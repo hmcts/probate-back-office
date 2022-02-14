@@ -28,7 +28,8 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     @Test
     public void testPost2022PA1PAllMandatoryFieldsPresentReturnNoWarning() {
         String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/Post2022PA1PAllMandatoryFilled.json");
+            utils.getStringFromFile(
+                "/json/bulkscan/version2/validation/requestPayload/Post2022PA1PAllMandatoryFilled.json");
         List<String> expectedWarnings = emptyList();
         validateOCRWarnings(PA1P, jsonRequest, SUCCESS, expectedWarnings);
     }
@@ -45,7 +46,8 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     @Test
     public void testPost2022PA1AAllMandatoryFieldsPresentReturnNoWarning() {
         String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/Post2022PA1AAllMandatoryFilled.json");
+            utils.getStringFromFile(
+                "/json/bulkscan/version2/validation/requestPayload/Post2022PA1AAllMandatoryFilled.json");
         List<String> expectedWarnings = emptyList();
         validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
     }
@@ -53,7 +55,8 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     @Test
     public void testPost2022PA1AMissingMandatoryFieldsPresentReturnSomeWarnings() {
         String jsonRequest =
-            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/Post2022PA1AMissingNQV.json");
+            utils.getStringFromFile(
+                "/json/bulkscan/version2/validation/requestPayload/Post2022PA1AMissingNQV.json");
         List<String> expectedWarnings =
             utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/missingNQV.txt");
         validateOCRWarnings(PA1A, jsonRequest, WARNINGS, expectedWarnings);
@@ -65,7 +68,8 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingIHT400421completed.json");
         List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/missingIHT400421completed.txt");
+            utils.getLinesFromFile(
+                "/json/bulkscan/version2/validation/expectedWarnings/missingIHT400421completed.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
 
@@ -75,7 +79,8 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingIHT207completed.json");
         List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/missingIHT207completed.txt");
+            utils.getLinesFromFile(
+                "/json/bulkscan/version2/validation/expectedWarnings/missingIHT207completed.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
 
@@ -85,7 +90,8 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingDiedAfterSwitchDate.json");
         List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/missingDiedAfterSwitchDate.txt");
+            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings" 
+                + "/missingDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
 

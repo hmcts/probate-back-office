@@ -38,13 +38,15 @@ public class BulkScanPA1FormV2OCRTransformationTests extends IntegrationTestBase
     @Test
     public void shouldSetDeceasedHadLateSpouseOrCivilPartnerYes() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version2/transformation/widowed.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.deceasedHadLateSpouseOrCivilPartner","Yes");
+        transformExceptionPostSuccess(jsonRequest, 
+            "case_creation_details.case_data.deceasedHadLateSpouseOrCivilPartner","Yes");
     }
     
     @Test
     public void shouldSetDeceasedHadLateSpouseOrCivilPartnerNo() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version2/transformation/neverMarried.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.deceasedHadLateSpouseOrCivilPartner","No");
+        transformExceptionPostSuccess(jsonRequest, 
+            "case_creation_details.case_data.deceasedHadLateSpouseOrCivilPartner","No");
     }
     
     @Test
