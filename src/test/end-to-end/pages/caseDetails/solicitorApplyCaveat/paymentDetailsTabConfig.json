@@ -1,7 +1,7 @@
 {
     "tabName": "Payment Details",
     "fields": [
-      "How do you want to pay? Or Want it for Free"
+      "How do you want to pay?"
     ],
     "dataKeys": [
       "page1_payment_type"
