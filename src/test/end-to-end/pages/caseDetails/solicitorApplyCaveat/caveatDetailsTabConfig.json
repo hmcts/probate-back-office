@@ -1,7 +1,7 @@
 {
     "tabName": "Caveat details",
     "fields": [
-      "Is this a paper form?"
+      "Is this a paper form OR Applicant Came to Registry?"
     ],
     "dataKeys": [
       "optionNo"
