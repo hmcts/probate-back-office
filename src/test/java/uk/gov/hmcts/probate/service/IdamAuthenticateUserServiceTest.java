@@ -25,7 +25,6 @@ import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -79,7 +78,7 @@ public class IdamAuthenticateUserServiceTest {
         UserInfo expectedUserDetails =
                 new UserInfo(userEmail, "16", "solicitor", "Peter", "Pan", new ArrayList<>());
 
-        given(idamClient.getUserInfo(eq("Bearer " + token.getAccessToken()))).willReturn(expectedUserDetails);
+        given(idamClient.getUserInfo("Bearer " + token.getAccessToken())).willReturn(expectedUserDetails);
 
         IdamTokens idamTokens = idamAuthenticateUserService.getIdamTokens();
         assertThat(idamTokens.getServiceAuthorization(), is(auth));
@@ -135,7 +134,7 @@ public class IdamAuthenticateUserServiceTest {
         UserInfo expectedUserDetails =
                 new UserInfo(userEmail, "16", "solicitor", "Peter", "Pan", new ArrayList<>());
 
-        given(idamClient.getUserInfo(eq("Bearer " + token.getAccessToken()))).willReturn(expectedUserDetails);
+        given(idamClient.getUserInfo("Bearer " + token.getAccessToken())).willReturn(expectedUserDetails);
 
         // first time
         IdamTokens idamTokens = idamAuthenticateUserService.getIdamTokens();
@@ -169,8 +168,8 @@ public class IdamAuthenticateUserServiceTest {
         UserInfo expectedUserDetails =
                 new UserInfo(userEmail, "16", "solicitor", "Peter", "Pan", new ArrayList<>());
 
-        given(idamClient.getUserInfo(eq("Bearer " + token.getAccessToken()))).willReturn(expectedUserDetails);
-        String email = idamAuthenticateUserService.getEmail("AuthToken");
+        given(idamClient.getUserInfo("Bearer " + token.getAccessToken())).willReturn(expectedUserDetails);
+        String email = idamAuthenticateUserService.getEmail();
 
         assertEquals(userEmail, email);
     }

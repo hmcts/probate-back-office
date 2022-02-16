@@ -55,7 +55,7 @@ public class PBARetrievalServiceTest {
 
     @Test
     public void shouldReturnPBAs() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+        when(idamAuthenticateUserService.getEmail()).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -73,7 +73,7 @@ public class PBARetrievalServiceTest {
 
     @Test
     public void shouldReturnNoPBAsForLookupForbidden() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+        when(idamAuthenticateUserService.getEmail()).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -87,14 +87,14 @@ public class PBARetrievalServiceTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldErrorOnGetIdamUserDetails() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn(null);
+        when(idamAuthenticateUserService.getEmail()).thenReturn(null);
 
         pbaRetrievalService.getPBAs(AUTH_TOKEN);
     }
 
     @Test(expected = ClientException.class)
     public void shouldFailOnAuthTokenMatch() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+        when(idamAuthenticateUserService.getEmail()).thenReturn("solicitor@probate-test.com");
 
         pbaRetrievalService.getPBAs("ForbiddenToken");
     }

@@ -51,7 +51,7 @@ sonarqube {
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java," + "**/ResponseCaseData.java," + "**/CaseData.java"
+    property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java," + "**/ResponseCaseData.java," + "**/CaseData.java," + "**/model/**"
   }
 }
 
