@@ -8,10 +8,6 @@
   "page2_dateOfDeath_month": "01",
   "page2_dateOfDeath_year": "2017",
   "page2_dateOfDeath_long": "1 Jan 2017",
-  "page2_dateOfBirth_day": "01",
-  "page2_dateOfBirth_month": "01",
-  "page2_dateOfBirth_year": "1930",
-  "page2_dateOfBirth_long": "1 Jan 1930",
 
   "page2_addAliasButton": "#deceasedFullAliasNameList div button[type=\"button\"]",
   "page2_alias_1": "deceased_alias_name1",

@@ -464,14 +464,14 @@ curl -X POST \
     "jsonBody": {
       "users": [
         {
-          "userIdentifier": "e8e9d8cc-ffcc-4f48-aa86-7b6760ae9327",
+          "userIdentifier": "a24c87eb-2c1b-412c-a71a-79d4dad3f751",
           "firstName": "PBA",
           "lastName": "TestUser",
           "email": "probatesolicitortestorgtest1@gmail.com",
           "idamStatus": "ACTIVE"
         },
         {
-          "userIdentifier": "05295da4-519e-453c-af54-4832a7c83195",
+          "userIdentifier": "0e0a4d35-b648-4604-884b-fc9e370f8d55",
           "firstName": "PBA",
           "lastName": "TestUser2",
           "email": "probatesolicitortestorg2test1@gmail.com",
@@ -509,7 +509,7 @@ curl -X POST \
               "organisationIdentifier": "XXXXX",
               "users": [
                   {
-                    "userIdentifier": "e8e9d8cc-ffcc-4f48-aa86-7b6760ae9327",
+                    "userIdentifier": "a24c87eb-2c1b-412c-a71a-79d4dad3f751",
                     "firstName": "PBA",
                     "lastName": "TestUser",
                     "email": "probatesolicitortestorgtest1@gmail.com",
@@ -525,7 +525,7 @@ curl -X POST \
                     "idamMessage": "11 OK"
                   },
                   {
-                    "userIdentifier": "05295da4-519e-453c-af54-4832a7c83195",
+                    "userIdentifier": "0e0a4d35-b648-4604-884b-fc9e370f8d55",
                     "firstName": "PBA",
                     "lastName": "TestUser2",
                     "email": "probatesolicitortestorg2test1@gmail.com",
@@ -571,7 +571,7 @@ curl -X POST \
               "organisationIdentifier": "XXXXX",
               "users": [
                   {
-                    "userIdentifier": "e8e9d8cc-ffcc-4f48-aa86-7b6760ae9327",
+                    "userIdentifier": "a24c87eb-2c1b-412c-a71a-79d4dad3f751",
                     "firstName": "PBA",
                     "lastName": "TestUser",
                     "email": "probatesolicitortestorgtest1@gmail.com",
@@ -587,7 +587,7 @@ curl -X POST \
                     "idamMessage": "11 OK"
                   },
                   {
-                    "userIdentifier": "05295da4-519e-453c-af54-4832a7c83195",
+                    "userIdentifier": "0e0a4d35-b648-4604-884b-fc9e370f8d55",
                     "firstName": "PBA",
                     "lastName": "TestUser2",
                     "email": "probatesolicitortestorg2test1@gmail.com",

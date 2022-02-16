@@ -138,7 +138,7 @@
         </td>
         <td colspan="3" class="text-leftAligned" style="padding-left: 70px;">
             {% if case_details.case_data.registryLocation == "ctsc" %}
-            High Court of Justice England and Wales <br />
+            High Court of Justice England and Wales<br />
             {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
             {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
             {% if case_details.registryAddressLine3 != null and case_details.registryAddressLine3 != "" %}{{case_details.registryAddressLine3}}<br />{% endif %}
@@ -169,7 +169,7 @@
             {% if case_details.registryTelephone != null and case_details.registryTelephone != "" %}{{case_details.registryTelephone}}{% endif %}
 
             {% else %}
-            High Court of Justice England and Wales <br />
+            High Court of Justice England and Wales<br />
             {{case_details.case_data.registryLocation}} District Probate Registry <br />
             {% if case_details.registryAddressLine1 != null and case_details.registryAddressLine1 != "" %}{{case_details.registryAddressLine1}}<br />{% endif %}
             {% if case_details.registryAddressLine2 != null and case_details.registryAddressLine2 != "" %}{{case_details.registryAddressLine2}}<br />{% endif %}
@@ -313,7 +313,7 @@
                 {{ case_details.case_data.boLimitationText }}{% endif %}
 
             </p>
-            <p>The application has stated that the gross value of the estate in England and Wales amounts to
+            <p>The application has stated that the gross value of the estate in {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}the United Kingdom{% else %}England and Wales{% endif %} amounts to
                 &#163;{{(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###.00")}} and the net value amounts to
                 &#163;{{(case_details.case_data.ihtNetValue / 100) | numberformat("###,###.00")}}
             </p>

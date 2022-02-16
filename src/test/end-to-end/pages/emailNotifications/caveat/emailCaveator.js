@@ -7,11 +7,12 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (caseRef) {
 
     const I = this;
-    await I.waitForText(emailCaveatorConfig.waitForText, testConfig.TestTimeToWaitForText);
+    await I.waitForText(emailCaveatorConfig.waitForText, testConfig.WaitForTextTimeout);
 
     await I.see(caseRef);
 
-    await I.fillField('#messageContent', emailCaveatorConfig.email_message_content);
+    await I.waitForEnabled({css: '#messageContent'});
+    await I.fillField({css: '#messageContent'}, emailCaveatorConfig.email_message_content);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
 };

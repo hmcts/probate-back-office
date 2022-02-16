@@ -33,6 +33,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -65,7 +67,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String solsSolicitorAppReference;
     private final String ihtFormId;
     private final String solsSolicitorIsExec;
-    private final String solsSolicitorIsMainApplicant;
     private final String solsSolicitorIsApplying;
     private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
@@ -104,6 +105,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<UploadDocument>> boDocumentsUploaded;
     private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String solsSOTNeedToUpdate;
+    private final DocumentLink solsLegalStatementUpload;
     private final DocumentLink solsNextStepsDocument;
     private final String solsAdditionalInfo;
     private final String primaryApplicantForenames;
@@ -300,7 +302,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String anyDeceasedGrandChildrenUnderEighteen;
     private final String deceasedAnyChildren;
     private final String deceasedHasAssetsOutsideUK;
-    private final String solicitorIsMainApplicant;
 
     private final String boStopDetailsDeclarationParagraph;
     private final String boEmailRequestInfoNotificationRequested;
@@ -325,6 +326,36 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String bulkScanCaseReference;
     private String grantDelayedNotificationIdentified;
     private String caseHandedOffToLegacySite;
-    private final List<CollectionMember<DeathRecord>> deathRecords;
-
+    private List<CollectionMember<DeathRecord>> deathRecords;
+    private DeathRecord deathRecord;
+    private Integer numberOfDeathRecords;
+    private final String willHasVisibleDamage;
+    private final Damage willDamage;
+    private final String willDamageReasonKnown;
+    private final String willDamageReasonDescription;
+    private final String willDamageCulpritKnown;
+    private final CombinedName willDamageCulpritName;
+    private final String willDamageDateKnown;
+    private final String willDamageDate;
+    private final String codicilsHasVisibleDamage;
+    private final Damage codicilsDamage;
+    private final String codicilsDamageReasonKnown;
+    private final String codicilsDamageReasonDescription;
+    private final String codicilsDamageCulpritKnown;
+    private final CombinedName codicilsDamageCulpritName;
+    private final String codicilsDamageDateKnown;
+    private final String codicilsDamageDate;
+    private final String deceasedWrittenWishes;
+    private final String dateOfDeathAfterEstateSwitch;
+    private final String ihtFormEstateValuesCompleted;
+    private final String ihtFormEstate;
+    private final BigDecimal ihtEstateGrossValue;
+    private final String ihtEstateGrossValueField;
+    private final BigDecimal ihtEstateNetValue;
+    private final String ihtEstateNetValueField;
+    private final BigDecimal ihtEstateNetQualifyingValue;
+    private final String ihtEstateNetQualifyingValueField;
+    private final String deceasedHadLateSpouseOrCivilPartner;
+    private final String ihtUnusedAllowanceClaimed;
+    private final String showIht400421Page;
 }

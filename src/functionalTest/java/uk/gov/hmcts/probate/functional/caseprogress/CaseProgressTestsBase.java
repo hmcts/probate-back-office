@@ -20,6 +20,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     protected static final String CASE_DOCS_RECEIVED_URL = "/notify/documents-received";
     protected static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     protected static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    protected static final String SOLS_VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
     protected static final String CASE_FAIL_QA_URL = "/case/fail-qa";
 
     protected static final String CASE_STOPPED_URL = "/case/case-stopped";
@@ -114,6 +115,11 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
                 .andReturn();
 
         return jsonResponse.getBody().asString();
+    }
+
+    protected String getSolicitorDtlsUrl() {
+        return UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE
+            .replaceFirst("<CASE_ID>", "1528365719153338");
     }
 
     protected String getDeceasedDtlsUrl() {

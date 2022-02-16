@@ -25,10 +25,9 @@ case $classification in
     exit 1 ;;
 esac
 
-binFolder=$($(dirname "$0")/probate-dev-env-realpath)
 
-userToken="$(${binFolder}/idam-xui-user-token.sh)"
-serviceToken="$(${binFolder}/idam-service-token.sh xui_webapp)"
+userToken="$(./bin/idam-xui-user-token.sh)"
+serviceToken="$(./bin/idam-service-token.sh xui_webapp)"
 
 curl -s -XPUT \
   http://localhost:4451/api/user-role \

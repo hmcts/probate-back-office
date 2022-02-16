@@ -17,9 +17,15 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     // Note - expected html filenames need to be .txt to stop intellij auto-formatting
 
     @Test
-    public void shouldTransformAppCreatedStateCorrectly() {
-        verifyCaseProgressHtmlSolPost("caseprogressintestacy/01-appCreated.json", TASKLIST_UPDATE_URL,
-            "/application-created-html.txt", getDeceasedDtlsUrl());
+    public void shouldTransformAppCreatedSolDtlsStateCorrectly() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/01-appCreatedSolDtls.json", TASKLIST_UPDATE_URL,
+                "/application-created-sol-dtls-html.txt", getSolicitorDtlsUrl());
+    }
+
+    @Test
+    public void shouldTransformAppCreatedDeceasedDtlsStateCorrectly() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/01a-appCreatedDeceasedDtls.json", TASKLIST_UPDATE_URL,
+                "/application-created-dcsd-dtls-html.txt", getDeceasedDtlsUrl());
     }
 
     @Test
@@ -44,6 +50,12 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/03-probateCreated.json", SOLS_VALIDATE_URL,
             "/deceased-dtls-entered-html.txt", getAddApplicationDetailsUrl());
+    }
+
+    @Test
+    public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePartWithPA16Form() {
+        verifyCaseProgressHtmlSolPost("caseprogressintestacy/04b-caseCreated.json", SOLS_VALIDATE_INTESTACY_URL,
+            "/deceased-dtls-entered-pa16-html.txt", getAddApplicationDetailsUrl());
     }
 
     @Test

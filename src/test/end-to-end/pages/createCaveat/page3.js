@@ -9,7 +9,7 @@ module.exports = async function (crud) {
     const I = this;
 
     if (crud === 'create') {
-        await I.waitForText(createCaveatConfig.page3_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createCaveatConfig.page3_waitForText, testConfig.WaitForTextTimeout);
 
         await I.fillField('#caveatorForenames', createCaveatConfig.page3_caveator_forenames);
         await I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname);
@@ -29,7 +29,7 @@ module.exports = async function (crud) {
     }
 
     if (crud === 'update') {
-        await I.waitForText(createCaveatConfig.page3_amend_waitForText, testConfig.TestTimeToWaitForText);
+        await I.waitForText(createCaveatConfig.page3_amend_waitForText, testConfig.WaitForTextTimeout);
 
         await I.fillField('#caveatorForenames', createCaveatConfig.page3_caveator_forenames_update);
         await I.fillField('#caveatorSurname', createCaveatConfig.page3_caveator_surname_update);

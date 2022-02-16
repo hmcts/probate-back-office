@@ -47,7 +47,7 @@ public class OrganisationsRetrievalService {
                 request, Organisations.class);
             Organisations organisationsResponse = Objects.requireNonNull(responseEntity.getBody());
 
-            if (organisationsResponse !=null && organisationsResponse.getOrganisations().size() ==1) {
+            if (organisationsResponse != null && organisationsResponse.getOrganisations().size() == 1) {
                 return organisationsResponse.getOrganisations().get(0);
             }
         } catch (Exception e) {

@@ -15,15 +15,11 @@ module.exports = async function () {
     await I.fillField('#deceasedDateOfDeath-month', applicationDetailsConfig.page2_dateOfDeath_month);
     await I.fillField('#deceasedDateOfDeath-year', applicationDetailsConfig.page2_dateOfDeath_year);
 
-    await I.fillField('#deceasedDateOfBirth-day', applicationDetailsConfig.page2_dateOfBirth_day);
-    await I.fillField('#deceasedDateOfBirth-month', applicationDetailsConfig.page2_dateOfBirth_month);
-    await I.fillField('#deceasedDateOfBirth-year', applicationDetailsConfig.page2_dateOfBirth_year);
-
     await I.click(`#deceasedAnyOtherNames_${applicationDetailsConfig.page2_hasAliasYes}`);
     if (!testConfig.TestAutoDelayEnabled) {
         // only valid for local dev where we need it to run as fast as poss to minimise
         // lost dev time
-        await I.wait(0.25);
+        await I.wait(testConfig.ManualDelayShort);
     }
 
     let idx = 0;
@@ -36,7 +32,7 @@ module.exports = async function () {
             if (!testConfig.TestAutoDelayEnabled) {
                 // only valid for local dev where we need it to run as fast as poss to minimise
                 // lost dev time
-                await I.wait(0.25);
+                await I.wait(testConfig.ManualDelayShort);
             }
             const locator = {css: `#deceasedFullAliasNameList_${idx}_FullAliasName`};
             await I.waitForVisible(locator);
