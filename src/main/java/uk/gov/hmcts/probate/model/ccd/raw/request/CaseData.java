@@ -168,6 +168,8 @@ public class CaseData extends CaseDataParent {
     @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willAsOriginalIsNull}")
     private final String willAccessOriginal;
 
+    private final String willAccessNotorial;
+
     @NotBlank(groups = {ApplicationProbateGroup.class,
         ApplicationAdmonGroup.class}, message = "{willNumberOfCodicilsIsNull}")
     private final String willHasCodicils;
