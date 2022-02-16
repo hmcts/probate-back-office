@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.model;
 
 public enum UserRole {
     REGISTRAR("caseworker-probate-registrar"),
