@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.model;
 
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 

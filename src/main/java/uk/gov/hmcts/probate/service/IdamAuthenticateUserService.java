@@ -9,6 +9,8 @@ import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.UserDetails;
+import uk.gov.hmcts.probate.model.UserDetailsTransformer;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.idam.client.IdamClient;
 import uk.gov.hmcts.reform.idam.client.models.UserInfo;
@@ -18,29 +20,13 @@ import uk.gov.hmcts.reform.idam.client.models.UserInfo;
 public class IdamAuthenticateUserService {
 
     public static final int ONE_HOUR = 1000 * 60 * 60;
-    private static final String BEARER = "Bearer ";
-    private static final String AUTHORIZATION_CODE = "authorization_code";
-    private static final String CODE = "code";
-    private static final String BASIC = "Basic ";
     private final AtomicInteger atomicInteger = new AtomicInteger(1);
-
-    @Value("${auth.provider.client.id}")
-    private String id;
-
-    @Value("${auth.provider.client.secret}")
-    private String secret;
-
-    @Value("${auth.provider.client.redirect}")
-    private String redirect;
 
     @Value("${auth.provider.client.email}")
     private String email;
 
     @Value("${auth.provider.client.password}")
     private String password;
-
-    @Value("${auth.provider.client.user}")
-    private String urlUsed;
 
     private final AuthTokenGenerator authTokenGenerator;
 
