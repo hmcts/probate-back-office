@@ -36,6 +36,22 @@ auth.provider.client:
   email: ${AUTH_TOKEN_EMAIL:ProbateSuperuser@gmail.com}
   password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
+
+#  idam.url=${IDAM_API_URL:http://localhost:5000}
+#  idam.s2s-auth.totp_secret=${IDAM_S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAC}
+#  idam.s2s-auth.microservice=${IDAM_S2S_AUTH_MICROSERVICE:sscs}
+#  idam.s2s-auth.url=${IDAM_S2S_AUTH:http://localhost:4502}
+#  idam.oauth2.user.email=${IDAM_SSCS_SYSTEMUPDATE_USER:system.update@hmcts.net}
+#  idam.oauth2.user.password=${IDAM_SSCS_SYSTEMUPDATE_PASSWORD:Pa55word11}
+#  idam.oauth2.redirectUrl=${IDAM_OAUTH2_REDIRECT_URL:https://localhost:3000/authenticated}
+#  auth.idam.client.baseUrl=${IDAM_API_URL:http://localhost:5000}
+#  auth.provider.service.client.baseUrl=${IDAM_S2S_AUTH:http://localhost:4502}
+#  auth.idam.client.redirectUri=${IDAM_OAUTH2_REDIRECT_URL:https://localhost:3000/authenticated}
+#  idam.api.url=${IDAM_API_URL:http://localhost:5000}
+#  idam.client.id=${IDAM_OAUTH2_CLIENT_ID:sscs}
+#  idam.client.secret=${IDAM_OAUTH2_CLIENT_SECRET:QM5RQQ53LZFOSIXJ}
+#  idam.client.redirect_uri=${IDAM_OAUTH2_REDIRECT_URL:https://localhost:3000/authenticated}
+
 pdf.service:
   url: http://localhost:5500
   pdfApi: /api/v2/pdf-generator/html
@@ -197,7 +213,17 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
+#idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
+
+idam:
+  s2s-auth:
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+  service:
+    host: ${S2S_AUTH_URL:http://localhost:4502}
+  api:
+    url: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
 logging:
   level:
@@ -463,12 +489,6 @@ document:
     service:
       api:
         baseurl: localhost:8080
-
-idam:
-  s2s-auth:
-    url: ${S2S_AUTH_URL:http://localhost:4502}
-    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
-    microservice: probate_backend
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
