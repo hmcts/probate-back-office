@@ -167,7 +167,7 @@ before --create make sure you have this env var setup
 LD_SDK_AM_KEY (see Sanjay for the value)
 
 after setup from dev-env, do, from this probate-back-office branch
-./bin/ccd-add-more-roles.sh
+./bin/share-a-case-setup.sh
 make sure manage-case-assignment docker image is running
 make sure wiremock is running and populated
 we will eventually merge this into probate-dev-env
