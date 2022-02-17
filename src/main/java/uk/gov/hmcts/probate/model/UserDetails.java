@@ -21,17 +21,6 @@ public class UserDetails {
 
     public UserDetails(@JsonProperty("id") String id,
                        @JsonProperty("email") String email,
-                       @JsonProperty("roles") List<String> roles) {
-        this.id = id;
-        this.email = email;
-        this.roles = roles;
-        this.name = null;
-        this.forename = null;
-        this.surname = null;
-    }
-
-    public UserDetails(@JsonProperty("id") String id,
-                       @JsonProperty("email") String email,
                        @JsonProperty("name") String name,
                        @JsonProperty("forename") String forename,
                        @JsonProperty("surname") String surname,
