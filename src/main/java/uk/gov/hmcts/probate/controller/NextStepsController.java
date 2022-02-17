@@ -58,7 +58,6 @@ public class NextStepsController {
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
-    private final AssignCaseAccessService assignCaseAccessService;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -113,7 +112,6 @@ public class NextStepsController {
             }
         }
 
-        assignCaseAccessService.assignCaseAccess(callbackRequest.getCaseDetails(), authToken);
         return ResponseEntity.ok(callbackResponse);
     }
 

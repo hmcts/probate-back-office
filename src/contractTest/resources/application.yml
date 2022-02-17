@@ -128,6 +128,10 @@ pba:
     health.url: ${pba.retrieval.url}/health
     api: /refdata/external/v1/organisations/pbas
 
+prd:
+  organisations:
+    url: ${PRD_API_URL:http://localhost:8991}
+    api: /refdata/external/v1/organisations
 
 markdown.templatesDirectory: templates/markdown/
 
@@ -479,3 +483,7 @@ ld:
 
 iht-estate:
   switch-date: "2022-01-01"
+
+aca:
+  api:
+    url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}
