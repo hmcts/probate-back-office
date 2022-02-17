@@ -163,7 +163,6 @@ docker-compose stop probate-back-office && ./gradlew assemble && docker-compose 
 
 #### share case setup
 ```
-./bin/idam-create-service.sh
 ./bin/ccd-add-more-roles.sh
 make sure manage-case-assignment docker image is running
 make sure wiremock is running and populated
