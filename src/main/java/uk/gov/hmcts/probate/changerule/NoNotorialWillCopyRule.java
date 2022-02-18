@@ -10,7 +10,7 @@ public class NoNotorialWillCopyRule implements ChangeRule {
 
     @Override
     public boolean isChangeNeeded(CaseData caseData) {
-        return NO.equals(caseData.getWillAccessNotorial());
+        return NO.equals(caseData.getWillAccessOriginal()) && NO.equals(caseData.getWillAccessNotorial());
     }
 
     @Override
