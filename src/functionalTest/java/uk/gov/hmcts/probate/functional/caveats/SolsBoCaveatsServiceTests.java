@@ -336,7 +336,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatExtendShouldReturnOKResponseCode() {
         final ResponseBody response = validatePostSuccess(CAVEAT_EXTEND_PAYLOAD, CAVEAT_EXTEND);
-        response.prettyPrint();
         JsonPath jsonPath = JsonPath.from(response.asString());
 
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
@@ -350,7 +349,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         jsonAsString = jsonAsString
             .replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",", "\"caveatorEmailAddress\": \"\",");
         final Response response = postJson(jsonAsString, CAVEAT_EXTEND);
-        response.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(200);
@@ -361,7 +359,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatSolicitorCreateReturnOkResponseCode() {
         final ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE_PAYLOAD, CAVEAT_SOLICITOR_CREATE);
-        response.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
         assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
@@ -374,7 +371,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         jsonAsString.replaceFirst("Solicitor", "Personal");
         jsonAsString.replaceFirst("ctsc", "Leeds");
         final Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_CREATE);
-        response.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(200);
@@ -386,7 +382,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatSolicitorUpdateReturnOKResponseCode() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_UPDATE_PAYLOAD, CAVEAT_SOLICITOR_UPDATE);
-        responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
 
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
@@ -401,7 +396,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         jsonAsString.replaceFirst("ctsc", "Leeds");
 
         final Response response = postJson(jsonAsString, CAVEAT_SOLICITOR_UPDATE);
-        response.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(200);
@@ -429,7 +423,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         jsonAsString = jsonAsString.replace("caveator@probate-test.com", "");
 
         final Response response = postJson(jsonAsString, CAVEAT_VALIDATE);
-        response.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(response.asString());
 
         response.then().assertThat().statusCode(400);
@@ -462,7 +455,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         final Response response = postJson(jsonAsString, CAVEAT_VALIDATE_EXTEND);
         final JsonPath jsonPath = JsonPath.from(response.asString());
-        response.prettyPrint();
 
         response.then().assertThat().statusCode(200);
         assertThat(jsonPath.get("data"), is(nullValue()));
@@ -472,7 +464,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatWithdrawShouldReturnOKResponseCode() {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_CASE_WITHDRAW_PAYLOAD, CAVEAT_WITHDRAW);
-        responseBody.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
 
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
@@ -488,7 +479,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         final Response response = postJson(jsonAsString, CAVEAT_WITHDRAW);
         final JsonPath jsonPath = JsonPath.from(response.asString());
-        response.prettyPrint();
         response.then().assertThat().statusCode(200);
         assertThat(jsonPath.get("data.notificationsGenerated[0].value.DocumentType"),
             containsString("caveatCoversheet"));
