@@ -207,6 +207,16 @@ withPipeline("java", product, component) {
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
 
+  onDemo {
+    env.ENV = 'demo'
+  }
+  onPerftest {
+    env.ENV = 'perftest'
+  }
+  onIthc {
+    env.ENV = 'ithc'
+  }
+
   before('smoketest:preview') {
 
     sh """
