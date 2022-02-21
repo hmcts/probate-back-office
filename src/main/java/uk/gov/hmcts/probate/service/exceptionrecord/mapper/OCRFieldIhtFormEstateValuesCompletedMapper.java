@@ -8,6 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import static org.apache.commons.lang3.StringUtils.isEmpty;
+
 @Slf4j
 @Component
 public class OCRFieldIhtFormEstateValuesCompletedMapper {
@@ -19,9 +21,9 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
     public Boolean toIhtFormEstateValuesCompleted(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for ihtFormEstateValuesCompleted");
 
-        if (ocrFields.getIhtEstateGrossValue() != null
-            && ocrFields.getIhtEstateNetValue() != null
-            && ocrFields.getIhtEstateNetQualifyingValue() != null) {
+        if (!isEmpty(ocrFields.getIhtEstateGrossValue())
+            && !isEmpty(ocrFields.getIhtEstateNetValue())
+            && !isEmpty(ocrFields.getIhtEstateNetQualifyingValue())) {
             return Boolean.FALSE;
         } else if (
             "true".equalsIgnoreCase(ocrFields.getIht207Completed())
