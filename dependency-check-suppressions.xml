@@ -15,6 +15,7 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-oauth2@.*$</packageUrl>
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
+        <vulnerabilityName>CWE-862: Missing Authorization</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
