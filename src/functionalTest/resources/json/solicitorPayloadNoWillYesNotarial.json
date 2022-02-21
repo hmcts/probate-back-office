@@ -1,0 +1,155 @@
+{
+  "iht217": "No",
+  "caseType": "gop",
+  "ihtFormId": "IHT205",
+  "paperForm": "No",
+  "willExists": "Yes",
+  "bulkPrintId": [],
+  "caseMatches": [],
+  "casePrinted": "Yes",
+  "ihtNetValue": "100",
+  "ihtGrossValue": "100",
+  "schemaVersion": "2.0.0",
+  "applicationType": "Solicitor",
+  "dateOfDeathType": "diedOn",
+  "deceasedAddress": {
+    "County": "111",
+    "Country": "United Kingdom",
+    "PostCode": "e6 1qq",
+    "PostTown": "1",
+    "AddressLine1": "1",
+    "AddressLine2": "1",
+    "AddressLine3": "11"
+  },
+  "deceasedSurname": "J",
+  "grantStoppedDate": "2022-02-18",
+  "paragraphDetails": [],
+  "registryLocation": "London",
+  "boSendToBulkPrint": "Yes",
+  "bulkScanEnvelopes": [],
+  "deceasedForenames": "Koijio",
+  "domicilityCountry": "as",
+  "executorsApplying": [],
+  "applicationGrounds": "sa",
+  "solsSolicitorEmail": "jiojoi@oij.com",
+  "willAccessNotarial": "Yes",
+  "willAccessOriginal": "No",
+  "deceasedDateOfBirth": "2000-09-09",
+  "deceasedDateOfDeath": "2020-09-09",
+  "otherExecutorExists": "No",
+  "solsSolicitorIsExec": "No",
+  "boCaseStopReasonList": [
+    {
+      "id": "884bfe23-dbde-403a-8723-aeb9e8323586",
+      "value": {
+        "caseStopReason": "IHTIssue"
+      }
+    }
+  ],
+  "codicilAddedDateList": [],
+  "executorsNotApplying": [],
+  "solsSolicitorAddress": {
+    "County": "dsf",
+    "Country": "",
+    "PostCode": "e6 1qq",
+    "PostTown": "London",
+    "AddressLine1": "67 Parr Road",
+    "AddressLine2": "1",
+    "AddressLine3": "1"
+  },
+  "willDatedBeforeApril": "No",
+  "deceasedAnyOtherNames": "No",
+  "solsSolicitorFirmName": "Kj",
+  "ihtFormCompletedOnline": "No",
+  "languagePreferenceWelsh": "No",
+  "primaryApplicantAddress": {
+    "County": "dsf",
+    "Country": "United Kingdom",
+    "PostCode": "e6 1qq",
+    "PostTown": "London",
+    "AddressLine1": "98 Stafford Road",
+    "AddressLine2": "",
+    "AddressLine3": ""
+  },
+  "primaryApplicantSurname": "j",
+  "solsSolicitorIsApplying": "No",
+  "applicationSubmittedDate": "2020-09-09",
+  "primaryApplicantHasAlias": "No",
+  "primaryApplicantForenames": "koijio",
+  "probateDocumentsGenerated": [],
+  "solsSolicitorAppReference": "q",
+  "deceasedDomicileInEngWales": "No",
+  "noOriginalWillAccessReason": "gd",
+  "primaryApplicantIsApplying": "Yes",
+  "solsDeceasedAliasNamesList": [],
+  "boCaveatStopSendToBulkPrint": "Yes",
+  "boRequestInfoSendToBulkPrint": "Yes",
+  "probateSotDocumentsGenerated": [
+    {
+      "id": "351b6f49-ea15-459a-a62b-a4785ea5eedb",
+      "value": {
+        "DocumentLink": {
+          "document_url": "http://dm-store:8080/documents/870b680a-8ba1-4d33-8489-5217791d0087",
+          "document_filename": "legalStatementGrantOfProbate.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/870b680a-8ba1-4d33-8489-5217791d0087/binary"
+        },
+        "DocumentType": "legalStatement",
+        "DocumentFileName": "3fa000b9-8ac5-4d52-864f-8c8c6f2ae1d1.pdf",
+        "DocumentDateAdded": "2022-02-18",
+        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
+      }
+    },
+    {
+      "id": "ee25b878-c8ab-4260-b861-360ae9a409c3",
+      "value": {
+        "DocumentLink": {
+          "document_url": "http://dm-store:8080/documents/fbc0de00-27dd-4236-802a-0e5e1c7c1843",
+          "document_filename": "legalStatementGrantOfProbate.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/fbc0de00-27dd-4236-802a-0e5e1c7c1843/binary"
+        },
+        "DocumentType": "legalStatement",
+        "DocumentFileName": "0637a5b0-0eb7-41a6-81c1-52abdfa8b962.pdf",
+        "DocumentDateAdded": "2022-02-18",
+        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
+      }
+    },
+    {
+      "id": "e3e8e799-81ef-4e3c-9a84-cf5ddbb62a5b",
+      "value": {
+        "DocumentLink": {
+          "document_url": "http://dm-store:8080/documents/f75f4d55-f5bf-4bf9-8972-b024c82e8c3b",
+          "document_filename": "legalStatementGrantOfProbate.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/f75f4d55-f5bf-4bf9-8972-b024c82e8c3b/binary"
+        },
+        "DocumentType": "legalStatement",
+        "DocumentFileName": "d81d7eec-9906-436c-91f9-1bd58ecfd7d3.pdf",
+        "DocumentDateAdded": "2022-02-18",
+        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
+      }
+    }
+  ],
+  "boCaveatStopEmailNotification": "No",
+  "boGrantReissueSendToBulkPrint": "Yes",
+  "probateNotificationsGenerated": [
+    {
+      "id": "e8feecba-e973-44b5-9c36-2600087e3f89",
+      "value": {
+        "DocumentLink": {
+          "document_url": "http://dm-store:8080/documents/da87ada7-f68a-4f97-a667-de2d67db832b",
+          "document_filename": "sentEmail.pdf",
+          "document_binary_url": "http://dm-store:8080/documents/da87ada7-f68a-4f97-a667-de2d67db832b/binary"
+        },
+        "DocumentType": "sentEmail",
+        "DocumentFileName": "c88abe36-76b0-44ee-96ad-0f3111ccaebf.pdf",
+        "DocumentDateAdded": "2022-02-17",
+        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
+      }
+    }
+  ],
+  "boEmailGrantIssuedNotification": "No",
+  "boEmailRequestInfoNotification": "No",
+  "boAssembleLetterSendToBulkPrint": "Yes",
+  "boEmailDocsReceivedNotification": "No",
+  "boEmailGrantReissuedNotification": "No",
+  "grantAwaitingDocumentationNotificationDate": "2022-03-25"
+}

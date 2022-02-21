@@ -2300,4 +2300,11 @@ public class SolBaCcdServiceDocumentsTests extends IntegrationTestBase {
                 + " testament of De Ceased"));
     }
 
+    @Test
+    public void verifyWillNotarialYesLegalStatementText() {
+        final String response = generateSotDocument("solicitorPayloadNoWillYesNotarial.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("as contained in the notarial/official copy"));
+    }
+
+
 }
