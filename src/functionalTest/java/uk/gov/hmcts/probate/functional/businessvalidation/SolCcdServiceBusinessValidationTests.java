@@ -46,6 +46,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
+    private static final String SOLS_VALIDATE_IHT_ESTATE = "/case/validate-iht-estate";
+    private static final String DEFAULT_SOLS_IHT_ESTATE = "/case/default-iht-estate";
     private static final String SOL_VALIDATE_MAX_EXECUTORS_URL = "/case/sols-validate-executors";
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
     private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
@@ -118,7 +120,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsGreaterThanGross.json",
-            "Net IHT value cannot be greater than the Gross value", 200);
+            "Net probate value cannot be greater than the Gross probate value", 200);
     }
 
     @Test
@@ -652,7 +654,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
         final ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
-        body.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(body.asString());
 
 
@@ -684,6 +685,48 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         assertEquals(willExist, "No");
         assertNull(errors);
+    }
+
+    @Test
+    public void verifyRequestSuccessForDefaultIhtEstate() {
+        //adjust with app yml iht-estate.switch-date
+        String json = utils.getJsonFromFile("solicitorPayloadIhtEstateDefault.json");
+        json = json.replaceAll("<DOD-DATE>", "2022-01-01");
+        final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
+            utils.getHeadersWithSolicitorUser());
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String dateOfDeathAfterEstateSwitch = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String errors = jsonPath.get("data.errors");
+
+        assertEquals("Yes", dateOfDeathAfterEstateSwitch);
+        assertNull(errors);
+    }
+
+    @Test
+    public void verifyRequestSuccessForDefaultIhtEstateNo() {
+        //adjust with app yml iht-estate.switch-date
+        String json = utils.getJsonFromFile("solicitorPayloadIhtEstateDefault.json");
+        json = json.replaceAll("<DOD-DATE>", "2021-12-31");
+        final ResponseBody body = validatePostSuccessForPayload(json, DEFAULT_SOLS_IHT_ESTATE,
+            utils.getHeadersWithSolicitorUser());
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String dateOfDeathAfterEstateSwitch = jsonPath.get("data.dateOfDeathAfterEstateSwitch");
+        final String errors = jsonPath.get("data.errors");
+
+        assertEquals("No", dateOfDeathAfterEstateSwitch);
+        assertNull(errors);
+    }
+
+    @Test
+    public void verifyRequestSuccessForValidateIhtEstate() {
+        //adjust with app yml iht-estate.switch-date
+        String json = utils.getJsonFromFile("solicitorPayloadIhtEstateValidate.json");
+        json = json.replaceAll("<DOD-DATE>", "2022-01-01");
+        json = json.replaceAll("<NET_QUALIFYING_VALUE>", "10000000");
+        validatePostSuccessForPayload(json, SOLS_VALIDATE_IHT_ESTATE,
+            utils.getHeadersWithSolicitorUser());
     }
 
     @Test

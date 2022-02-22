@@ -63,6 +63,7 @@ public class CCDDataTransformer {
             .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
+            .titleAndClearingType(caseData.getTitleAndClearingType())
             .build();
     }
 
@@ -117,6 +118,10 @@ public class CCDDataTransformer {
             .formName(caseData.getIhtFormId())
             .netValue(caseData.getIhtNetValue())
             .grossValue(caseData.getIhtGrossValue())
+            .ihtFormEstateValuesCompleted(caseData.getIhtFormEstateValuesCompleted())
+            .ihtFormEstate(caseData.getIhtFormEstate())
+            .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
+            .ihtEstateNetValue(caseData.getIhtEstateNetValue())
             .build();
     }
 

@@ -36,11 +36,12 @@ import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -98,7 +99,7 @@ public class BusinessValidationUnitTest {
     @Mock
     private List<ValidationRule> validationRules;
     @Mock
-    private List<CaseworkerAmendValidationRule> caseworkerAmendValidationRules;
+    private List<CaseworkerAmendAndCreateValidationRule> caseworkerAmendAndCreateValidationRules;
     @Mock
     private List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     @Mock
@@ -128,6 +129,8 @@ public class BusinessValidationUnitTest {
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     @Mock
+    private IhtEstateValidationRule ihtEstateValidationRule;
+    @Mock
     private CodicilDateValidationRule codicilDateValidationRuleMock;
     @Mock
     private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
@@ -152,7 +155,7 @@ public class BusinessValidationUnitTest {
             notificationService,
             objectMapper,
             validationRules,
-            caseworkerAmendValidationRules,
+            caseworkerAmendAndCreateValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
             cdt,
@@ -167,7 +170,8 @@ public class BusinessValidationUnitTest {
             caseStoppedServiceMock,
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
-            ihtFourHundredDateValidationRule);
+            ihtFourHundredDateValidationRule,
+            ihtEstateValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -378,7 +382,7 @@ public class BusinessValidationUnitTest {
     @Test
     public void shouldValidateAmendCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors()).thenReturn(Collections.emptyList());
 
@@ -412,7 +416,7 @@ public class BusinessValidationUnitTest {
     public void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendValidationRules))
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getErrors())
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
@@ -493,6 +497,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
@@ -514,6 +520,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
@@ -536,6 +544,8 @@ public class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+            .thenReturn(callbackResponseMock);
         Document documentMock = Mockito.mock(Document.class);
         when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
             .thenReturn(documentMock);
@@ -556,6 +566,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class)))
@@ -576,6 +588,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
@@ -595,6 +609,8 @@ public class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+            .thenReturn(callbackResponseMock);
         when(callbackResponseMock.getData()).thenReturn(responseCaseData);
         when(callbackResponseTransformerMock.paperForm(callbackRequestMock, null)).thenReturn(callbackResponseMock);
         when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
@@ -611,6 +627,14 @@ public class BusinessValidationUnitTest {
     public void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(callbackResponseTransformerMock).transform(any());
+    }
+
+    @Test
+    public void shouldDefaultIHT400421PageFlow() {
+        ResponseEntity<CallbackResponse> response = underTest.defaultIht400DatePage(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(callbackResponseTransformerMock).defaultIht400421DatePageFlow(any());
     }
 
     @Test
@@ -625,6 +649,25 @@ public class BusinessValidationUnitTest {
             underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
             .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldDefaultIHT() {
+        ResponseEntity<CallbackResponse> response =
+            underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+            .defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateIHTEstateData() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        ResponseEntity<CallbackResponse> response =
+            underTest.validateIhtEstateData(callbackRequestMock);
+        verify(ihtEstateValidationRule, times(1))
+            .validate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

@@ -23,4 +23,10 @@ public class CaseExtraDecorator {
         }
         return dataJson;
     }
+
+    public String combineDecorations(String origDecor, String newDecor) {
+        String all = origDecor + newDecor;
+        return all.replaceAll("}\\{", ",");
+    }
+
 }
