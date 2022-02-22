@@ -89,6 +89,15 @@ public class FunctionalTestUtils {
         }
     }
 
+    public String replaceAnyCaseNumberWithRandom(String caseData) {
+        String replace = "" + System.currentTimeMillis() + System.currentTimeMillis();
+        replace = replace.substring(0, 16);
+        String replacement = caseData.replaceAll("\"id\": [0-9]{16}",
+            "\"id\": " + replace);
+        System.out.println("replacement: " + replacement);
+        return replacement;
+    }
+
     public String getJsonFromFile(String fileName) {
         try {
             final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));

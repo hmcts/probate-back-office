@@ -654,7 +654,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
         final ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
-        body.prettyPrint();
         final JsonPath jsonPath = JsonPath.from(body.asString());
 
 
