@@ -127,13 +127,13 @@ def archiveCoreCaseDataDefinitions(env) {
   def uploadCoreCaseDataDefinitions(env) {
     dir("${WORKSPACE}/bin"){
       if("preview" == env){
-        ccdDefinitionFilePath="${WORKSPACE}/build/jsonToXLS-preview"
+        ccdDefinitionFilePath = "${WORKSPACE}/build/jsonToXLS-preview"
         sh """
         eval \$(./variables/load-preview-environment-variables.sh ${CHANGE_ID})
         ${WORKSPACE}/ccdImports/conversionScripts/importAllXLS-pipeline.sh ${ccdDefinitionFilePath}
       """
       } else {
-        ccdDefinitionFilePath="${WORKSPACE}/build/jsonToXLS-${env}"
+        ccdDefinitionFilePath = "${WORKSPACE}/build/jsonToXLS-${env}"
         sh """
         eval \$(./variables/load-${env}-environment-variables.sh)
         ${WORKSPACE}/ccdImports/conversionScripts/importAllXLS-pipeline.sh ${ccdDefinitionFilePath}
@@ -188,7 +188,6 @@ withPipeline("java", product, component) {
     if (env.ENV != 'preview') {
       // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
       echo "CCD definition upload for environment: ${env.ENV}"
-      //setupShutteringSecret()
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
           archiveCoreCaseDataDefinitions(env.ENV)
@@ -208,7 +207,6 @@ withPipeline("java", product, component) {
       env.ENV='preview'
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
-
   onDemo {
     env.ENV = 'demo'
   }
