@@ -94,8 +94,6 @@ def archiveCoreCaseDataDefinitions(env) {
     }
 
       else {
-      echo "Building CCD Def for: ${env}"
-      echo "Building CCD Def for: ${env.ENV}"
       sh "./build-release-ccd-definitions.sh ${env}"
     }
   }
@@ -193,7 +191,6 @@ withPipeline("java", product, component) {
       //setupShutteringSecret()
       withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV) {
-          echo "Invoking archiveCoreCaseDataDefinitions with env : ${env.ENV}"
           archiveCoreCaseDataDefinitions(env.ENV)
           uploadCoreCaseDataDefinitions(env.ENV)
         }
