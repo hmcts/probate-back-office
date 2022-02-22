@@ -48,6 +48,17 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
+    public void shouldReturnFalseWhenIhtEstateFieldsAreAllEmpty() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+            .ihtEstateGrossValue("")
+            .ihtEstateNetValue("")
+            .ihtEstateNetQualifyingValue("")
+            .build();
+        assertNull(ocrFieldIhtFormEstateValuesCompletedMapper.toIhtFormEstateValuesCompleted(ocrFields));
+    }
+
+    @Test
     public void shouldReturnTrueWhenIHT207() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
