@@ -166,7 +166,7 @@ def versions = [
         restAssured                     : '4.4.0',
         lombok                          : '1.18.16',
         springfoxSwagger                : '3.0.0',
-        springSecurityVersion           : '5.5.1',
+        springSecurityVersion           : '5.6.1',
         probateCommonsVersion           : '1.3.4',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
@@ -207,7 +207,7 @@ dependencyManagement {
   dependencies {
     //CVE-2020-15250
     dependency group: 'junit', name: 'junit', version: '4.13.2'
-    
+
     // dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
 
     //CVE-2021-22112
@@ -245,6 +245,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
+  implementation group: 'org.springframework.security', name: 'spring-security-core', version: versions.springSecurityVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
@@ -315,7 +316,7 @@ dependencies {
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
-  
+
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
   testSmokeImplementation sourceSets.test.runtimeClasspath
@@ -369,7 +370,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile) {
-  options.compilerArgs << '-parameters'  
+  options.compilerArgs << '-parameters'
 }
 
 bootJar {
