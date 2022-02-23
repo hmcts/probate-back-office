@@ -29,7 +29,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDateOfDeath", "Label": "Date of death", "HintText": "Use the date from the death certificate. For example, 30 06 2016", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willExists", "Label": "Did the deceased leave a will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willAccessOriginal", "Label": "Do you have access to the original will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willAccessNotorial", "Label": "Do you have access to a notarial or court-sealed copy of the will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willAccessNotarial", "Label": "Do you have access to a notarial or court-sealed copy of the will?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willHasVisibleDamage", "Label": "Does the will have visible damage?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willDamage", "Label": "Select types of will damage", "FieldType": "Damage", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willDamageReasonKnown", "Label": "Do you know why the will has damages or marks", "FieldType": "YesOrNo", "SecurityClassification": "Public"},

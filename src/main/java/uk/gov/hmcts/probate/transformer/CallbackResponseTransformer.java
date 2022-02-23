@@ -823,7 +823,7 @@ public class CallbackResponseTransformer {
                 .map(dateTimeFormatter::format).orElse(null))
             .willExists(caseData.getWillExists())
             .willAccessOriginal((caseData.getWillAccessOriginal()))
-            .willAccessNotorial((caseData.getWillAccessNotorial()))
+            .willAccessNotarial((caseData.getWillAccessNotarial()))
             .willHasCodicils(caseData.getWillHasCodicils())
             .willNumberOfCodicils(caseData.getWillNumberOfCodicils())
             .ihtFormId(caseData.getIhtFormId())

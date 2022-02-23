@@ -27,7 +27,7 @@ public class NoNotorialWillCopyRuleTest {
     @Test
     public void shouldNeedChange() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
-        when(caseDataMock.getWillAccessNotorial()).thenReturn("No");
+        when(caseDataMock.getWillAccessNotarial()).thenReturn("No");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
@@ -35,7 +35,7 @@ public class NoNotorialWillCopyRuleTest {
     @Test
     public void shouldNotNeedChangeWithWillAccessOriginal() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
-        when(caseDataMock.getWillAccessNotorial()).thenReturn("Yes");
+        when(caseDataMock.getWillAccessNotarial()).thenReturn("Yes");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
@@ -43,7 +43,7 @@ public class NoNotorialWillCopyRuleTest {
     @Test
     public void shouldNotNeedChangeWithWillNoAccessOriginal() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
-        when(caseDataMock.getWillAccessNotorial()).thenReturn("Yes");
+        when(caseDataMock.getWillAccessNotarial()).thenReturn("Yes");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
@@ -51,7 +51,7 @@ public class NoNotorialWillCopyRuleTest {
     @Test
     public void shouldNotNeedChangeWithWillAccessOriginalNoNotirialCopy() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
-        when(caseDataMock.getWillAccessNotorial()).thenReturn("No");
+        when(caseDataMock.getWillAccessNotarial()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
