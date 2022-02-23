@@ -2660,6 +2660,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boDocumentsUploaded", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsLegalStatementUpload", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsLegalStatementUploadLabel", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "probateDocumentsGenerated", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSOTStateTransition", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsConfirmSignSOT3", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deleteApplication", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
