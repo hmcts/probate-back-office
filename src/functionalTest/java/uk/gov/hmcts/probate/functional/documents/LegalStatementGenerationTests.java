@@ -534,5 +534,10 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         return generateDocumentFromPayload(payload, path, SOT_DOC_NAME);
     }
 
+    @Test
+    public void verifyWillNotarialYesLegalStatementText() {
+        final String response = generateSotDocument("solicitorPayloadNoWillYesNotarial.json", GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("as contained in the notarial/official copy"));
+    }
 
 }
