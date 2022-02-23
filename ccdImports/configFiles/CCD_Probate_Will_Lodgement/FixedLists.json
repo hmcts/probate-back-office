@@ -26,9 +26,9 @@
   {"LiveFrom": "01/01/2017", "ID": "wlWithdrawReasons", "ListElementCode": "byTestator", "ListElement": "By testator"},
   {"LiveFrom": "01/01/2017", "ID": "wlWithdrawReasons", "ListElementCode": "cancelled", "ListElement": "Cancelled"},
   {"LiveFrom": "01/01/2017", "ID": "wlDocumentTypeEnum", "ListElementCode": "willLodgementDepositReceipt", "ListElement": "Deposit Receipt"},
-  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email"},
-  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence"},
-  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil"},
-  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate"},
-  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other"}
+  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email", "DisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence", "DisplayOrder": 2},
+  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "IHT", "ListElement": "Codicil", "DisplayOrder": 3},
+  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "other", "ListElement": "Other", "DisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "ID": "wlDocumentUploadTypeEnum", "ListElementCode": "deathCertificate", "ListElement": "Death Certificate", "DisplayOrder": 5}
 ]
