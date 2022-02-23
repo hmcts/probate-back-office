@@ -1,155 +1,121 @@
 {
-  "iht217": "No",
-  "caseType": "gop",
-  "ihtFormId": "IHT205",
-  "paperForm": "No",
-  "willExists": "Yes",
-  "bulkPrintId": [],
-  "caseMatches": [],
-  "casePrinted": "Yes",
-  "ihtNetValue": "100",
-  "ihtGrossValue": "100",
-  "schemaVersion": "2.0.0",
-  "applicationType": "Solicitor",
-  "dateOfDeathType": "diedOn",
-  "deceasedAddress": {
-    "County": "111",
-    "Country": "United Kingdom",
-    "PostCode": "e6 1qq",
-    "PostTown": "1",
-    "AddressLine1": "1",
-    "AddressLine2": "1",
-    "AddressLine3": "11"
-  },
-  "deceasedSurname": "J",
-  "grantStoppedDate": "2022-02-18",
-  "paragraphDetails": [],
-  "registryLocation": "London",
-  "boSendToBulkPrint": "Yes",
-  "bulkScanEnvelopes": [],
-  "deceasedForenames": "Koijio",
-  "domicilityCountry": "as",
-  "executorsApplying": [],
-  "applicationGrounds": "sa",
-  "solsSolicitorEmail": "jiojoi@oij.com",
-  "willAccessNotarial": "Yes",
-  "willAccessOriginal": "No",
-  "deceasedDateOfBirth": "2000-09-09",
-  "deceasedDateOfDeath": "2020-09-09",
-  "otherExecutorExists": "No",
-  "solsSolicitorIsExec": "No",
-  "boCaseStopReasonList": [
-    {
-      "id": "884bfe23-dbde-403a-8723-aeb9e8323586",
-      "value": {
-        "caseStopReason": "IHTIssue"
-      }
-    }
-  ],
-  "codicilAddedDateList": [],
-  "executorsNotApplying": [],
-  "solsSolicitorAddress": {
-    "County": "dsf",
-    "Country": "",
-    "PostCode": "e6 1qq",
-    "PostTown": "London",
-    "AddressLine1": "67 Parr Road",
-    "AddressLine2": "1",
-    "AddressLine3": "1"
-  },
-  "willDatedBeforeApril": "No",
-  "deceasedAnyOtherNames": "No",
-  "solsSolicitorFirmName": "Kj",
-  "ihtFormCompletedOnline": "No",
-  "languagePreferenceWelsh": "No",
-  "primaryApplicantAddress": {
-    "County": "dsf",
-    "Country": "United Kingdom",
-    "PostCode": "e6 1qq",
-    "PostTown": "London",
-    "AddressLine1": "98 Stafford Road",
-    "AddressLine2": "",
-    "AddressLine3": ""
-  },
-  "primaryApplicantSurname": "j",
-  "solsSolicitorIsApplying": "No",
-  "applicationSubmittedDate": "2020-09-09",
-  "primaryApplicantHasAlias": "No",
-  "primaryApplicantForenames": "koijio",
-  "probateDocumentsGenerated": [],
-  "solsSolicitorAppReference": "q",
-  "deceasedDomicileInEngWales": "No",
-  "noOriginalWillAccessReason": "gd",
-  "primaryApplicantIsApplying": "Yes",
-  "solsDeceasedAliasNamesList": [],
-  "boCaveatStopSendToBulkPrint": "Yes",
-  "boRequestInfoSendToBulkPrint": "Yes",
-  "probateSotDocumentsGenerated": [
-    {
-      "id": "351b6f49-ea15-459a-a62b-a4785ea5eedb",
-      "value": {
-        "DocumentLink": {
-          "document_url": "http://dm-store:8080/documents/870b680a-8ba1-4d33-8489-5217791d0087",
-          "document_filename": "legalStatementGrantOfProbate.pdf",
-          "document_binary_url": "http://dm-store:8080/documents/870b680a-8ba1-4d33-8489-5217791d0087/binary"
-        },
-        "DocumentType": "legalStatement",
-        "DocumentFileName": "3fa000b9-8ac5-4d52-864f-8c8c6f2ae1d1.pdf",
-        "DocumentDateAdded": "2022-02-18",
-        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
-      }
+  "case_details": {
+    "case_data": {
+      "caseType": "gop",
+      "taskList": "<div class=\"width-50\">\n\n<h2 class=\"govuk-heading-l\">Case progress</h2>\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case stopped</div>\n\n<h2 class=\"govuk-heading-l\">What happens next</h2>\n\n<p class=\"govuk-body-s\">The case was stopped on 21 Feb 2022 for one of two reasons:</p>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>an internal review is needed</li>\n<li>further information from the applicant or solicitor is needed</li>\n</ul>\n\n<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to progress the case.</p>\n<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then.</p>\n\n<h2 class=\"govuk-heading-l\">Get help with your application</h2>\n\n<h3 class=\"govuk-heading-m\">Telephone</h3>\n\n<p class=\"govuk-body-s\">You will need the case reference or the deceased's full name when you call.</p><br/><p class=\"govuk-body-s\">Telephone: 0300 303 0648</p><p class=\"govuk-body-s\">Monday to Friday 8am to 6pm, Saturday 8am to 2pm (except public holidays)</p><br/><p class=\"govuk-body-s\">Welsh language: 0300 303 0654</p><p class=\"govuk-body-s\">Monday to Friday, 8am to 5pm (except public holidays)</p><br/>\n\n<a href=\"https://www.gov.uk/call-charges\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">Find out about call charges</a>\n\n<h3 class=\"govuk-heading-m\">Email</h3>\n\n<a href=\"mailto:contactprobate@justice.gov.uk\" class=\"govuk-link\">contactprobate@justice.gov.uk</a><p class=\"govuk-body-s\">We aim to respond within 10 working days</p>\n\n</div>",
+      "ukEstate": [],
+      "paperForm": "No",
+      "willExists": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "casePrinted": "Yes",
+      "ihtNetValue": "100",
+      "solsSOTName": "sd dsf",
+      "ihtGrossValue": "100",
+      "schemaVersion": "2.0.0",
+      "solsSOTSurname": "dsf",
+      "applicationType": "Solicitor",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "dsf",
+        "Country": null,
+        "PostCode": null,
+        "PostTown": "London",
+        "AddressLine1": "477 Katherine Road",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "deceasedSurname": "L",
+      "spouseOrPartner": "Yes",
+      "grantStoppedDate": "2022-02-21",
+      "paragraphDetails": [],
+      "registryLocation": "London",
+      "solsSOTForenames": "sd",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "Ll",
+      "executorsApplying": [],
+      "extraCopiesOfGrant": "1",
+      "ihtReferenceNumber": "1",
+      "solsSolicitorEmail": "Contact@Email.com",
+      "willAccessNotarial": "Yes",
+      "willAccessOriginal": "No",
+      "deceasedDateOfBirth": "2003-01-01",
+      "deceasedDateOfDeath": "2020-01-01",
+      "otherExecutorExists": "No",
+      "solsSolicitorIsExec": "No",
+      "applyingAsAnAttorney": "No",
+      "boCaseStopReasonList": [
+        {
+          "id": "0b188677-d367-4e87-b8dc-6b0162eafd46",
+          "value": {
+            "caseStopReason": "ExecNotAccountedFor"
+          }
+        }
+      ],
+      "solsLegalStatementDocument":{
+        "document_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9",
+        "document_binary_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9/binary",
+        "document_filename":"legal_statement.pdf"
+      },
+      "codicilAddedDateList": [],
+      "executorsNotApplying": [],
+      "solsSolicitorAddress": {
+        "County": "dsf",
+        "Country": "United Kingdom",
+        "PostCode": "E6 7LQ",
+        "PostTown": "London",
+        "AddressLine1": "477 Katherine Road",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "deceasedAnyOtherNames": "No",
+      "solsSolicitorFirmName": "Xzz",
+      "ihtFormCompletedOnline": "Yes",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "County": null,
+        "Country": null,
+        "PostCode": null,
+        "PostTown": null,
+        "AddressLine1": null,
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "primaryApplicantSurname": "l",
+      "solsSolicitorIsApplying": "No",
+      "applicationSubmittedDate": "2001-09-09",
+      "primaryApplicantHasAlias": "No",
+      "primaryApplicantForenames": "Firm1",
+      "probateDocumentsGenerated": [],
+      "solsSolicitorAppReference": "1",
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "No",
+      "solsDeceasedAliasNamesList": [],
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "primaryApplicantEmailAddress": "DASD@DASD.co.uk",
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "boEmailGrantIssuedNotification": "No",
+      "boEmailRequestInfoNotification": "No",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "No",
+      "attorneyOnBehalfOfNameAndAddress": [],
+      "boEmailGrantReissuedNotification": "No",
+      "solsPrimaryExecutorNotApplyingReason": "DiedBefore",
+      "grantAwaitingDocumentationNotificationDate": "2022-03-28"
     },
-    {
-      "id": "ee25b878-c8ab-4260-b861-360ae9a409c3",
-      "value": {
-        "DocumentLink": {
-          "document_url": "http://dm-store:8080/documents/fbc0de00-27dd-4236-802a-0e5e1c7c1843",
-          "document_filename": "legalStatementGrantOfProbate.pdf",
-          "document_binary_url": "http://dm-store:8080/documents/fbc0de00-27dd-4236-802a-0e5e1c7c1843/binary"
-        },
-        "DocumentType": "legalStatement",
-        "DocumentFileName": "0637a5b0-0eb7-41a6-81c1-52abdfa8b962.pdf",
-        "DocumentDateAdded": "2022-02-18",
-        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
-      }
-    },
-    {
-      "id": "e3e8e799-81ef-4e3c-9a84-cf5ddbb62a5b",
-      "value": {
-        "DocumentLink": {
-          "document_url": "http://dm-store:8080/documents/f75f4d55-f5bf-4bf9-8972-b024c82e8c3b",
-          "document_filename": "legalStatementGrantOfProbate.pdf",
-          "document_binary_url": "http://dm-store:8080/documents/f75f4d55-f5bf-4bf9-8972-b024c82e8c3b/binary"
-        },
-        "DocumentType": "legalStatement",
-        "DocumentFileName": "d81d7eec-9906-436c-91f9-1bd58ecfd7d3.pdf",
-        "DocumentDateAdded": "2022-02-18",
-        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
-      }
-    }
-  ],
-  "boCaveatStopEmailNotification": "No",
-  "boGrantReissueSendToBulkPrint": "Yes",
-  "probateNotificationsGenerated": [
-    {
-      "id": "e8feecba-e973-44b5-9c36-2600087e3f89",
-      "value": {
-        "DocumentLink": {
-          "document_url": "http://dm-store:8080/documents/da87ada7-f68a-4f97-a667-de2d67db832b",
-          "document_filename": "sentEmail.pdf",
-          "document_binary_url": "http://dm-store:8080/documents/da87ada7-f68a-4f97-a667-de2d67db832b/binary"
-        },
-        "DocumentType": "sentEmail",
-        "DocumentFileName": "c88abe36-76b0-44ee-96ad-0f3111ccaebf.pdf",
-        "DocumentDateAdded": "2022-02-17",
-        "DocumentGeneratedBy": "05c63e25-7f18-4188-bd33-4d452d8e3144"
-      }
-    }
-  ],
-  "boEmailGrantIssuedNotification": "No",
-  "boEmailRequestInfoNotification": "No",
-  "boAssembleLetterSendToBulkPrint": "Yes",
-  "boEmailDocsReceivedNotification": "No",
-  "boEmailGrantReissuedNotification": "No",
-  "grantAwaitingDocumentationNotificationDate": "2022-03-25"
+    "last_modified":[
+      "2018",
+      "7",
+      "2",
+      "12",
+      "30",
+      "57",
+      "378000000"
+    ],
+    "id":1530528040354687,
+    "state":"BOCaseStopped"
+  }
 }
