@@ -526,11 +526,6 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
             + " testament of De Ceased"));
     }
 
-    @Test
-    public void verifyWillNotarialYesLegalStatementText() {
-        final String response = generateSotDocument("solicitorPayloadNoWillYesNotarial.json", GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("as contained in the notarial/official copy"));
-    }
     
     private String generateSotDocument(String jsonFileName, String path) {
         return generateSotDocumentFromPayload(utils.getJsonFromFile(jsonFileName), path);
