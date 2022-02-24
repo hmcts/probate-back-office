@@ -13,6 +13,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
@@ -115,7 +116,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
         Response fullResponse = validatePostRequestSuccessForLegalStatement(
-                "nextsteps/authenticatedTranslation/nextsteps.json", Collections.emptyList());
+                "/nextsteps/authenticatedTranslation/nextsteps.json", Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
         response = removeCrLfs(response);
         assertTrue(response.contains("an authenticated translation of the will"));
@@ -176,11 +177,13 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
     
     private Response validatePostRequestSuccessForLegalStatement(String file, List<String> validationString) {
+        String jsonBody = utils.getJsonFromFile(file);
+        assertNotNull(jsonBody);
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
-            .body(utils.getJsonFromFile(file))
+            .body(jsonBody)
             .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());
