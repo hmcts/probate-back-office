@@ -486,8 +486,6 @@ http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
 
 
 
-
-
 When the containers are restarted, ccd data has to be reloaded
 The user token expires approx every 4 hours
 
