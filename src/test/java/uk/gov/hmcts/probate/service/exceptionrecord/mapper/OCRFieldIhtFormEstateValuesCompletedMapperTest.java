@@ -1,20 +1,17 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.eq;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import static org.mockito.Mockito.when;
+import org.springframework.test.context.junit4.SpringRunner;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 @RunWith(SpringRunner.class)
 public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
@@ -31,9 +28,9 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     @Before
     public void setUp() {
         when(exceptedEstateDateOfDeathChecker
-            .isOnOrAfterSwitchDate(eq(PRE_EE_DECEASED_DATE_OF_DEATH))).thenReturn(false);
+            .isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH)).thenReturn(false);
         when(exceptedEstateDateOfDeathChecker
-            .isOnOrAfterSwitchDate(eq(POST_EE_DECEASED_DATE_OF_DEATH))).thenReturn(true);
+            .isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH)).thenReturn(true);
     }
 
     @Test

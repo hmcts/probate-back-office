@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -34,7 +33,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     private static final String IHT400421_FORM = "IHT400421";
     private static final String IHT421_FORM = "IHT421";
     private static final String IHT400_FORM = "IHT400";
-    private static final String UNKNOWN_FORM = "UNKOWNFORM";
+    private static final String UNKNOWN_FORM = "UNKNOWNFORM";
     private static final String PRE_EE_DECEASED_DATE_OF_DEATH = "01012021";
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
 
@@ -44,9 +43,9 @@ public class OCRFieldIhtFormTypeMapperTest {
     @Before
     public void setUp() {
         when(exceptedEstateDateOfDeathChecker
-            .isOnOrAfterSwitchDate(eq(PRE_EE_DECEASED_DATE_OF_DEATH))).thenReturn(false);
+            .isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH)).thenReturn(false);
         when(exceptedEstateDateOfDeathChecker
-            .isOnOrAfterSwitchDate(eq(POST_EE_DECEASED_DATE_OF_DEATH))).thenReturn(true);
+            .isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH)).thenReturn(true);
     }
     
     @Test
@@ -99,11 +98,11 @@ public class OCRFieldIhtFormTypeMapperTest {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(UNKNOWN_FORM)
             .build();
-        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
     }
 
     @Test
-    public void shouldReturnNullWhenihtFormIdIsNull() {
+    public void shouldReturnNullWhenIhtFormIdIsNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();
         IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
@@ -111,7 +110,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenihtFormIdIsEmptyString() {
+    public void shouldReturnNullWhenIhtFormIdIsEmptyString() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId("")
             .build();
