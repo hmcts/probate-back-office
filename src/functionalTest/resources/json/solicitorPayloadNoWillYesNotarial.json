@@ -1,0 +1,121 @@
+{
+  "case_details": {
+    "case_data": {
+      "caseType": "gop",
+      "taskList": "<div class=\"width-50\">\n\n<h2 class=\"govuk-heading-l\">Case progress</h2>\n\n<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Case stopped</div>\n\n<h2 class=\"govuk-heading-l\">What happens next</h2>\n\n<p class=\"govuk-body-s\">The case was stopped on 21 Feb 2022 for one of two reasons:</p>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>an internal review is needed</li>\n<li>further information from the applicant or solicitor is needed</li>\n</ul>\n\n<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to progress the case.</p>\n<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then.</p>\n\n<h2 class=\"govuk-heading-l\">Get help with your application</h2>\n\n<h3 class=\"govuk-heading-m\">Telephone</h3>\n\n<p class=\"govuk-body-s\">You will need the case reference or the deceased's full name when you call.</p><br/><p class=\"govuk-body-s\">Telephone: 0300 303 0648</p><p class=\"govuk-body-s\">Monday to Friday 8am to 6pm, Saturday 8am to 2pm (except public holidays)</p><br/><p class=\"govuk-body-s\">Welsh language: 0300 303 0654</p><p class=\"govuk-body-s\">Monday to Friday, 8am to 5pm (except public holidays)</p><br/>\n\n<a href=\"https://www.gov.uk/call-charges\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">Find out about call charges</a>\n\n<h3 class=\"govuk-heading-m\">Email</h3>\n\n<a href=\"mailto:contactprobate@justice.gov.uk\" class=\"govuk-link\">contactprobate@justice.gov.uk</a><p class=\"govuk-body-s\">We aim to respond within 10 working days</p>\n\n</div>",
+      "ukEstate": [],
+      "paperForm": "No",
+      "willExists": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "casePrinted": "Yes",
+      "ihtNetValue": "100",
+      "solsSOTName": "sd dsf",
+      "ihtGrossValue": "100",
+      "schemaVersion": "2.0.0",
+      "solsSOTSurname": "dsf",
+      "applicationType": "Solicitor",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "dsf",
+        "Country": null,
+        "PostCode": null,
+        "PostTown": "London",
+        "AddressLine1": "477 Katherine Road",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "deceasedSurname": "L",
+      "spouseOrPartner": "Yes",
+      "grantStoppedDate": "2022-02-21",
+      "paragraphDetails": [],
+      "registryLocation": "London",
+      "solsSOTForenames": "sd",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "Ll",
+      "executorsApplying": [],
+      "extraCopiesOfGrant": "1",
+      "ihtReferenceNumber": "1",
+      "solsSolicitorEmail": "Contact@Email.com",
+      "willAccessNotarial": "Yes",
+      "willAccessOriginal": "No",
+      "deceasedDateOfBirth": "2003-01-01",
+      "deceasedDateOfDeath": "2020-01-01",
+      "otherExecutorExists": "No",
+      "solsSolicitorIsExec": "No",
+      "applyingAsAnAttorney": "No",
+      "boCaseStopReasonList": [
+        {
+          "id": "0b188677-d367-4e87-b8dc-6b0162eafd46",
+          "value": {
+            "caseStopReason": "ExecNotAccountedFor"
+          }
+        }
+      ],
+      "solsLegalStatementDocument":{
+        "document_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9",
+        "document_binary_url":"http://localhost:8080/documents/c22c7fa3-2b6c-4a66-9d90-0269a90b57e9/binary",
+        "document_filename":"legal_statement.pdf"
+      },
+      "codicilAddedDateList": [],
+      "executorsNotApplying": [],
+      "solsSolicitorAddress": {
+        "County": "dsf",
+        "Country": "United Kingdom",
+        "PostCode": "E6 7LQ",
+        "PostTown": "London",
+        "AddressLine1": "477 Katherine Road",
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "deceasedAnyOtherNames": "No",
+      "solsSolicitorFirmName": "Xzz",
+      "ihtFormCompletedOnline": "Yes",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "County": null,
+        "Country": null,
+        "PostCode": null,
+        "PostTown": null,
+        "AddressLine1": null,
+        "AddressLine2": null,
+        "AddressLine3": null
+      },
+      "primaryApplicantSurname": "l",
+      "solsSolicitorIsApplying": "No",
+      "applicationSubmittedDate": "2001-09-09",
+      "primaryApplicantHasAlias": "No",
+      "primaryApplicantForenames": "Firm1",
+      "probateDocumentsGenerated": [],
+      "solsSolicitorAppReference": "1",
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "No",
+      "solsDeceasedAliasNamesList": [],
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "primaryApplicantEmailAddress": "DASD@DASD.co.uk",
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "boEmailGrantIssuedNotification": "No",
+      "boEmailRequestInfoNotification": "No",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "No",
+      "attorneyOnBehalfOfNameAndAddress": [],
+      "boEmailGrantReissuedNotification": "No",
+      "solsPrimaryExecutorNotApplyingReason": "DiedBefore",
+      "grantAwaitingDocumentationNotificationDate": "2022-03-28"
+    },
+    "last_modified":[
+      "2018",
+      "7",
+      "2",
+      "12",
+      "30",
+      "57",
+      "378000000"
+    ],
+    "id":1530528040354687,
+    "state":"BOCaseStopped"
+  }
+}
