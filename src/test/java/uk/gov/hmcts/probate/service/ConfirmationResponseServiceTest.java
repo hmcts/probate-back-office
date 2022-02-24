@@ -623,6 +623,25 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetNextStepsConfirmationAdmonWill() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getAdmonWillRenunciationFormLabel(any(CaseData.class)))
+            .thenReturn("PA15 and PA17 form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA15 and PA17 form text",
+            nextStepsValues.get("{{admonWillRenunciation}}"));
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationForPA16Form() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
 

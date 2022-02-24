@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -48,6 +49,8 @@ public class TaskStateRendererTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    @Mock
+    private AdmonWillRenunicationRule admonWillRenunicationRule;
 
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
@@ -749,6 +752,7 @@ public class TaskStateRendererTest {
             .getFileFromResourceAsString(
                 "caseprogress/admonwill/solicitorCaseProgressSendDocuments");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(admonWillRenunicationRule.isApplicable(caseData)).thenReturn(true);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",

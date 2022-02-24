@@ -56,7 +56,7 @@ public class MarkdownDecoratorServiceTest {
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
         assertEquals("\n*   <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor" 
-                + "-rights-for-legal-professionals\" target=\"_blank\">Give up probate executor rights for probate " 
+                + "-rights-for-probate-practitioners\" target=\"_blank\">Give up probate executor rights for probate "
                 + "practitioners paper form (PA17)</a>",
             md);
     }

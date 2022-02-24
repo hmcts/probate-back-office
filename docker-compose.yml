@@ -527,7 +527,7 @@ services:
       - service-auth-provider-api
 
   probate-business-service:
-    image: hmctspublic.azurecr.io/probate/business-service:latest
+    image: business-debug:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - SERVER_PORT=8081

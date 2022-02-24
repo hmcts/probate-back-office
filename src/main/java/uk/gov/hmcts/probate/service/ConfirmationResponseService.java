@@ -278,6 +278,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
         keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
+        keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
@@ -329,10 +330,17 @@ public class ConfirmationResponseService {
             .build();
         return markdownDecoratorService.getPA17FormLabel(caseData);
     }
+
+    private String getAdmonWillRenunciationFormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .solsWillType(ccdData.getSolsWillType())
+            .build();
+        return markdownDecoratorService.getAdmonWillRenunciationFormLabel(caseData);
+    }
     
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
-    } 
+    }
     
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();

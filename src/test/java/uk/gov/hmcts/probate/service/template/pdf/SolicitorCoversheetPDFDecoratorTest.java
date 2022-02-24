@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
@@ -29,6 +30,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
     private PA17FormBusinessRule pa17FormBusinessRuleMock;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
+    @Mock
+    private AdmonWillRenunicationRule admonWillRenunicationRuleMock;
     @Mock
     private CaseExtraDecorator caseExtraDecorator;
     @Mock
@@ -77,6 +80,21 @@ public class SolicitorCoversheetPDFDecoratorTest {
     public void shouldProvideIhtEstate207Decoration() {
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
+        when(caseExtraDecorator.decorate(any()))
+            .thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+    }
+
+    @Test
+    public void shouldProvideAdmonWillRenunciationDecoration() {
+        when(admonWillRenunicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"showAdmonWillRenunciation\": \"Yes\","
+            + "\"pa15FormUrl\":\"PA15FormURL\", \"admonWillRenunciationText\":\"admonWillRenunciationText\""
+            + "\"pa17FormUrl\":\"PA17FormURL\", \"pa15FormText\":\"PA15\", \"pa17FormText\":\"PA17\"}";
         when(caseExtraDecorator.decorate(any()))
             .thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);

@@ -57,12 +57,21 @@ public final class Constants {
     public static final String SOLICITOR_ID = "solicitor";
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
-    public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals";
+    public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners";
     public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form" 
         + " (PA17)";
+    public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";
+    public static final String PA15_FORM_TEXT_ADMON_WILL = "PA15";
+    public static final String PA17_FORM_TEXT_ADMON_WILL = "PA17";
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
+
+    public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT = "if applicable, send us the appropriate"
+        + " renunciation form ";
+    public static final String ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT = " / ";
+    public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT = " for executors who have"
+        + " renounced their right to apply";
 
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used
