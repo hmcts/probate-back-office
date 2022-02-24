@@ -216,8 +216,6 @@ withPipeline("java", product, component) {
   }
   onIthc {
     env.ENV = 'ithc'
-    archiveCoreCaseDataDefinitions('ithc')
-    uploadCoreCaseDataDefinitions('ithc')
   }
 
   before('smoketest:preview') {
