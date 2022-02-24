@@ -4,7 +4,7 @@
         <notes><![CDATA[
          Suppressing as it's a false positive (see: https://pivotal.io/security/cve-2018-1258)
         ]]></notes>
-        <filePath regex="true">.*spring-security-(config|crypto|web|core)-5\.5\.1\.jar</filePath>
+        <filePath regex="true">.*spring-security-(config|crypto|web|core)-5\.6\.1\.jar</filePath>
         <cpe>cpe:/a:pivotal_software:spring_security</cpe>
         <cve>CVE-2018-1258</cve>
     </suppress>
@@ -31,12 +31,5 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-security@.*$</packageUrl>
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-security-core-5.5.1.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
-        <vulnerabilityName>CWE-862: Missing Authorization</vulnerabilityName>
     </suppress>
 </suppressions>
