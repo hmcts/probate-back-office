@@ -118,7 +118,7 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     @Test
     public void shouldRenderSendDocumentsAdmonWill() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04-caseCreated.json", TASKLIST_UPDATE_URL,
-            "/admonwill/04-caseCreated");
+            "/admonwill/case-created-html.txt");
     }
 
     @Test

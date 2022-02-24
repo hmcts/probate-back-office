@@ -124,7 +124,7 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     @Test
     public void shouldRenderSendDocumentsIntestacy() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/04-caseCreated.json", TASKLIST_UPDATE_URL,
-            "/intestacy/04-caseCreated");
+            "/intestacy/case-created-html.txt");
     }
 
 
