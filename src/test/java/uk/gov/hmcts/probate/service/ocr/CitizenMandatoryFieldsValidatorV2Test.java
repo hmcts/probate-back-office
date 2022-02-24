@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import static org.mockito.Mockito.times;
@@ -40,7 +39,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     public void setup() {
         MockitoAnnotations.initMocks(this);
         warnings = new ArrayList<>();
-        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(eq("01012022"))).thenReturn(true);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
     }
     
     @Test
