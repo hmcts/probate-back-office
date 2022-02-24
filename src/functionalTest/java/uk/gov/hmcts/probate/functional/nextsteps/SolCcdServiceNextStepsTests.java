@@ -116,7 +116,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
         Response fullResponse = validatePostRequestSuccessForLegalStatement(
-                "/nextsteps/authenticatedTranslation/nextsteps.json", Collections.emptyList());
+                "/nextsteps/authenticatedTranslation/nextSteps.json", Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
         response = removeCrLfs(response);
         assertTrue(response.contains("an authenticated translation of the will"));
