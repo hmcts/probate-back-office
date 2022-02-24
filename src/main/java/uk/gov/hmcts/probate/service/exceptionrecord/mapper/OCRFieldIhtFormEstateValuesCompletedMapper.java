@@ -17,6 +17,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
     @Autowired
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
+    @SuppressWarnings({"squid:S2447"})
     @ToIHTFormEstateValuesCompleted
     public Boolean toIhtFormEstateValuesCompleted(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for ihtFormEstateValuesCompleted");

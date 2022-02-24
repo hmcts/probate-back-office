@@ -14,6 +14,7 @@ public class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper {
     @Autowired
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
+    @SuppressWarnings({"squid:S2447"})
     @ToDeceasedHadLateSpouseOrCivilPartner
     public Boolean decasedHadLateSpouseOrCivilPartner(ExceptionRecordOCRFields ocrFields) {
         if ("2".equals(ocrFields.getFormVersion())

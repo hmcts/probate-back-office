@@ -13,6 +13,7 @@ public class OCRFieldIhtFormCompletedOnlineMapper {
     @Autowired
     OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
 
+    @SuppressWarnings({"squid:S2447"})
     @ToIHTFormCompletedOnline
     public Boolean ihtFormCompletedOnline(ExceptionRecordOCRFields ocrFields) {
         if ("2".equals(ocrFields.getFormVersion())) {
