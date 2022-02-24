@@ -200,6 +200,7 @@ withPipeline("java", product, component) {
   }
 
   onMaster() {
+    env.ENV='aat'
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
   
@@ -215,6 +216,8 @@ withPipeline("java", product, component) {
   }
   onIthc {
     env.ENV = 'ithc'
+    archiveCoreCaseDataDefinitions('ithc')
+    uploadCoreCaseDataDefinitions('ithc')
   }
 
   before('smoketest:preview') {
