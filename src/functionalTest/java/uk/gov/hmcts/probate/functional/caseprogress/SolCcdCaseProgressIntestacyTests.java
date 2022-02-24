@@ -61,7 +61,7 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/04-caseCreated.json", CASE_PRINTED_URL,
-            "/case-created-html.txt");
+            "/cwdefault/intestacy/case-created-html.txt");
     }
 
     @Test
@@ -69,7 +69,7 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
     public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/05-caseMarkAsReadyForExam.json",
-            CASE_DOCS_RECEIVED_URL, "/case-ready-for-exam-html.txt");
+            CASE_DOCS_RECEIVED_URL, "/cwdefault/intestacy/case-ready-for-exam-html.txt");
     }
 
     @Test
@@ -87,31 +87,32 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/08-caseMatchingExamining.json",
-            CASE_MATCHING_EXAMINING_URL, "/case-matching-examining-html.txt");
+            CASE_MATCHING_EXAMINING_URL, "/cwdefault/intestacy/case-matching-examining-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenExamining() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/09-examineCase.json", TASKLIST_UPDATE_URL,
-            "/examine-case-html.txt");
+            "/cwdefault/intestacy/examine-case-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/10-caseMatchingReadyToIssue.json",
-            CASE_MATCHING_READY_TO_ISSUE_URL, "/case-matching-ready-to-issue-html.txt");
+            CASE_MATCHING_READY_TO_ISSUE_URL,
+            "/cwdefault/intestacy/case-matching-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/11-markReadyToIssue.json",
-            CASE_MATCHING_EXAMINING_URL, "/case-mark-ready-to-issue-html.txt");
+            CASE_MATCHING_EXAMINING_URL, "/cwdefault/intestacy/case-mark-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
         verifyCaseProgressHtmlCwPost("caseprogressintestacy/12-issueGrant.json", GENERATE_GRANT_URL,
-            "/generate-grant-html.txt");
+            "/cwdefault/intestacy/generate-grant-html.txt");
     }
 
     @Test

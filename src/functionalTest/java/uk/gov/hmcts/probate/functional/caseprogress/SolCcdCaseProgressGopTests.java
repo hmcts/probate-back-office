@@ -55,7 +55,7 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() {
         verifyCaseProgressHtmlSolPost("caseprogress/04-caseCreated.json", CASE_PRINTED_URL,
-            "/case-created-html.txt");
+            "/cwdefault/gop/case-created-html.txt");
     }
 
     @Test
@@ -63,7 +63,7 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
     public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
         verifyCaseProgressHtmlSolPost("caseprogress/05-caseMarkAsReadyForExam.json", CASE_DOCS_RECEIVED_URL,
-            "/case-ready-for-exam-html.txt");
+            "/cwdefault/gop/case-ready-for-exam-html.txt");
     }
 
     @Test
@@ -81,31 +81,31 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
         verifyCaseProgressHtmlSolPost("caseprogress/08-caseMatchingExamining.json", CASE_MATCHING_EXAMINING_URL,
-            "/case-matching-examining-html.txt");
+            "/cwdefault/gop/case-matching-examining-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenExamining() {
         verifyCaseProgressHtmlSolPost("caseprogress/09-examineCase.json", TASKLIST_UPDATE_URL,
-            "/examine-case-html.txt");
+            "/cwdefault/gop/examine-case-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogress/10-caseMatchingReadyToIssue.json",
-            CASE_MATCHING_READY_TO_ISSUE_URL, "/case-matching-ready-to-issue-html.txt");
+            CASE_MATCHING_READY_TO_ISSUE_URL, "/cwdefault/gop/case-matching-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogress/11-markReadyToIssue.json", CASE_MATCHING_EXAMINING_URL,
-            "/case-mark-ready-to-issue-html.txt");
+            "/cwdefault/gop/case-mark-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
         verifyCaseProgressHtmlCwPost("caseprogress/12-issueGrant.json", GENERATE_GRANT_URL,
-            "/generate-grant-html.txt");
+            "/cwdefault/gop/generate-grant-html.txt");
     }
 
     @Test

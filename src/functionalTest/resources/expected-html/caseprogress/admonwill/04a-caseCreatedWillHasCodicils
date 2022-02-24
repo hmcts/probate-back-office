@@ -32,7 +32,7 @@
     </span>
   </summary>
   <div class="govuk-details__text">
-    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1528365719153338 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li><will/></li><li>the inheritance tax form IHT205</li></ul>
+    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1528365719153338 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li><will/></li><li>the inheritance tax form IHT205</li><li>if applicable, send us the appropriate renunciation form <a href="https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights" target="_blank" rel="noopener noreferrer" class="govuk-link">PA15</a> / <a href="https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners" target="_blank" rel="noopener noreferrer" class="govuk-link">PA17</a> for executors who have renounced their right to apply</li></ul>
   </div>
 </details></p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
 </div></div>
