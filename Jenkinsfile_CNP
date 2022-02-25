@@ -1,10 +1,13 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
+import uk.gov.hmcts.contino.AppPipelineConfig
 
 @Library("Infrastructure")
 
 String product = "probate"
 String component = "back-office"
+
+AppPipelineConfig pipelineConf;
 
 def secrets = [
         'probate-${env}'      : [
@@ -90,6 +93,7 @@ def branchesToSync = ['demo', 'ithc', 'perftest']
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
+  pipelineConf = config;
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
@@ -135,7 +139,8 @@ withPipeline("java", product, component) {
       echo "CCD definition upload for environment: ${env.ENV}"
       withSubscription(env.ENV !='prod' ? 'nonprod' : 'prod') {
         withTeamSecrets(pipelineConf, env.ENV){
-
+          archiveCoreCaseDataDefinitions(env.ENV)
+          uploadCoreCaseDataDefinitions(env.ENV)
         }
       }
     } else {
