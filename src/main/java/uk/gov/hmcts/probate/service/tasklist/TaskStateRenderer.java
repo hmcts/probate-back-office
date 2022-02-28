@@ -32,18 +32,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -306,17 +296,9 @@ public class TaskStateRenderer {
         keyValue.put("ihtEstate207", ihtEstate207);
         String admonWillRenForms = "";
         if (admonWillRenunicationRule.isApplicable(data)) {
-            admonWillRenForms = "<li>" + ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT
-                + "<a href=\"" + PA15_FORM_URL + "\" target=\"_blank\" "
-                + "rel=\"noopener noreferrer\" class=\"govuk-link\">" + PA15_FORM_TEXT_ADMON_WILL + "</a>"
-                + ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT + "<a href=\"" + PA17_FORM_URL + "\" target=\"_blank\" "
-                + "rel=\"noopener noreferrer\" class=\"govuk-link\">"
-                + PA17_FORM_TEXT_ADMON_WILL + "</a>" + ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT + "</li>";
+            admonWillRenForms = "<li>" + sendDocumentsRenderer.getAdmonWillRenunciationText() + "</li>";
         }
         keyValue.put("admonWillRenForms", admonWillRenForms);
-        keyValue.put("renouncingExecutors",
-            (data.getAdditionalExecutorsNotApplying() != null) && (!data.getAdditionalExecutorsNotApplying().isEmpty())
-                ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         return keyValue;
     }
 

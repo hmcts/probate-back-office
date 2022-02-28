@@ -13,13 +13,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 
-import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_ADMON_WILL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -81,10 +74,7 @@ public class MarkdownDecoratorService {
 
     public String getAdmonWillRenunciationFormLabel(CaseData caseData) {
         if (admonWillRenunicationRule.isApplicable(caseData)) {
-            return "\n*   " + ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT + "<a href=\"" + PA15_FORM_URL
-                + "\" target=\"_blank\">" + PA15_FORM_TEXT_ADMON_WILL + "</a>" + ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT
-                + "<a href=\"" + PA17_FORM_URL + "\" target=\"_blank\">" + PA17_FORM_TEXT_ADMON_WILL + "</a>"
-                + ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
+            return BULLET + sendDocumentsRenderer.getAdmonWillRenunciationText();
         }
         return "";
     }

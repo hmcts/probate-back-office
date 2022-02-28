@@ -638,7 +638,8 @@ public class ConfirmationResponseServiceTest {
         when(markdownDecoratorService.getAdmonWillRenunciationFormLabel(any(CaseData.class)))
             .thenReturn("PA15 and PA17 form text");
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("PA15 and PA17 form text",

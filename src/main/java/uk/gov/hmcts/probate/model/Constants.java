@@ -70,7 +70,6 @@ public final class Constants {
     public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners";
     public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form" 
         + " (PA17)";
-    public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";
     public static final String PA15_FORM_TEXT_ADMON_WILL = "PA15";
     public static final String PA17_FORM_TEXT_ADMON_WILL = "PA17";
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";

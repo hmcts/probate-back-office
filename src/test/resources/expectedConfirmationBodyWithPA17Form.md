@@ -44,7 +44,7 @@ You now need to send us:
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
 *   the inheritance tax form IHT207
 *   a photocopy of the signed legal statement and declaration
-*   <a href="https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals" target="_blank">Give up probate executor rights for probate practitioners paper form (PA17)</a>
+*   <a href="https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners" target="_blank">Give up probate executor rights for probate practitioners paper form (PA17)</a>
 
 Where to send us your documents
 -------------------------------

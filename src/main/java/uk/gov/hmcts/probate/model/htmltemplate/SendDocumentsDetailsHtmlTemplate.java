@@ -13,11 +13,9 @@ public class SendDocumentsDetailsHtmlTemplate {
                     PageTextConstants.ORIGINAL_WILL,
                     PageTextConstants.IHT_TEXT,
                     PageTextConstants.IHT_FORM,
-                    PageTextConstants.IHT_ESTATE_207,
                     PageTextConstants.PA14_FORM,
                     PageTextConstants.PA15_FORM,
                     PageTextConstants.PA16_FORM,
-                    PageTextConstants.PA17_FORM);
                     PageTextConstants.PA17_FORM,
                     PageTextConstants.IHT_ESTATE_207,
                     PageTextConstants.ADMON_WILL_RENUNCIATION);
