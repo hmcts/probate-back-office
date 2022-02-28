@@ -821,7 +821,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_DispenseNoticeSupportDocs() {
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_NoEnglishWill() {
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
 

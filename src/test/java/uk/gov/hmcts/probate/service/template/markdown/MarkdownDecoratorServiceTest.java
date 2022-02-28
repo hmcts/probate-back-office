@@ -81,7 +81,7 @@ public class MarkdownDecoratorServiceTest {
         String supportDocsText =
             "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
         String supportDocsEntry = "document1 document2";
-        String expectedText = "\n   " + supportDocsText + supportDocsEntry;
+        String expectedText = "\n*  " + supportDocsText + supportDocsEntry;
         when(caseDataMock.getDispenseWithNotice()).thenReturn(YES);
         when(caseDataMock.getDispenseWithNoticeSupportingDocs()).thenReturn("document1 document2");
         String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
