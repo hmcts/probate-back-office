@@ -278,8 +278,6 @@ public class ConfirmationResponseService {
         keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
         keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
-        keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
-        keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
         keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
