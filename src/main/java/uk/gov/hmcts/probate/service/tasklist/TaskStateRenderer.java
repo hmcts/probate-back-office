@@ -99,7 +99,8 @@ public class TaskStateRenderer {
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
         return html == null ? null : html
-                .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+                .replaceFirst("<addSolicitorLink/>",
+                    renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                         currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
@@ -162,15 +163,16 @@ public class TaskStateRenderer {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)
-                                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
-                                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
-                                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
-                                .replaceFirst(RENOUNCING_EXECUTORS, keyValues.getOrDefault("renouncingExecutors", ""))
-                                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
-                                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
-                                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
-                                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
-                                        keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
+                            .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
+                            .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
+                            .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
+                            .replaceFirst(RENOUNCING_EXECUTORS,
+                                keyValues.getOrDefault("renouncingExecutors", ""))
+                            .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
+                            .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
+                            .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                            .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
+                                keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
                 );
     }
 
