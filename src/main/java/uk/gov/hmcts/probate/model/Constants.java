@@ -77,9 +77,9 @@ public final class Constants {
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
 
     public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT = "if applicable, send us the appropriate"
-        + " renunciation form ";
-    public static final String ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT = " / ";
-    public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT = " for executors who have"
+        + " renunciation form";
+    public static final String ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT = "/ ";
+    public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT = "for executors who have"
         + " renounced their right to apply";
 
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.

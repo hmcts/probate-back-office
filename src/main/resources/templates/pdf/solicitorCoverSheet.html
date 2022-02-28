@@ -104,7 +104,6 @@
                 {% endif %}
 
                 {% if case_extras != null %}
-                    {% endif %}
                     {% if case_extras.showIhtEstate == "Yes" %}
                     <li>
                         {{ case_extras.ihtEstate207Text }}
@@ -133,16 +132,12 @@
                     <li>
                         <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
                     </li>
-                    {% if case_extras.showPa17Form == "Yes" %}
-                    <li>
-                        <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
-                    </li>
                     {% endif %}
                     {% if case_extras.showAdmonWillRenunciation == "Yes" %}
                     <li>
                         {{ case_extras.admonWillRenunciationBeforeLinksText }}
                         <a href="{{ case_extras.pa15FormUrl }}" target="_blank">{{ case_extras.pa15FormText }}</a>
-                        {{ case_extras.admonWillRenunciationMidLinksText }}
+                         {{ case_extras.admonWillRenunciationMidLinksText }}
                         <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
                         {{ case_extras.admonWillRenunciationAfterLinksText }}
                     </li>
