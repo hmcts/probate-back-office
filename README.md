@@ -22,8 +22,8 @@ The template is a working application with a minimal setup. It contains:
  * Hystrix dashboard
  * MIT license and contribution information
 
-The application exposes health endpoint (http://localhost:3455/health) and metrics endpoint
-(http://localhost:3455/metrics).
+The application exposes health endpoint (http://localhost:4104/health) and metrics endpoint
+(http://localhost:4104/metrics).
 
 ## Plugins
 
