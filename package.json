@@ -24,6 +24,7 @@
     "test-e2e-caveat3": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath3.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-caveat4": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/caveatPath4.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePath.js -c ./src/test/end-to-end/ --steps",
+    "test-e2e-grantOfProbateEE": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker/grantOfProbatePathEE.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate-sol": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker_xui_issues/grantOfProbateSolPath.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate-sol-non-trust": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker_xui_issues/grantOfProbateSolPath-NonTrust.js -c ./src/test/end-to-end/ --steps",
     "test-e2e-grantOfProbate-sol-paper-form-yes": "NODE_PATH=. E2E_AUTO_DELAY_ENABLED=false node ./node_modules/codeceptjs/bin/codecept.js run paths/caseworker_xui_issues/grantOfProbateSolPath-PaperFormYes.js -c ./src/test/end-to-end/ --steps",
