@@ -26,8 +26,8 @@ import static org.hamcrest.Matchers.equalTo;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
-    //private static final int APP_FEE = 27300; //comment this out for local tests - keep for commits
-    private static final int APP_FEE = 15500;
+    private static final int APP_FEE = 27300; //comment this out for local tests - keep for commits
+    //private static final int APP_FEE = 15500;
     private static final int COPIES_FEE = 150;
     private static final double MAX_UK_COPIES = 50;
     private static final double MAX_NON_UK_COPIES = 50;
