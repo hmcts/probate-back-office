@@ -160,16 +160,12 @@ public class IdamAuthenticateUserServiceTest {
     public void shouldGetUserEmail() {
         String auth = "auth";
         String userEmail = "solicitor@probate-test.com";
-        TokenExchangeResponse token = TokenExchangeResponse.builder().accessToken("accessToken").build();
-        when(authTokenGenerator.generate()).thenReturn(auth);
-
-        when(idamClient.getAccessToken("email", "pass")).thenReturn("Bearer " + token.getAccessToken());
 
         UserInfo expectedUserDetails =
                 new UserInfo(userEmail, "16", "solicitor", "Peter", "Pan", new ArrayList<>());
 
-        given(idamClient.getUserInfo("Bearer " + token.getAccessToken())).willReturn(expectedUserDetails);
-        String email = idamAuthenticateUserService.getEmail();
+        given(idamClient.getUserInfo("AuthToken")).willReturn(expectedUserDetails);
+        String email = idamAuthenticateUserService.getEmail("AuthToken");
 
         assertEquals(userEmail, email);
     }

@@ -104,8 +104,8 @@ public class IdamAuthenticateUserService {
                 .build();
     }
 
-    public String getEmail() {
-        return getIdamTokens().getEmail();
+    public String getEmail(String authToken) {
+        return getUserDetails(authToken).getEmail();
     }
 
 }
