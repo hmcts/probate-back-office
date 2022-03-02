@@ -74,7 +74,7 @@ public class PBARetrievalConsumerTest {
     @PactTestFor(pactMethod = "generatePbaRetrievalPactFragment")
     public void verifyPbaRetrievePact() {
 
-        when(idamAuthenticateUserService.getEmail()).thenReturn(ORGANISATION_EMAIL);
+        when(idamAuthenticateUserService.getEmail(SOME_AUTHORIZATION_TOKEN)).thenReturn(ORGANISATION_EMAIL);
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
         List<String> pbas = pbaRetrievalService.getPBAs(SOME_AUTHORIZATION_TOKEN);
         assertThat(pbas.get(0), equalTo("paymentAccountA1"));

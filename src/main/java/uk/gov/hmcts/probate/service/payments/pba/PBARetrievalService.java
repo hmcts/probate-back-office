@@ -40,7 +40,7 @@ public class PBARetrievalService {
     protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
-        String emailId = idamAuthenticateUserService.getEmail();
+        String emailId = idamAuthenticateUserService.getEmail(authToken);
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken, emailId);
 
