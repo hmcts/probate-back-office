@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
@@ -32,10 +31,4 @@ public class UserDetails {
         this.forename = forename;
         this.surname = surname;
     }
-
-    @JsonIgnore
-    public boolean hasRole(UserRole role) {
-        return roles != null && roles.contains(role.getValue());
-    }
-
 }
