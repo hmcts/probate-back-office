@@ -14,6 +14,7 @@ def secrets = [
                 secret('idamUserId', 'IDAM_USER_ID'),
                 secret('probateIdamSecret', 'IDAM_SECRET'),
                 secret('s2s-probate-backend', 'SS2S_PROBATE_BACKEND_SECRET'),
+                secret('s2sAuthTotpSecret', 'S2S_AUTH_TOTP_SECRET'),
                 secret('probate-bo-govNotifyApiKey', 'PROBATE_BO_NOTIFY_KEY'),
                 secret('pdf-service-grantSignatureBase64-first', 'BO_GRANT_SIG_FIRST'),
                 secret('pdf-service-grantSignatureBase64-last','BO_GRANT_SIG_LAST'),
