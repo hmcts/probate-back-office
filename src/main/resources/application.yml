@@ -23,7 +23,7 @@ management:
 
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
 auth.provider.service.client:
-  key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+  key: ${S2S_PROBATE_BACKEND_SECRET:AAAAAAAAAAAAAAAA}
   baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
   microservice: probate_backend
   tokenTimeToLiveInSeconds: 900
@@ -467,7 +467,7 @@ document:
 idam:
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
-    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    totp_secret: ${S2S_PROBATE_BACKEND_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
 
 send-letter:

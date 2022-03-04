@@ -371,7 +371,7 @@ document:
 idam:
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
-    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    totp_secret: ${S2S_PROBATE_BACKEND_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
 
 send-letter:
