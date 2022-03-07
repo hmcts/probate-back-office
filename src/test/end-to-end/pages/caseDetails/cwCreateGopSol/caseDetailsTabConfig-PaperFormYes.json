@@ -2,7 +2,7 @@
     "tabName": "Case details",
     "fields": [
       "What case type is this?",
-      "Is this a paper form OR Applicant Came to Registry?",
+      "Is this a paper form?",
       "IHT Form completed Online",
       "IHT Reference Number",
       "Gross value of the estate",

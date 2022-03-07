@@ -329,7 +329,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "totalFeePaperForm", "Label": "Total fees", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paperPaymentMethod", "Label": "Please select the correct payment method", "FieldType": "FixedList", "FieldTypeParameter": "paperPaymentMethodFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paymentReferenceNumberPaperform", "Label": "Payment reference ", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paperForm", "Label": "Is this a paper form OR Applicant Came to Registry?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paperForm", "Label": "Is this a paper form?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "languagePreferenceWelsh", "Label": "Is the language preference Welsh?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDiedEngOrWales", "Label": "Did the deceased die in England or Wales?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedDeathCertificate", "Label": "Do you have a death certificate or an interim death certificate?", "FieldType": "FixedList", "FieldTypeParameter": "deceasedDeathCertificateFixedList", "SecurityClassification": "Public"},
