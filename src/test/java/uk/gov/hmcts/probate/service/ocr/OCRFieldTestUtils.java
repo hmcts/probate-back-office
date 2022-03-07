@@ -330,4 +330,51 @@ public class OCRFieldTestUtils {
         });
         return ocrFieldValues;
     }
+
+    public void addAllV2Data(List<OCRField> ocrFields) {
+        OCRField iht400421completed = OCRField.builder()
+            .name("iht400421completed")
+            .value("false")
+            .description("IHT Completed online?").build();
+        OCRField iht207completed = OCRField.builder()
+            .name("iht207completed")
+            .value("false")
+            .description("IHT Completed").build();
+        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
+            .name("deceasedDiedOnAfterSwitchDate")
+            .value("true")
+            .description("deceasedDiedOnAfterSwitchDate").build();
+        OCRField ihtEstateGrossValue = OCRField.builder()
+            .name("ihtEstateGrossValue")
+            .value("1,000,000")
+            .description("ihtEstateGrossValue").build();
+        OCRField ihtEstateNetValue = OCRField.builder()
+            .name("ihtEstateNetValue")
+            .value("900,000")
+            .description("ihtEstateNetValue").build();
+        OCRField ihtEstateNetQualifyingValue = OCRField.builder()
+            .name("ihtEstateNetQualifyingValue")
+            .value("800,000")
+            .description("ihtEstateNetQualifyingValue").build();
+        ocrFields.add(iht400421completed);
+        ocrFields.add(iht207completed);
+        ocrFields.add(deceasedDiedOnAfterSwitchDate);
+        ocrFields.add(ihtEstateGrossValue);
+        ocrFields.add(ihtEstateNetValue);
+        ocrFields.add(ihtEstateNetQualifyingValue);
+
+    }
+
+    public void removeOCRField(List<OCRField> ocrFields, String fieldNameToRemove) {
+        OCRField fieldToRemove = null;
+        for (OCRField ocrField : ocrFields) {
+            if (fieldNameToRemove.equals(ocrField.getName())) {
+                fieldToRemove = ocrField;
+            }
+        }
+
+        if (fieldToRemove != null) {
+            ocrFields.remove(fieldToRemove);
+        }
+    }
 }
