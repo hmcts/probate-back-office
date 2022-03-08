@@ -41,7 +41,7 @@ public class OCRToCCDMandatoryField {
 
     public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
-        Map<String, String> ocrFieldValues = new HashMap<String, String>();
+        Map<String, String> ocrFieldValues = new HashMap<>();
 
         ocrFields.forEach(ocrField -> {
             ocrFieldValues.put(ocrField.getName(), ocrField.getValue());

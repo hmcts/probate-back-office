@@ -53,5 +53,16 @@ public class PA1ASolicitorMandatoryFieldsValidatorTest {
         assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warnings.get(3));
     }
 
+    @Test
+    public void testSolicitorMissingPaymentMethodFieldsPA1P() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        ocrFieldValues.put("paperPaymentMethod", "PBA");
+
+        pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(1, warnings.size());
+        assertEquals("Solicitors fee account number (solsFeeAccountNumber) is mandatory.", warnings.get(0));
+    }
 
 }
