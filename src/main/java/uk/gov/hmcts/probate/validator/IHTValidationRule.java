@@ -20,8 +20,6 @@ class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationRule, Ca
 
     public static final String IHT_PROBATE_NET_GREATER_THAN_GROSS = "ihtProbateNetGreaterThanGross";
     public static final String IHT_ESTATE_NET_GREATER_THAN_GROSS = "ihtEstateNetGreaterThanGross";
-    public static final String IHT_NET_IS_NULL = "ihtNetIsNull";
-    public static final String IHT_GROSS_IS_NULL = "ihtGrossIsNull";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 

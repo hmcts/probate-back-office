@@ -1066,7 +1066,7 @@ public class BusinessValidationControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
-                .value("Net probate value cannot be greater than the Gross probate value"));
+                .value("The gross probate value cannot be less than the net probate value"));
     }
 
     @Test
@@ -1088,7 +1088,7 @@ public class BusinessValidationControllerTest {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
-                .value("Net IHT value cannot be greater than the Gross IHT value"));
+                .value("The gross IHT value cannot be less than the net IHT value"));
     }
 
     @Test
