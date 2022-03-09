@@ -15,7 +15,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +129,7 @@ public class CCDDataTransformer {
             .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
             .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
             .paymentMethod(caseData.getSolsPaymentMethods())
-            .solsPBANumber(caseData.getSolsPBANumber() == null 
+            .solsPBANumber(caseData.getSolsPBANumber() == null
                 || caseData.getSolsPBANumber().getValue() == null ? null :
                 caseData.getSolsPBANumber().getValue().getCode())
             .solsPBAPaymentReference(caseData.getSolsPBAPaymentReference())
@@ -209,10 +208,10 @@ public class CCDDataTransformer {
     }
 
     private LocalDate getCaseSubmissionDate(String[] lastModified) {
-        try {
+        if (lastModified != null && lastModified.length >= 3 && lastModified[0] != null && lastModified[1] != null
+                && lastModified[2] != null) {
             return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException | DateTimeException | NullPointerException e) {
-            log.warn(e.getMessage(), e);
+        } else {
             return null;
         }
     }

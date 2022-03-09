@@ -176,6 +176,16 @@ public class CCDDataTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWhenCaseFirstCreated() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(null);
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals(null, ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithUploadedLegalStatement() {
         ArrayList<CollectionMember<UploadDocument>> uploaded = new ArrayList<>();
         uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
@@ -302,7 +312,7 @@ public class CCDDataTransformerTest {
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
     }
-    
+
     @Test
     public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
         when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
@@ -385,7 +395,7 @@ public class CCDDataTransformerTest {
         assertEquals("Yes", ccdData.getSolsSpouseOrCivilRenouncing());
 
     }
-    
+
     @Test
     public void shouldConvertRequestToDataBeanForPA17Form() {
 
@@ -396,7 +406,7 @@ public class CCDDataTransformerTest {
         assertAll(ccdData);
         assertEquals("TCTPartAllRenouncing", ccdData.getTitleAndClearingType());
     }
-    
+
     @Test
     public void shouldConvertRequestToDataBeanForIhtEstate() {
 
