@@ -9,7 +9,7 @@ maintainers:
     email: probate-action-group@HMCTS.NET
 dependencies:
   - name: java
-    version:  3.7.1
+    version:  3.7.4
     repository: '@hmctspublic'
   - name: ccd
     version: 6.0.0
