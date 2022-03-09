@@ -28,6 +28,16 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
+    public void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        ocrFieldTestUtils.removeOCRField(ocrFields, "ihtFormCompletedOnline");
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+
+        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+        assertEquals(0, warnings.size());
+    }
+
+    @Test
     public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
