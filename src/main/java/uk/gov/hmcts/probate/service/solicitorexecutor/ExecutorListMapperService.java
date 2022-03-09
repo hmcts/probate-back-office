@@ -147,7 +147,7 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
-                .filter(exec -> exec.getValue().getAdditionalApplying().equals(YES))
+                .filter(exec -> YES.equals(exec.getValue().getAdditionalApplying()))
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
