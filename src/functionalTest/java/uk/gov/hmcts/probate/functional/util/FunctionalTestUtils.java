@@ -6,6 +6,19 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.pdfbox.cos.COSDocument;
 import org.pdfbox.pdfparser.PDFParser;
@@ -18,19 +31,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.functional.SolCCDServiceAuthTokenGenerator;
 import uk.gov.hmcts.probate.functional.TestContextConfiguration;
-
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.Locale;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
@@ -89,6 +89,15 @@ public class FunctionalTestUtils {
         }
     }
 
+    public String replaceAnyCaseNumberWithRandom(String caseData) {
+        String replace = "" + System.currentTimeMillis() + System.currentTimeMillis();
+        replace = replace.substring(0, 16);
+        String replacement = caseData.replaceAll("\"id\": [0-9]{16}",
+            "\"id\": " + replace);
+        System.out.println("replacement: " + replacement);
+        return replacement;
+    }
+
     public String getJsonFromFile(String fileName) {
         try {
             final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
@@ -104,6 +113,16 @@ public class FunctionalTestUtils {
         try {
             final File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
             return new String(Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<String> getLinesFromFile(String fileName) {
+        try {
+            final File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
+            return Files.readAllLines(file.toPath());
         } catch (IOException e) {
             e.printStackTrace();
             return null;

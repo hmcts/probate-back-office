@@ -120,6 +120,8 @@ public class CCDDataTransformer {
             .grossValue(caseData.getIhtGrossValue())
             .ihtFormEstateValuesCompleted(caseData.getIhtFormEstateValuesCompleted())
             .ihtFormEstate(caseData.getIhtFormEstate())
+            .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
+            .ihtEstateNetValue(caseData.getIhtEstateNetValue())
             .build();
     }
 

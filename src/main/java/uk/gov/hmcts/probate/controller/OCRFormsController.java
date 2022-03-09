@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
+import uk.gov.hmcts.probate.service.ocr.NonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
@@ -35,6 +36,7 @@ public class OCRFormsController {
 
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
+    private final NonMandatoryFieldsValidator nonMandatoryFieldsValidator;
 
     @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
     @ApiResponses({
@@ -54,7 +56,7 @@ public class OCRFormsController {
         List<String> warningsMandatory = ocrToCCDMandatoryField
             .ocrToCCDMandatoryFields(ocrFields, FormType.valueOf(formType));
 
-        List<String> warningsNonMandatory = ocrToCCDMandatoryField
+        List<String> warningsNonMandatory = nonMandatoryFieldsValidator
             .ocrToCCDNonMandatoryWarnings(ocrFields, FormType.valueOf(formType));
 
         List<String> warnings = new ArrayList<String>();

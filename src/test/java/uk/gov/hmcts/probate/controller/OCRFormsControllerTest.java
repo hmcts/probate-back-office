@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.NonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -54,6 +55,9 @@ public class OCRFormsControllerTest {
     @MockBean
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
+    @MockBean
+    private NonMandatoryFieldsValidator nonMandatoryFieldsValidator;
+
     private String ocrPayload;
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
@@ -83,7 +87,7 @@ public class OCRFormsControllerTest {
 
     @Test
     public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
-        when(ocrToCCDMandatoryField.ocrToCCDNonMandatoryWarnings(any(), any())).thenReturn(warnings);
+        when(nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
