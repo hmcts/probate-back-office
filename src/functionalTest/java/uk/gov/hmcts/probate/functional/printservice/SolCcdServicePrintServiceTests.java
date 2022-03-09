@@ -109,7 +109,6 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .when().get("/template/probateManLegacyCase");
-        response.prettyPrint();
 
         assertThat(response.statusCode(), is(equalTo(200)));
         assertTrue(response.getBody().asString().contains("Probate Man Legacy Case"));
@@ -122,7 +121,6 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
             .when().get("/template/probateManLegacyCase");
-        response.prettyPrint();
 
         assertThat(response.statusCode(), is(equalTo(403)));
         assertTrue(response.getBody().asString().contains("Forbidden"));

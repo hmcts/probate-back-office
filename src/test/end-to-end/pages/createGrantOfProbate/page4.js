@@ -67,8 +67,6 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#deceasedDateOfBirth-day', createGrantOfProbateConfig.page4_deceasedDob_day_update);
         await I.fillField('#deceasedDateOfBirth-month', createGrantOfProbateConfig.page4_deceasedDob_month_update);
         await I.fillField('#deceasedDateOfBirth-year', createGrantOfProbateConfig.page4_deceasedDob_year_update);
-
-        await I.fillField('#ihtReferenceNumber', createGrantOfProbateConfig.page9_ihtReferenceNumber_update);
     }
 
     if (crud === 'update2orig') {
@@ -89,5 +87,41 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#deceasedDateOfBirth-year', createGrantOfProbateConfig.page4_deceasedDob_year);
     }
 
+    if (crud === 'EE') {
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
+
+        await I.waitForEnabled({css: '#selectionList'});
+        await I.selectOption('#selectionList', createGrantOfProbateConfig.page4_list1_update_option);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
+
+        await I.waitForVisible('#deceasedDateOfDeath-day');
+    }
+
     await I.waitForNavigationToComplete(commonConfig.continueButton);
+
+    if (crud === 'update' || crud === 'update2orig') {
+        await I.fillField('#ihtReferenceNumber', createGrantOfProbateConfig.page9_ihtReferenceNumber_update);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
+
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
+    }
+
+    if (crud === 'EE') {
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
+        await I.click(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedYes}`);
+
+        await I.click(`#ihtFormEstate-${createGrantOfProbateConfig.EE_ihtFormEstate207}`);
+
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
+
+        await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
+
+        await I.fillField('#ihtGrossValue', createGrantOfProbateConfig.EE_ihtEstateGrossValue);
+        await I.fillField('#ihtNetValue', createGrantOfProbateConfig.EE_ihtEstateNetValue);
+
+        await I.waitForNavigationToComplete(commonConfig.continueButton);
+
+    }
+
 };

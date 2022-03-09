@@ -188,4 +188,15 @@ public class ExceptionRecordOCRFields {
     private final String ihtFormId;
     private final String ihtGrossValue;
     private final String ihtNetValue;
+    private final String ihtFormEstate;
+    private final String ihtEstateGrossValue;
+    private final String ihtEstateNetValue;
+    private final String ihtEstateNetQualifyingValue;
+    private final String deceasedHadLateSpouseOrCivilPartner;
+    private final String ihtUnusedAllowanceClaimed;
+    private final String deceasedDiedOnAfterSwitchDate;
+    private final String iht400421Completed;
+    private final String iht207Completed;
+    private final String iht205completedOnline;
+    private final String formVersion;
 }

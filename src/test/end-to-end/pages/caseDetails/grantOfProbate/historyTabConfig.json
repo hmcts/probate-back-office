@@ -1,5 +1,5 @@
 {
-  "waitForText" : "Manage cases",
+  "waitForText" : "Manage Cases",
   "tabName": "Event History",
   "fields": [
     "Date",
