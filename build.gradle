@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.5.5'
+    springBootVersion = '2.6.3'
   }
   repositories {
     jcenter()
@@ -156,8 +156,8 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.5.9',
-        springBootStarterHateoas        : '2.5.9',
+        springBootVersion               : '2.6.3',
+        springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.11.2',
