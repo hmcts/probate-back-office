@@ -14,7 +14,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +40,7 @@ public class CCDDataTransformer {
         return CCDData.builder()
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
-            .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
+            .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails()))
             .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
             .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
             .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
@@ -207,10 +209,17 @@ public class CCDDataTransformer {
         return executors;
     }
 
-    private LocalDate getCaseSubmissionDate(String[] lastModified) {
+    private LocalDate getCaseSubmissionDate(CaseDetails caseDetails) {
+        String[] lastModified = caseDetails.getLastModified();
         if (lastModified != null && lastModified.length >= 3 && lastModified[0] != null && lastModified[1] != null
                 && lastModified[2] != null) {
-            return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
+            try {
+                return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
+            } catch (NumberFormatException | DateTimeException e) {
+                log.warn("CCDDataTransformer.getCaseSubmissionDate for case {}, error {}", caseDetails.getId(),
+                        e.getMessage());
+                return null;
+            }
         } else {
             return null;
         }
