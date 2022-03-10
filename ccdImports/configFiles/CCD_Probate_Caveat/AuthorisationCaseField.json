@@ -429,4 +429,4 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"}
-]
+ ]

@@ -245,6 +245,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-webflux', version: versions.springBootVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud

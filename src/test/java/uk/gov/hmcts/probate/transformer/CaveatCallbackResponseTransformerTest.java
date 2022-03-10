@@ -194,7 +194,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
-        CaveatCallbackResponse caveatCallbackResponse = underTest.transformForSolicitor(caveatCallbackRequestMock);
+        CaveatCallbackResponse caveatCallbackResponse = underTest.transformForSolicitor(caveatCallbackRequestMock, "FAKE_TOKEN");
         assertCommonSolsCaveats(caveatCallbackResponse);
     }
 

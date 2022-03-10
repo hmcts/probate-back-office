@@ -1089,7 +1089,8 @@ public class CallbackResponseTransformer {
     }
 
     private OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
-        OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrgId(authToken);
+        OrganisationEntityResponse organisationEntityResponse =
+            organisationsRetrievalService.getOrganisationEntity(authToken);
         OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
             .organisation(Organisation.builder()
                 .organisationID(organisationEntityResponse.getOrganisationIdentifier())
