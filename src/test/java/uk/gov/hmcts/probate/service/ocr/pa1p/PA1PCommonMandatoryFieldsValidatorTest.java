@@ -28,6 +28,16 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
+    public void testNoPrimaryApplicantHasAlasKeyReturnSuccessfullyForPA1A() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
+        ocrFieldTestUtils.removeOCRField(ocrFields, "primaryApplicantHasAlias");
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+
+        pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+        assertEquals(0, warnings.size());
+    }
+
+    @Test
     public void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
