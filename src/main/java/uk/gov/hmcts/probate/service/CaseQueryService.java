@@ -108,32 +108,6 @@ public class CaseQueryService {
         return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, null);
     }
 
-    private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
-                                                             String queryDateStart, String queryDateEnd) {
-
-        List<ReturnedCaseDetails> allResults = new ArrayList<>();
-        List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
-        int index = 0;
-        int pageStart = 0;
-        int total = 10000000;
-        String paginatedQry = jsonQuery;
-        log.info("paginatedQry:" + paginatedQry);
-        while (index < total) {
-
-            ReturnedCases cases = runQuery(paginatedQry);
-            total = cases.getTotal();
-            pagedResults = cases.getCases();
-            log.info("{} for date:{} to date:{}, from:{} to:{}", queryName, queryDateStart, queryDateEnd, pageStart,
-                (pageStart + dataExtractPaginationSize));
-            allResults.addAll(pagedResults);
-            index = index + pagedResults.size();
-            pageStart = pageStart + dataExtractPaginationSize;
-            paginatedQry = updatePageStartOnQry(paginatedQry, pageStart);
-        }
-
-        return allResults;
-    }
-
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
         return findCaseStateWithinDateRange("Excela", GRANT_RANGE_QUERY_EXELA, startDate, endDate);
     }
@@ -195,9 +169,34 @@ public class CaseQueryService {
                 null);
     }
 
+    private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
+                                                             String queryDateStart, String queryDateEnd) {
+
+        List<ReturnedCaseDetails> allResults = new ArrayList<>();
+        List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
+        int index = 0;
+        int pageStart = 0;
+        int total = 10000000;
+        String paginatedQry = jsonQuery;
+        while (index < total) {
+
+            ReturnedCases cases = runQuery(paginatedQry);
+            total = cases.getTotal();
+            pagedResults = cases.getCases();
+            log.info("{} for date:{} to date:{}, from:{} to:{}", queryName, queryDateStart, queryDateEnd, pageStart,
+                    (pageStart + dataExtractPaginationSize));
+            allResults.addAll(pagedResults);
+            index = index + pagedResults.size();
+            pageStart = pageStart + dataExtractPaginationSize;
+            paginatedQry = updatePageStartOnQry(paginatedQry, pageStart);
+        }
+
+        return allResults;
+    }
+
     @Nullable
     private ReturnedCases runQuery(String jsonQuery) {
-        log.debug("CaseQueryService runQuery: " + jsonQuery);
+        log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
