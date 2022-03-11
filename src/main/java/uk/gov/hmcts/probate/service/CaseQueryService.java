@@ -26,7 +26,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import javax.annotation.Nullable;
 import java.net.URI;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,12 +77,6 @@ public class CaseQueryService {
     private final FileSystemResourceService fileSystemResourceService;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
-    @Value("${data-extract.block.size}")
-    protected int dataExtractBlockSize;
-    @Value("${data-extract.block.numDaysInclusive}")
-    protected int numDaysBlock;
-    @Value("${data-extract.smee-and-ford.size}")
-    protected int dataExtractSmeeAndFordSize;
 
     private static <T> T nonNull(@Nullable T result) {
         Assert.state(result != null, "Entity should be non null in CaseQueryService");
@@ -95,87 +88,72 @@ public class CaseQueryService {
 
         query.must(matchQuery(STATE, STATE_MATCH));
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
-
-        return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", query, queryDate);
-    }
-
-    private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, BoolQueryBuilder query,
-                                                             String queryDate) {
-
-        List<ReturnedCaseDetails> allResults = new ArrayList<>();
-        List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
-        int index = 0;
-        int pageStart = 0;
-        int total = 10000;
-        while (index < total) {
-            String jsonQuery = new SearchSourceBuilder().query(query)
+        String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
-                .from(pageStart)
+                .from(0)
                 .toString();
 
-            ReturnedCases cases = runQuery(jsonQuery);
-            total = cases.getTotal();
-            pagedResults = cases.getCases();
-            log.info("{} for date:{} from:{} to:{}", queryName, queryDate, pageStart,
-                (pageStart + dataExtractPaginationSize));
-            allResults.addAll(pagedResults);
-            index = index + pagedResults.size();
-            pageStart = pageStart + dataExtractPaginationSize;
-        }
-
-        return allResults;
+        return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", jsonQuery,
+                queryDate, null);
     }
 
     public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
+        String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(0)
+                .toString();
 
-        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", query, queryDate);
+        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, null);
+    }
+
+    private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
+                                                             String queryDateStart, String queryDateEnd) {
+
+        List<ReturnedCaseDetails> allResults = new ArrayList<>();
+        List<ReturnedCaseDetails> pagedResults = new ArrayList<>();
+        int index = 0;
+        int pageStart = 0;
+        int total = 10000000;
+        String paginatedQry = jsonQuery;
+        log.info("paginatedQry:" + paginatedQry);
+        while (index < total) {
+
+            ReturnedCases cases = runQuery(paginatedQry);
+            total = cases.getTotal();
+            pagedResults = cases.getCases();
+            log.info("{} for date:{} to date:{}, from:{} to:{}", queryName, queryDateStart, queryDateEnd, pageStart,
+                (pageStart + dataExtractPaginationSize));
+            allResults.addAll(pagedResults);
+            index = index + pagedResults.size();
+            pageStart = pageStart + dataExtractPaginationSize;
+            paginatedQry = updatePageStartOnQry(paginatedQry, pageStart);
+        }
+
+        return allResults;
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        return findCaseStateWithinDateRange(dataExtractBlockSize, GRANT_RANGE_QUERY_EXELA, startDate, endDate);
+        return findCaseStateWithinDateRange("Excela", GRANT_RANGE_QUERY_EXELA, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
-        return findCaseStateWithinDateRange(dataExtractBlockSize, GRANT_RANGE_QUERY_HMRC, startDate, endDate);
+        return findCaseStateWithinDateRange("HMRC", GRANT_RANGE_QUERY_HMRC, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeSmeeAndFord(String startDate, String endDate) {
-        return findCaseStateWithinDateRange(dataExtractSmeeAndFordSize, GRANT_RANGE_QUERY_SMEEFORD, startDate, endDate);
+        return findCaseStateWithinDateRange("SMEEFORD", GRANT_RANGE_QUERY_SMEEFORD, startDate, endDate);
     }
 
-    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(int size, String qry, String startDate,
+    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String from, String qry, String startDate,
                                                                    String endDate) {
-        List<ReturnedCaseDetails> allCases = new ArrayList<>();
-        LocalDate end = LocalDate.parse(endDate, DATE_FORMAT);
-        LocalDate counter = LocalDate.parse(startDate, DATE_FORMAT);
-        while (!counter.isAfter(end)) {
-            String stBlock = counter.format(DATE_FORMAT);
-            LocalDate endCounter = counter.plusDays(numDaysBlock);
-            if (endCounter.isAfter(end)) {
-                endCounter = end;
-            }
-            String endBlock = endCounter.format(DATE_FORMAT);
-            log.info("findCaseStateWithinDateRange stBlock:" + stBlock + " endBlock:" + endBlock + " days:"
-                + (counter.datesUntil(endCounter).count() + 1));
-            String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
-                .replace(":size", "" + size)
-                .replace(":fromDate", stBlock)
-                .replace(":toDate", endBlock);
-            List<ReturnedCaseDetails> blockCases = runQuery(jsonQuery).getCases();
-            if (blockCases.size() == size) {
-                String message = "Number of cases returned during data range query at max block size for "
-                    + stBlock + " to " + endBlock;
-                log.info(message);
-                throw new ClientDataException(message);
-            }
-            allCases.addAll(blockCases);
+        String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
+                .replace(":size", "" + dataExtractPaginationSize)
+                .replace(":fromDate", startDate)
+                .replace(":toDate", endDate);
 
-            counter = endCounter.plusDays(1);
-        }
-
-        return allCases;
+        return runQueryWithPagination(from + " findCaseStateWithinDateRange", jsonQuery, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
@@ -192,9 +170,9 @@ public class CaseQueryService {
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
         query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize).from(0).toString();
 
-        return runQuery(jsonQuery).getCases();
+        return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, null);
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantAwaitingDocumentation(String queryDate) {
@@ -211,9 +189,10 @@ public class CaseQueryService {
         query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
         query.mustNot(existsQuery(KEY_EVIDENCE_HANDLED));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(10000).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize).from(0).toString();
 
-        return runQuery(jsonQuery).getCases();
+        return runQueryWithPagination("findCasesForGrantAwaitingDocumentation", jsonQuery, queryDate,
+                null);
     }
 
     @Nullable
@@ -257,6 +236,16 @@ public class CaseQueryService {
 
         log.info("CaseQueryService returnedCases.size = {}", returnedCases.getCases().size());
         return returnedCases;
+    }
+
+    private String updatePageStartOnQry(String paginatedQry, int pageStart) {
+        int fromIndex = paginatedQry.indexOf("from");
+        int fromColIndex = paginatedQry.indexOf(":", fromIndex);
+        int fromComIndex = paginatedQry.indexOf(",", fromIndex);
+        String start = paginatedQry.substring(0, fromColIndex + 1);
+        String end = paginatedQry.substring(fromComIndex + 1);
+        String all = start + pageStart + "," + end;
+        return all;
     }
 
 }

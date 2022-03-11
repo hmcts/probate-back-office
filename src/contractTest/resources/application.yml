@@ -424,7 +424,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
@@ -449,11 +449,6 @@ excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
 data-extract:
   pagination:
     size: 100
-  block:
-    size: 3000
-    numDaysInclusive: 0
-  smee-and-ford:
-    size: 10000
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 

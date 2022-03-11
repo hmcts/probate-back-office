@@ -388,12 +388,7 @@ smeeAndFordEmail: smeeAndFord@probate-test.com
 data-extract:
   pagination:
     size: 1
-  block:
-    size: 3000
-    numDaysInclusive: 0
-  smee-and-ford:
-    size: 2000
-    
+
 welsh:
   months:
     1: "Ionawr"
