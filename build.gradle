@@ -7,8 +7,7 @@ buildscript {
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.6.0")
-    classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.5.8")
   }
 }
 
@@ -21,7 +20,7 @@ plugins {
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.2.9'
+  id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
 }
 
@@ -128,14 +127,10 @@ task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
-  //finalizedBy aggregate
+  finalizedBy aggregate
 }
 
-//functional.finalizedBy(aggregate)
-
-serenity {
-  reports = ["single-page-html"]
-}
+functional.finalizedBy(aggregate)
 
 
 task caseCreator(type: Test) {
@@ -324,7 +319,6 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
   testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
