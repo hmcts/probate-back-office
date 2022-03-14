@@ -120,14 +120,15 @@ public class CaseQueryService {
         return findCaseStateWithinDateRange("SMEEFORD", GRANT_RANGE_QUERY_SMEEFORD, startDate, endDate);
     }
 
-    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String from, String qry, String startDate,
+    private List<ReturnedCaseDetails> findCaseStateWithinDateRange(String qryFrom, String qry, String startDate,
                                                                    String endDate) {
         String jsonQuery = fileSystemResourceService.getFileFromResourceAsString(qry)
+                .replace(":from,", "0,")
                 .replace(":size", "" + dataExtractPaginationSize)
                 .replace(":fromDate", startDate)
                 .replace(":toDate", endDate);
 
-        return runQueryWithPagination(from + " findCaseStateWithinDateRange", jsonQuery, startDate, endDate);
+        return runQueryWithPagination(qryFrom + " findCaseStateWithinDateRange", jsonQuery, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantDelayed(String queryDate) {
