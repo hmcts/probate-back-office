@@ -238,13 +238,7 @@ public class CaseQueryService {
     }
 
     private String updatePageStartOnQry(String paginatedQry, int pageStart) {
-        int fromIndex = paginatedQry.indexOf("from");
-        int fromColIndex = paginatedQry.indexOf(":", fromIndex);
-        int fromComIndex = paginatedQry.indexOf(",", fromIndex);
-        String start = paginatedQry.substring(0, fromColIndex + 1);
-        String end = paginatedQry.substring(fromComIndex + 1);
-        String all = start + pageStart + "," + end;
-        return all;
+        return paginatedQry.replaceFirst("\"from\": *\\d*,", "\"from\":" + pageStart + ",");
     }
 
 }
