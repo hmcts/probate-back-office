@@ -109,7 +109,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
-        return findCaseStateWithinDateRange("Excela", GRANT_RANGE_QUERY_EXELA, startDate, endDate);
+        return findCaseStateWithinDateRange("Exela", GRANT_RANGE_QUERY_EXELA, startDate, endDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeHMRC(String startDate, String endDate) {
@@ -180,12 +180,11 @@ public class CaseQueryService {
         int total = 10000000;
         String paginatedQry = jsonQuery;
         while (index < total) {
-
+            log.info("Querying for {} from date:{} to date:{}, from page:{} to page:{}", queryName, queryDateStart,
+                    queryDateEnd, pageStart, (pageStart + dataExtractPaginationSize));
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
             pagedResults = cases.getCases();
-            log.info("{} for date:{} to date:{}, from:{} to:{}", queryName, queryDateStart, queryDateEnd, pageStart,
-                    (pageStart + dataExtractPaginationSize));
             allResults.addAll(pagedResults);
             index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;

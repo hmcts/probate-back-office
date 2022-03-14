@@ -12,7 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class DataExtractTests extends IntegrationTestBase {
     private static final String IRONMOUNTAIN_URL = "/data-extract/iron-mountain";
-    private static final String EXCELA_URL = "/data-extract/exela";
+    private static final String EXELA_UR = "/data-extract/exela";
     private static final String SMEE_AND_FORD_URL = "/data-extract/smee-and-ford";
     private static final String HMRC_URL = "/data-extract/hmrc";
 
@@ -110,7 +110,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyValidDateRequestReturnsAcceptedStatusForExcela() {
+    public void verifyValidDateRequestReturnsAcceptedStatusForExela() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -118,30 +118,30 @@ public class DataExtractTests extends IntegrationTestBase {
             .queryParam("fromDate", "2019-02-03")
             .queryParam("toDate", "2019-02-03")
             .when()
-            .post(EXCELA_URL)
+            .post(EXELA_UR)
             .then().assertThat().statusCode(202);
     }
 
     @Test
-    public void verifyNoDateFormatReturnsBadRequestForExcela() {
+    public void verifyNoDateFormatReturnsBadRequestForExela() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders(email, password, id))
             .when()
-            .post(EXCELA_URL)
+            .post(EXELA_UR)
             .then().assertThat().statusCode(400);
     }
 
     @Test
-    public void verifyIncorrectDateFormatReturnsBadRequestForExcela() {
+    public void verifyIncorrectDateFormatReturnsBadRequestForExela() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders(email, password, id))
             .queryParam("date", "2019-2-2")
             .when()
-            .post(EXCELA_URL)
+            .post(EXELA_UR)
             .then().assertThat().statusCode(400);
     }
 
