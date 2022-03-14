@@ -12,7 +12,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class DataExtractTests extends IntegrationTestBase {
     private static final String IRONMOUNTAIN_URL = "/data-extract/iron-mountain";
-    private static final String EXELA_UR = "/data-extract/exela";
+    private static final String EXELA_URL = "/data-extract/exela";
     private static final String SMEE_AND_FORD_URL = "/data-extract/smee-and-ford";
     private static final String HMRC_URL = "/data-extract/hmrc";
 
@@ -118,7 +118,7 @@ public class DataExtractTests extends IntegrationTestBase {
             .queryParam("fromDate", "2019-02-03")
             .queryParam("toDate", "2019-02-03")
             .when()
-            .post(EXELA_UR)
+            .post(EXELA_URL)
             .then().assertThat().statusCode(202);
     }
 
@@ -129,7 +129,7 @@ public class DataExtractTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders(email, password, id))
             .when()
-            .post(EXELA_UR)
+            .post(EXELA_URL)
             .then().assertThat().statusCode(400);
     }
 
@@ -141,7 +141,7 @@ public class DataExtractTests extends IntegrationTestBase {
             .headers(utils.getHeaders(email, password, id))
             .queryParam("date", "2019-2-2")
             .when()
-            .post(EXELA_UR)
+            .post(EXELA_URL)
             .then().assertThat().statusCode(400);
     }
 
