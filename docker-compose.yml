@@ -499,7 +499,7 @@ services:
 
 
   probate-orchestrator:
-    image: hmctspublic.azurecr.io/probate/orchestrator-service:latest
+    image: orch-debug:latest
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
@@ -531,7 +531,7 @@ services:
       - service-auth-provider-api
 
   probate-business-service:
-    image: hmctspublic.azurecr.io/probate/business-service:latest
+    image: business-debug:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - SERVER_PORT=8081
@@ -670,7 +670,29 @@ services:
       - ccd-data-store-api
       - service-auth-provider-api
 
-
+  xui-manage-org:
+    image: hmctspublic.azurecr.io/xui/mo-webapp:latest
+    environment:
+      SERVICES_IDAM_API_URL: http://sidam-api:5000
+      SERVICES_IDAM_WEB_ADMIN: http://idam-web-admin:8082
+      SERVICES_PRD_API: 
+      S2S_URL: http://service-auth-provider-api:8080
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
+      APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
+      IDAM_SECRET: "AAAAAAAAAAAAAAAC"
+      S2S_SECRET: "AAAAAAAAAAAAAAAC"
+      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
+      MO_S2S_CLIENT_SECRET: "AAAAAAAAAAAAAAAC"
+      APPINSIGHTS_INSTRUMENTATIONKEY_MO: "AAAAAAAAAAAAAAAC"
+      GOOGLE_ANALYTICS_KEY: "AAAAAAAAAAAAAAAC"
+      MO_WEBAPP_REDIS_CONNECTION_STRING: "AAAAAAAAAAAAAAAC"
+      REDISCLOUD_URL: "AAAAAAAAAAAAAAAC"
+      NODE_ENV_CONFIG: local
+    links:
+      - manage-case-assignment
+    ports:
+      - 4456:4456
 
   ccd-case-document-am-api:
     image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"

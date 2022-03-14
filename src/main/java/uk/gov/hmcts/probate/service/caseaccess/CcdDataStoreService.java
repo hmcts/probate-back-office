@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.caseaccess.CaseUser;
 import uk.gov.hmcts.probate.model.caseaccess.RemoveUserRolesRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -29,11 +30,32 @@ public class CcdDataStoreService {
         removeRole(caseDetails, authorisationToken);
     }
 
+    public void removeCreatorRoleCaveat(CaveatDetails caveatDetails, String authorisationToken) {
+        removeRole(caveatDetails, authorisationToken);
+    }
+
     private void removeRole(CaseDetails caseDetails, String authorisationToken) {
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authorisationToken);
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String userId = result.get("id").toString().toLowerCase();
         String caseId = caseDetails.getId().toString();
+
+        log.info("CaseID: {} removing [CREATOR] case roles from user {}", caseId, userId);
+
+        caseRoleClient.removeCaseRoles(
+            authorisationToken,
+            authTokenGenerator.generate(),
+            buildRemoveUserRolesRequest(caseId, userId)
+        );
+
+        log.info("CaseID: {} removed [CREATOR] case roles from user {}", caseId, userId);
+    }
+
+    private void removeRole(CaveatDetails caveatDetails, String authorisationToken) {
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authorisationToken);
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        String caseId = caveatDetails.getId().toString();
 
         log.info("CaseID: {} removing [CREATOR] case roles from user {}", caseId, userId);
 

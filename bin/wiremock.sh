@@ -2,6 +2,7 @@
 # Setup Wiremock responses for Professional Reference Data based on existing Idam users
 probatesolicitortestorgtest1=$1
 probatesolicitortestorg2test1=$2
+probatesolicitortestorg1test3=$3
 
 # clear all existing
 curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
@@ -286,6 +287,47 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
+#PBA accounts ON HOLD
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/pbas",
+            "headers": {
+              "UserEmail": {
+                "equalTo": "probatesolicitortestorg1test3@gmail.com"
+              }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationEntityResponse" : {
+                "organisationIdentifier": "AAAAA",
+                "name": "ia-legal-rep-org",
+                "status": "ACTIVE",
+                "sraId": null,
+                "sraRegulated": false,
+                "companyNumber": null,
+                "companyUrl": null,
+                "superUser": {
+                  "firstName": "legalrep",
+                  "lastName": "orgcreator",
+                  "email": "superuser@probate-test.com"
+                },
+                "paymentAccount": [
+                  "PBA0083374"
+                ],
+                "contactInformation": null
+              }
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
 #PBA NO accounts
 curl -X POST \
 --data '{
@@ -482,7 +524,14 @@ curl -X POST \
           "lastName": "TestUser2",
           "email": "probatesolicitortestorg2test1@gmail.com",
           "idamStatus": "ACTIVE"
-        }  
+        },
+        {
+          "userIdentifier": "'${probatesolicitortestorg1test3}'",
+          "firstName": "ProbPrac",
+          "lastName": "User3",
+          "email": "probatesolicitortestorg1test3@gmail.com",
+          "idamStatus": "ACTIVE"
+        }
       ],
       "organisationIdentifier": "XXXXX"
     }
@@ -545,6 +594,22 @@ curl -X POST \
                     "idamStatus": "ACTIVE",
                     "idamStatusCode": "200",
                     "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "'${probatesolicitortestorg1test3}'",
+                    "firstName": "PBA",
+                    "lastName": "TestUser2",
+                    "email": "probatesolicitortestorg1test3@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
                   }
                 ]
             }
@@ -597,6 +662,22 @@ curl -X POST \
                     "firstName": "PBA",
                     "lastName": "TestUser2",
                     "email": "probatesolicitortestorg2test1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "'${probatesolicitortestorg1test3}'",
+                    "firstName": "PBA",
+                    "lastName": "TestUser2",
+                    "email": "probatesolicitortestorg1test3@gmail.com",
                     "roles": [
                       "caseworker",
                       "caseworker-probate",

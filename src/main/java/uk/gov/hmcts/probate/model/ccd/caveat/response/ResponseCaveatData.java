@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
@@ -82,5 +83,7 @@ public class ResponseCaveatData {
     private final List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes;
 
     private final List<CollectionMember<Payment>> payments;
+
+    protected OrganisationPolicy applicantOrganisationPolicy;
 
 }

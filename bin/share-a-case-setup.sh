@@ -2,6 +2,9 @@
 binFolder=$(dirname "$0")
 (${binFolder}/idam-role.sh caseworker-caa)
 
+(${binFolder}/ccd-add-role.sh caseworker-caa)
+(${binFolder}/xui-add-role.sh caseworker-caa)
+
 # update the services to have the new role
 IDAM_URI="http://localhost:5000"
 authToken=$(curl -H 'Content-Type: application/x-www-form-urlencoded' -XPOST "${IDAM_URI}/loginUser?username=idamOwner@hmcts.net&password=Ref0rmIsFun" | jq -r .api_auth_token)
@@ -24,5 +27,4 @@ curl -XPUT \
 (${binFolder}/idam-create-service.sh "aac_manage_case_assignment" "aac_manage_case_assignment" "AAAAAAAAAAAAAAAA" "https://manage-case-assignment/oauth2redirect" "false" "profile openid roles manage-user")
 
 #put user1 and 2 userId in here
-(${binFolder}/wiremock.sh "b0d383b4-335f-43f3-bbeb-7f56d0a220ac" "df6bfb10-7504-4608-997c-4f42fe355032")
-
+(${binFolder}/wiremock.sh "d96bfd7e-97e5-47b0-9790-0ff0628967ac" "1002bc1c-39b2-49dc-9b87-11bff901c2a3" "13a2a916-c28e-44e0-a223-bba987e01ef1")

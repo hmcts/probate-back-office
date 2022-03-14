@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -15,8 +17,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
@@ -50,6 +55,7 @@ public class CaveatCallbackResponseTransformer {
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
+    private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, 
                                                PaymentResponse paymentResponse, List<Document> documents,
@@ -159,6 +165,31 @@ public class CaveatCallbackResponseTransformer {
             .build();
 
         return transformResponse(responseCaveatData);
+    }
+
+    public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest, String authToken) {
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+            .applicationType(SOLICITOR)
+            .paperForm(NO)
+            .registryLocation(CTSC)
+            .applicantOrganisationPolicy(buildOrganisationPolicy(callbackRequest.getCaseDetails().getData(), authToken))
+            .build();
+
+        return transformResponse(responseCaveatData);
+    }
+
+    private OrganisationPolicy buildOrganisationPolicy(CaveatData caveatData, String authToken) {
+        OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrgId(authToken);
+        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
+            .organisation(Organisation.builder()
+                .organisationID(organisationEntityResponse.getOrganisationIdentifier())
+                .organisationName(organisationEntityResponse.getName())
+                .build())
+            .orgPolicyReference(caveatData.getApplicantOrganisationPolicy().getOrgPolicyReference())
+            .orgPolicyCaseAssignedRole(caveatData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
+            .build();
+        return organisationPolicy;
+
     }
 
     public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {

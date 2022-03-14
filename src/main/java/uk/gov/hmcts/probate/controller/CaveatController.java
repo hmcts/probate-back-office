@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
@@ -27,6 +28,7 @@ import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -65,6 +67,7 @@ public class CaveatController {
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
+    private final AssignCaseAccessService assignCaseAccessService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -115,13 +118,23 @@ public class CaveatController {
 
     @PostMapping(path = "/solsCreate")
     public ResponseEntity<CaveatCallbackResponse> createSolsCaveat(
+        @RequestHeader(value = "Authorization") String authToken,
         @Validated({CaveatCreatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest, authToken);
 
         return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
+    @PostMapping(path = "/sols-access")
+    public ResponseEntity<AfterSubmitCallbackResponse> solicitorCreate(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        assignCaseAccessService.assignCaseAccessCaveat(caveatCallbackRequest.getCaseDetails(), authToken);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
+        return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
     @PostMapping(path = "/solsUpdate")
