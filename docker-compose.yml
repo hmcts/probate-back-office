@@ -673,11 +673,9 @@ services:
   xui-manage-org:
     image: hmctspublic.azurecr.io/xui/mo-webapp:latest
     environment:
-      SERVICES_IDAM_API_URL: http://sidam-api:5000
-      SERVICES_IDAM_WEB_ADMIN: http://idam-web-admin:8082
-      SERVICES_PRD_API: 
-      S2S_URL: http://service-auth-provider-api:8080
-      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      RD_PROFESSIONAL_API_SERVICE: http://wiremock:8080
+      FEE_AND_PAY_API: http://fees-api:8080
+      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
       ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
       APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
       IDAM_SECRET: "AAAAAAAAAAAAAAAC"
@@ -686,9 +684,35 @@ services:
       MO_S2S_CLIENT_SECRET: "AAAAAAAAAAAAAAAC"
       APPINSIGHTS_INSTRUMENTATIONKEY_MO: "AAAAAAAAAAAAAAAC"
       GOOGLE_ANALYTICS_KEY: "AAAAAAAAAAAAAAAC"
-      MO_WEBAPP_REDIS_CONNECTION_STRING: "AAAAAAAAAAAAAAAC"
       REDISCLOUD_URL: "AAAAAAAAAAAAAAAC"
-      NODE_ENV_CONFIG: local
+      NODE_CONFIG_ENV: local
+
+      IDAM_CLIENT:
+      MICROSERVICE:
+      NOW: false
+      OAUTH_CALLBACK_URL: /oauth2/callback
+      LOGIN_ROLE_MATCHER: "^pui-.*-manager$"
+      PROTOCOL: "http"
+      IDAM_API_SERVICE: "http://sidam-api:5000"
+      IDAM_WEB_SERVICE: http://idam-web-admin:8082
+      S2S_SERVICE: http://service-auth-provider-api:8080
+      SERVICES_TERMS_AND_CONDITIONS_API_SERVICE:
+      SERVICES_MCA_PROXY_API:
+      MANAGE_CASE_LINK:
+      MANAGE_ORG_LINK:
+      SESSION_SECRET:
+      CASE_TYPES:
+      FEATURE_APP_INSIGHTS_ENABLED:
+      FEATURE_PROXY_ENABLED:
+      FEATURE_SECURE_COOKIE_ENABLED:
+      FEATURE_TERMS_AND_CONDITIONS_ENABLED: false
+      FEATURE_HELMET_ENABLED:
+      FEATURE_REDIS_ENABLED: false
+      FEATURE_OIDC_ENABLED: false
+      HELMET_CONFIG:
+      REDIS_KEY_PREFIX:
+
+
     links:
       - manage-case-assignment
     ports:
