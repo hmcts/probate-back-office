@@ -127,7 +127,7 @@ public class BusinessValidationController {
     public ResponseEntity<AfterSubmitCallbackResponse> solicitorCreate(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest request) {
-        assignCaseAccessService.assignCaseAccess(request.getCaseDetails(), authToken);
+        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken);
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }

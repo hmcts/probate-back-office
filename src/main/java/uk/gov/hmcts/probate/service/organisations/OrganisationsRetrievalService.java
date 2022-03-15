@@ -50,7 +50,7 @@ public class OrganisationsRetrievalService {
                 return organisationsResponse.getOrganisations().get(0);
             }
         } catch (Exception e) {
-            log.info("Exception when looking up orgId for authToken={} for exception {}",
+            log.error("Exception when looking up orgId for authToken={} for exception {}",
                 new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
         }
         return null;

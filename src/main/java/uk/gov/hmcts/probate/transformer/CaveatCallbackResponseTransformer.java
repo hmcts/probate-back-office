@@ -170,15 +170,17 @@ public class CaveatCallbackResponseTransformer {
     public OrganisationPolicy buildOrganisationPolicy(CaveatData caveatData, String authToken) {
         OrganisationEntityResponse organisationEntityResponse =
             organisationsRetrievalService.getOrganisationEntity(authToken);
-        return OrganisationPolicy.builder()
-            .organisation(Organisation.builder()
-                .organisationID(organisationEntityResponse.getOrganisationIdentifier())
-                .organisationName(organisationEntityResponse.getName())
-                .build())
-            .orgPolicyReference(caveatData.getApplicantOrganisationPolicy().getOrgPolicyReference())
-            .orgPolicyCaseAssignedRole(caveatData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
-            .build();
-
+        if(null != organisationEntityResponse && null != caveatData.getApplicantOrganisationPolicy()) {
+            return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                    .organisationID(organisationEntityResponse.getOrganisationIdentifier())
+                    .organisationName(organisationEntityResponse.getName())
+                    .build())
+                .orgPolicyReference(caveatData.getApplicantOrganisationPolicy().getOrgPolicyReference())
+                .orgPolicyCaseAssignedRole(caveatData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
+                .build();
+        }
+        return null;
     }
 
     public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {
