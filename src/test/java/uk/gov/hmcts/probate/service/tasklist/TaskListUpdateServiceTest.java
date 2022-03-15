@@ -63,8 +63,6 @@ public class TaskListUpdateServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
-
-        when(defaultTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
         when(stoppedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
         when(escalatedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
     }
@@ -78,11 +76,11 @@ public class TaskListUpdateServiceTest {
             + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the "
-            + "probate practitioner.</font></p>"
+            + "Probate practitioner.</font></p>"
             + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p>"
+            + "Add Probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p>"
             + "<img align=\"right\" width=\"114px\" "
             + "height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -110,7 +108,7 @@ public class TaskListUpdateServiceTest {
             + "<br/>\n"
             + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "<font color=\"#505a5f\">These steps are to be completed by the probate practitioner.</font></p></div>"
+            + "<font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
             + "\n"
@@ -137,8 +135,10 @@ public class TaskListUpdateServiceTest {
             + "    </span>\n"
             + "  </summary>\n"
             + "  <div class=\"govuk-details__text\">\n"
-            + "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li>"
-            + "<li>a photocopy of the signed legal statement and declaration</li></ul>\n"
+            + "    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab)"
+            + " or your reference number 1"
+            + " written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li>"
+            + "<li>the original will</li></ul>\n"
             + "  </div>\n"
             + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" "
             + "height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -200,6 +200,8 @@ public class TaskListUpdateServiceTest {
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
             + "\n</div>\n</div>\n";
 
+        when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
+        when(defaultTaskListRenderer.renderHtml(caseDetails)).thenReturn(expectedCaseProgressCaseCreatedHtml);
         ResponseCaseDataBuilder response = taskListUpdateService.generateTaskList(caseDetails, builder);
         ResponseCaseData result = response.build();
 
@@ -215,11 +217,11 @@ public class TaskListUpdateServiceTest {
             + "<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the "
-                + "probate practitioner.</font></p>"
+                + "Probate practitioner.</font></p>"
             + "</div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "Add solicitor details</p></div><div class=\"govuk-grid-column-one-third\"><p>"
+            + "Add Probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p>"
             + "<img align=\"right\" width=\"114px\" height=\"31px\" src="
             + "\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -248,7 +250,7 @@ public class TaskListUpdateServiceTest {
             + "<br/>\n"
             + "<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n"
             + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-            + "<font color=\"#505a5f\">These steps are to be completed by the probate practitioner.</font></p></div>"
+            + "<font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
             + "\n"
@@ -274,10 +276,10 @@ public class TaskListUpdateServiceTest {
             + "    </span>\n"
             + "  </summary>\n"
             + "  <div class=\"govuk-details__text\">\n"
-            + "    You now need to send us<br/><ul><li>your reference number 1 written on a piece of paper</li>"
-            + "<li>a photocopy of the signed legal statement and "
-            + "declaration</li></ul>\n"
-            + "  </div>\n"
+            + "    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab)"
+            + " or your reference number 1 written on a"
+            + " sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li>"
+            + "<li>the original will</li></ul>\n  </div>\n"
             + "</details></p></div><div class=\"govuk-grid-column-one-third\"><p>"
             + "<img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
@@ -346,6 +348,8 @@ public class TaskListUpdateServiceTest {
             + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
             + "\n</div>\n</div>\n";
 
+        when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
+        when(defaultTaskListRenderer.renderHtml(caseDetails)).thenReturn(expectedCaseProgressCaseCreatedHtml);
         ResponseCaseDataBuilder response = taskListUpdateService.generateTaskList(caseDetails, builder);
         ResponseCaseData result = response.build();
 

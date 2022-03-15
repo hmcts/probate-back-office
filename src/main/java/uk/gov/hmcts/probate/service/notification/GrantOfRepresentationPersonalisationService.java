@@ -95,9 +95,9 @@ public class GrantOfRepresentationPersonalisationService {
             try {
                 data.append(getWillReferenceNumber(currentCase.getData()));
                 data.append(", ");
-                data.append(currentCase.getData().getDeceasedForenames());
+                data.append(parseDelimiters(currentCase.getData().getDeceasedForenames()));
                 data.append(", ");
-                data.append(currentCase.getData().getDeceasedSurname());
+                data.append(parseDelimiters(currentCase.getData().getDeceasedSurname()));
                 data.append(", ");
                 data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
                 data.append(", ");
@@ -115,6 +115,10 @@ public class GrantOfRepresentationPersonalisationService {
             }
         }
         return data;
+    }
+
+    private String parseDelimiters(String value) {
+        return value.replaceAll(",", " ");
     }
 
     private String getWillReferenceNumber(CaseData data) {

@@ -73,8 +73,9 @@
             "additionalApplying": "No",
             "additionalExecReasonNotApplying": "DiedBefore"
           },
-          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7",
-
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        },
+        {
           "value": {
             "additionalExecForenames": "exfn1",
             "additionalExecLastname": "exfn1",
@@ -94,7 +95,6 @@
           },
           "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
         }
-
       ],
       "solsAdditionalInfo":null,
       "boEmailDocsReceivedNotification":"No",

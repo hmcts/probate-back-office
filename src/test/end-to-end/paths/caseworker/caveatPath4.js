@@ -1,5 +1,4 @@
 'use strict';
-
 const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
@@ -21,26 +20,33 @@ const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/ca
 const caveatDetailsTabReopenConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabReopenConfig');
 
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
+// this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
+// const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
-Feature('Back Office').retry(testConfig.TestRetryFeatures);
+const {
+    legacyParse,
+    convertTokens
+} = require('@date-fns/upgrade/v2');
 
-Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
+Feature('Back Office').retry(testConfig.TestRetryFeatures);
+const scenarioName = 'Caseworker Caveat4 - Withdraw caveat';
+Scenario(scenarioName, async function ({I}) {
 
     // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Withdraw caveat
 
     // get unique suffix for names - in order to match only against 1 case
     const unique_deceased_user = Date.now();
 
-    // IdAM
-    await I.authenticateWithIdamIfAvailable();
+    await I.logInfo(scenarioName, 'Login as Caseworker');
+    await I.authenticateWithIdamIfAvailable(false);
 
     // FIRST case is only needed for case-matching with SECOND one
 
     let nextStepName = 'Raise a caveat';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
@@ -50,9 +56,9 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
 
     // SECOND case - the main test case
 
-    nextStepName = 'Raise a caveat';
+    await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
-    await I.selectCaseTypeOptions(createCaseConfig.list1_text, createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
+    await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
     await I.enterCaveatPage1('create');
     await I.enterCaveatPage2('create', unique_deceased_user);
     await I.enterCaveatPage3('create');
@@ -60,35 +66,35 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     await I.checkMyAnswers(nextStepName);
     endState = 'Caveat raised';
 
-    const url = await I.grabCurrentUrl();
-    const caseRef = url.split('/')
-        .pop()
-        .match(/.{4}/g)
-        .join('-');
+    const caseRef = await I.getCaseRefFromUrl();
 
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
     await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
     await I.seeCaseDetails(caseRef, caveatorDetailsTabConfig, createCaveatConfig);
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
-    createCaveatConfig.caveat_expiry_date = dateFns.format(dateFns.addMonths(new Date(), 6), 'D MMM YYYY');
+    createCaveatConfig.caveat_expiry_date = dateFns.format(legacyParse(dateFns.addMonths(new Date(), 6)), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
 
     nextStepName = 'Caveat match';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat matching';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
+    // await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
 
     nextStepName = 'Caveat not matched';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat not matched';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload document';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
@@ -97,12 +103,14 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     await I.seeCaseDetails(caseRef, documentsTabUploadDocumentConfig, documentUploadConfig);
 
     nextStepName = 'Add comment';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.enterComment(caseRef, nextStepName);
     // Note that End State does not change when adding a comment.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Withdraw caveat';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.withdrawCaveatPage1();
     await I.enterEventSummary(caseRef, nextStepName);
@@ -110,23 +118,26 @@ Scenario('04 BO Caveat E2E - Withdraw caveat', async function (I) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat closed'
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.emailCaveator(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     // Note that End State does not change when emailing the caveator.
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When emailing the caveator, the Date added for the email document is set to today
-    emailCaveatorConfig.dateAdded = dateFns.format(new Date(), 'D MMM YYYY');
+    emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
 
     nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
+    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.reopenCaveat(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Caveat raised';
+    await I.logInfo(scenarioName, endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
-    await I.click('#sign-out');
+    await I.signOut();
 
 }).retry(testConfig.TestRetryScenarios);

@@ -17,7 +17,8 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
-class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule, CaseworkerAmendValidationRule {
+class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule,
+    CaseworkerAmendAndCreateValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 

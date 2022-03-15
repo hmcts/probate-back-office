@@ -9,9 +9,9 @@
 /src/test/end-to-end/output/**
 /src/test/end-to-end/functional-output/**
 output/
-/src/test/end-to-end/output/**
 /output/**
 functional-output/
+/pacts/
 
 ### STS ###
 .apt_generated
@@ -36,3 +36,11 @@ node_modules/\.bin/
 node_modules/
 
 src/test/end-to-end/functional-output/
+/src/main/build/
+
+
+/bin/contractTest
+/bin/main
+/bin/test
+/bin/testFunctional
+/src/main/generated/

@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.model.ocr.OCRRequest;
 import uk.gov.hmcts.probate.service.ocr.FormType;
+import uk.gov.hmcts.probate.service.ocr.NonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 
@@ -24,18 +25,18 @@ import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.microsoft.applicationinsights.core.dependencies.io.grpc.netty.shaded.io.netty.handler.codec.http.HttpHeaders.Values.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping(value = "/forms", consumes = APPLICATION_JSON, produces = APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/forms", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
 @Api(tags = "Manage bulk scanning data")
 public class OCRFormsController {
 
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
+    private final NonMandatoryFieldsValidator nonMandatoryFieldsValidator;
 
     @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
     @ApiResponses({
@@ -43,7 +44,7 @@ public class OCRFormsController {
         @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
         @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
     })
-    @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON)
+    @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
                                                                       @Valid @RequestBody OCRRequest ocrRequest) {
         log.info("Validate ocr data for form type: {}", formType);
@@ -55,7 +56,7 @@ public class OCRFormsController {
         List<String> warningsMandatory = ocrToCCDMandatoryField
             .ocrToCCDMandatoryFields(ocrFields, FormType.valueOf(formType));
 
-        List<String> warningsNonMandatory = ocrToCCDMandatoryField
+        List<String> warningsNonMandatory = nonMandatoryFieldsValidator
             .ocrToCCDNonMandatoryWarnings(ocrFields, FormType.valueOf(formType));
 
         List<String> warnings = new ArrayList<String>();

@@ -18,7 +18,7 @@
       "deceasedSurname":"lastName",
       "deceasedDateOfDeath":"2018-01-01",
       "deceasedDateOfBirth":"1990-01-01",
-      "willExists":"Yes",
+      "willExists": "No",
       "solsWillType": "NoWill",
       "solsApplicantRelationshipToDeceased": null,
       "solsSpouseOrCivilRenouncing": null,
@@ -73,8 +73,9 @@
             "additionalApplying": "No",
             "additionalExecReasonNotApplying": "DiedBefore"
           },
-          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7",
-
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        },
+        {
           "value": {
             "additionalExecForenames": "exfn1",
             "additionalExecLastname": "exfn1",
@@ -137,7 +138,7 @@
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
       "boExaminationChecklistRequestQA" : "yes",
-      "caseType" : "gop",
+      "caseType" : "intestacy",
       "scannedDocuments": []
     },
     "last_modified":[

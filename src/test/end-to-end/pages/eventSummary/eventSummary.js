@@ -7,10 +7,10 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 module.exports = async function (caseRef, nextStepName) {
 
     const I = this;
-
+    await I.wait(testConfig.EventSummaryDelay);
     let eventSummaryPrefix = nextStepName;
 
-    await I.waitForText(nextStepName, testConfig.TestTimeToWaitForText);
+    await I.waitForText(nextStepName, testConfig.WaitForTextTimeout);
 
     await I.see(caseRef);
 

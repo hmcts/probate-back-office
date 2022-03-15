@@ -25,28 +25,6 @@
       "ihtNetValue": 10000,
       "ihtGrossValue": 11000,
       "numberOfCopiesOutsideOfUK": 1
-    },
-    "data_classification": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solicitorFirmPostcode": "PUBLIC",
-      "solicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "security_classifications": {
-      "deceasedDateOfDeath": "PUBLIC",
-      "solicitorFirmPostcode": "PUBLIC",
-      "solicitorAppReference": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "solicitorFirmName": "PUBLIC",
-      "deceasedSurname": "PUBLIC"
     }
-  },
-  "event_id": "solicitorCreate"
+  }
 }

@@ -1,5 +1,5 @@
 {
-  "waitForText" : "Manage probate application",
+  "waitForText" : "Manage Cases",
   "tabName": "Event History",
   "testTimeToWaitForTab": 5,
   "fields": [

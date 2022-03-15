@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.HeadingRenderer;
 import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
@@ -12,7 +14,10 @@ import uk.gov.hmcts.probate.model.htmltemplate.CaseTaskListHtmlTemplate;
 
 import java.time.LocalDate;
 
+@Service
+@RequiredArgsConstructor
 public class DefaultTaskListRenderer extends BaseTaskListRenderer {
+    private final TaskStateRenderer taskStateRenderer;
 
     public String renderHtml(CaseDetails details) {
         final TaskListState tlState = TaskListState.mapCaseState(details.getState());
@@ -32,13 +37,13 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
             willType = "WillLeft";
         }
         return
-            TaskStateRenderer.renderByReplace(tlState,
+            taskStateRenderer.renderByReplace(tlState,
                 ParagraphRenderer.renderByReplace(
                     GridRenderer.renderByReplace(
                         SecondaryTextRenderer.renderByReplace(
                             HeadingRenderer.renderByReplace(
                                 UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE))))),
                                     details.getId(), willType, caseData.getSolsSOTNeedToUpdate(),
-                                        authDate, submitLocalDate);
+                                        authDate, submitLocalDate, details);
     }
 }

@@ -11,6 +11,7 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
+      "caseType": "admonWill",
       "solsSolicitorAppReference":"firmReference",
       "solsSolicitorEmail":"rebecca.baker@hmcts.net",
       "solsSolicitorPhoneNumber":null,
@@ -73,8 +74,9 @@
             "additionalApplying": "No",
             "additionalExecReasonNotApplying": "DiedBefore"
           },
-          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7",
-
+          "id": "366406fe-e6c3-4bdf-8709-121f8f64c1f7"
+        },
+        {
           "value": {
             "additionalExecForenames": "exfn1",
             "additionalExecLastname": "exfn1",

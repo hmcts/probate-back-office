@@ -14,7 +14,6 @@
       8,
       695000000
     ],
-    "security_classification": "PUBLIC",
     "case_data": {
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
@@ -49,96 +48,19 @@
         "Country": ""
       },
       "solsPaymentMethods": "fee account",
-      "solsFeeAccountNumber": "12345"
-    },
-    "data_classification": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "caveatorEmailAddress": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
-      "caveatorAddress": {
-        "classification": "PUBLIC",
+      "solsFeeAccountNumber": "12345",
+      "solsPBANumber": {
         "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "solsSolicitorAppReference": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedAnyOtherNames": "PUBLIC",
-      "deceasedFullAliasNameList": "PUBLIC",
-      "deceasedAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "solsPaymentMethods": "PUBLIC",
-      "solsFeeAccountNumber": "PUBLIC"
-    },
-    "after_submit_callback_response": null,
-    "callback_response_status_code": null,
-    "callback_response_status": null,
-    "delete_draft_response_status_code": null,
-    "delete_draft_response_status": null,
-    "security_classifications": {
-      "applicationType": "PUBLIC",
-      "registryLocation": "PUBLIC",
-      "solsSolicitorFirmName": "PUBLIC",
-      "caveatorEmailAddress": "PUBLIC",
-      "solsSolicitorPhoneNumber": "PUBLIC",
-      "caveatorAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "solsSolicitorAppReference": "PUBLIC",
-      "caveatorForenames": "PUBLIC",
-      "caveatorSurname": "PUBLIC",
-      "deceasedForenames": "PUBLIC",
-      "deceasedSurname": "PUBLIC",
-      "deceasedDateOfDeath": "PUBLIC",
-      "deceasedDateOfBirth": "PUBLIC",
-      "deceasedAnyOtherNames": "PUBLIC",
-      "deceasedFullAliasNameList": "PUBLIC",
-      "deceasedAddress": {
-        "classification": "PUBLIC",
-        "value": {
-          "AddressLine1": "PUBLIC",
-          "AddressLine2": "PUBLIC",
-          "AddressLine3": "PUBLIC",
-          "County": "PUBLIC",
-          "PostTown": "PUBLIC",
-          "PostCode": "PUBLIC",
-          "Country": "PUBLIC"
-        }
-      },
-      "solsPaymentMethods": "PUBLIC",
-      "solsFeeAccountNumber": "PUBLIC"
+          "code": "PBA1111",
+          "label": "PBA1111"
+        },
+        "list_items": [
+          {
+            "code": "PBA1111",
+            "label": "PBA1111"
+          }
+        ]
+      }
     }
   }
 }

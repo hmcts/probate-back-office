@@ -38,9 +38,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
@@ -120,6 +121,8 @@ public class NotificationServiceTest {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
     private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
+    private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH = "deceased_date_of_birth_welsh_text";
+    private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
 
     @Autowired
     private NotificationService notificationService;
@@ -143,7 +146,7 @@ public class NotificationServiceTest {
     private EventValidationService eventValidationService;
 
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     @Mock
     private CallbackResponse callbackResponse;
@@ -156,6 +159,9 @@ public class NotificationServiceTest {
 
     @MockBean
     private DocumentStoreClient documentStoreClient;
+
+    @MockBean
+    private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -173,6 +179,7 @@ public class NotificationServiceTest {
     private CaseDetails solsCaseDataCtscRequestInformation;
     private CaseDetails solicitorCaseDataManchester;
     private CaseDetails personalGrantDelayedOxford;
+    private CaseDetails solicitorGrantDelayedOxford;
     private CaseDetails personalGrantRaisedOxford;
     private CaseDetails solicitorGrantRaisedOxford;
     private CaseDetails personalGrantRaisedOxfordPaper;
@@ -248,6 +255,21 @@ public class NotificationServiceTest {
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .registryLocation("Oxford")
             .primaryApplicantEmailAddress("primary@probate-test.com")
+            .languagePreferenceWelsh("No")
+            .build(), LAST_MODIFIED, ID);
+
+        solicitorGrantDelayedOxford = new CaseDetails(CaseData.builder()
+            .applicationType(SOLICITOR)
+            .primaryApplicantForenames(PERSONALISATION_APPLICANT_FORENAMES)
+            .primaryApplicantSurname(PERSONALISATION_APPLICANT_SURNAME)
+            .deceasedForenames(PERSONALISATION_DECEASED_FORNAMES)
+            .deceasedSurname(PERSONALISATION_DECEASED_SURNAME)
+            .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+            .registryLocation("Oxford")
+            .primaryApplicantEmailAddress("primary@probate-test.com")
+            .solsSolicitorAppReference(PERSONALISATION_SOLICITOR_REFERENCE)
+            .solsSOTName(PERSONALISATION_SOLICITOR_NAME)
+            .solsSolicitorEmail("solicitor@probate-test.com")
             .languagePreferenceWelsh("No")
             .build(), LAST_MODIFIED, ID);
 
@@ -1093,12 +1115,17 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+                "The deceased's date of birth: " + dateFormatterService
+                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
+                "Dyddiad geni’r ymadawedig yw: " 
+                    + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
         } else {
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1132,11 +1159,16 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+                "The deceased's date of birth: " + dateFormatterService
+                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
+                "Dyddiad geni’r ymadawedig yw: " 
+                    + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
         } else {
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
         }
 
@@ -1167,14 +1199,18 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }  else {
+                "The deceased's date of birth: " + dateFormatterService
+                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
+                "Dyddiad geni’r ymadawedig yw: " + localDateToWelshStringConverter
+                    .convert(caveatData.getDeceasedDateOfBirth()));
+        } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
         }
-
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseData);
 
@@ -1205,12 +1241,17 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }  else {
+                "The deceased's date of birth: " + dateFormatterService
+                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
+                "Dyddiad geni’r ymadawedig yw: " + localDateToWelshStringConverter
+                    .convert(caveatData.getDeceasedDateOfBirth()));
+        } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseDataBilingual);
@@ -1237,17 +1278,24 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseData.getData().getMessageContent());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CAVEATOR_NAME,
+            solicitorCaveatRaisedCaseData.getData().getCaveatorFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
             solicitorCaveatRaisedCaseData.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-        }  else {
+                "The deceased's date of birth: " + dateFormatterService
+                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
+                "Dyddiad geni’r ymadawedig yw: " + localDateToWelshStringConverter
+                    .convert(caveatData.getDeceasedDateOfBirth()));
+        } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, solicitorCaveatRaisedCaseData);
@@ -1449,6 +1497,22 @@ public class NotificationServiceTest {
     }
 
     @Test
+    public void sendSmeeAndFordEmail() throws NotificationClientException {
+        Document doc = Document.builder().build();
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(doc);
+        
+        Document document = notificationService.sendSmeeAndFordEmail(excelaCaseData.build(), "fromDate", "toDate");
+
+        verify(notificationClient).sendEmail(
+            eq("pa-smeeFord-data"),
+            eq("smeeAndFord@probate-test.com"),
+            any(),
+            anyString());
+
+        assertEquals(doc, document);
+    }
+
+    @Test
     public void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
@@ -1460,7 +1524,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules))
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules))
             .thenReturn(callbackResponse);
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1483,7 +1547,7 @@ public class NotificationServiceTest {
         errors.add("test error");
 
         when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
@@ -1506,7 +1570,7 @@ public class NotificationServiceTest {
         errors.add("test error");
 
         when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
@@ -1725,13 +1789,18 @@ public class NotificationServiceTest {
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
+        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
         personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
         if (caveatData.getDeceasedDateOfBirth() != null) {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                    "The deceased's date of birth: " + dateFormatterService
-                        .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+                "The deceased's date of birth: " + dateFormatterService
+                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
+                "Dyddiad geni’r ymadawedig yw: " + localDateToWelshStringConverter
+                    .convert(caveatData.getDeceasedDateOfBirth()));
         } else {
             personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
+            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
         }
 
         notificationService.sendCaveatEmail(CAVEAT_EXTEND, caveatRaisedCaseData);
@@ -1819,6 +1888,47 @@ public class NotificationServiceTest {
             eq("primary@probate-test.com"),
             eq(personalisation),
             eq(null));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    public void sendGrantDelayedAwaitingDocumentationSolicitorEmail()
+        throws NotificationClientException, BadRequestException {
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS, solicitorGrantDelayedOxford.getData()
+            .getBoStopDetails());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, solicitorGrantDelayedOxford.getId().toString());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
+        personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solicitorGrantDelayedOxford.getData()
+            .getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_SOLICITOR_NAME, solicitorGrantDelayedOxford.getData().getSolsSOTName());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, personalGrantDelayedOxford.getData().getDeceasedFullName());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "Oxford Probate Registry");
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, "12 Rhagfyr 2000");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC, null);
+        personalisation
+            .put(PERSONALISATION_APPLICANT_NAME, solicitorGrantDelayedOxford.getData().getPrimaryApplicantFullName());
+
+        ReturnedCaseDetails returnedCaseDetails =
+            new ReturnedCaseDetails(solicitorGrantDelayedOxford.getData(), null, ID);
+
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+            .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        Document document = notificationService.sendGrantAwaitingDocumentationEmail(returnedCaseDetails);
+
+        assertEquals(SENT_EMAIL_FILE_NAME, document.getDocumentFileName());
+
+        verify(notificationClient).sendEmail(
+            eq("sols-grantAwaitingDoc"),
+            eq("solicitor@probate-test.com"),
+            eq(personalisation),
+            eq("solicitor_reference"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }

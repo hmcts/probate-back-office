@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
+import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -28,6 +29,7 @@ public class DataExtractController {
     private final HmrcDataExtractService hmrcDataExtractService;
     private final IronMountainDataExtractService ironMountainDataExtractService;
     private final ExelaDataExtractService exelaDataExtractService;
+    private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     private final DataExtractDateValidator dataExtractDateValidator;
 
     @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
@@ -79,6 +81,25 @@ public class DataExtractController {
         log.info("Perform Exela data extract from date finished");
 
         return ResponseEntity.accepted().body("Exela data extract finished");
+    }
+
+    @ApiOperation(value = "Initiate Smee And Ford data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/smee-and-ford")
+    public ResponseEntity initiateSmeeAndFordExtract(
+                @ApiParam(value = "Date to find cases against", required = true)
+                @RequestParam(value = "fromDate") String fromDate,
+                @RequestParam(value = "toDate") String toDate) {
+
+        dataExtractDateValidator.dateValidator(fromDate, toDate);
+
+        log.info("Calling perform Smee And Ford data extract from date...");
+        ExecutorService executor = Executors.newFixedThreadPool(1);
+        executor.submit(() -> {
+            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
+        });
+        log.info("Perform Smee And Ford data extract from date finished");
+
+        return ResponseEntity.accepted().body("Smee And Ford data extract finished");
     }
 
 }

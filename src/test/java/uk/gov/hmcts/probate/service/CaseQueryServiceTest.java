@@ -30,7 +30,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 public class CaseQueryServiceTest {
@@ -87,13 +86,20 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases = new ReturnedCases(caseList);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
-
-        doNothing().when(appInsights).trackEvent(any(), anyString());
     }
 
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
+
+        assertEquals(1, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
+    public void findAllCasesWithDatedDocumentReturnsCaseList() {
+        List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -103,7 +109,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCasesWithDatedDocument("testDate");
+        List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -152,10 +158,22 @@ public class CaseQueryServiceTest {
     }
 
     @Test
+    public void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
+        caseQueryService.dataExtractSmeeAndFordSize = 10000;
+        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
+        List<ReturnedCaseDetails> cases = caseQueryService
+            .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
+
+        assertEquals(3, cases.size());
+        assertThat(cases.get(0).getId(), is(1L));
+        assertEquals("Smith", cases.get(0).getData().getDeceasedSurname());
+    }
+
+    @Test
     public void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caseQueryService.findCasesWithDatedDocument("testDate"))
+        Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate"))
             .isInstanceOf(CaseMatchingException.class);
     }
 
@@ -208,6 +226,6 @@ public class CaseQueryServiceTest {
     @Test(expected = ClientDataException.class)
     public void testExceptionWithNullFromRestTemplatePost() {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caseQueryService.findCasesWithDatedDocument("testDate");
+        caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("testDate");
     }
 }

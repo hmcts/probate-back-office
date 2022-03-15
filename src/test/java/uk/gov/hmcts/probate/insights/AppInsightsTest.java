@@ -15,6 +15,7 @@ import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
 public class AppInsightsTest {
     private AppInsights classUnderTest;
+    private String instrumentKey = "key";
 
     @Mock
     private TelemetryClient telemetryClient;
@@ -25,13 +26,12 @@ public class AppInsightsTest {
         TelemetryContext telemetryContext = new TelemetryContext();
         telemetryContext.setInstrumentationKey("some-key");
         doReturn(telemetryContext).when(telemetryClient).getContext();
-        classUnderTest = new AppInsights(telemetryClient);
+        classUnderTest = new AppInsights(instrumentKey, telemetryClient);
     }
 
     @Test
     public void trackRequest() {
-        classUnderTest.trackEvent(REQUEST_SENT, "uri");
-
+        classUnderTest.trackEvent(REQUEST_SENT.toString(), classUnderTest.trackingMap("uri", "http://testurl.com"));
     }
 
     @Test
@@ -42,9 +42,8 @@ public class AppInsightsTest {
         TelemetryClient telemetryClient = mock(TelemetryClient.class);
         when(telemetryClient.getContext()).thenReturn(telemetryContext);
 
-        AppInsights appInsights = new AppInsights(telemetryClient);
+        AppInsights appInsights = new AppInsights(instrumentKey, telemetryClient);
 
         Assert.isInstanceOf(AppInsights.class, appInsights);
     }
-
 }

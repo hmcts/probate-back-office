@@ -3,26 +3,46 @@
 const deceasedDetailsConfig = require('./deceasedDetailsConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function () {
+module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
     const I = this;
-    await I.waitForElement('#applicationGrounds');
+
     await I.runAccessibilityTest();
-    await I.fillField('#applicationGrounds', deceasedDetailsConfig.page2_applicationGrounds);
-    await I.click(`#deceasedDomicileInEngWales-${deceasedDetailsConfig.optionYes}`);
-    await I.click(`#deceasedAnyOtherNames-${deceasedDetailsConfig.optionNo}`);
 
-    await I.click(deceasedDetailsConfig.UKpostcodeLink);
-    await I.fillField('#deceasedAddress_AddressLine1', deceasedDetailsConfig.address_line1);
-    await I.fillField('#deceasedAddress_AddressLine2', deceasedDetailsConfig.address_line2);
-    await I.fillField('#deceasedAddress_AddressLine3', deceasedDetailsConfig.address_line3);
-    await I.fillField('#deceasedAddress_PostTown', deceasedDetailsConfig.address_town);
-    await I.fillField('#deceasedAddress_County', deceasedDetailsConfig.address_county);
-    await I.fillField('#deceasedAddress_PostCode', deceasedDetailsConfig.address_postcode);
-    await I.fillField('#deceasedAddress_Country', deceasedDetailsConfig.address_country);
+    if (applicationType === 'EE') {
+        if (iHTFormsCompleted === 'Yes') {
+            await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionYes}`);
+            await I.waitForText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
+            await I.waitForText(deceasedDetailsConfig.page2_IHT207Label);
+            await I.waitForText(deceasedDetailsConfig.page2_IHT400421Label);
 
-    await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
-    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
+            if (whichIHTFormsCompleted === 'IHT207') {
+                await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`});
+            } else {
+                await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});
+            }
+        } else {
+            await I.click(`#ihtFormEstateValuesCompleted_${deceasedDetailsConfig.optionNo}`);
+            await I.waitForText(deceasedDetailsConfig.page2_grossValueIHTEstateLabel);
+            await I.waitForText(deceasedDetailsConfig.page2_netValueIHTEstateLabel);
+            await I.waitForText(deceasedDetailsConfig.page2_netQualifyingValueIHTEstateLabel);
+
+            await I.fillField('#ihtEstateGrossValue', deceasedDetailsConfig.page2_grossValueIHTEstate);
+            await I.fillField('#ihtEstateNetValue', deceasedDetailsConfig.page2_netValueIHTEstate);
+            await I.fillField('#ihtEstateNetQualifyingValue', deceasedDetailsConfig.page2_netQualifyingValueIHTEstate);
+
+            await I.click(`#deceasedHadLateSpouseOrCivilPartner_${deceasedDetailsConfig.optionYes}`);
+            await I.click(`#ihtUnusedAllowanceClaimed_${deceasedDetailsConfig.optionYes}`);
+        }
+    } else if (applicationType === 'MultiExec') {
+        await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOptionMulti}`});
+        await I.waitForText(deceasedDetailsConfig.page2_NilRateBandLabel);
+        await I.click({css: `#iht217_${deceasedDetailsConfig.optionYes}`});
+    } else {
+        await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
+    }
+
     await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
+    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
 
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };
