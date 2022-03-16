@@ -39,7 +39,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -80,7 +80,7 @@ public class BusinessValidationController {
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
     private final List<ValidationRule> allValidationRules;
-    private final List<CaseworkerAmendValidationRule> allCaseworkerAmendValidationRules;
+    private final List<CaseworkerAmendAndCreateValidationRule> allCaseworkerAmendAndCreateValidationRules;
     private final List<CheckListAmendCaseValidationRule> checkListAmendCaseValidationRules;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseDataTransformer caseDataTransformer;
@@ -104,12 +104,12 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
-    @PostMapping(path = "/sols-default-iht-estate")
+    @PostMapping(path = "/default-iht-estate")
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(request));
     }
 
-    @PostMapping(path = "/sols-validate-iht-estate")
+    @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         ihtEstateValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
@@ -274,7 +274,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response =
-            eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendValidationRules);
+            eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
         }
@@ -394,6 +394,12 @@ public class BusinessValidationController {
         }
 
         CallbackResponse response;
+
+        response = eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
+
+        if (!response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(response);
+        }
 
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
