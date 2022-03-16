@@ -35,7 +35,7 @@ import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
@@ -74,7 +74,7 @@ public class NotificationService {
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final EventValidationService eventValidationService;
-    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     private final GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private final CaveatPersonalisationService caveatPersonalisationService;
@@ -270,7 +270,7 @@ public class NotificationService {
         CallbackResponse callbackResponse;
         Document sentEmail;
         callbackResponse =
-            eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
 
         if (callbackResponse.getErrors().isEmpty()) {
             sentEmail = sendEmail(GRANT_REISSUED, caseDetails);

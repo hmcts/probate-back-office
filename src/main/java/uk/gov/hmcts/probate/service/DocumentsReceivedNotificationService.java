@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class DocumentsReceivedNotificationService {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final NotificationService notificationService;
     private final EventValidationService eventValidationService;
-    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest)
         throws NotificationClientException {
@@ -40,7 +40,7 @@ public class DocumentsReceivedNotificationService {
 
         if (caseData.isDocsReceivedEmailNotificationRequested() && !isCaseCreatedFromBulkScan(caseData)) {
             response =
-                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
