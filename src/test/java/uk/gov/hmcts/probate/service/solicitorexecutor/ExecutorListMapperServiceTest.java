@@ -229,6 +229,19 @@ public class ExecutorListMapperServiceTest {
     public void shouldMapFromSolsAdditionalExecToApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
         solsAdditionalExecs.add(SOLS_EXEC_ADDITIONAL_APPLYING);
+        CollectionMember<AdditionalExecutor> emptyApplying = new CollectionMember(EXEC_ID,
+                AdditionalExecutor.builder()
+                        .additionalExecForenames(EXEC_FIRST_NAME)
+                        .additionalExecLastname(EXEC_SURNAME)
+                        .additionalExecAddress(EXEC_ADDRESS)
+                        .additionalExecAliasNameOnWill(EXEC_WILL_NAME)
+                        .build());
+        CollectionMember<AdditionalExecutor> empty = new CollectionMember(EXEC_ID,
+                AdditionalExecutor.builder()
+                        .build());
+        solsAdditionalExecs.add(emptyApplying);
+        solsAdditionalExecs.add(empty);
+
         CaseData caseData = CaseData.builder().solsAdditionalExecutorList(solsAdditionalExecs).build();
 
         List<CollectionMember<AdditionalExecutorApplying>> result =
