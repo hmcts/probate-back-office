@@ -8,9 +8,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
@@ -26,6 +30,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -38,15 +44,28 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
+@ContextConfiguration(classes = {CaveatCallbackResponseTransformer.class})
 @RunWith(MockitoJUnitRunner.class)
 public class CaveatCallbackResponseTransformerTest {
+
+    public static final String ORGANISATION_NAME = "OrganisationName";
+    public static final String ORG_ID = "OrgID";
+
+    @Mock
+    private OrganisationsRetrievalService organisationsRetrievalService;
+
+    @MockBean
+    private SolicitorPBADefaulter solicitorPBADefaulter;
 
     private static final DateTimeFormatter dateTimeFormatter = CaveatCallbackResponseTransformer.dateTimeFormatter;
 
@@ -106,7 +125,7 @@ public class CaveatCallbackResponseTransformerTest {
     private static final String CAV_SOLS_REGISTRY_LOCATION = "ctsc";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
-            BULK_SCAN_ENVELOPES = new ArrayList<>();
+        BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -125,7 +144,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Mock
     private CaveatDetails caveatDetailsMock;
-    
+
     @Mock
     private SolicitorPBADefaulter solicitorPBADefaulterMock;
 
@@ -194,7 +213,8 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
-        CaveatCallbackResponse caveatCallbackResponse = underTest.transformForSolicitor(caveatCallbackRequestMock);
+        CaveatCallbackResponse caveatCallbackResponse =
+            underTest.transformForSolicitor(caveatCallbackRequestMock, "FAKE_TOKEN");
         assertCommonSolsCaveats(caveatCallbackResponse);
     }
 
@@ -217,7 +237,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
         assertPaperForm(caveatCallbackResponse, NO);
-        
+
         assertEquals("pba",
             caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
     }
@@ -453,6 +473,49 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    public void testBuildOrganisationPolicy() {
+        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+            .thenReturn(new OrganisationEntityResponse());
+        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+    }
+
+    @Test
+    public void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
+        when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
+        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+    }
+
+    @Test
+    public void testBuildOrganisationPolicyValues() {
+
+        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
+        organisationEntityResponse.setName(ORGANISATION_NAME);
+
+        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+            .thenReturn(organisationEntityResponse);
+        OrganisationPolicy organisationPolicy = mock(OrganisationPolicy.class);
+        when(organisationPolicy.getOrgPolicyCaseAssignedRole()).thenReturn("Org Policy Case Assigned Role");
+        when(organisationPolicy.getOrgPolicyReference()).thenReturn("Org Policy Reference");
+
+        CaveatData caveatData = new CaveatData();
+        caveatData.setApplicantOrganisationPolicy(organisationPolicy);
+        OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
+            .buildOrganisationPolicy(caveatData, "ABC123");
+        assertEquals("Org Policy Case Assigned Role",
+            actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
+        assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
+        Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
+        assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
+        assertEquals(ORG_ID, organisationResult.getOrganisationID());
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
+        verify(organisationPolicy).getOrgPolicyReference();
+    }
+
+    @Test
     public void shouldCovertSolsPBANumbers() {
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
@@ -460,7 +523,7 @@ public class CaveatCallbackResponseTransformerTest {
         assertCommon(caveatCallbackResponse);
         verify(solicitorPBADefaulterMock).defaultCaveatFeeAccounts(any(), any(), any());
     }
-    
+
     @Test
     public void shouldExtendCaveatExpiry() {
         CaveatCallbackResponse caveatCallbackResponse =
@@ -553,7 +616,7 @@ public class CaveatCallbackResponseTransformerTest {
             caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
 
     }
-    
+
     private void assertApplicationType(CaveatCallbackResponse caveatCallbackResponse,
                                        ApplicationType cavApplicationType) {
         assertEquals(cavApplicationType, caveatCallbackResponse.getCaveatData().getApplicationType());

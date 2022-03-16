@@ -116,10 +116,11 @@ public class CaveatController {
     @PostMapping(path = "/solsCreate")
     public ResponseEntity<CaveatCallbackResponse> createSolsCaveat(
         @Validated({CaveatCreatedGroup.class})
+        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest, authToken);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -127,10 +128,11 @@ public class CaveatController {
     @PostMapping(path = "/solsUpdate")
     public ResponseEntity<CaveatCallbackResponse> updateSolsCaveat(
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
+        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest);
+            caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest, authToken);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

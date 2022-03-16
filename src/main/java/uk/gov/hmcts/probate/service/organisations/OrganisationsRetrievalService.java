@@ -13,7 +13,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.Organisations;
-import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -30,7 +29,6 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 public class OrganisationsRetrievalService {
 
-    private final IdamAuthenticateUserService idamAuthenticateUserService;
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     @Value("${prd.organisations.url}")
@@ -38,20 +36,21 @@ public class OrganisationsRetrievalService {
     @Value("${prd.organisations.api}")
     protected String orgApi;
 
-    public OrganisationEntityResponse getOrgId(String authToken) {
+    public OrganisationEntityResponse getOrganisationEntity(String authToken) {
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         try {
             ResponseEntity<Organisations> responseEntity = restTemplate.exchange(uri, GET,
                 request, Organisations.class);
+
             Organisations organisationsResponse = Objects.requireNonNull(responseEntity.getBody());
 
             if (organisationsResponse != null && organisationsResponse.getOrganisations().size() == 1) {
                 return organisationsResponse.getOrganisations().get(0);
             }
         } catch (Exception e) {
-            log.info("Exception when looking up orgId for authToken={} for exception {}",
+            log.error("Exception when looking up orgId for authToken={} for exception {}",
                 new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
         }
         return null;
@@ -73,4 +72,5 @@ public class OrganisationsRetrievalService {
         return fromHttpUrl(orgUri + orgApi)
             .build().toUri();
     }
+
 }
