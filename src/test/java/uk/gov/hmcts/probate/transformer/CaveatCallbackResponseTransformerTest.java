@@ -504,7 +504,8 @@ public class CaveatCallbackResponseTransformerTest {
         caveatData.setApplicantOrganisationPolicy(organisationPolicy);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
             .buildOrganisationPolicy(caveatData, "ABC123");
-        assertEquals("Org Policy Case Assigned Role", actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
+        assertEquals("Org Policy Case Assigned Role",
+            actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
         assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
