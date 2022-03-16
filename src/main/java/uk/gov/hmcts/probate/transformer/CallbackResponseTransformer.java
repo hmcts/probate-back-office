@@ -1091,7 +1091,8 @@ public class CallbackResponseTransformer {
     private OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
         OrganisationEntityResponse organisationEntityResponse =
             organisationsRetrievalService.getOrganisationEntity(authToken);
-        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
+        if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
+            return OrganisationPolicy.builder()
             .organisation(Organisation.builder()
                 .organisationID(organisationEntityResponse.getOrganisationIdentifier())
                 .organisationName(organisationEntityResponse.getName())
@@ -1099,8 +1100,8 @@ public class CallbackResponseTransformer {
             .orgPolicyReference(caseData.getApplicantOrganisationPolicy().getOrgPolicyReference())
             .orgPolicyCaseAssignedRole(caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
             .build();
-        return organisationPolicy;
-        
+        }
+        return null;
     }
 
     private boolean isPaperForm(CaseData caseData) {

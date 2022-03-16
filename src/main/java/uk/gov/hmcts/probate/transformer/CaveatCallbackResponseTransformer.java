@@ -157,14 +157,16 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest, String authToken) {
-        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(callbackRequest.getCaseDetails())
             .applicationType(SOLICITOR)
             .paperForm(NO)
-            .registryLocation(CTSC)
-            .applicantOrganisationPolicy(buildOrganisationPolicy(callbackRequest.getCaseDetails().getData(), authToken))
-            .build();
-
-        return transformResponse(responseCaveatData);
+            .registryLocation(CTSC);
+        OrganisationPolicy organisationPolicy =
+            buildOrganisationPolicy(callbackRequest.getCaseDetails().getData(), authToken);
+        if (null != organisationPolicy) {
+            responseCaveatDataBuilder.applicantOrganisationPolicy(organisationPolicy);
+        }
+        return transformResponse(responseCaveatDataBuilder.build());
     }
 
     public OrganisationPolicy buildOrganisationPolicy(CaveatData caveatData, String authToken) {

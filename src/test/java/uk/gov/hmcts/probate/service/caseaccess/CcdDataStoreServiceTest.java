@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.caseaccess;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
@@ -40,15 +41,13 @@ public class CcdDataStoreServiceTest {
         stringObjectMap.put("id", "Value");
         ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
 
-        when(this.idamApi.getUserDetails((String) any())).thenReturn(responseEntity);
+        when(this.idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
         doNothing().when(this.caseRoleClient)
-            .removeCaseRoles((String) any(), (String) any(),
-                (uk.gov.hmcts.probate.model.caseaccess.RemoveUserRolesRequest) any());
+            .removeCaseRoles(anyString(), anyString(), any());
         when(this.authTokenGenerator.generate()).thenReturn("Generate");
         this.ccdDataStoreService.removeCreatorRole("42", "ABC123");
-        verify(this.idamApi).getUserDetails((String) any());
-        verify(this.caseRoleClient).removeCaseRoles((String) any(), (String) any(),
-            (uk.gov.hmcts.probate.model.caseaccess.RemoveUserRolesRequest) any());
+        verify(this.idamApi).getUserDetails(anyString());
+        verify(this.caseRoleClient).removeCaseRoles(anyString(), anyString(), any());
         verify(this.authTokenGenerator).generate();
     }
 }

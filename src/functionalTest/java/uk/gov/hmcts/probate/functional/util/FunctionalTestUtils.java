@@ -159,7 +159,8 @@ public class FunctionalTestUtils {
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
             new Header("Authorization",
-                serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+                "Bearer "
+                    + serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
             new Header("user-id", userId));
     }
 

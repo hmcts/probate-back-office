@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.caseaccess;
 
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
@@ -44,18 +45,16 @@ public class AssignCaseAccessServiceTest {
         stringObjectMap.put("id", "Value");
         ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
 
-        when(this.idamApi.getUserDetails((String) any())).thenReturn(responseEntity);
-        doNothing().when(this.ccdDataStoreService).removeCreatorRole((String) any(), (String) any());
+        when(this.idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        doNothing().when(this.ccdDataStoreService).removeCreatorRole(anyString(), anyString());
         when(this.authTokenGenerator.generate()).thenReturn("Generate");
         doNothing().when(this.assignCaseAccessClient)
-            .assignCaseAccess((String) any(), (String) any(), anyBoolean(),
-                (uk.gov.hmcts.probate.model.caseaccess.AssignCaseAccessRequest) any());
+            .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
         this.assignCaseAccessService.assignCaseAccess("42", "ABC123");
-        verify(this.idamApi).getUserDetails((String) any());
-        verify(this.ccdDataStoreService).removeCreatorRole((String) any(), (String) any());
+        verify(this.idamApi).getUserDetails(anyString());
+        verify(this.ccdDataStoreService).removeCreatorRole(anyString(), anyString());
         verify(this.authTokenGenerator).generate();
-        verify(this.assignCaseAccessClient).assignCaseAccess((String) any(), (String) any(), anyBoolean(),
-            (uk.gov.hmcts.probate.model.caseaccess.AssignCaseAccessRequest) any());
+        verify(this.assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
     }
 }
 

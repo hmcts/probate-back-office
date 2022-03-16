@@ -16,6 +16,7 @@ import static org.junit.Assert.assertEquals;
 public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
     protected static final String TASKLIST_UPDATE_URL = "/tasklist/update";
+    protected static final String CASE_SOLS_CREATED = "/case/sols-created";
     protected static final String CASE_PRINTED_URL = "/case/casePrinted";
     protected static final String CASE_DOCS_RECEIVED_URL = "/notify/documents-received";
     protected static final String SOLS_VALIDATE_URL = "/case/sols-validate";
