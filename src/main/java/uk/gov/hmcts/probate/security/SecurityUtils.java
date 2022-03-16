@@ -6,13 +6,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
-import uk.gov.hmcts.probate.model.TokenExchangeResponse;
-import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.idam.client.IdamClient;
 
-import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
 
 @Component
@@ -27,19 +24,9 @@ public class SecurityUtils {
     private static final String USER_ID = "user-id";
 
     private static final String AUTHORIZATION = "Authorization";
-    private static final String BASIC = "Basic ";
-    private static final String BEARER = "Bearer ";
-    private static final String AUTHORIZATION_CODE = "authorization_code";
-    private static final String CODE = "code";
-
-    @Value("${auth.provider.client.redirect}")
-    private String authRedirectUrl;
 
     @Value("${auth.provider.client.id}")
     private String authClientId;
-
-    @Value("${auth.provider.client.secret}")
-    private String authClientSecret;
 
     @Value("${auth.provider.client.email}")
     private String caseworkerUserName;
@@ -47,7 +34,7 @@ public class SecurityUtils {
     @Value("${auth.provider.client.password}")
     private String caseworkerPassword;
 
-    private final IdamApi idamClient;
+    private final IdamClient idamClient;
 
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
@@ -92,32 +79,8 @@ public class SecurityUtils {
     }
 
     private String getIdamOauth2Token(String username, String password) {
-        String basicAuthHeader = getBasicAuthHeader(username, password);
-
         log.info("Client ID: {} . Authenticating...", authClientId);
-
-        AuthenticateUserResponse authenticateUserResponse = idamClient.authenticateUser(
-                basicAuthHeader,
-                CODE,
-                authClientId,
-                authRedirectUrl
-        );
-
-        log.info("Authenticated. Exchanging...");
-        TokenExchangeResponse tokenExchangeResponse = idamClient.exchangeCode(
-                authenticateUserResponse.getCode(),
-                AUTHORIZATION_CODE,
-                authRedirectUrl,
-                authClientId,
-                authClientSecret
-        );
-
         log.info("Getting AccessToken...");
-        return tokenExchangeResponse.getAccessToken();
-    }
-
-    private String getBasicAuthHeader(String username, String password) {
-        String authorisation = username + ":" + password;
-        return BASIC + Base64.getEncoder().encodeToString(authorisation.getBytes());
+        return idamClient.getAccessToken(username, password);
     }
 }
