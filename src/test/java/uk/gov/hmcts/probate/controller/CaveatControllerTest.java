@@ -42,6 +42,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CaveatControllerTest {
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     @Autowired
     private MockMvc mockMvc;
@@ -87,6 +88,7 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/solsCreate")
+            .header("Authorization", AUTH_TOKEN)
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -109,6 +111,7 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorUpdateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/solsUpdate")
+            .header("Authorization", AUTH_TOKEN)
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())

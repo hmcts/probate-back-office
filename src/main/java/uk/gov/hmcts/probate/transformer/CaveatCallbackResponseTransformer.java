@@ -170,8 +170,10 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public OrganisationPolicy buildOrganisationPolicy(CaveatData caveatData, String authToken) {
-        OrganisationEntityResponse organisationEntityResponse =
-            organisationsRetrievalService.getOrganisationEntity(authToken);
+        OrganisationEntityResponse organisationEntityResponse = null;
+        if (null != authToken) {
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+        }
         if (null != organisationEntityResponse && null != caveatData.getApplicantOrganisationPolicy()) {
             return OrganisationPolicy.builder()
                 .organisation(Organisation.builder()
