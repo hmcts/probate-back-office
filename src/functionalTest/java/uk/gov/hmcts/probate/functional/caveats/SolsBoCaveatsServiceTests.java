@@ -358,11 +358,14 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaveatSolicitorCreateReturnOkResponseCode() {
-        final ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE_PAYLOAD, CAVEAT_SOLICITOR_CREATE);
+        final ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE, CAVEAT_SOLICITOR_CREATE);
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
         assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
+        assertThat(jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"), is(equalTo("org Role")));
+        assertThat(jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyReference"),
+            is(equalTo("org Reference")));
     }
 
     @Test

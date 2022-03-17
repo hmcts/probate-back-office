@@ -30,7 +30,15 @@
         "PostCode": "2",
         "Country": ""
       },
-      "solsSolicitorAppReference": "REFREFREFREFREFREFREFREFREFREF"
+      "solsSolicitorAppReference": "REFREFREFREFREFREFREFREFREFREF",
+      "applicantOrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": "orgID",
+          "OrganisationName": "orgName"
+        },
+        "OrgPolicyCaseAssignedRole": "org Role",
+        "OrgPolicyReference": "org Reference"
+      }
     }
   }
 }
