@@ -197,7 +197,15 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
+idam:
+  s2s-auth:
+    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
+    microservice: probate_backend
+    url: ${S2S_AUTH_URL:http://localhost:4502}
+  service:
+    host: ${S2S_AUTH_URL:http://localhost:4502}
+  api:
+    url: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
 logging:
   level:
@@ -463,12 +471,6 @@ document:
     service:
       api:
         baseurl: localhost:8080
-
-idam:
-  s2s-auth:
-    url: ${S2S_AUTH_URL:http://localhost:4502}
-    totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
-    microservice: probate_backend
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
