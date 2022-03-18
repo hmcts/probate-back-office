@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -32,8 +33,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -50,6 +53,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -176,15 +180,9 @@ public class BusinessValidationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private CaseDataBuilder caseDataBuilder;
-    @MockBean
-    private AppInsights appInsights;
-
 
     @MockBean
     private PDFManagementService pdfManagementService;
-
-    @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
 
     @MockBean
     private CaseStoppedService caseStoppedService;
@@ -192,8 +190,8 @@ public class BusinessValidationControllerTest {
     @MockBean
     private NotificationService notificationService;
 
-    @MockBean
-    private PBARetrievalService pbaRetrievalService;
+    @SpyBean
+    OrganisationsRetrievalService organisationsRetrievalService;
 
     @Before
     public void setup() {
@@ -250,6 +248,12 @@ public class BusinessValidationControllerTest {
             .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
             .totalFee(TOTAL_FEE)
             .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+
+        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
+        organisationEntityResponse.setName("ORGANISATION_NAME");
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+
     }
 
     @Test
