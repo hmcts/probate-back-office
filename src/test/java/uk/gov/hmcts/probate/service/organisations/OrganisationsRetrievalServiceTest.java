@@ -15,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.Organisations;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Collections;
@@ -32,6 +31,7 @@ public class OrganisationsRetrievalServiceTest {
     RestTemplate restTemplate;
 
     Organisations organisations;
+
     @Test
     public void testOrganisationEntityGetsReturnedOk() {
         MockitoAnnotations.openMocks(this);
