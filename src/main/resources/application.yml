@@ -206,6 +206,10 @@ idam:
     host: ${S2S_AUTH_URL:http://localhost:4502}
   api:
     url: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  client:
+    redirect_uri: ${IDAM_SERVICE_HOST:http://localhost:5000}
+    id: ${IDAM_CLIENT_NAME:ccd_gateway}
+    secret: ${IDAM_CLIENT_NAME:ccd_gateway_secret}
 
 logging:
   level:
