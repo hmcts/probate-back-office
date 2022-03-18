@@ -36,6 +36,7 @@ public class OrganisationsRetrievalServiceTest {
 
     @Mock
     private AuthTokenGenerator authTokenGenerator;
+
     @Test
     public void testOrganisationEntityGetsReturnedOk() {
         MockitoAnnotations.openMocks(this);
