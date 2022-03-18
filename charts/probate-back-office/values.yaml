@@ -46,6 +46,8 @@ java:
           alias: spring.datasource.password
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
+        - name: ccidam-idam-api-secrets-probate
+          alias: IDAM_SECRET
         - name: probate-bo-govNotifyApiKey
           alias: notifications.govNotifyApiKey
         - name: authTokenEmail
