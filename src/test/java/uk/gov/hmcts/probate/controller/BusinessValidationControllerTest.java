@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -143,6 +144,7 @@ public class BusinessValidationControllerTest {
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1170,6 +1172,18 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Letters of administration with will annexed details")))
             .andReturn();
+    }
+
+    @Test
+    public void solsCaseCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+        String caseDetails = testUtils.getStringFromFile("caseDetailWithOrgPolicy.json");
+
+        mockMvc.perform(post("/case/sols-created")
+                .header("Authorization", AUTH_TOKEN)
+                .content(caseDetails)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(CoreMatchers.containsString("data")));
     }
 }
 
