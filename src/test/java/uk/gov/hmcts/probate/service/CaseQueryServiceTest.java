@@ -68,8 +68,6 @@ public class CaseQueryServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
-        IdamTokens tokens = IdamTokens.builder().idamOauth2Token("Bearer 123").build();
-        when(idamAuthenticateUserService.getIdamTokens()).thenReturn(tokens);
         when(idamAuthenticateUserService.getIdamOauth2Token()).thenReturn("Bearer 123");
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 

@@ -33,7 +33,7 @@ auth.provider.client:
   secret: ${IDAM_SECRET:ccd_gateway_secret}
   id: ${IDAM_CLIENT_NAME:ccd_gateway}
   redirect: ${IDAM_REDIRECT_URL:http://localhost:3451/oauth2redirect}
-  email: ${AUTH_TOKEN_EMAIL:ProbateSuperuser@gmail.com}
+  email: ${AUTH_TOKEN_EMAIL:ProbateSchedulerDEV@gmail.com}
   password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:

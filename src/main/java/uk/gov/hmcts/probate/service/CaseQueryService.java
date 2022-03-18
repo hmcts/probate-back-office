@@ -203,7 +203,6 @@ public class CaseQueryService {
         HttpHeaders tokenHeaders = null;
         HttpEntity<String> entity;
         try {
-            log.info("headers:" + headers);
             tokenHeaders = headers.getAuthorizationHeaders();
 
         } catch (Exception e) {
@@ -211,7 +210,7 @@ public class CaseQueryService {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
-            tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamTokens().getIdamOauth2Token());
+            tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
             log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
