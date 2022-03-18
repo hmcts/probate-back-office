@@ -15,6 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.Organisations;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Collections;
@@ -24,14 +25,17 @@ public class OrganisationsRetrievalServiceTest {
 
     @InjectMocks
     private OrganisationsRetrievalService organisationsRetrievalService;
+
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     public static final String ORGANISATION_NAME = "OrganisationName";
     public static final String ORG_ID = "OrgID";
-    @Mock
-    RestTemplate restTemplate;
 
+    @Mock(name = "restTemplate")
+    private RestTemplate restTemplate;
     Organisations organisations;
 
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
     @Test
     public void testOrganisationEntityGetsReturnedOk() {
         MockitoAnnotations.openMocks(this);
@@ -51,6 +55,8 @@ public class OrganisationsRetrievalServiceTest {
         organisationsRetrievalService.orgUri = "http://localhost:8080/test";
         OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(AUTH_TOKEN);
         assertEquals(organisationEntityResponse, organisationEntity);
+
+        when(authTokenGenerator.generate()).thenReturn("S2S_DUMMY");
     }
 
     @Test
