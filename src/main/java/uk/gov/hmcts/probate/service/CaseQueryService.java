@@ -194,7 +194,7 @@ public class CaseQueryService {
 
     @Nullable
     private List<ReturnedCaseDetails> runQuery(String jsonQuery) {
-        log.debug("CaseQueryService runQuery: " + jsonQuery);
+        log.info("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
@@ -207,10 +207,10 @@ public class CaseQueryService {
 
         } catch (Exception e) {
             tokenHeaders = new HttpHeaders();
+            tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
             tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
             log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
-            tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
         }
