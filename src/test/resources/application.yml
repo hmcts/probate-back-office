@@ -121,8 +121,6 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
-idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
-
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
@@ -140,7 +138,7 @@ notifications:
           grantIssued: "pa-grant-issued"
           grantReissued: "pa-grant-reissued"
           generalCaveatMessage: "pa-general-caveat-message"
-          exelaData: "pa-exela-data"
+          excelaData: "pa-excela-data"
           smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "pa-grant-raised"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan"
@@ -373,6 +371,10 @@ idam:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
+  service:
+    host: ${S2S_AUTH_URL:http://localhost:4502}
+  api:
+    url: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}
@@ -388,7 +390,6 @@ smeeAndFordEmail: smeeAndFord@probate-test.com
 data-extract:
   pagination:
     size: 1
-
 welsh:
   months:
     1: "Ionawr"

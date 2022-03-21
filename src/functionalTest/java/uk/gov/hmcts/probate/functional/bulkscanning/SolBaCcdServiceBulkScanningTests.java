@@ -8,6 +8,8 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 
@@ -72,14 +74,15 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     private void transformExceptionPostSuccess(String bodyText, String containsText) {
-        RestAssured.given()
+        String actualResponse = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
             .body(bodyText)
             .when().post(TRANSFORM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(200)
-            .and().body(containsString(containsText));
+            .and().extract().body().asPrettyString();
+        JSONAssert.assertEquals(containsText, actualResponse, JSONCompareMode.STRICT);
     }
 
     private void updateCaseFromExceptionPostSuccess(String bodyText, String containsText) {
