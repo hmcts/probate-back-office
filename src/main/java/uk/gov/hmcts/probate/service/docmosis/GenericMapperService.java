@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,7 +39,7 @@ public class GenericMapperService {
     private ObjectMapper mapper;
 
     public Map<String, Object> addCaseData(CaseData caseData) {
-        mapper = new ObjectMapper();
+        mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         Map<String, Object> placeholders = mapper.convertValue(caseData, Map.class);
         placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
         placeholders.replace(DECEASED_DATE_OF_BIRTH, DATE_FORMAT.format(caseData.getDeceasedDateOfBirth()));
