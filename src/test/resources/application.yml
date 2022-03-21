@@ -138,7 +138,7 @@ notifications:
           grantIssued: "pa-grant-issued"
           grantReissued: "pa-grant-reissued"
           generalCaveatMessage: "pa-general-caveat-message"
-          excelaData: "pa-excela-data"
+          exelaData: "pa-exela-data"
           smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "pa-grant-raised"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan"
