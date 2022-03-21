@@ -206,7 +206,6 @@ public class CaseQueryService {
             tokenHeaders = headers.getAuthorizationHeaders();
 
         } catch (Exception e) {
-            log.info("getAuthorizationHeaders exception stack: " + e.getStackTrace());
             tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
