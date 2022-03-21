@@ -23,6 +23,8 @@ const examChecklistTabConfig = require('src/test/end-to-end/pages/caseDetails/gr
 const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
+const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
+const ihtTabConfigUpdate = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtUpdateTabConfig');
 
 const {
     legacyParse,
@@ -78,6 +80,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Handle supplementary evidence';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -127,6 +130,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.chooseNextStep(nextStepName);
     await I.enterGrantOfProbatePage4('EE');
     await I.checkMyAnswers(nextStepName);
+    await I.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
     nextStepName = 'Find matches (Examining)';
     await I.logInfo(scenarioName, nextStepName, caseRef);

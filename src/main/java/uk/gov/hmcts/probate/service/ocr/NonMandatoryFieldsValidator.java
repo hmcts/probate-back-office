@@ -27,12 +27,10 @@ public class NonMandatoryFieldsValidator {
     public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
         warnings.addAll(ocrEmailValidator.validateField(ocrFields));
-        Map<String, String> ocrFieldValues = new HashMap<String, String>();
+        Map<String, String> ocrFieldValues = new HashMap<>();
         boolean isSolicitorForm = false;
 
-        ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
-        });
+        ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
 
         switch (formType) {
             case PA8A:

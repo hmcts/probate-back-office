@@ -76,6 +76,7 @@ public class ExceptionRecordController {
                 formType);
 
         if (!warnings.isEmpty()) {
+            log.warn(warnings.toString());
             throw new OCRMappingException("Please resolve all warnings before creating the case", warnings);
         }
 

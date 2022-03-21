@@ -41,7 +41,7 @@ import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
@@ -146,7 +146,7 @@ public class NotificationServiceTest {
     private EventValidationService eventValidationService;
 
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     @Mock
     private CallbackResponse callbackResponse;
@@ -1524,7 +1524,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules))
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules))
             .thenReturn(callbackResponse);
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1547,7 +1547,7 @@ public class NotificationServiceTest {
         errors.add("test error");
 
         when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
@@ -1570,7 +1570,7 @@ public class NotificationServiceTest {
         errors.add("test error");
 
         when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);

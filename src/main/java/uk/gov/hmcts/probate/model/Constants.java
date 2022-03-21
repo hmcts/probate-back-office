@@ -107,6 +107,9 @@ public final class Constants {
                 TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING));
     }
 
+    public static final String EMAIL_REGEX = "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30})"
+        + "{0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?";
+
     private Constants() {
     }
 }
