@@ -35,7 +35,6 @@ import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapper
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -68,7 +67,6 @@ public class NotificationController {
     private final NotificationService notificationService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
-    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     private final PDFManagementService pdfManagementService;
     private final BulkPrintService bulkPrintService;
@@ -82,7 +80,6 @@ public class NotificationController {
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
-        @Validated({EmailAddressNotificationValidationRule.class})
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
@@ -91,7 +88,7 @@ public class NotificationController {
 
         if (isDigitalApplication(caseData) && isAnEmailAddressPresent(caseData)) {
             CallbackResponse response =
-                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
                 return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
@@ -179,7 +176,6 @@ public class NotificationController {
 
     @PostMapping(path = "/documents-received")
     public ResponseEntity<CallbackResponse> sendDocumentReceivedNotification(
-        @Validated({EmailAddressNotificationValidationRule.class})
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
         return ResponseEntity
@@ -198,7 +194,6 @@ public class NotificationController {
 
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
-        @Validated({EmailAddressNotificationValidationRule.class})
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
