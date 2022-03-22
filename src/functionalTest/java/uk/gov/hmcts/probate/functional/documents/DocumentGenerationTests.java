@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import junit.framework.TestCase;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -156,7 +157,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .when().post(RE_PRINT)
             .andReturn();
         assertEquals(response.statusCode(), 403);
-        assertTrue(response.getBody().toString().contains("Forbidden"));
+        TestCase.assertTrue(response.body().toString().contains("Forbidden"));
     }
 
 }
