@@ -211,13 +211,6 @@ dependencyManagement {
       entry 'spring-security-crypto'
       entry 'spring-security-web'
     }
-
-    //CVE-2020-36518
-    dependencySet(group: 'com.fasterxml.jackson.core', version: '2.13.2') {
-      entry 'jackson-databind'
-      entry 'jackson-core'
-      entry 'jackson-annotations'
-    }
   }
 }
 
