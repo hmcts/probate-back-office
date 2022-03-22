@@ -63,7 +63,7 @@ prd:
   organisations:
     url: ${PRD_API_URL:http://localhost:8991}
     api: /refdata/external/v1/organisations
-    
+
 docmosis:
   service:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
@@ -211,6 +211,10 @@ idam:
     host: ${S2S_AUTH_URL:http://localhost:4502}
   api:
     url: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  client:
+    redirect_uri: ${IDAM_SERVICE_HOST:http://localhost:5000}
+    id: ${IDAM_CLIENT_NAME:ccd_gateway}
+    secret: ${IDAM_SECRET:ccd_gateway_secret}
 
 logging:
   level:
