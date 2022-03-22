@@ -2,11 +2,12 @@ package uk.gov.hmcts.probate.functional.printservice;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import junit.framework.Assert;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.skyscreamer.jsonassert.JSONAssert;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import static junit.framework.TestCase.assertEquals;
@@ -124,7 +125,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
             .when().get("/template/probateManLegacyCase");
 
         assertThat(response.statusCode(), is(equalTo(403)));
-        assertTrue(response.body().toString().contains("Forbidden"));
+        JSONAssert.assertEquals("Forbidden", String.valueOf(response), JSONCompareMode.STRICT);
     }
 }
 
