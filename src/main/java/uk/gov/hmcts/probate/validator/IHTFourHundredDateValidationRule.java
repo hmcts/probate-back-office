@@ -9,15 +9,18 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Locale;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
+
+import static java.util.Locale.UK;
 
 @Component
 @RequiredArgsConstructor
 public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule {
 
     public static final String IHT_DATE_IS_INVALID = "iht400DateInvalid";
+    public static final String IHT_DATE_IS_INVALID2 = "iht400DateInvalid2";
+    public static final String IHT_DATE_IS_INVALID3 = "iht400DateInvalid3";
     public static final String IHT_DATE_IS_IN_FUTURE = "iht400DateIsInFuture";
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -85,16 +88,19 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
         String userMessage;
 
         if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 0) {
-            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, Locale.UK);
+            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, UK);
             throw new BusinessValidationException(userMessage,
                 "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past");
         }
 
         if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 20) {
-            userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, args, Locale.UK);
-            throw new BusinessValidationException(userMessage,
-                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")"
-                    + " needs to be before 20 working days before current date");
+            userMessage = "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")"
+                + " needs to be before 20 working days before current date";
+            String[] empty = {};
+            String error1 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, empty, UK);
+            String error2 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID2, args, UK);
+            String error3 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID3, empty, UK);
+            throw new BusinessValidationException(error1, userMessage, error2, error3);
         }
     }
 }
