@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -289,7 +290,8 @@ public class TaskStateRenderer {
         String dispenseWithNotice = NO;
         if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
             dispenseWithNotice = YES;
-            dispenseWithNoticeSupportingDocs = "<li>" + data.getDispenseWithNoticeSupportingDocs() + "</li>";
+            dispenseWithNoticeSupportingDocs = "<li>" + DISPENSE_NOTICE_SUPPORT_TEXT
+                + data.getDispenseWithNoticeSupportingDocs() + "</li>";
         }
         keyValue.put("dispenseWithNotice", dispenseWithNotice);
         keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
