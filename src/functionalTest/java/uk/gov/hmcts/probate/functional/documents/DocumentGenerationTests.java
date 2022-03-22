@@ -8,8 +8,6 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
@@ -158,7 +156,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .when().post(RE_PRINT)
             .andReturn();
         assertEquals(response.statusCode(), 403);
-        JSONAssert.assertEquals("Forbidden", String.valueOf(response), JSONCompareMode.STRICT);
+
     }
 
 }
