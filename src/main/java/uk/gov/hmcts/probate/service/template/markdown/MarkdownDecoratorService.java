@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
@@ -38,7 +39,7 @@ public class MarkdownDecoratorService {
 
     public String getAuthenticatedTranslationLabel(CaseData caseData) {
         if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
-            return "\n*   " + "an authenticated translation of the will";
+            return "\n*   " + AUTHENTICATED_TRANSLATION_WILL_TEXT;
         }
         return "";
     }

@@ -55,7 +55,7 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
-    public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT = "an authenticated translation of the will";
+    public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT = "an authenticated translation of the will in English or Welsh";
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
     public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals";
