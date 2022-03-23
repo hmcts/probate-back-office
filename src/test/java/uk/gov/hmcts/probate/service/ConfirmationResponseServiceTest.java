@@ -896,7 +896,8 @@ public class ConfirmationResponseServiceTest {
                 .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
                 .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+                caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
