@@ -75,13 +75,13 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     private void transformExceptionPostSuccess(String bodyText, String containsText) {
         String actualResponse = RestAssured.given()
-            .config(config)
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
-            .body(bodyText)
-            .when().post(TRANSFORM_EXCEPTON_RECORD)
-            .then().assertThat().statusCode(200)
-            .and().extract().body().asPrettyString();
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeaders())
+                .body(bodyText)
+                .when().post(TRANSFORM_EXCEPTON_RECORD)
+                .then().assertThat().statusCode(200)
+                .and().extract().body().asPrettyString();
         JSONAssert.assertEquals(containsText, actualResponse, JSONCompareMode.STRICT);
     }
 
