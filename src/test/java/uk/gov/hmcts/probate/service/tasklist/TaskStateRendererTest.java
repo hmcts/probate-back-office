@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -53,6 +54,8 @@ public class TaskStateRendererTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    @Mock
+    private AdmonWillRenunicationRule admonWillRenunicationRule;
     @Mock
     private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     @Mock
@@ -415,8 +418,8 @@ public class TaskStateRendererTest {
             .getFileFromResourceAsString("caseprogress/gop/solicitorCaseProgressSendDocumentsWithPA17Form");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
         when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(true);
-        when(sendDocumentsRenderer.getPA17FormText()).thenReturn("<a href=\"https://www.gov" 
-            + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" " 
+        when(sendDocumentsRenderer.getPA17FormText()).thenReturn("<a href=\"https://www.gov"
+            + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" "
             + "target=\"_blank\">Give up probate executor rights for probate practitioners paper form (PA17)</a>");
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
@@ -466,7 +469,7 @@ public class TaskStateRendererTest {
         all.add(single);
         when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, "Renunciation")).thenReturn(all);
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
-            + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Medical " 
+            + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Medical "
             + "certificate completed by a health professional</a> (PA14) for Tim Smith");
 
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
@@ -637,8 +640,8 @@ public class TaskStateRendererTest {
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
         when(pa16FormBusinessRule.isApplicable(caseData)).thenReturn(true);
-        when(sendDocumentsRenderer.getPA16FormText()).thenReturn("<a href=\"https://www.gov" 
-            + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">Give up" 
+        when(sendDocumentsRenderer.getPA16FormText()).thenReturn("<a href=\"https://www.gov"
+            + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">Give up"
             + " probate administrator rights paper form (PA16)</a>");
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
@@ -816,12 +819,19 @@ public class TaskStateRendererTest {
             .ihtFormId(IHT_FORM_207)
             .build();
 
-        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        final CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
         String expectedHtml = fileSystemResourceService
             .getFileFromResourceAsString(
                 "caseprogress/admonwill/solicitorCaseProgressSendDocuments");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(admonWillRenunicationRule.isApplicable(caseData)).thenReturn(true);
+        when(sendDocumentsRenderer.getAdmonWillRenunciationText()).thenReturn("if applicable, send us the appropriate"
+            + " renunciation form <a href=\"https://www.gov.uk/government/publications/form-pa15-give-up-probate-"
+            + "executor-rights\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA15</a> /"
+            + " <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for"
+            + "-probate-practitioners\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA17</a>"
+            + " for executors who have renounced their right to apply");
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",

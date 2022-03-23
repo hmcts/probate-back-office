@@ -23,6 +23,9 @@
             font-size: 16pt;
         }
 
+        table {
+            max-width: 60%;
+        }
 
         .table-content {
             display: block;
@@ -101,7 +104,6 @@
                 {% endif %}
 
                 {% if case_extras != null %}
-                    {% endif %}
                     {% if case_extras.showIhtEstate == "Yes" %}
                     <li>
                         {{ case_extras.ihtEstate207Text }}
@@ -117,7 +119,7 @@
                     {% if case_extras.showPa15Form == "Yes" %}
                         {% for pa15FormPoint in case_extras.pa15FormPoints %}
                         <li>
-                            <a href="{{ pa15FormPoint.url }}" target="_blank">{{ pa15FormPoint.text }}</a> (PA15) for {{ pa15FormPoint.executor }} 
+                            <a href="{{ pa15FormPoint.url }}" target="_blank">{{ pa15FormPoint.text }}</a> (PA15) for {{ pa15FormPoint.executor }}
                         </li>
                         {% endfor %}
                     {% endif %}
@@ -130,6 +132,16 @@
                     <li>
                         <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
                     </li>
+                    {% endif %}
+                    {% if case_extras.showAdmonWillRenunciation == "Yes" %}
+                    <li>
+                        {{ case_extras.admonWillRenunciationBeforeLinksText }}
+                        <a href="{{ case_extras.pa15FormUrl }}" target="_blank">{{ case_extras.pa15FormText }}</a>
+                         {{ case_extras.admonWillRenunciationMidLinksText }}
+                        <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
+                        {{ case_extras.admonWillRenunciationAfterLinksText }}
+                    </li>
+                    {% endif %}
                 {% endif %}
             </ul>
             <br /><br /><br />

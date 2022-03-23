@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.template.markdown;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -27,6 +28,7 @@ public class MarkdownDecoratorService {
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
+    private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
 
@@ -66,6 +68,13 @@ public class MarkdownDecoratorService {
     public String getPA17FormLabel(CaseData caseData) {
         if (pa17FormBusinessRule.isApplicable(caseData)) {
             return BULLET + sendDocumentsRenderer.getPA17FormText();
+        }
+        return "";
+    }
+
+    public String getAdmonWillRenunciationFormLabel(CaseData caseData) {
+        if (admonWillRenunicationRule.isApplicable(caseData)) {
+            return BULLET + sendDocumentsRenderer.getAdmonWillRenunciationText();
         }
         return "";
     }

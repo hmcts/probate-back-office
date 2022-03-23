@@ -27,7 +27,7 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private PA14FormBusinessRule pa14FormBusinessRule;
-    
+
     @Mock
     private PA15FormBusinessRule pa15FormBusinessRule;
 

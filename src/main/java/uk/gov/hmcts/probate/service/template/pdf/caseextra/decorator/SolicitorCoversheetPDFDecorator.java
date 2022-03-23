@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -9,6 +10,7 @@ import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AdmonWillRenunciationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.NotApplyingExecutorFormPoint;
@@ -20,14 +22,19 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
@@ -42,13 +49,14 @@ public class SolicitorCoversheetPDFDecorator {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
         if (pa14FormBusinessRule.isApplicable(caseData)) {
             PA14FormCaseExtra pa14FormCaseExtra = PA14FormCaseExtra.builder()
-                .notApplyingExecutorFormPoints(buildNotApplyingExecutorsLinks(caseData, 
+                .notApplyingExecutorFormPoints(buildNotApplyingExecutorsLinks(caseData,
                     REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE, PA14_FORM_URL, PA14_FORM_TEXT))
                 .showPa14Form(YES)
                 .build();
@@ -90,6 +98,20 @@ public class SolicitorCoversheetPDFDecorator {
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
         }
+        if (admonWillRenunicationRule.isApplicable(caseData)) {
+            AdmonWillRenunciationCaseExtra admonWillRenunciationCaseExtra = AdmonWillRenunciationCaseExtra.builder()
+                .admonWillRenunciationBeforeLinksText(ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT)
+                .admonWillRenunciationMidLinksText(ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT)
+                .admonWillRenunciationAfterLinksText(ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT)
+                .pa15FormText(PA15_FORM_TEXT_ADMON_WILL)
+                .pa17FormText(PA17_FORM_TEXT_ADMON_WILL)
+                .pa15FormUrl(PA15_FORM_URL)
+                .pa17FormUrl(PA17_FORM_URL)
+                .showAdmonWillRenunciation(YES)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(admonWillRenunciationCaseExtra));
+        }
         return decoration;
     }
 
@@ -112,5 +134,5 @@ public class SolicitorCoversheetPDFDecorator {
             .executor(renouncingExecutorName)
             .build();
     }
-    
+
 }
