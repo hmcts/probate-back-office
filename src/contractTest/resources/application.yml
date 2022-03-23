@@ -212,7 +212,7 @@ notifications:
           grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           grantRaisedCtsc: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
@@ -233,7 +233,7 @@ notifications:
           grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
@@ -254,7 +254,7 @@ notifications:
           grantIssued: "515c7643-ea3b-4a86-9b94-4622114be080"
           grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "025c2410-f1d4-4688-b03f-c94a6776341c"
           caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
@@ -273,7 +273,7 @@ notifications:
           grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
           caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
@@ -444,14 +444,11 @@ auth.idam.client.baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
-excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
+exelaEmail: ${EXCELA_EMAIL:exela@probate-test.com}
 
 data-extract:
-  block:
-    size: 3000
-    numDaysInclusive: 0
-  smee-and-ford:
-    size: 10000
+  pagination:
+    size: 100
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 
