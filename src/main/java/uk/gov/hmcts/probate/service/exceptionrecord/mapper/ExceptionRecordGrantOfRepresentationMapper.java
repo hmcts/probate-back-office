@@ -7,7 +7,11 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdoptive
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToApplicationTypeGrantOfRepresentation;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedHadLateSpouseOrCivilPartner;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormCompletedOnline;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstate;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToLong;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
@@ -45,11 +49,15 @@ import org.mapstruct.ReportingPolicy;
         OCRFieldYesOrNoMapper.class,
         OCRFieldMartialStatusMapper.class,
         OCRFieldAdoptiveRelativesMapper.class,
+        OCRFieldIhtFormEstateMapper.class,
         OCRFieldIhtFormTypeMapper.class,
         OCRFieldIhtMoneyMapper.class,
         OCRFieldRelationshipMapper.class,
         OCRFieldPaymentMethodMapper.class,
-        OCRFieldNumberMapper.class
+        OCRFieldNumberMapper.class,
+        OCRFieldIhtFormEstateValuesCompletedMapper.class,
+        OCRFieldIhtFormCompletedOnlineMapper.class,
+        OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -210,18 +218,29 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "willGiftUnderEighteen", source = "ocrFields.willGiftUnderEighteen", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "notifiedApplicants", source = "ocrFields.notifiedApplicants", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields.ihtFormCompletedOnline", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields", qualifiedBy = {
+        ToIHTFormCompletedOnline.class})
     @Mapping(target = "ihtReferenceNumber", source = "ocrFields.ihtReferenceNumber")
-    @Mapping(target = "ihtFormId", source = "ocrFields.ihtFormId", qualifiedBy = {ToIHTFormId.class})
+    @Mapping(target = "ihtFormId", source = "ocrFields", qualifiedBy = {ToIHTFormId.class})
     @Mapping(target = "ihtGrossValue", source = "ocrFields.ihtGrossValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtNetValue", source = "ocrFields.ihtNetValue", qualifiedBy = {ToPennies.class})
 
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {
         ToApplicationTypeGrantOfRepresentation.class})
+    @Mapping(target = "ihtFormEstate", source = "ocrFields", qualifiedBy = {ToIHTFormEstate.class})
+    @Mapping(target = "ihtEstateGrossValue", source = "ocrFields.ihtEstateGrossValue", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtEstateNetValue", source = "ocrFields.ihtEstateNetValue", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtEstateNetQualifyingValue", 
+        source = "ocrFields.ihtEstateNetQualifyingValue", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", 
+        source = "ocrFields", qualifiedBy = {
+            ToDeceasedHadLateSpouseOrCivilPartner.class})
+    @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
+        ToYesOrNo.class})
+    @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields", 
+        qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
-
 
     @AfterMapping
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData,

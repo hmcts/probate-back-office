@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -24,7 +24,7 @@ public class RaiseGrantOfRepresentationNotificationService {
     private final NotificationService notificationService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
-    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest)
         throws NotificationClientException {
@@ -39,7 +39,7 @@ public class RaiseGrantOfRepresentationNotificationService {
         if (useEmailNotification) {
             log.info("Email address available, sending email to applicant.");
             response =
-                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document document = notificationService.sendEmail(GRANT_RAISED, callbackRequest.getCaseDetails());
                 documents.add(document);
