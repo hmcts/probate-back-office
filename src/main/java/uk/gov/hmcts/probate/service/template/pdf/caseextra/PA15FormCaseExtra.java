@@ -5,16 +5,16 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Builder
 @Data
-public class PA16FormCaseExtra {
+public class PA15FormCaseExtra {
 
-    @JsonProperty(value = "showPa16Form")
-    private final String showPa16Form;
-    @JsonProperty(value = "pa16FormUrl")
-    private final String pa16FormUrl;
-    @JsonProperty(value = "pa16FormText")
-    private final String pa16FormText;
+    @JsonProperty(value = "showPa15Form")
+    private final String showPa15Form;
+    @JsonProperty(value = "pa15FormPoints")
+    private final List<NotApplyingExecutorFormPoint> notApplyingExecutorFormPoints;
 
 }

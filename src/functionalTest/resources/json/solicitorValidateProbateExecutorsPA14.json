@@ -43,9 +43,8 @@
       },
       "solsPBAPaymentReference": "appref-PAY2",
       "otherExecutorExists": "No",
-      "outsideUKGrantCopies": <NON_UK_COPIES>,
+      "outsideUKGrantCopies": null,
       "applicationType": "Solicitor",
-      "dateOfDeathType": "diedOn",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -72,9 +71,9 @@
       "solsApplicantSiblings": null,
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
-      "solsSolicitorIsExec": "No",
-      "solsSolicitorIsApplying": null,
-      "solsSolicitorNotApplyingReason": null,
+      "solsSolicitorIsExec": "Yes",
+      "solsSolicitorIsApplying": "No",
+      "solsSolicitorNotApplyingReason": "MentallyIncapable",
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
       "solsSOTNeedToUpdate": "No",
@@ -98,7 +97,7 @@
         "document_filename": "legal_statement.pdf",
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
-      "extraCopiesOfGrant": <UK_COPIES>,
+      "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
       "trustCorpAddress": {
         "County": "county",
@@ -150,9 +149,6 @@
           }
         }
       ],
-      "additionalExecutorsNotApplying": [],
-      "executorsApplyingLegalStatement": [],
-      "executorsNotApplyingLegalStatement": [],
       "additionalExecutorsTrustCorpList": [
         {
           "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",

@@ -1,37 +1,37 @@
 This probate application has now been submitted
 -------------------------------------------------
 
-{{solsSolicitorFirmName}}, {{solsSolicitorAddress}}
+Legal Service Ltd, Sols Add Line 1, SW1E 6EA, 
 
-{{solicitorName}}
+Peter Crouch
 
 **Probate registry reference:**
-{{deceasedLastname}}, {{deceasedFirstname}}, died {{deceasedDateOfDeath}}
+Michael, Andy, died 04/04/2017
 
-**Your reference:** {{solicitorReference}}
+**Your reference:** SOL_REF_X12345
 
-**Submitted on:** {{caseSubmissionDate}}
+**Submitted on:** 01/01/2018
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;{{applicationFee}}
+**Application fee** &pound;0.10
 
-**Fee for additional UK copies** &pound;{{feeForUkCopies}}
+**Fee for additional UK copies** &pound;1.00
 
-**Fee for certified copies** &pound;{{feeForNonUkCopies}}
+**Fee for certified copies** &pound;2.00
 
-**Fee amount** &pound;{{paymentAmount}}
+**Fee amount** &pound;0.10
 
-**Payment method** {{paymentMethod}}
+**Payment method** fee account
 
-**Selected PBA account** {{selectedPBA}}
+**Selected PBA account** PBA-12345
 
-**Customer reference** {{paymentReferenceNumber}}
+**Customer reference** Fee account PBA-12345
 
 Notes for this application
 -------------------------------------------------
 
-{{additionalInfo}}
+ADDITIONAL INFO
 
 What you need to do now
 ==================================================
@@ -39,9 +39,12 @@ What you need to do now
 Print a copy of this page for your records. 
  
 You now need to send us:
-{{originalWill}}
-*   the printed coversheet (accessed in the cover sheet tab) or your reference number {{caseRef}} written on a sheet of paper{{ihtText}}{{ihtForm}}
-{{deadExecutors}}{{legalPhotocopy}}{{pa14form}}{{pa15form}}{{pa16form}}{{pa17form}}
+
+*   the original will
+*   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
+*   the inheritance tax form IHT207
+*   a photocopy of the signed legal statement and declaration
+*   <a href="https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals" target="_blank">Give up probate executor rights for probate practitioners paper form (PA17)</a>
 
 Where to send us your documents
 -------------------------------
