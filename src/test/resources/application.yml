@@ -121,6 +121,8 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
+
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
