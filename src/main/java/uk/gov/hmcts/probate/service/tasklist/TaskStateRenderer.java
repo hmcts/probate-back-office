@@ -305,10 +305,6 @@ public class TaskStateRenderer {
             ihtEstate207 = "<li>" + IHT_ESTATE_207_TEXT + "</li>";
         }
         keyValue.put("ihtEstate207", ihtEstate207);
-        keyValue.put("renouncingExecutors",
-                (data.getAdditionalExecutorsNotApplying() != null)
-                        && (!data.getAdditionalExecutorsNotApplying().isEmpty())
-                        ? getRenouncingExecutors(data.getAdditionalExecutorsNotApplying()) : "");
         String authenticatedTranslation = "";
         if (authenticatedTranslationBusinessRule.isApplicable(data)) {
             authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";

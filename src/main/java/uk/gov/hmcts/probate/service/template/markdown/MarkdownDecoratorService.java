@@ -15,10 +15,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import java.util.List;
 import java.util.stream.Collectors;
 
