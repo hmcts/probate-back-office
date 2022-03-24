@@ -23,6 +23,9 @@
             font-size: 16pt;
         }
 
+        table {
+            max-width: 60%;
+        }
 
         .table-content {
             display: block;
@@ -99,32 +102,51 @@
                         </li>
                     {% endif %}
                 {% endif %}
-                {% if case_details.case_data.executorsNotApplyingLegalStatement != null %}
-                    {% for executor in case_details.case_data.executorsNotApplyingLegalStatement %}
-                        {% if executor.value.notApplyingExecutorReason == "Renunciation" %}
-                        <li>renunciation form for
-                            {{ executor.value.notApplyingExecutorName }}
-                        </li>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
 
                 {% if case_extras != null %}
-                    {% if case_extras.showPa16Form == "Yes" %}
-                    <li>
-                        <a href="{{ case_extras.pa16FormUrl }}" target="_blank">{{ case_extras.pa16FormText }}</a>
-                    </li>
-                    {% endif %}
                     {% if case_extras.showIhtEstate == "Yes" %}
                     <li>
                         {{ case_extras.ihtEstate207Text }}
                     </li>
                     {% endif %}
-                {% endif %}
-                {% if case_extras != null and case_extras.showPa17Form == "Yes" %}
-                <li>
-                    <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
-                </li>
+                    {% if case_extras.showPa14Form == "Yes" %}
+                        {% for pa14FormPoint in case_extras.pa14FormPoints %}
+                        <li>
+                            <a href="{{ pa14FormPoint.url }}" target="_blank">{{ pa14FormPoint.text }}</a> (PA14) for {{ pa14FormPoint.executor }}
+                        </li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if case_extras.showPa15Form == "Yes" %}
+                        {% for pa15FormPoint in case_extras.pa15FormPoints %}
+                        <li>
+                            <a href="{{ pa15FormPoint.url }}" target="_blank">{{ pa15FormPoint.text }}</a> (PA15) for {{ pa15FormPoint.executor }}
+                        </li>
+                        {% endfor %}
+                    {% endif %}
+                    {% if case_extras.showPa16Form == "Yes" %}
+                    <li>
+                        <a href="{{ case_extras.pa16FormUrl }}" target="_blank">{{ case_extras.pa16FormText }}</a>
+                    </li>
+                    {% endif %}
+                    {% if case_extras.showPa17Form == "Yes" %}
+                    <li>
+                        <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
+                    </li>
+                    {% endif %}
+                    {% if case_extras.showAdmonWillRenunciation == "Yes" %}
+                    <li>
+                        {{ case_extras.admonWillRenunciationBeforeLinksText }}
+                        <a href="{{ case_extras.pa15FormUrl }}" target="_blank">{{ case_extras.pa15FormText }}</a>
+                         {{ case_extras.admonWillRenunciationMidLinksText }}
+                        <a href="{{ case_extras.pa17FormUrl }}" target="_blank">{{ case_extras.pa17FormText }}</a>
+                        {{ case_extras.admonWillRenunciationAfterLinksText }}
+                    </li>
+                    {% endif %}
+                    {% if case_extras.showTcResolutionLodgedWithApp == "Yes" %}
+                    <li>
+                        {{ case_extras.tcResolutionLodgedWithAppText }}
+                    </li>
+                    {% endif %}
                 {% endif %}
                 {% if case_extras != null and case_extras.showAuthenticatedTranslation == "Yes" %}
                 <li>

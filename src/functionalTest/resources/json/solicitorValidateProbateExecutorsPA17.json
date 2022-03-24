@@ -45,6 +45,7 @@
       "otherExecutorExists": "No",
       "outsideUKGrantCopies": <NON_UK_COPIES>,
       "applicationType": "Solicitor",
+      "dateOfDeathType": "diedOn",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -149,6 +150,9 @@
           }
         }
       ],
+      "additionalExecutorsNotApplying": [],
+      "executorsApplyingLegalStatement": [],
+      "executorsNotApplyingLegalStatement": [],
       "additionalExecutorsTrustCorpList": [
         {
           "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",

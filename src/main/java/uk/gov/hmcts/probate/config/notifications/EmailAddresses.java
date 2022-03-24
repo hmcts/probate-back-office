@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties
 public class EmailAddresses {
 
-    private String excelaEmail;
-    
+    private String exelaEmail;
+
     private String smeeAndFordEmail;
 }
