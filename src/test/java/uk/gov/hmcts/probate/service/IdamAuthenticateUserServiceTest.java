@@ -33,10 +33,10 @@ public class IdamAuthenticateUserServiceTest {
     public void shouldGetIdamOAuth2Token() {
         AuthenticateUserResponse user = AuthenticateUserResponse.builder().code("code").build();
         when(idamApi.authenticateUser(any(), any(), any(), any()))
-            .thenReturn(user);
+                .thenReturn(user);
         TokenExchangeResponse token = TokenExchangeResponse.builder().accessToken("accessToken").build();
         when(idamApi.exchangeCode(any(), any(), any(), any(), any()))
-            .thenReturn(token);
+                .thenReturn(token);
         String oauth2Token = idamAuthenticateUserService.getIdamOauth2Token();
         assertEquals("Bearer accessToken", oauth2Token);
     }

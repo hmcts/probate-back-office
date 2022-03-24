@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
@@ -20,7 +19,6 @@ import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -35,10 +33,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
@@ -55,9 +51,6 @@ public class ConfirmationResponseService {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
-    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
     public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
@@ -86,8 +79,8 @@ public class ConfirmationResponseService {
         return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
     }
 
-    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData, CaseData caseData) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData, caseData));
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
@@ -210,7 +203,7 @@ public class ConfirmationResponseService {
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
 
-    private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
+    private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData, CaseData caseData) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
         String caseSubmissionDate = "";
@@ -258,9 +251,9 @@ public class ConfirmationResponseService {
         } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
             originalWill = "\n*   the original will and any codicils";
         }
-        
+
         keyValue.put("{{originalWill}}", originalWill);
-        
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -274,10 +267,11 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtText}}", getIhtText(ccdData));
         keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
-        keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
-        keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
-        keyValue.put("{{pa16form}}", getPA16FormLabel(ccdData));
-        keyValue.put("{{pa17form}}", getPA17FormLabel(ccdData));
+        keyValue.put("{{pa14form}}", getPA14FormLabel(caseData));
+        keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
+        keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
+        keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
+        keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
         keyValue.put("{{tcResolutionLodgedWithApp}}", getTcResolutionFormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
@@ -315,20 +309,27 @@ public class ConfirmationResponseService {
         return ihtText;
     }
 
-    private String getPA16FormLabel(CCDData ccdData) {
-        CaseData caseData = CaseData.builder()
-            .solsApplicantRelationshipToDeceased(ccdData.getSolsApplicantRelationshipToDeceased())
-            .solsApplicantSiblings(ccdData.getSolsApplicantSiblings())
-            .solsSpouseOrCivilRenouncing(ccdData.getSolsSpouseOrCivilRenouncing())
-            .build();
+    private String getPA14FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA14FormLabel(caseData);
+    }
+
+    private String getPA15FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA15FormLabel(caseData);
+    }
+
+    private String getPA16FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA16FormLabel(caseData);
     }
-    
-    private String getPA17FormLabel(CCDData ccdData) {
-        CaseData caseData = CaseData.builder()
-            .titleAndClearingType(ccdData.getTitleAndClearingType())
-            .build();
+
+    private String getPA17FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA17FormLabel(caseData);
+    }
+
+    private String getAdmonWillRenunciationFormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .solsWillType(ccdData.getSolsWillType())
+            .build();
+        return markdownDecoratorService.getAdmonWillRenunciationFormLabel(caseData);
     }
 
     private String getTcResolutionFormLabel(CCDData ccdData) {
@@ -337,11 +338,11 @@ public class ConfirmationResponseService {
                 .build();
         return markdownDecoratorService.getTcResolutionFormLabel(caseData);
     }
-    
+
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
-    } 
-    
+    }
+
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
@@ -356,25 +357,6 @@ public class ConfirmationResponseService {
 
     private String defaultString(String value) {
         return value == null ? "" : value + ", ";
-    }
-
-    private String getRenouncingExecutors(List<Executor> executors) {
-        String renouncingExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
-    }
-
-    private String getDeadExecutors(List<Executor> executors) {
-        String deadExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
-                || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
     private String getOptionalAmountAsString(BigDecimal amount) {

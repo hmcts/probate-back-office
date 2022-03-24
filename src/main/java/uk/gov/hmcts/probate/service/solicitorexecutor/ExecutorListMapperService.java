@@ -17,10 +17,10 @@ import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_PROFESSIONAL;
 import static uk.gov.hmcts.probate.model.Constants.EXECUTOR_TYPE_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
-import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrTitleClearingTypes;
 import static uk.gov.hmcts.probate.model.Constants.SOLICITOR_ID;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.getNonTrustPtnrTitleClearingTypes;
+import static uk.gov.hmcts.probate.model.Constants.getTrustCorpTitleClearingTypes;
 
 @Slf4j
 @Service
@@ -147,7 +147,7 @@ public class ExecutorListMapperService {
             CaseData caseData) {
         return caseData.getSolsAdditionalExecutorList()
                 .stream()
-                .filter(exec -> exec.getValue().getAdditionalApplying().equals(YES))
+                .filter(exec -> YES.equals(exec.getValue().getAdditionalApplying()))
                 .map(exec -> new CollectionMember<>(exec.getId(), AdditionalExecutorApplying.builder()
                         .applyingExecutorAddress(exec.getValue().getAdditionalExecAddress())
                         .applyingExecutorFirstName(FormattingService.capitaliseEachWord(
