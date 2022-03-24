@@ -18,7 +18,7 @@ exports.config = {
                 },
                 args: [
                     // '--headless',
-                    '--disable-gpu',
+                    //'--disable-gpu',
                     '--no-sandbox',
                     '--allow-running-insecure-content',
                     '--ignore-certificate-errors',
