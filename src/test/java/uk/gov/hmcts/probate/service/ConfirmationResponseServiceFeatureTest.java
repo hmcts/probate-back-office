@@ -186,7 +186,8 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithTcResolutionLodgedWithinApp() throws Exception {
         CCDData ccdData = createCCDataBuilder().titleAndClearingType("TCTTrustCorpResWithApp").build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData);
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
+            caseDataMock);
 
         String expectedConfirmationBody = testUtils
                 .getStringFromFile("expectedConfirmationBodyWithTcResolutionLodged.md");

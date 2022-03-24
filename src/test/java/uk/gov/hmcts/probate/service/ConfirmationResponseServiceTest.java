@@ -733,7 +733,8 @@ public class ConfirmationResponseServiceTest {
         when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class)))
             .thenReturn("a certified copy of the resolution");
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("a certified copy of the resolution",
