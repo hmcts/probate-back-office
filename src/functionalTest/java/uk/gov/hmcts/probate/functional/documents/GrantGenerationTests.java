@@ -1340,14 +1340,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(POSTCODE));
     }
 
-    @Test
-    public void verifyGenerateSolsCoverSheetGopTcResolutionLodgedWithinApplication() {
-        String payload = "/caseprogress/04e-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
-        assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
-
-    }
-
     private String generateGrantDocument(String jsonFileName, String path) {
         return generateDocument(jsonFileName, path, GRANT_DOC_NAME);
     }
