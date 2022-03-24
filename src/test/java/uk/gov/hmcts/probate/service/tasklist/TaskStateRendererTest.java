@@ -946,28 +946,18 @@ public class TaskStateRendererTest {
 
     @Test
     public void shouldRenderCorrectDocumentsForState_SendDocuments_NoEnglishWill() {
-        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
-        when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
-
-        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorName()).thenReturn("Executor Two");
-        when(additionalExecutorNotApplyingRenounced2.getNotApplyingExecutorReason()).thenReturn("Renunciation");
-
-        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorName()).thenReturn("Executor Three");
-        when(additionalExecutorNotApplyingDied.getNotApplyingExecutorReason()).thenReturn(
-            ExecutorNotApplyingReason.DIED_BEFORE.toString());
 
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
-            .primaryApplicantIsApplying(NO)
+            .primaryApplicantIsApplying(YES)
             .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
             .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
             .solsAdditionalExecutorList(null)
             .ihtFormId(IHT_FORM_207)
-            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingList)
             .solsWillType(GRANT_TYPE_PROBATE)
             .solsFeeAccountNumber("1")
-            .titleAndClearingType("TCTPartAllRenouncing")
+            .titleAndClearingType("TCTTrustCorpResWithApp")
             .englishWill(NO)
             .build();
 
@@ -975,7 +965,7 @@ public class TaskStateRendererTest {
             .getFileFromResourceAsString(
                 "caseprogress/gop/solicitorCaseProgressSendDocumentsWithAuthenticatedTranslationOfWill");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
-        when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(true);
+        when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(false);
         when(authenticatedTranslationBusinessRule.isApplicable(caseData)).thenReturn(true);
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,

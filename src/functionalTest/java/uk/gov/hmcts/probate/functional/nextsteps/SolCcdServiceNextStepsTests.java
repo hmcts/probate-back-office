@@ -132,7 +132,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
                 "/nextsteps/authenticatedTranslation/nextSteps.json", Collections.emptyList());
         String response = fullResponse.getBody().jsonPath().get("confirmation_body");
         response = removeCrLfs(response);
-        assertTrue(response.contains("an authenticated translation of the will in English or Welsh"));
+        assertTrue(response.contains("an authenticated translation of the will"));
     }
 
     @Test

@@ -305,11 +305,6 @@ public class TaskStateRenderer {
             ihtEstate207 = "<li>" + IHT_ESTATE_207_TEXT + "</li>";
         }
         keyValue.put("ihtEstate207", ihtEstate207);
-        String authenticatedTranslation = "";
-        if (authenticatedTranslationBusinessRule.isApplicable(data)) {
-            authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
-        }
-        keyValue.put("authenticatedTranslation", authenticatedTranslation);
         String admonWillRenForms = "";
         if (admonWillRenunicationRule.isApplicable(data)) {
             admonWillRenForms = "<li>" + sendDocumentsRenderer.getAdmonWillRenunciationText() + "</li>";
@@ -320,6 +315,11 @@ public class TaskStateRenderer {
             tcResolutionLodgedWithApp = "<li>" + TC_RESOLUTION_LODGED_WITH_APP + "</li>";
         }
         keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
+        String authenticatedTranslation = "";
+        if (authenticatedTranslationBusinessRule.isApplicable(data)) {
+            authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
+        }
+        keyValue.put("authenticatedTranslation", authenticatedTranslation);
 
         return keyValue;
     }

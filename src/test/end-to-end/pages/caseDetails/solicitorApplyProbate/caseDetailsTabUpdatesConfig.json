@@ -3,7 +3,7 @@
   "WillLeft": {
     "fields": [
       "Does the will dispose of the estate in England and Wales (or if will is in English, does it appoint an executor), or is the deceased a British National?",
-      "Is the will in English or Welsh?",
+      "Is the will in English?",
       "Does the will appoint an executor?",
       "Application type"
     ],
