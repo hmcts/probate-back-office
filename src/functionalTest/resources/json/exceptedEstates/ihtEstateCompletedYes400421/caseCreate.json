@@ -86,8 +86,8 @@
         {
           "id": "solicitor",
           "value": {
-            "additionalExecForenames": "Solicitor_fn",
-            "additionalExecLastname": "Solicitor_ln",
+            "additionalExecForenames": "Solicitor_fn1",
+            "additionalExecLastname": "Solicitor_ln1",
             "additionalExecNameOnWill": "No",
             "additionalApplying": "No",
             "additionalExecReasonNotApplying": "Renunciation"
@@ -96,11 +96,11 @@
         {
           "id": "149ebc69-c8be-4d90-94dd-f00715526779",
           "value": {
-            "additionalExecForenames": "exec2",
-            "additionalExecLastname": "Renounced",
+            "additionalExecForenames": "exec21",
+            "additionalExecLastname": "Renounced1",
             "additionalExecNameOnWill": "No",
             "additionalApplying": "No",
-            "additionalExecReasonNotApplying": "Renunciation"
+            "additionalExecReasonNotApplying": "PowerReserved"
           }
         }
       ],
@@ -118,7 +118,7 @@
           "id": "solicitor",
           "value": {
             "notApplyingExecutorName": "Solicitor_fn Solicitor_ln",
-            "notApplyingExecutorReason": "Renunciation"
+            "notApplyingExecutorReason": "DiedAfter"
           }
         },
         {

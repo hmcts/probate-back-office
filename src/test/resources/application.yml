@@ -121,6 +121,8 @@ evidence.management.upload.file.url: /documents
 http.connect.timeout: 60000
 http.connect.request.timeout: 60000
 
+idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
+
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
@@ -138,7 +140,7 @@ notifications:
           grantIssued: "pa-grant-issued"
           grantReissued: "pa-grant-reissued"
           generalCaveatMessage: "pa-general-caveat-message"
-          excelaData: "pa-excela-data"
+          exelaData: "pa-exela-data"
           smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "pa-grant-raised"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan"
@@ -158,7 +160,7 @@ notifications:
           grantIssued: "sol-grant-issued"
           grantReissued: "sol-grant-reissued"
           generalCaveatMessage: "sol-general-caveat-message"
-          excelaData: "pa-excela-data"
+          exelaData: "pa-exela-data"
           smeeAndFordData: "pa-smeeFord-data"
           grantRaised: "sol-grant-raised"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan"
@@ -179,7 +181,7 @@ notifications:
           grantIssued: "pa-grant-issued-welsh"
           grantReissued: "pa-grant-reissued-welsh"
           generalCaveatMessage: "pa-general-caveat-message-welsh"
-          excelaData: "pa-excela-data-welsh"
+          exelaData: "pa-exela-data-welsh"
           smeeAndFordData: "pa-smeeFord-data"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
@@ -198,7 +200,7 @@ notifications:
           grantIssued: "sol-grant-issued-welsh"
           grantReissued: "sol-grant-reissued-welsh"
           generalCaveatMessage: "sol-general-caveat-message-welsh"
-          excelaData: "pa-excela-data-welsh"
+          exelaData: "pa-exela-data-welsh"
           smeeAndFordData: "pa-smeeFord-data"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
@@ -384,16 +386,12 @@ idam-s2s-auth:
     eureka:
       enabled: false
 
-excelaEmail: excela@probate-test.com
+exelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 
 data-extract:
-  block:
-    size: 3000
-    numDaysInclusive: 0
-  smee-and-ford:
-    size: 2000
-
+  pagination:
+    size: 1
 welsh:
   months:
     1: "Ionawr"
