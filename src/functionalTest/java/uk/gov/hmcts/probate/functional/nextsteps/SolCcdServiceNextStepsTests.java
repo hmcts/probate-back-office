@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.nextsteps;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
@@ -53,7 +54,20 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc", "(PA16)").getBody().asString();
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
-    
+
+    @Test
+    public void shouldIncludePA14Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA14.json", VALIDATE_URL);
+        assertTrue(response.contains("(PA14)"));
+    }
+
+    @Test
+    public void shouldIncludePA15Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA15.json", VALIDATE_URL);
+        System.out.println("shouldIncludePA15Link.response:" +  response);
+        assertTrue(response.contains("(PA15)"));
+    }
+
     @Test
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA17Form() {
         validatePostRequestSuccessForLegalStatement(
@@ -152,6 +166,17 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
         verifyAll(VALIDATE_URL, "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.postCode");
+    }
+
+    private String transformCase(String jsonFileName, String path) {
+
+        final Response jsonResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
+
+        return jsonResponse.getBody().asString();
     }
 
     private Response validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {
