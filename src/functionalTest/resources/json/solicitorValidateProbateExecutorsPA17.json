@@ -43,8 +43,9 @@
       },
       "solsPBAPaymentReference": "appref-PAY2",
       "otherExecutorExists": "No",
-      "outsideUKGrantCopies": null,
+      "outsideUKGrantCopies": <NON_UK_COPIES>,
       "applicationType": "Solicitor",
+      "dateOfDeathType": "diedOn",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -97,7 +98,7 @@
         "document_filename": "legal_statement.pdf",
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
-      "extraCopiesOfGrant": null,
+      "extraCopiesOfGrant": <UK_COPIES>,
       "solsPaymentMethods": "fee account",
       "trustCorpAddress": {
         "County": "county",
@@ -149,6 +150,9 @@
           }
         }
       ],
+      "additionalExecutorsNotApplying": [],
+      "executorsApplyingLegalStatement": [],
+      "executorsNotApplyingLegalStatement": [],
       "additionalExecutorsTrustCorpList": [
         {
           "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",

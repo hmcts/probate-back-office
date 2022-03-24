@@ -35,7 +35,7 @@ import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
@@ -62,7 +62,7 @@ import static uk.gov.service.notify.NotificationClient.prepareUpload;
 public class NotificationService {
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMM Y HH:mm");
-    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -74,7 +74,7 @@ public class NotificationService {
     private final MarkdownTransformationService markdownTransformationService;
     private final PDFManagementService pdfManagementService;
     private final EventValidationService eventValidationService;
-    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     private final GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private final CaveatPersonalisationService caveatPersonalisationService;
@@ -200,21 +200,21 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddress, documentType);
     }
 
-    public Document sendExcelaEmail(List<ReturnedCaseDetails> caseDetails) throws
+    public Document sendExelaEmail(List<ReturnedCaseDetails> caseDetails) throws
         NotificationClientException {
         String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
             .get(caseDetails.get(0).getData().getApplicationType())
-            .getExcelaData();
+            .getExelaData();
         Map<String, String> personalisation =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(caseDetails);
-        String reference = LocalDateTime.now().format(EXCELA_DATE);
+            grantOfRepresentationPersonalisationService.getExelaPersonalisation(caseDetails);
+        String reference = LocalDateTime.now().format(EXELA_DATE);
 
         SendEmailResponse response;
-        response = notificationClientService.sendEmail(templateId, emailAddresses.getExcelaEmail(),
+        response = notificationClientService.sendEmail(templateId, emailAddresses.getExelaEmail(),
             personalisation, reference);
-        log.info("Excela email reference response: {}", response.getReference());
+        log.info("Exela email reference response: {}", response.getReference());
 
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExelaEmail(), SENT_EMAIL);
     }
 
     public Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate, String toDate) throws
@@ -224,7 +224,7 @@ public class NotificationService {
             .getSmeeAndFordData();
         Map<String, String> personalisation =
             smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(caseDetails, fromDate, toDate);
-        String reference = LocalDateTime.now().format(EXCELA_DATE);
+        String reference = LocalDateTime.now().format(EXELA_DATE);
 
         SendEmailResponse response =
             notificationClientService.sendEmail(templateId, emailAddresses.getSmeeAndFordEmail(),
@@ -270,7 +270,7 @@ public class NotificationService {
         CallbackResponse callbackResponse;
         Document sentEmail;
         callbackResponse =
-            eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
 
         if (callbackResponse.getErrors().isEmpty()) {
             sentEmail = sendEmail(GRANT_REISSUED, caseDetails);

@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -68,6 +69,8 @@ public class CCDDataTransformerTest {
     private static final String PAYMENT_METHOD_FEE = "fee account";
     private static final String SELECTED_PBA_NUMBER = "PBA1234";
     private static final String PBA_PAYMENT_REFERENCE = "PBA1234-PayRef";
+    private static final BigDecimal IHT_ESTATE_GROSS = BigDecimal.valueOf(20000f);
+    private static final BigDecimal IHT_ESTATE_NET = BigDecimal.valueOf(18000f);
 
     @Mock
     private CallbackRequest callbackRequestMock;
@@ -137,6 +140,9 @@ public class CCDDataTransformerTest {
         when(additionalExecutors2.getValue()).thenReturn(additionalExecutor2);
         additionalExecutors.add(additionalExecutors1);
         additionalExecutors.add(additionalExecutors2);
+        when(additionalExecutor1.getAdditionalApplying()).thenReturn(YES);
+        when(additionalExecutor2.getAdditionalApplying()).thenReturn(NO);
+        when(additionalExecutor2.getAdditionalExecReasonNotApplying()).thenReturn("Renunciation");
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(additionalExecutors);
         when(caseDataMock.getPrimaryApplicantForenames()).thenReturn(EXEC_FIRSTNAME);
         when(caseDataMock.isPrimaryApplicantApplying()).thenReturn(true);
@@ -162,6 +168,18 @@ public class CCDDataTransformerTest {
         additionalExecutorsPartner.add(additionalExecutorsPartner1);
         additionalExecutorsPartner.add(additionalExecutorsPartner2);
         when(caseDataMock.getOtherPartnersApplyingAsExecutors()).thenReturn(additionalExecutorsPartner);
+
+        List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying = 
+            new ArrayList<>();
+        AdditionalExecutorNotApplying addNot1 = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorReason("Renunciation")
+            .build();
+        AdditionalExecutorNotApplying addNot2 = AdditionalExecutorNotApplying.builder()
+            .notApplyingExecutorReason("Renunciation")
+            .build();
+        additionalExecutorsNotApplying.add(new CollectionMember<>(addNot1));
+        additionalExecutorsNotApplying.add(new CollectionMember<>(addNot2));
+        when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(additionalExecutorsNotApplying);
     }
 
     @Test
@@ -400,12 +418,16 @@ public class CCDDataTransformerTest {
 
         when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(IHT_ESTATE_GROSS);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(IHT_ESTATE_NET);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertEquals("Yes", ccdData.getIht().getIhtFormEstateValuesCompleted());
         assertEquals("IHT207", ccdData.getIht().getIhtFormEstate());
+        assertEquals(IHT_ESTATE_GROSS, ccdData.getIht().getIhtEstateGrossValue());
+        assertEquals(IHT_ESTATE_NET, ccdData.getIht().getIhtEstateNetValue());
     }
 
     private void assertAll(CCDData ccdData) {
@@ -429,6 +451,10 @@ public class CCDDataTransformerTest {
         assertTrue(ccdData.getExecutors().get(2).isApplying());
         assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
+        
+        assertEquals(true, ccdData.getExecutors().get(0).isApplying());
+        assertEquals(false, ccdData.getExecutors().get(1).isApplying());
+        assertEquals("Renunciation", ccdData.getExecutors().get(1).getReasonNotApplying());
     }
 
     private void assertCaseSubmissionDate(CCDData ccdData) {
