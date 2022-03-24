@@ -386,7 +386,7 @@ idam-s2s-auth:
     eureka:
       enabled: false
 
-exelaEmail: exela@probate-test.com
+excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
 
 data-extract:
