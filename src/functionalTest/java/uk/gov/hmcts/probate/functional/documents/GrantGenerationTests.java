@@ -10,8 +10,6 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class GrantGenerationTests extends DocumentGenerationTestBase {
