@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 
 @Slf4j
 @Service
@@ -31,6 +33,8 @@ public class MarkdownDecoratorService {
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
+    private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+
 
     public String getPA14FormLabel(CaseData caseData) {
         String label = "";
@@ -87,4 +91,11 @@ public class MarkdownDecoratorService {
         return BULLET + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName);
     }
 
+
+    public String getTcResolutionFormLabel(CaseData caseData) {
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(caseData)) {
+            return "\n*   " + TC_RESOLUTION_LODGED_WITH_APP;
+        }
+        return "";
+    }
 }

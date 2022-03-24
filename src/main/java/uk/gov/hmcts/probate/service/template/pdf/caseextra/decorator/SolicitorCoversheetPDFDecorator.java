@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.AdmonWillRenunciationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.TCResolutionLodgedWithAppCaseExtra;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +40,7 @@ import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -51,6 +54,7 @@ public class SolicitorCoversheetPDFDecorator {
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
+    private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
@@ -111,6 +115,15 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(admonWillRenunciationCaseExtra));
+        }
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(caseData)) {
+            TCResolutionLodgedWithAppCaseExtra tcResolutionLodgedWithAppCaseExtra = TCResolutionLodgedWithAppCaseExtra
+                .builder()
+                .showTcResolutionLodgedWithApp(YES)
+                .tcResolutionLodgedWithAppText(TC_RESOLUTION_LODGED_WITH_APP)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(tcResolutionLodgedWithAppCaseExtra));
         }
         return decoration;
     }

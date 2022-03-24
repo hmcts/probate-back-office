@@ -16,6 +16,7 @@ public class PageTextConstants {
     public static final String PA17_FORM = "<pa17Form/>";
     public static final String IHT_ESTATE_207 = "<ihtEstate207/>";
     public static final String ADMON_WILL_RENUNCIATION = "<admonWillRenForms/>";
+    public static final String TC_RESOLUTION_WITH_APP = "<tcResolutionWithApp/>";
 
     private PageTextConstants() {
         throw new IllegalStateException("Utility class");
