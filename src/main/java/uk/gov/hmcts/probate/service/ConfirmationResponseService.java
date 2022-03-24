@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
@@ -20,7 +19,6 @@ import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -35,18 +33,14 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_DIED_AFTER;
-import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_DIED_BEFORE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
@@ -257,9 +251,9 @@ public class ConfirmationResponseService {
         } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
             originalWill = "\n*   the original will and any codicils";
         }
-        
+
         keyValue.put("{{originalWill}}", originalWill);
-        
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -273,7 +267,6 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtText}}", getIhtText(ccdData));
         keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
-        keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
         keyValue.put("{{pa14form}}", getPA14FormLabel(caseData));
         keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
         keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
@@ -341,7 +334,7 @@ public class ConfirmationResponseService {
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
     }
-    
+
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
@@ -356,16 +349,6 @@ public class ConfirmationResponseService {
 
     private String defaultString(String value) {
         return value == null ? "" : value + ", ";
-    }
-
-    private String getDeadExecutors(List<Executor> executors) {
-        String deadExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
-                || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
     private String getOptionalAmountAsString(BigDecimal amount) {
