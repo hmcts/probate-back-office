@@ -94,16 +94,6 @@
             "additionalApplying": "No",
             "additionalExecReasonNotApplying": "Renunciation"
           }
-        },
-        {
-          "id": "149ebc69-c8be-4d90-94dd-f00715526779",
-          "value": {
-            "additionalExecForenames": "exec2",
-            "additionalExecLastname": "Renounced",
-            "additionalExecNameOnWill": "No",
-            "additionalApplying": "No",
-            "additionalExecReasonNotApplying": "Renunciation"
-          }
         }
       ],
       "solsSolicitorAddress": {
@@ -116,13 +106,6 @@
         "Country": "SolAddCo"
       },
       "executorsNotApplying": [
-        {
-          "id": "solicitor",
-          "value": {
-            "notApplyingExecutorName": "Solicitor_fn Solicitor_ln",
-            "notApplyingExecutorReason": "Renunciation"
-          }
-        },
         {
           "id": "solicitor",
           "value": {
