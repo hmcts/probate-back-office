@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -38,6 +39,7 @@ import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUN
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
@@ -46,6 +48,7 @@ import static uk.gov.hmcts.probate.model.PageTextConstants.PA14_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA15_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.TC_RESOLUTION_WITH_APP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -79,6 +82,7 @@ public class TaskStateRenderer {
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
+    private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -176,6 +180,8 @@ public class TaskStateRenderer {
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
                 .replaceFirst(ADMON_WILL_RENUNCIATION, keyValues.getOrDefault("admonWillRenForms", ""))
+                .replaceFirst(TC_RESOLUTION_WITH_APP,
+                    keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
                 );
     }
 
@@ -299,6 +305,12 @@ public class TaskStateRenderer {
             admonWillRenForms = "<li>" + sendDocumentsRenderer.getAdmonWillRenunciationText() + "</li>";
         }
         keyValue.put("admonWillRenForms", admonWillRenForms);
+        String tcResolutionLodgedWithApp = "";
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(data)) {
+            tcResolutionLodgedWithApp = "<li>" + TC_RESOLUTION_LODGED_WITH_APP + "</li>";
+        }
+        keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
+
         return keyValue;
     }
 

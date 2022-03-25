@@ -18,7 +18,6 @@ import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
 
-
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     private static final String VALIDATE_URL = "/nextsteps/validate";
@@ -166,6 +165,16 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     public void verifyEmptySolicitorFirmPostcodeReturnsError() {
         verifyAll(VALIDATE_URL, "failure.missingSolicitorPostcode.json", 400, "Invalid payload",
             "caseDetails.data.solsSolicitorAddress.postCode");
+    }
+
+    @Test
+    public void verifyGenerateSolsGopTcResolutionLodgedWithinApplication() {
+        String dir = "/nextsteps/tcResolutionLodged/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
+                Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains("a certified copy of the resolution"));
     }
 
     private String transformCase(String jsonFileName, String path) {

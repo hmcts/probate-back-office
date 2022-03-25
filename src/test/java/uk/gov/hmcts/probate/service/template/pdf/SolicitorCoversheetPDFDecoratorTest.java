@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
@@ -49,6 +50,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
     @Mock
     private AdmonWillRenunicationRule admonWillRenunicationRuleMock;
+    @Mock
+    private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRuleMock;
     @Mock
     private CaseExtraDecorator caseExtraDecorator;
     @Mock
@@ -154,6 +157,18 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
+    public void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
+        when(tcResolutionLodgedWithApplicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"tcResolutionLodgedWithAppText\":\"a certified copy of the resolution\"}";
+        when(caseExtraDecorator.decorate(any())).thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+    }
+
+    @Test
     public void shouldProvideAllDecorations() {
         when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
@@ -171,6 +186,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
         String extraIht = "extraIht";
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class)))
             .thenReturn(extraIht);
+        when(caseExtraDecorator.combineDecorations("", extraIht)).thenReturn(extraIht);
 
         String extra1 = "extraPA15";
         String extra2 = "extraPA15, extraPA16";

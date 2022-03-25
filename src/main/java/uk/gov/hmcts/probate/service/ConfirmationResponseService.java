@@ -272,6 +272,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
         keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
         keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
+        keyValue.put("{{tcResolutionLodgedWithApp}}", getTcResolutionFormLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
@@ -329,6 +330,13 @@ public class ConfirmationResponseService {
             .solsWillType(ccdData.getSolsWillType())
             .build();
         return markdownDecoratorService.getAdmonWillRenunciationFormLabel(caseData);
+    }
+
+    private String getTcResolutionFormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+                .titleAndClearingType(ccdData.getTitleAndClearingType())
+                .build();
+        return markdownDecoratorService.getTcResolutionFormLabel(caseData);
     }
 
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {

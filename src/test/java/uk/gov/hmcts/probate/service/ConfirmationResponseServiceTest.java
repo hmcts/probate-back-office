@@ -723,6 +723,26 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetNextStepsConfirmationForTcResolutionLodgedWithApp() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class)))
+            .thenReturn("a certified copy of the resolution");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("a certified copy of the resolution",
+                nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));
+
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationLegalstatementUploaded() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
         when(ccdDataMock.isHasUploadedLegalStatement()).thenReturn(true);

@@ -38,6 +38,7 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -86,7 +87,7 @@ public class ConfirmationResponseServiceFeatureTest {
 
     @MockBean
     private CaseData caseDataMock;
-    
+
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {
         CCDData ccdData = createCCDataBuilder().build();
@@ -149,7 +150,7 @@ public class ConfirmationResponseServiceFeatureTest {
     public void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         CCDData ccdData = createCCDataBuilder().executors(Collections.singletonList(deadExecutor)).build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithDeadExecutor.md");
@@ -162,7 +163,7 @@ public class ConfirmationResponseServiceFeatureTest {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         Executor deadExecutor2 = createDeadExecutor("John", "Martin");
         CCDData ccdData = createCCDataBuilder().executors(Arrays.asList(deadExecutor, deadExecutor2)).build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody =
@@ -174,7 +175,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithIHT400421() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT400421")).build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT400421.md");
@@ -183,15 +184,27 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
+    public void shouldGenerateCorrectConfirmationBodyWithTcResolutionLodgedWithinApp() throws Exception {
+        CCDData ccdData = createCCDataBuilder().titleAndClearingType("TCTTrustCorpResWithApp").build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
+            caseDataMock);
+
+        String expectedConfirmationBody = testUtils
+                .getStringFromFile("expectedConfirmationBodyWithTcResolutionLodged.md");
+
+        assertEquals(stopConfirmation.getConfirmationBody(), expectedConfirmationBody);
+    }
+
+    @Test
     public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptions() throws Exception {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         CCDData ccdData = createCCDataBuilder()
             .executors(Arrays.asList(deadExecutor))
             .iht(createInheritanceTax("IHT400421")).build();
-        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(createAdditionalExecutor("Tim", "Smith", false, 
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(createAdditionalExecutor("Tim", "Smith", false,
             REASON_RENOUNCED));
         when(caseDataMock.getOtherExecutorExists()).thenReturn("Yes");
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithAllCombinations.md");
@@ -208,12 +221,12 @@ public class ConfirmationResponseServiceFeatureTest {
             .executors(Arrays.asList(deadExecutor, deadExecutor2))
             .iht(createInheritanceTax("IHT400421")).build();
         when(caseDataMock.getOtherExecutorExists()).thenReturn("Yes");
-        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(createAdditionalExecutor("Tim", "Smith", false, 
+        when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(createAdditionalExecutor("Tim", "Smith", false,
             REASON_RENOUNCED));
         when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(createAdditionalExecutorNotApplying("John",
             "Smith", REASON_RENOUNCED));
 
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody =
@@ -235,7 +248,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectCordicilsConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).willHasCodicils("Yes").build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithWillCordicils.md");
@@ -246,7 +259,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectIHT217ConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).iht217("Yes").build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT217.md");
@@ -294,7 +307,7 @@ public class ConfirmationResponseServiceFeatureTest {
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn("No");
         when(caseDataMock.getSolsSpouseOrCivilRenouncing()).thenReturn("Yes");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithPA16Form.md");
@@ -306,7 +319,7 @@ public class ConfirmationResponseServiceFeatureTest {
     public void shouldGenerateCorrectPA17FormConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().build();
         when(caseDataMock.getTitleAndClearingType()).thenReturn("TCTPartOthersRenouncing");
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData, 
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithPA17Form.md");
@@ -404,9 +417,9 @@ public class ConfirmationResponseServiceFeatureTest {
             .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
             .build();
     }
-    
+
     private List<CollectionMember<AdditionalExecutorNotApplying>> createAdditionalExecutorNotApplying(String forenames,
-                                                                                                      String lastname, 
+                                                                                                      String lastname,
                                                                                                       String reason) {
         return Arrays.asList(new CollectionMember<>(null, AdditionalExecutorNotApplying.builder()
             .notApplyingExecutorName(forenames + " " + lastname)

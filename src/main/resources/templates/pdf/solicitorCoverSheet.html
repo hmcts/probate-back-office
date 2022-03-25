@@ -142,6 +142,11 @@
                         {{ case_extras.admonWillRenunciationAfterLinksText }}
                     </li>
                     {% endif %}
+                    {% if case_extras.showTcResolutionLodgedWithApp == "Yes" %}
+                    <li>
+                        {{ case_extras.tcResolutionLodgedWithAppText }}
+                    </li>
+                    {% endif %}
                 {% endif %}
             </ul>
             <br /><br /><br />
