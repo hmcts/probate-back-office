@@ -210,11 +210,11 @@ public class NotificationService {
         String reference = LocalDateTime.now().format(EXELA_DATE);
 
         SendEmailResponse response;
-        response = notificationClientService.sendEmail(templateId, emailAddresses.getExelaEmail(),
+        response = notificationClientService.sendEmail(templateId, emailAddresses.getExcelaEmail(),
             personalisation, reference);
         log.info("Exela email reference response: {}", response.getReference());
 
-        return getGeneratedSentEmailDocument(response, emailAddresses.getExelaEmail(), SENT_EMAIL);
+        return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
     public Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate, String toDate) throws

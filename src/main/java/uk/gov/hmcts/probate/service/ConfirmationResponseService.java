@@ -51,6 +51,9 @@ public class ConfirmationResponseService {
 
     static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
     static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
+    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
+    private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
+    private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
     public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
@@ -273,6 +276,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
         keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
         keyValue.put("{{tcResolutionLodgedWithApp}}", getTcResolutionFormLabel(ccdData));
+        keyValue.put("{{authenticatedTranslation}}", getAuthenticatedTranslationLabel(ccdData));
 
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
@@ -339,10 +343,17 @@ public class ConfirmationResponseService {
         return markdownDecoratorService.getTcResolutionFormLabel(caseData);
     }
 
-    boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
-        return !ccdData.isHasUploadedLegalStatement();
+    private String getAuthenticatedTranslationLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .englishWill(ccdData.getEnglishWill())
+            .build();
+        return markdownDecoratorService.getAuthenticatedTranslationLabel(caseData);
     }
 
+    boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
+        return !ccdData.isHasUploadedLegalStatement();
+    } 
+    
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
