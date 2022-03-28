@@ -123,7 +123,6 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
             .when().get("/template/probateManLegacyCase");
 
         assertThat(response.statusCode(), is(equalTo(403)));
-        assertTrue(response.getBody().asString().contains("Forbidden"));
     }
 }
 

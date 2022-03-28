@@ -156,7 +156,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .when().post(RE_PRINT)
             .andReturn();
         assertEquals(response.statusCode(), 403);
-        assertTrue(response.getBody().asString().contains("Forbidden"));
+
     }
 
 }
