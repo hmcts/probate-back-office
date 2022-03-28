@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
@@ -13,6 +14,7 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
@@ -49,6 +51,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
     @Mock
+    private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRuleMock;
+    @Mock
     private AdmonWillRenunicationRule admonWillRenunicationRuleMock;
     @Mock
     private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRuleMock;
@@ -60,6 +64,16 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Before
     public void setup() {
         initMocks(this);
+        setBusinessRuleMocksApplicable(false);
+    }
+
+    private void setBusinessRuleMocksApplicable(boolean isApplicable) {
+        when(pa14FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
     }
 
     @Test
@@ -187,13 +201,17 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class)))
             .thenReturn(extraIht);
         when(caseExtraDecorator.combineDecorations("", extraIht)).thenReturn(extraIht);
-
+        String extraAuthTrans = "extraAuthTrans";
+        when(caseExtraDecorator.decorate(any(AuthenticatedTranslationCaseExtra.class)))
+            .thenReturn(extraAuthTrans);
         String extra1 = "extraPA15";
         String extra2 = "extraPA15, extraPA16";
         String extra3 = "extraPA15, extraPA16, extraPA17";
-        when(caseExtraDecorator.combineDecorations(any(), any())).thenReturn(extra1, extra2, extra3);
+        String extra4 = "extraPA15, extraPA16, extraPA17, extraIht";
+        String extra5 = "extraPA15, extraPA16, extraPA17, extraIht";
+        when(caseExtraDecorator.combineDecorations(any(), any())).thenReturn(extra1, extra2, extra3, extra4, extra5);
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra3, json);
+        assertEquals(extra5, json);
     }
 }
