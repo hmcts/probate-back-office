@@ -148,6 +148,11 @@
                     </li>
                     {% endif %}
                 {% endif %}
+                {% if case_extras != null and case_extras.showAuthenticatedTranslation == "Yes" %}
+                <li>
+                    {{ case_extras.authenticatedTranslationText }}
+                </li>
+                {% endif %}
             </ul>
             <br /><br /><br />
         </td>
