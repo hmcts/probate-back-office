@@ -10,4 +10,7 @@ public class ReturnedCases {
 
     @JsonProperty(value = "cases")
     private final List<ReturnedCaseDetails> cases;
+
+    @JsonProperty(value = "total")
+    private final int total;
 }

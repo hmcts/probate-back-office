@@ -40,11 +40,10 @@ public class CCDDataTransformer {
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
-            .solsWillType(callbackRequest.getCaseDetails().getData().getSolsWillType())
-            .solsSolicitorIsExec(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsExec())
-            .solsSolicitorIsApplying(callbackRequest.getCaseDetails().getData().getSolsSolicitorIsApplying())
-            .solsSolicitorNotApplyingReason(
-                callbackRequest.getCaseDetails().getData().getSolsSolicitorNotApplyingReason())
+            .solsWillType(caseData.getSolsWillType())
+            .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
+            .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
+            .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solicitor(buildSolicitorDetails(caseData))
             .deceased(buildDeceasedDetails(caseData))
             .iht(buildInheritanceTaxDetails(caseData))
@@ -64,6 +63,7 @@ public class CCDDataTransformer {
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
             .titleAndClearingType(caseData.getTitleAndClearingType())
+            .englishWill(caseData.getEnglishWill())
             .dispenseWithNotice(caseData.getDispenseWithNotice())
             .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
             .build();

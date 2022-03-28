@@ -56,7 +56,7 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04-caseCreated.json", CASE_PRINTED_URL,
-            "/case-created-html.txt");
+            "/admonwill/case-created-html.txt");
     }
 
     @Test
@@ -64,7 +64,7 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
     public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/05-caseMarkAsReadyForExam.json",
-            CASE_DOCS_RECEIVED_URL, "/case-ready-for-exam-html.txt");
+            CASE_DOCS_RECEIVED_URL, "/admonwill/case-ready-for-exam-html.txt");
     }
 
     @Test
@@ -82,25 +82,25 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/08-caseMatchingExamining.json",
-            CASE_MATCHING_EXAMINING_URL, "/case-matching-examining-html.txt");
+            CASE_MATCHING_EXAMINING_URL, "/admonwill/case-matching-examining-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenExamining() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/09-examineCase.json", TASKLIST_UPDATE_URL,
-            "/examine-case-html.txt");
+            "/admonwill/examine-case-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/10-caseMatchingReadyToIssue.json",
-            CASE_MATCHING_READY_TO_ISSUE_URL, "/case-matching-ready-to-issue-html.txt");
+            CASE_MATCHING_READY_TO_ISSUE_URL, "/admonwill/case-matching-ready-to-issue-html.txt");
     }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/11-markReadyToIssue.json",
-            CASE_MATCHING_EXAMINING_URL, "/case-mark-ready-to-issue-html.txt");
+            CASE_MATCHING_EXAMINING_URL, "/admonwill/case-mark-ready-to-issue-html.txt");
     }
 
     @Test
@@ -112,13 +112,13 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     @Test
     public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
         verifyCaseProgressHtmlCwPost("caseprogressadmonwill/12-issueGrant.json", GENERATE_GRANT_URL,
-            "/generate-grant-html.txt");
+            "/admonwill/generate-grant-html.txt");
     }
 
     @Test
     public void shouldRenderSendDocumentsAdmonWill() {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/04-caseCreated.json", TASKLIST_UPDATE_URL,
-            "/admonwill/04-caseCreated");
+            "/admonwill/case-created-html.txt");
     }
 
     @Test
