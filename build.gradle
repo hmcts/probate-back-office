@@ -155,7 +155,7 @@ def versions = [
         springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
-        jacksonDatabind                 : '2.13.2',
+        jacksonDatabind                 : '2.13.2.1',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
@@ -256,7 +256,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.9'
 
-  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.2'
+  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.2.1'
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
@@ -306,7 +306,7 @@ dependencies {
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
-  testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.2'
+  testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.13.2.1'
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
