@@ -452,5 +452,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecord", "Label": "Deceased", "FieldType": "DeathRecord", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "numberOfDeathRecords", "Label": "Number of death records", "FieldType": "Number",  "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecords", "Label": "Deceased", "FieldType": "Collection", "FieldTypeParameter": "DeathRecord", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantOrganisationPolicy", "Label": "Applicant Solicitor Details", "FieldType": "OrganisationPolicy", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantOrganisationPolicy", "Label": "Applicant Solicitor Details", "FieldType": "OrganisationPolicy", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "organisation", "Label": "Applicant Solicitor Details", "FieldType": "Organisation", "SecurityClassification": "Public"}
 ]
