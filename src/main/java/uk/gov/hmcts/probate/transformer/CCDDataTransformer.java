@@ -63,6 +63,7 @@ public class CCDDataTransformer {
             .solsApplicantSiblings(caseData.getSolsApplicantSiblings())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
             .titleAndClearingType(caseData.getTitleAndClearingType())
+            .englishWill(caseData.getEnglishWill())
             .build();
     }
 
