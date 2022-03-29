@@ -7,6 +7,7 @@ import au.com.dius.pact.core.model.RequestResponsePact;
 import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
 import org.junit.After;
@@ -44,7 +45,7 @@ public class PBAPaymentConsumerSuccessTest extends BasePBAPaymentTest {
     @MockBean
     BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
     
     @After
     public void teardown() {
