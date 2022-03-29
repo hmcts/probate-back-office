@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
@@ -48,7 +49,7 @@ public class PDFManagementService {
     public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
                                 HttpServletRequest httpServletRequest,
                                 PDFServiceConfiguration pdfServiceConfiguration,
-                                FileSystemResourceService fileSystemResourceService, 
+                                FileSystemResourceService fileSystemResourceService,
                                 PDFDecoratorService pdfDecoratorService) {
         this.pdfGeneratorService = pdfGeneratorService;
         this.uploadService = uploadService;
@@ -120,7 +121,7 @@ public class PDFManagementService {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
             EvidenceManagementFile store = uploadService.store(fileUpload);
             Optional<Link> binaryOptionalLink = store.getLink("binary");
-            Optional<Link> selfOptionalLink = store.getLink(Link.REL_SELF);
+            Optional<Link> selfOptionalLink = store.getLink(IanaLinkRelations.SELF);
             if (!binaryOptionalLink.isPresent()) {
                 throw new IOException("binary link is not present");
             }

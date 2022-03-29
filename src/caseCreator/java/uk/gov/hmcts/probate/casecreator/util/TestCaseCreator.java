@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.casecreator.util;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -68,7 +69,7 @@ public class TestCaseCreator {
 
     @Autowired
     private RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator;
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
     {
         System.setProperty("socksProxyHost", "localhost");
