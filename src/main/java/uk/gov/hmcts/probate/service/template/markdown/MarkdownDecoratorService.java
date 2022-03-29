@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.template.markdown;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -13,7 +14,7 @@ import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
-
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -30,6 +31,7 @@ public class MarkdownDecoratorService {
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
@@ -94,7 +96,14 @@ public class MarkdownDecoratorService {
 
     public String getTcResolutionFormLabel(CaseData caseData) {
         if (tcResolutionLodgedWithApplicationRule.isApplicable(caseData)) {
-            return "\n*   " + TC_RESOLUTION_LODGED_WITH_APP;
+            return BULLET + TC_RESOLUTION_LODGED_WITH_APP;
+        }
+        return "";
+    }
+
+    public String getAuthenticatedTranslationLabel(CaseData caseData) {
+        if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
+            return BULLET + AUTHENTICATED_TRANSLATION_WILL_TEXT;
         }
         return "";
     }
