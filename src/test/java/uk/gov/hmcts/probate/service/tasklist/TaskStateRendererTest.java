@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
@@ -60,6 +61,8 @@ public class TaskStateRendererTest {
     private PA17FormBusinessRule pa17FormBusinessRule;
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
     @Mock
     private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     @Mock
@@ -972,7 +975,38 @@ public class TaskStateRendererTest {
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
+
         assertEquals(expectedHtml, result);
     }
 
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_DispenseNotice() {
+
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .solsFeeAccountNumber("1")
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .englishWill(NO)
+            .dispenseWithNotice(YES)
+            .dispenseWithNoticeSupportingDocs("document1, document2")
+            .build();
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsWithDispenseNoticeSupportDocs");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseData)).thenReturn(true);
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+        assertEquals(expectedHtml, result);
+    }
 }
