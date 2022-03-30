@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -24,7 +25,7 @@ public class MarkdownDecoratorServiceTest {
 
     @InjectMocks
     private MarkdownDecoratorService markdownDecoratorService;
-
+    
     @Mock
     private PA14FormBusinessRule pa14FormBusinessRule;
 
@@ -36,6 +37,9 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private PA17FormBusinessRule pa17FormBusinessRule;
+    
+    @Mock
+    private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
 
     @Mock
     private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
@@ -50,7 +54,7 @@ public class MarkdownDecoratorServiceTest {
     public void  setup() {
         initMocks(this);
     }
-
+    
     @Test
     public void shouldGetPA14FormLabel() {
         when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
@@ -129,6 +133,23 @@ public class MarkdownDecoratorServiceTest {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetAuthenticatedTranslationFormLabel() {
+        when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        assertEquals("\n*   an authenticated translation of the will",
+                md);
+    }
+
+    @Test
+    public void shouldNotGetAuthenticatedTranslationFormLabel() {
+        when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
         assertEquals("", md);
     }
 }

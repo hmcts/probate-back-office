@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
@@ -11,6 +12,7 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.AdmonWillRenunciationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
@@ -19,6 +21,7 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.TCResolutionLodgedWithAppCaseExtra;
 
 import java.util.List;
@@ -52,6 +55,7 @@ public class SolicitorCoversheetPDFDecorator {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
@@ -101,6 +105,15 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
+        }
+        if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
+            AuthenticatedTranslationCaseExtra authenticatedTranslationCaseExtra =
+                    AuthenticatedTranslationCaseExtra.builder()
+                    .authenticatedTranslationText(AUTHENTICATED_TRANSLATION_WILL_TEXT)
+                    .showAuthenticatedTranslation(YES)
+                    .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(authenticatedTranslationCaseExtra));
         }
         if (admonWillRenunicationRule.isApplicable(caseData)) {
             AdmonWillRenunciationCaseExtra admonWillRenunciationCaseExtra = AdmonWillRenunciationCaseExtra.builder()

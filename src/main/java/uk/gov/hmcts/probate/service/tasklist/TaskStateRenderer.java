@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
@@ -13,7 +14,6 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -33,11 +33,13 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
@@ -74,6 +76,7 @@ public class TaskStateRenderer {
     private static final String IHT_400421 = "IHT400421";
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
@@ -86,8 +89,8 @@ public class TaskStateRenderer {
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
-                                         String willType, String solSOTNeedToUpdate,
-                                         LocalDate authDate, LocalDate submitDate, CaseDetails details) {
+                                  String willType, String solSOTNeedToUpdate,
+                                  LocalDate authDate, LocalDate submitDate, CaseDetails details) {
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                 solSOTNeedToUpdate);
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
@@ -138,8 +141,8 @@ public class TaskStateRenderer {
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
-                                          String solSOTNeedToUpdate) {
-        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(Constants.YES)
+                                   String solSOTNeedToUpdate) {
+        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
                 return TaskState.COMPLETED;
@@ -179,6 +182,8 @@ public class TaskStateRenderer {
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                .replaceFirst(AUTHENTICATED_TRANSLATION,
+                                        keyValues.getOrDefault("authenticatedTranslation", ""))
                 .replaceFirst(ADMON_WILL_RENUNCIATION, keyValues.getOrDefault("admonWillRenForms", ""))
                 .replaceFirst(TC_RESOLUTION_WITH_APP,
                     keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
@@ -186,8 +191,8 @@ public class TaskStateRenderer {
     }
 
     private String renderLinkOrText(TaskListState taskListState, TaskListState currState,
-                                           TaskState currTaskState, String linkText, String caseId,
-                                           String willType, CaseDetails details) {
+                                    TaskState currTaskState, String linkText, String caseId,
+                                    String willType, CaseDetails details) {
 
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
@@ -310,6 +315,11 @@ public class TaskStateRenderer {
             tcResolutionLodgedWithApp = "<li>" + TC_RESOLUTION_LODGED_WITH_APP + "</li>";
         }
         keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
+        String authenticatedTranslation = "";
+        if (authenticatedTranslationBusinessRule.isApplicable(data)) {
+            authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
+        }
+        keyValue.put("authenticatedTranslation", authenticatedTranslation);
 
         return keyValue;
     }
