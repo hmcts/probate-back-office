@@ -77,6 +77,8 @@ public final class Constants {
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
+    public static final String DISPENSE_NOTICE_SUPPORT_TEXT =
+            "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
     public static final String TC_RESOLUTION_LODGED_WITH_APP = "a certified copy of the resolution";
 
     public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT = "if applicable, send us the appropriate"
