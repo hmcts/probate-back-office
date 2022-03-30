@@ -1088,9 +1088,11 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    private OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
-        OrganisationEntityResponse organisationEntityResponse =
-            organisationsRetrievalService.getOrganisationEntity(authToken);
+    public OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
+        OrganisationEntityResponse organisationEntityResponse = null;
+        if (null != authToken) {
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+        }
         if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
             return OrganisationPolicy.builder()
             .organisation(Organisation.builder()
