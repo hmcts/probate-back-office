@@ -21,6 +21,10 @@ management:
       show-details: always
       enabled: true
 
+springdoc:
+  packagesToScan: uk.gov.hmcts.probate.controller
+  pathsToMatch: /**
+
 authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
 auth.provider.service.client:
   key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}

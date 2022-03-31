@@ -155,10 +155,11 @@ curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'ac
 
 #### re run the ./bin/wiremock above to apply as needed
 
-# to use local probate backoffice 
-eg for a branch/PR
+# to use local probate backoffice
 ```
-docker-compose stop probate-back-office && ./gradlew assemble && docker-compose up -d --build probate-back-office
+docker-compose stop probate-back-office
+./gradlew assemble
+docker-compose up -d --build probate-back-office
 ```
 
 #### share case setup
