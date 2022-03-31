@@ -224,7 +224,7 @@ public class DocumentController {
 
         Registry registry = registriesProperties.getRegistries().get(NEWCASTLE);
         callbackRequest.getCaseDetails().setNewcastleRegistryAddress(String.join(" ",
-            registry.getAddressLine1(), registry.getAddressLine2(),
+            registry.getAddressLine1(), registry.getAddressLine2(), registry.getAddressLine3(),
             registry.getTown(), registry.getPostcode()));
 
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
