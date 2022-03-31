@@ -254,9 +254,9 @@ public class ConfirmationResponseService {
         } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
             originalWill = "\n*   the original will and any codicils";
         }
-
+        
         keyValue.put("{{originalWill}}", originalWill);
-
+        
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -277,7 +277,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
         keyValue.put("{{tcResolutionLodgedWithApp}}", getTcResolutionFormLabel(ccdData));
         keyValue.put("{{authenticatedTranslation}}", getAuthenticatedTranslationLabel(ccdData));
-
+        keyValue.put("{{dispenseWithNoticeSupportingDocs}}", getDispenseWithNoticeSupportDocsLabelAndText(ccdData));
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
@@ -348,6 +348,14 @@ public class ConfirmationResponseService {
             .englishWill(ccdData.getEnglishWill())
             .build();
         return markdownDecoratorService.getAuthenticatedTranslationLabel(caseData);
+    }
+    
+    private String getDispenseWithNoticeSupportDocsLabelAndText(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+                .dispenseWithNotice(ccdData.getDispenseWithNotice())
+                .dispenseWithNoticeSupportingDocs(ccdData.getDispenseWithNoticeSupportingDocs())
+                .build();
+        return markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseData);
     }
 
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
