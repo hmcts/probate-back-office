@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.nextsteps;
 
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
@@ -13,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
@@ -53,7 +54,20 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "IHT205", "SolicitorFirmName", "Solicitor_fn Solicitor_ln", "firmpc", "(PA16)").getBody().asString();
         assertFalse(fullResponse.contains("a photocopy of the signed legal statement and declaration"));
     }
-    
+
+    @Test
+    public void shouldIncludePA14Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA14.json", VALIDATE_URL);
+        assertTrue(response.contains("(PA14)"));
+    }
+
+    @Test
+    public void shouldIncludePA15Link() {
+        final String response = transformCase("solicitorValidateProbateExecutorsPA15.json", VALIDATE_URL);
+        System.out.println("shouldIncludePA15Link.response:" +  response);
+        assertTrue(response.contains("(PA15)"));
+    }
+
     @Test
     public void verifyAllDataInTheReturnedMarkdownForUploadedLegalStatementWithPA17Form() {
         validatePostRequestSuccessForLegalStatement(
@@ -113,6 +127,15 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(
+                "/nextsteps/authenticatedTranslation/nextSteps.json", Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains("an authenticated translation of the will"));
+    }
+
+    @Test
     public void verifyEmptyDeceasedFirstNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedForenames\": \"deceasedFirstName\"",
             "\"deceasedForenames\": \"\"", "caseDetails.data.deceasedForenames");
@@ -154,6 +177,27 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
+    @Test
+    public void verifyGenerateSolsGopTcResolutionLodgedWithinApplication() {
+        String dir = "/nextsteps/tcResolutionLodged/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
+                Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains("a certified copy of the resolution"));
+    }
+
+    private String transformCase(String jsonFileName, String path) {
+
+        final Response jsonResponse = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(utils.getJsonFromFile(jsonFileName))
+            .when().post(path).andReturn();
+
+        return jsonResponse.getBody().asString();
+    }
+
     private Response validatePostRequestSuccessForLegalStatement(List<String> validationStrings) {
         return validatePostRequestSuccessForLegalStatement("success.nextsteps.json", validationStrings);
     }
@@ -167,11 +211,13 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
     
     private Response validatePostRequestSuccessForLegalStatement(String file, List<String> validationString) {
+        String jsonBody = utils.getJsonFromFile(file);
+        assertNotNull(jsonBody);
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
-            .body(utils.getJsonFromFile(file))
+            .body(jsonBody)
             .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());

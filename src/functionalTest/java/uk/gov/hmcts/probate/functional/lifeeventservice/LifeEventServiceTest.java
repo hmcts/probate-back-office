@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.functional.lifeeventservice;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import java.util.List;
@@ -33,7 +34,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     @Test
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws JsonProcessingException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.findAndRegisterModules();
         final CallbackRequest callbackRequest = objectMapper.readValue(jsonFromFile, CallbackRequest.class);
         final CallbackResponse callbackResponse = RestAssured.given()
@@ -53,7 +54,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     @Test
     public void shouldReturnErrorManualUpdateAboutToStart() throws JsonProcessingException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
-        ObjectMapper objectMapper = new ObjectMapper();
+        ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.findAndRegisterModules();
         final CallbackRequest callbackRequest = objectMapper.readValue(jsonFromFile, CallbackRequest.class);
         final CallbackResponse callbackResponse = RestAssured.given()

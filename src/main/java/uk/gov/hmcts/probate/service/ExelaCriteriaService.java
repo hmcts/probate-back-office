@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 
 @Slf4j
 @Service
-public class ExcelaCriteriaService {
+public class ExelaCriteriaService {
 
     private ArrayList<ReturnedCaseDetails> filteredCases;
     private static final LocalDateTime EARLIEST_DATE = LocalDateTime.parse("2019-03-31T23:59:59");

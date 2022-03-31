@@ -83,7 +83,7 @@ public class SecurityConfigurationTest {
 
     @Test
     public void shouldGetSwaggerUiWithStatusCodeOkAuthenticated() throws Exception {
-        mvc.perform(get("/swagger-ui/")).andExpect(status().isOk()).andExpect(unauthenticated());
+        mvc.perform(get("/swagger-ui/index.html")).andExpect(status().isOk()).andExpect(unauthenticated());
     }
 
     @Test

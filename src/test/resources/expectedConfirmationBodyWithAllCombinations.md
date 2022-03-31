@@ -42,9 +42,8 @@ You now need to send us:
 
 *   the original will
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
-*   renunciation form for Tim Smith
-*   death certificate for Bob Martin
 *   a photocopy of the signed legal statement and declaration
+*   <a href="https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights" target="_blank">Give up probate administrator rights paper form</a> (PA15) for Tim Smith
 
 Where to send us your documents
 -------------------------------

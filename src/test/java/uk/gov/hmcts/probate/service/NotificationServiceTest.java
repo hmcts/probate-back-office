@@ -41,7 +41,7 @@ import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
@@ -146,7 +146,7 @@ public class NotificationServiceTest {
     private EventValidationService eventValidationService;
 
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     @Mock
     private CallbackResponse callbackResponse;
@@ -186,9 +186,9 @@ public class NotificationServiceTest {
     private CaseDetails solicitorGrantRaisedOxfordPaper;
     private CaseDetails personalGrantRaisedOxfordPaperWelsh;
     private CaseDetails solicitorGrantRaisedOxfordPaperWelsh;
-    private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseData = new ImmutableList.Builder<>();
-    private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseDataNoWillReference = new ImmutableList.Builder<>();
-    private ImmutableList.Builder<ReturnedCaseDetails> excelaCaseDataNoSubtype = new ImmutableList.Builder<>();
+    private ImmutableList.Builder<ReturnedCaseDetails> exelaCaseData = new ImmutableList.Builder<>();
+    private ImmutableList.Builder<ReturnedCaseDetails> exelaCaseDataNoWillReference = new ImmutableList.Builder<>();
+    private ImmutableList.Builder<ReturnedCaseDetails> exelaCaseDataNoSubtype = new ImmutableList.Builder<>();
     private CaveatDetails personalCaveatDataOxford;
     private CaveatDetails personalCaveatDataBilingualOxford;
     private CaveatDetails personalCaveatDataBirmingham;
@@ -415,7 +415,7 @@ public class NotificationServiceTest {
             .languagePreferenceWelsh("Yes")
             .build(), LAST_MODIFIED, ID);
 
-        excelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -424,7 +424,7 @@ public class NotificationServiceTest {
             .scannedDocuments(scannedDocuments)
             .build(), LAST_MODIFIED, ID));
 
-        excelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -433,7 +433,7 @@ public class NotificationServiceTest {
             .scannedDocuments(scannedDocumentsNoWill)
             .build(), LAST_MODIFIED, ID));
 
-        excelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -1122,7 +1122,7 @@ public class NotificationServiceTest {
                 "The deceased's date of birth: " + dateFormatterService
                     .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
-                "Dyddiad geni’r ymadawedig yw: " 
+                "Dyddiad geni’r ymadawedig yw: "
                     + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
         } else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
@@ -1165,7 +1165,7 @@ public class NotificationServiceTest {
                 "The deceased's date of birth: " + dateFormatterService
                     .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
-                "Dyddiad geni’r ymadawedig yw: " 
+                "Dyddiad geni’r ymadawedig yw: "
                     + localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfBirth()));
         } else {
             personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
@@ -1458,12 +1458,12 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendExcelaEmail() throws NotificationClientException {
-        notificationService.sendExcelaEmail(excelaCaseData.build());
+    public void sendExelaEmail() throws NotificationClientException {
+        notificationService.sendExelaEmail(exelaCaseData.build());
 
         verify(notificationClient).sendEmail(
-            eq("pa-excela-data"),
-            eq("excela@probate-test.com"),
+            eq("pa-exela-data"),
+            eq("exela@probate-test.com"),
             any(),
             anyString());
 
@@ -1471,12 +1471,12 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendExcelaEmailScannedDocumentWithNoWillReference() throws NotificationClientException {
-        notificationService.sendExcelaEmail(excelaCaseDataNoWillReference.build());
+    public void sendExelaEmailScannedDocumentWithNoWillReference() throws NotificationClientException {
+        notificationService.sendExelaEmail(exelaCaseDataNoWillReference.build());
 
         verify(notificationClient).sendEmail(
-            eq("pa-excela-data"),
-            eq("excela@probate-test.com"),
+            eq("pa-exela-data"),
+            eq("exela@probate-test.com"),
             any(),
             anyString());
 
@@ -1484,12 +1484,12 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendExcelaEmailScannedDocumentWithNoSubtype() throws NotificationClientException {
-        notificationService.sendExcelaEmail(excelaCaseDataNoSubtype.build());
+    public void sendExelaEmailScannedDocumentWithNoSubtype() throws NotificationClientException {
+        notificationService.sendExelaEmail(exelaCaseDataNoSubtype.build());
 
         verify(notificationClient).sendEmail(
-            eq("pa-excela-data"),
-            eq("excela@probate-test.com"),
+            eq("pa-exela-data"),
+            eq("exela@probate-test.com"),
             any(),
             anyString());
 
@@ -1500,8 +1500,8 @@ public class NotificationServiceTest {
     public void sendSmeeAndFordEmail() throws NotificationClientException {
         Document doc = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(doc);
-        
-        Document document = notificationService.sendSmeeAndFordEmail(excelaCaseData.build(), "fromDate", "toDate");
+
+        Document document = notificationService.sendSmeeAndFordEmail(exelaCaseData.build(), "fromDate", "toDate");
 
         verify(notificationClient).sendEmail(
             eq("pa-smeeFord-data"),
@@ -1524,7 +1524,7 @@ public class NotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules))
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules))
             .thenReturn(callbackResponse);
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
@@ -1547,7 +1547,7 @@ public class NotificationServiceTest {
         errors.add("test error");
 
         when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
@@ -1570,7 +1570,7 @@ public class NotificationServiceTest {
         errors.add("test error");
 
         when(eventValidationService.validateEmailRequest(callbackRequest,
-            emailAddressNotificationValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
+            emailAddressNotifyValidationRules)).thenReturn(CallbackResponse.builder().errors(errors).build());
 
         assertThatThrownBy(() -> {
             notificationService.generateGrantReissue(callbackRequest);
