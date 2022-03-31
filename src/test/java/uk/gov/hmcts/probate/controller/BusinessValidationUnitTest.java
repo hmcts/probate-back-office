@@ -44,7 +44,6 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -115,8 +114,6 @@ public class BusinessValidationUnitTest {
     @Mock
     private StateChangeService stateChangeServiceMock;
     @Mock
-    private RedeclarationSoTValidationRule redeclarationSoTValidationRuleMock;
-    @Mock
     private NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRuleMock;
 
     private FieldErrorResponse businessValidationErrorMock;
@@ -162,7 +159,6 @@ public class BusinessValidationUnitTest {
             confirmationResponseServiceMock,
             stateChangeServiceMock,
             pdfManagementServiceMock,
-            redeclarationSoTValidationRuleMock,
             numberOfApplyingExecutorsValidationRuleMock,
             codicilDateValidationRuleMock,
             originalWillSignedDateValidationRuleMock,

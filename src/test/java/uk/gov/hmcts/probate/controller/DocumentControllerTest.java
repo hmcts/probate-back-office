@@ -608,13 +608,13 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateWithPaperCase() throws Exception {
+    public void shouldValidateWithPaperCaseWithNoErrors() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
         mockMvc
             .perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+            .andExpect(jsonPath("$.errors").isEmpty())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
