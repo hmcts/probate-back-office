@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 @RunWith(SpringRunner.class)
-public class ExcelaCriteriaServiceTest {
+public class ExelaCriteriaServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
@@ -32,7 +32,7 @@ public class ExcelaCriteriaServiceTest {
     private ReturnedCaseDetails case6;
     private ReturnedCaseDetails case7;
 
-    private ExcelaCriteriaService excelaCriteriaService = new ExcelaCriteriaService();
+    private ExelaCriteriaService exelaCriteriaService = new ExelaCriteriaService();
 
     @Before
     public void setup() {
@@ -123,25 +123,25 @@ public class ExcelaCriteriaServiceTest {
     @Test
     public void testValidCaseShouldBeReturned() {
         cases.add(case1);
-        assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
+        assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 
     @Test
     public void testBoundaryCaseShouldBeReturned() {
         cases.add(case2);
-        assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
+        assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 
     @Test
     public void testInvalidDocumentsShouldNotReturnCase() {
         cases.add(case3);
-        assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(0));
+        assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(0));
     }
 
     @Test
     public void testEmptySubtypePrecedingValidSubtypeShouldReturnCase() {
         cases.add(case4);
-        assertThat(excelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
+        assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 
     @Test
@@ -149,7 +149,7 @@ public class ExcelaCriteriaServiceTest {
         cases.add(case1);
         cases.add(case5);
         cases.add(case6);
-        List<ReturnedCaseDetails> returnedCaseDetails = excelaCriteriaService.getFilteredCases(cases.build());
+        List<ReturnedCaseDetails> returnedCaseDetails = exelaCriteriaService.getFilteredCases(cases.build());
         assertThat(returnedCaseDetails.get(0).getData().getDeceasedSurname(), is("Abson"));
         assertThat(returnedCaseDetails.get(1).getData().getDeceasedSurname(), is("Alderson"));
         assertThat(returnedCaseDetails.get(2).getData().getDeceasedSurname(), is("Smith"));
@@ -161,7 +161,7 @@ public class ExcelaCriteriaServiceTest {
         cases.add(case5);
         cases.add(case6);
         cases.add(case7);
-        List<ReturnedCaseDetails> returnedCaseDetails = excelaCriteriaService.getFilteredCases(cases.build());
+        List<ReturnedCaseDetails> returnedCaseDetails = exelaCriteriaService.getFilteredCases(cases.build());
         assertThat(returnedCaseDetails.get(0).getData().getDeceasedSurname(), is("Abson"));
         assertThat(returnedCaseDetails.get(1).getData().getDeceasedSurname(), is("addington"));
     }

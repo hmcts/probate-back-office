@@ -36,7 +36,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -80,7 +80,7 @@ public class DocumentController {
     private final RegistriesProperties registriesProperties;
     private final BulkPrintService bulkPrintService;
     private final EventValidationService eventValidationService;
-    private final List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
     private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final ReprintService reprintService;
@@ -151,7 +151,7 @@ public class DocumentController {
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
-        @Validated({EmailAddressNotificationValidationRule.class, BulkPrintValidationRule.class})
+        @Validated({BulkPrintValidationRule.class})
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
@@ -190,7 +190,7 @@ public class DocumentController {
 
         if (caseData.isGrantIssuedEmailNotificationRequested()) {
             callbackResponse =
-                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (callbackResponse.getErrors().isEmpty()) {
                 Document grantIssuedSentEmail =
                     notificationService.sendEmail(grantState.apply(caseData.getCaseType()), caseDetails);

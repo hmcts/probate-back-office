@@ -38,7 +38,6 @@ public class IronMountainFileService extends BaseFileService {
 
     private void prepareData(Long id, CaseData data) {
         try {
-            log.info("Preparing row data for Iron Mountain, caseId={}", id);
             final List<String> deceasedAddress = addressManager(data.getDeceasedAddress());
             final List<String> applicantAddress = addressManager(data.getApplicationType().equals(ApplicationType
                 .PERSONAL) ? data.getPrimaryApplicantAddress() : data.getSolsSolicitorAddress());

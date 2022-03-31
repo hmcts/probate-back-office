@@ -41,7 +41,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
@@ -53,7 +53,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
-    private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
+    private static final String PERSONALISATION_EXELA_NAME = "exelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
@@ -76,11 +76,11 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
     private CaseDetails caseDetails;
     private ReturnedCaseDetails returnedCaseDetails;
-    private List<ReturnedCaseDetails> excelaCaseData = new ArrayList<>();
-    private List<ReturnedCaseDetails> excelaCaseDataWithCommas = new ArrayList<>();
-    private List<ReturnedCaseDetails> excelaCaseDataNoWillReference = new ArrayList<>();
-    private List<ReturnedCaseDetails> excelaCaseDataNoSubtype = new ArrayList<>();
-    private List<ReturnedCaseDetails> excelaCaseDataNoDOB = new ArrayList<>();
+    private List<ReturnedCaseDetails> exelaCaseData = new ArrayList<>();
+    private List<ReturnedCaseDetails> exelaCaseDataWithCommas = new ArrayList<>();
+    private List<ReturnedCaseDetails> exelaCaseDataNoWillReference = new ArrayList<>();
+    private List<ReturnedCaseDetails> exelaCaseDataNoSubtype = new ArrayList<>();
+    private List<ReturnedCaseDetails> exelaCaseDataNoDOB = new ArrayList<>();
 
     @Before
     public void setUp() {
@@ -120,7 +120,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
 
-        excelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -130,7 +130,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
             .registryLocation("Cardiff")
             .build(), LAST_MODIFIED, ID));
 
-        excelaCaseDataWithCommas.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseDataWithCommas.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack,Henry")
             .deceasedSurname("Michelson, Howard")
@@ -139,8 +139,8 @@ public class GrantOfRepresentationPersonalisationServiceTest {
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
             .build(), LAST_MODIFIED, ID));
-        
-        excelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
+
+        exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -150,7 +150,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
             .registryLocation("Cardiff")
             .build(), LAST_MODIFIED, ID));
 
-        excelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -160,7 +160,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
             .registryLocation("Cardiff")
             .build(), LAST_MODIFIED, ID));
 
-        excelaCaseDataNoDOB.add(new ReturnedCaseDetails(CaseData.builder()
+        exelaCaseDataNoDOB.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
             .deceasedForenames("Jack")
             .deceasedSurname("Michelson")
@@ -217,52 +217,52 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getExcelaPersonalisationContentIsOk() {
+    public void getExelaPersonalisationContentIsOk() {
         Map<String, String> response =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseData);
+            grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseData);
 
-        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
         assertEquals("123456, Jack, Michelson, 01/01/2019, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 
     @Test
-    public void getExcelaPersonalisationContentIsOkWithCommas() {
+    public void getExelaPersonalisationContentIsOkWithCommas() {
         Map<String, String> response =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataWithCommas);
+            grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataWithCommas);
 
-        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
         assertEquals("123456, Jack Henry, Michelson  Howard, 01/01/2019, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 
     @Test
-    public void getExcelaPersonalisationContentIsOkNoWillReference() {
+    public void getExelaPersonalisationContentIsOkNoWillReference() {
         Map<String, String> response =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoWillReference);
+            grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoWillReference);
 
-        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
         assertEquals(", Jack, Michelson, 01/01/2019, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 
 
     @Test
-    public void getExcelaPersonalisationContentIsOkNoSubType() {
+    public void getExelaPersonalisationContentIsOkNoSubType() {
         Map<String, String> response =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoSubtype);
+            grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoSubtype);
 
-        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
         assertEquals(", Jack, Michelson, 01/01/2019, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
 
     @Test
-    public void getExcelaPersonalisationContentWithExceptionInData() {
+    public void getExelaPersonalisationContentWithExceptionInData() {
         Map<String, String> response =
-            grantOfRepresentationPersonalisationService.getExcelaPersonalisation(excelaCaseDataNoDOB);
+            grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoDOB);
 
-        assertEquals(LocalDateTime.now().format(EXCELA_DATE) + "will", response.get(PERSONALISATION_EXCELA_NAME));
+        assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
         assertEquals(", Jack, Michelson, 1, java.lang.NullPointerException: temporal\n",
             response.get(PERSONALISATION_CASE_DATA));
     }
