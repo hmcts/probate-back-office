@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -20,6 +21,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService.BULLET;
 
 public class MarkdownDecoratorServiceTest {
 
@@ -46,6 +49,9 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private SendDocumentsRenderer sendDocumentsRenderer;
+
+    @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
 
     @Mock
     private CaseData caseDataMock;
@@ -141,7 +147,7 @@ public class MarkdownDecoratorServiceTest {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
 
         String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
-        assertEquals("\n*   an authenticated translation of the will",
+        assertEquals("\n*   an authenticated translation of the will in English or Welsh",
                 md);
     }
 
@@ -150,6 +156,28 @@ public class MarkdownDecoratorServiceTest {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetDispenseWithNoticeSupportDocsLabel() {
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String supportDocsText =
+            "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
+        String supportDocsEntry = "document1 document2";
+        String expectedText = BULLET + supportDocsText + supportDocsEntry;
+        when(caseDataMock.getDispenseWithNotice()).thenReturn(YES);
+        when(caseDataMock.getDispenseWithNoticeSupportingDocs()).thenReturn("document1 document2");
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
+        assertEquals(expectedText, md);
+    }
+
+    @Test
+    public void shouldNotGetDispenseWithNoticeSupportDocsLabel() {
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
         assertEquals("", md);
     }
 }

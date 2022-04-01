@@ -60,7 +60,7 @@ public final class Constants {
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
     public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT
-        = "an authenticated translation of the will";
+        = "an authenticated translation of the will in English or Welsh";
     public static final String PA14_FORM_URL = "https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate";
     public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
     public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
@@ -77,6 +77,8 @@ public final class Constants {
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
+    public static final String DISPENSE_NOTICE_SUPPORT_TEXT =
+            "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
     public static final String TC_RESOLUTION_LODGED_WITH_APP = "a certified copy of the resolution";
 
     public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT = "if applicable, send us the appropriate"

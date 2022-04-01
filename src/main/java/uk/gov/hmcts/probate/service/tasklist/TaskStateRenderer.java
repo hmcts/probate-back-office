@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
@@ -33,12 +34,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
 import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
@@ -86,6 +90,7 @@ public class TaskStateRenderer {
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -187,6 +192,8 @@ public class TaskStateRenderer {
                 .replaceFirst(ADMON_WILL_RENUNCIATION, keyValues.getOrDefault("admonWillRenForms", ""))
                 .replaceFirst(TC_RESOLUTION_WITH_APP,
                     keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
+                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
+                    keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
                 );
     }
 
@@ -320,7 +327,15 @@ public class TaskStateRenderer {
             authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
         }
         keyValue.put("authenticatedTranslation", authenticatedTranslation);
-
+        String dispenseWithNoticeSupportingDocs = "";
+        String dispenseWithNotice = NO;
+        if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
+            dispenseWithNotice = YES;
+            dispenseWithNoticeSupportingDocs = "<li>" + DISPENSE_NOTICE_SUPPORT_TEXT
+                + data.getDispenseWithNoticeSupportingDocs() + "</li>";
+        }
+        keyValue.put("dispenseWithNotice", dispenseWithNotice);
+        keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
         return keyValue;
     }
 
@@ -330,7 +345,6 @@ public class TaskStateRenderer {
         return notApplyingExecs.stream()
             .map(executor -> buildPA14NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
             .collect(Collectors.joining());
-
     }
 
     private String buildPA15NotApplyingExecutorsLinks(CaseData caseData, String reason) {
