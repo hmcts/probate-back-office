@@ -24,44 +24,33 @@ public class OrganisationEntityResponse {
 
     @JsonProperty("organisationIdentifier")
     private String organisationIdentifier;
-
     @JsonProperty(value = "name")
     private String name;
-
-    @JsonProperty(value = "status")
-    private String status;
-
-    @JsonProperty(value = "sraId")
-    private String sraId;
-
-    @JsonProperty(value = "sraRegulated")
-    private boolean sraRegulated;
-
-    @JsonProperty(value = "companyNumber")
-    private String companyNumber;
-
-    @JsonProperty(value = "companyUrl")
-    private String companyUrl;
-
-    @JsonProperty(value = "paymentAccount")
-    private List<String> paymentAccount;
-
-    @JsonProperty(value = "superUser")
-    private SuperUserResponse superUser;
-
     @JsonProperty(value = "contactInformation")
     private List<ContactInformationResponse> contactInformation;
-
-    @JsonProperty(value = "pendingPaymentAccount")
+    @JsonProperty
+    private OrganisationStatus status;
+    @JsonProperty
+    private String statusMessage;
+    @JsonProperty
+    private String sraId;
+    @JsonProperty
+    private Boolean sraRegulated;
+    @JsonProperty
+    private String companyNumber;
+    @JsonProperty
+    private String companyUrl;
+    @JsonProperty
+    private SuperUserResponse superUser;
+    @JsonProperty
+    private List<String> paymentAccount;
+    @JsonProperty
     private List<String> pendingPaymentAccount = new ArrayList<String>();
-
-    @JsonProperty(value = "dateReceived")
+    @JsonProperty
     @DateTimeFormat
     private LocalDateTime dateReceived;
-
-    @JsonProperty(value = "dateApproved")
+    @JsonProperty
     @DateTimeFormat
     @JsonInclude(ALWAYS)
     private LocalDateTime dateApproved = null;
-
 }
