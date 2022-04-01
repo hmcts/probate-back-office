@@ -40,8 +40,10 @@ public class OrganisationsRetrievalService {
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         try {
-            ResponseEntity<Organisations> responseEntity = restTemplate.exchange(uri, GET,
-                request, Organisations.class);
+//            ResponseEntity<Organisations> responseEntity = restTemplate.exchange(uri, GET,
+//                request, Organisations.class);
+
+            ResponseEntity<Organisations> responseEntity = restTemplate.getForEntity(uri, Organisations.class);
 
             log.info("responseEntity" + responseEntity.toString());
             Organisations organisationsResponse = responseEntity.getBody();
