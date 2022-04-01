@@ -49,7 +49,8 @@ public class OrganisationsRetrievalServiceTest {
         ResponseEntity<Organisations> organisationsResponseEntity =
             ResponseEntity.of(Optional.of(organisations));
 
-        when(restTemplate.getForEntity(any(URI.class), any(Class.class))).thenReturn(organisationsResponseEntity);
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+            any(HttpEntity.class), any(Class.class))).thenReturn(organisationsResponseEntity);
 
         organisationsRetrievalService.orgApi = "/test_api";
         organisationsRetrievalService.orgUri = "http://localhost:8080/test";

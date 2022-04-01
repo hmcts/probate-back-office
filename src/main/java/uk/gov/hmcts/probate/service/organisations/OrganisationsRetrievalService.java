@@ -19,6 +19,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.net.URI;
 import java.util.Base64;
 
+import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 
 @Slf4j
@@ -39,8 +40,8 @@ public class OrganisationsRetrievalService {
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         try {
-
-            ResponseEntity<Organisations> responseEntity = restTemplate.getForEntity(uri, Organisations.class);
+            ResponseEntity<Organisations> responseEntity = restTemplate.exchange(uri, GET,
+                request, Organisations.class);
 
             log.info("responseEntity" + responseEntity.toString());
             Organisations organisationsResponse = responseEntity.getBody();
