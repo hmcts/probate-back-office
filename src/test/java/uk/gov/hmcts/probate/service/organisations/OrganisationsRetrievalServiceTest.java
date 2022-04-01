@@ -1,9 +1,5 @@
 package uk.gov.hmcts.probate.service.organisations;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
-
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -14,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
-import uk.gov.hmcts.probate.model.payments.pba.Organisations;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
-import java.util.Collections;
 import java.util.Optional;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 
 public class OrganisationsRetrievalServiceTest {
 
@@ -32,7 +30,7 @@ public class OrganisationsRetrievalServiceTest {
 
     @Mock(name = "restTemplate")
     private RestTemplate restTemplate;
-    Organisations organisations;
+    OrganisationEntityResponse organisationEntityResponse;
 
     @Mock
     private AuthTokenGenerator authTokenGenerator;
@@ -41,13 +39,12 @@ public class OrganisationsRetrievalServiceTest {
     public void testOrganisationEntityGetsReturnedOk() {
         MockitoAnnotations.openMocks(this);
 
-        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
         organisationEntityResponse.setName(ORGANISATION_NAME);
-        organisations = new Organisations(Collections.singletonList(organisationEntityResponse));
 
-        ResponseEntity<Organisations> organisationsResponseEntity =
-            ResponseEntity.of(Optional.of(organisations));
+        ResponseEntity<OrganisationEntityResponse> organisationsResponseEntity =
+            ResponseEntity.of(Optional.of(organisationEntityResponse));
 
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
             any(HttpEntity.class), any(Class.class))).thenReturn(organisationsResponseEntity);

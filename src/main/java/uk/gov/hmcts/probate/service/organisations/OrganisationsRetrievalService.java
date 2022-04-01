@@ -12,12 +12,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
-import uk.gov.hmcts.probate.model.payments.pba.Organisations;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Base64;
+import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
@@ -40,15 +40,13 @@ public class OrganisationsRetrievalService {
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         try {
-            ResponseEntity<Organisations> responseEntity = restTemplate.exchange(uri, GET,
-                request, Organisations.class);
+            ResponseEntity<OrganisationEntityResponse> responseEntity = restTemplate.exchange(uri, GET,
+                request, OrganisationEntityResponse.class);
 
             log.info("responseEntity" + responseEntity.toString());
-            Organisations organisationsResponse = responseEntity.getBody();
+            OrganisationEntityResponse organisationEntityResponse = Objects.requireNonNull(responseEntity.getBody());
 
-            if (organisationsResponse != null && organisationsResponse.getOrganisations().size() == 1) {
-                return organisationsResponse.getOrganisations().get(0);
-            }
+            return organisationEntityResponse;
         } catch (Exception e) {
             log.error("Exception when looking up orgId for authToken={} for exception {}",
                 new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());

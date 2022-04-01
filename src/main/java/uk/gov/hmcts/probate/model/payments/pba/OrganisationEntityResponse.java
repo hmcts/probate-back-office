@@ -44,6 +44,7 @@ public class OrganisationEntityResponse {
     private SuperUserResponse superUser;
     @JsonProperty
     private List<String> paymentAccount;
+    @Builder.Default
     @JsonProperty
     private List<String> pendingPaymentAccount = new ArrayList<String>();
     @JsonProperty
@@ -52,5 +53,6 @@ public class OrganisationEntityResponse {
     @JsonProperty
     @DateTimeFormat
     @JsonInclude(ALWAYS)
+    @Builder.Default
     private LocalDateTime dateApproved = null;
 }
