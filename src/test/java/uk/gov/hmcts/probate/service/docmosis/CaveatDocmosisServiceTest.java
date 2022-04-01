@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -31,7 +32,7 @@ public class CaveatDocmosisServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String CAV_EXPIRY_DATE = "31st December 2019";
     Registry registry = new Registry();
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
     Map<String, Registry> registries = new HashMap<>();
     @InjectMocks
     private CaveatDocmosisService caveatDocmosisService;
