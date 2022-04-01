@@ -18,7 +18,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Base64;
-import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
