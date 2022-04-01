@@ -535,7 +535,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -563,7 +564,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -589,7 +591,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -610,7 +613,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -623,6 +627,64 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetNextStepsConfirmationAdmonWill() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getAdmonWillRenunciationFormLabel(any(CaseData.class)))
+            .thenReturn("PA15 and PA17 form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA15 and PA17 form text",
+            nextStepsValues.get("{{admonWillRenunciation}}"));
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA14Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA14FormLabel(any(CaseData.class))).thenReturn("PA14Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA14Form text",
+            nextStepsValues.get("{{pa14form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA15Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA15FormLabel(any(CaseData.class))).thenReturn("PA15Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA15Form text",
+            nextStepsValues.get("{{pa15form}}"));
+
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmationForPA16Form() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
 
@@ -631,8 +693,9 @@ public class ConfirmationResponseServiceTest {
             .thenReturn(willBodyTemplateResponseMock);
 
         when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
-        
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("PA16Form text",
@@ -650,11 +713,32 @@ public class ConfirmationResponseServiceTest {
 
         when(markdownDecoratorService.getPA17FormLabel(any(CaseData.class))).thenReturn("PA17Form text");
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("PA17Form text",
             nextStepsValues.get("{{pa17form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForTcResolutionLodgedWithApp() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class)))
+            .thenReturn("a certified copy of the resolution");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("a certified copy of the resolution",
+                nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));
 
     }
 
@@ -667,7 +751,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -706,7 +791,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -744,7 +830,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -769,7 +856,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -797,7 +885,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -808,6 +897,34 @@ public class ConfirmationResponseServiceTest {
         assertIHT207(nextStepsValues);
         assertEquals("No payment needed", nextStepsValues.get("{{paymentMethod}}"));
         assertEquals("0.00", nextStepsValues.get("{{paymentAmount}}"));
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationWithDiedBeforeOrDiedAfterThenShouldNotShowDeathCertificate() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(deadBeforeExecutorMock.isApplying()).thenReturn(false);
+        when(deadBeforeExecutorMock.getReasonNotApplying()).thenReturn("DiedBefore");
+        when(deadBeforeExecutorMock.getForename()).thenReturn("deadBeforeExecutorFirstname");
+        when(deadBeforeExecutorMock.getLastname()).thenReturn("deadBeforeExecutorLastname");
+
+        when(deadAfterExecutorMock.isApplying()).thenReturn(false);
+        when(deadAfterExecutorMock.getReasonNotApplying()).thenReturn("DiedAfter");
+        when(deadAfterExecutorMock.getForename()).thenReturn("deadAfterExecutorFirstname");
+        when(deadAfterExecutorMock.getLastname()).thenReturn("deadAfterExecutorLastname");
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+                caseDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertConfirmationValues(nextStepsValues);
+        assertNull(nextStepsValues.get("{{deadExecutors}}"));
+        assertIHT207(nextStepsValues);
     }
 
     private void assertConfirmationValues(Map<String, String> nextStepsValues) {
@@ -825,11 +942,11 @@ public class ConfirmationResponseServiceTest {
         assertEquals("*   a photocopy of the signed legal statement and declaration",
             nextStepsValues.get("{{legalPhotocopy}}"));
     }
-    
+
     private void assertIHT207(Map<String, String> nextStepsValues) {
         assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
     }
-    
+
     private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
         assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }

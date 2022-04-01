@@ -24,8 +24,8 @@ public class EvidenceManagementFileTest {
         evidenceManagementFile.setCreatedOn(new Date());
         evidenceManagementFile.setMimeType("mime type");
         Map<String, Link> linkMap = new HashMap<>();
-        linkMap.put("LABEl1", new Link("LINK1_HREF"));
-        linkMap.put("LABEL2", new Link("LINK2_HREF"));
+        linkMap.put("LABEl1", Link.of("LINK1_HREF"));
+        linkMap.put("LABEL2", Link.of("LINK2_HREF"));
 
         evidenceManagementFile.setLinks(linkMap);
 

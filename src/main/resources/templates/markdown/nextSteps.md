@@ -41,7 +41,7 @@ Print a copy of this page for your records.
 You now need to send us:
 {{originalWill}}
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number {{caseRef}} written on a sheet of paper{{ihtText}}{{ihtForm}}
-{{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}{{pa16form}}{{pa17form}}
+{{legalPhotocopy}}{{pa14form}}{{pa15form}}{{pa16form}}{{pa17form}}{{admonWillRenunciation}}{{tcResolutionLodgedWithApp}}{{authenticatedTranslation}}{{dispenseWithNoticeSupportingDocs}}
 
 Where to send us your documents
 -------------------------------
