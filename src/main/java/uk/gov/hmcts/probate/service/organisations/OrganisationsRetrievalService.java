@@ -44,7 +44,8 @@ public class OrganisationsRetrievalService {
             ResponseEntity<Organisations> responseEntity = restTemplate.exchange(uri, GET,
                 request, Organisations.class);
 
-            Organisations organisationsResponse = Objects.requireNonNull(responseEntity.getBody());
+            log.info("responseEntity" + responseEntity.toString());
+            Organisations organisationsResponse = responseEntity.getBody();
 
             if (organisationsResponse != null && organisationsResponse.getOrganisations().size() == 1) {
                 return organisationsResponse.getOrganisations().get(0);
