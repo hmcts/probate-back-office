@@ -148,6 +148,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
                         + "invalidApplyingExecutor0EmailAddress.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
+
     @Test
     public void validApplyingExecutor0EmailAddress() {
         String jsonRequest =
@@ -156,6 +157,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
         List<String> expectedWarnings = emptyList();
         validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
     }
+
     private void validateOCRWarnings(String formName, String bodyText, String containsText,
                                      List<String> expectedWarnings) {
         List<String> warnings = RestAssured.given()
