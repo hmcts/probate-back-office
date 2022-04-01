@@ -60,7 +60,7 @@ public final class Constants {
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
     public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT
-        = "an authenticated translation of the will";
+        = "an authenticated translation of the will in English or Welsh";
     public static final String PA14_FORM_URL = "https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate";
     public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
     public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
