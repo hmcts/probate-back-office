@@ -38,6 +38,6 @@ done
 rolesJson="${rolesJson}]"
 
 curl -XPOST \
-  http://localhost:5000/testing-support/accounts \
+  "${IDAM_API_BASE_URL:-http://localhost:5000}"/testing-support/accounts \
   -H "Content-Type: application/json" \
   -d '{"email":"'${email}'","forename":"'${forename}'","surname":"'${surname}'","password":"'${password}'","levelOfAccess":1, "roles": '${rolesJson}', "userGroup": {"code": "caseworker"}}'

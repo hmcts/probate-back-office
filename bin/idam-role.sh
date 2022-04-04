@@ -1,8 +1,7 @@
 #!/bin/sh
 
-IDAM_URI="http://localhost:5000"
+IDAM_URI="${IDAM_API_BASE_URL:-http://localhost:5000}"
 role=$1
-description=${2:-Test}
 
 if [ -z "$role" ]
   then
@@ -15,4 +14,4 @@ curl --request POST \
   --url "${IDAM_URI}/roles" \
   --header "Authorization: AdminApiAuthToken ${authToken}" \
   --header "Content-Type: application/json" \
-  --data '{"id": "'${role}'","name": "'${role}'","description": "'${description}'","assignableRoles": [],"conflictingRoles": []}'
+  --data '{"id": "'${role}'","name": "'${role}'","description": "'${role}'","assignableRoles": [],"conflictingRoles": []}'
