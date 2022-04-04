@@ -661,10 +661,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestValidationsErrorForRedeclarationSOTForPaperFormCase() {
+    public void verifyRequestValidationsForRedeclarationSOTForPaperFormCase() {
         final ResponseBody responseBody = validatePostSuccess("redeclarationSOTPaperForm.json",
             REDECLARATION_SOT);
-        Assert.assertTrue(responseBody.asString().contains("You can only use this event for digital cases"));
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertNull(jsonPath.get("data.errors"));
     }
 
     @Test
