@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -168,7 +169,7 @@ public class DocumentGeneratorServiceTest {
         returnedCaseDetails.setRegistryTown("town");
         returnedCaseDetails.setCtscTelephone("01010101010101");
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
             mapper.convertValue(CaseData.builder().caseType("gop").registryLocation("Bristol").build(), Map.class);
 
