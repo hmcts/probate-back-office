@@ -4,6 +4,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
@@ -11,7 +14,10 @@ import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
@@ -48,7 +54,13 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
     @Mock
+    private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRuleMock;
+    @Mock
     private AdmonWillRenunicationRule admonWillRenunicationRuleMock;
+    @Mock
+    private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRuleMock;
+    @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRuleMock;
     @Mock
     private CaseExtraDecorator caseExtraDecorator;
     @Mock
@@ -57,6 +69,17 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Before
     public void setup() {
         initMocks(this);
+        setBusinessRuleMocksApplicable(false);
+    }
+
+    private void setBusinessRuleMocksApplicable(boolean isApplicable) {
+        when(pa14FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
+        when(dispenseNoticeSupportDocsRuleMock.isApplicable(caseDataMock)).thenReturn(isApplicable);
     }
 
     @Test
@@ -76,7 +99,9 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         all.add(AdditionalExecutorNotApplying.builder().build());
-        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "MentallyIncapable")).thenReturn(all);
+        when(notApplyingExecutorsMapper
+            .getAllExecutorsNotApplying(caseDataMock, "MentallyIncapable"))
+            .thenReturn(all);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -92,7 +117,8 @@ public class SolicitorCoversheetPDFDecoratorTest {
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
         List<AdditionalExecutorNotApplying> all = new ArrayList<>();
         all.add(AdditionalExecutorNotApplying.builder().build());
-        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "Renunciation")).thenReturn(all);
+        when(notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseDataMock, "Renunciation"))
+            .thenReturn(all);
 
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -154,11 +180,25 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
+    public void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
+        when(tcResolutionLodgedWithApplicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"tcResolutionLodgedWithAppText\":\"a certified copy of the resolution\"}";
+        when(caseExtraDecorator.decorate(any())).thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+    }
+
+    @Test
     public void shouldProvideAllDecorations() {
         when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        when(authenticatedTranslationBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
+        when(dispenseNoticeSupportDocsRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extraPA15 = "extraPA15";
         String extraPA16 = "extraPA16";
         String extraPA17 = "extraPA17";
@@ -171,13 +211,23 @@ public class SolicitorCoversheetPDFDecoratorTest {
         String extraIht = "extraIht";
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class)))
             .thenReturn(extraIht);
-
+        when(caseExtraDecorator.combineDecorations("", extraIht)).thenReturn(extraIht);
+        String extraAuthTrans = "extraAuthTrans";
+        when(caseExtraDecorator.decorate(any(AuthenticatedTranslationCaseExtra.class)))
+            .thenReturn(extraAuthTrans);
+        String extraDispenseNoticeDocs = "extraDispenseNotice";
+        when(caseExtraDecorator.decorate(any(DispenseNoticeCaseExtra.class)))
+            .thenReturn(extraDispenseNoticeDocs);
         String extra1 = "extraPA15";
         String extra2 = "extraPA15, extraPA16";
         String extra3 = "extraPA15, extraPA16, extraPA17";
-        when(caseExtraDecorator.combineDecorations(any(), any())).thenReturn(extra1, extra2, extra3);
+        String extra4 = "extraPA15, extraPA16, extraPA17, extraIht";
+        String extra5 = "extraPA15, extraPA16, extraPA17, extraIht, extraAuthTrans";
+        String extra6 = "extraPA15, extraPA16, extraPA17, extraIht, extraDispenseNotice";
+        when(caseExtraDecorator.combineDecorations(any(), any()))
+            .thenReturn(extra1, extra2, extra3, extra4, extra5, extra6);
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
-        assertEquals(extra3, json);
+        assertEquals(extra6, json);
     }
 }

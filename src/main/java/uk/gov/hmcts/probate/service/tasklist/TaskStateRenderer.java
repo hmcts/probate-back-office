@@ -3,7 +3,10 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -12,7 +15,6 @@ import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
-import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -32,12 +34,18 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
+import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
@@ -46,6 +54,7 @@ import static uk.gov.hmcts.probate.model.PageTextConstants.PA14_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA15_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.TC_RESOLUTION_WITH_APP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -71,6 +80,7 @@ public class TaskStateRenderer {
     private static final String IHT_400421 = "IHT400421";
 
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
@@ -79,11 +89,13 @@ public class TaskStateRenderer {
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
+    private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
-                                         String willType, String solSOTNeedToUpdate,
-                                         LocalDate authDate, LocalDate submitDate, CaseDetails details) {
+                                  String willType, String solSOTNeedToUpdate,
+                                  LocalDate authDate, LocalDate submitDate, CaseDetails details) {
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                 solSOTNeedToUpdate);
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
@@ -134,8 +146,8 @@ public class TaskStateRenderer {
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
-                                          String solSOTNeedToUpdate) {
-        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(Constants.YES)
+                                   String solSOTNeedToUpdate) {
+        if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
                 return TaskState.COMPLETED;
@@ -175,13 +187,19 @@ public class TaskStateRenderer {
                 .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
                 .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                .replaceFirst(AUTHENTICATED_TRANSLATION,
+                                        keyValues.getOrDefault("authenticatedTranslation", ""))
                 .replaceFirst(ADMON_WILL_RENUNCIATION, keyValues.getOrDefault("admonWillRenForms", ""))
+                .replaceFirst(TC_RESOLUTION_WITH_APP,
+                    keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
+                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
+                    keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
                 );
     }
 
     private String renderLinkOrText(TaskListState taskListState, TaskListState currState,
-                                           TaskState currTaskState, String linkText, String caseId,
-                                           String willType, CaseDetails details) {
+                                    TaskState currTaskState, String linkText, String caseId,
+                                    String willType, CaseDetails details) {
 
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
@@ -299,6 +317,25 @@ public class TaskStateRenderer {
             admonWillRenForms = "<li>" + sendDocumentsRenderer.getAdmonWillRenunciationText() + "</li>";
         }
         keyValue.put("admonWillRenForms", admonWillRenForms);
+        String tcResolutionLodgedWithApp = "";
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(data)) {
+            tcResolutionLodgedWithApp = "<li>" + TC_RESOLUTION_LODGED_WITH_APP + "</li>";
+        }
+        keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
+        String authenticatedTranslation = "";
+        if (authenticatedTranslationBusinessRule.isApplicable(data)) {
+            authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
+        }
+        keyValue.put("authenticatedTranslation", authenticatedTranslation);
+        String dispenseWithNoticeSupportingDocs = "";
+        String dispenseWithNotice = NO;
+        if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
+            dispenseWithNotice = YES;
+            dispenseWithNoticeSupportingDocs = "<li>" + DISPENSE_NOTICE_SUPPORT_TEXT
+                + data.getDispenseWithNoticeSupportingDocs() + "</li>";
+        }
+        keyValue.put("dispenseWithNotice", dispenseWithNotice);
+        keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
         return keyValue;
     }
 
@@ -308,7 +345,6 @@ public class TaskStateRenderer {
         return notApplyingExecs.stream()
             .map(executor -> buildPA14NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
             .collect(Collectors.joining());
-
     }
 
     private String buildPA15NotApplyingExecutorsLinks(CaseData caseData, String reason) {

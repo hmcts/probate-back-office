@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
@@ -9,7 +11,10 @@ import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.AdmonWillRenunciationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
@@ -18,6 +23,9 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.TCResolutionLodgedWithAppCaseExtra;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -38,6 +46,7 @@ import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
@@ -49,8 +58,11 @@ public class SolicitorCoversheetPDFDecorator {
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
+    private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
@@ -97,6 +109,15 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
+        }        
+        if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
+            AuthenticatedTranslationCaseExtra authenticatedTranslationCaseExtra =
+                    AuthenticatedTranslationCaseExtra.builder()
+                    .authenticatedTranslationText(AUTHENTICATED_TRANSLATION_WILL_TEXT)
+                    .showAuthenticatedTranslation(YES)
+                    .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                    caseExtraDecorator.decorate(authenticatedTranslationCaseExtra));
         }
         if (admonWillRenunicationRule.isApplicable(caseData)) {
             AdmonWillRenunciationCaseExtra admonWillRenunciationCaseExtra = AdmonWillRenunciationCaseExtra.builder()
@@ -111,6 +132,27 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(admonWillRenunciationCaseExtra));
+        }
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(caseData)) {
+            TCResolutionLodgedWithAppCaseExtra tcResolutionLodgedWithAppCaseExtra = TCResolutionLodgedWithAppCaseExtra
+                .builder()
+                .showTcResolutionLodgedWithApp(YES)
+                .tcResolutionLodgedWithAppText(TC_RESOLUTION_LODGED_WITH_APP)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(tcResolutionLodgedWithAppCaseExtra));
+        }
+        // NB dispense notice support docs should appear last requirement from DTSPB-2054
+        if (dispenseNoticeSupportDocsRule.isApplicable(caseData)) {
+            DispenseNoticeCaseExtra dispenseNoticeCaseExtra =
+                DispenseNoticeCaseExtra.builder()
+                    .dispenseNoticeSupportDocsText(DISPENSE_NOTICE_SUPPORT_TEXT
+                        + caseData.getDispenseWithNoticeSupportingDocs())
+                    .showDispenseNoticeSupportDocs(YES)
+                    .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(dispenseNoticeCaseExtra));
+
         }
         return decoration;
     }

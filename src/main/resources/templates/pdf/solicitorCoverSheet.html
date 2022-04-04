@@ -142,6 +142,21 @@
                         {{ case_extras.admonWillRenunciationAfterLinksText }}
                     </li>
                     {% endif %}
+                    {% if case_extras.showTcResolutionLodgedWithApp == "Yes" %}
+                    <li>
+                        {{ case_extras.tcResolutionLodgedWithAppText }}
+                    </li>
+                    {% endif %}
+                {% endif %}
+                {% if case_extras != null and case_extras.showAuthenticatedTranslation == "Yes" %}
+                <li>
+                    {{ case_extras.authenticatedTranslationText }}
+                </li>
+                {% endif %}
+                {% if case_extras != null and case_extras.showDispenseNoticeSupportDocs == "Yes" %}
+                <li>
+                    {{ case_extras.dispenseNoticeSupportDocsText }}
+                </li>
                 {% endif %}
             </ul>
             <br /><br /><br />

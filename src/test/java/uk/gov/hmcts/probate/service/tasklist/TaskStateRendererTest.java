@@ -4,12 +4,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.caseprogress.TaskListState;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
@@ -23,6 +26,10 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -55,11 +62,18 @@ public class TaskStateRendererTest {
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRule;
     @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+    @Mock
+    private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
+    @Mock
     private AdmonWillRenunicationRule admonWillRenunicationRule;
     @Mock
     private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     @Mock
     private SendDocumentsRenderer sendDocumentsRenderer;
+    @Mock
+    private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+
 
     private CaseDetails caseDetails;
     public static final Long ID = 1L;
@@ -898,6 +912,101 @@ public class TaskStateRendererTest {
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
 
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentForState_SendDocuments_GopTcResolutionLodgedWithApplication() {
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .ihtFormId(IHT_FORM_207)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .solsFeeAccountNumber("1")
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsCopyOfResolution");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        when(tcResolutionLodgedWithApplicationRule.isApplicable(any(CaseData.class))).thenReturn(true);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_NoEnglishWill() {
+
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(YES)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .ihtFormId(IHT_FORM_207)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .solsFeeAccountNumber("1")
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .englishWill(NO)
+            .build();
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsWithAuthenticatedTranslationOfWill");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(pa17FormBusinessRule.isApplicable(caseData)).thenReturn(false);
+        when(authenticatedTranslationBusinessRule.isApplicable(caseData)).thenReturn(true);
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    public void shouldRenderCorrectDocumentsForState_SendDocuments_DispenseNotice() {
+
+        final CaseData caseData = CaseData.builder()
+            .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+            .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+            .primaryApplicantIsApplying(NO)
+            .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+            .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+            .solsAdditionalExecutorList(null)
+            .solsWillType(GRANT_TYPE_PROBATE)
+            .solsFeeAccountNumber("1")
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .englishWill(NO)
+            .dispenseWithNotice(YES)
+            .dispenseWithNoticeSupportingDocs("document1, document2")
+            .build();
+
+        String expectedHtml = fileSystemResourceService
+            .getFileFromResourceAsString(
+                "caseprogress/gop/solicitorCaseProgressSendDocumentsWithDispenseNoticeSupportDocs");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseData)).thenReturn(true);
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+            testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+            LocalDate.of(2020,10,10),
+            LocalDate.of(2020,11, 1), caseDetails);
         assertEquals(expectedHtml, result);
     }
 }

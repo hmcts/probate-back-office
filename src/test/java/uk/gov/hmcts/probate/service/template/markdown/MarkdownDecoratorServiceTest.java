@@ -4,6 +4,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -19,12 +21,14 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService.BULLET;
 
 public class MarkdownDecoratorServiceTest {
 
     @InjectMocks
     private MarkdownDecoratorService markdownDecoratorService;
-
+    
     @Mock
     private PA14FormBusinessRule pa14FormBusinessRule;
 
@@ -36,6 +40,9 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private PA17FormBusinessRule pa17FormBusinessRule;
+    
+    @Mock
+    private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
 
     @Mock
     private NotApplyingExecutorsMapper notApplyingExecutorsMapper;
@@ -44,13 +51,16 @@ public class MarkdownDecoratorServiceTest {
     private SendDocumentsRenderer sendDocumentsRenderer;
 
     @Mock
+    private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+
+    @Mock
     private CaseData caseDataMock;
 
     @Before
     public void  setup() {
         initMocks(this);
     }
-
+    
     @Test
     public void shouldGetPA14FormLabel() {
         when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
@@ -129,6 +139,45 @@ public class MarkdownDecoratorServiceTest {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetAuthenticatedTranslationFormLabel() {
+        when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        assertEquals("\n*   an authenticated translation of the will in English or Welsh",
+                md);
+    }
+
+    @Test
+    public void shouldNotGetAuthenticatedTranslationFormLabel() {
+        when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
+        assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetDispenseWithNoticeSupportDocsLabel() {
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(true);
+
+        String supportDocsText =
+            "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
+        String supportDocsEntry = "document1 document2";
+        String expectedText = BULLET + supportDocsText + supportDocsEntry;
+        when(caseDataMock.getDispenseWithNotice()).thenReturn(YES);
+        when(caseDataMock.getDispenseWithNoticeSupportingDocs()).thenReturn("document1 document2");
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
+        assertEquals(expectedText, md);
+    }
+
+    @Test
+    public void shouldNotGetDispenseWithNoticeSupportDocsLabel() {
+        when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(false);
+
+        String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
         assertEquals("", md);
     }
 }

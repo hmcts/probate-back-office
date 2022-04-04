@@ -14,10 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
+import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertFalse;
 import static junit.framework.TestCase.assertTrue;
-
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
@@ -127,6 +127,15 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsGopAuthenticatedTranslationRequestInApplication() {
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(
+                "/nextsteps/authenticatedTranslation/nextSteps.json", Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains("an authenticated translation of the will in English or Welsh"));
+    }
+
+    @Test
     public void verifyEmptyDeceasedFirstNameReturnsError() {
         validatePostRequestFailureForLegalStatement("\"deceasedForenames\": \"deceasedFirstName\"",
             "\"deceasedForenames\": \"\"", "caseDetails.data.deceasedForenames");
@@ -168,6 +177,16 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
             "caseDetails.data.solsSolicitorAddress.postCode");
     }
 
+    @Test
+    public void verifyGenerateSolsGopTcResolutionLodgedWithinApplication() {
+        String dir = "/nextsteps/tcResolutionLodged/";
+        Response fullResponse = validatePostRequestSuccessForLegalStatement(dir + "nextsteps.json",
+                Collections.emptyList());
+        String response = fullResponse.getBody().jsonPath().get("confirmation_body");
+        response = removeCrLfs(response);
+        assertTrue(response.contains("a certified copy of the resolution"));
+    }
+
     private String transformCase(String jsonFileName, String path) {
 
         final Response jsonResponse = RestAssured.given()
@@ -192,11 +211,13 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     }
     
     private Response validatePostRequestSuccessForLegalStatement(String file, List<String> validationString) {
+        String jsonBody = utils.getJsonFromFile(file);
+        assertNotNull(jsonBody);
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders())
-            .body(utils.getJsonFromFile(file))
+            .body(jsonBody)
             .post("/nextsteps/confirmation");
 
         assertEquals(200, response.getStatusCode());

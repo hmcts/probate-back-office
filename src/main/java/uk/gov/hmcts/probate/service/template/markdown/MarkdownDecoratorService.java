@@ -4,10 +4,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
@@ -16,8 +19,11 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 
 @Slf4j
 @Service
@@ -28,9 +34,12 @@ public class MarkdownDecoratorService {
     private final PA15FormBusinessRule pa15FormBusinessRule;
     private final PA16FormBusinessRule pa16FormBusinessRule;
     private final PA17FormBusinessRule pa17FormBusinessRule;
+    private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final SendDocumentsRenderer sendDocumentsRenderer;
+    private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
 
     public String getPA14FormLabel(CaseData caseData) {
         String label = "";
@@ -87,4 +96,25 @@ public class MarkdownDecoratorService {
         return BULLET + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName);
     }
 
+
+    public String getTcResolutionFormLabel(CaseData caseData) {
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(caseData)) {
+            return BULLET + TC_RESOLUTION_LODGED_WITH_APP;
+        }
+        return "";
+    }
+
+    public String getAuthenticatedTranslationLabel(CaseData caseData) {
+        if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
+            return BULLET + AUTHENTICATED_TRANSLATION_WILL_TEXT;
+        }
+        return "";
+    }
+
+    public String getDispenseWithNoticeSupportDocsLabelAndList(CaseData caseData) {
+        if (dispenseNoticeSupportDocsRule.isApplicable(caseData)) {
+            return BULLET + DISPENSE_NOTICE_SUPPORT_TEXT + caseData.getDispenseWithNoticeSupportingDocs();
+        }
+        return "";
+    }
 }

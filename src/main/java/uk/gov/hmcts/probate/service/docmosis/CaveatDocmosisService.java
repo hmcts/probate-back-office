@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,7 @@ public class CaveatDocmosisService {
 
     public Map<String, Object> caseDataAsPlaceholders(CaveatDetails caveatDetails) {
 
-        ObjectMapper mapper = new ObjectMapper();
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         Map<String, Object> placeholders = mapper.convertValue(caveatDetails.getData(), Map.class);
 
         Registry registry = registriesProperties.getRegistries().get(
