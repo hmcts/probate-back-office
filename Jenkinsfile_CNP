@@ -202,6 +202,8 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
+    env.ENV = 'prod'
+    // all the AAT tasks in the master pipeline finished, so we update the env variable to promote to prod tasks
   }
 
   after('highleveldatasetup') {
