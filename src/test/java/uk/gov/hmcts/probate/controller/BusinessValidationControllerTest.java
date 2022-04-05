@@ -1035,19 +1035,6 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithPaperCaseWithNoErrors() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
-
-        Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(document);
-        mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").isEmpty())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
     public void shouldValidateIhtNetGreaterThanGrossProbateValue() throws Exception {
 
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");

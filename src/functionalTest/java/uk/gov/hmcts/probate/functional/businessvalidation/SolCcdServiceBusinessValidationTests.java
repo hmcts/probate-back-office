@@ -660,14 +660,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestValidationsForRedeclarationSOTForPaperFormCase() {
-        final ResponseBody responseBody = validatePostSuccess("redeclarationSOTPaperForm.json",
-            REDECLARATION_SOT);
-        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
-        assertNull(jsonPath.get("data.errors"));
-    }
-
-    @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() {
         final ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
         final JsonPath jsonPath = JsonPath.from(body.asString());

@@ -608,17 +608,6 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateWithPaperCaseWithNoErrors() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
-
-        mockMvc
-            .perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors").isEmpty())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-    }
-
-    @Test
     public void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
