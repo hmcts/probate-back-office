@@ -103,14 +103,14 @@ def archiveCoreCaseDataDefinitions(env) {
 
   dir("${WORKSPACE}/build") {
     if("preview" == env){
-      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice-1864.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
     } else {
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice-1864.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
@@ -225,7 +225,7 @@ withPipeline("java", product, component) {
     env.ENV='aat'
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
-  
+
   onPR() {
       env.ENV='preview'
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
