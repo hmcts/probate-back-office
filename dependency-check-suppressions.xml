@@ -53,4 +53,11 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
         <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-beans-5.3.15.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
+        <vulnerabilityName>CVE-2022-22965</vulnerabilityName>
+    </suppress>
 </suppressions>
