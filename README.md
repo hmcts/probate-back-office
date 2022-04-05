@@ -131,7 +131,6 @@ npx @hmcts/probate-dev-env
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
-
 # to clear out all images
 npx @hmcts/probate-dev-env --destroy
 docker container rm $(docker container ls -a -q)

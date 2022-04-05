@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class EmailAddresses {
 
     private String excelaEmail;
-    
+
     private String smeeAndFordEmail;
 }
