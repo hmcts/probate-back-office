@@ -185,6 +185,8 @@ public class CaseQueryService {
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
             pagedResults = cases.getCases();
+            log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
+                    pagedResults.get(pagedResults.size() - 1).getId());
             allResults.addAll(pagedResults);
             index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;
