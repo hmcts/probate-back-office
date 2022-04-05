@@ -91,6 +91,7 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
+                .sort("id")
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", jsonQuery,
@@ -103,6 +104,7 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
+                .sort("id")
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, null);
@@ -145,7 +147,11 @@ public class CaseQueryService {
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
         query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize).from(0).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(0)
+                .sort("id")
+                .toString();
 
         return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, null);
     }
@@ -164,7 +170,11 @@ public class CaseQueryService {
         query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
         query.mustNot(existsQuery(KEY_EVIDENCE_HANDLED));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize).from(0).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(0)
+                .sort("id")
+                .toString();
 
         return runQueryWithPagination("findCasesForGrantAwaitingDocumentation", jsonQuery, queryDate,
                 null);
@@ -180,7 +190,7 @@ public class CaseQueryService {
         int total = 10000000;
         String paginatedQry = jsonQuery;
         while (index < total) {
-            log.info("Querying for {} from date:{} to date:{}, from page:{} to page:{}", queryName, queryDateStart,
+            log.info("Querying for {} from date:{} to date:{}, from index:{} to index:{}", queryName, queryDateStart,
                     queryDateEnd, pageStart, (pageStart + dataExtractPaginationSize));
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
