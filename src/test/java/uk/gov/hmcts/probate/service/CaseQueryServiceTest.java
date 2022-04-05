@@ -76,12 +76,12 @@ public class CaseQueryServiceTest {
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
 
         CaseData caseData = CaseData.builder()
-            .deceasedSurname("Smith")
-            .build();
-        List<ReturnedCaseDetails> caseList =
-            new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, 1L))
+                .deceasedSurname("Smith")
                 .build();
+        List<ReturnedCaseDetails> caseList =
+                new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
+                                LAST_MODIFIED, 1L))
+                        .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
 
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases);
@@ -90,7 +90,7 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesWithDatedDocumentReturnsCaseList() {
         List<ReturnedCaseDetails> cases =
-            caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
+                caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -101,7 +101,7 @@ public class CaseQueryServiceTest {
     public void findAllCasesWithDatedDocumentReturnsCaseList() {
         caseQueryService.dataExtractPaginationSize = 1;
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01");
+                "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -115,7 +115,7 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases2 = getReturnedCases(2, 3, 5);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01");
+                "2021-01-01");
 
         assertEquals(5, cases.size());
         assertThat(cases.get(0).getId(), is(0L));
@@ -137,7 +137,7 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases2 = getReturnedCases(3, 3, 6);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01");
+                "2021-01-01");
 
         assertEquals(6, cases.size());
         assertThat(cases.get(0).getId(), is(0L));
@@ -161,9 +161,9 @@ public class CaseQueryServiceTest {
         ReturnedCases returnedCases2 = getReturnedCases(3, 3, 7);
         ReturnedCases returnedCases3 = getReturnedCases(1, 6, 7);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
-            returnedCases3);
+                returnedCases3);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01");
+                "2021-01-01");
 
         assertEquals(7, cases.size());
         assertThat(cases.get(0).getId(), is(0L));
@@ -186,15 +186,15 @@ public class CaseQueryServiceTest {
         ArrayList<ReturnedCaseDetails> allReturnedCases = new ArrayList<>();
         for (int i = 0; i < numCases; i++) {
             CaseData caseData = CaseData.builder()
-                .deceasedSurname("Smith" + (caseIndex + i))
-                .build();
+                    .deceasedSurname("Smith" + (caseIndex + i))
+                    .build();
             allReturnedCases.add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, Long.valueOf(caseIndex + i)));
+                    LAST_MODIFIED, Long.valueOf(caseIndex + i)));
         }
         List<ReturnedCaseDetails> caseList =
-            new ImmutableList.Builder<ReturnedCaseDetails>()
-                .addAll(allReturnedCases)
-                .build();
+                new ImmutableList.Builder<ReturnedCaseDetails>()
+                        .addAll(allReturnedCases)
+                        .build();
         return new ReturnedCases(caseList, total);
     }
 
@@ -202,7 +202,7 @@ public class CaseQueryServiceTest {
     public void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
         List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01");
+                "2021-01-01");
 
         assertEquals(1, cases.size());
         assertThat(cases.get(0).getId(), is(1L));
@@ -218,7 +218,7 @@ public class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
                 returnedCases3);
         List<ReturnedCaseDetails> cases = caseQueryService
-            .findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
+                .findCaseStateWithinDateRangeExela("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.get(0).getId().intValue());
@@ -228,14 +228,14 @@ public class CaseQueryServiceTest {
     @Test(expected = ClientDataException.class)
     public void findCasesWithDateRangeThrowsError() {
         CaseData caseData = CaseData.builder()
-            .deceasedSurname("Smith")
-            .build();
-        List<ReturnedCaseDetails> caseList =
-            new ImmutableList.Builder<ReturnedCaseDetails>()
-                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L))
-                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 2L))
-                .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 3L))
+                .deceasedSurname("Smith")
                 .build();
+        List<ReturnedCaseDetails> caseList =
+                new ImmutableList.Builder<ReturnedCaseDetails>()
+                        .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L))
+                        .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 2L))
+                        .add(new ReturnedCaseDetails(caseData, LAST_MODIFIED, 3L))
+                        .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 3);
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
 
@@ -252,7 +252,7 @@ public class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
                 returnedCases3);
         List<ReturnedCaseDetails> cases = caseQueryService
-            .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
+                .findCaseStateWithinDateRangeHMRC("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.get(0).getId().intValue());
@@ -269,7 +269,7 @@ public class CaseQueryServiceTest {
                 returnedCases3);
 
         List<ReturnedCaseDetails> cases = caseQueryService
-            .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
+                .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.get(0).getId().intValue());
@@ -281,8 +281,8 @@ public class CaseQueryServiceTest {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
         Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01"))
-            .isInstanceOf(CaseMatchingException.class);
+                        "2021-01-01"))
+                .isInstanceOf(CaseMatchingException.class);
     }
 
     @Test
@@ -297,34 +297,31 @@ public class CaseQueryServiceTest {
     @Test
     public void findCasesForGrantAwaitingDocs() {
         CaseData caseData = CaseData.builder()
-            .deceasedSurname("Smith")
-            .build();
-        List<ReturnedCaseDetails> caseList =
-            new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, 1L))
+                .deceasedSurname("Smith")
                 .build();
+        List<ReturnedCaseDetails> caseList =
+                new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
+                                LAST_MODIFIED, 1L))
+                        .build();
         ReturnedCases returnedCases = new ReturnedCases(caseList, 1);
         when(restTemplate.postForObject(any(), entityCaptor.capture(), any())).thenReturn(returnedCases);
 
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
 
-        String expected = "{\"from\":0,\"size\":0,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":"
-            + "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,"
-            + "\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
-            + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true,"
-            +
-            "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":{\"data"
-            + ".grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\","
-            + "\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,"
-            + "\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}},"
-            +
-            "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0,"
-            + "\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
-            + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],"
-            +
-            "\"must_not\":[{\"exists\":{\"field\":\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},"
-            + "{\"exists\":{\"field\":\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,"
-            + "\"boost\":1.0}}}";
+        String expected = "{\"from\":0,\"size\":0,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":" +
+                "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50," +
+                "\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\"," +
+                "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true," +
+                "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":" +
+                "{\"data.grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\"," +
+                "\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false," +
+                "\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}," +
+                "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0," +
+                "\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\"," +
+                "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"must_not\":[{\"exists\":{\"field\":" +
+                "\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},{\"exists\":{\"field\":" +
+                "\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,\"boost\":1.0}}," +
+                "\"sort\":[{\"id\":{\"order\":\"asc\"}}]}";
         assertEquals(expected, entityCaptor.getValue().getBody());
         assertEquals(1, cases.size());
         assertEquals(1, cases.get(0).getId().intValue());
