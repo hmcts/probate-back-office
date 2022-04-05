@@ -35,15 +35,6 @@ module.exports = async function (caseRef, documentUploadConfig) {
     await I.attachFile(docLink, documentUploadConfig.fileToUploadUrl);
     await I.wait(testConfig.DocumentUploadDelay);
 
-    /* add the following properties to documentUploadConfig.json once caseworker moves
-       from CCD UI to ExUI.
-       CCD UI currently seems to put options in ddl in a random order - differs from local setup to pipeline.
-
-       caveat:  "docTypes": ["Email", "Correspondence", "Codicil", "Death Certificate", "Warning", "Other"]
-       grantOfProbate: "docTypes": ["Will", "Email", "Correspondence", "Codicil", "Death Certificate", "Other"]
-       willLodgement: "docTypes": ["Email", "Correspondence", "Codicil", "Death Certificate", "Other"]
-    */
-
     if (documentUploadConfig.documentType) {
         for (let i = 0; i < documentUploadConfig.documentType.length; i++) {
             // eslint-disable-next-line no-await-in-loop
