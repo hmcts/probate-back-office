@@ -66,6 +66,7 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_hmrc.json";
     private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_smeeford.json";
+    private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
@@ -89,7 +90,7 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
-                .sort("id")
+                .sort(SORT_COLUMN)
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", jsonQuery,
@@ -102,7 +103,7 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
-                .sort("id")
+                .sort(SORT_COLUMN)
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, null);
@@ -148,7 +149,7 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
-                .sort("id")
+                .sort(SORT_COLUMN)
                 .toString();
 
         return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, null);
@@ -171,7 +172,7 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
-                .sort("id")
+                .sort(SORT_COLUMN)
                 .toString();
 
         return runQueryWithPagination("findCasesForGrantAwaitingDocumentation", jsonQuery, queryDate,
