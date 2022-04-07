@@ -103,14 +103,14 @@ def archiveCoreCaseDataDefinitions(env) {
 
   dir("${WORKSPACE}/build") {
     if("preview" == env){
-      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice-1864.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
     } else {
-      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice-1864.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
       steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
@@ -243,31 +243,31 @@ withPipeline("java", product, component) {
     env.ENV='perftest'
   }
 
-  before('smoketest:preview') {
-
-    sh """
-      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-      ./bin/add-roles.sh
-    """
-    archiveCoreCaseDataDefinitions('preview')
-    uploadCoreCaseDataDefinitions('preview')
-
-    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
-    env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.CCD_DEF_URL="http://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_PRO_URL="http://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_DAT_URL="http://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-
-    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
-    env.CURL_OPTS="--insecure --retry 3 "
-    env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
-
-    sh """
- docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DEF_URL/health
- docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
- docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
- """
-  }
+//  before('smoketest:preview') {
+//
+//    sh """
+//      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
+//      ./bin/add-roles.sh
+//    """
+//    archiveCoreCaseDataDefinitions('preview')
+//    uploadCoreCaseDataDefinitions('preview')
+//
+//    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
+//    env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+//    env.CCD_DEF_URL="http://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+//    env.CCD_PRO_URL="http://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+//    env.CCD_DAT_URL="http://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+//
+//    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+//    env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
+//    env.CURL_OPTS="--insecure --retry 3 "
+//    env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+//
+//    sh """
+// docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DEF_URL/health
+// docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
+// docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
+// """
+//  }
 }
 
