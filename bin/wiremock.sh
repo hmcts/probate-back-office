@@ -1,8 +1,18 @@
 #!/bin/bash
+binFolder=$(dirname "$0")
 # Setup Wiremock responses for Professional Reference Data based on existing Idam users
-probatesolicitortestorgtest1=$1
-probatesolicitortestorg2test1=$2
-probatesolicitortestorgtestman=$3
+user1Token=$(${binFolder}/idam-lease-user-token.sh probatesolicitortestorgtest1@gmail.com Probate123)
+probatesolicitortestorgtest1=$(curl -X GET "http://localhost:5000/details" -H  "accept: application/json" -H  "authorization: ${user1Token}" | jq -r .id)
+echo probatesolicitortestorgtest1=$probatesolicitortestorgtest1
+
+user2Token=$(${binFolder}/idam-lease-user-token.sh probatesolicitortestorg2test1@gmail.com Probate123)
+probatesolicitortestorg2test1=$(curl -X GET "http://localhost:5000/details" -H  "accept: application/json" -H  "authorization: ${user2Token}" | jq -r .id)
+echo probatesolicitortestorg2test1=$probatesolicitortestorg2test1
+
+orgUserToken=$(${binFolder}/idam-lease-user-token.sh probatesolicitortestorgman3@gmail.com Probate123)
+probatesolicitortestorgtestman=$(curl -X GET "http://localhost:5000/details" -H  "accept: application/json" -H  "authorization: ${orgUserToken}" | jq -r .id)
+echo probatesolicitortestorgtestman=$probatesolicitortestorgtestman
+
 
 # clear all existing
 curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
@@ -339,56 +349,36 @@ curl -X POST \
     "headers": {
       "Content-Type": "application/json"
     },
-    "jsonBody": 
-      {
-      "organisationIdentifier": "XXXXX",
-      "name": "Probate Test Org",
+    "jsonBody": {
+      "companyNumber": "string",
+      "companyUrl": "string",
       "contactInformation": [
-          {
-            "addressLine1": "string",
-            "addressLine2": "string",
-            "addressLine3": "string",
-            "country": "string",
-            "county": "string",
-            "postCode": "string",
-            "townCity": "string"
-          }
-          ],
-          "paymentAccount": [
-           "PBA0082126",
-            "PBA0083372"
-        ],
-    "organisations": [
-      {
-        "companyNumber": "string",
-        "companyUrl": "string",
-        "contactInformation": [
-          {
-            "addressLine1": "string",
-            "addressLine2": "string",
-            "addressLine3": "string",
-            "country": "string",
-            "county": "string",
-            "postCode": "string",
-            "townCity": "string"
-          }
-        ],
-        "name": "Probate Test Org",
-        "organisationIdentifier": "XXXXX",
-        "paymentAccount": [
-          "string"
-        ],
-        "sraId": "string",
-        "sraRegulated": true,
-        "status": "ACTIVE",
-        "superUser": {
-          "email": "probatesolicitortestorgman3@gmail.com",
-          "firstName": "PBA",
-          "lastName": "TestUser"
+        {
+          "addressLine1": "Line 1A",
+          "addressLine2": "Line 2A",
+          "addressLine3": "Line 3A",
+          "county": "Kent",
+          "townCity": "London",
+          "country": "UK",
+          "postCode": "DA15 7LN"
         }
+      ],
+      "name": "Probate Test Org",
+      "organisationIdentifier": "XXXXX",
+      "orgId": "XXXXX",
+      "paymentAccount": [
+        "PBA0082126",
+        "PBA0083372"
+      ],
+      "sraId": "string",
+      "sraRegulated": true,
+      "status": "ACTIVE",
+      "superUser": {
+        "email": "probatesolicitortestorgman3@gmail.com",
+        "firstName": "PBA",
+        "lastName": "TestUser"
       }
-    ]
-  }
+    }
   }
 }
 ' \

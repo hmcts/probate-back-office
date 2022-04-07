@@ -169,9 +169,29 @@ LD_SDK_AM_KEY (see Sanjay for the value)
 
 after setup from dev-env, do, from this probate-back-office branch
 ./bin/share-a-case-setup.sh
+upload new xls from local
+redeploy probate-backoffice image
 make sure manage-case-assignment docker image is running
 make sure wiremock is running and populated
-we will eventually merge this into probate-dev-env
+http://localhost:3455/
+```
+
+#### share case - manage-org setup
+```
+complete above
+create a case to share
+unshare that case from everyone
+run 
+./bin/wiremockForMO.sh
+go to
+http://localhost:3001/
+login with org user
+click Unassigned cases link
+see unassigned cases + assign as needed
+
+when you want to return to manage-case
+run ./bin/wiremock.sh
+create cases + share per orn from here
 ```
 
 #### wiremock url

@@ -1,8 +1,13 @@
 #!/bin/bash
 binFolder=$(dirname "$0")
 (${binFolder}/idam-role.sh caseworker-caa)
+(${binFolder}/idam-role.sh pui-caa)
+(${binFolder}/idam-role.sh pui-organisation-manager)
 (${binFolder}/ccd-add-role.sh caseworker-caa)
 (${binFolder}/xui-add-role.sh caseworker-caa)
+(${binFolder}/xui-add-role.sh pui-caa)
+(${binFolder}/xui-add-role.sh pui-organisation-manager)
+
 # update the services to have the new role
 IDAM_URI="http://localhost:5000"
 authToken=$(curl -H 'Content-Type: application/x-www-form-urlencoded' -XPOST "${IDAM_URI}/loginUser?username=idamOwner@hmcts.net&password=Ref0rmIsFun" | jq -r .api_auth_token)
@@ -23,7 +28,9 @@ curl -XPUT \
 (${binFolder}/idam-create-caseworker.sh caseworker,caseworker-caa,pui-case-manager,pui-user-manager caa-caseworker@mailnesia.com "Password12" "caa" "caseworker")
 
 (${binFolder}/idam-create-service.sh "aac_manage_case_assignment" "aac_manage_case_assignment" "AAAAAAAAAAAAAAAA" "https://manage-case-assignment/oauth2redirect" "false" "profile openid roles manage-user")
+(${binFolder}/idam-create-service.sh "xui_mo_webapp" "xui_mo_webapp" "AAAAAAAAAAAAAAAA" "http://localhost:3001/oauth2/callback" "false" "profile openid roles manage-user create-user manage-roles")
 
-#put user1 and 2 userId in here
-#(${binFolder}/wiremock.sh "b0d383b4-335f-43f3-bbeb-7f56d0a220ac" "df6bfb10-7504-4608-997c-4f42fe355032")
-(${binFolder}/wiremock.sh "4841f65a-b149-4053-a647-2ac28d4550e2" "719946a7-5586-4b1e-85d4-977a35158b8c")
+(${binFolder}/idam-create-caseworker.sh caseworker,caseworker-probate,caseworker-probate-solicitor,pui-case-manager,pui-user-manager,pui-organisation-manager,pui-caa probatesolicitortestorgman3@gmail.com Probate123 TestOrg3 PBA)
+
+(${binFolder}/wiremock.sh)
+
