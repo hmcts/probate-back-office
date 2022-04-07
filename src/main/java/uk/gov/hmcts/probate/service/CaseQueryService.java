@@ -94,7 +94,7 @@ public class CaseQueryService {
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", jsonQuery,
-                queryDate, null);
+                queryDate, queryDate);
     }
 
     public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
@@ -106,7 +106,7 @@ public class CaseQueryService {
                 .sort(SORT_COLUMN)
                 .toString();
 
-        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, null);
+        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, queryDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
@@ -152,7 +152,7 @@ public class CaseQueryService {
                 .sort(SORT_COLUMN)
                 .toString();
 
-        return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, null);
+        return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, queryDate);
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantAwaitingDocumentation(String queryDate) {
@@ -176,7 +176,7 @@ public class CaseQueryService {
                 .toString();
 
         return runQueryWithPagination("findCasesForGrantAwaitingDocumentation", jsonQuery, queryDate,
-                null);
+                queryDate);
     }
 
     private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
