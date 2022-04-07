@@ -6,6 +6,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -657,6 +658,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String paperForm = jsonPath.get("data.paperForm");
         assertNull(errors);
         assertEquals(paperForm, "No");
+    }
+
+    @Test
+    public void verifyRequestValidationsErrorForRedeclarationSOTForPaperFormCase() {
+        final ResponseBody responseBody = validatePostSuccess("redeclarationSOTPaperForm.json",
+            REDECLARATION_SOT);
+        Assert.assertTrue(responseBody.asString().contains("You can only use this event for digital cases"));
     }
 
     @Test
