@@ -33,11 +33,11 @@
       "solsSolicitorAppReference": "REFREFREFREFREFREFREFREFREFREF",
       "applicantOrganisationPolicy": {
         "Organisation": {
-          "OrganisationID": "orgID",
-          "OrganisationName": "orgName"
+          "OrganisationID": null,
+          "OrganisationName": null
         },
-        "OrgPolicyCaseAssignedRole": "org Role",
-        "OrgPolicyReference": "org Reference"
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITOR]",
+        "OrgPolicyReference": null
       }
     }
   }

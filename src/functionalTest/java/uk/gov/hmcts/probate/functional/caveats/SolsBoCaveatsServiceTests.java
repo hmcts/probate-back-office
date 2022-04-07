@@ -20,6 +20,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
@@ -34,6 +35,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_VALIDATE = "/caveat/validate";
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
+    private static final String CAVEAT_SOLS_CREATED = "/caveat/solsCreate";
     private static final String DEFAULT_PAYLOAD = "caveatPayloadNotifications.json";
     private static final String DEFAULT_PAYLOAD_RESPONSE = "caveatPayloadNotificationsResponse.txt";
     private static final String DEFAULT_PAYLOAD_WELSH = "caveatPayloadNotificationsWelsh.json";
@@ -363,9 +365,12 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
         assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
-        assertThat(jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"), is(equalTo("org Role")));
-        assertThat(jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyReference"),
-            is(equalTo("org Reference")));
+        assertNotNull(jsonPath.get("data.applicantOrganisationPolicy"));
+        assertNotNull(jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationID"));
+        assertEquals("Probate Test Org",
+            jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationName"));
+        assertEquals("[APPLICANTSOLICITOR]",
+            jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"));
     }
 
     @Test

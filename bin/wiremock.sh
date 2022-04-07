@@ -2,6 +2,7 @@
 # Setup Wiremock responses for Professional Reference Data based on existing Idam users
 probatesolicitortestorgtest1=$1
 probatesolicitortestorg2test1=$2
+probatesolicitortestorgtestman=$3
 
 # clear all existing
 curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
@@ -340,6 +341,23 @@ curl -X POST \
     },
     "jsonBody": 
       {
+      "organisationIdentifier": "XXXXX",
+      "name": "Probate Test Org",
+      "contactInformation": [
+          {
+            "addressLine1": "string",
+            "addressLine2": "string",
+            "addressLine3": "string",
+            "country": "string",
+            "county": "string",
+            "postCode": "string",
+            "townCity": "string"
+          }
+          ],
+          "paymentAccount": [
+           "PBA0082126",
+            "PBA0083372"
+        ],
     "organisations": [
       {
         "companyNumber": "string",
@@ -355,7 +373,7 @@ curl -X POST \
             "townCity": "string"
           }
         ],
-        "name": "XXXXX",
+        "name": "Probate Test Org",
         "organisationIdentifier": "XXXXX",
         "paymentAccount": [
           "string"
@@ -364,7 +382,7 @@ curl -X POST \
         "sraRegulated": true,
         "status": "ACTIVE",
         "superUser": {
-          "email": "probatesolicitortestorgtest1@gmail.com",
+          "email": "probatesolicitortestorgman3@gmail.com",
           "firstName": "PBA",
           "lastName": "TestUser"
         }
@@ -406,8 +424,21 @@ curl -X POST \
         }
       ],
       "organisationIdentifier": "XXXXX",
-      "name": "XXXXX"
+      "name": "Probate Test Org"
     }
+  }
+}
+' \
+http://localhost:8991/__admin/mappings/new
+
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/health"
+  },
+  "response": {
+    "status": 200
   }
 }
 ' \
@@ -443,7 +474,7 @@ curl -X POST \
         }
       ],
       "organisationIdentifier": "XXXXX",
-      "name": "XXXXX"
+      "name": "Probate Test Org"
     }
   }
 }
@@ -482,7 +513,14 @@ curl -X POST \
           "lastName": "TestUser2",
           "email": "probatesolicitortestorg2test1@gmail.com",
           "idamStatus": "ACTIVE"
-        }  
+        },
+        {
+          "userIdentifier": "'${probatesolicitortestorgtestman}'",
+          "firstName": "PBA",
+          "lastName": "TestOrg3",
+          "email": "probatesolicitortestorgman3@gmail.com",
+          "idamStatus": "ACTIVE"
+        }
       ],
       "organisationIdentifier": "XXXXX"
     }
@@ -513,7 +551,26 @@ curl -X POST \
             },
             "jsonBody": {
               "organisationIdentifier": "XXXXX",
+              "name": "Probate Test Org",
               "users": [
+                  {
+                    "userIdentifier": "'${probatesolicitortestorgtestman}'",
+                    "firstName": "PBA",
+                    "lastName": "TestOrg3",
+                    "email": "probatesolicitortestorgman3@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager",
+                      "pui-caa",
+                      "pui-organisation-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
                   {
                     "userIdentifier": "'${probatesolicitortestorgtest1}'",
                     "firstName": "PBA",
@@ -552,7 +609,6 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
-
 #Users with roles
 curl -X POST \
 --data '{
@@ -575,7 +631,98 @@ curl -X POST \
             },
             "jsonBody": {
               "organisationIdentifier": "XXXXX",
+              "name": "Probate Test Org",
               "users": [
+                  {
+                    "userIdentifier": "'${probatesolicitortestorgtestman}'",
+                    "firstName": "PBA",
+                    "lastName": "TestOrg3",
+                    "email": "probatesolicitortestorgman3@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager",
+                      "pui-caa",
+                      "pui-organisation-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "'${probatesolicitortestorgtest1}'",
+                    "firstName": "PBA",
+                    "lastName": "TestUser",
+                    "email": "probatesolicitortestorgtest1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "'${probatesolicitortestorg2test1}'",
+                    "firstName": "PBA",
+                    "lastName": "TestUser2",
+                    "email": "probatesolicitortestorg2test1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  }
+                ]
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
+#Users no roles
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/users/"
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationIdentifier": "XXXXX",
+              "name": "Probate Test Org",
+              "users": [
+                  {
+                    "userIdentifier": "'${probatesolicitortestorgtestman}'",
+                    "firstName": "PBA",
+                    "lastName": "TestOrg3",
+                    "email": "probatesolicitortestorgman3@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager",
+                      "pui-caa",
+                      "pui-organisation-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
                   {
                     "userIdentifier": "'${probatesolicitortestorgtest1}'",
                     "firstName": "PBA",
