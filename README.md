@@ -162,18 +162,32 @@ docker-compose stop probate-back-office
 docker-compose up -d --build probate-back-office
 ```
 
-#### share case setup
+#### share case - manage-case setup
 ```
 before --create make sure you have this env var setup
 LD_SDK_AM_KEY (see Sanjay for the value)
+npx @hmcts/probate-dev-env --create
+npx @hmcts/probate-dev-env
 
-after setup from dev-env, do, from this probate-back-office branch
+after this setup from dev-env, do, from this probate-back-office branch, do
 ./bin/share-a-case-setup.sh
+
 upload new xls from local
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
+./ccdImports/conversionScripts/importAllXLS.sh
+
 redeploy probate-backoffice image
-make sure manage-case-assignment docker image is running
+docker-compose stop probate-back-office
+./gradlew assemble
+docker-compose up -d --build probate-back-office
+
+make sure probate-backoffice and manage-case-assignment docker images are running
 make sure wiremock is running and populated
 http://localhost:3455/
+login as one of the test PP users, create a case
+you should be able to share that case with the other PP user
+
+if you are running low on memory you can stop probate-frontend, business-service, submit-service, orchestrtor etc
 ```
 
 #### share case - manage-org setup
