@@ -978,7 +978,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformCaseWithApplicantOrganisationPolicy() {
-        final String response = transformCase("success.solsCreateShareACase",
+        final String response = transformCase("success.solsCreateShareACase.json",
             SOLS_CREATED_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
