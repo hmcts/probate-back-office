@@ -46,6 +46,7 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -85,6 +86,7 @@ public class BusinessValidationController {
     private final ConfirmationResponseService confirmationResponseService;
     private final StateChangeService stateChangeService;
     private final PDFManagementService pdfManagementService;
+    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private final NumberOfApplyingExecutorsValidationRule numberOfApplyingExecutorsValidationRule;
     private final CodicilDateValidationRule codicilDateValidationRule;
     private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
@@ -416,6 +418,8 @@ public class BusinessValidationController {
     @PostMapping(path = "/redeclarationSot", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> redeclarationSot(
         @RequestBody CallbackRequest callbackRequest) {
+
+        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
 
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
