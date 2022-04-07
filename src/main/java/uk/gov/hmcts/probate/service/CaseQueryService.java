@@ -106,7 +106,8 @@ public class CaseQueryService {
                 .sort(SORT_COLUMN)
                 .toString();
 
-        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, queryDate);
+        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate,
+                queryDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
