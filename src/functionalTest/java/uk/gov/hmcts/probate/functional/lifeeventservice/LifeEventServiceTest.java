@@ -1,10 +1,11 @@
 package uk.gov.hmcts.probate.functional.lifeeventservice;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
+
+import java.io.IOException;
 import java.util.List;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
@@ -20,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class LifeEventServiceTest extends IntegrationTestBase {
 
     @Test
-    public void shouldReturn200() {
+    public void shouldReturn200() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreatedSolDtls.json");
         Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
@@ -32,7 +33,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws JsonProcessingException {
+    public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.findAndRegisterModules();
@@ -52,7 +53,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnErrorManualUpdateAboutToStart() throws JsonProcessingException {
+    public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
         objectMapper.findAndRegisterModules();
