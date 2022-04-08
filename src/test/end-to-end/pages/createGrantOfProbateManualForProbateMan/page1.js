@@ -1,10 +1,10 @@
 'use strict';
 
 const testConfig = require('src/test/config');
-const createGrantOfProbateConfig = require('./createGrantOfProbateManualConfig');
+const createGrantOfProbateConfig = require('./createGrantOfProbateManualProbateManCaseConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (crud, unique_deceased_user) {
+module.exports = async function (crud) {
 
     const I = this;
 
@@ -50,8 +50,8 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.click(`#otherExecutorExists_${createGrantOfProbateConfig.page1_otherExecutorExistsNo}`);
         await I.fillField({css: '#boDeceasedTitle'}, createGrantOfProbateConfig.page1_bo_deceasedTitle);
 
-        await I.fillField({css: '#deceasedForenames'}, createGrantOfProbateConfig.page1_deceasedForenames + '_' + unique_deceased_user);
-        await I.fillField({css: '#deceasedSurname'}, createGrantOfProbateConfig.page1_deceasedSurname + '_' + unique_deceased_user);
+        await I.fillField({css: '#deceasedForenames'}, createGrantOfProbateConfig.page1_deceasedForenames);
+        await I.fillField({css: '#deceasedSurname'}, createGrantOfProbateConfig.page1_deceasedSurname);
         await I.fillField('#boDeceasedHonours', createGrantOfProbateConfig.page1_bo_deceasedHonours);
 
         const pcLocator2 = {xpath: createGrantOfProbateConfig.UKpostcodeLink2};
@@ -81,6 +81,5 @@ module.exports = async function (crud, unique_deceased_user) {
 
         await I.click({css: `#languagePreferenceWelsh_${createGrantOfProbateConfig.page1_optionNo}`});
     }
-
-    await I.waitForNavigationToComplete(commonConfig.continueButton);
+    await I.waitForNavigationToComplete(commonConfig.continueButton, 20);
 };

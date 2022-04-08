@@ -4,27 +4,19 @@ const dateFns = require('date-fns');
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 
-const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
-const createGrantOfProbateManualProbateManCaseConfig = require('src/test/end-to-end/pages/createGrantOfProbateManual/createGrantOfProbateManualProbateManCaseConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
+const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/probateManCaseMatchesConfig');
+const createGrantOfProbateManualProbateManCaseConfig = require('src/test/end-to-end/pages/createGrantOfProbateManualForProbateMan/createGrantOfProbateManualProbateManCaseConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
-const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');
 const markForExaminationConfig = require('src/test/end-to-end/pages/markForExamination/markForExaminationConfig');
-const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markForIssueConfig');
 
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsTabConfigProbateMan');
 
-const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
+const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/probateManCaseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
-const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadTabConfig');
-const examChecklistTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/examChecklistTabConfig');
-const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
-const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
-const ihtTabConfigUpdate = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtUpdateTabConfig');
 
 const {
     legacyParse,
@@ -34,8 +26,6 @@ const {
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Caseworker Grant of Representation - probateman case match';
 Scenario(scenarioName, async function ({I}) {
-    // Using the deceased user details from existing legacy database Probateman
-    const unique_deceased_user = 'No';
     let endState;
     await I.logInfo(scenarioName, 'Login as Caseworker');
     await I.authenticateWithIdamIfAvailable(false);
@@ -46,12 +36,12 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName + ' - first case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
-    await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateManualProbateManCaseConfig);
-    await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
-    await I.enterGrantOfProbateManualPage2('create');
-    await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
-    await I.enterGrantOfProbateManualPage3('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbateManualForProbateManPage1');
+    await I.enterGrantOfProbateManualForProbateManPage1('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbateManualForProbateManPage2');
+    await I.enterGrantOfProbateManualForProbateManPage2('create');
+    await I.logInfo(scenarioName, 'enterGrantOfProbateManualForProbateManPage3');
+    await I.enterGrantOfProbateManualForProbateManPage3('create');
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
 
@@ -64,7 +54,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateManualProbateManCaseConfig);
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateManualProbateManCaseConfig);
-    await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateManualProbateManCaseConfig);
 
     nextStepName = 'Print the case';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -88,10 +77,11 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Find matches (Examining)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
-    await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName, false);
+    await I.selectProbateManCaseMatchesForGrantOfProbate(caseRef, nextStepName, false);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Examining)';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caseMatchesTabConfig, caseMatchesConfig);
+    await I.verifyProbateManCcdCaseNumber();
 
 }).retry(testConfig.TestRetryScenarios);
