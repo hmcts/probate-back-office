@@ -155,7 +155,7 @@ def versions = [
         springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
-        jacksonDatabind                 : '2.13.2',
+        jacksonDatabind                 : '2.13.2.1',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
@@ -283,7 +283,7 @@ dependencies {
 
   implementation group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
-  implementation ('org.postgresql:postgresql:42.2.18') {
+  implementation ('org.postgresql:postgresql:42.3.3') {
     exclude module: 'slf4j-simple'
   }
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
