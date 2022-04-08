@@ -365,7 +365,6 @@ curl -X POST \
       ],
       "name": "Probate Test Org",
       "organisationIdentifier": "XXXXX",
-      "orgId": "XXXXX",
       "paymentAccount": [
         "PBA0082126",
         "PBA0083372"
