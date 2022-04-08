@@ -161,7 +161,7 @@ public abstract class IntegrationTestBase {
         String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements)
         throws IOException {
         String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
-        for ( Map.Entry<String, String> entry : expectedKeyValuerelacements.entrySet()) {
+        for (Map.Entry<String, String> entry : expectedKeyValuerelacements.entrySet()) {
             expectedText = expectedText.replace(entry.getKey(), entry.getValue());
         }
 
