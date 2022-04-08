@@ -43,7 +43,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String DEFAULT_PAYLOAD_CTSC = "caveatPayloadNotificationsCTSC.json";
     private static final String DEFAULT_PAYLOAD_CTSC_RESPONSE = "caveatPayloadNotificationsCTSCResponse.txt";
     private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB = "caveatPayloadNotificationsCTSCNoDOB.json";
-    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE = "caveatPayloadNotificationsCTSCNoDOBResponse" 
+    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE = "caveatPayloadNotificationsCTSCNoDOBResponse"
         + ".txt";
     private static final String PAYLOAD_CAVEAT_NO_DOB = "caveatPayloadNoDOB.json";
     private static final String RESPONSE_CAVEAT_NO_DOB = "caveatPayloadNoDOBResponse.txt";
@@ -56,10 +56,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         "solicitorCaveatWithdrawnExpectedTextWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE = "caveatPayloadNotificationsSolicitorResponse.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_WELSH = "caveatPayloadNotificationsSolicitorWelsh.json";
-    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH = 
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH =
         "caveatPayloadNotificationsSolicitorResponseWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOB.json";
-    private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse" 
+    private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse"
         + ".txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH =
         "caveatPayloadNotificationsSolicitorNoDOBWelsh.json";
@@ -165,7 +165,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL, 
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
@@ -193,7 +193,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL, 
+        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
@@ -240,7 +240,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH, 
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
             EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
@@ -360,7 +360,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaveatSolicitorCreateReturnOkResponseCode() {
-        final ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE_PAYLOAD, CAVEAT_SOLICITOR_CREATE);
+        String json = utils.getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
+        final ResponseBody response = validatePostSuccessForPayload(json, CAVEAT_SOLICITOR_CREATE,
+                utils.getHeadersWithSolicitorUser());
+
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
         assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
