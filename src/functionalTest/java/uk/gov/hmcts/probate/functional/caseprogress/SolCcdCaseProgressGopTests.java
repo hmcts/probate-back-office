@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
+import java.io.IOException;
+
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
 
@@ -17,43 +19,43 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     // Note - expected html filenames need to be .txt to stop intellij auto-formatting
 
     @Test
-    public void shouldTransformAppCreatedSolDtlsStateCorrectly() {
+    public void shouldTransformAppCreatedSolDtlsStateCorrectly() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/01-appCreatedSolDtls.json", TASKLIST_UPDATE_URL,
             "/application-created-sol-dtls-html.txt", getSolicitorDtlsUrl());
     }
 
     @Test
-    public void shouldTransformAppCreatedDeceasedDtlsStateCorrectly() {
+    public void shouldTransformAppCreatedDeceasedDtlsStateCorrectly() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/01a-appCreatedDeceasedDtls.json", TASKLIST_UPDATE_URL,
                 "/application-created-dcsd-dtls-html.txt", getDeceasedDtlsUrl());
     }
 
     @Test
-    public void shouldTransformAppUpdatedStateCorrectly() {
+    public void shouldTransformAppUpdatedStateCorrectly() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/02-appUpdated.json", SOLS_VALIDATE_PROBATE_URL,
             "/application-updated-html.txt", getReviewOrSubmitUrl());
     }
 
     @Test
-    public void shouldTransformAppCreatedStateReenterDetailsCorrectly() {
+    public void shouldTransformAppCreatedStateReenterDetailsCorrectly() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/02a-appCreated-update-app.json", TASKLIST_UPDATE_URL,
             "/application-created-update-app-html.txt", getDeceasedDtlsUrl());
     }
 
     @Test
-    public void shouldTransformAppUpdatedStateReenterDetailsCorrectly() {
+    public void shouldTransformAppUpdatedStateReenterDetailsCorrectly() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/02b-appUpdated-update-app.json", SOLS_VALIDATE_PROBATE_URL,
             "/application-updated-update-app-html.txt", getReviewOrSubmitUrl());
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() {
+    public void shouldTransformCaseCorrectlyWhenCompletingSolicitorProbatePart() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/03-probateCreated.json", SOLS_VALIDATE_URL,
             "/deceased-dtls-entered-html.txt", getAddApplicationDetailsUrl());
     }
 
     @Test
-    public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() {
+    public void shouldTransformCaseCreatedStateCorrectlyOnPrinting() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/04-caseCreated.json", CASE_PRINTED_URL,
             "/gop/case-created-html.txt");
     }
@@ -61,79 +63,79 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     @Test
     // NOTE - actual cw state change to
     // BOReadyForExamination doesn't come to back office, we just get docs received notification
-    public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() {
+    public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/05-caseMarkAsReadyForExam.json", CASE_DOCS_RECEIVED_URL,
             "/gop/case-ready-for-exam-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenStopped() {
+    public void shouldTransformCaseCorrectlyWhenStopped() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json", CASE_STOPPED_URL,
             "/case-stopped-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenEscalated() {
+    public void shouldTransformCaseCorrectlyWhenEscalated() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/07-caseEscalated.json", CASE_ESCALATED_URL,
             "/case-escalated-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() {
+    public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/08-caseMatchingExamining.json", CASE_MATCHING_EXAMINING_URL,
             "/gop/case-matching-examining-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenExamining() {
+    public void shouldTransformCaseCorrectlyWhenExamining() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/09-examineCase.json", TASKLIST_UPDATE_URL,
             "/gop/examine-case-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() {
+    public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/10-caseMatchingReadyToIssue.json",
             CASE_MATCHING_READY_TO_ISSUE_URL, "/gop/case-matching-ready-to-issue-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() {
+    public void shouldTransformCaseCorrectlyWhenMarkingReadyToIssue() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/11-markReadyToIssue.json", CASE_MATCHING_EXAMINING_URL,
             "/gop/case-mark-ready-to-issue-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenIssuingGrant() {
+    public void shouldTransformCaseCorrectlyWhenIssuingGrant() throws IOException {
         verifyCaseProgressHtmlCwPost("caseprogress/12-issueGrant.json", GENERATE_GRANT_URL,
             "/gop/generate-grant-html.txt");
     }
 
     @Test
-    public void shouldTransformCaseCorrectlyWhenFailQa() {
+    public void shouldTransformCaseCorrectlyWhenFailQa() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json",
             CASE_FAIL_QA_URL, "/case-stopped-html.txt");
     }
 
     @Test
-    public void shouldRenderSendDocumentsWithRenouncingExecutors() {
+    public void shouldRenderSendDocumentsWithRenouncingExecutors() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/04a-caseCreated.json", TASKLIST_UPDATE_URL,
             "/gop/04a-caseCreatedRenouncingExecutors");
     }
 
     @Test
-    public void shouldRenderSendDocumentsWithCodicils() {
+    public void shouldRenderSendDocumentsWithCodicils() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/04b-caseCreated.json", TASKLIST_UPDATE_URL,
             "/gop/04b-caseCreatedWillHasCodicils");
     }
 
     @Test
-    public void shouldRenderSendDocumentsWithIht217() {
+    public void shouldRenderSendDocumentsWithIht217() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/04c-caseCreated.json", TASKLIST_UPDATE_URL,
             "/gop/04c-caseCreatedIHT217");
     }
 
     @Test
-    public void shouldRenderSendDocumentsWithTcResolutionLodgedWithApplication() {
+    public void shouldRenderSendDocumentsWithTcResolutionLodgedWithApplication() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/04e-caseCreated.json", TASKLIST_UPDATE_URL,
                 "/gop/04e-caseCreatedTcResolutionLodgedWithApp");
     }
