@@ -4,8 +4,8 @@
       "solsSolicitorWillSignSOT": "Yes",
       "applicantOrganisationPolicy": {
         "Organisation": {
-          "OrganisationID": "XXXXX",
-          "OrganisationName": "Probate Test Org"
+          "OrganisationID": null,
+          "OrganisationName": null
         },
         "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITOR]",
         "OrgPolicyReference": null

@@ -978,9 +978,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldTransformCaseWithApplicantOrganisationPolicy() {
-        final String response = transformCase("success.solsCreateShareACase.json",
-            SOLS_CREATED_URL);
+        String json = utils.getJsonFromFile("success.solsCreateShareACase.json");
+        final ResponseBody body = validatePostSuccessForPayload(json, SOLS_CREATED_URL,
+                utils.getHeadersWithSolicitorUser());
 
+        final String response = body.asString();
         final JsonPath jsonPath = JsonPath.from(response);
         assertNotNull(jsonPath.get("data.applicantOrganisationPolicy"));
         assertNotNull(jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationID"));
