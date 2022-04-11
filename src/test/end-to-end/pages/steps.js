@@ -76,6 +76,7 @@ module.exports = function () {
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         dontSeeCaseDetails: steps.caseDetails.checkCaseDetailsDoNotAppear,
+        seeTabDetails: steps.caseProgress.tabDetails,
         seeUpdatesOnCase: steps.caseDetails.caseDetailsUpdated,
         chooseNextStep: steps.nextStep.nextStep,
         printCase: steps.printCase.printCase,

@@ -9,6 +9,7 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStopEscalateIssue/caseProgressConfig');
 const solicitorDetailsHtmlCheck = require('src/test/end-to-end/pages/caseProgressStopEscalateIssue/solicitorDetailsHtmlCheck');
 const solCheckAnswersHtmlCheck = require('src/test/end-to-end/pages/caseProgressStopEscalateIssue/solCheckAnswersHtmlCheck');
+const documentUploadSolTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadSolTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Case Progress - stop/escalate/issue';
@@ -187,6 +188,10 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         // log back in as solicitor & check all sections completed
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
+
+        await I.seeTabDetails(caseRef, documentUploadSolTabConfig, caseProgressConfig);
+        await I.clickTab('Case Progress');
+
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 0,

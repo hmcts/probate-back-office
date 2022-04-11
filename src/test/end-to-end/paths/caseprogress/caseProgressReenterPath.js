@@ -6,6 +6,7 @@ const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
+const documentUploadSolTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadSolTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Case Progress - Reenter Deceased Details';
@@ -278,6 +279,10 @@ Scenario(scenarioName, async function ({I}) {
         // log back in as solicitor
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
+
+        await I.seeTabDetails(caseRef, documentUploadSolTabConfig, caseProgressConfig);
+        await I.clickTab('Case Progress');
+
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 8,
             numInProgress: 0,
