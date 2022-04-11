@@ -49,9 +49,9 @@ import java.util.Optional;
 import java.util.function.Function;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.NEWCASTLE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
-import static uk.gov.hmcts.probate.model.Constants.LONDON;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
@@ -222,9 +222,9 @@ public class DocumentController {
         Document document;
         DocumentType template = WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
-        Registry registry = registriesProperties.getRegistries().get(LONDON);
-        callbackRequest.getCaseDetails().setLondonRegistryAddress(String.join(" ",
-            registry.getAddressLine1(), registry.getAddressLine2(),
+        Registry registry = registriesProperties.getRegistries().get(NEWCASTLE);
+        callbackRequest.getCaseDetails().setNewcastleRegistryAddress(String.join(" ",
+            registry.getAddressLine1(), registry.getAddressLine2(), registry.getAddressLine3(),
             registry.getTown(), registry.getPostcode()));
 
         document = pdfManagementService.generateAndUpload(callbackRequest, template);
