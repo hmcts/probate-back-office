@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -124,10 +125,11 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/sols-access")
-    public ResponseEntity<AfterSubmitCallbackResponse> solicitorCreate(
+    public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
         @RequestHeader(value = "Authorization") String authToken,
+        @RequestParam(value = "caseTypeId") String caseTypeId,
         @RequestBody CallbackRequest request) {
-        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken);
+        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken, caseTypeId);
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
@@ -218,7 +220,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
-        
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 gopPage1ValidationRules);
 

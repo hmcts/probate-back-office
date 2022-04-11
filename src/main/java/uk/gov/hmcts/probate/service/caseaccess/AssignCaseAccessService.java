@@ -11,8 +11,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.util.Map;
 import java.util.Objects;
 
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -24,12 +22,12 @@ public class AssignCaseAccessService {
     private final IdamApi idamApi;
 
 
-    public void assignCaseAccess(String caseId, String authorisationToken) {
+    public void assignCaseAccess(String caseId, String authorisationToken, String caseTypeId) {
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authorisationToken);
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String userId = result.get("id").toString().toLowerCase();
 
-        log.info("CaseId: {} assigning case access to user {}", caseId, userId);
+        log.info("CaseId: {} of type {} assigning case access to user {}", caseId, caseTypeId, userId);
 
         String serviceToken = authTokenGenerator.generate();
         log.info("serviceToken: {}", serviceToken);
@@ -38,19 +36,19 @@ public class AssignCaseAccessService {
             authorisationToken,
             serviceToken,
             true,
-            buildAssignCaseAccessRequest(caseId, userId)
+            buildAssignCaseAccessRequest(caseId, userId, caseTypeId)
         );
         ccdDataStoreService.removeCreatorRole(caseId, authorisationToken);
 
         log.info("CaseId: {} assigned case access to user {}", caseId, userId);
     }
 
-    private AssignCaseAccessRequest buildAssignCaseAccessRequest(String caseId, String userId) {
+    private AssignCaseAccessRequest buildAssignCaseAccessRequest(String caseId, String userId, String caseTypeId) {
         return AssignCaseAccessRequest
             .builder()
             .caseId(caseId)
             .assigneeId(userId)
-            .caseTypeId(GRANT_OF_REPRESENTATION.getName())
+            .caseTypeId(caseTypeId)
             .build();
     }
 }

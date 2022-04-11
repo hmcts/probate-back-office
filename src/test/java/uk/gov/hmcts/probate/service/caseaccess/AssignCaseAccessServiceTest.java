@@ -50,7 +50,7 @@ public class AssignCaseAccessServiceTest {
         when(this.authTokenGenerator.generate()).thenReturn("Generate");
         doNothing().when(this.assignCaseAccessClient)
             .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
-        this.assignCaseAccessService.assignCaseAccess("42", "ABC123");
+        this.assignCaseAccessService.assignCaseAccess("42", "ABC123", "GrantOfRepersentation");
         verify(this.idamApi).getUserDetails(anyString());
         verify(this.ccdDataStoreService).removeCreatorRole(anyString(), anyString());
         verify(this.authTokenGenerator).generate();
