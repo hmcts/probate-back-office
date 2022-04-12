@@ -70,6 +70,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyGrantReissueDocumentAppNameWithApostrophe() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
+    }
+
+    @Test
+    public void verifyGrantReissueDocumentAppNameDoubleBarrelled() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameDoubleBarrelled.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
+    }
+
+    @Test
     public void verifyWelshGrantReissueDocumentAndEmail() {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
             "expectedPersonalDocumentWelshGrantReissued.txt",
@@ -88,6 +104,22 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
             "expectedPersonalDocumentWelshAdmonWillReissued.txt",
             "expectedPersonalEmailWelshGrantReissued.txt");
+    }
+
+    @Test
+    public void verifyWelshGrantReissueDocumentAppNameWithApostrophe() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadWelshGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentWelshGrantReissuedNameWithApostrophe.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
+    }
+
+    @Test
+    public void verifyWelshGrantReissueDocumentAppNameDoubleBarrelled() {
+        final ResponseBody responseBody = validatePostSuccess(
+            "personalPayloadWelshGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
+        assertExpectedContents("expectedPersonalDocumentWelshGrantReissuedNameDoubleBarrelled.txt",
+            GENERATED_DOCUMENT_URL, responseBody);
     }
 
     @Test
