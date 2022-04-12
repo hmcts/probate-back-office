@@ -21,5 +21,5 @@ public class WillLodgementDetails {
     
     private String grantSignatureBase64;
 
-    private String londonRegistryAddress;
+    private String newcastleRegistryAddress;
 }
