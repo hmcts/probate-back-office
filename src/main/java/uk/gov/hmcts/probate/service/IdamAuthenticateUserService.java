@@ -43,7 +43,7 @@ public class IdamAuthenticateUserService {
 
     @Autowired
     public IdamAuthenticateUserService(
-        IdamApi idamApi
+            IdamApi idamApi
     ) {
         this.idamApi = idamApi;
     }
@@ -54,18 +54,18 @@ public class IdamAuthenticateUserService {
 
         try {
             AuthenticateUserResponse authenticateUserResponse = idamApi.authenticateUser(
-                BASIC + base64Authorisation,
-                CODE,
-                id,
-                redirect
+                    BASIC + base64Authorisation,
+                    CODE,
+                    id,
+                    redirect
             );
 
             TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(
-                authenticateUserResponse.getCode(),
-                AUTHORIZATION_CODE,
-                redirect,
-                id,
-                secret
+                    authenticateUserResponse.getCode(),
+                    AUTHORIZATION_CODE,
+                    redirect,
+                    id,
+                    secret
             );
 
             return BEARER + tokenExchangeResponse.getAccessToken();
@@ -74,11 +74,11 @@ public class IdamAuthenticateUserService {
             throw e;
         }
     }
-    
+
     public String getEmail(String authToken) {
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authToken);
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
-        return result.get("email").toString().toLowerCase(); 
+        return result.get("email").toString().toLowerCase();
     }
 
 }

@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.16
+version: 1.0.18
 
 maintainers:
   - name: HMCTS Probate Team
@@ -12,16 +12,16 @@ dependencies:
     version:  3.7.4
     repository: '@hmctspublic'
   - name: ccd
-    version: 4.3.2
+    version: 6.0.0
     repository: '@hmctspublic'
     tags:
       - probate-ccd-stack
   - name: xui-webapp
-    version: ~0.2.1
+    version: ~0.2.13
     repository: '@hmctspublic'
     condition: xui-webapp.enabled
   - name: idam-pr
-    version: 2.2.6
+    version: 2.2.7
     repository: '@hmctspublic'
     condition: idam-pr.enabled
 
