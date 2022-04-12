@@ -177,9 +177,7 @@ upload new xls from local
 ./ccdImports/conversionScripts/importAllXLS.sh
 
 redeploy probate-backoffice image
-docker-compose stop probate-back-office
-./gradlew assemble
-docker-compose up -d --build probate-back-office
+docker-compose stop probate-back-office && ./gradlew assemble && docker-compose up -d --build probate-back-office
 
 make sure probate-backoffice and manage-case-assignment docker images are running
 make sure wiremock is running and populated
@@ -195,8 +193,6 @@ if you are running low on memory you can stop probate-frontend, business-service
 complete above
 create a case to share
 unshare that case from everyone
-run 
-./bin/wiremockForMO.sh
 go to
 http://localhost:3001/
 login with org user
@@ -205,7 +201,7 @@ see unassigned cases + assign as needed
 
 when you want to return to manage-case
 run ./bin/wiremock.sh
-create cases + share per orn from here
+create cases + share per org from here
 ```
 
 #### wiremock url

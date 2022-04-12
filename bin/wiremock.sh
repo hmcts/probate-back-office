@@ -553,7 +553,6 @@ curl -X POST \
                       "caseworker-probate-solicitor",
                       "pui-user-manager",
                       "pui-case-manager",
-                      "pui-caa",
                       "pui-organisation-manager"
                     ],
                     "idamStatus": "ACTIVE",
@@ -633,7 +632,6 @@ curl -X POST \
                       "caseworker-probate-solicitor",
                       "pui-user-manager",
                       "pui-case-manager",
-                      "pui-caa",
                       "pui-organisation-manager"
                     ],
                     "idamStatus": "ACTIVE",
@@ -705,7 +703,6 @@ curl -X POST \
                       "caseworker-probate-solicitor",
                       "pui-user-manager",
                       "pui-case-manager",
-                      "pui-caa",
                       "pui-organisation-manager"
                     ],
                     "idamStatus": "ACTIVE",

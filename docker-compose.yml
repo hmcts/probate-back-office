@@ -57,7 +57,8 @@ services:
   ccd-data-store-api:
     image: "${CCD_DATA_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/data-store-api:${CCD_DATA_STORE_API_TAG:-latest}"
     environment:
-      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      # JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      # JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5007
       DATA_STORE_DB_HOST: shared-database
       DATA_STORE_DB_PORT: 5432
       DATA_STORE_DB_USERNAME: "${DB_USERNAME}"
