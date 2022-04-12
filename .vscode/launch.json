@@ -5,7 +5,6 @@
     "version": "0.2.0",
     "configurations": [
 
-
         {
             "name": "Set up Wiremocks",
             "request": "launch",
@@ -203,6 +202,18 @@
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-grantOfProbate",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Caseworker GoP (Personal) e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbateEE",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
