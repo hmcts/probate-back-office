@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.6.3'
+    springBootVersion = '2.6.6'
   }
   repositories {
     jcenter()
@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.6.3'
+  id 'org.springframework.boot' version '2.6.6'
   id 'uk.gov.hmcts.java' version '0.12.2'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
@@ -151,7 +151,7 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.6.3',
+        springBootVersion               : '2.6.6',
         springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
@@ -283,7 +283,7 @@ dependencies {
 
   implementation group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
-  implementation ('org.postgresql:postgresql:42.2.18') {
+  implementation ('org.postgresql:postgresql:42.3.3') {
     exclude module: 'slf4j-simple'
   }
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
@@ -402,6 +402,12 @@ task fortifyScan(type: JavaExec)  {
   main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+
+task highLevelDataSetup(type: JavaExec) {
+  onlyIf {
+    return false
+  }
 }
 
 test {

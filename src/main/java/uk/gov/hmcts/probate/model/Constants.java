@@ -13,7 +13,7 @@ public final class Constants {
     public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
     public static final int STANDING_SEARCH_LIFESPAN = 6;
     public static final String BUSINESS_ERROR = "businessError";
-    public static final String LONDON = "london";
+    public static final String NEWCASTLE = "newcastle";
     public static final String CTSC = "ctsc";
     public static final String EXTRACT_PROBATE = "PROBATE";
     public static final String EXTRACT_ADMINISTRATION = "ADMINISTRATION";
@@ -60,7 +60,7 @@ public final class Constants {
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
     public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT
-        = "an authenticated translation of the will";
+        = "an authenticated translation of the will in English or Welsh";
     public static final String PA14_FORM_URL = "https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate";
     public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
     public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
