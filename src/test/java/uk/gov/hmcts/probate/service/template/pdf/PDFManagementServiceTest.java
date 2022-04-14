@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -128,7 +129,7 @@ public class PDFManagementServiceTest {
         assertEquals(href, response.getDocumentLink().getDocumentBinaryUrl());
         assertEquals(href, response.getDocumentLink().getDocumentUrl());
     }
-    
+
     @Test
     public void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
         String json = "{}";
@@ -427,7 +428,7 @@ public class PDFManagementServiceTest {
             .thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
         optionalLink = Optional.of(link);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(optionalLink);
+        when(evidenceManagementFile.getLink(IanaLinkRelations.SELF)).thenReturn(optionalLink);
         when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
         underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
@@ -449,7 +450,7 @@ public class PDFManagementServiceTest {
 
     private void mockLinks(String href) {
         optionalLink = Optional.of(link);
-        when(evidenceManagementFile.getLink(Link.REL_SELF)).thenReturn(optionalLink);
+        when(evidenceManagementFile.getLink(IanaLinkRelations.SELF)).thenReturn(optionalLink);
         when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
         when(link.getHref()).thenReturn(href);
     }

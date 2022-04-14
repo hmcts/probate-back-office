@@ -1,27 +1,26 @@
 buildscript {
   ext {
-    springBootVersion = '2.5.5'
+    springBootVersion = '2.6.6'
   }
   repositories {
     jcenter()
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.6.0")
-    classpath("net.serenity-bdd:serenity-single-page-report:2.1.4")
+    classpath("net.serenity-bdd:serenity-gradle-plugin:2.5.8")
   }
 }
 
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.5.9'
+  id 'org.springframework.boot' version '2.6.6'
   id 'uk.gov.hmcts.java' version '0.12.2'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.2.9'
+  id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
 }
 
@@ -128,14 +127,10 @@ task functional(type: Test) {
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
-  //finalizedBy aggregate
+  finalizedBy aggregate
 }
 
-//functional.finalizedBy(aggregate)
-
-serenity {
-  reports = ["single-page-html"]
-}
+functional.finalizedBy(aggregate)
 
 
 task caseCreator(type: Test) {
@@ -153,27 +148,27 @@ gitProperties {
 }
 
 def versions = [
-        springCloudStarterNetflixHystrix: '2.1.3.RELEASE',
+        springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.5.9',
-        springBootStarterHateoas        : '2.5.9',
+        springBootVersion               : '2.6.6',
+        springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
-        jacksonDatabind                 : '2.11.2',
+        jacksonDatabind                 : '2.13.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
         lombok                          : '1.18.16',
-        springfoxSwagger                : '3.0.0',
+        springDocOpenUi                 : '1.6.6',
         springSecurityVersion           : '5.6.1',
-        probateCommonsVersion           : '1.3.4',
+        probateCommonsVersion           : '1.3.8',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
-        pact_version                    : '4.1.7',
+        pact_version                    : '4.1.34',
         probatePactCommonsVersion       : '1.0.2',
-        springCloud                     : '3.0.4',
+        springCloud                     : '3.1.1',
         junit_jupiter                   : '5.8.0-M1',
         elasticSearchVersion            : '7.15.0'
 ]
@@ -204,12 +199,10 @@ processResources {
 }
 
 dependencyManagement {
+  imports {
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.1"
+  }
   dependencies {
-    //CVE-2020-15250
-    dependency group: 'junit', name: 'junit', version: '4.13.2'
-    
-    // dependency group: 'junit', name: 'junit-bom', version: '5.7.0'
-
     //CVE-2021-22112
     dependencySet(group: 'org.springframework.security', version: '5.6.1') {
       entry 'spring-security-config'
@@ -217,9 +210,6 @@ dependencyManagement {
       entry 'spring-security-crypto'
       entry 'spring-security-web'
     }
-
-    //CVE-2021-27568
-    dependency group: 'json-smart', name: 'json-smart', version: '2.3'
   }
 }
 
@@ -230,7 +220,7 @@ configurations.all {
         details.useVersion '9.0.58'
       }
       if (details.requested.group in ['org.hibernate']) {
-        details.useVersion '5.4.25.Final'
+        details.useVersion '5.6.5.Final'
       }
       if (details.requested.group in ['org.apache.logging.log4j']) {
         details.useVersion '2.17.1'
@@ -266,11 +256,12 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.9'
 
-  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: '2.9.8'
+  implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
-  implementation group: 'io.springfox', name: 'springfox-boot-starter', version: versions.springfoxSwagger
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDocOpenUi
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: versions.springDocOpenUi
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   implementation group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
@@ -292,7 +283,7 @@ dependencies {
 
   implementation group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
-  implementation ('org.postgresql:postgresql:42.2.18') {
+  implementation ('org.postgresql:postgresql:42.3.3') {
     exclude module: 'slf4j-simple'
   }
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
@@ -315,7 +306,8 @@ dependencies {
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
-  
+  testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
+
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
   testSmokeImplementation sourceSets.test.runtimeClasspath
@@ -324,7 +316,6 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
   testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
@@ -349,7 +340,7 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.11.0'
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
@@ -369,7 +360,7 @@ dependencies {
 }
 
 tasks.withType(JavaCompile) {
-  options.compilerArgs << '-parameters'  
+  options.compilerArgs << '-parameters'
 }
 
 bootJar {
@@ -411,6 +402,12 @@ task fortifyScan(type: JavaExec)  {
   main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
+}
+
+task highLevelDataSetup(type: JavaExec) {
+  onlyIf {
+    return false
+  }
 }
 
 test {

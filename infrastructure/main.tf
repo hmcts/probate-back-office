@@ -19,5 +19,6 @@ module "db-v11" {
   sku_name           = "GP_Gen5_2"
   sku_tier           = "GeneralPurpose"
   common_tags        = var.common_tags
+  storage_mb         = 61440
   subscription       = var.subscription
 }

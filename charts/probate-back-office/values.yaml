@@ -7,6 +7,9 @@ idam-pr:
 xui-webapp:
   enabled: false
 
+elastic:
+  enabled: false
+
 postgresql:
   enabled: false
 
@@ -33,8 +36,8 @@ java:
     PRD_API_URL : http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PAYMENT_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
-    PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-{{ .Values.global.environment }}
-    PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-{{ .Values.global.environment }}.postgres.database.azure.com
+    PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-v11-{{ .Values.global.environment }}
+    PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-v11-{{ .Values.global.environment }}.postgres.database.azure.com
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     PROBATE_POSTGRESQL_PORT: 5432
   keyVaults:

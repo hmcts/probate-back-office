@@ -13,7 +13,7 @@ public final class Constants {
     public static final int CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS = 6;
     public static final int STANDING_SEARCH_LIFESPAN = 6;
     public static final String BUSINESS_ERROR = "businessError";
-    public static final String LONDON = "london";
+    public static final String NEWCASTLE = "newcastle";
     public static final String CTSC = "ctsc";
     public static final String EXTRACT_PROBATE = "PROBATE";
     public static final String EXTRACT_ADMINISTRATION = "ADMINISTRATION";
@@ -53,16 +53,39 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING = "TCTPartOthersRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING = "TCTPartSuccAllRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
+    public static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
+    public static final String REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE = "MentallyIncapable";
+    public static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
+    public static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     public static final String EMPTY_STRING = "";
     public static final String SOLICITOR_ID = "solicitor";
+    public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT
+        = "an authenticated translation of the will in English or Welsh";
+    public static final String PA14_FORM_URL = "https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate";
+    public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
+    public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
+    public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";
+    public static final String PA15_FORM_TEXT = "Give up probate administrator rights paper form";
+    public static final String PA15_FORM_TEXT_AFTER = "(PA15) for ";
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
-    public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals";
+    public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners";
     public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form" 
         + " (PA17)";
+    public static final String PA15_FORM_TEXT_ADMON_WILL = "PA15";
+    public static final String PA17_FORM_TEXT_ADMON_WILL = "PA17";
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
+    public static final String DISPENSE_NOTICE_SUPPORT_TEXT =
+            "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
+    public static final String TC_RESOLUTION_LODGED_WITH_APP = "a certified copy of the resolution";
+
+    public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT = "if applicable, send us the appropriate"
+        + " renunciation form";
+    public static final String ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT = "/ ";
+    public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT = "for executors who have"
+        + " renounced their right to apply";
 
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used
@@ -105,6 +128,9 @@ public final class Constants {
                 TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING,
                 TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING));
     }
+
+    public static final String EMAIL_REGEX = "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30})"
+        + "{0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?";
 
     private Constants() {
     }
