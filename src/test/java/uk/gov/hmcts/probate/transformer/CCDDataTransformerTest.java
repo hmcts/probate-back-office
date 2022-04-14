@@ -316,6 +316,17 @@ public class CCDDataTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWithLastModifiedDate() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"2022", "1", "1", "1"});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals(LocalDate.of(2022, 1, 1), ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanWithNoLastModifiedDate() {
         when(caseDetailsMock.getLastModified()).thenReturn(null);
 
