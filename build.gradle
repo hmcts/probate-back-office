@@ -432,6 +432,7 @@ pact {
   }
 }
 
+// Build the back office excel file.
 task buildBackOfficeXlsx(type: Exec) {
     def input = project.file('ccdImports/configFiles/CCD_Probate_Backoffice')
     commandLine project.file("ccdImports/conversionScripts/convertJsonToXLS.sh")
@@ -444,6 +445,7 @@ task buildBackOfficeXlsx(type: Exec) {
 bootWithCCD {
     dependsOn buildBackOfficeXlsx
     authMode = uk.gov.hmcts.rse.AuthMode.Local
+    // Request the cftlib create the probate_man database
     environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
 
     environment 'IDAM_S2S_URL', 'http://localhost:8489'
