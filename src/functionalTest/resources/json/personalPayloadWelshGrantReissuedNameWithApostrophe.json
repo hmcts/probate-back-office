@@ -1,0 +1,110 @@
+{
+  "case_details": {
+    "id": 1528365719156666,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "caseType": "gop",
+      "ihtFormId": "IHT205",
+      "paperForm": "Yes",
+      "willExists": "Yes",
+      "caseMatches": [],
+      "casePrinted": "Yes",
+      "ihtNetValue": "22222200",
+      "orderNeeded": "No",
+      "reissueDate": "2020-01-01",
+      "ihtGrossValue": "122222200",
+      "reissueReason": [
+        {
+          "id": "de594500-6a1f-4ee5-967b-7f541a1577e7",
+          "value": {
+            "reissueReason": "duplicate",
+            "reissueReasonDetails": "sefwqwq"
+          }
+        }
+      ],
+      "applicationType": "Personal",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "HP5 2PN",
+        "PostTown": "Chesham",
+        "AddressLine1": "151 Hivings Hill",
+        "AddressLine2": "Chesham",
+        "AddressLine3": ""
+      },
+      "deceasedSurname": "welsh",
+      "grantIssuedDate": "2020-09-02",
+      "bulkPrintPdfSize": "null",
+      "registryLocation": "ctsc",
+      "boSendToBulkPrint": "No",
+      "deceasedForenames": "welsh",
+      "executorsApplying": [],
+      "ihtReferenceNumber": "21342134213",
+      "deceasedDateOfBirth": "1999-04-04",
+      "deceasedDateOfDeath": "2020-04-04",
+      "otherExecutorExists": "No",
+      "executorsNotApplying": [],
+      "deceasedAnyOtherNames": "No",
+      "reissueReasonNotation": "duplicate",
+      "ihtFormCompletedOnline": "Yes",
+      "languagePreferenceWelsh": "Yes",
+      "primaryApplicantAddress": {
+        "County": "Middlesex",
+        "Country": "United Kingdom",
+        "PostCode": "HA1 4ET",
+        "PostTown": "Harrow",
+        "AddressLine1": "87A Pinner Road",
+        "AddressLine2": "Harrow",
+        "AddressLine3": "Harrow"
+      },
+      "primaryApplicantSurname": "O'Welsh",
+      "applicationSubmittedDate": "2020-01-01",
+      "boExaminationChecklistQ1": "Yes",
+      "boExaminationChecklistQ2": "Yes",
+      "primaryApplicantHasAlias": "No",
+      "primaryApplicantForenames": "welsh",
+      "probateDocumentsGenerated": [],
+      "boSendToBulkPrintRequested": "No",
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "primaryApplicantEmailAddress": "primary@probate-test.com",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [],
+      "boEmailGrantIssuedNotification": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "Yes",
+      "boExaminationChecklistRequestQA": "No",
+      "boEmailGrantReissuedNotification": "Yes",
+      "boEmailGrantIssuedNotificationRequested": "No",
+      "boEmailDocsReceivedNotificationRequested": "No",
+      "grantAwaitingDocumentationNotificationDate": "2020-09-23"
+    }
+  }
+}
