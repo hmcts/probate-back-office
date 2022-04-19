@@ -7,6 +7,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,7 +25,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateDeceasedDetailWithoutDomicileHardStop() {
+    public void validateDeceasedDetailWithoutDomicileHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -33,7 +35,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopForDomicile() {
+    public void validateHardStopForDomicile() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -46,7 +48,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopMessageForNoDomicile() {
+    public void validateHardStopMessageForNoDomicile() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
