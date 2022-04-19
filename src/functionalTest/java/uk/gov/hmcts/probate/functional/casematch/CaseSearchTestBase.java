@@ -4,6 +4,8 @@ import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 public abstract class CaseSearchTestBase extends IntegrationTestBase {
     protected static final String ERROR_MSG = "You may only select one legacy record for import at a time.";
     protected static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
@@ -11,7 +13,7 @@ public abstract class CaseSearchTestBase extends IntegrationTestBase {
     protected static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";
     protected static final String WILL_LODGEMENT_MATCH_CASE_JSON = "casematch/willLodgementMatchCase.json";
 
-    protected Response search(String path) {
+    protected Response search(String path) throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -23,7 +25,7 @@ public abstract class CaseSearchTestBase extends IntegrationTestBase {
         return response;
     }
 
-    protected Response search(String jsonFileName, String path) {
+    protected Response search(String jsonFileName, String path) throws IOException {
         return RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -33,7 +35,7 @@ public abstract class CaseSearchTestBase extends IntegrationTestBase {
             .andReturn();
     }
 
-    private String modifyDODInJson() {
+    private String modifyDODInJson() throws IOException {
         String json = getJsonFromFile(GRANT_OF_PROBATE_MATCH_CASE_JSON);
         json = json.replaceAll("2020-01-01", "2021-01-01");
         return json;

@@ -7,7 +7,7 @@
     "Comment"
   ],
   "dataKeys": [
-    "documentType",
+    "documentTypeSelected",
     "filename",
     "comment"
   ]
