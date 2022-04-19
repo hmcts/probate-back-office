@@ -358,6 +358,9 @@ dependencies {
   testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
+
+  // Provides fast-reload of the probate service upon edit & compile during local development
+  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.withType(JavaCompile) {
