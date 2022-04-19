@@ -98,15 +98,9 @@ public class FunctionalTestUtils {
         return replacement;
     }
 
-    public String getJsonFromFile(String fileName) {
-        try {
-            final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            final String fileContent = new String(Files.readString(file.toPath(), StandardCharsets.UTF_8));
-            return fileContent;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String getJsonFromFile(String fileName) throws IOException {
+        final File file = ResourceUtils.getFile(this.getClass().getClassLoader().getResource("json/" + fileName));
+        return Files.readString(file.toPath(), StandardCharsets.UTF_8);
     }
 
     public String getStringFromFile(String fileName) {
@@ -140,13 +134,13 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
-        final String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+        final String genAuthorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
+            new Header("ServiceAuthorization", genServiceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken),
+            new Header("Authorization", "Bearer " + genAuthorizationToken),
             new Header("user-id", id.toString()));
     }
 
@@ -173,10 +167,10 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
-        final String userId = getSchedulerCaseworkerUserId();
+        final String cwUserId = getSchedulerCaseworkerUserId();
         final Response document = RestAssured.given()
             .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId(serviceToken, userId))
+            .headers(getHeadersWithUserId(serviceToken, cwUserId))
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());

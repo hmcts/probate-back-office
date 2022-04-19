@@ -5,6 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     protected static final String GENERATE_GRANT = "/document/generate-grant";
     protected static final String GENERATE_GRANT_REISSUE = "/document/generate-grant-reissue";
@@ -17,7 +19,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     protected static final String DEFAULT_PA_PAYLOAD = "personalPayloadNotifications.json";
     protected static final String DEFAULT_REISSUE_PAYLOAD = "personalPayloadReissueDuplicate.json";
 
-    protected String getDocumentTextAtPath(String jsonFileName, String path, String documentName) {
+    protected String getDocumentTextAtPath(String jsonFileName, String path, String documentName) throws IOException {
         final Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
@@ -33,7 +35,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
         return response;
     }
 
-    protected JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) {
+    protected JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) throws IOException {
 
         final Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
@@ -44,11 +46,12 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
         return JsonPath.from(jsonResponse.getBody().asString());
     }
 
-    protected String getFirstProbateDocumentsText(String jsonFileName, String path) {
+    protected String getFirstProbateDocumentsText(String jsonFileName, String path) throws IOException {
         return getDocumentTextAtPath(jsonFileName, path, "probateDocumentsGenerated[0].value.DocumentLink");
     }
 
-    protected String getProbateDocumentsGeneratedTextAtIndex(String jsonFileName, String path, String index) {
+    protected String getProbateDocumentsGeneratedTextAtIndex(String jsonFileName, String path, String index)
+        throws IOException {
         return getDocumentTextAtPath(jsonFileName, path, "probateDocumentsGenerated[" + index + "].value.DocumentLink");
     }
 
@@ -77,7 +80,7 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
         return removeCrLfs(response);
     }
 
-    protected String generateDocument(String jsonFileName, String path, String documentName) {
+    protected String generateDocument(String jsonFileName, String path, String documentName) throws IOException {
         return generateDocumentFromPayload(utils.getJsonFromFile(jsonFileName), path, documentName);
     }
 
