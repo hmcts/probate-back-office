@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.collection.IsEmptyCollection.empty;
@@ -35,63 +37,63 @@ public class CaseMatchingTests extends CaseSearchTestBase {
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenGOPSearchFlow() {
+    public void shouldReturnMatchingCaseWhenGOPSearchFlow() throws IOException {
         createCase();
         final Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenGOPSearchFlow() {
+    public void shouldReturnNoMatchingCaseWhenGOPSearchFlow() throws IOException {
         final Response response = search(SEARCH_GRANT_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() {
+    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() throws IOException {
         createCase();
         final Response response = search(CAVEAT_MATCH_CASE_JSON, SEARCH_FROM_CAVEAT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenCaveatSearchFlow() {
+    public void shouldReturnNoMatchingCaseWhenCaveatSearchFlow() throws IOException {
         final Response response = search(SEARCH_FROM_CAVEAT_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenStandingSearchFlow() {
+    public void shouldReturnMatchingCaseWhenStandingSearchFlow() throws IOException {
         createCase();
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenStandingSearchFlow() {
+    public void shouldReturnNoMatchingCaseWhenStandingSearchFlow() throws IOException {
         final Response response = search(SEARCH_FROM_STANDING_SEARCH_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() {
+    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws IOException {
         createCase();
         final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenWillLodgementSearchFlow() {
+    public void shouldReturnNoMatchingCaseWhenWillLodgementSearchFlow() throws IOException {
         final Response response = search(SEARCH_FROM_WILL_LODGEMENT_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
 
-    public void createCase() {
+    public void createCase() throws IOException {
         //Create Case
         final String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
         final String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARAMETER, APPLY_GRANT_EVENT);

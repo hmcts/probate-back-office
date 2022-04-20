@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,7 +25,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPrintTemplateDocuments() {
+    public void verifySuccessForGetPrintTemplateDocuments() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
