@@ -182,7 +182,9 @@ docker-compose stop probate-back-office && ./gradlew assemble && docker-compose 
 make sure probate-backoffice and manage-case-assignment docker images are running
 make sure wiremock is running and populated
 http://localhost:3455/
-login as one of the test PP users, create a case
+login as one of the test PP users, create a case 
+* probatesolicitortestorgtest1@gmail.com Probate123
+* probatesolicitortestorg2test1@gmail.com Probate123
 you should be able to share that case with the other PP user
 
 if you are running low on memory you can stop probate-frontend, business-service, submit-service, orchestrtor etc
@@ -196,6 +198,7 @@ unshare that case from everyone
 go to
 http://localhost:3001/
 login with org user
+* probatesolicitortestorgman3@gmail.com Probate123
 click Unassigned cases link
 see unassigned cases + assign as needed
 
