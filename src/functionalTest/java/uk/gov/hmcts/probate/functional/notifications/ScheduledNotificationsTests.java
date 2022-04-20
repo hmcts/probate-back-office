@@ -12,6 +12,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -48,7 +49,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     @Test
     @Pending
-    public void createCaseAndVerifyGrantDelayed() throws InterruptedException {
+    public void createCaseAndVerifyGrantDelayed() throws InterruptedException, IOException {
         final String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
         final String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
@@ -92,7 +93,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     @Pending
     @Test
-    public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException {
+    public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException, IOException {
         final String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         final String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         final String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson,
