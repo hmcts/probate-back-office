@@ -22,9 +22,15 @@ public class OcrEmailValidatorTest {
     private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primaryApplicantEmailAddress";
     private static final String CAVEATOR_EMAIL_ADDRESS = "caveatorEmailAddress";
     private static final String SOLS_SOLICITOR_EMAIL = "solsSolicitorEmail";
+    private static final String SECOND_APPLYING_EMAIL_ADDRESS = "executorsApplying_0_applyingExecutorEmail";
+    private static final String THIRD_APPLYING_EMAIL_ADDRESS = "executorsApplying_1_applyingExecutorEmail";
+    private static final String FOURTH_APPLYING_EMAIL_ADDRESS = "executorsApplying_2_applyingExecutorEmail";
     private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION = "Primary applicant email address";
     private static final String CAVEATOR_EMAIL_ADDRESS_DESCRIPTION = "Caveator email address";
     private static final String SOLS_SOLICITOR_EMAIL_DESCRIPTION = "Solicitor email address";
+    private static final String SECOND_APPLYING_EMAIL_ADDRESS_DESCRIPTION = "Second applicant email address";
+    private static final String THIRD_APPLYING_EMAIL_DESCRIPTION = "Third applicant email address";
+    private static final String FOURTH_APPLYING_EMAIL_DESCRIPTION = "Fourth applicant email address";
 
     private static Map<String, String> emailFields = new HashMap<>();
 
@@ -32,6 +38,9 @@ public class OcrEmailValidatorTest {
         emailFields.put(PRIMARY_APPLICANT_EMAIL_ADDRESS, PRIMARY_APPLICANT_EMAIL_ADDRESS_DESCRIPTION);
         emailFields.put(CAVEATOR_EMAIL_ADDRESS, CAVEATOR_EMAIL_ADDRESS_DESCRIPTION);
         emailFields.put(SOLS_SOLICITOR_EMAIL, SOLS_SOLICITOR_EMAIL_DESCRIPTION);
+        emailFields.put(SECOND_APPLYING_EMAIL_ADDRESS, SECOND_APPLYING_EMAIL_ADDRESS_DESCRIPTION);
+        emailFields.put(THIRD_APPLYING_EMAIL_ADDRESS, THIRD_APPLYING_EMAIL_DESCRIPTION);
+        emailFields.put(FOURTH_APPLYING_EMAIL_ADDRESS, FOURTH_APPLYING_EMAIL_DESCRIPTION);
     }
 
     private OcrEmailValidator ocrEmailValidator;
@@ -70,7 +79,7 @@ public class OcrEmailValidatorTest {
             .collect(toList());
 
         final List<String> result = ocrEmailValidator.validateField(fields);
-        assertThat(result.size(), is(3));
+        assertThat(result.size(), is(6));
 
         result.forEach(r -> assertWarning(result, fields.get(0)));
         fields.forEach(f -> assertWarning(result, f));
