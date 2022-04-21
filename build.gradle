@@ -255,6 +255,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.9'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.14.1'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO

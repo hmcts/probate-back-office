@@ -99,6 +99,10 @@ public class DataExtractController {
         });
         log.info("Perform Smee And Ford data extract from date finished");
 
+        log.info("Perform Blob activities ");
+
+        //blobUpload.uploadFile(new File("audit.json"));
+
         return ResponseEntity.accepted().body("Smee And Ford data extract finished");
     }
 
