@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -19,8 +20,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService.BULLET;
 
@@ -52,6 +56,9 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+
+    @Mock
+    private NotarialWillBusinessRule notarialWillBusinessRule;
 
     @Mock
     private CaseData caseDataMock;
@@ -179,5 +186,37 @@ public class MarkdownDecoratorServiceTest {
 
         String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
         assertEquals("", md);
+    }
+
+    @Test
+    public void shouldGetNotarialWillLabel() {
+        when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+        String willLabel = markdownDecoratorService.getWillLabel(caseDataMock);
+        String notarialWill = "the notarial or court sealed copy of the will";
+        String statementAndExhibits = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, and that it has not been revoked";
+        assertTrue(willLabel.contains(notarialWill));
+        assertTrue(willLabel.contains(statementAndExhibits));
+    }
+
+    @Test
+    public void shouldGetOriginalWillLabelNoCodicils() {
+        when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+        when(caseDataMock.getWillHasCodicils()).thenReturn(NO);
+        assertEquals(BULLET + "the original will",
+            markdownDecoratorService.getWillLabel(caseDataMock));
+    }
+
+    @Test
+    public void shouldGetOriginalWillLabelWithCodicils() {
+        when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
+        when(caseDataMock.getWillHasCodicils()).thenReturn(YES);
+        assertEquals(BULLET + "the original will and any codicils",
+            markdownDecoratorService.getWillLabel(caseDataMock));
+    }
+
+    @Test
+    public void shouldGetEmptyWillLabelAsIntestacy() {
+        when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
+        assertTrue(markdownDecoratorService.getWillLabel(caseDataMock).isEmpty());
     }
 }

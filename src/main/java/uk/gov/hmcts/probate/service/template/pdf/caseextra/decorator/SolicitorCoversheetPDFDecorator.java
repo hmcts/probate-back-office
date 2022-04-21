@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -63,6 +64,7 @@ public class SolicitorCoversheetPDFDecorator {
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    private final NotarialWillBusinessRule notarialWillBusinessRule;
 
     public String decorate(CaseData caseData) {
         String decoration = "";

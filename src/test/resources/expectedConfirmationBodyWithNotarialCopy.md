@@ -40,6 +40,8 @@ Print a copy of this page for your records.
  
 You now need to send us:
 
+*   the notarial or court sealed copy of the will
+*   statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, and that it has not been revoked
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
 *   the inheritance tax form IHT207
 *   a photocopy of the signed legal statement and declaration

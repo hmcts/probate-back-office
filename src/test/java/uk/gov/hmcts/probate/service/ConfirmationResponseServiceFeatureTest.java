@@ -40,6 +40,7 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -135,6 +136,7 @@ public class ConfirmationResponseServiceFeatureTest {
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn(REASON_RENOUNCED);
         when(caseDataMock.getOtherExecutorExists()).thenReturn("Yes");
+        when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
         CCDData ccdData =
             createCCDataBuilder().build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
@@ -325,6 +327,17 @@ public class ConfirmationResponseServiceFeatureTest {
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithPA17Form.md");
 
         assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
+    public void shouldGenerateNotarialCopyConfirmationBody() throws Exception {
+        CCDData ccdData = createCCDataBuilder().build();
+        when(caseDataMock.getWillAccessNotarial()).thenReturn(YES);
+        AfterSubmitCallbackResponse confirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
+            caseDataMock);
+        String expectedConfirmationBody = testUtils.getStringFromFile(
+            "expectedConfirmationBodyWithNotarialCopy.md");
+        assertEquals(expectedConfirmationBody, confirmation.getConfirmationBody());
     }
 
     private CCDData.CCDDataBuilder createCCDataBuilder() {

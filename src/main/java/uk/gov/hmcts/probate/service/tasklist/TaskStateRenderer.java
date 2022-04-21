@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
@@ -39,8 +40,12 @@ import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WIL
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_WITH_CODICILS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
+import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
 import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
@@ -78,7 +83,8 @@ public class TaskStateRenderer {
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
     private static final String COVERSHEET = "coversheet";
     private static final String IHT_400421 = "IHT400421";
-
+    private static final String LIST_ITEM_START = "<li>";
+    private static final String LIST_ITEM_END = "</li>";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
@@ -91,6 +97,7 @@ public class TaskStateRenderer {
     private final SendDocumentsRenderer sendDocumentsRenderer;
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
     private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+    private final NotarialWillBusinessRule notarialWillBusinessRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -116,7 +123,8 @@ public class TaskStateRenderer {
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
         return html == null ? null : html
-                .replaceFirst("<addSolicitorLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+                .replaceFirst("<addSolicitorLink/>",
+                    renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                         currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
@@ -189,7 +197,8 @@ public class TaskStateRenderer {
                 .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
                 .replaceFirst(AUTHENTICATED_TRANSLATION,
                                         keyValues.getOrDefault("authenticatedTranslation", ""))
-                .replaceFirst(ADMON_WILL_RENUNCIATION, keyValues.getOrDefault("admonWillRenForms", ""))
+                .replaceFirst(ADMON_WILL_RENUNCIATION,
+                    keyValues.getOrDefault("admonWillRenForms", ""))
                 .replaceFirst(TC_RESOLUTION_WITH_APP,
                     keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
                 .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
@@ -262,26 +271,18 @@ public class TaskStateRenderer {
 
     private Map<String, String> getKeyValues(CaseData data) {
         Map<String, String> keyValue = new HashMap<>();
-        String solsWillType = data.getSolsWillType() == null ? "" : data.getSolsWillType();
-        String willHasCodicils = data.getWillHasCodicils() == null ? "" : data.getWillHasCodicils();
-        String originalWill = "<li>the original will</li>";
-        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
-            originalWill = "";
-        } else if ("Yes".equals(willHasCodicils)) {
-            originalWill = "<li>the original will and any codicils</li>";
-        }
-
-        keyValue.put("originalWill", originalWill);
+        String willText = getWillCaseTypeLabel(data);
+        keyValue.put("originalWill", willText);
 
         String ihtFormValue = data.getIhtFormId() == null ? "" : data.getIhtFormId();
         String ihtText = "";
         String ihtForm = "";
         if (!ihtFormValue.contentEquals(IHT_400421) && !"".equals(ihtFormValue)) {
-            ihtText = "<li>the inheritance tax form ";
+            ihtText = LIST_ITEM_START + "the inheritance tax form ";
             if (YES.equals(data.getIht217())) {
-                ihtForm = "IHT205 and IHT217</li>";
+                ihtForm = "IHT205 and IHT217" + LIST_ITEM_END;
             } else {
-                ihtForm = ihtFormValue + "</li>";
+                ihtForm = ihtFormValue + LIST_ITEM_END;
             }
         }
 
@@ -299,44 +300,60 @@ public class TaskStateRenderer {
         keyValue.put("pa15Form", pa15Form);
         String pa16Form = "";
         if (pa16FormBusinessRule.isApplicable(data)) {
-            pa16Form = "<li>" + sendDocumentsRenderer.getPA16FormText() + "</li>";
+            pa16Form = LIST_ITEM_START + sendDocumentsRenderer.getPA16FormText() + LIST_ITEM_END;
         }
         keyValue.put("pa16Form", pa16Form);
         String pa17Form = "";
         if (pa17FormBusinessRule.isApplicable(data)) {
-            pa17Form = "<li>" + sendDocumentsRenderer.getPA17FormText() + "</li>";
+            pa17Form = LIST_ITEM_START + sendDocumentsRenderer.getPA17FormText() + LIST_ITEM_END;
         }
         keyValue.put("pa17Form", pa17Form);
         String ihtEstate207 = "";
         if (ihtEstate207BusinessRule.isApplicable(data)) {
-            ihtEstate207 = "<li>" + IHT_ESTATE_207_TEXT + "</li>";
+            ihtEstate207 = LIST_ITEM_START + IHT_ESTATE_207_TEXT + LIST_ITEM_END;
         }
         keyValue.put("ihtEstate207", ihtEstate207);
         String admonWillRenForms = "";
         if (admonWillRenunicationRule.isApplicable(data)) {
-            admonWillRenForms = "<li>" + sendDocumentsRenderer.getAdmonWillRenunciationText() + "</li>";
+            admonWillRenForms = LIST_ITEM_START + sendDocumentsRenderer.getAdmonWillRenunciationText() + LIST_ITEM_END;
         }
         keyValue.put("admonWillRenForms", admonWillRenForms);
         String tcResolutionLodgedWithApp = "";
         if (tcResolutionLodgedWithApplicationRule.isApplicable(data)) {
-            tcResolutionLodgedWithApp = "<li>" + TC_RESOLUTION_LODGED_WITH_APP + "</li>";
+            tcResolutionLodgedWithApp = LIST_ITEM_START + TC_RESOLUTION_LODGED_WITH_APP + LIST_ITEM_END;
         }
         keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
         String authenticatedTranslation = "";
         if (authenticatedTranslationBusinessRule.isApplicable(data)) {
-            authenticatedTranslation = "<li>" + AUTHENTICATED_TRANSLATION_WILL_TEXT + "</li>";
+            authenticatedTranslation = LIST_ITEM_START + AUTHENTICATED_TRANSLATION_WILL_TEXT + LIST_ITEM_END;
         }
         keyValue.put("authenticatedTranslation", authenticatedTranslation);
         String dispenseWithNoticeSupportingDocs = "";
         String dispenseWithNotice = NO;
         if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
             dispenseWithNotice = YES;
-            dispenseWithNoticeSupportingDocs = "<li>" + DISPENSE_NOTICE_SUPPORT_TEXT
-                + data.getDispenseWithNoticeSupportingDocs() + "</li>";
+            dispenseWithNoticeSupportingDocs = LIST_ITEM_START + DISPENSE_NOTICE_SUPPORT_TEXT
+                + data.getDispenseWithNoticeSupportingDocs() + LIST_ITEM_END;
         }
         keyValue.put("dispenseWithNotice", dispenseWithNotice);
         keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
         return keyValue;
+    }
+
+    private String getWillCaseTypeLabel(CaseData data) {
+        String solsWillType = data.getSolsWillType() == null ? "" : data.getSolsWillType();
+        String willHasCodicils = data.getWillHasCodicils() == null ? "" : data.getWillHasCodicils();
+
+        String willText = LIST_ITEM_START + ORIGINAL_WILL_TEXT + LIST_ITEM_END;
+        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
+            willText = "";
+        } else if (YES.equals(willHasCodicils)) {
+            willText = LIST_ITEM_START + ORIGINAL_WILL_WITH_CODICILS_TEXT + LIST_ITEM_END;
+        } else if (YES.equals(data.getWillAccessNotarial())) {
+            willText = LIST_ITEM_START + NOTARIAL_COPY_WILL_TEXT + LIST_ITEM_END +
+                LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT + LIST_ITEM_END;
+        }
+        return willText;
     }
 
     private String buildPA14NotApplyingExecutorsLinks(CaseData caseData, String reason) {
@@ -357,10 +374,12 @@ public class TaskStateRenderer {
     }
 
     private String buildPA15NotApplyingExecLabel(String renouncingExecutorName) {
-        return "<li>" + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName) +  "</li>";
+        return LIST_ITEM_START + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName) +
+            LIST_ITEM_END;
     }
 
     private String buildPA14NotApplyingExecLabel(String renouncingExecutorName) {
-        return "<li>" + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName) +  "</li>";
+        return LIST_ITEM_START + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName) +
+            LIST_ITEM_END;
     }
 }

@@ -86,6 +86,9 @@
             <ul style="font-size: 13pt">
                 <li>a photocopy of the signed legal statement and declaration</li>
                 {% if case_details.case_data.solsWillType != "NoWill" %}
+                    {%if case_details.case_data.willAccessNotarial == "Yes" %}
+                    <li>the notarial or court sealed copy of the will</li>
+                    <li>statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, and that it has not been revoked</li>
                     {% if case_details.case_data.willHasCodicils == "Yes" %}
                     <li>the original will and any codicils</li>
                     {% else %}
