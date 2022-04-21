@@ -350,8 +350,8 @@ public class TaskStateRenderer {
         } else if (YES.equals(willHasCodicils)) {
             willText = LIST_ITEM_START + ORIGINAL_WILL_WITH_CODICILS_TEXT + LIST_ITEM_END;
         } else if (YES.equals(data.getWillAccessNotarial())) {
-            willText = LIST_ITEM_START + NOTARIAL_COPY_WILL_TEXT + LIST_ITEM_END +
-                LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT + LIST_ITEM_END;
+            willText = LIST_ITEM_START + NOTARIAL_COPY_WILL_TEXT + LIST_ITEM_END
+                + LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT + LIST_ITEM_END;
         }
         return willText;
     }
@@ -374,12 +374,12 @@ public class TaskStateRenderer {
     }
 
     private String buildPA15NotApplyingExecLabel(String renouncingExecutorName) {
-        return LIST_ITEM_START + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName) +
-            LIST_ITEM_END;
+        return LIST_ITEM_START + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName)
+            + LIST_ITEM_END;
     }
 
     private String buildPA14NotApplyingExecLabel(String renouncingExecutorName) {
-        return LIST_ITEM_START + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName) +
-            LIST_ITEM_END;
+        return LIST_ITEM_START + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName)
+            + LIST_ITEM_END;
     }
 }

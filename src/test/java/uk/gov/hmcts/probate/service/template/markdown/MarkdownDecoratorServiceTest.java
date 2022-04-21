@@ -32,7 +32,7 @@ public class MarkdownDecoratorServiceTest {
 
     @InjectMocks
     private MarkdownDecoratorService markdownDecoratorService;
-    
+
     @Mock
     private PA14FormBusinessRule pa14FormBusinessRule;
 
@@ -44,7 +44,7 @@ public class MarkdownDecoratorServiceTest {
 
     @Mock
     private PA17FormBusinessRule pa17FormBusinessRule;
-    
+
     @Mock
     private AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
 
@@ -67,7 +67,7 @@ public class MarkdownDecoratorServiceTest {
     public void  setup() {
         initMocks(this);
     }
-    
+
     @Test
     public void shouldGetPA14FormLabel() {
         when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
@@ -155,7 +155,7 @@ public class MarkdownDecoratorServiceTest {
 
         String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
         assertEquals("\n*   an authenticated translation of the will in English or Welsh",
-                md);
+            md);
     }
 
     @Test
@@ -193,7 +193,9 @@ public class MarkdownDecoratorServiceTest {
         when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         String willLabel = markdownDecoratorService.getWillLabel(caseDataMock);
         String notarialWill = "the notarial or court sealed copy of the will";
-        String statementAndExhibits = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, and that it has not been revoked";
+        String statementAndExhibits
+            = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost,"
+            + "and that it has not been revoked";
         assertTrue(willLabel.contains(notarialWill));
         assertTrue(willLabel.contains(statementAndExhibits));
     }

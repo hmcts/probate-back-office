@@ -131,10 +131,10 @@ public class MarkdownDecoratorService {
         if (GRANT_TYPE_INTESTACY.equals(solsWillType)) {
             return "";
         }
-        if(notarialWillBusinessRule.isApplicable(caseData)) {
-            return BULLET + NOTARIAL_COPY_WILL_TEXT +
-                BULLET + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT ;
-        } else if(YES.equals(caseData.getWillHasCodicils())) {
+        if (notarialWillBusinessRule.isApplicable(caseData)) {
+            return BULLET + NOTARIAL_COPY_WILL_TEXT
+                + BULLET + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT;
+        } else if (YES.equals(caseData.getWillHasCodicils())) {
             return BULLET + ORIGINAL_WILL_WITH_CODICILS_TEXT;
         } else {
             return BULLET + ORIGINAL_WILL_TEXT;
