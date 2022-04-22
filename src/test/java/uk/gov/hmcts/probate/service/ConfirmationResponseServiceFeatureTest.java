@@ -103,6 +103,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectConfirmationBodyWithNoWill() throws Exception {
         CCDData ccdData = createCCDataBuilder().solsWillType(WILL_TYPE_INTESTACY).build();
+        when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 
@@ -250,6 +251,7 @@ public class ConfirmationResponseServiceFeatureTest {
     @Test
     public void shouldGenerateCorrectCordicilsConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).willHasCodicils("Yes").build();
+        when(caseDataMock.getWillHasCodicils()).thenReturn(YES);
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
 

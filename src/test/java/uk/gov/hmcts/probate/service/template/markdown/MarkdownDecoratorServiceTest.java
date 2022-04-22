@@ -194,7 +194,7 @@ public class MarkdownDecoratorServiceTest {
         String willLabel = markdownDecoratorService.getWillLabel(caseDataMock);
         String notarialWill = "the notarial or court sealed copy of the will";
         String statementAndExhibits
-            = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost,"
+            = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, "
             + "and that it has not been revoked";
         assertTrue(willLabel.contains(notarialWill));
         assertTrue(willLabel.contains(statementAndExhibits));
