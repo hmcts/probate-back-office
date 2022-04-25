@@ -9,8 +9,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.File;
 import java.util.List;
 
 @Service
@@ -19,7 +21,8 @@ import java.util.List;
 public class SmeeAndFordDataExtractService {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
-    
+    private final ZipFileService zipFileService;
+
     public Document performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
             return performSmeeAndFordExtractForDate(fromDate);
@@ -45,6 +48,8 @@ public class SmeeAndFordDataExtractService {
         log.info("Sending email to Smee And Ford for {} filtered cases", cases.size());
         if (!cases.isEmpty()) {
             try {
+                File zip = zipFileService.zipIssuedGrants(cases);
+                log.info("zip: {} / {}", zip.getPath(), zip.getName());
                 return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);

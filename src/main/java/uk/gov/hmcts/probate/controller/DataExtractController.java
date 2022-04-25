@@ -93,10 +93,7 @@ public class DataExtractController {
         dataExtractDateValidator.dateValidator(fromDate, toDate);
 
         log.info("Calling perform Smee And Ford data extract from date...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
-        });
+        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
         log.info("Perform Smee And Ford data extract from date finished");
 
         return ResponseEntity.accepted().body("Smee And Ford data extract finished");

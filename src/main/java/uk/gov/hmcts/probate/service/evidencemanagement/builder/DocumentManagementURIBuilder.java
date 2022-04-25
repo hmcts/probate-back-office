@@ -26,4 +26,8 @@ public class DocumentManagementURIBuilder {
     public String buildUrl(String id) {
         return buildUrl() + "/" + id;
     }
+
+    public String buildBinaryUrl(String id) {
+        return buildUrl() + "/" + id + "/binary";
+    }
 }

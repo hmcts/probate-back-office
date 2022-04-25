@@ -3,7 +3,11 @@ package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import org.springframework.util.MultiValueMap;
@@ -23,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class EmUploadService implements UploadService {
@@ -69,4 +74,19 @@ public class EmUploadService implements UploadService {
             new HttpEntity<>(json, headers.getApplicationJsonHttpHeader()),
             HashMap.class);
     }
+
+    public ByteArrayResource getDocument(String id) {
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers.getAuthorizationHeadersFromDTO());
+        log.info("getDocument");
+
+        String url = documentManagementURIBuilder.buildBinaryUrl(id);
+        log.info("url:" + url);
+        ResponseEntity<ByteArrayResource> response = evidenceManagementRestTemplate.exchange(
+                url, HttpMethod.GET, requestEntity, ByteArrayResource.class);
+
+        log.info("response:" + response.toString());
+
+        return response.getBody();
+    }
+
 }

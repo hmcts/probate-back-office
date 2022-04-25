@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDateTime;
@@ -36,6 +37,8 @@ public class SmeeAndFordDataExtractServiceTest {
     private CaseQueryService caseQueryService;
     @Mock
     private NotificationService notificationService;
+    @Mock
+    private ZipFileService zipFileService;
     @Mock
     private FileTransferService fileTransferService;
 
