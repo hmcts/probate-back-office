@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -72,7 +73,7 @@ public class CaseQueryService {
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
-    private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final SecurityUtils securityUtils;
     private final FileSystemResourceService fileSystemResourceService;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
@@ -223,7 +224,7 @@ public class CaseQueryService {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
-            tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
+            tokenHeaders.add(AUTHORIZATION, securityUtils.getCaseworkerToken());
             log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);

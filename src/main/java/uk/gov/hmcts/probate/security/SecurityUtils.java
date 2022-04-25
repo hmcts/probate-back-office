@@ -6,14 +6,19 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
-import uk.gov.hmcts.probate.model.TokenExchangeResponse;
+import org.springframework.util.ObjectUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
+import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
-import java.util.Base64;
 import javax.servlet.http.HttpServletRequest;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.ZonedDateTime;
+import java.util.Objects;
 
 @Component
 @Slf4j
@@ -24,13 +29,14 @@ public class SecurityUtils {
 
     private final HttpServletRequest httpServletRequest;
 
+    private final IdamApi idamApi;
+
     private static final String USER_ID = "user-id";
+    private static final String OPENID_GRANT_TYPE = "password";
 
     private static final String AUTHORIZATION = "Authorization";
-    private static final String BASIC = "Basic ";
     private static final String BEARER = "Bearer ";
-    private static final String AUTHORIZATION_CODE = "authorization_code";
-    private static final String CODE = "code";
+    private TokenResponse cacheTokenResponse;
 
     @Value("${auth.provider.client.redirect}")
     private String authRedirectUrl;
@@ -46,8 +52,6 @@ public class SecurityUtils {
 
     @Value("${auth.provider.client.password}")
     private String caseworkerPassword;
-
-    private final IdamApi idamClient;
 
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
@@ -87,37 +91,56 @@ public class SecurityUtils {
                 .setAuthentication(new UsernamePasswordAuthenticationToken(caseworkerUserName, getCaseworkerToken()));
     }
 
-    private String getCaseworkerToken() {
+    public String getCaseworkerToken() {
         return getIdamOauth2Token(caseworkerUserName, caseworkerPassword);
     }
 
     private String getIdamOauth2Token(String username, String password) {
-        String basicAuthHeader = getBasicAuthHeader(username, password);
 
+        TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
-
-        AuthenticateUserResponse authenticateUserResponse = idamClient.authenticateUser(
-                basicAuthHeader,
-                CODE,
-                authClientId,
-                authRedirectUrl
-        );
-
-        log.info("Authenticated. Exchanging...");
-        TokenExchangeResponse tokenExchangeResponse = idamClient.exchangeCode(
-                authenticateUserResponse.getCode(),
-                AUTHORIZATION_CODE,
-                authRedirectUrl,
-                authClientId,
-                authClientSecret
-        );
-
-        log.info("Getting AccessToken...");
-        return tokenExchangeResponse.getAccessToken();
+        try {
+            if (ObjectUtils.isEmpty(cacheTokenResponse) || isExpired(cacheTokenResponse)) {
+                log.info("No cached IDAM token found, requesting from IDAM service.");
+                idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
+            } else {
+                log.info("Using cached IDAM token.");
+                idamOpenIdTokenResponse = cacheTokenResponse;
+            }
+            log.info("Getting AccessToken...");
+            return BEARER + idamOpenIdTokenResponse.accessToken;
+        } catch (Exception e) {
+            log.error("Exception" + e.getMessage());
+            throw e;
+        }
     }
 
-    private String getBasicAuthHeader(String username, String password) {
-        String authorisation = username + ":" + password;
-        return BASIC + Base64.getEncoder().encodeToString(authorisation.getBytes());
+    private TokenResponse getOpenIdTokenResponse(String username, String password) {
+        TokenResponse tokenResponse = idamApi.generateOpenIdToken(
+                new TokenRequest(
+                        authClientId,
+                        authClientSecret,
+                        OPENID_GRANT_TYPE,
+                        authRedirectUrl,
+                        username,
+                        password,
+                        "openid profile roles",
+                        null,
+                        null
+                ));
+        cacheTokenResponse = tokenResponse;
+        return cacheTokenResponse;
+    }
+
+    private boolean isExpired(TokenResponse tokenResponse) {
+        Instant now = Instant.now();
+        Instant expiresAt = ZonedDateTime.parse(tokenResponse.expiresIn).toInstant();
+        return now.isAfter(expiresAt.minus(Duration.ofMinutes(1L)));
+    }
+
+    public String getEmail(String authToken) {
+        UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
+        String result = Objects.requireNonNull(userInfo.getName());
+        return result.toLowerCase();
     }
 }

@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
-import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
@@ -32,7 +32,7 @@ public class PBARetrievalServiceTest {
     private PBARetrievalService pbaRetrievalService;
 
     @Mock
-    private IdamAuthenticateUserService idamAuthenticateUserService;
+    private SecurityUtils securityUtils;
     @Mock(name = "restTemplate")
     private RestTemplate restTemplate;
     @Mock
@@ -55,7 +55,7 @@ public class PBARetrievalServiceTest {
 
     @Test
     public void shouldReturnPBAs() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+        when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -73,7 +73,7 @@ public class PBARetrievalServiceTest {
 
     @Test
     public void shouldReturnNoPBAsForLookupForbidden() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+        when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -87,14 +87,14 @@ public class PBARetrievalServiceTest {
 
     @Test(expected = NullPointerException.class)
     public void shouldErrorOnGetIdamUserDetails() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn(null);
+        when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn(null);
 
         pbaRetrievalService.getPBAs(AUTH_TOKEN);
     }
 
     @Test(expected = ClientException.class)
     public void shouldFailOnAuthTokenMatch() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+        when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         pbaRetrievalService.getPBAs("ForbiddenToken");
     }
