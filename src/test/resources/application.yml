@@ -411,6 +411,9 @@ welsh:
 iht-estate:
   switch-date: "2022-01-01"
 
+storage:
+  connection: DefaultEndpointsProtocol=https;AccountName=fileshareprobate;AccountKey=NUxpuQd9G/vCFi2bMk3roxhmUg2lXBmkXG8LKpY6HbEhAjMxUjQC4HLCQneIoRU0FySpZLCz6xuM+AStLcvnow==;EndpointSuffix=core.windows.net
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:off}
   user:
