@@ -76,15 +76,11 @@ public class EmUploadService implements UploadService {
     }
 
     public ByteArrayResource getDocument(String id) {
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers.getAuthorizationHeadersFromDTO());
-        log.info("getDocument");
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers.getAuthorizationHeadersForDocuments());
 
         String url = documentManagementURIBuilder.buildBinaryUrl(id);
-        log.info("url:" + url);
         ResponseEntity<ByteArrayResource> response = evidenceManagementRestTemplate.exchange(
                 url, HttpMethod.GET, requestEntity, ByteArrayResource.class);
-
-        log.info("response:" + response.toString());
 
         return response.getBody();
     }

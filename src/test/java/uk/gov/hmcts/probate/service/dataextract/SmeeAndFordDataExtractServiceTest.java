@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -19,6 +20,8 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,6 +44,10 @@ public class SmeeAndFordDataExtractServiceTest {
     private ZipFileService zipFileService;
     @Mock
     private FileTransferService fileTransferService;
+    @Mock
+    private BlobUpload blobUpload;
+    @Mock
+    private File fileMock;
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private CaseData caseData1;
@@ -80,14 +87,16 @@ public class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractForDate() throws NotificationClientException {
+    public void shouldExtractForDate() throws NotificationClientException, IOException {
+        when(zipFileService.createTempZipFile(any())).thenReturn(fileMock);
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
     @Test
-    public void shouldExtractForDateRange() throws NotificationClientException {
+    public void shouldExtractForDateRange() throws NotificationClientException, IOException {
+        when(zipFileService.createTempZipFile(any())).thenReturn(fileMock);
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
@@ -107,7 +116,8 @@ public class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test(expected = ClientException.class)
-    public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
+    public void shouldThrowClientExceptionForDateRange() throws NotificationClientException, IOException {
+        when(zipFileService.createTempZipFile(any())).thenReturn(fileMock);
         when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
             .thenThrow(NotificationClientException.class);
 

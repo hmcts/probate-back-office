@@ -47,10 +47,8 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     }
 
     @Override
-    public HttpHeaders getAuthorizationHeadersFromDTO() {
+    public HttpHeaders getAuthorizationHeadersForDocuments() {
         HttpHeaders headers = new HttpHeaders();
-        System.out.println("getServiceAuthorisation:" + httpServletRequest.getHeader(SERVICE_AUTH));
-        System.out.println("getAuthorisation:" + httpServletRequest.getHeader(AUTHORIZATION));
         headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
         headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));
         headers.add(USER_ROLES, CASEWORKER_PROBATE_SCHEDULER);

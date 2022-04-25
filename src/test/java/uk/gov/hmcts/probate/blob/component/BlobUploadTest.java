@@ -23,7 +23,7 @@ public class BlobUploadTest {
         String file3 = "src/test/resources/expectedGeneratedFiles/hmrcPersonal.txt";
         String file4 = "src/test/resources/expectedGeneratedFiles/hmrcSolicitor.txt";
         String[] filePaths = new String[] {file2, file3, file4};
-        blobUpload.uploadFile(filePaths);
+        //blobUpload.uploadFile(filePaths);
     }
 
 }

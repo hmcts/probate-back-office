@@ -10,6 +10,6 @@ public interface HttpHeadersFactory {
 
     HttpHeaders getAuthorizationHeaders();
 
-    HttpHeaders getAuthorizationHeadersFromDTO();
+    HttpHeaders getAuthorizationHeadersForDocuments();
 
 }
