@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -169,7 +170,7 @@ public class CCDDataTransformerTest {
         additionalExecutorsPartner.add(additionalExecutorsPartner2);
         when(caseDataMock.getOtherPartnersApplyingAsExecutors()).thenReturn(additionalExecutorsPartner);
 
-        List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying = 
+        List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplying =
             new ArrayList<>();
         AdditionalExecutorNotApplying addNot1 = AdditionalExecutorNotApplying.builder()
             .notApplyingExecutorReason("Renunciation")
@@ -195,49 +196,32 @@ public class CCDDataTransformerTest {
     public void shouldConvertRequestToDataBeanWithUploadedLegalStatement() {
         ArrayList<CollectionMember<UploadDocument>> uploaded = new ArrayList<>();
         uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
-            .builder().documentType(UPLOADED_LEGAL_STATEMENT).build()));
+                .builder().documentType(UPLOADED_LEGAL_STATEMENT).build()));
         uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
-            .builder().documentType(LEGAL_STATEMENT_PROBATE).build()));
+                .builder().documentType(LEGAL_STATEMENT_PROBATE).build()));
         when(caseDataMock.getBoDocumentsUploaded()).thenReturn(uploaded);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
         assertCaseSubmissionDate(ccdData);
-        assertEquals(true, ccdData.isHasUploadedLegalStatement());
+        assertTrue(ccdData.isHasUploadedLegalStatement());
 
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithNoLastModifiedDate() {
-        when(caseDetailsMock.getLastModified()).thenReturn(null);
+    public void shouldConvertRequestToDataBeanWithNoUploadedLegalStatements() {
+        ArrayList<CollectionMember<UploadDocument>> uploaded = new ArrayList<>();
+        uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
+                .builder().documentType(LEGAL_STATEMENT_PROBATE).build()));
+        when(caseDataMock.getBoDocumentsUploaded()).thenReturn(uploaded);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
         assertAll(ccdData);
-        assertNull(ccdData.getCaseSubmissionDate());
-    }
+        assertCaseSubmissionDate(ccdData);
+        assertFalse(ccdData.isHasUploadedLegalStatement());
 
-    @Test
-    public void shouldConvertRequestToDataBeanWithLastModifiedDateEmptyData() {
-        String[] lmDate = {};
-        when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
-
-        CCDData ccdData = underTest.transform(callbackRequestMock);
-
-        assertAll(ccdData);
-        assertNull(ccdData.getCaseSubmissionDate());
-    }
-
-    @Test
-    public void shouldConvertRequestToDataBeanWithLastModifiedDateMissingData() {
-        String[] lmDate = {null, null, null, null, null, null, null, null};
-        when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
-
-        CCDData ccdData = underTest.transform(callbackRequestMock);
-
-        assertAll(ccdData);
-        assertNull(ccdData.getCaseSubmissionDate());
     }
 
     @Test
@@ -318,7 +302,7 @@ public class CCDDataTransformerTest {
         assertCaseSubmissionDate(ccdData);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
     }
-    
+
     @Test
     public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
         when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
@@ -332,8 +316,18 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateIsNull() {
+    public void shouldConvertRequestToDataBeanWithLastModifiedDate() {
 
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"2022", "1", "1", "1"});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertEquals(LocalDate.of(2022, 1, 1), ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWithNoLastModifiedDate() {
         when(caseDetailsMock.getLastModified()).thenReturn(null);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
@@ -343,9 +337,9 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateIsEmpty() {
-
-        when(caseDetailsMock.getLastModified()).thenReturn(new String[0]);
+    public void shouldConvertRequestToDataBeanWithLastModifiedDateEmptyData() {
+        String[] lmDate = {};
+        when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
@@ -354,9 +348,9 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullFirstElement() {
-
-        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{null});
+    public void shouldConvertRequestToDataBeanWithLastModifiedDateMissingData() {
+        String[] lmDate = {null, null, null, null, null, null, null, null};
+        when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
@@ -387,6 +381,28 @@ public class CCDDataTransformerTest {
     }
 
     @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateNFE() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"1", "2", "number"});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
+    public void shouldConvertRequestToDataBeanWhenLastModifiedDateInvalidDate() {
+
+        when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"2022", "1", "50"});
+
+        CCDData ccdData = underTest.transform(callbackRequestMock);
+
+        assertAll(ccdData);
+        assertNull(ccdData.getCaseSubmissionDate());
+    }
+
+    @Test
     public void shouldConvertRequestToDataBeanForPA16Form() {
 
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
@@ -401,7 +417,7 @@ public class CCDDataTransformerTest {
         assertEquals("Yes", ccdData.getSolsSpouseOrCivilRenouncing());
 
     }
-    
+
     @Test
     public void shouldConvertRequestToDataBeanForPA17Form() {
 
@@ -412,7 +428,7 @@ public class CCDDataTransformerTest {
         assertAll(ccdData);
         assertEquals("TCTPartAllRenouncing", ccdData.getTitleAndClearingType());
     }
-    
+
     @Test
     public void shouldConvertRequestToDataBeanForIhtEstate() {
 
@@ -451,7 +467,7 @@ public class CCDDataTransformerTest {
         assertTrue(ccdData.getExecutors().get(2).isApplying());
         assertEquals(TOTAL_FEE.floatValue(), ccdData.getFee().getAmount().floatValue(), 0.01);
         assertEquals(APPLICATION_FEE.floatValue(), ccdData.getFee().getApplicationFee().floatValue(), 0.01);
-        
+
         assertEquals(true, ccdData.getExecutors().get(0).isApplying());
         assertEquals(false, ccdData.getExecutors().get(1).isApplying());
         assertEquals("Renunciation", ccdData.getExecutors().get(1).getReasonNotApplying());

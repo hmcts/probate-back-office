@@ -5,9 +5,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
+
+import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -19,11 +19,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
-    @Autowired
-    protected FunctionalTestUtils utils;
-
     @Test
-    public void shouldValidateDefaultPBAs() {
+    public void shouldValidateDefaultPBAs() throws IOException {
         validatePostRequestSuccessForPBAs("/case/default-sols-pba",
             "solicitorPDFPayloadProbate.json",
             "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}",
@@ -32,14 +29,15 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldValidateDefaultPBAPaymentsNoFee() {
+    public void shouldValidateDefaultPBAPaymentsNoFee() throws IOException {
         String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-pba",
             "solicitorPDFPayloadProbateNoPaymentFee.json",
             "\"solsNeedsPBAPayment\":\"No\"");
         assertFalse(responseBody.contains("\"payments\": ["));
     }
 
-    private String validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues) {
+    private String validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues)
+        throws IOException {
 
         String body = given().headers(utils.getHeadersWithSolicitorUser())
             .relaxedHTTPSValidation()

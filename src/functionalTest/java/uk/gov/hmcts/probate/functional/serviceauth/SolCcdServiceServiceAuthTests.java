@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 
 
@@ -18,7 +20,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyThatWithCorrectAuthorizationWeReceiveSuccess() {
+    public void verifyThatWithCorrectAuthorizationWeReceiveSuccess() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -29,7 +31,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyThatWithInCorrectAuthorizationWeReceive403() {
+    public void verifyThatWithInCorrectAuthorizationWeReceive403() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -40,7 +42,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyThatWithEmptyAuthorizationHeaderWeReceive403() {
+    public void verifyThatWithEmptyAuthorizationHeaderWeReceive403() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
