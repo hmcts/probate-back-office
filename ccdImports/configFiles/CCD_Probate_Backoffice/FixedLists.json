@@ -345,5 +345,7 @@
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "paperClipMarks", "ListElement": "Paper clip marks"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "tornEdges", "ListElement": "Torn edges"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "waterDamage", "ListElement": "Water damage"},
-  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"}
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"},
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "blank", "ListElement": "Blank letter", "DisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2}
 ]

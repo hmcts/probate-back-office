@@ -88,6 +88,7 @@ services:
       ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION: "${ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION:-true}"
       REFERENCE_DATA_API_URL: "${RD_LOCATION_REF_API_BASE_URL:-http://ccd-test-stubs-service:5555}"
       ROLE_ASSIGNMENT_URL: "${ROLE_ASSIGNMENT_URL:-http://am-role-assignment-service:4096}"
+      CCD_DOCUMENT_URL_PATTERN: "https?://((dm-store:8080/documents/[A-Za-z0-9-]+(?:/binary)?)|(localhost:5006/documents/[A-Za-z0-9-]+(?:/binary)?))"
     ports:
       - 4452:4452
       - 5005:5005
