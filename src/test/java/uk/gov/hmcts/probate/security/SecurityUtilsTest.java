@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -12,10 +13,17 @@ import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @RunWith(MockitoJUnitRunner.class)
 public class SecurityUtilsTest {
@@ -62,5 +70,40 @@ public class SecurityUtilsTest {
         securityUtils.setSecurityContextUserAsCaseworker();
 
         assertThat(securityUtils.getAuthorisation(), equalTo(BEARER + USER_TOKEN));
+    }
+
+    @Test
+    public void shouldGetUserEmail() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("email", "solicitor@probate-test.com");
+        ResponseEntity<Map<String, Object>> response = ResponseEntity.of(Optional.of(map));
+        when(idamApi.getUserDetails("AuthToken")).thenReturn(response);
+        String email = securityUtils.getEmail("AuthToken");
+
+        assertEquals("solicitor@probate-test.com", email);
+    }
+
+    @Test
+    public void shouldReturnCacheToken() {
+        ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", CASEWORKER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", CASEWORKER_PASSWORD);
+
+        Instant instant = Instant.now().plusSeconds(3600);
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,instant.toString(),USER_TOKEN,null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(tokenResponse);
+
+        // first time
+        String idamToken = securityUtils.getCaseworkerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+
+        // second time
+        idamToken = securityUtils.getCaseworkerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+
+        verify(idamApi, atMostOnce()).generateOpenIdToken(any(TokenRequest.class));
+
     }
 }
