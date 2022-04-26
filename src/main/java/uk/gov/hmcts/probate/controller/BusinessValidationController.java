@@ -200,7 +200,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
-        
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 gopPage1ValidationRules);
 
