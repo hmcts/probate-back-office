@@ -5,7 +5,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -15,9 +14,6 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.time.Instant;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
