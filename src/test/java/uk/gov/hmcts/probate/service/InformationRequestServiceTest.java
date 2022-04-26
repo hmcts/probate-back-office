@@ -18,7 +18,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -51,8 +50,7 @@ public class InformationRequestServiceTest {
     private CallbackResponseTransformer callbackResponseTransformer;
     @Mock
     private NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
-    @Mock
-    private RedeclarationSoTValidationRule redeclarationSoTValidationRule;
+
     @InjectMocks
     private InformationRequestService informationRequestService;
     private CollectionMember<ExecutorsApplyingNotification> execApplying;
