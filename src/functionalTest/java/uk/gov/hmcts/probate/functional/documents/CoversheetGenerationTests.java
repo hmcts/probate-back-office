@@ -65,7 +65,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         String expectedText = utils
             .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
         assertTrue(response.contains(expectedText));
-
     }
 
     @Test
