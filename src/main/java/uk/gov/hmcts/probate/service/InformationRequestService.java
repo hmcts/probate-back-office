@@ -8,7 +8,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -21,7 +20,6 @@ public class InformationRequestService {
     private final NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
     private final InformationRequestCorrespondenceService informationRequestCorrespondenceService;
     private final CallbackResponseTransformer callbackResponseTransformer;
-    private final RedeclarationSoTValidationRule redeclarationSoTValidationRule;
     private List<Document> documents;
     private List<Document> letterIdDocuments;
     private List<String> letterIds;
@@ -30,7 +28,6 @@ public class InformationRequestService {
         documents = new LinkedList<>();
         letterIdDocuments = new LinkedList<>();
         letterIds = new ArrayList<>();
-        redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
         if (callbackRequest.getCaseDetails().getData().isBoEmailRequestInfoNotificationRequested()) {
             notificationExecutorsApplyingValidationRule.validate(callbackRequest.getCaseDetails());
             documents =

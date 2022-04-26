@@ -41,9 +41,9 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: postgresql-42.2.18.jar
+   file name: spring-core-5.3.18.jar
    ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
-        <cve>CVE-2022-21724</cve>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring-core@.*$</packageUrl>
+        <vulnerabilityName>CVE-2022-22968</vulnerabilityName>
     </suppress>
 </suppressions>
