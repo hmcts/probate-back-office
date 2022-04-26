@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -23,7 +25,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPrintTemplateDocuments() {
+    public void verifySuccessForGetPrintTemplateDocuments() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -109,7 +111,6 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
             .when().get("/template/probateManLegacyCase");
-        response.prettyPrint();
 
         assertThat(response.statusCode(), is(equalTo(200)));
         assertTrue(response.getBody().asString().contains("Probate Man Legacy Case"));
@@ -122,10 +123,8 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
             .when().get("/template/probateManLegacyCase");
-        response.prettyPrint();
 
         assertThat(response.statusCode(), is(equalTo(403)));
-        assertTrue(response.getBody().asString().contains("Forbidden"));
     }
 }
 

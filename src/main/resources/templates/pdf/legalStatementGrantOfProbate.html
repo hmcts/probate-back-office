@@ -153,6 +153,9 @@
         <td colspan="2">
             <p>The gross value for the estate in {% if case_details.case_data.deceasedDomicileInEngWales == "Yes"%}the United Kingdom {% else %}England and Wales {% endif %}
                 amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+            {% if case_extras != null %}
+                {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% endif %}
             <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
@@ -196,7 +199,7 @@
                 that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}{% else %}{{ case_details.case_data.nameOfFirmNamedInWill }}{% endif %},
                 at the date of death of the deceased. The remaining profit-sharing
                 {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }}
-                in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
+                in the firm {{ case_details.case_data.nameOfSucceededFirm }}
                 are renouncing their right to probate.
             </p>
             {% endif %}
@@ -229,8 +232,8 @@
                 The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.{% elseif case_details.case_data.titleAndClearingType == "TCTPartSuccAllRenouncing" %}
                 {% if multipleExecutors %}We are the executors named in the will.{% else %}I am the executor named in the will.{% endif %}
-                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
-                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                The profit-sharing {{ case_details.case_data.pluralProfitSharingTextForLegalStatement }} in the firm {{ case_details.case_data.nameOfSucceededFirm }}
+                that had succeeded to and carried on the practice of the firm {{ case_details.case_data.nameOfFirmNamedInWill }}
                 at the date of death of the deceased have renounced probate.{% endif %}</p>
 
             {% if case_details.case_data.titleAndClearingType == "TCTSolePrinSucc" or case_details.case_data.titleAndClearingType == "TCTSolePrin" %}
@@ -289,7 +292,7 @@
                 {{ case_details.case_data.solsSolicitorFirmName }} to send on
                 {% if (multipleExecutors) %}our{% else %}my{% endif %} behalf what
                 {% if (multipleExecutors) %}we{% else %}I{% endif %} believe to be the
-                true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessOriginal == "No" %}, as contained in a notarial/official copy{% endif %}
+                true and original last will and testament{% if case_details.case_data.originalWillSignedDateFormatted != null %}, signed and dated {{ case_details.case_data.originalWillSignedDateFormatted }}{% endif %}{% if case_details.case_data.willAccessNotarial == "Yes" %}, as contained in a notarial/official copy{% endif %}
                 {% for codicil in case_details.case_data.codicilAddedFormattedDateList %}{% if currentCodicil == 1 %} with{% else %}, and{% endif %} codicil signed and dated {{ codicil.value }}{% set currentCodicil = currentCodicil + 1 %}{% endfor %}
                 of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.
             </p>

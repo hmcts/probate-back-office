@@ -4,6 +4,7 @@
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Set up Wiremocks",
             "request": "launch",
@@ -15,7 +16,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },        
+        },
         {
             "name": "full functional",
             "request": "launch",
@@ -183,7 +184,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },      
+        },
         {
             "name": "Caseworker GoP (Solicitor Paper Form Yes) e2e",
             "request": "launch",
@@ -195,7 +196,7 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },                        
+        },
         {
             "name": "Caseworker GoP (Personal) e2e",
             "request": "launch",
@@ -207,7 +208,19 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },            
+        },
+        {
+            "name": "Caseworker GoP (Personal) e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-grantOfProbateEE",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
         {
             "name": "Solicitor create GOP, Caseworker amend e2e",
             "request": "launch",
@@ -231,12 +244,24 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },                 
+        },
         {
             "name": "Solicitor GoP e2e",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-sol-grantOfProbate",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Solicitor GoP e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateEE",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -255,7 +280,19 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        },         
+        },
+        {
+            "name": "Solicitor not named, applying Gop e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateNotNamedApplyingEE",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
         {
             "name": "Solicitor applyCaveat e2e",
             "request": "launch",
@@ -267,12 +304,24 @@
                 "<node_internals>/**"
             ],
             "type": "pwa-node"
-        }, 
+        },
         {
             "name": "Solicitor multi GoP e2e",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-sol-grantOfProbateMulti",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Solicitor multi GoP e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-grantOfProbateMultiEE",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [
@@ -293,10 +342,34 @@
             "type": "pwa-node"
         },
         {
+            "name": "Solicitor no will (Intestacy) GoR e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-gorNoWillEE",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
             "name": "Solicitor will annexed (Admon Will) GoR e2e",
             "request": "launch",
             "runtimeArgs": [
                 "test-e2e-sol-gorWillAnnexed",
+            ],
+            "runtimeExecutable": "yarn",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "type": "pwa-node"
+        },
+        {
+            "name": "Solicitor will annexed (Admon Will) GoR e2e EE",
+            "request": "launch",
+            "runtimeArgs": [
+                "test-e2e-sol-gorWillAnnexedEE",
             ],
             "runtimeExecutable": "yarn",
             "skipFiles": [

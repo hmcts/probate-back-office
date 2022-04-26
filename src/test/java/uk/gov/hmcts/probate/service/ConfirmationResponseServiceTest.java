@@ -7,6 +7,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
+import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
@@ -35,6 +36,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
+import uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
@@ -50,6 +52,10 @@ import static org.mockito.ArgumentMatchers.anyMap;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 public class ConfirmationResponseServiceTest {
 
@@ -82,6 +88,8 @@ public class ConfirmationResponseServiceTest {
     @Mock
     private SpouseOrCivilRule spouseOrCivilRuleMock;
     @Mock
+    private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
+    @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private CaseDetails caseDetailsMock;
@@ -91,6 +99,8 @@ public class ConfirmationResponseServiceTest {
     private TemplateResponse willBodyTemplateResponseMock;
     @Mock
     private MarkdownSubstitutionService markdownSubstitutionServiceMock;
+    @Mock
+    private MarkdownDecoratorService markdownDecoratorService;
     @Mock
     private MessageResourceService messageResourceServiceMock;
     @Mock
@@ -113,9 +123,11 @@ public class ConfirmationResponseServiceTest {
         MockitoAnnotations.initMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
+            markdownDecoratorService,
             applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
             executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock,
-            renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock);
+            renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock,
+            ihtEstate207BusinessRuleMock);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -508,6 +520,92 @@ public class ConfirmationResponseServiceTest {
     }
 
     @Test
+    public void shouldGetExceptedEstateYes207Confirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+        when(ihtEstate207BusinessRuleMock.isApplicable(any(CaseData.class))).thenReturn(true);
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getIht().getFormName()).thenReturn(null);
+        when(ccdDataMock.getIht().getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(ccdDataMock.getIht().getIhtFormEstate()).thenReturn(IHT207_VALUE);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertEquals("", nextStepsValues.get("{{ihtForm}}"));
+        assertEquals("\n*   the inheritance tax form IHT 207", nextStepsValues.get("{{ihtText}}"));
+        assertFeeConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetExceptedEstateYes400421Confirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getIht().getFormName()).thenReturn(null);
+        when(ccdDataMock.getIht().getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(ccdDataMock.getIht().getIhtFormEstate()).thenReturn(IHT400421_VALUE);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertEquals("", nextStepsValues.get("{{ihtForm}}"));
+        assertEquals("", nextStepsValues.get("{{ihtText}}"));
+        assertFeeConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetExceptedEstateNoConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(NO);
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getIht().getFormName()).thenReturn(null);
+        when(ccdDataMock.getIht().getIhtFormEstateValuesCompleted()).thenReturn(NO);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertEquals("", nextStepsValues.get("{{ihtForm}}"));
+        assertEquals("", nextStepsValues.get("{{ihtText}}"));
+        assertFeeConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
     public void shouldGetNextStepsConfirmation() {
         CCDData ccdDataMock = getCcdDataForConfirmation();
 
@@ -515,15 +613,133 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertIHT207(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
         assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationAdmonWill() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getAdmonWillRenunciationFormLabel(any(CaseData.class)))
+            .thenReturn("PA15 and PA17 form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA15 and PA17 form text",
+            nextStepsValues.get("{{admonWillRenunciation}}"));
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA14Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA14FormLabel(any(CaseData.class))).thenReturn("PA14Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA14Form text",
+            nextStepsValues.get("{{pa14form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA15Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA15FormLabel(any(CaseData.class))).thenReturn("PA15Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA15Form text",
+            nextStepsValues.get("{{pa15form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA16Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA16Form text",
+            nextStepsValues.get("{{pa16form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForPA17Form() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+            .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+            .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getPA17FormLabel(any(CaseData.class))).thenReturn("PA17Form text");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("PA17Form text",
+            nextStepsValues.get("{{pa17form}}"));
+
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationForTcResolutionLodgedWithApp() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class)))
+            .thenReturn("a certified copy of the resolution");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
+
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("a certified copy of the resolution",
+                nextStepsValues.get("{{tcResolutionLodgedWithApp}}"));
+
     }
 
     @Test
@@ -535,13 +751,15 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertIHT207(nextStepsValues);
         assertEquals("",
             nextStepsValues.get("{{legalPhotocopy}}"));
         assertFeeConfirmationValues(nextStepsValues);
@@ -573,13 +791,15 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
         Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
         assertEquals("", nextStepsValues.get("{{caseSubmissionDate}}"));
         assertConfirmationValues(nextStepsValues);
+        assertIHT207(nextStepsValues);
         assertLegalStatement(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
     }
@@ -610,7 +830,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertEquals(null, afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -618,6 +839,7 @@ public class ConfirmationResponseServiceTest {
         assertEquals("0.50", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("1.50", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertIHT207(nextStepsValues);
         assertLegalStatement(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
     }
@@ -634,7 +856,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -642,6 +865,7 @@ public class ConfirmationResponseServiceTest {
         assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertIHT207(nextStepsValues);
         assertLegalStatement(nextStepsValues);
         assertFeeConfirmationValues(nextStepsValues);
     }
@@ -661,7 +885,8 @@ public class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+            caseDataMock);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -669,8 +894,37 @@ public class ConfirmationResponseServiceTest {
         assertEquals("", nextStepsValues.get("{{feeForUkCopies}}"));
         assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
+        assertIHT207(nextStepsValues);
         assertEquals("No payment needed", nextStepsValues.get("{{paymentMethod}}"));
         assertEquals("0.00", nextStepsValues.get("{{paymentAmount}}"));
+    }
+
+    @Test
+    public void shouldGetNextStepsConfirmationWithDiedBeforeOrDiedAfterThenShouldNotShowDeathCertificate() {
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(deadBeforeExecutorMock.isApplying()).thenReturn(false);
+        when(deadBeforeExecutorMock.getReasonNotApplying()).thenReturn("DiedBefore");
+        when(deadBeforeExecutorMock.getForename()).thenReturn("deadBeforeExecutorFirstname");
+        when(deadBeforeExecutorMock.getLastname()).thenReturn("deadBeforeExecutorLastname");
+
+        when(deadAfterExecutorMock.isApplying()).thenReturn(false);
+        when(deadAfterExecutorMock.getReasonNotApplying()).thenReturn("DiedAfter");
+        when(deadAfterExecutorMock.getForename()).thenReturn("deadAfterExecutorFirstname");
+        when(deadAfterExecutorMock.getLastname()).thenReturn("deadAfterExecutorLastname");
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+                caseDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertConfirmationValues(nextStepsValues);
+        assertNull(nextStepsValues.get("{{deadExecutors}}"));
+        assertIHT207(nextStepsValues);
     }
 
     private void assertConfirmationValues(Map<String, String> nextStepsValues) {
@@ -681,7 +935,6 @@ public class ConfirmationResponseServiceTest {
         assertEquals("Firstname", nextStepsValues.get("{{deceasedFirstname}}"));
         assertEquals("Lastname", nextStepsValues.get("{{deceasedLastname}}"));
         assertEquals("31/12/2000", nextStepsValues.get("{{deceasedDateOfDeath}}"));
-        assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
         assertEquals("solsAdditionalInfo", nextStepsValues.get("{{additionalInfo}}"));
     }
 
@@ -689,7 +942,11 @@ public class ConfirmationResponseServiceTest {
         assertEquals("*   a photocopy of the signed legal statement and declaration",
             nextStepsValues.get("{{legalPhotocopy}}"));
     }
-    
+
+    private void assertIHT207(Map<String, String> nextStepsValues) {
+        assertEquals("IHT207", nextStepsValues.get("{{ihtForm}}"));
+    }
+
     private void assertFeeConfirmationValues(Map<String, String> nextStepsValues) {
         assertEquals("100.00", nextStepsValues.get("{{paymentAmount}}"));
     }

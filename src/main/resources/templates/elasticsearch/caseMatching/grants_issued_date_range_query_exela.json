@@ -1,6 +1,6 @@
 {
   "size": :size,
-  "from": 0,
+  "from": :from,
   "query": {
     "bool": {
       "filter": [
@@ -24,5 +24,12 @@
         }
       ]
     }
-  }
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
 }

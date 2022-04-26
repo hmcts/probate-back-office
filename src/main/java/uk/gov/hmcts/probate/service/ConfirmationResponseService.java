@@ -2,9 +2,9 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.base.Strings;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
 import uk.gov.hmcts.probate.changerule.SpouseOrCivilRule;
 import uk.gov.hmcts.probate.model.PageTextConstants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.Executor;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -27,22 +26,24 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.template.MarkdownTemplate;
 import uk.gov.hmcts.probate.model.template.TemplateResponse;
+import uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService;
 import uk.gov.hmcts.probate.service.template.markdown.MarkdownSubstitutionService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 @Component
 @RequiredArgsConstructor
@@ -53,7 +54,6 @@ public class ConfirmationResponseService {
     private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
     private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
-    private static final String IHT_400421 = "IHT400421";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
     public static final String NO_PAYMENT_NEEDED = "No payment needed";
     public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
@@ -61,6 +61,7 @@ public class ConfirmationResponseService {
     public static final String PARM_PAYMENT_REFERENCE_NUMBER = "{{paymentReferenceNumber}}";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
+    private final MarkdownDecoratorService markdownDecoratorService;
     private final ApplicantSiblingsRule applicantSiblingsConfirmationResponseRule;
     private final DiedOrNotApplyingRule diedOrNotApplyingRule;
     private final EntitledMinorityRule entitledMinorityRule;
@@ -72,6 +73,7 @@ public class ConfirmationResponseService {
     private final ResiduaryRule residuaryRule;
     private final SolsExecutorRule solsExecutorConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
+    private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -80,8 +82,8 @@ public class ConfirmationResponseService {
         return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
     }
 
-    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData));
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData, CaseData caseData) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData, caseData));
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
@@ -204,7 +206,7 @@ public class ConfirmationResponseService {
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
 
-    private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData) {
+    private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData, CaseData caseData) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
         String caseSubmissionDate = "";
@@ -260,30 +262,100 @@ public class ConfirmationResponseService {
             additionalInfo = "None provided";
         }
 
+        String legalPhotocopy = "";
+        if (hasNoLegalStatmentBeenUploaded(ccdData)) {
+            legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
+        }
+        keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
+        keyValue.put("{{ihtText}}", getIhtText(ccdData));
+        keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
+        keyValue.put("{{additionalInfo}}", additionalInfo);
+        keyValue.put("{{pa14form}}", getPA14FormLabel(caseData));
+        keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
+        keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
+        keyValue.put("{{pa17form}}", getPA17FormLabel(caseData));
+        keyValue.put("{{admonWillRenunciation}}", getAdmonWillRenunciationFormLabel(ccdData));
+        keyValue.put("{{tcResolutionLodgedWithApp}}", getTcResolutionFormLabel(ccdData));
+        keyValue.put("{{authenticatedTranslation}}", getAuthenticatedTranslationLabel(ccdData));
+        keyValue.put("{{dispenseWithNoticeSupportingDocs}}", getDispenseWithNoticeSupportDocsLabelAndText(ccdData));
+        return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    private String getIhtForm(CCDData ccdData) {
         String ihtFormValue = ccdData.getIht().getFormName();
-        String ihtText = "";
         String ihtForm = "";
-        if (!ihtFormValue.contentEquals(IHT_400421)) {
-            ihtText = "\n*   the inheritance tax form ";
-            if ("Yes".equals(ccdData.getIht217())) {
+        if (ihtFormValue != null && !ihtFormValue.contentEquals(IHT400421_VALUE)) {
+            if (YES.equals(ccdData.getIht217())) {
                 ihtForm = "IHT205 and IHT217";
             } else {
                 ihtForm = ccdData.getIht().getFormName();
             }
         }
 
-        String legalPhotocopy = "";
-        if (hasNoLegalStatmentBeenUploaded(ccdData)) {
-            legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
-        }
-        keyValue.put("{{legalPhotocopy}}", legalPhotocopy);
-        keyValue.put("{{ihtText}}", ihtText);
-        keyValue.put("{{ihtForm}}", ihtForm);
-        keyValue.put("{{additionalInfo}}", additionalInfo);
-        keyValue.put("{{renouncingExecutors}}", getRenouncingExecutors(ccdData.getExecutors()));
-        keyValue.put("{{deadExecutors}}", getDeadExecutors(ccdData.getExecutors()));
+        return ihtForm;
+    }
 
-        return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+    private String getIhtText(CCDData ccdData) {
+        String ihtFormValue = ccdData.getIht().getFormName();
+        String ihtText = "";
+        if (ihtFormValue == null) {
+            CaseData caseData = CaseData.builder()
+                .ihtFormEstateValuesCompleted(ccdData.getIht().getIhtFormEstateValuesCompleted())
+                .ihtFormEstate(ccdData.getIht().getIhtFormEstate())
+                .build();
+            if (ihtEstate207BusinessRule.isApplicable(caseData)) {
+                ihtText = "\n*   " + IHT_ESTATE_207_TEXT;
+            }
+        } else if (!ihtFormValue.contentEquals(IHT400421_VALUE)) {
+            ihtText = "\n*   the inheritance tax form ";
+        }
+
+        return ihtText;
+    }
+
+    private String getPA14FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA14FormLabel(caseData);
+    }
+
+    private String getPA15FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA15FormLabel(caseData);
+    }
+
+    private String getPA16FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA16FormLabel(caseData);
+    }
+
+    private String getPA17FormLabel(CaseData caseData) {
+        return markdownDecoratorService.getPA17FormLabel(caseData);
+    }
+
+    private String getAdmonWillRenunciationFormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .solsWillType(ccdData.getSolsWillType())
+            .build();
+        return markdownDecoratorService.getAdmonWillRenunciationFormLabel(caseData);
+    }
+
+    private String getTcResolutionFormLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+                .titleAndClearingType(ccdData.getTitleAndClearingType())
+                .build();
+        return markdownDecoratorService.getTcResolutionFormLabel(caseData);
+    }
+
+    private String getAuthenticatedTranslationLabel(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+            .englishWill(ccdData.getEnglishWill())
+            .build();
+        return markdownDecoratorService.getAuthenticatedTranslationLabel(caseData);
+    }
+    
+    private String getDispenseWithNoticeSupportDocsLabelAndText(CCDData ccdData) {
+        CaseData caseData = CaseData.builder()
+                .dispenseWithNotice(ccdData.getDispenseWithNotice())
+                .dispenseWithNoticeSupportingDocs(ccdData.getDispenseWithNoticeSupportingDocs())
+                .build();
+        return markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseData);
     }
 
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
@@ -304,25 +376,6 @@ public class ConfirmationResponseService {
 
     private String defaultString(String value) {
         return value == null ? "" : value + ", ";
-    }
-
-    private String getRenouncingExecutors(List<Executor> executors) {
-        String renouncingExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_RENUNCIATION.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   renunciation form for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(renouncingExecutors) ? renouncingExecutors + "\n" : renouncingExecutors;
-    }
-
-    private String getDeadExecutors(List<Executor> executors) {
-        String deadExecutors = executors.stream()
-            .filter(executor -> !executor.isApplying())
-            .filter(executor -> REASON_FOR_NOT_APPLYING_DIED_BEFORE.equals(executor.getReasonNotApplying())
-                || REASON_FOR_NOT_APPLYING_DIED_AFTER.equals(executor.getReasonNotApplying()))
-            .map(executor -> "*   death certificate for " + executor.getForename() + " " + executor.getLastname())
-            .collect(Collectors.joining("\n"));
-        return !StringUtils.isEmpty(deadExecutors) ? deadExecutors + "\n" : deadExecutors;
     }
 
     private String getOptionalAmountAsString(BigDecimal amount) {

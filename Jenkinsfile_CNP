@@ -1,10 +1,13 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
+import uk.gov.hmcts.contino.AppPipelineConfig
 
 @Library("Infrastructure")
 
 String product = "probate"
 String component = "back-office"
+
+AppPipelineConfig pipelineConf;
 
 def secrets = [
         'probate-${env}'      : [
@@ -54,7 +57,9 @@ def secrets = [
                 secret('levClientSecret', 'LEV_CLIENT_SECRET'),
                 secret('levUsername', 'LEV_USERNAME'),
                 secret('levPassword', 'LEV_PASSWORD'),
-                secret('levDeathUrl', 'LEV_DEATH_URL')
+                secret('levDeathUrl', 'LEV_DEATH_URL'),
+                secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
+                secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -64,6 +69,9 @@ def secrets = [
         ],
         'ccd-${env}'      : [
                 secret('ccd-api-gateway-oauth2-client-secret', 'API_GATEWAY_IDAM_SECRET'),
+                secret('idam-data-store-client-secret','IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET'),
+                secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
+                secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
         ]
 ]
@@ -82,15 +90,72 @@ env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 // Configure branches to sync with master branch
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
+def archiveCoreCaseDataDefinitions(env) {
+  dir("${WORKSPACE}/bin") {
+    if ("preview" == env) {
+      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID}"
+    }
+
+      else {
+      sh "./build-release-ccd-definitions.sh ${env}"
+    }
+  }
+
+  dir("${WORKSPACE}/build") {
+    if("preview" == env){
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Caveat.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Cases.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Legacy_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Standing_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-preview/CCD_Probate_Will_Lodgement.xlsx"
+    } else {
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Backoffice.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Caveat.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Cases.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Legacy_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Standing_Search.xlsx"
+      steps.archiveArtifacts artifacts: "jsonToXLS-${env}/CCD_Probate_Will_Lodgement.xlsx"
+    }
+  }
+  }
+
+/**
+ * Imports CCD definitions into specified environment. Import XLSX file is archived when process completed.
+ *
+ * NOTE: It requires `bin/variables/load-${env}-environment-variables.sh` file to define environment specific URLs.
+ *
+ * @param env target environment
+ */
+  def uploadCoreCaseDataDefinitions(env) {
+    dir("${WORKSPACE}/bin"){
+      if("preview" == env){
+        ccdDefinitionFilePath = "${WORKSPACE}/build/jsonToXLS-preview"
+        sh """
+        eval \$(./variables/load-preview-environment-variables.sh ${CHANGE_ID})
+        ${WORKSPACE}/ccdImports/conversionScripts/importAllXLS-pipeline.sh ${ccdDefinitionFilePath}
+      """
+      } else {
+        ccdDefinitionFilePath = "${WORKSPACE}/build/jsonToXLS-${env}"
+        sh """
+        eval \$(./variables/load-${env}-environment-variables.sh)
+        ${WORKSPACE}/ccdImports/conversionScripts/importAllXLS-pipeline.sh ${ccdDefinitionFilePath}
+      """
+      }
+    }
+  }
+
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
+  pipelineConf = config;
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
   loadVaultSecrets(secrets)
 
   enableSlackNotifications('#probate-jenkins')
+  enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
   after('test') {
@@ -117,18 +182,92 @@ withPipeline("java", product, component) {
 
   after('functionalTest:preview') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "target/site/serenity/",
+            reportFiles          : "index.html",
+            reportName           : "Functional Tests Report"
+    ]
   }
 
   after('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    publishHTML target: [
+            allowMissing         : true,
+            alwaysLinkToLastBuild: true,
+            keepAll              : true,
+            reportDir            : "target/site/serenity/",
+            reportFiles          : "index.html",
+            reportName           : "Functional Tests Report"
+    ]
+    env.ENV = 'prod'
+    // all the AAT tasks in the master pipeline finished, so we update the env variable to promote to prod tasks
+  }
+
+  after('highleveldatasetup') {
+    if (env.ENV != 'preview') {
+      // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
+      echo "CCD definition upload for environment: ${env.ENV}"
+      withSubscription(env.ENV != 'prod' ? 'nonprod' : 'prod') {
+        withTeamSecrets(pipelineConf, env.ENV) {
+          archiveCoreCaseDataDefinitions(env.ENV)
+          uploadCoreCaseDataDefinitions(env.ENV)
+        }
+      }
+    } else {
+      echo "CCD definition upload SKIPPED for environment: ${env.ENV}"
+    }
   }
 
   onMaster() {
+    env.ENV='aat'
     enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
   }
-  
+
   onPR() {
+      env.ENV='preview'
       enablePactAs([AppPipelineDsl.PactRoles.CONSUMER])
+  }
+
+  onIthc() {
+      env.ENV='ithc'
+  }
+
+  onDemo() {
+    env.ENV='demo'
+  }
+
+  onPerftest() {
+    env.ENV='perftest'
+  }
+
+  before('smoketest:preview') {
+
+    sh """
+      eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
+      ./bin/add-roles.sh
+    """
+    archiveCoreCaseDataDefinitions('preview')
+    uploadCoreCaseDataDefinitions('preview')
+
+    env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
+    env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+    env.CCD_DEF_URL="http://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_PRO_URL="http://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DAT_URL="http://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+
+    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
+    env.CURL_OPTS="--insecure --retry 3 "
+    env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
+
+    sh """
+ docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DEF_URL/health
+ docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
+ docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
+ """
   }
 }
 

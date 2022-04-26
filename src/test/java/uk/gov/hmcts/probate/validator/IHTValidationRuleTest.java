@@ -23,7 +23,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
-import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NET_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
 
 @RunWith(MockitoJUnitRunner.class)
 public class IHTValidationRuleTest {
@@ -63,6 +64,17 @@ public class IHTValidationRuleTest {
     }
 
     @Test
+    public void testValidateWithSuccessWhenEqual() {
+        when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
+        when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
+        assertThat(validationError.isEmpty(), is(true));
+    }
+
+    @Test
     public void testValidateWithSuccessWhenIhtIsNull() {
         when(ccdDataMock.getIht()).thenReturn(null);
 
@@ -73,16 +85,46 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateFailureWhenNetHigherThanGross() {
+    public void testValidateFailureWhenProbateNetHigherThanGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_NET_GREATER_THAN_GROSS))
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS))
                 .thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
         assertThat(validationError.isEmpty(), is(false));
-        verify(businessValidationMessageService, times(1)).generateError(BUSINESS_ERROR, IHT_NET_GREATER_THAN_GROSS);
+        verify(businessValidationMessageService, times(1))
+            .generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS);
         assertTrue(validationError.contains(businessValidationError));
+    }
+
+    @Test
+    public void testValidateFailureWhenIHTNetHigherThanGross() {
+        when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
+        when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
+        when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
+        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_ESTATE_NET_GREATER_THAN_GROSS))
+            .thenReturn(businessValidationError);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertThat(validationError.isEmpty(), is(false));
+        verify(businessValidationMessageService, times(1))
+            .generateError(BUSINESS_ERROR, IHT_ESTATE_NET_GREATER_THAN_GROSS);
+        assertTrue(validationError.contains(businessValidationError));
+    }
+
+    @Test
+    public void testValidateSuccessWhenIhtValuesNetIsTheSameAsGross() {
+        when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
+        when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
+        when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
+        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertThat(validationError.isEmpty(), is(true));
     }
 }

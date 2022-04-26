@@ -48,7 +48,7 @@ pdf.service:
 docmosis:
   service:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
-    accessKey: ${PDF_SERVICE_ACCESS_KEY:ZDYxMTkzZTQtMGY2Mi00NDM1LWIyN2ItNGRkNzdjOTczMjAwOjQ1NTE0ODQ}
+    accessKey: ${PDF_SERVICE_ACCESS_KEY:dyVv8pXwQ03RRyJZQIPX2RWP9LgJJGTU08kc9dA8ATJoA9EZXQEWe7L1Uwe}
     health.uri: ${PDF_SERVICE_HEALTH_URL:https://docmosis.aat.platform.hmcts.net}
   templates:
     caveatRaised:
@@ -209,10 +209,10 @@ notifications:
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
-          grantIssued: "8c05655d-02c9-4391-b461-56d8e585f48b"
+          grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
           grantReissued: "1b094aae-1b4e-4161-9a61-f563a1a6ed6d"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           grantRaisedCtsc: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
@@ -233,7 +233,7 @@ notifications:
           grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaised: "8d4fe65c-f25f-4cc1-a1af-fa267a10755a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
@@ -242,6 +242,7 @@ notifications:
           requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
           grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
       welsh:
@@ -253,7 +254,7 @@ notifications:
           grantIssued: "515c7643-ea3b-4a86-9b94-4622114be080"
           grantReissued: "c5232b10-0975-4085-ba5a-3e5a6eb5c2bf"
           generalCaveatMessage: "d2b33c5b-0c65-4472-b26f-9352de5538ba"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "025c2410-f1d4-4688-b03f-c94a6776341c"
           caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
@@ -272,7 +273,7 @@ notifications:
           grantIssued: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
           grantReissued: "1e18751f-fd4e-4893-85bb-f59cc5330c38"
           generalCaveatMessage: "afadf00e-c224-4da0-a6dc-fb47a2e5db67"
-          excelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
+          exelaData: "fd474506-a272-4caa-ad61-6086cee0639a"
           grantRaisedPaperFormBulkScan: "d2db94a3-72c8-47af-a687-5e806f065acb"
           caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
           caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
@@ -280,6 +281,7 @@ notifications:
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "95aa541b-e55e-4d7c-a6f5-810b5f03adba"
+          caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "30baff9f-fff8-41f5-879e-5ea963e3d144"
           grantAwaitingDocumentation: "2debe394-5d0f-4d66-8b05-f3d4276d34eb"
 
@@ -387,13 +389,14 @@ registry:
       town: South Wales
       postcode: CF24 0RZ
     newcastle:
-      name: Newcastle-Upon-Tyne Probate Registry
+      name: Newcastle District Probate Registry
       phone: 0300 303 0648
       emailReplyToId: "21106760-70e7-4b61-adb8-7df6f653f8db"
-      addressline1: Newcastle DPR
-      addressline2: No 1 Waterloo Square
-      town: Newcastle-Upon-Tyne
-      postcode: NE1 4DR
+      addressline1: 2nd Floor
+      addressline2: Kings Court
+      addressline3: Earl Grey Way
+      town: North Shields
+      postcode: NE29 6AR
     winchester:
       name: Winchester Probate Registry
       phone: 0300 303 0648
@@ -422,7 +425,7 @@ registry:
       addressline3: Cardiff
       town: South Wales
       postcode: CF24 0RZ
-      
+
 document:
   retriever:
     service:
@@ -442,14 +445,11 @@ auth.idam.client.baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
 core_case_data.api.url: ${services.coreCaseData.baseUrl:http://localhost:4452}
 
-excelaEmail: ${EXCELA_EMAIL:excela@probate-test.com}
+excelaEmail: ${EXCELA_EMAIL:exela@probate-test.com}
 
 data-extract:
-  block:
-    size: 3000
-    numDaysInclusive: 0
-  smee-and-ford:
-    size: 10000
+  pagination:
+    size: 100
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
 
@@ -474,4 +474,6 @@ ld:
     key: ${LD_USER_KEY:dummy_key}
     firstName: Probate
     lastName: Backend
-    
+
+iht-estate:
+  switch-date: "2022-01-01"

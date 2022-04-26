@@ -6,6 +6,19 @@ import io.restassured.http.Header;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.pdfbox.cos.COSDocument;
 import org.pdfbox.pdfparser.PDFParser;
@@ -18,19 +31,6 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.functional.SolCCDServiceAuthTokenGenerator;
 import uk.gov.hmcts.probate.functional.TestContextConfiguration;
-
-import javax.annotation.PostConstruct;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.util.Date;
-import java.util.Locale;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
@@ -89,21 +89,34 @@ public class FunctionalTestUtils {
         }
     }
 
-    public String getJsonFromFile(String fileName) {
-        try {
-            final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            final String fileContent = new String(Files.readString(file.toPath(), StandardCharsets.UTF_8));
-            return fileContent;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String replaceAnyCaseNumberWithRandom(String caseData) {
+        String replace = "" + System.currentTimeMillis() + System.currentTimeMillis();
+        replace = replace.substring(0, 16);
+        String replacement = caseData.replaceAll("\"id\": [0-9]{16}",
+            "\"id\": " + replace);
+        System.out.println("replacement: " + replacement);
+        return replacement;
+    }
+
+    public String getJsonFromFile(String fileName) throws IOException {
+        final File file = ResourceUtils.getFile(this.getClass().getClassLoader().getResource("json/" + fileName));
+        return Files.readString(file.toPath(), StandardCharsets.UTF_8);
     }
 
     public String getStringFromFile(String fileName) {
         try {
             final File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
             return new String(Files.readAllBytes(file.toPath()));
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public List<String> getLinesFromFile(String fileName) {
+        try {
+            final File file = ResourceUtils.getFile(this.getClass().getResource(fileName));
+            return Files.readAllLines(file.toPath());
         } catch (IOException e) {
             e.printStackTrace();
             return null;
@@ -121,13 +134,13 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
-        final String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+        final String genAuthorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
+            new Header("ServiceAuthorization", genServiceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken),
+            new Header("Authorization", "Bearer " + genAuthorizationToken),
             new Header("user-id", id.toString()));
     }
 
@@ -154,10 +167,10 @@ public class FunctionalTestUtils {
     }
 
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
-        final String userId = getSchedulerCaseworkerUserId();
+        final String cwUserId = getSchedulerCaseworkerUserId();
         final Response document = RestAssured.given()
             .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId(serviceToken, userId))
+            .headers(getHeadersWithUserId(serviceToken, cwUserId))
             .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
 
         return parsePDFToString(document.getBody().asInputStream());
@@ -229,7 +242,7 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithCaseworkerUser() {
         final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
-                caseworkerPassword);
+            caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -254,7 +267,7 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
         final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail,
-                schedulerPassword);
+            schedulerPassword);
         final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
@@ -334,8 +347,8 @@ public class FunctionalTestUtils {
     }
 
     public String convertToWelsh(LocalDate dateToConvert) {
-        final String[] welshMonths = {"Ionawr","Chwefror","Mawrth","Ebrill","Mai","Mehefin","Gorffennaf","Awst","Medi",
-            "Hydref", "Tachwedd","Rhagfyr"};
+        final String[] welshMonths = {"Ionawr", "Chwefror", "Mawrth", "Ebrill", "Mai", "Mehefin", "Gorffennaf", "Awst",
+            "Medi", "Hydref", "Tachwedd", "Rhagfyr"};
 
         if (dateToConvert == null) {
             return null;
@@ -343,10 +356,9 @@ public class FunctionalTestUtils {
         final int day = dateToConvert.getDayOfMonth();
         final int year = dateToConvert.getYear();
         final int month = dateToConvert.getMonth().getValue();
-        return String.join(" ", Integer.toString(day),  welshMonths[month - 1],
-            Integer.toString(year));
+        return String.join(" ", Integer.toString(day), welshMonths[month - 1], Integer.toString(year));
     }
-    
+
     public String formatDate(LocalDate dateToConvert) {
         if (dateToConvert == null) {
             return null;
@@ -362,7 +374,7 @@ public class FunctionalTestUtils {
             return null;
         }
     }
-    
+
     private String addDayNumberSuffix(String formattedDate) {
         final int day = Integer.parseInt(formattedDate.substring(0, 2));
         switch (day) {

@@ -9,6 +9,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 import static java.time.LocalDate.now;
 import static java.time.format.DateTimeFormatter.ofPattern;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -30,7 +32,7 @@ public class StandingSearchTests extends IntegrationTestBase {
     }
 
     @Test
-    public void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() {
+    public void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -50,7 +52,7 @@ public class StandingSearchTests extends IntegrationTestBase {
     }
 
     @Test
-    public void standingSearchCreatedShouldReturnDefaultValues() {
+    public void standingSearchCreatedShouldReturnDefaultValues() throws IOException {
         //ARRANGE
         String jsonAsString = utils.getJsonFromFile("/search/standingSearchPayload.json");
         jsonAsString = jsonAsString.replaceFirst("\"registryLocation\": \"Manchester\",", "");
