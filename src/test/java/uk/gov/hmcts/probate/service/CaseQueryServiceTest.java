@@ -309,22 +309,19 @@ public class CaseQueryServiceTest {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantAwaitingDocumentation("2019-02-05");
 
         String expected = "{\"from\":0,\"size\":0,\"query\":{\"bool\":{\"must\":[{\"bool\":{\"should\":[{\"match\":"
-            + "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,"
-            + "\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
-            + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true,"
-            +
-            "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":{\"data"
-            + ".grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\","
-            + "\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,"
-            + "\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}},"
-            +
-            "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0,"
-            + "\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
-            + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],"
-            +
-            "\"must_not\":[{\"exists\":{\"field\":\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},"
-            + "{\"exists\":{\"field\":\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,"
-            + "\"boost\":1.0}}}";
+                + "{\"state\":{\"query\":\"CasePrinted\",\"operator\":\"OR\",\"prefix_length\":0,\"max_expansions\":50,"
+                + "\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
+                + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"adjust_pure_negative\":true,"
+                + "\"minimum_should_match\":\"1\",\"boost\":1.0}},{\"match\":"
+                + "{\"data.grantAwaitingDocumentationNotificationDate\":{\"query\":\"2019-02-05\",\"operator\":\"OR\","
+                + "\"prefix_length\":0,\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,"
+                + "\"zero_terms_query\":\"NONE\",\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}},"
+                + "{\"match\":{\"data.paperForm\":{\"query\":\"No\",\"operator\":\"OR\",\"prefix_length\":0,"
+                + "\"max_expansions\":50,\"fuzzy_transpositions\":true,\"lenient\":false,\"zero_terms_query\":\"NONE\","
+                + "\"auto_generate_synonyms_phrase_query\":true,\"boost\":1.0}}}],\"must_not\":[{\"exists\":{\"field\":"
+                + "\"data.grantAwaitingDocumentatioNotificationSent\",\"boost\":1.0}},{\"exists\":{\"field\":"
+                + "\"data.evidenceHandled\",\"boost\":1.0}}],\"adjust_pure_negative\":true,\"boost\":1.0}},"
+                + "\"sort\":[{\"id\":{\"order\":\"asc\"}}]}";
         assertEquals(expected, entityCaptor.getValue().getBody());
         assertEquals(1, cases.size());
         assertEquals(1, cases.get(0).getId().intValue());
