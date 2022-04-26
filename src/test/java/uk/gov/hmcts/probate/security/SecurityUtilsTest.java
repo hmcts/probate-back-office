@@ -12,6 +12,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.time.Instant;
 import java.util.HashMap;
@@ -76,10 +77,8 @@ public class SecurityUtilsTest {
 
     @Test
     public void shouldGetUserEmail() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("email", "solicitor@probate-test.com");
-        ResponseEntity<Map<String, Object>> response = ResponseEntity.of(Optional.of(map));
-        when(idamApi.getUserDetails("AuthToken")).thenReturn(response);
+        UserInfo userInfo = UserInfo.builder().name("solicitor@probate-test.com").build();
+        when(idamApi.retrieveUserInfo("AuthToken")).thenReturn(userInfo);
         String email = securityUtils.getEmail("AuthToken");
 
         assertEquals("solicitor@probate-test.com", email);
