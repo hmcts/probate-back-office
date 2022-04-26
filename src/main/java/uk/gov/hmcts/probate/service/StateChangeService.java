@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
+import uk.gov.hmcts.probate.changerule.NoNotorialWillCopyRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -17,7 +18,6 @@ import uk.gov.hmcts.probate.changerule.UpdateApplicationRule;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import java.util.Optional;
 
@@ -49,13 +49,18 @@ public class StateChangeService {
     private final SolsExecutorRule solsExecutorRule;
     private final SpouseOrCivilRule spouseOrCivilRule;
     private final UpdateApplicationRule updateApplicationRule;
-    private final CallbackResponseTransformer callbackResponseTransformer;
+    private final NoNotorialWillCopyRule noNotorialWillCopyRule;
 
 
     public Optional<String> getChangedStateForProbateUpdate(CaseData caseData) {
         if (executorsRule.isChangeNeeded(caseData)) {
             return Optional.of(STATE_STOPPED);
         }
+        
+        if (noNotorialWillCopyRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        
         return Optional.empty();
     }
 
@@ -111,6 +116,10 @@ public class StateChangeService {
             return Optional.of(STATE_STOPPED);
         }
 
+        if (noNotorialWillCopyRule.isChangeNeeded(caseData)) {
+            return Optional.of(STATE_STOPPED);
+        }
+        
         return Optional.empty();
     }
 

@@ -83,6 +83,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final LocalDate solsIHT400Date;
     private final String willExists;
     private final String willAccessOriginal;
+    private final String willAccessNotarial;
     private final String willHasCodicils;
     private final String willNumberOfCodicils;
     private final BigDecimal ihtNetValue;
