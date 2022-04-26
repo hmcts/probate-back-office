@@ -37,6 +37,16 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
+    public void verifyGenerateSolsCoverSheetGopNotarialWill() {
+        String payload = "/caseprogress/04-caseCreated-notarial.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillNotarial");
+        assertTrue(response.contains(expectedText));
+
+    }
+
+    @Test
     public void verifyGenerateSolsCoverSheetGopIht217() {
         String payload = "/caseprogress/04c-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
