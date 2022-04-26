@@ -528,6 +528,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
             + " testament of De Ceased"));
     }
 
+
     private String generateSotDocument(String jsonFileName, String path) throws IOException {
         return generateSotDocumentFromPayload(utils.getJsonFromFile(jsonFileName), path);
     }
