@@ -39,16 +39,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetGopNotarialWill() throws IOException {
-        String payload = "/caseprogress/04-caseCreated-notarial.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
-        String expectedText = utils
-            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillNotarial");
-        assertTrue(response.contains(expectedText));
-
-    }
-
-    @Test
     public void verifyGenerateSolsCoverSheetGopIht217() throws IOException {
         String payload = "/caseprogress/04c-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
@@ -174,6 +164,14 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         String payload = "/caseprogress/04e-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
+    }
 
+    @Test
+    public void verifyGenerateSolsCoverSheetGopNotarialWill() throws IOException {
+        String payload = "/caseprogress/04-caseCreated-notarial.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillNotarial");
+        assertTrue(response.contains(expectedText));
     }
 }
