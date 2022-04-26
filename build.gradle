@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.6.6'
+    springBootVersion = '2.6.7'
   }
   repositories {
     jcenter()
@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.6.6'
+  id 'org.springframework.boot' version '2.6.7'
   id 'uk.gov.hmcts.java' version '0.12.2'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
@@ -259,7 +259,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDocOpenUi
   implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: versions.springDocOpenUi
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -340,7 +340,7 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
