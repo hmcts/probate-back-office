@@ -3527,6 +3527,7 @@ public class CallbackResponseTransformerTest {
         caseDataBuilder.willAccessOriginal(NO);
         caseDataBuilder.noOriginalWillAccessReason(NO_ACCESS_WILL_REASON);
         caseDataBuilder.willHasCodicils(NO);
+        caseDataBuilder.willAccessNotarial(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -3536,6 +3537,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getWillAccessOriginal());
         assertEquals(NO_ACCESS_WILL_REASON, callbackResponse.getData().getNoOriginalWillAccessReason());
         assertEquals(NO, callbackResponse.getData().getWillHasCodicils());
+        assertEquals(YES, callbackResponse.getData().getWillAccessNotarial());
     }
 
     @Test

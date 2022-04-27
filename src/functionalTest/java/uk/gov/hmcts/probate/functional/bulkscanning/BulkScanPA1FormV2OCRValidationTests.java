@@ -138,6 +138,26 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
 
+    @Test
+    public void invalidApplyingExecutor0EmailAddress() {
+        String jsonRequest =
+                utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
+                        + "Post2022PA1PInvalidExecutor0EmailAddress.json");
+        List<String> expectedWarnings =
+                utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/"
+                        + "invalidApplyingExecutor0EmailAddress.txt");
+        validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
+    }
+
+    @Test
+    public void validApplyingExecutor0EmailAddress() {
+        String jsonRequest =
+                utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
+                        + "Post2022PA1PValidExecutor0EmailAddress.json");
+        List<String> expectedWarnings = emptyList();
+        validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
+    }
+
     private void validateOCRWarnings(String formName, String bodyText, String containsText,
                                      List<String> expectedWarnings) {
         List<String> warnings = RestAssured.given()
@@ -148,7 +168,6 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             .when().post(String.format(VALIDATE_OCR_DATA, formName))
             .then().assertThat().statusCode(200)
             .and().body(containsString(containsText)).extract().body().jsonPath().get("warnings");
-
         assertEquals(expectedWarnings, warnings);
     }
 }
