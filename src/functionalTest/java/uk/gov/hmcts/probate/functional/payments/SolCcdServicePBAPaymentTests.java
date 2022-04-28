@@ -5,8 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.skyscreamer.jsonassert.JSONAssert;
-import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
@@ -14,6 +12,8 @@ import java.io.IOException;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static junit.framework.TestCase.assertFalse;
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -43,9 +43,9 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
             .relaxedHTTPSValidation()
             .body(utils.getJsonFromFile(fileName))
             .contentType(JSON)
-            .when().post(path).getBody().asPrettyString();
+            .when().post(path).getBody().asString();
         for (String expectedValue : expectedValues) {
-            JSONAssert.assertEquals(expectedValue, body, JSONCompareMode.STRICT);
+            assertThat(body, containsString(expectedValue));
         }
         return body;
     }
