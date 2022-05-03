@@ -9,7 +9,6 @@ String product = "probate"
 String component = "back-office"
 
 AppPipelineConfig pipelineConf
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def secrets = [
         'probate-${env}'      : [
                 secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
@@ -91,11 +90,6 @@ env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 // Configure branches to sync with master branch
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
-def checkForEnableHelmLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
-}
-
-
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     if ("preview" == env) {
@@ -151,10 +145,15 @@ def archiveCoreCaseDataDefinitions(env) {
     }
   }
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+def checkForEnableHelmLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
+}
+
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
-  pipelineConf = config;
+  pipelineConf = config
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
@@ -197,7 +196,7 @@ withPipeline("java", product, component) {
             reportName           : "Functional Tests Report"
     ]
     if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      yarnBuilder.yarn('test:fullfunctional');
+      yarnBuilder.yarn('test:fullfunctional')
     }
   }
 
