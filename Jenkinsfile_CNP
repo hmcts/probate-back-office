@@ -1,14 +1,14 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.AppPipelineConfig
-import uk.gov.hmcts.contino.GithubAPI
 
 @Library("Infrastructure")
 
 String product = "probate"
 String component = "back-office"
 
-AppPipelineConfig pipelineConf
+AppPipelineConfig pipelineConf;
+
 def secrets = [
         'probate-${env}'      : [
                 secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
@@ -145,15 +145,10 @@ def archiveCoreCaseDataDefinitions(env) {
     }
   }
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-def checkForEnableHelmLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
-}
-
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
-  pipelineConf = config
+  pipelineConf = config;
 
   enableAksStagingDeployment()
   disableLegacyDeployment()
@@ -195,9 +190,6 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
-    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      yarnBuilder.yarn('test:fullfunctional')
-    }
   }
 
   after('functionalTest:aat') {
