@@ -279,17 +279,3 @@ withPipeline("java", product, component) {
   }
 }
 
-withNightlyPipeline("nodejs", product, component) {
-  env.TEST_E2E_URL = params.XUI_URL_TO_TEST
-  env.TEST_URL = params.URL_TO_TEST
-  env.Rules = params.SecurityRules
-  env.Rules = params.SecurityRules
-  loadVaultSecrets(secrets)
-  enableFullFunctionalTest(90)
-
-  // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
-  after('fullFunctionalTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-  }
-}
-
