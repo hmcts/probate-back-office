@@ -13,8 +13,6 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
-import java.time.Instant;
-
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.Assert.assertEquals;
@@ -62,7 +60,7 @@ public class SecurityUtilsTest {
         ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", CASEWORKER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", CASEWORKER_PASSWORD);
 
-        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,null,USER_TOKEN,null,null,null);
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
         when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
             .thenReturn(tokenResponse);
 
@@ -85,8 +83,7 @@ public class SecurityUtilsTest {
         ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", CASEWORKER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", CASEWORKER_PASSWORD);
 
-        Instant instant = Instant.now().plusSeconds(3600);
-        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,instant.toString(),USER_TOKEN,null,null,null);
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
         when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
                 .thenReturn(tokenResponse);
 

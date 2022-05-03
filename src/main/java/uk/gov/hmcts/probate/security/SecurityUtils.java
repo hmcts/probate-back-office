@@ -134,7 +134,7 @@ public class SecurityUtils {
 
     private boolean isExpired(TokenResponse tokenResponse) {
         Instant now = Instant.now();
-        Instant expiresAt = ZonedDateTime.parse(tokenResponse.expiresIn).toInstant();
+        Instant expiresAt = ZonedDateTime.parse(tokenResponse.getExpiresAtTime()).toInstant();
         return now.isAfter(expiresAt.minus(Duration.ofMinutes(1L)));
     }
 
