@@ -164,7 +164,7 @@ withPipeline("java", product, component) {
   after('build') {
     if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
       sh 'yarn install'
-      sh 'yarn script test:fullfunctional'
+      sh 'yarn test:fullfunctional'
     }
   }
 
