@@ -148,7 +148,11 @@ def archiveCoreCaseDataDefinitions(env) {
     }
   }
 
-withPipeline("java", product, component) {
+withPipeline("nodejs", product, component) {
+
+  after('build') {
+    sh 'yarn setup'
+  }
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
   pipelineConf = config;
@@ -161,8 +165,9 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
+
   if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-    yarnBuilder.yarn('./bin/run-e2e-tests.sh');
+    yarnBuilder.yarn('test:fullfunctional');
   }
 
   after('fullFunctionalTest') {
