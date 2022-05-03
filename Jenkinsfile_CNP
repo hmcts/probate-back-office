@@ -2,11 +2,15 @@
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.AppPipelineConfig
 
-@Library("Infrastructure")
 
+@Library("Infrastructure")
+import uk.gov.hmcts.contino.GithubAPI
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 String product = "probate"
 String component = "back-office"
-
+def checkForEnableHelmLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
+}
 AppPipelineConfig pipelineConf;
 
 def secrets = [
@@ -190,6 +194,9 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
+    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      yarnBuilder.yarn('test:fullfunctional');
+    }
   }
 
   after('functionalTest:aat') {
