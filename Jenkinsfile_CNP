@@ -186,6 +186,9 @@ withPipeline("java", product, component) {
   }
 
   after('functionalTest:preview') {
+    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      sh 'yarn test:fullfunctional'
+    }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
@@ -273,15 +276,6 @@ withPipeline("java", product, component) {
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
-  }
-}
-
-withPipeline("nodejs", product, component) {
-  def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-  after('functionalTest:preview') {
-    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      yarnBuilder.yarn('test:fullfunctional');
-    }
   }
 }
 
