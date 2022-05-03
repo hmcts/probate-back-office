@@ -195,7 +195,7 @@ withPipeline("java", product, component) {
             reportName           : "Functional Tests Report"
     ]
     if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      yarnBuilder.yarn('test:fullfunctional');
+      enableFullFunctionalTest(90)
     }
   }
 
