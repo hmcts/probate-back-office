@@ -188,11 +188,6 @@ withPipeline("java", product, component) {
   }
 
   after('functionalTest:preview') {
-    withPipeline("nodejs", product, component) {
-      if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-        yarnBuilder.yarn('test:fullfunctional');
-      }
-    }
 
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
@@ -281,6 +276,20 @@ withPipeline("java", product, component) {
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
  docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
+  }
+}
+
+withPipeline("nodejs", product, component) {
+  after('functionalTest:preview') {
+    publishHTML target: [
+            reportDir            : "functional-output/",
+            reportFiles          : "mochawesome.html",
+            reportName           : "Preview Functional Tests",
+            alwaysLinkToLastBuild: true
+    ]
+    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      yarnBuilder.yarn('test:fullfunctional');
+    }
   }
 }
 
