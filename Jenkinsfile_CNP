@@ -272,3 +272,8 @@ withPipeline("java", product, component) {
   }
 }
 
+withPipeline("nodejs", product, component) {
+  after('functionalTest:preview') {
+  }
+}
+
