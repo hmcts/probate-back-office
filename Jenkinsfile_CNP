@@ -148,7 +148,6 @@ def archiveCoreCaseDataDefinitions(env) {
   }
 
 withPipeline("java", product, component) {
-  sh 'yarn setup'
 
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
