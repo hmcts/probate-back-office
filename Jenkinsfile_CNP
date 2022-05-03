@@ -91,6 +91,10 @@ env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 // Configure branches to sync with master branch
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
+def checkForEnableHelmLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
+}
+
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     if ("preview" == env) {
@@ -273,7 +277,11 @@ withPipeline("java", product, component) {
 }
 
 withPipeline("nodejs", product, component) {
+  def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
   after('functionalTest:preview') {
+    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      yarnBuilder.yarn('test:fullfunctional');
+    }
   }
 }
 
