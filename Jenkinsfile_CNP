@@ -8,7 +8,7 @@ import uk.gov.hmcts.contino.GithubAPI
 String product = "probate"
 String component = "back-office"
 
-AppPipelineConfig pipelineConf;
+AppPipelineConfig pipelineConf
 def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 def secrets = [
         'probate-${env}'      : [
@@ -94,11 +94,7 @@ def branchesToSync = ['demo', 'ithc', 'perftest']
 def checkForEnableHelmLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
 }
-onPR {
-  if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-    yarnBuilder.yarn('test:fullfunctional');
-  }
-}
+
 
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
