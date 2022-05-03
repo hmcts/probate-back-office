@@ -184,6 +184,9 @@ withPipeline("java", product, component) {
   }
 
   after('functionalTest:preview') {
+    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      enableFullFunctionalTest(90)
+    }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
@@ -193,9 +196,6 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
-    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      enableFullFunctionalTest(90)
-    }
   }
 
   after('functionalTest:aat') {
