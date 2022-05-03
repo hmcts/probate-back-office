@@ -30,8 +30,6 @@ public class AssignCaseAccessService {
         log.info("CaseId: {} of type {} assigning case access to user {}", caseId, caseTypeId, userId);
 
         String serviceToken = authTokenGenerator.generate();
-        log.info("serviceToken: {}", serviceToken);
-        log.info("authorisationToken: {}", authorisationToken);
         assignCaseAccessClient.assignCaseAccess(
             authorisationToken,
             serviceToken,
