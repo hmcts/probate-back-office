@@ -279,17 +279,17 @@ withPipeline("java", product, component) {
   }
 }
 
-withPipeline("nodejs", product, component) {
-  after('functionalTest:preview') {
-    publishHTML target: [
-            reportDir            : "functional-output/",
-            reportFiles          : "mochawesome.html",
-            reportName           : "Preview Functional Tests",
-            alwaysLinkToLastBuild: true
-    ]
-    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      yarnBuilder.yarn('test:fullfunctional');
-    }
+withNightlyPipeline("nodejs", product, component) {
+  env.TEST_E2E_URL = params.XUI_URL_TO_TEST
+  env.TEST_URL = params.URL_TO_TEST
+  env.Rules = params.SecurityRules
+  env.Rules = params.SecurityRules
+  loadVaultSecrets(secrets)
+  enableFullFunctionalTest(90)
+
+  // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
+  after('fullFunctionalTest') {
+    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
   }
 }
 
