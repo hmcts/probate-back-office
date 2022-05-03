@@ -149,8 +149,8 @@ def archiveCoreCaseDataDefinitions(env) {
 
 withPipeline("java", product, component) {
 
-  env.APPINSIGHTS_INSTRUMENTATIONKEY=false
-  env.IDAM_CLIENT_NAME='probate'
+  env.APPINSIGHTS_INSTRUMENTATIONKEY = false
+  env.IDAM_CLIENT_NAME = 'probate'
   pipelineConf = config;
 
   enableAksStagingDeployment()
@@ -161,9 +161,11 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
-
-  if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-    sh 'yarn script test:fullfunctional'
+  after('build') {
+    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      sh 'yarn install'
+      sh 'yarn script test:fullfunctional'
+    }
   }
 
   after('fullFunctionalTest') {
