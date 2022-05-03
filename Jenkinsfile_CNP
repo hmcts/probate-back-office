@@ -5,7 +5,6 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 
 @Library("Infrastructure")
 import uk.gov.hmcts.contino.GithubAPI
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 String product = "probate"
 String component = "back-office"
 def checkForEnableHelmLabel(branch_name) {
