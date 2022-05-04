@@ -7,9 +7,6 @@ import uk.gov.hmcts.contino.GithubAPI
 import uk.gov.hmcts.contino.GithubAPI
 String product = "probate"
 String component = "back-office"
-def checkForEnableNightlyLabel(branch_name) {
-  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
-}
 AppPipelineConfig pipelineConf;
 
 def secrets = [
@@ -93,7 +90,7 @@ env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 // Configure branches to sync with master branch
 def branchesToSync = ['demo', 'ithc', 'perftest']
 
-def checkForEnableHelmLabel(branch_name) {
+def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
 }
 
@@ -188,10 +185,7 @@ withPipeline("java", product, component) {
   }
 
   after('functionalTest:preview') {
-    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      sh 'yarn install'
-      sh 'yarn test:fullfunctional'
-    }
+
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
