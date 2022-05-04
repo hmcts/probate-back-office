@@ -161,9 +161,6 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
-  after('build') {
-
-  }
 
   after('fullFunctionalTest') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
@@ -202,6 +199,7 @@ withPipeline("java", product, component) {
             reportName           : "Functional Tests Report"
     ]
     if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       sh 'yarn install'
       sh 'yarn test:fullfunctional'
     }
