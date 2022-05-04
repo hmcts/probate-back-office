@@ -4,10 +4,12 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 
 @Library("Infrastructure")
-
+import uk.gov.hmcts.contino.GithubAPI
 String product = "probate"
 String component = "back-office"
-
+def checkForEnableNightlyLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
+}
 AppPipelineConfig pipelineConf;
 
 def secrets = [
@@ -199,6 +201,11 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
+    if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      sh 'yarn install'
+      sh 'yarn test:fullfunctional'
+    }
   }
 
   after('functionalTest:aat') {
