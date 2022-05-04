@@ -2,7 +2,6 @@
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.AppPipelineConfig
 
-
 @Library("Infrastructure")
 import uk.gov.hmcts.contino.GithubAPI
 String product = "probate"
@@ -11,6 +10,7 @@ def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
 }
 AppPipelineConfig pipelineConf;
+
 def secrets = [
         'probate-${env}'      : [
                 secret('serviceAuthProviderBaseUrl', 'SERVICE_AUTH_PROVIDER_BASE_URL'),
@@ -148,9 +148,8 @@ def archiveCoreCaseDataDefinitions(env) {
   }
 
 withPipeline("java", product, component) {
-
-  env.APPINSIGHTS_INSTRUMENTATIONKEY = false
-  env.IDAM_CLIENT_NAME = 'probate'
+  env.APPINSIGHTS_INSTRUMENTATIONKEY=false
+  env.IDAM_CLIENT_NAME='probate'
   pipelineConf = config;
 
   enableAksStagingDeployment()
@@ -160,11 +159,6 @@ withPipeline("java", product, component) {
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
-
-
-  after('fullFunctionalTest') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
-  }
 
   after('test') {
     junit 'build/test-results/test/**/*.xml'
