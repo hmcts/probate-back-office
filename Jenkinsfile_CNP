@@ -188,10 +188,8 @@ withPipeline("java", product, component) {
   after('functionalTest:preview') {
     if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
       env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-      env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT = 120
-      env.E2E_AUTO_DELAY_ENABLED = 'true'
       sh 'yarn install'
-      sh 'yarn test:fullfunctional-cw'
+      sh 'yarn test:fullfunctional'
     }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
