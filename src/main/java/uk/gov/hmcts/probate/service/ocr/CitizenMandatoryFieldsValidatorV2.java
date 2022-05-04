@@ -84,8 +84,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
     private boolean hasLateSpouseCivilPartner(Map<String, String> ocrFieldValues) {
         String deceasedMaritalStatus = ocrFieldValues.get(DECEASED_MARITAL_STATUS_KEY);
         if (deceasedMaritalStatus != null) {
-            boolean isWidowed = DECEASED_MARITAL_STATUS_WIDOWED.equals(deceasedMaritalStatus);
-            return isWidowed;
+            return DECEASED_MARITAL_STATUS_WIDOWED.equals(deceasedMaritalStatus);
         }
         return false;
     }
