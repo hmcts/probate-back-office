@@ -187,6 +187,7 @@ withPipeline("java", product, component) {
 
   after('functionalTest:preview') {
     if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       sh 'yarn install'
       sh 'yarn test:fullfunctional'
     }
