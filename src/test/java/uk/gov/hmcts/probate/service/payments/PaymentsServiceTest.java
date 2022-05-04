@@ -34,7 +34,6 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-import static uk.gov.hmcts.probate.service.payments.PaymentsService.DUPICANT_PAYMENT_ERROR_KEY;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -218,7 +217,7 @@ public class PaymentsServiceTest {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                 any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
             when(httpClientErrorExceptionMock.getStatusCode()).thenReturn(BAD_REQUEST);
-            when(httpClientErrorExceptionMock.getMessage()).thenReturn(DUPICANT_PAYMENT_ERROR_KEY);
+            when(httpClientErrorExceptionMock.getMessage()).thenReturn("duplicate payment");
             String[] empty = {};
 
             when(businessValidationMessageRetriever.getMessage(
