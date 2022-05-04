@@ -22,8 +22,8 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
 
     private static final String MUST_ANSWER_UNUSED_ALLOWANCE = "answerUnusedAllowanceClaimed";
     private static final String IHT_ESTATE_VALUE_NEEDS_TAX = "ihtEstateValueNeedsTax";
-    private static final double NQV_LOWER = 32500000;
-    private static final double NQV_UPPER = 65000000;
+    public static final double NQV_LOWER = 32500000;
+    public static final double NQV_UPPER = 65000000;
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -32,11 +32,11 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
         boolean estateValuesEntered =
             caseData.getIhtEstateGrossValue() != null && caseData.getIhtEstateNetValue() != null;
         boolean unusedClaimedNotSet = StringUtils.isEmpty(caseData.getIhtUnusedAllowanceClaimed());
-        
+
         BigDecimal nqv = caseData.getIhtEstateNetQualifyingValue();
         if (estateValuesEntered && nqv != null) {
             boolean deceasedHadLateSpouseOrCivilPartner = YES.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner());
-            boolean nqvBetweenValues = (nqv.doubleValue() >= NQV_LOWER && nqv.doubleValue() <= NQV_UPPER);
+            boolean nqvBetweenValues = isNqvBetweenValues(nqv);
             if (nqvBetweenValues && unusedClaimedNotSet && deceasedHadLateSpouseOrCivilPartner) {
                 String userMessage = businessValidationMessageRetriever.getMessage(MUST_ANSWER_UNUSED_ALLOWANCE, null,
                     Locale.UK);
@@ -53,5 +53,9 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
                     "The estate does not qualify as excepted for case:" + caseDetails.getId());
             }
         }
+    }
+
+    public boolean isNqvBetweenValues(BigDecimal nqv) {
+        return nqv.doubleValue() >= NQV_LOWER && nqv.doubleValue() <= NQV_UPPER;
     }
 }
