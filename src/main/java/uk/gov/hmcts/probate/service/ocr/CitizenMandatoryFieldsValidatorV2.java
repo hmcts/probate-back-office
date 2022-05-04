@@ -32,6 +32,9 @@ public class CitizenMandatoryFieldsValidatorV2 {
         "Did the deceased die on or after 1 January 2022?");
     private static final String FALSE = "false";
     private static final String TRUE = "true";
+    public static final String IHT_ESTATE_NET_QUALIFYING_VALUE_KEY = "ihtEstateNetQualifyingValue";
+    public static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMaritalStatus";
+    public static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
 
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
@@ -70,7 +73,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
     }
 
     private boolean nqvBetweenThresholds(Map<String, String> ocrFieldValues) {
-        String ihtEstateNetQualifyingValue = ocrFieldValues.get("ihtEstateNetQualifyingValue");
+        String ihtEstateNetQualifyingValue = ocrFieldValues.get(IHT_ESTATE_NET_QUALIFYING_VALUE_KEY);
         if (ihtEstateNetQualifyingValue != null && NumberUtils.isCreatable((ihtEstateNetQualifyingValue))) {
             BigDecimal nqv = new BigDecimal(ihtEstateNetQualifyingValue);
             return ihtEstateValidationRule.isNqvBetweenValues(nqv);
@@ -79,9 +82,9 @@ public class CitizenMandatoryFieldsValidatorV2 {
     }
 
     private boolean hasLateSpouseCivilPartner(Map<String, String> ocrFieldValues) {
-        String deceasedMaritalStatus = ocrFieldValues.get("deceasedMaritalStatus");
+        String deceasedMaritalStatus = ocrFieldValues.get(DECEASED_MARITAL_STATUS_KEY);
         if (deceasedMaritalStatus != null) {
-            boolean isWidowed = "widowed".equals(deceasedMaritalStatus);
+            boolean isWidowed = DECEASED_MARITAL_STATUS_WIDOWED.equals(deceasedMaritalStatus);
             return isWidowed;
         }
         return false;
