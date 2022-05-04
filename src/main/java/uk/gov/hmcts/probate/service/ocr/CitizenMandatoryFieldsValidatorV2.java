@@ -56,19 +56,26 @@ public class CitizenMandatoryFieldsValidatorV2 {
                             + "Did the deceased die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate)",
                         warnings);
                 } else {
-                    if (deceasedDiedOnAfterSwitchDate) {
-                        if (hasLateSpouseCivilPartner(ocrFieldValues) && nqvBetweenThresholds(ocrFieldValues)) {
-                            mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                                    IHT_UNUSED_ALLOWANCE);
-                        }
-                        mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                            IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV);
-                    } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
-                        mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings,
-                            IHT_205_COMPLETED_ONLINE);
-                    }
+                    addWarningsForDeceasedDiedOnAfterSwitchDate(deceasedDiedOnAfterSwitchDate, ocrFieldValues,
+                            warnings);
                 }
             }
+        }
+    }
+
+    private void addWarningsForDeceasedDiedOnAfterSwitchDate(boolean deceasedDiedOnAfterSwitchDate,
+                                                             Map<String, String> ocrFieldValues,
+                                                             List<String> warnings) {
+        if (deceasedDiedOnAfterSwitchDate) {
+            if (hasLateSpouseCivilPartner(ocrFieldValues) && nqvBetweenThresholds(ocrFieldValues)) {
+                mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
+                        IHT_UNUSED_ALLOWANCE);
+            }
+            mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
+                    IHT_ESTATE_GROSS, IHT_ESTATE_NET, IHT_ESTATE_NQV);
+        } else if (isNotBlank(ocrFieldValues.get(DIED_AFTER_SWITCH_DATE.getKey()))) {
+            mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings,
+                    IHT_205_COMPLETED_ONLINE);
         }
     }
 
