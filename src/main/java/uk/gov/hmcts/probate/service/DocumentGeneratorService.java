@@ -60,6 +60,8 @@ public class DocumentGeneratorService {
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
     private static final String FULL_REDEC = "fullRedec";
     private static final String APP_NAME = "applicantName";
+    private static final String LETTER_TYPE = "letterType";
+    private static final String BLANK = "blank";
     private final PlaceholderDecorator placeholderDecorator;
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
@@ -200,8 +202,13 @@ public class DocumentGeneratorService {
             placeholders.putAll(mappedImages);
         }
 
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-            DocumentType.ASSEMBLED_LETTER);
+        if (BLANK.equals(placeholders.get(LETTER_TYPE))) {
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.BLANK_LETTER);
+        } else {
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.ASSEMBLED_LETTER);
+        }
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {

@@ -105,6 +105,8 @@ docmosis:
       templateName: FL-PRB-SOT-WEL-00234.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
+    blankLetter:
+      templateName: FL-PRB-GNO-ENG-01040.docx
     welshDigitalGrant:
       templateName: FL-PRB-GRP-WEL-00226.doc
     welshIntestacyGrant:

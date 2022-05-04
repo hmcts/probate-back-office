@@ -64,6 +64,7 @@ public class DocumentGeneratorServiceTest {
     private static final String WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME = "welshDigitalGrantFinalReissue.pdf";
     private static final String WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME = "welshIntestacyGrantFinalReissue.pdf";
     private static final String WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME = "welshAdmonWillGrantFinalReissue.pdf";
+    private static final String BLANK = "blank";
 
 
     private CallbackRequest callbackRequest;
@@ -691,6 +692,18 @@ public class DocumentGeneratorServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
             .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
+            documentGeneratorService.generateLetter(callbackRequest, true));
+    }
+
+    @Test
+    public void testGenerateBlankLetter() {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        expectedMap =
+            mapper.convertValue(CaseData.builder().letterType(BLANK).build(), Map.class);
+        when(previewLetterService.addLetterData(any())).thenReturn(expectedMap);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.BLANK_LETTER))
+            .thenReturn(Document.builder().documentType(DocumentType.BLANK_LETTER).build());
+        assertEquals(Document.builder().documentType(DocumentType.BLANK_LETTER).build(),
             documentGeneratorService.generateLetter(callbackRequest, true));
     }
 

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer.assembly;
 
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -121,6 +122,15 @@ public class AssembleLetterTransformerTest {
         assertThat(responseCaseData.getParagraphDetails().size(), equalTo(2));
         assertThat(responseCaseData.getParagraphDetails().get(0).getValue().getCode(), equalTo("someCode1"));
         assertThat(responseCaseData.getParagraphDetails().get(1).getValue().getCode(), equalTo("someCode2"));
+    }
+
+    @Test
+    public void shouldPreserveLetterTypeAndLetterText() {
+        when(caseDataMock.getLetterType()).thenReturn("blank");
+        ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
+        assembleLetterTransformer.setupAllLetterParagraphDetails(caseDetailsMock, responseCaseDataBuilder);
+        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
+        assertEquals("blank", responseCaseData.getLetterType());
     }
 
     @Test

@@ -55,7 +55,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
                             IHT_205_COMPLETED_ONLINE);
                     }
                 }
-            } 
+            }
         }
     }
 }
