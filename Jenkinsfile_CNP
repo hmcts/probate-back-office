@@ -7,7 +7,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.GithubAPI
 String product = "probate"
 String component = "back-office"
-def checkForEnableHelmLabel(branch_name) {
+def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
 }
 AppPipelineConfig pipelineConf;
@@ -162,10 +162,7 @@ withPipeline("java", product, component) {
   syncBranchesWithMaster(branchesToSync)
 
   after('build') {
-    if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
-      sh 'yarn install'
-      sh 'yarn test:fullfunctional'
-    }
+
   }
 
   after('fullFunctionalTest') {
@@ -204,6 +201,10 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "Functional Tests Report"
     ]
+    if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
+      sh 'yarn install'
+      sh 'yarn test:fullfunctional'
+    }
   }
 
   after('functionalTest:aat') {
