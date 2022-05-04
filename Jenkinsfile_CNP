@@ -187,6 +187,7 @@ withPipeline("java", product, component) {
 
   after('functionalTest:preview') {
     if (checkForEnableHelmLabel(env.BRANCH_NAME)) {
+      sh 'yarn install'
       sh 'yarn test:fullfunctional'
     }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
