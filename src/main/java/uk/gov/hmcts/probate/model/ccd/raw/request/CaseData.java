@@ -560,6 +560,7 @@ public class CaseData extends CaseDataParent {
     private final String ihtEstateNetQualifyingValueField;
     private final String deceasedHadLateSpouseOrCivilPartner;
     private final String ihtUnusedAllowanceClaimed;
+
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
     private final String letterType;

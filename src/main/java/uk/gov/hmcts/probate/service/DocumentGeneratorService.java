@@ -200,8 +200,13 @@ public class DocumentGeneratorService {
             placeholders.putAll(mappedImages);
         }
 
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-            DocumentType.ASSEMBLED_LETTER);
+        if("template".equals(placeholders.get("letterType"))){
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.ASSEMBLED_LETTER);
+        } else {
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.BLANK_LETTER);
+        }
     }
 
     private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
