@@ -191,7 +191,7 @@ withPipeline("java", product, component) {
       env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT = 120
       env.E2E_AUTO_DELAY_ENABLED = 'true'
       sh 'yarn install'
-      sh 'yarn test:fullfunctional'
+      sh 'yarn test:fullfunctional-cw'
     }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
