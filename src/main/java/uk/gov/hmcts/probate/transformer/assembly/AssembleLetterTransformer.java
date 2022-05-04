@@ -290,14 +290,18 @@ public class AssembleLetterTransformer {
     public void setupAllLetterParagraphDetails(@Valid CaseDetails caseDetails,
                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         CaseData caseData = caseDetails.getData();
-        Categories categories = caseData.getCategories();
-        List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
-        addParagraphsForUsedFields(paragraphDetails, Caseworker.getParagraphFields(), caseData);
-        addAllCategoryParagraphs(paragraphDetails, categories.getAllSelectedCategories(), caseData);
-        addParagraphsForUsedFields(paragraphDetails, FreeText.getParagraphFields(), caseData);
-
-        responseCaseDataBuilder.categories(categories);
-        responseCaseDataBuilder.paragraphDetails(paragraphDetails);
+        if("template".equals(caseData.getLetterType())){
+            Categories categories = caseData.getCategories();
+            List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
+            addParagraphsForUsedFields(paragraphDetails, Caseworker.getParagraphFields(), caseData);
+            addAllCategoryParagraphs(paragraphDetails, categories.getAllSelectedCategories(), caseData);
+            addParagraphsForUsedFields(paragraphDetails, FreeText.getParagraphFields(), caseData);
+            responseCaseDataBuilder.categories(categories);
+            responseCaseDataBuilder.paragraphDetails(paragraphDetails);
+        } else {
+            responseCaseDataBuilder.letterType(caseData.getLetterType());
+            responseCaseDataBuilder.letterText(caseData.getLetterText());
+        }
     }
 
     private void addAllCategoryParagraphs(List<CollectionMember<ParagraphDetail>> paragraphDetails,

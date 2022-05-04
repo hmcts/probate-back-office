@@ -41,13 +41,17 @@ public class PreviewLetterService {
 
     private List<Template> addTemplateList(@Valid CaseDetails caseDetails) {
         List<Template> templateList = new ArrayList<>();
-        for (CollectionMember<ParagraphDetail> paragraphDetail : caseDetails.getData().getParagraphDetails()) {
-            if (paragraphDetail.getValue().getTemplateName() != null) {
-                Template newTemplate = Template.builder().value(paragraphDetail.getValue().getTemplateName()).build();
-                if (!templateList.contains(newTemplate)) {
-                    templateList.add(newTemplate);
+            for (CollectionMember<ParagraphDetail> paragraphDetail : caseDetails.getData().getParagraphDetails()) {
+                if (paragraphDetail.getValue().getTemplateName() != null) {
+                    Template newTemplate = Template.builder().value(paragraphDetail.getValue().getTemplateName()).build();
+                    if (!templateList.contains(newTemplate)) {
+                        templateList.add(newTemplate);
+                    }
                 }
             }
+            if("blank".equals(caseDetails.getData().getLetterType())){
+            Template newTemplate = Template.builder().value("DTSPB-2632-blank-letter-template.docx").build();
+            templateList.add(newTemplate);
         }
         return templateList;
     }
