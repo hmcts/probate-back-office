@@ -110,7 +110,7 @@ public class SecurityUtils {
             log.info("Getting AccessToken...");
             return BEARER + idamOpenIdTokenResponse.accessToken;
         } catch (Exception e) {
-            log.error("Exception" + e.getMessage());
+            log.error("Exception on IDAM token" + e.getMessage());
             throw e;
         }
     }
@@ -134,13 +134,17 @@ public class SecurityUtils {
 
     private boolean isExpired(TokenResponse tokenResponse) {
         Instant now = Instant.now();
+        log.info("Idam token expire time {}", tokenResponse.getExpiresAtTime());
         Instant expiresAt = ZonedDateTime.parse(tokenResponse.getExpiresAtTime()).toInstant();
+        log.info("Idam token expire Instant date {}", expiresAt.toString());
         return now.isAfter(expiresAt.minus(Duration.ofMinutes(1L)));
     }
 
     public String getEmail(String authToken) {
+        log.info("Getting email from token...");
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         String result = Objects.requireNonNull(userInfo.getName());
+        log.info("Email from token {}", result);
         return result.toLowerCase();
     }
 }
