@@ -10,13 +10,9 @@ module.exports = async function () {
     await I.runAccessibilityTest();
 
     await I.click({css: '#willAccessOriginal_No'});
-    await I.waitForVisible({css: '#willAccessOriginalHintText'});
-    await I.waitForVisible({css: '#noOriginalWillAccessReason'});
     await I.waitForText(grantOfProbateConfig.page1_noAccessOriginalWillLabel);
 
     await I.click({css: `#willAccessOriginal_${grantOfProbateConfig.optionYes}`});
-    await I.waitForInvisible({css: '#willAccessOriginalHintText'});
-    await I.waitForInvisible({css: '#noOriginalWillAccessReason'});
 
     await I.fillField({css: '#originalWillSignedDate-day'}, grantOfProbateConfig.page1_originalWillSignedDate_day);
     await I.fillField({css: '#originalWillSignedDate-month'}, grantOfProbateConfig.page1_originalWillSignedDate_month);
