@@ -65,6 +65,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifySolicitorCreateRequestWithDodSameAsDob() throws IOException {
+        String payload = utils.getJsonFromFile("success.solicitorCreate.json");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",", "\"deceasedDateOfBirth\": \"2018-01-01\",");
+        validatePostSuccessAndCheckValue(payload, VALIDATE_URL, "deceasedDateOfBirth", "2018-01-01");
+    }
+
+    @Test
+    public void verifySolicitorAmendRequestWithDodSameAsDob() throws IOException {
+        String payload = utils.getJsonFromFile("success.solicitorCreate.json");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",", "\"deceasedDateOfBirth\": \"2018-01-01\",");
+        validatePostSuccessAndCheckValue(payload, VALIDATE_CASE_AMEND_URL, "deceasedDateOfBirth", "2018-01-01");
+    }
+
+    @Test
     public void verifyRequestWithDobNullReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsNull.json",
             "Date of birth cannot be empty", 400);
@@ -80,12 +94,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithDodBeforeDobReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
             "Date of death cannot be before date of birth", 200);
-    }
-
-    @Test
-    public void verifyRequestWithDodSameAsDobReturnsError() throws IOException {
-        validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsSameAsDob.json",
-            "Date of death cannot be the same as date of birth", 200);
     }
 
     @Test
@@ -543,6 +551,20 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
+    }
+
+    @Test
+    public void verifySuccessCaseworkerCreatedPersonalApplicationSameDobAndDod() throws IOException {
+        String payload = utils.getJsonFromFile("success.paperForm.json");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1960-01-01\",", "\"deceasedDateOfBirth\": \"2018-01-01\",");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "deceasedDateOfBirth", "2018-01-01");
+    }
+
+    @Test
+    public void verifySuccessCaseworkerCreatedSolicitorApplicationSameDobAndDod() throws IOException {
+        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1900-01-01\",", "\"deceasedDateOfBirth\": \"2000-01-01\",");
+        validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "deceasedDateOfBirth", "2000-01-01");
     }
 
     @Test

@@ -47,10 +47,6 @@ class DobDodValidationRule implements SolicitorCreateValidationRule,
                         codes.add(CODE_DOD_IN_FUTURE);
                     }
 
-                    if (dod.equals(dob)) {
-                        codes.add(CODE_DOD_ON_DOB);
-                    }
-
                     if (dod.isBefore(dob)) {
                         codes.add(CODE_DOD_BEFORE_DOB);
                     }
