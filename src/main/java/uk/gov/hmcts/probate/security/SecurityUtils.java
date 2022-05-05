@@ -134,18 +134,14 @@ public class SecurityUtils {
 
     private boolean isExpired(TokenResponse tokenResponse) {
         Instant now = Instant.now();
-        log.info("Idam token expire time {}", tokenResponse.getExpiresAtTime());
+        log.info("IDAM token expire time {}", tokenResponse.getExpiresAtTime());
         Instant expiresAt = ZonedDateTime.parse(tokenResponse.getExpiresAtTime()).toInstant();
-        log.info("Idam token expire Instant date {}", expiresAt.toString());
         return now.isAfter(expiresAt.minus(Duration.ofMinutes(1L)));
     }
 
     public String getEmail(String authToken) {
-        log.info("Getting email from token...");
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
-        String result = Objects.requireNonNull(userInfo.getName());
-        log.info("UserInfo from token {}", userInfo);
-        log.info("Email from token {}", result);
+        String result = Objects.requireNonNull(userInfo.getSub());
         return result.toLowerCase();
     }
 }

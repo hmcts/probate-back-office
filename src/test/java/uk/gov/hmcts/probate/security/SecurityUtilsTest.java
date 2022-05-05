@@ -71,7 +71,7 @@ public class SecurityUtilsTest {
 
     @Test
     public void shouldGetUserEmail() {
-        UserInfo userInfo = UserInfo.builder().name("solicitor@probate-test.com").build();
+        UserInfo userInfo = UserInfo.builder().sub("solicitor@probate-test.com").build();
         when(idamApi.retrieveUserInfo("AuthToken")).thenReturn(userInfo);
         String email = securityUtils.getEmail("AuthToken");
 
