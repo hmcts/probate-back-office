@@ -144,6 +144,7 @@ public class SecurityUtils {
         log.info("Getting email from token...");
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         String result = Objects.requireNonNull(userInfo.getName());
+        log.info("UserInfo from token {}", userInfo);
         log.info("Email from token {}", result);
         return result.toLowerCase();
     }
