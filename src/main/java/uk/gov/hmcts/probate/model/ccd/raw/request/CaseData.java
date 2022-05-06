@@ -564,7 +564,9 @@ public class CaseData extends CaseDataParent {
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
     private final String letterType;
+    private final String caseworkerName;
     private final String letterText;
+    private final String includeStatementOfTruth;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

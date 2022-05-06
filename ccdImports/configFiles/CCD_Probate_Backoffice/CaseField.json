@@ -455,5 +455,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecord", "Label": "Deceased", "FieldType": "DeathRecord", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "numberOfDeathRecords", "Label": "Number of death records", "FieldType": "Number",  "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "letterType", "Label": "What type of letter do you want to assemble?", "FieldType": "FixedRadioList", "FieldTypeParameter": "LetterType", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "letterText", "Label": "Blank letter", "FieldType": "TextArea", "SecurityClassification": "Public"}
-]
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "letterText", "Label": "Blank letter", "FieldType": "TextArea", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseworkerName", "Label": "Caseworker", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "includeStatementOfTruth", "Label": "Do you want to include a statement of truth?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}]
