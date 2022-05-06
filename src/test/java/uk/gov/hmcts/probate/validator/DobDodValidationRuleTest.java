@@ -23,7 +23,6 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOB_IN_FUTURE;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_BEFORE_DOB;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_IN_FUTURE;
-import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_ON_DOB;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DobDodValidationRuleTest {

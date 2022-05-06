@@ -67,14 +67,16 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorCreateRequestWithDodSameAsDob() throws IOException {
         String payload = utils.getJsonFromFile("success.solicitorCreate.json");
-        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",", "\"deceasedDateOfBirth\": \"2018-01-01\",");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",",
+                "\"deceasedDateOfBirth\": \"2018-01-01\",");
         validatePostSuccessAndCheckValue(payload, VALIDATE_URL, "deceasedDateOfBirth", "2018-01-01");
     }
 
     @Test
     public void verifySolicitorAmendRequestWithDodSameAsDob() throws IOException {
         String payload = utils.getJsonFromFile("success.solicitorCreate.json");
-        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",", "\"deceasedDateOfBirth\": \"2018-01-01\",");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",",
+                "\"deceasedDateOfBirth\": \"2018-01-01\",");
         validatePostSuccessAndCheckValue(payload, VALIDATE_CASE_AMEND_URL, "deceasedDateOfBirth", "2018-01-01");
     }
 
@@ -556,14 +558,16 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifySuccessCaseworkerCreatedPersonalApplicationSameDobAndDod() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1960-01-01\",", "\"deceasedDateOfBirth\": \"2018-01-01\",");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1960-01-01\",",
+                "\"deceasedDateOfBirth\": \"2018-01-01\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "deceasedDateOfBirth", "2018-01-01");
     }
 
     @Test
     public void verifySuccessCaseworkerCreatedSolicitorApplicationSameDobAndDod() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1900-01-01\",", "\"deceasedDateOfBirth\": \"2000-01-01\",");
+        payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1900-01-01\",",
+                "\"deceasedDateOfBirth\": \"2000-01-01\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "deceasedDateOfBirth", "2000-01-01");
     }
 
