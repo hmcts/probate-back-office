@@ -225,7 +225,7 @@ public class CaseQueryService {
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
             tokenHeaders.add(AUTHORIZATION, securityUtils.getCaseworkerToken());
-            log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
+            log.info("DONE securityUtils.getCaseworkerToken()");
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
         }

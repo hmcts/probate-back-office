@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import feign.Response;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -24,18 +23,6 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 
 @FeignClient(name = "idam-api", url = "${auth.provider.client.user}", configuration = FeignClientConfiguration.class)
 public interface IdamApi {
-
-    @GetMapping(
-            value = "/pin",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-    )
-    Response authenticatePinUser(
-            @RequestHeader("pin") final String pin,
-            @RequestParam("client_id") final String clientId,
-            @RequestParam("redirect_uri") final String redirectUri,
-            @RequestParam("state") final String state
-    );
-
 
     /**
      * User Authenticate method.
