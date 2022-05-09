@@ -9,13 +9,9 @@ module.exports = async function () {
     await I.waitForElement('#willAccessOriginal');
     await I.runAccessibilityTest();
     await I.click({css: '#willAccessOriginal_No'});
-    await I.waitForVisible('#willAccessOriginalHintText');
-    await I.waitForVisible('#noOriginalWillAccessReason');
     await I.waitForText(admonWillDetailsConfig.page1_noAccessOriginalWillLabel);
 
     await I.click({css: `#willAccessOriginal_${admonWillDetailsConfig.optionYes}`});
-    await I.waitForInvisible({css: '#willAccessOriginalHintText'});
-    await I.waitForInvisible({css: '#noOriginalWillAccessReason'});
 
     await I.fillField({css: '#originalWillSignedDate-day'}, admonWillDetailsConfig.page1_originalWillSignedDate_day);
     await I.fillField({css: '#originalWillSignedDate-month'}, admonWillDetailsConfig.page1_originalWillSignedDate_month);
