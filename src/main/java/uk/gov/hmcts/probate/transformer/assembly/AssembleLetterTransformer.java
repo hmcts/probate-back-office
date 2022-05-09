@@ -298,9 +298,11 @@ public class AssembleLetterTransformer {
             addParagraphsForUsedFields(paragraphDetails, FreeText.getParagraphFields(), caseData);
             responseCaseDataBuilder.categories(categories);
             responseCaseDataBuilder.paragraphDetails(paragraphDetails);
+            responseCaseDataBuilder.letterText(caseData.getAssembledLetterSot());
         } else {
             responseCaseDataBuilder.letterType(caseData.getLetterType());
             responseCaseDataBuilder.letterText(caseData.getLetterText());
+            responseCaseDataBuilder.letterText(caseData.getAssembledLetterSot());
         }
     }
 

@@ -104,7 +104,7 @@ docmosis:
     welshStatementOfTruth:
       templateName: FL-PRB-SOT-WEL-00234.doc
     assembledLetter:
-      templateName: FL-PRB-GNO-ENG-00133.docx
+      templateName: FL-PRB-GNO-ENG-00133-DTSPB-2638.docx
     blankLetter:
       templateName: DTSPB-2632-blank-letter-template.docx
     welshDigitalGrant:

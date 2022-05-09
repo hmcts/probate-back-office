@@ -565,6 +565,7 @@ public class CaseData extends CaseDataParent {
     private final Integer numberOfDeathRecords;
     private final String letterType;
     private final String letterText;
+    private final String assembledLetterSot;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

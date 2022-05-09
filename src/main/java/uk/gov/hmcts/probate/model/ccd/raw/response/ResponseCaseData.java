@@ -361,4 +361,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String showIht400421Page;
     private final String letterType;
     private final String letterText;
+    private final String assembledLetterSot;
 }
