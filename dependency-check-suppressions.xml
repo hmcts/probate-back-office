@@ -15,6 +15,7 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-oauth2@.*$</packageUrl>
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
+        <vulnerabilityName>CVE-2022-22969</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -31,12 +32,5 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-security@.*$</packageUrl>
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: jackson-databind-2.13.2.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson-databind@.*$</packageUrl>
-        <vulnerabilityName>CVE-2020-36518</vulnerabilityName>
     </suppress>
 </suppressions>
