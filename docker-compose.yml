@@ -637,91 +637,91 @@ services:
       - ccd-api-gateway
       - ccd-data-store-api
 
-  manage-case-assignment:
-    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
-    environment:
-      IDAM_OIDC_URL: http://sidam-api:5000
-      IDAM_API_URL: http://sidam-api:5000
-      IDAM_CLIENT_ID: aac_manage_case_assignment
-      IDAM_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
-      IDAM_CLIENT_REDIRECT_URL: http://localhost:3501/oauth2/callback
-      IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
-      IDAM_CAA_PASSWORD: "Password12"
-      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker@mailnesia.com"
-      IDAM_NOC_APPROVER_PASSWORD: "Password12"
-      IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
-      IDAM_SYSTEM_USER_PASSWORD: "Password12"
-      IDAM_URL: http://sidam-api:5000
-      S2S_URL: http://service-auth-provider-api:8080
-      MANAGE_CASE_S2S_AUTHORISED_SERVICES: ccd_gw,xui_webapp,ccd_data,fpl_case_service,probate_backend,xui_mo_webapp
-      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
-      CCD_DATA_STORE_ALLOWED_SERVICE: xui_webapp
-      CCD_DEFINITION_STORE_ALLOWED_SERVICE: xui_webapp
-      CCD_DEFINITION_STORE_API_BASE_URL: http://ccd-definition-store-api:4451
-      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
-      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
-      MCA_CONDITIONAL_APIS_CASE_ASSIGNMENTS_ENABLED: "true"
-      PRD_HOST: http://wiremock:8080
-      NOTIFY_MCA_API_KEY: "notify-test-api-key"
-    #  JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006'
-    #  JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5008"
-    ports:
-      - 4454:4454
-      - 5008:5008
-    depends_on:
-      - sidam-api
-      - shared-database
-      - ccd-data-store-api
-      - service-auth-provider-api
-
-  xui-manage-org:
-    image: hmctspublic.azurecr.io/xui/mo-webapp:latest
-    environment:
-      IDAM_API_SERVICE: http://sidam-api:5000
-      IDAM_WEB_SERVICE: http://localhost:3501
-      RD_PROFESSIONAL_API_SERVICE: http://wiremock:8080
-      S2S_SERVICE: http://service-auth-provider-api:8080
-      FEE_AND_PAY_API: http://fees-api:8080
-      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
-      ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
-      SERVICES_MCA_PROXY_API: http://manage-case-assignment:4454
-      SERVICES_IDAM_ISS_URL: http://fr-am:8080/openam/oauth2/realms/root/realms/hmcts
-      APPINSIGHTS_INSTRUMENTATIONKEY: "AAAAAAAAAAAAAAAC"
-      IDAM_SECRET: "AAAAAAAAAAAAAAAA"
-      S2S_SECRET: "AAAAAAAAAAAAAAAA"
-      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
-      APPINSIGHTS_INSTRUMENTATIONKEY_MO: "AAAAAAAAAAAAAAAC"
-      MO_S2S_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
-      GOOGLE_ANALYTICS_KEY: "AAAAAAAAAAAAAAAC"
-      REDISCLOUD_URL: "AAAAAAAAAAAAAAAC"
-      NODE_CONFIG_ENV: local
-      IDAM_CLIENT: xui_mo_webapp
-      MICROSERVICE: xui_webapp
-      OAUTH_CALLBACK_URL: /oauth2/callback
-      LOGIN_ROLE_MATCHER:
-      PROTOCOL: "http"
-      SERVICES_TERMS_AND_CONDITIONS_API_SERVICE:
-      MANAGE_CASE_LINK:
-      MANAGE_ORG_LINK:
-      SESSION_SECRET:
-      CASE_TYPES: "Caveat,GrantOfRepresentation"
-      FEATURE_APP_INSIGHTS_ENABLED: "false"
-      FEATURE_PROXY_ENABLED: "false"
-      FEATURE_SECURE_COOKIE_ENABLED: "false"
-      FEATURE_TERMS_AND_CONDITIONS_ENABLED: "false"
-      FEATURE_HELMET_ENABLED: "false"
-      FEATURE_REDIS_ENABLED: "false"
-      FEATURE_OIDC_ENABLED: "false"
-      LOGGING: debug
-      PORT: 3001
-    links:
-      - manage-case-assignment
-      - idam-web-admin
-    ports:
-      - 4456:4456
-      - 3001:3001
-    depends_on:
-      - idam-web-admin
+#  manage-case-assignment:
+#    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+#    environment:
+#      IDAM_OIDC_URL: http://sidam-api:5000
+#      IDAM_API_URL: http://sidam-api:5000
+#      IDAM_CLIENT_ID: aac_manage_case_assignment
+#      IDAM_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
+#      IDAM_CLIENT_REDIRECT_URL: http://localhost:3501/oauth2/callback
+#      IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
+#      IDAM_CAA_PASSWORD: "Password12"
+#      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker@mailnesia.com"
+#      IDAM_NOC_APPROVER_PASSWORD: "Password12"
+#      IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
+#      IDAM_SYSTEM_USER_PASSWORD: "Password12"
+#      IDAM_URL: http://sidam-api:5000
+#      S2S_URL: http://service-auth-provider-api:8080
+#      MANAGE_CASE_S2S_AUTHORISED_SERVICES: ccd_gw,xui_webapp,ccd_data,fpl_case_service,probate_backend,xui_mo_webapp
+#      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+#      CCD_DATA_STORE_ALLOWED_SERVICE: xui_webapp
+#      CCD_DEFINITION_STORE_ALLOWED_SERVICE: xui_webapp
+#      CCD_DEFINITION_STORE_API_BASE_URL: http://ccd-definition-store-api:4451
+#      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
+#      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
+#      MCA_CONDITIONAL_APIS_CASE_ASSIGNMENTS_ENABLED: "true"
+#      PRD_HOST: http://wiremock:8080
+#      NOTIFY_MCA_API_KEY: "notify-test-api-key"
+#    #  JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006'
+#    #  JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5008"
+#    ports:
+#      - 4454:4454
+#      - 5008:5008
+#    depends_on:
+#      - sidam-api
+#      - shared-database
+#      - ccd-data-store-api
+#      - service-auth-provider-api
+#
+#  xui-manage-org:
+#    image: hmctspublic.azurecr.io/xui/mo-webapp:latest
+#    environment:
+#      IDAM_API_SERVICE: http://sidam-api:5000
+#      IDAM_WEB_SERVICE: http://localhost:3501
+#      RD_PROFESSIONAL_API_SERVICE: http://wiremock:8080
+#      S2S_SERVICE: http://service-auth-provider-api:8080
+#      FEE_AND_PAY_API: http://fees-api:8080
+#      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
+#      ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
+#      SERVICES_MCA_PROXY_API: http://manage-case-assignment:4454
+#      SERVICES_IDAM_ISS_URL: http://fr-am:8080/openam/oauth2/realms/root/realms/hmcts
+#      APPINSIGHTS_INSTRUMENTATIONKEY: "AAAAAAAAAAAAAAAC"
+#      IDAM_SECRET: "AAAAAAAAAAAAAAAA"
+#      S2S_SECRET: "AAAAAAAAAAAAAAAA"
+#      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
+#      APPINSIGHTS_INSTRUMENTATIONKEY_MO: "AAAAAAAAAAAAAAAC"
+#      MO_S2S_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
+#      GOOGLE_ANALYTICS_KEY: "AAAAAAAAAAAAAAAC"
+#      REDISCLOUD_URL: "AAAAAAAAAAAAAAAC"
+#      NODE_CONFIG_ENV: local
+#      IDAM_CLIENT: xui_mo_webapp
+#      MICROSERVICE: xui_webapp
+#      OAUTH_CALLBACK_URL: /oauth2/callback
+#      LOGIN_ROLE_MATCHER:
+#      PROTOCOL: "http"
+#      SERVICES_TERMS_AND_CONDITIONS_API_SERVICE:
+#      MANAGE_CASE_LINK:
+#      MANAGE_ORG_LINK:
+#      SESSION_SECRET:
+#      CASE_TYPES: "Caveat,GrantOfRepresentation"
+#      FEATURE_APP_INSIGHTS_ENABLED: "false"
+#      FEATURE_PROXY_ENABLED: "false"
+#      FEATURE_SECURE_COOKIE_ENABLED: "false"
+#      FEATURE_TERMS_AND_CONDITIONS_ENABLED: "false"
+#      FEATURE_HELMET_ENABLED: "false"
+#      FEATURE_REDIS_ENABLED: "false"
+#      FEATURE_OIDC_ENABLED: "false"
+#      LOGGING: debug
+#      PORT: 3001
+#    links:
+#      - manage-case-assignment
+#      - idam-web-admin
+#    ports:
+#      - 4456:4456
+#      - 3001:3001
+#    depends_on:
+#      - idam-web-admin
 
   ccd-case-document-am-api:
     image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
