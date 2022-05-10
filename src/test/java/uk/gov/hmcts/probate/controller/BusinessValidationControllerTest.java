@@ -128,6 +128,7 @@ public class BusinessValidationControllerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String SOLS_DEFAULT_IHT_ESTATE_URL = "/case/default-iht-estate";
+    private static final String SOLS_CREATE_VALIDATE_URL = "/case/sols-create-validate";
     private static final String SOLS_VALIDATE_IHT_ESTATE_URL = "/case/validate-iht-estate";
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
@@ -1173,6 +1174,16 @@ public class BusinessValidationControllerTest {
             .andExpect(jsonPath("$.data.solsAmendLegalStatmentSelect.list_items[2].label",
                 is("Letters of administration with will annexed details")))
             .andReturn();
+    }
+
+    @Test
+    public void shouldNotErrorOnSolCreateValidate() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SOLS_CREATE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     @Test
