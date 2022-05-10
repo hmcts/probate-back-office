@@ -473,11 +473,11 @@ services:
     ports:
       - 4104:4104
     depends_on:
-      - manage-case-assignment
       - sidam-api
       - shared-database
       - service-auth-provider-api
       - dm-store
+#      - manage-case-assignment
 
   probate-frontend:
     image: hmctspublic.azurecr.io/probate/frontend:latest

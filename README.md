@@ -168,6 +168,7 @@ before --create make sure you have this env var setup
 LD_SDK_AM_KEY (see Sanjay for the value)
 npx @hmcts/probate-dev-env --create
 uncomment 2 docker images from the local docker-compose.yml: manage-case-assignment, xui-manage-org
+and uncomment manage-case-assignment dependency on probate-back-office docker image
 npx @hmcts/probate-dev-env
 
 after this setup from dev-env, do, from this probate-back-office branch, do
