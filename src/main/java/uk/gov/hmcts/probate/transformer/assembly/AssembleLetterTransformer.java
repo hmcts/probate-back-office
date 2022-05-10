@@ -149,7 +149,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sopl
 @Component
 @RequiredArgsConstructor
 public class AssembleLetterTransformer {
-    private static final String BLANK = "blank";
+    private static final String TEMPLATE = "template";
     private final AssembleCaseworker assembleCaseworker;
     private final AssembleFreeText assembleFreeText;
     private final AssembleEntitlement assembleEntitlement;
@@ -291,9 +291,7 @@ public class AssembleLetterTransformer {
     public void setupAllLetterParagraphDetails(@Valid CaseDetails caseDetails,
                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         CaseData caseData = caseDetails.getData();
-        if (BLANK.equals(caseData.getLetterType())) {
-            responseCaseDataBuilder.letterType(caseData.getLetterType());
-        } else {
+        if (TEMPLATE.equals(caseData.getLetterType())) {
             Categories categories = caseData.getCategories();
             List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
             addParagraphsForUsedFields(paragraphDetails, Caseworker.getParagraphFields(), caseData);
