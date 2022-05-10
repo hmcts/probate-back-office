@@ -291,9 +291,7 @@ public class AssembleLetterTransformer {
     public void setupAllLetterParagraphDetails(@Valid CaseDetails caseDetails,
                                                ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
         CaseData caseData = caseDetails.getData();
-        if (BLANK.equals(caseData.getLetterType())) {
-            responseCaseDataBuilder.letterType(caseData.getLetterType());
-        } else {
+        if (!BLANK.equals(caseData.getLetterType())) {
             Categories categories = caseData.getCategories();
             List<CollectionMember<ParagraphDetail>> paragraphDetails = new ArrayList<>();
             addParagraphsForUsedFields(paragraphDetails, Caseworker.getParagraphFields(), caseData);

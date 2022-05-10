@@ -1,12 +1,16 @@
 package uk.gov.hmcts.probate.transformer.assembly;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Arrays;
+import java.util.List;
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -29,13 +33,6 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleSolicitorRedeclar
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWitness;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
-
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -122,15 +119,6 @@ public class AssembleLetterTransformerTest {
         assertThat(responseCaseData.getParagraphDetails().size(), equalTo(2));
         assertThat(responseCaseData.getParagraphDetails().get(0).getValue().getCode(), equalTo("someCode1"));
         assertThat(responseCaseData.getParagraphDetails().get(1).getValue().getCode(), equalTo("someCode2"));
-    }
-
-    @Test
-    public void shouldPreserveLetterTypeAndLetterText() {
-        when(caseDataMock.getLetterType()).thenReturn("blank");
-        ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
-        assembleLetterTransformer.setupAllLetterParagraphDetails(caseDetailsMock, responseCaseDataBuilder);
-        ResponseCaseData responseCaseData = responseCaseDataBuilder.build();
-        assertEquals("blank", responseCaseData.getLetterType());
     }
 
     @Test
