@@ -61,7 +61,7 @@ public class DocumentGeneratorService {
     private static final String APP_NAME = "applicantName";
     private static final String LETTER_TYPE = "letterType";
     private static final String BLANK = "blank";
-    private static final String TEMPLATE = "TEMPLATE";
+    private static final String TEMPLATE = "template";
     private final PlaceholderDecorator placeholderDecorator;
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;

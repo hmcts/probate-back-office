@@ -64,6 +64,7 @@ public class DocumentGeneratorServiceTest {
     private static final String WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME = "welshIntestacyGrantFinalReissue.pdf";
     private static final String WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME = "welshAdmonWillGrantFinalReissue.pdf";
     private static final String BLANK = "blank";
+    private static final String TEMPLATE = "template";
 
 
     private CallbackRequest callbackRequest;
@@ -171,7 +172,7 @@ public class DocumentGeneratorServiceTest {
 
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
-            mapper.convertValue(CaseData.builder().caseType("gop").registryLocation("Bristol").build(), Map.class);
+            mapper.convertValue(CaseData.builder().caseType("gop").letterType(TEMPLATE).registryLocation("Bristol").build(), Map.class);
 
         when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
