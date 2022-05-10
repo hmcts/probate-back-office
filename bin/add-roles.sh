@@ -19,6 +19,7 @@ ${dir}/idam-role.sh caseworker-probate-scheduler
 ${dir}/idam-role.sh caseworker-probate-charity
 ${dir}/idam-role.sh payment
 ${dir}/idam-role.sh ccd-import
+${dir}/idam-role.sh caseworker-caa)
 
 # User used during the CCD import and ccd-role creation
 ${dir}/idam-create-caseworker.sh "ccd-import" "ccd.docker.default@hmcts.net"
@@ -41,3 +42,4 @@ ${dir}/ccd-add-role.sh caseworker-probate-superuser
 ${dir}/ccd-add-role.sh caseworker-probate-scheduler
 ${dir}/ccd-add-role.sh caseworker-probate-charity
 ${dir}/ccd-add-role.sh caseworker-probate-bulkscan
+${dir}/ccd-add-role.sh caseworker-caa)
