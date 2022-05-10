@@ -1,5 +1,4 @@
 [
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
