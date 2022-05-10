@@ -1,15 +1,26 @@
 package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
+import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -27,18 +38,6 @@ import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-
-import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
 public class DocumentGeneratorServiceTest {
 
@@ -705,6 +704,17 @@ public class DocumentGeneratorServiceTest {
             .thenReturn(Document.builder().documentType(DocumentType.BLANK_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.BLANK_LETTER).build(),
             documentGeneratorService.generateLetter(callbackRequest, true));
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void unknownLetterTypeShouldThrowException() {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        expectedMap =
+            mapper.convertValue(CaseData.builder().build(), Map.class);
+        when(previewLetterService.addLetterData(any())).thenReturn(expectedMap);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.BLANK_LETTER))
+            .thenReturn(Document.builder().documentType(DocumentType.BLANK_LETTER).build());
+        documentGeneratorService.generateLetter(callbackRequest, true);
     }
 
     @Test
