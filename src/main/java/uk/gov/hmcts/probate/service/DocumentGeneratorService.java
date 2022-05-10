@@ -205,7 +205,7 @@ public class DocumentGeneratorService {
         if (BLANK.equals(placeholders.get(LETTER_TYPE))) {
             return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
                 DocumentType.BLANK_LETTER);
-        } else if (TEMPLATE.equals(placeholders.get(LETTER_TYPE))){
+        } else if (TEMPLATE.equals(placeholders.get(LETTER_TYPE))) {
             return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
                 DocumentType.ASSEMBLED_LETTER);
         } else {
