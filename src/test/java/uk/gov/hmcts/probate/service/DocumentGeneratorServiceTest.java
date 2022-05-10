@@ -172,7 +172,8 @@ public class DocumentGeneratorServiceTest {
 
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
-            mapper.convertValue(CaseData.builder().caseType("gop").letterType(TEMPLATE).registryLocation("Bristol").build(), Map.class);
+            mapper.convertValue(CaseData.builder().caseType("gop").letterType(TEMPLATE)
+                .registryLocation("Bristol").build(), Map.class);
 
         when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
