@@ -139,7 +139,6 @@ public class CaveatController {
     @PostMapping(path = "/solsUpdate")
     public ResponseEntity<CaveatCallbackResponse> updateSolsCaveat(
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
-        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
 
         CaveatCallbackResponse caveatCallbackResponse =
