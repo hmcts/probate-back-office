@@ -56,7 +56,7 @@ public class CaveatCallbackResponseTransformer {
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final OrganisationsRetrievalService organisationsRetrievalService;
 
-    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, 
+    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
                                                PaymentResponse paymentResponse, List<Document> documents,
                                                String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -71,7 +71,7 @@ public class CaveatCallbackResponseTransformer {
             paymentsList = new ArrayList<>();
             paymentsList.addAll(caveatData.getPayments());
         }
-        
+
         if (caveatData.getApplicationType() != null) {
             if (SOLICITOR.equals(caveatData.getApplicationType()) && paymentResponse != null) {
                 if (paymentsList == null) {
@@ -152,6 +152,16 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(caveatDetails)
             .messageContent("")
             .build();
+
+        return transformResponse(responseCaveatData);
+    }
+
+    public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest) {
+        ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                .applicationType(SOLICITOR)
+                .paperForm(NO)
+                .registryLocation(CTSC)
+                .build();
 
         return transformResponse(responseCaveatData);
     }
@@ -314,11 +324,11 @@ public class CaveatCallbackResponseTransformer {
             eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
-    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest, 
+    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest,
                                                                       String authToken) {
-        ResponseCaveatDataBuilder responseCaseDataBuilder = 
+        ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(), 
+        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder, authToken);
 
         return transformResponse(responseCaseDataBuilder.build());

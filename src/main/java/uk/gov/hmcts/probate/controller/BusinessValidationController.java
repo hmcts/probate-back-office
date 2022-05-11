@@ -133,7 +133,7 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/sols-created")
-    public ResponseEntity<CallbackResponse> createSolsCase(
+    public ResponseEntity<CallbackResponse> createSolsCaseWithOrganisation(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest request) {
         logRequest("/sols-created", request);
