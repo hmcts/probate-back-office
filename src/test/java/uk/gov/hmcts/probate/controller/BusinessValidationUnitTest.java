@@ -219,8 +219,8 @@ public class BusinessValidationUnitTest {
                 .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
                 .thenReturn(callbackResponseMock);
 
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth", "GrantOfRepresentation",
-                callbackRequestMock);
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth",
+                "GrantOfRepresentation", callbackRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
