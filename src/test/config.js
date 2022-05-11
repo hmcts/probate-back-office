@@ -6,7 +6,7 @@ module.exports = {
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
     TestOutputDir: process.env.E2E_OUTPUT_DIR || './functional-output',
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
-    WaitForTextTimeout: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 120),
+    WaitForTextTimeout: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 200),
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
     TestEnvCwUser: process.env.CW_USER_EMAIL || 'ProbateSolCW1@gmail.com',
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
