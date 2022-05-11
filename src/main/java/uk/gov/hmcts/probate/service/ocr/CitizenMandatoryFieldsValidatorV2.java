@@ -80,10 +80,13 @@ public class CitizenMandatoryFieldsValidatorV2 {
     }
 
     private boolean nqvBetweenThresholds(Map<String, String> ocrFieldValues) {
-        String ihtEstateNetQualifyingValue = ocrFieldValues.get(IHT_ESTATE_NET_QUALIFYING_VALUE_KEY);
-        if (ihtEstateNetQualifyingValue != null && NumberUtils.isCreatable((ihtEstateNetQualifyingValue))) {
-            BigDecimal nqv = new BigDecimal(ihtEstateNetQualifyingValue);
-            return ihtEstateValidationRule.isNqvBetweenValues(nqv);
+        String ihtEstateNetQualifyingValue = ocrFieldValues.get("ihtEstateNetQualifyingValue");
+        if (ihtEstateNetQualifyingValue != null ) {
+            String numericalMonetaryValue = ihtEstateNetQualifyingValue.replaceAll("[^\\d^\\.]","");
+            if(NumberUtils.isCreatable((numericalMonetaryValue))){
+                BigDecimal nqv = new BigDecimal(numericalMonetaryValue).multiply(BigDecimal.valueOf(100));
+                return ihtEstateValidationRule.isNqvBetweenValues(nqv);
+            }
         }
         return false;
     }
