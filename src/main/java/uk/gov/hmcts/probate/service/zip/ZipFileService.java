@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.ZippedDocumentFile;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.EmUploadService;
-import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -26,8 +25,7 @@ import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
-import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
-import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
+import static uk.gov.hmcts.probate.model.DocumentType.*;
 import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 
 @Slf4j
@@ -35,22 +33,19 @@ import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 @RequiredArgsConstructor
 public class ZipFileService {
     private final EmUploadService emUploadService;
-    private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private Path secureDir = null;
     private static final String PDF = ".pdf";
     private static final String CSV = ".csv";
 
-    public void zipIssuedGrants(List<ReturnedCaseDetails> cases, File tempFile) {
+    public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile) {
         log.info("zipIssuedGrants for {} cases", cases.size());
         List<ZippedDocumentFile> filesToZip = new ArrayList<>();
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
-            filesToZip.addAll(getAllGeneratedGrantDocuments(returnedCaseDetails));
-            filesToZip.addAll(getAllScannedWillDocuments(returnedCaseDetails));
-            filesToZip.addAll(getAllUploadedWillDocuments(returnedCaseDetails));
+            filesToZip.addAll(getWillDocuments(returnedCaseDetails));
+            filesToZip.addAll(getGrantDocuments(returnedCaseDetails));
+            filesToZip.addAll(getReIssueGrantDocuments(returnedCaseDetails));
         }
-
-        filesToZip.add(getSmeeAndFordCaseData(cases));
-
+        filesToZip.add(generateManifestFile());
         try {
             zipMultipleDocs(filesToZip, tempFile);
         } catch (IOException e) {
@@ -59,7 +54,91 @@ public class ZipFileService {
         }
     }
 
-    private ZippedDocumentFile getSmeeAndFordCaseData(List<ReturnedCaseDetails> cases) {
+    private ZippedDocumentFile generateManifestFile() {
+        return null;
+    }
+
+    private Collection<ZippedDocumentFile> getWillDocuments(ReturnedCaseDetails caseDetails) {
+        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
+        filesToZip.addAll(getScannedDocuments(caseDetails));
+        filesToZip.addAll(getUploadedWillDocuments(caseDetails));
+        return filesToZip;
+    }
+
+    private Collection<ZippedDocumentFile> getScannedDocuments(ReturnedCaseDetails caseDetails) {
+        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
+        if (caseDetails.getData().getScannedDocuments() != null) {
+            List<CollectionMember<ScannedDocument>> collect = caseDetails.getData()
+                    .getScannedDocuments().stream()
+                    .filter(collectionMember -> filterScannedDocs(collectionMember)
+                    )
+                    .collect(Collectors.toList());
+
+            log.info("scanned will {} docs for case {}", collect.size(), caseDetails.getId());
+            int scannedDocIndex = 1;
+            for (CollectionMember<ScannedDocument> doc : collect) {
+                String url = doc.getValue().getUrl().getDocumentBinaryUrl();
+                addZippedDocument(filesToZip, caseDetails, url, "scanned_"
+                        + WILL.getTemplateName() + "_" + scannedDocIndex, PDF);
+                scannedDocIndex++;
+            }
+        }
+        return filesToZip;
+    }
+
+    private Collection<ZippedDocumentFile> getUploadedWillDocuments(ReturnedCaseDetails caseDetails) {
+        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
+        if (caseDetails.getData().getBoDocumentsUploaded() != null) {
+            List<CollectionMember<UploadDocument>> collect = caseDetails.getData()
+                    .getBoDocumentsUploaded().stream()
+                    .filter(collectionMember -> filterUploadedDocs(collectionMember))
+                    .collect(Collectors.toList());
+
+            log.info("uploaded will {} docs for case {}", collect.size(), caseDetails.getId());
+            int uploadedDocIndex = 1;
+            for (CollectionMember<UploadDocument> doc : collect) {
+                String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
+                addZippedDocument(filesToZip, caseDetails, url,
+                        "uploaded_" + WILL.getTemplateName() + "_" + uploadedDocIndex, PDF);
+                uploadedDocIndex++;
+            }
+        }
+        return filesToZip;
+    }
+
+    private Collection<ZippedDocumentFile> getGrantDocuments(ReturnedCaseDetails caseDetails) {
+        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
+        List<CollectionMember<Document>> collect = caseDetails.getData()
+                .getProbateDocumentsGenerated().stream()
+                .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT))
+                .collect(Collectors.toList());
+
+        log.info("{} grant docs for case {}", collect.size(), caseDetails.getId());
+        for (CollectionMember<Document> doc : collect) {
+            String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
+            addZippedDocument(filesToZip, caseDetails, url, DIGITAL_GRANT.getTemplateName(), PDF);
+        }
+
+        return filesToZip;
+    }
+
+    public Collection<ZippedDocumentFile> getReIssueGrantDocuments(ReturnedCaseDetails caseDetails) {
+        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
+        List<CollectionMember<Document>> collect = caseDetails.getData()
+                .getProbateDocumentsGenerated().stream()
+                .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_REISSUE))
+                .collect(Collectors.toList());
+
+        log.info("{} grant docs for case {}", collect.size(), caseDetails.getId());
+        for (CollectionMember<Document> doc : collect) {
+            String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
+            addZippedDocument(filesToZip, caseDetails, url, DIGITAL_GRANT_REISSUE.getTemplateName(), PDF);
+        }
+
+        return filesToZip;
+    }
+
+    /*private ZippedDocumentFile getSmeeAndFordCaseData(List<ReturnedCaseDetails> cases) {
         byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
         ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
                 .caseNumber("all")
@@ -69,68 +148,11 @@ public class ZipFileService {
                 .build();
 
         return zippedDocumentFile;
-    }
-
-    private Collection<ZippedDocumentFile> getAllGeneratedGrantDocuments(ReturnedCaseDetails returnedCaseDetails) {
-        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
-        List<CollectionMember<Document>> collect = returnedCaseDetails.getData()
-                .getProbateDocumentsGenerated().stream()
-                .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT))
-                .collect(Collectors.toList());
-
-        log.info("{} grant docs for case {}", collect.size(), returnedCaseDetails.getId());
-        for (CollectionMember<Document> doc : collect) {
-            String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
-            addZippedDocument(filesToZip, returnedCaseDetails, url, DIGITAL_GRANT.getTemplateName(), PDF);
-        }
-
-        return filesToZip;
-    }
-
-    private Collection<ZippedDocumentFile> getAllScannedWillDocuments(ReturnedCaseDetails returnedCaseDetails) {
-        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
-        if (returnedCaseDetails.getData().getScannedDocuments() != null) {
-            List<CollectionMember<ScannedDocument>> collect = returnedCaseDetails.getData()
-                    .getScannedDocuments().stream()
-                    .filter(collectionMember -> filterScannedDocs(collectionMember)
-                    )
-                    .collect(Collectors.toList());
-
-            log.info("scanned will {} docs for case {}", collect.size(), returnedCaseDetails.getId());
-            int scannedDocIndex = 1;
-            for (CollectionMember<ScannedDocument> doc : collect) {
-                String url = doc.getValue().getUrl().getDocumentBinaryUrl();
-                addZippedDocument(filesToZip, returnedCaseDetails, url, "scanned_"
-                        + WILL.getTemplateName() + "_" + scannedDocIndex, PDF);
-                scannedDocIndex++;
-            }
-        }
-        return filesToZip;
-    }
+    }*/
 
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
         return collectionMember.getValue().getType().equalsIgnoreCase(OTHER.getTemplateName())
                 && collectionMember.getValue().getSubtype().equalsIgnoreCase(WILL.getTemplateName());
-    }
-
-    private Collection<ZippedDocumentFile> getAllUploadedWillDocuments(ReturnedCaseDetails returnedCaseDetails) {
-        List<ZippedDocumentFile> filesToZip = new ArrayList<>();
-        if (returnedCaseDetails.getData().getBoDocumentsUploaded() != null) {
-            List<CollectionMember<UploadDocument>> collect = returnedCaseDetails.getData()
-                    .getBoDocumentsUploaded().stream()
-                    .filter(collectionMember -> filterUploadedDocs(collectionMember))
-                    .collect(Collectors.toList());
-
-            log.info("uploaded will {} docs for case {}", collect.size(), returnedCaseDetails.getId());
-            int uploadedDocIndex = 1;
-            for (CollectionMember<UploadDocument> doc : collect) {
-                String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
-                addZippedDocument(filesToZip, returnedCaseDetails, url,
-                        "uploaded_" + WILL.getTemplateName() + "_" + uploadedDocIndex, PDF);
-                uploadedDocIndex++;
-            }
-        }
-        return filesToZip;
     }
 
     private boolean filterUploadedDocs(CollectionMember<UploadDocument> collectionMember) {

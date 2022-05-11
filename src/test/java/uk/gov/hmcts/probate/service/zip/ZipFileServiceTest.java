@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.EmUploadService;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,7 @@ public class ZipFileServiceTest {
 
     @Test
     public void shouldCreateZip() {
-        //zipFileService.zipIssuedGrants(returnedCaseDetails, new File("temp"));
+        zipFileService.zipIssuedGrants(returnedCaseDetails, new File("temp"));
         //assertTrue(zip.getAbsolutePath().contains("multiCompressed"));
     }
 
