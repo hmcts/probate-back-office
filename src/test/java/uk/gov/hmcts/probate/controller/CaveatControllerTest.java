@@ -97,6 +97,19 @@ public class CaveatControllerTest {
     }
 
     @Test
+    public void solsCaveatCreatedForOrganisation_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
+
+        mockMvc.perform(post("/caveat/sols-created")
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
     public void solsCaveatCreated_ShouldReturnError_400ResponseCode() throws Exception {
         String personalPayload = testUtils.getStringFromFile("solsCaveatPayloadNoEmail.json");
 

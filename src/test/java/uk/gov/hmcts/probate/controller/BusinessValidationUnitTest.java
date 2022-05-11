@@ -207,6 +207,42 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
+    public void shouldVerifySolsAccessWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
+        when(callbackResponseTransformerMock
+                .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
+                .thenReturn(callbackResponseMock);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth", "GrantOfRepresentation",
+                callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldVerifySolsCreatedWithNoErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        when(callbackResponseTransformerMock.createSolsCase(callbackRequestMock, "auth"))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.createSolsCaseWithOrganisation("auth",
+                callbackRequestMock);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
     public void shouldValidateWithNoErrorsWithStateChange() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
