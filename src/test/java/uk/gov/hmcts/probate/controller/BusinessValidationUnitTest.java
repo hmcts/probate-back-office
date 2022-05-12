@@ -208,16 +208,8 @@ public class BusinessValidationUnitTest {
 
     @Test
     public void shouldVerifySolsAccessWithNoErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
-                .thenReturn(callbackResponseMock);
-        when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
-        when(callbackResponseTransformerMock
-                .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
-                .thenReturn(callbackResponseMock);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth",
                 "GrantOfRepresentation", callbackRequestMock);
@@ -227,11 +219,6 @@ public class BusinessValidationUnitTest {
 
     @Test
     public void shouldVerifySolsCreatedWithNoErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(callbackRequestMock.getCaseDetails())
-                .thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-
         when(callbackResponseTransformerMock.createSolsCase(callbackRequestMock, "auth"))
                 .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response = underTest.createSolsCaseWithOrganisation("auth",
