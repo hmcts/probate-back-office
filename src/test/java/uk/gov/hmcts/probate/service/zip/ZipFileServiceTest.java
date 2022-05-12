@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.zip;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -26,6 +27,9 @@ public class ZipFileServiceTest {
     @Mock
     private EmUploadService emUploadService;
 
+    @Mock
+    private ObjectMapper objectMapper;
+
     @InjectMocks
     private ZipFileService zipFileService;
 
@@ -37,9 +41,9 @@ public class ZipFileServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
 
-        returnedCaseDetails.add(getNewCaseData());
-        returnedCaseDetails.add(getNewCaseData());
-        returnedCaseDetails.add(getNewCaseData());
+        returnedCaseDetails.add(getNewCaseData(1L));
+        returnedCaseDetails.add(getNewCaseData(2L));
+        returnedCaseDetails.add(getNewCaseData(3L));
 
         final ByteArrayResource byteArrayResource1 = new ByteArrayResource("firstFile".getBytes(UTF_8));
         final ByteArrayResource byteArrayResource2 = new ByteArrayResource("secondFile".getBytes(UTF_8));
@@ -52,7 +56,7 @@ public class ZipFileServiceTest {
                 byteArrayResource3);
     }
 
-    private ReturnedCaseDetails getNewCaseData() {
+    private ReturnedCaseDetails getNewCaseData(Long caseId) {
         DocumentLink link = DocumentLink.builder().documentBinaryUrl("/documents/12345/binary").build();
         Document doc = Document.builder().documentType(DocumentType.DIGITAL_GRANT)
                 .documentLink(link)
@@ -61,14 +65,14 @@ public class ZipFileServiceTest {
         List<CollectionMember<Document>> cms = new ArrayList<>();
         cms.add(cm);
         CaseData data = CaseData.builder().probateDocumentsGenerated(cms).build();
-        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, 1L);
+        ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, caseId);
 
         return returnedCaseDetails;
     }
 
     @Test
     public void shouldCreateZip() {
-        zipFileService.zipIssuedGrants(returnedCaseDetails, new File("temp"));
+        zipFileService.generateZipFile(returnedCaseDetails, new File("temp"));
         //assertTrue(zip.getAbsolutePath().contains("multiCompressed"));
     }
 
