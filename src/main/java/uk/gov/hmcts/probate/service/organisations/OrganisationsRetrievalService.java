@@ -44,9 +44,7 @@ public class OrganisationsRetrievalService {
                 request, OrganisationEntityResponse.class);
 
             log.info("responseEntity" + responseEntity.toString());
-            OrganisationEntityResponse organisationEntityResponse = Objects.requireNonNull(responseEntity.getBody());
-
-            return organisationEntityResponse;
+            return Objects.requireNonNull(responseEntity.getBody());
         } catch (Exception e) {
             log.error("Exception when looking up orgId for authToken={} for exception {}",
                 new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());

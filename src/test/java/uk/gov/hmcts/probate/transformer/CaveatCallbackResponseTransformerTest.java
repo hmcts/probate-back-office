@@ -487,6 +487,11 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    public void testBuildOrganisationPolicyReturnNullForNoAuth() {
+        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), null));
+    }
+
+    @Test
     public void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
         when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
         assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));

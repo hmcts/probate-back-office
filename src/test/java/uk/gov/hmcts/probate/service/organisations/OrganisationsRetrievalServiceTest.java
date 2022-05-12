@@ -9,6 +9,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -68,6 +69,15 @@ public class OrganisationsRetrievalServiceTest {
         organisationsRetrievalService.orgUri = "http://localhost:8080/test";
         OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(AUTH_TOKEN);
         assertEquals(null, organisationEntity);
+    }
+
+    @Test(expected = ClientException.class)
+    public void testOrganisationEntityExceptionWithNoBearer() {
+        MockitoAnnotations.openMocks(this);
+
+        organisationsRetrievalService.orgApi = "/test_api";
+        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
+        organisationsRetrievalService.getOrganisationEntity("something else");
     }
 }
 
