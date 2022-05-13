@@ -1,6 +1,9 @@
 package uk.gov.hmcts.probate.service.zip;
 
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.JsonSerializable;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -149,7 +152,7 @@ public class ZipFileService {
         List<CollectionMember<Document>> collect = caseDetails.getData()
                 .getProbateDocumentsGenerated().stream()
                 .filter(collectionMember -> Arrays.asList(REISSUE_GRANT_TYPES).contains(collectionMember.getValue()
-                        .getDocumentType().equals(DIGITAL_GRANT_REISSUE)))
+                        .getDocumentType()))
                 .collect(Collectors.toList());
 
         log.info("{} grant docs for case {}", collect.size(), caseDetails.getId());
