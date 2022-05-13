@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service.zip;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.json.JSONArray;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -22,6 +23,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -53,6 +55,7 @@ public class ZipFileService {
     private final EmUploadService emUploadService;
     private Path secureDir = null;
     private static final String PDF = ".pdf";
+    private static final String JSON = ".json";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT, INTESTACY_GRANT,
         WELSH_DIGITAL_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_INTESTACY_GRANT};
     private static final DocumentType[] REISSUE_GRANT_TYPES = {DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
@@ -229,16 +232,16 @@ public class ZipFileService {
     }
 
     private ZippedDocumentFile generateManifestFile(List<ZippedDocumentFile> files) throws IOException {
-        StringBuilder data = new StringBuilder();
+        JSONArray jsonArray = new JSONArray();
         for (ZippedDocumentFile file : files) {
-            data.append(objectMapper.writeValueAsString(file.getZippedManifestData()));
+            jsonArray.put(objectMapper.writeValueAsString(file.getZippedManifestData()));
         }
         ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
-                .byteArrayResource(new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8)))
+                .byteArrayResource(new ByteArrayResource(jsonArray.toString().getBytes(StandardCharsets.UTF_8)))
                 .zippedManifestData(ZippedManifestData.builder()
-                        .caseNumber("ALL")
-                        .docType(".json")
-                        .docFileType("JSON")
+                        .caseNumber("All")
+                        .docType("cases")
+                        .docFileType(JSON)
                         .errorDescription("").build())
                 .build();
         return zippedDocumentFile;
