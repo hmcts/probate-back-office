@@ -11,6 +11,7 @@ public class ZippedManifestData {
     private final String docType;
     private final String docFileType;
     private final String subType;
+    private final String caseType;
     private final String errorDescription;
 
     public String getDocumentName() {

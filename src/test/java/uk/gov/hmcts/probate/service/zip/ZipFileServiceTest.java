@@ -15,18 +15,21 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.EmUploadService;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
 
 public class ZipFileServiceTest {
 
@@ -83,7 +86,8 @@ public class ZipFileServiceTest {
         List<CollectionMember<UploadDocument>> willDocuments = new ArrayList<>();
         willDocuments.add(new CollectionMember<>(willDocument));
 
-        CaseData data = CaseData.builder().probateDocumentsGenerated(grantDocuments).boDocumentsUploaded(willDocuments).build();
+        CaseData data = CaseData.builder().caseType(GrantType.Constants.GRANT_OF_PROBATE_NAME)
+                .probateDocumentsGenerated(grantDocuments).boDocumentsUploaded(willDocuments).build();
         ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, caseId);
 
         return returnedCaseDetails;
