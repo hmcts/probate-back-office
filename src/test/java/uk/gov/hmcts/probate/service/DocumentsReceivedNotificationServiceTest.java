@@ -18,7 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.io.IOException;
@@ -80,7 +80,7 @@ public class DocumentsReceivedNotificationServiceTest {
     private CallbackResponseTransformer callbackResponseTransformer;
 
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
     @Before
     public void setup() throws IOException, NotificationClientException {
@@ -138,7 +138,7 @@ public class DocumentsReceivedNotificationServiceTest {
     public void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
-            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
@@ -153,7 +153,7 @@ public class DocumentsReceivedNotificationServiceTest {
     public void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
-            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
@@ -168,7 +168,7 @@ public class DocumentsReceivedNotificationServiceTest {
     public void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirminghamFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
-            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedNoDocuments), any(), any());
 
@@ -182,7 +182,7 @@ public class DocumentsReceivedNotificationServiceTest {
     public void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirminghamFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
-            .validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules);
+            .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedNoDocuments), any(), any());
 

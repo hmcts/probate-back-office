@@ -17,6 +17,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
+import java.io.IOException;
+import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 
@@ -87,7 +89,7 @@ public abstract class IntegrationTestBase {
         return removeLineFeeds(removeCarriageReturns(text));
     }
 
-    protected String getJsonFromFile(String jsonFileName) {
+    protected String getJsonFromFile(String jsonFileName) throws IOException {
         return utils.getJsonFromFile(jsonFileName);
     }
 
@@ -123,20 +125,20 @@ public abstract class IntegrationTestBase {
         return response.getBody();
     }
 
-    protected final ResponseBody validatePostSuccess(String jsonFileName, String path) {
+    protected final ResponseBody validatePostSuccess(String jsonFileName, String path) throws IOException {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
 
     protected final ResponseBody validatePostSuccessWithAttributeUpdate(String jsonFileName, String path,
                                                                         String originalAttr,
-                                                                  String updatedAttr) {
+                                                                  String updatedAttr) throws IOException {
         String request = getJsonFromFile(jsonFileName);
         request = replaceAllInString(request, originalAttr, updatedAttr);
         return validatePostSuccessForPayload(request, path);
     }
 
     protected void assertExpectedContents(String expectedResponseFile, String responseDocumentUrl,
-                                          ResponseBody responseBody) {
+                                          ResponseBody responseBody) throws IOException {
         final String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
 
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -146,10 +148,11 @@ public abstract class IntegrationTestBase {
     }
 
     protected void assertExpectedContentsWithExpectedReplacement(String expectedResponseFile,
-        String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements) {
+        String responseDocumentUrl, ResponseBody responseBody, HashMap<String, String> expectedKeyValuerelacements)
+        throws IOException {
         String expectedText = removeCrLfs(getJsonFromFile(expectedResponseFile));
-        for (String key : expectedKeyValuerelacements.keySet()) {
-            expectedText = expectedText.replace(key, expectedKeyValuerelacements.get(key));
+        for (Map.Entry<String, String> entry : expectedKeyValuerelacements.entrySet()) {
+            expectedText = expectedText.replace(entry.getKey(), entry.getValue());
         }
 
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());

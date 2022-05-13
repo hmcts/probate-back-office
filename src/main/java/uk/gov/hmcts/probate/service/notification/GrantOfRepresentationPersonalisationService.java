@@ -24,8 +24,8 @@ import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 @RequiredArgsConstructor
 @Service
 public class GrantOfRepresentationPersonalisationService {
-    private static final DateTimeFormatter EXCELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
-    private static final DateTimeFormatter EXCELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
+    private static final DateTimeFormatter EXELA_CONTENT_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
@@ -37,7 +37,7 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_CAVEAT_CASE_ID = "caveat_case_id";
     private static final String PERSONALISATION_DECEASED_DOD = "deceased_dod";
     private static final String PERSONALISATION_CCD_REFERENCE = "ccd_reference";
-    private static final String PERSONALISATION_EXCELA_NAME = "excelaName";
+    private static final String PERSONALISATION_EXELA_NAME = "exelaName";
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
@@ -53,12 +53,12 @@ public class GrantOfRepresentationPersonalisationService {
         return getPersonalisationFromCaseData(caseDetails.getData(), caseDetails.getId(), registry);
     }
 
-    public Map<String, String> getExcelaPersonalisation(List<ReturnedCaseDetails> cases) {
+    public Map<String, String> getExelaPersonalisation(List<ReturnedCaseDetails> cases) {
         HashMap<String, String> personalisation = new HashMap<>();
 
-        StringBuilder data = getExcelaBuiltData(cases);
+        StringBuilder data = getExelaBuiltData(cases);
 
-        personalisation.put(PERSONALISATION_EXCELA_NAME, LocalDateTime.now().format(EXCELA_DATE) + "will");
+        personalisation.put(PERSONALISATION_EXELA_NAME, LocalDateTime.now().format(EXELA_DATE) + "will");
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
 
         return personalisation;
@@ -88,7 +88,7 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
-    private StringBuilder getExcelaBuiltData(List<ReturnedCaseDetails> cases) {
+    private StringBuilder getExelaBuiltData(List<ReturnedCaseDetails> cases) {
         StringBuilder data = new StringBuilder();
 
         for (ReturnedCaseDetails currentCase : cases) {
@@ -99,9 +99,9 @@ public class GrantOfRepresentationPersonalisationService {
                 data.append(", ");
                 data.append(parseDelimiters(currentCase.getData().getDeceasedSurname()));
                 data.append(", ");
-                data.append(EXCELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
+                data.append(EXELA_CONTENT_DATE.format(currentCase.getData().getDeceasedDateOfBirth()));
                 data.append(", ");
-                data.append(EXCELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
+                data.append(EXELA_CONTENT_DATE.format(LocalDate.parse(currentCase.getData().getGrantIssuedDate())));
                 data.append(", ");
                 data.append(currentCase.getId().toString());
                 data.append(", ");

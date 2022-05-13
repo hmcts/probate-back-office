@@ -41,7 +41,7 @@ Print a copy of this page for your records.
 You now need to send us:
 {{originalWill}}
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number {{caseRef}} written on a sheet of paper{{ihtText}}{{ihtForm}}
-{{renouncingExecutors}}{{deadExecutors}}{{legalPhotocopy}}{{pa16form}}{{pa17form}}
+{{legalPhotocopy}}{{pa14form}}{{pa15form}}{{pa16form}}{{pa17form}}{{admonWillRenunciation}}{{tcResolutionLodgedWithApp}}{{authenticatedTranslation}}{{dispenseWithNoticeSupportingDocs}}
 
 Where to send us your documents
 -------------------------------
@@ -50,7 +50,6 @@ You should:
 
 *   use recorded delivery
 *   keep copies of all documents
-*   if you are providing a notarial copy or a court sealed copy of the will please also provide a cover letter with the application indicating where the original will is and why it cannot be released. 
 
 Send all documents to:
 

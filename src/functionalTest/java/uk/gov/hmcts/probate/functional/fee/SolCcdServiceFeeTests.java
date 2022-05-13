@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
 import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
@@ -27,7 +28,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     private static final int APP_FEE = 27300; //comment this out for local tests - keep for commits
-    //private static final int APP_FEE = 15500;
+    // private static final int APP_FEE = 15500;
     private static final int COPIES_FEE = 150;
     private static final double MAX_UK_COPIES = 50;
     private static final double MAX_NON_UK_COPIES = 50;
@@ -38,14 +39,14 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldIncludePA17Link() {
+    public void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
             true, true, true);
         assertTrue(response.getBody().asPrettyString().contains("(PA17)"));
     }
 
     @Test
-    public void shouldTransformSolicitorExecutorFields() {
+    public void shouldTransformSolicitorExecutorFields() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true, true,
             true);
 
@@ -75,63 +76,63 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyAllFeesAboveThreshold() {
+    public void verifyAllFeesAboveThreshold() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true, true);
     }
 
     @Test
-    public void verifyAllFeesBelowThreshold() {
+    public void verifyAllFeesBelowThreshold() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, true, true);
     }
 
     @Test
-    public void shouldValidatePBAPaymentNoFees() {
+    public void shouldValidatePBAPaymentNoFees() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false, false);
     }
 
     @Test
-    public void shouldValidatePaymentAccountDeleted() {
+    public void shouldValidatePaymentAccountDeleted() throws IOException {
         validatePostRequestFailureForPBAs(1, "solicitorPDFPayloadProbateAccountDeleted.json",
             "Your account is deleted");
     }
 
     @Test
-    public void shouldValidatePaymentInsufficientFunds() {
+    public void shouldValidatePaymentInsufficientFunds() throws IOException {
         validatePostRequestFailureForPBAs(1000, "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
             "have insufficient funds available");
     }
 
     @Pending
     @Test
-    public void shouldValidatePaymentAountOnHold() {
+    public void shouldValidatePaymentAountOnHold() throws IOException {
         //this test cannot be automated on a deployed env - leaving it for local checking
         validatePostRequestFailureForPBAsForSolicitor2(1, "solicitorPDFPayloadProbateAccountOnHold.json",
             "Your account is on hold");
     }
 
     @Test
-    public void verifyIncorrectJsonReturns400() {
+    public void verifyIncorrectJsonReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.fee.json", "Invalid Request");
     }
 
     @Test
-    public void verifyEmptyApplicationFeeReturns400() {
+    public void verifyEmptyApplicationFeeReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.fee.emptyNetIHT.json", "Net IHT value cannot be empty");
     }
 
     @Test
-    public void verifyNegativeUKCopiesFeeReturns400() {
+    public void verifyNegativeUKCopiesFeeReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.negativeUKCopies.json", "Uk Grant copies cannot be negative");
     }
 
     @Test
-    public void verifyNegativeOverseasCopiesFeeReturns400() {
+    public void verifyNegativeOverseasCopiesFeeReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be "
             + "negative");
     }
 
     private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication, boolean hasFees,
-                                                      boolean hasPayments) {
+                                                      boolean hasPayments) throws IOException {
         int rndUkCopies = (int) (Math.random() * MAX_UK_COPIES) + 1;
         int rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
         int applicationFee = hasApplication ? APP_FEE : 0;
@@ -154,11 +155,12 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             response.then().assertThat().body("data.payments[0].value.status", equalTo("Success"));
             response.then().assertThat().body("data.payments[0].value.reference", containsString("RC-"));
         }
-        
+
         return response;
     }
 
-    private Response getResponse(String fileName, int rndUkCopies, int rndNonUkCopies, Headers headers) {
+    private Response getResponse(String fileName, int rndUkCopies, int rndNonUkCopies, Headers headers)
+        throws IOException {
         String payload = utils.replaceAnyCaseNumberWithRandom(utils.getJsonFromFile(fileName));
         payload = payload.replaceAll("<UK_COPIES>", "" + rndUkCopies);
         payload = payload.replaceAll("<NON_UK_COPIES>", "" + rndNonUkCopies);
@@ -170,7 +172,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             .when().post("/nextsteps/validate");
     }
 
-    private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) {
+    private void verifyIncorrectPostRequestReturns400(String fileName, String errorMessage) throws IOException {
         given().headers(utils.getHeadersWithCaseworkerUser())
             .relaxedHTTPSValidation()
             .body(utils.replaceAnyCaseNumberWithRandom(utils.getJsonFromFile(fileName)))
@@ -180,7 +182,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private Response validatePostRequestFailureForPBAs(int copiesMultiplier, String fileName,
-                                                       String... expectedValues) {
+                                                       String... expectedValues) throws IOException {
 
         int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
         int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
@@ -192,7 +194,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestFailureForPBAsForSolicitor2(int copiesMultiplier, String fileName,
-                                                                String... expectedValues) {
+                                                                String... expectedValues) throws IOException {
         int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
         int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
         Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitor2User());

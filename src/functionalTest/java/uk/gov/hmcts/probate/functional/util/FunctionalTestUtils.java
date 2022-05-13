@@ -101,15 +101,9 @@ public class FunctionalTestUtils {
         return replacement;
     }
 
-    public String getJsonFromFile(String fileName) {
-        try {
-            final File file = ResourceUtils.getFile(this.getClass().getResource("/json/" + fileName));
-            final String fileContent = new String(Files.readString(file.toPath(), StandardCharsets.UTF_8));
-            return fileContent;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public String getJsonFromFile(String fileName) throws IOException {
+        final File file = ResourceUtils.getFile(this.getClass().getClassLoader().getResource("json/" + fileName));
+        return Files.readString(file.toPath(), StandardCharsets.UTF_8);
     }
 
     public String getStringFromFile(String fileName) {
@@ -143,13 +137,13 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(userName, password);
-        final String serviceToken = serviceAuthTokenGenerator.generateServiceToken();
+        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(userName, password);
+        final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
+            new Header("ServiceAuthorization", genServiceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken),
+            new Header("Authorization", "Bearer " + genAuthorizationToken),
             new Header("user-id", id.toString()));
     }
 
@@ -177,7 +171,7 @@ public class FunctionalTestUtils {
         jsonResponse.then().assertThat().statusCode(200);
         return  jsonResponse;
     }
-    
+
     public String downloadPdfAndParseToString(String documentUrl) {
         Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
 
@@ -191,9 +185,9 @@ public class FunctionalTestUtils {
         final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
         return getDocumentResponseFromId(documentId, headers);
     }
-    
+
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
-        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithUserId(serviceToken, 
+        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithUserId(serviceToken,
             getSchedulerCaseworkerUserId()));
 
         return parsePDFToString(jsonResponse.getBody().asInputStream());

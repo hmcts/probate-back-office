@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -36,7 +37,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForWillLodgementForCardiff() {
+    public void verifySuccessForWillLodgementForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
@@ -47,13 +48,13 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
 
-    private String generateNonProbateDocument(String jsonFileName, String path) {
+    private String generateNonProbateDocument(String jsonFileName, String path) throws IOException {
         return generateDocument(jsonFileName, path, NON_PROBATE_DOC_NAME);
     }
 
 
     @Test
-    public void verifyAssembleLetterShouldReturnOkResponseCode() {
+    public void verifyAssembleLetterShouldReturnOkResponseCode() throws IOException {
         final ResponseBody response = validatePostSuccess("/document/assembleLetterPayLoad.json",
             ASSEMBLE_LETTER);
         final JsonPath jsonPath = JsonPath.from(response.asString());
@@ -65,7 +66,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyAssembleLetterShouldReturnIHTReferenceNumber() {
+    public void verifyAssembleLetterShouldReturnIHTReferenceNumber() throws IOException {
         final String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
         final Response response = RestAssured.given()
             .config(config)
@@ -81,7 +82,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyDefaultRePrintValuesReturnsOkResponseCode() {
+    public void verifyDefaultRePrintValuesReturnsOkResponseCode() throws IOException {
         final ResponseBody response =
             validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
 
@@ -91,7 +92,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyDefaultRePrintValuesReturnsIhtReferenceNumber() {
+    public void verifyDefaultRePrintValuesReturnsIhtReferenceNumber() throws IOException {
         String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
         jsonAsString = jsonAsString.replaceFirst("\"paperForm\": \"Yes\",", "\"paperForm\": \"No\",");
 
@@ -108,13 +109,13 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorGenerateLetterReturnOkResponseCode() {
+    public void verifySolicitorGenerateLetterReturnOkResponseCode() throws IOException {
         final String response = getFirstProbateDocumentsText(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
         assertEquals(getJsonFromFile("/document/assembledLetter.txt"), response);
     }
 
     @Test
-    public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() {
+    public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() throws IOException {
         final ResponseBody responseBody =
             validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -123,7 +124,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorPreviewLetterReturnsCorrectResponse() {
+    public void verifySolicitorPreviewLetterReturnsCorrectResponse() throws IOException {
         final Response jsonResponse = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -138,7 +139,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() {
+    public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
             PREVIEW_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -147,7 +148,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorRePrintReturnBadResponseCode() {
+    public void verifySolicitorRePrintReturnBadResponseCode() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -156,7 +157,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .when().post(RE_PRINT)
             .andReturn();
         assertEquals(response.statusCode(), 403);
-        assertTrue(response.getBody().asString().contains("Forbidden"));
+
     }
 
 }

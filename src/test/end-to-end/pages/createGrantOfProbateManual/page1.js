@@ -10,6 +10,7 @@ module.exports = async function (crud, unique_deceased_user) {
 
     if (crud === 'create') {
         await I.waitForText(createGrantOfProbateConfig.page1_waitForText, testConfig.WaitForTextTimeout);
+        await I.waitForElement('#registryLocation');
         await I.selectOption('#registryLocation', createGrantOfProbateConfig.page1_list1_registry_location);
         await I.selectOption('#applicationType', createGrantOfProbateConfig.page1_list2_application_type);
 

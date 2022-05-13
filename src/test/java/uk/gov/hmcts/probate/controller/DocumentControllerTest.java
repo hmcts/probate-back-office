@@ -520,7 +520,7 @@ public class DocumentControllerTest {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this applicant. "
-                    + "To continue the application, go back and select no to sending an email."))
+                    + "Add an email address or contact them by post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }

@@ -47,6 +47,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -91,12 +92,12 @@ public class BusinessValidationController {
     private final CodicilDateValidationRule codicilDateValidationRule;
     private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
     private final List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
-
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     private final IhtEstateValidationRule ihtEstateValidationRule;
+    private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -112,6 +113,20 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         ihtEstateValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+    }
+
+    @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateSolsCreate(
+            @Validated({ApplicationCreatedGroup.class}) @RequestBody
+                    CallbackRequest callbackRequest) {
+
+        final List<ValidationRule> solPcValidation = Arrays.asList(solicitorPostcodeValidationRule);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
+        if (response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -200,7 +215,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
-        
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 gopPage1ValidationRules);
 

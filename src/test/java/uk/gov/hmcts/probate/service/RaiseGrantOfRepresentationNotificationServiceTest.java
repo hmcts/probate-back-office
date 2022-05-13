@@ -22,7 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClient;
@@ -69,7 +69,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
     @Mock
     private EventValidationService eventValidationService;
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     @Mock
     private CallbackResponse callbackResponse;
     @Mock
@@ -111,7 +111,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules))
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules))
             .thenReturn(callbackResponse);
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).documentType(GRANT_RAISED).build());
@@ -138,7 +138,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
                 LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotificationValidationRules))
+        when(eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules))
             .thenReturn(callbackResponse);
         when(pdfManagementService.generateDocmosisDocumentAndUpload(any(Map.class), eq(GRANT_RAISED)))
             .thenReturn(Document.builder()

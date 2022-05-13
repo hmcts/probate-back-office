@@ -43,8 +43,6 @@ You now need to send us:
 *   the original will
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number 1 written on a sheet of paper
 *   the inheritance tax form IHT207
-*   death certificate for Bob Martin
-*   death certificate for John Martin
 *   a photocopy of the signed legal statement and declaration
 
 Where to send us your documents
@@ -54,7 +52,6 @@ You should:
 
 *   use recorded delivery
 *   keep copies of all documents
-*   if you are providing a notarial copy or a court sealed copy of the will please also provide a cover letter with the application indicating where the original will is and why it cannot be released. 
 
 Send all documents to:
 

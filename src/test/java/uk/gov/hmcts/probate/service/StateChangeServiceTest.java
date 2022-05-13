@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.changerule.ExecutorsRule;
 import uk.gov.hmcts.probate.changerule.ImmovableEstateRule;
 import uk.gov.hmcts.probate.changerule.LifeInterestRule;
 import uk.gov.hmcts.probate.changerule.MinorityInterestRule;
+import uk.gov.hmcts.probate.changerule.NoNotorialWillCopyRule;
 import uk.gov.hmcts.probate.changerule.RenouncingRule;
 import uk.gov.hmcts.probate.changerule.ResiduaryRule;
 import uk.gov.hmcts.probate.changerule.SolsExecutorRule;
@@ -23,7 +24,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,9 +47,7 @@ public class StateChangeServiceTest {
     private static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";
     private static final String STATE_GRANT_TYPE_ADMON = "SolAdmonCreated";
     private static final String STATE_GRANT_TYPE_CREATED = "SolAppCreatedDeceasedDtls";
-    private static final Long ID = 1L;
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final Long CASE_ID = 12345678987654321L;
+
     @InjectMocks
     private StateChangeService underTest;
     @Mock
@@ -77,7 +75,7 @@ public class StateChangeServiceTest {
     @Mock
     private UpdateApplicationRule updateApplicationRule;
     @Mock
-    private CallbackResponseTransformer callbackResponseTransformer;
+    private NoNotorialWillCopyRule noNotorialWillCopyRule;
     @Mock
     private CaseData caseDataMock;
     private List<CollectionMember<ExecutorsApplyingNotification>> execList;
@@ -92,7 +90,7 @@ public class StateChangeServiceTest {
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule,
             entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule,
             renouncingRule, residuaryRule, solsExecutorRule, spouseOrCivilRule, updateApplicationRule,
-            callbackResponseTransformer);
+            noNotorialWillCopyRule);
 
         execList = new ArrayList<>();
         execResponseReceived = new CollectionMember<>(
@@ -122,6 +120,26 @@ public class StateChangeServiceTest {
         when(executorsStateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
 
         Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForAnyNoNotrialRuleValid() {
+        when(noNotorialWillCopyRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForProbateUpdate(caseDataMock);
+
+        assertTrue(newState.isPresent());
+        assertEquals("Stopped", newState.get());
+    }
+
+    @Test
+    public void shouldChangeStateForAnyNoNotrialRuleValidAdmon() {
+        when(noNotorialWillCopyRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+
+        Optional<String> newState = underTest.getChangedStateForAdmonUpdate(caseDataMock);
 
         assertTrue(newState.isPresent());
         assertEquals("Stopped", newState.get());

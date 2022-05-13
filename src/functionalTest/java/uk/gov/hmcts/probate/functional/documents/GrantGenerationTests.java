@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertFalse;
@@ -123,54 +124,55 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             + "The application has stated that the gross value";
 
     @Test
-    public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() {
+    public void verifySolicitorGenerateGrantShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
     }
 
     @Test
-    public void verifySolicitorGenerateGrantDraftShouldReturnOkResponseCode() {
+    public void verifySolicitorGenerateGrantDraftShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
     }
 
     @Test
-    public void verifySolicitorGenerateIntestacyGrantShouldReturnOkResponseCode() {
+    public void verifySolicitorGenerateIntestacyGrantShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", GENERATE_GRANT);
     }
 
     @Test
-    public void verifySolicitorGenerateIntestacyGrantDraftShouldReturnOkResponseCode() {
+    public void verifySolicitorGenerateIntestacyGrantDraftShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess("solicitorPayloadNotificationsIntestacy.json", GENERATE_GRANT_DRAFT);
     }
 
 
     @Test
-    public void verifySolicitorGenerateAdmonWillGrantShouldReturnOkResponseCode() {
+    public void verifySolicitorGenerateAdmonWillGrantShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", GENERATE_GRANT);
     }
 
     @Test
-    public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() {
+    public void verifySolicitorGenerateAdmonWillGrantDraftShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess("solicitorPayloadNotificationsAdmonWill.json", GENERATE_GRANT_DRAFT);
     }
 
 
     @Test
-    public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() {
+    public void verifyPersonalApplicantGenerateGrantShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
     }
 
     @Test
-    public void verifyPersonalApplicantGenerateGrantDraftShouldReturnOkResponseCode() {
+    public void verifyPersonalApplicantGenerateGrantDraftShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
     }
 
     @Test
-    public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() {
+    public void verifyGenerateGrantDraftReissueShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
     }
 
     @Test
-    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+        throws IOException {
         final String gopPayload = "/default/gop/personal/";
 
         String response = generateGrantDocument(gopPayload + "gop.json", GENERATE_GRANT_DRAFT);
@@ -184,7 +186,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales()
+        throws IOException {
         final String gopPayload = "/default/gop/personal/";
 
         final String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText, "the United Kingdom",
@@ -207,7 +210,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+        throws IOException {
         String response = generateGrantDocument(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
         assertTrue(response.contains(deceasedDomiciledInEngWalesText));
 
@@ -224,7 +228,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishGopSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales()
+        throws IOException {
         final String expectedText = replaceAllInString(deceasedDomiciledInEngWalesText, "the United Kingdom",
             "England and Wales");
 
@@ -247,7 +252,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+        throws IOException {
         String admonWillPayload = "/default/admonwill/personal/";
 
         String response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT_DRAFT);
@@ -261,7 +267,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishAdmonWillPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales()
+        throws IOException {
         String admonWillPayload = "/default/admonwill/personal/";
 
         String admonWillPayloadIssue = replaceAllInString(
@@ -286,7 +293,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+        throws IOException {
         String admonWillPayload = "/default/admonwill/solicitor/";
 
         String response = generateGrantDocument(admonWillPayload + "admonWill.json", GENERATE_GRANT_DRAFT);
@@ -300,7 +308,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishAdmonWillSolicitorGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales()
+        throws IOException {
         String admonWillPayload = "/default/admonwill/solicitor/";
 
         String admonWillPayloadIssue = replaceAllInString(
@@ -325,7 +334,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+        throws IOException {
         String intestacyPayload = "/default/intestacy/personal/";
 
         String response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT_DRAFT);
@@ -339,7 +349,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishIntestacyPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales()
+        throws IOException {
         String intestacyPayload = "/default/intestacy/personal/";
 
         String intestacyPayloadIssue = replaceAllInString(
@@ -364,7 +375,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales() {
+    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledInEnglandOrWales()
+        throws IOException {
         String intestacyPayload = "/default/intestacy/solicitor/";
 
         String response = generateGrantDocument(intestacyPayload + "intestacy.json", GENERATE_GRANT_DRAFT);
@@ -378,7 +390,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledNotInEnglandOrWales() {
+    public void verifyGenerateAllEnglishIntestacySolicitorGrantTypesWhenDeceasedDomiciledNotInEnglandOrWales()
+        throws IOException {
         String intestacyPayload = "/default/intestacy/solicitor/";
 
         String intestacyPayloadIssue = replaceAllInString(
@@ -403,12 +416,12 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTrustCorpsShouldReturnOkResponseCode() {
+    public void verifyTrustCorpsShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
     }
 
     @Test
-    public void verifySolicitorGenerateGrantDraftReissueCtsc() {
+    public void verifySolicitorGenerateGrantDraftReissueCtsc() throws IOException {
         final String response = generateReissueGrantDraftDocument(SOL_PAYLOAD_REISSUE_CTSC);
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
         assertTrue(response.contains(REISSUE_REASON_DUPLICATE));
@@ -416,7 +429,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorGenerateGrantDraftReissueOxford() {
+    public void verifySolicitorGenerateGrantDraftReissueOxford() throws IOException {
         final String payload = replaceAllInString(getJsonFromFile(SOL_PAYLOAD_REISSUE_CTSC),
             "\"registryLocation\": \"ctsc\"", "\"registryLocation\": \"Oxford\"");
         final String response = generateReissueGrantDraftDocumentFromPayload(payload);
@@ -426,7 +439,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetAdmonWillGrantForCardiff() {
+    public void verifySuccessForGetAdmonWillGrantForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
 
         final String response = getFirstProbateDocumentsText(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT);
@@ -438,7 +451,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetAdmonWillGrantDraftForCardiff() {
+    public void verifySuccessForGetAdmonWillGrantDraftForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_ADMON_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
@@ -449,42 +462,42 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGoPChangesForGopGenerate() {
+    public void verifySuccessForGoPChangesForGopGenerate() throws IOException {
         final String response = generateGrantDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains("Trust Corporation Name 1 High St"));
     }
 
     @Test
-    public void verifySuccessForDigitalGrantDraftAddresses() {
+    public void verifySuccessForDigitalGrantDraftAddresses() throws IOException {
         final String response = generateGrantDocument(CW_PART_SUCC, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
-    public void verifySuccessForDigitalGrantAddresses() {
+    public void verifySuccessForDigitalGrantAddresses() throws IOException {
         final String response = generateGrantDocument(CW_PART_SUCC, GENERATE_GRANT);
 
         assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
-    public void verifySuccessForDigitalGrantAddressesFirm() {
+    public void verifySuccessForDigitalGrantAddressesFirm() throws IOException {
         final String response = generateGrantDocument(CW_PART, GENERATE_GRANT);
 
         assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
-    public void verifySuccessForDigitalGrantDraftAddressesFirm() {
+    public void verifySuccessForDigitalGrantDraftAddressesFirm() throws IOException {
         final String response = generateGrantDocument(CW_PART, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains("Probate Practitioner 123 London London"));
     }
 
     @Test
-    public void verifySuccessForGoPChangesForGopGenerateDraft() {
+    public void verifySuccessForGoPChangesForGopGenerateDraft() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = generateGrantDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_GRANT_DRAFT);
 
@@ -492,7 +505,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGenerateDraftTCPartnerFirmPowerReserved() {
+    public void verifySuccessForGenerateDraftTCPartnerFirmPowerReserved() throws IOException {
         final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
             GENERATE_GRANT_DRAFT);
         assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
@@ -506,7 +519,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGenerateGrantTCPartnerFirmPowerReserved() {
+    public void verifySuccessForGenerateGrantTCPartnerFirmPowerReserved() throws IOException {
         final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
             GENERATE_GRANT);
         assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
@@ -520,7 +533,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGenerateGrantReissueDraftTCPartnerFirmPowerReserved() {
+    public void verifySuccessForGenerateGrantReissueDraftTCPartnerFirmPowerReserved() throws IOException {
         final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
             GENERATE_GRANT_DRAFT_REISSUE);
         assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
@@ -534,7 +547,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGenerateGrantReissueTCPartnerFirmPowerReserved() {
+    public void verifySuccessForGenerateGrantReissueTCPartnerFirmPowerReserved() throws IOException {
         final String responseWithSinglePowerReserved = generateGrantDocument(PARTNERS_FIRM_POWER_RESERVED_PAYLOAD,
             "/document/generate-grant-reissue");
         assertTrue(responseWithSinglePowerReserved.contains("Power reserved to another Executor"));
@@ -548,7 +561,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetIntestacyGrantForCardiff() {
+    public void verifySuccessForGetIntestacyGrantForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
@@ -559,7 +572,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetIntestacyGrantDraftForCardiff() {
+    public void verifySuccessForGetIntestacyGrantDraftForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
@@ -570,7 +583,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetGopGrantForCardiff() {
+    public void verifySuccessForGetGopGrantForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT);
 
@@ -581,7 +594,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetGopGrantDraftForCardiff() {
+    public void verifySuccessForGetGopGrantDraftForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_GOP_CARDIFF_PAYLOAD, GENERATE_GRANT_DRAFT);
 
@@ -592,7 +605,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForOxfordGopGenerateGrant() {
+    public void verifyTelephoneForOxfordGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(OXFORD_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -603,7 +616,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForManchesterGopGenerateGrant() {
+    public void verifyTelephoneForManchesterGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(MANCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -614,7 +627,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForLeedsGopGenerateGrant() {
+    public void verifyTelephoneForLeedsGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(LEEDS_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -625,7 +638,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForLiverpoolGopGenerateGrant() {
+    public void verifyTelephoneForLiverpoolGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(LIVERPOOL_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -636,7 +649,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForBrightonGopGenerateGrant() {
+    public void verifyTelephoneForBrightonGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(BRIGHTON_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -647,7 +660,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForLondonGopGenerateGrant() {
+    public void verifyTelephoneForLondonGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(LONDON_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -658,7 +671,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForNewcastleGopGenerateGrant() {
+    public void verifyTelephoneForNewcastleGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(NEWCASTLE_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -669,7 +682,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForWinchesterGopGenerateGrant() {
+    public void verifyTelephoneForWinchesterGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(WINCHESTER_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -680,7 +693,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyTelephoneForBristolGopGenerateGrant() {
+    public void verifyTelephoneForBristolGopGenerateGrant() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(BRISTOL_GOP_PAYLOAD, GENERATE_GRANT);
 
@@ -691,7 +704,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithSingleExecutorSols() {
+    public void verifySuccessForGetDigitalGrantWithSingleExecutorSols() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -713,7 +726,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithSingleExecutorPA() {
+    public void verifySuccessForGetDigitalGrantWithSingleExecutorPA() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -734,7 +747,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() {
+    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSolTc() throws IOException {
         final String response = generateGrantDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -747,7 +760,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSolTc() {
+    public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSolTc() throws IOException {
         final String response = generateGrantDocument(MULTI_EXEC_TC_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -760,7 +773,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithNotNamedSolTc() {
+    public void verifySuccessForGetDigitalGrantWithNotNamedSolTc() throws IOException {
         final String response = generateGrantDocument(NOT_NAMED_TC_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -772,7 +785,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTc() {
+    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTc() throws IOException {
         final String response = generateGrantDocument(NOT_NAMED_TC_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -784,7 +797,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithNotNamedSolTcTcExec() {
+    public void verifySuccessForGetDigitalGrantWithNotNamedSolTcTcExec() throws IOException {
         final String response = generateGrantDocument(NOT_NAMED_TC_TC_EXEC_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -796,7 +809,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTcTcExec() {
+    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTcTcExec() throws IOException {
         final String response = generateGrantDocument(NOT_NAMED_TC_TC_EXEC_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -808,7 +821,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithNotNamedNotApplyingSolTcTcExec() {
+    public void verifySuccessForGetDigitalGrantWithNotNamedNotApplyingSolTcTcExec() throws IOException {
         final String payload = replaceAllInString(utils.getJsonFromFile(NOT_NAMED_TC_PAYLOAD),
             "\"solsSolicitorIsApplying\": \"Yes\"", "\"solsSolicitorIsApplying\": \"No\"");
         final String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT);
@@ -816,7 +829,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithNotNamedNotApplyingSolTcTcExec() {
+    public void verifySuccessForGetDigitalGrantDraftWithNotNamedNotApplyingSolTcTcExec() throws IOException {
         final String payload = replaceAllInString(utils.getJsonFromFile(NOT_NAMED_TC_PAYLOAD),
             "\"solsSolicitorIsApplying\": \"Yes\"", "\"solsSolicitorIsApplying\": \"No\"");
         final String response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_DRAFT);
@@ -824,7 +837,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithNotNamedSolTcPowerReserved() {
+    public void verifySuccessForGetDigitalGrantWithNotNamedSolTcPowerReserved() throws IOException {
         final String response = generateGrantDocument(NOT_NAMED_TC_POWER_RESERVED_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -839,7 +852,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTcPowerReserved() {
+    public void verifySuccessForGetDigitalGrantDraftWithNotNamedSolTcPowerReserved() throws IOException {
         final String response = generateGrantDocument(NOT_NAMED_TC_POWER_RESERVED_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
@@ -854,7 +867,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls() {
+    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
             GENERATE_GRANT);
 
@@ -878,7 +891,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() {
+    public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT);
 
@@ -899,7 +912,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithPowerReservedSingleSOls() {
+    public void verifySuccessForGetDigitalGrantWithPowerReservedSingleSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
             GENERATE_GRANT);
 
@@ -921,7 +934,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantWithGrantInfoSOls() {
+    public void verifySuccessForGetDigitalGrantWithGrantInfoSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
             GENERATE_GRANT);
 
@@ -945,7 +958,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() {
+    public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorSols() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
@@ -966,7 +979,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() {
+    public void verifySuccessForGetDigitalGrantDraftWithSingleExecutorPA() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_PA_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
@@ -987,7 +1000,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSOls() {
+    public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutors.json",
             GENERATE_GRANT_DRAFT);
 
@@ -1013,7 +1026,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() {
+    public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT_DRAFT);
 
@@ -1034,7 +1047,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithPowerReservedSingleSOls() {
+    public void verifySuccessForGetDigitalGrantDraftWithPowerReservedSingleSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReserved.json",
             GENERATE_GRANT_DRAFT);
 
@@ -1055,7 +1068,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftWithGrantInfoSOls() {
+    public void verifySuccessForGetDigitalGrantDraftWithGrantInfoSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsGrantInfo.json",
             GENERATE_GRANT_DRAFT);
 
@@ -1078,7 +1091,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftDateFormat() {
+    public void verifySuccessForGetDigitalGrantDraftDateFormat() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(DOD));
@@ -1086,7 +1099,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDateFormat() {
+    public void verifySuccessForGetDigitalGrantDateFormat() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(DOD));
@@ -1095,7 +1108,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftMoneyFormat() {
+    public void verifySuccessForGetDigitalGrantDraftMoneyFormat() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(IHT_GROSS));
@@ -1106,7 +1119,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantMoneyFormat() {
+    public void verifySuccessForGetDigitalGrantMoneyFormat() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_SOLS_PAYLOAD, GENERATE_GRANT);
 
         assertTrue(response.contains(IHT_GROSS));
@@ -1116,7 +1129,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantMoneyFormatWithPence() {
+    public void verifySuccessForGetDigitalGrantMoneyFormatWithPence() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsIHTCurrencyFormat.json",
             GENERATE_GRANT);
 
@@ -1127,7 +1140,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftMoneyFormatWithPence() {
+    public void verifySuccessForGetDigitalGrantDraftMoneyFormatWithPence() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsIHTCurrencyFormat.json",
             GENERATE_GRANT_DRAFT);
 
@@ -1138,7 +1151,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() {
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() throws IOException {
 
         final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
             "\"primaryApplicantIsApplying\": \"Yes\",", "");
@@ -1150,7 +1163,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() {
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
                 GENERATE_GRANT_DRAFT);
@@ -1166,7 +1179,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplying() {
+    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplying() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json", GENERATE_GRANT);
 
@@ -1181,7 +1194,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved() {
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReserved() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT_DRAFT);
@@ -1198,7 +1211,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved() {
+    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReserved() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT);
@@ -1215,7 +1228,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple() {
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplyingPowerReservedMultiple()
+        throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT_DRAFT);
@@ -1232,7 +1246,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple() {
+    public void verifySuccessForGetDigitalGrantPrimaryApplicantNotApplyingPowerReservedMultiple() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT);
@@ -1249,7 +1263,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantPartialSolsAddress() {
+    public void verifySuccessForGetDigitalGrantPartialSolsAddress() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPartialAddress.json", GENERATE_GRANT);
 
@@ -1271,7 +1285,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDomiciledUK() {
+    public void verifySuccessForGetDigitalGrantDomiciledUK() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPartialAddress.json",
             GENERATE_GRANT);
 
@@ -1296,7 +1310,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifySuccessForGetDigitalGrantDomiciledForeignDomicile() {
+    public void verifySuccessForGetDigitalGrantDomiciledForeignDomicile() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsForeignDomicile.json",
             GENERATE_GRANT);
 
@@ -1321,14 +1335,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() {
+    public void verifyWillLodgementDepositReceiptShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_WILL_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
     }
 
     //Ignored due to Docmosis not allowing screen readers as images overlay all text
     @Ignore
     @Test
-    public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() {
+    public void verifySuccessForDigitalGrantDraftReissueForDuplicateNotation() throws IOException {
         final String response = getFirstProbateDocumentsText(DEFAULT_REISSUE_PAYLOAD, GENERATE_GRANT_DRAFT_REISSUE);
         assertTrue(response.contains(ENGLAND_AND_WALES));
         assertTrue(response.contains(CASE_REFERENCE));
@@ -1338,7 +1352,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(POSTCODE));
     }
 
-    private String generateGrantDocument(String jsonFileName, String path) {
+    private String generateGrantDocument(String jsonFileName, String path) throws IOException {
         return generateDocument(jsonFileName, path, GRANT_DOC_NAME);
     }
 
@@ -1346,7 +1360,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         return generateDocumentFromPayload(payload, path, GRANT_DOC_NAME);
     }
 
-    private String generateReissueGrantDraftDocument(String jsonFileName) {
+    private String generateReissueGrantDraftDocument(String jsonFileName) throws IOException {
         return generateDocument(jsonFileName, GENERATE_GRANT_DRAFT_REISSUE, GRANT_DOC_NAME);
     }
 

@@ -33,46 +33,46 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyFirstNameInTheReturnedPDF() {
+    public void verifyFirstNameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorFirstName", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyLastNameInTheReturnedPDF() {
+    public void verifyLastNameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorLastName", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyAddressInTheReturnedPDF() {
+    public void verifyAddressInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("Test AddressLine1, Test "
                 + "AddressLine2, Test AddressLine3, Hounslow, Middlesex, TW3 3DB, United Kingdom", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyDeceasedNameInTheReturnedPDF() {
+    public void verifyDeceasedNameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("DeceasedFirstName DeceasedLastName", DOC_NAME,
             VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyDeceasedDobInTheReturnedPDF() {
+    public void verifyDeceasedDobInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("01/01/1987", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyDeceasedDodInTheReturnedPDF() {
+    public void verifyDeceasedDodInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("01/01/2018", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyPrimaryExecutorAliasNameInTheReturnedPDF() {
+    public void verifyPrimaryExecutorAliasNameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("TestPrimaryExecutorAliasName", DOC_NAME,
                 VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyLegalStatementAcceptInTheReturnedPDF() {
+    public void verifyLegalStatementAcceptInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement(
             "We confirm that the information we have provided is correct to the best of our knowledge.",
             DOC_NAME,
@@ -80,7 +80,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() {
+    public void verifyLegalStatementSolicitorsDeclarationInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement(
             "The executors believe that all the information stated in the legal statement is true.",
             DOC_NAME,
@@ -88,40 +88,40 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyDeclarationAcceptInTheReturnedPDF() {
+    public void verifyDeclarationAcceptInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("They have authorised \nSolicitorFirmName "
                 + "to sign a statement of truth on their behalf.",
                 DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyIhtGrossInTheReturnedPDF() {
+    public void verifyIhtGrossInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("1000.01", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyIhtNetInTheReturnedPDF() {
+    public void verifyIhtNetInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("900.09", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifySolicitorFirmNameInTheReturnedPDF() {
+    public void verifySolicitorFirmNameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("SolicitorFirmName", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyAdditionalExecutor1NameInTheReturnedPDF() {
+    public void verifyAdditionalExecutor1NameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("AdditionalExecutor1FirstName AdditionalExecutor1LastName",
             DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyAdditionalExecutor1AliasNameInTheReturnedPDF() {
+    public void verifyAdditionalExecutor1AliasNameInTheReturnedPDF() throws IOException {
         validatePostRequestSuccessForLegalStatement("AdditionalExecutor1 willname", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
-    public void verifyIncorrectInputReturns400() {
+    public void verifyIncorrectInputReturns400() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -131,19 +131,19 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyMissingDeceasedDodReturnsError() {
+    public void verifyMissingDeceasedDodReturnsError() throws IOException {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfDeath\": \"2018-01-01\"",
             "\"deceasedDateOfDeath\": \"\"", "caseDetails.data.deceasedDateOfDeath", VALIDATE_URL);
     }
 
     @Test
-    public void verifyMissingDeceasedDobReturnsError() {
+    public void verifyMissingDeceasedDobReturnsError() throws IOException {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"",
             "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
     
     @Test
-    public void validatePostRequestSuccessCYAForBeforeSignSOT() {
+    public void validatePostRequestSuccessCYAForBeforeSignSOT() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -155,21 +155,21 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validatePostRequestSolicitorValidateIntestacySuccess() {
+    public void validatePostRequestSolicitorValidateIntestacySuccess() throws IOException {
         validatePostRequestSuccessForLegalStatement(
             "I authorise Firm Name, as my appointed firm to submit this application on my behalf.",
             "solicitorPDFPayloadIntestacy.json", VALIDATE_INTESTACY_URL);
     }
 
     @Test
-    public void validatePostRequestSolicitorValidateAdmonSuccess() {
+    public void validatePostRequestSolicitorValidateAdmonSuccess() throws IOException {
         validatePostRequestSuccessForLegalStatement(
             "The administrator believes that all the information stated in the legal statement is true.",
             "solicitorPDFPayloadAdmonWill.json", VALIDATE_ADMON_URL);
     }
 
     @Test
-    public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() {
+    public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -187,7 +187,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptyForeNamesSolicitorValidateAdmonReturnsError() {
+    public void verifyEmptyForeNamesSolicitorValidateAdmonReturnsError() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -203,7 +203,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyStateChangeFromCYABeforeLegalStatement() {
+    public void verifyStateChangeFromCYABeforeLegalStatement() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -215,7 +215,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyStateChangeFromCYABeforeSigningSOT() {
+    public void verifyStateChangeFromCYABeforeSigningSOT() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -226,7 +226,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
             .and().body("data.state", equalToIgnoringCase("SolAppCreatedDeceasedDtls"));
     }
 
-    private String replaceStringInCheckYourAnswersPayload(String oldJson, String newJson) {
+    private String replaceStringInCheckYourAnswersPayload(String oldJson, String newJson) throws IOException {
         return utils.getJsonFromFile("success.beforeLegalStatement.checkYourAnswersPayload.json")
             .replace(oldJson, newJson);
     }
@@ -240,7 +240,8 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         }
     }
 
-    private void validatePostRequestSuccessForLegalStatement(String validationString, String fileName, String url) {
+    private void validatePostRequestSuccessForLegalStatement(String validationString, String fileName, String url)
+        throws IOException {
         final Response response = given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithSolicitorUser())
@@ -252,7 +253,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     private void validatePostRequestFailureForLegalStatement(String oldString, String replacingString, String errorMsg,
-                                                             String postURL) {
+                                                             String postURL) throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
