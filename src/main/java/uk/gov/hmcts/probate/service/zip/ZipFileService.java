@@ -7,6 +7,7 @@ import org.json.JSONArray;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
+import uk.gov.hmcts.probate.exception.ZipFileException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -74,7 +75,7 @@ public class ZipFileService {
             zipMultipleDocs(filesToZip, tempFile);
         } catch (IOException e) {
             log.info("Exception occurred while generating zip file: {}", e);
-            throw new RuntimeException(e);
+            throw new ZipFileException(e.getMessage());
         }
     }
 
@@ -90,8 +91,7 @@ public class ZipFileService {
         if (caseDetails.getData().getScannedDocuments() != null) {
             List<CollectionMember<ScannedDocument>> collect = caseDetails.getData()
                     .getScannedDocuments().stream()
-                    .filter(collectionMember -> filterScannedDocs(collectionMember)
-                    )
+                    .filter(this::filterScannedDocs)
                     .collect(Collectors.toList());
 
             log.info("scanned will {} docs for case {}", collect.size(), caseDetails.getId());
@@ -111,7 +111,7 @@ public class ZipFileService {
         if (caseDetails.getData().getBoDocumentsUploaded() != null) {
             List<CollectionMember<UploadDocument>> collect = caseDetails.getData()
                     .getBoDocumentsUploaded().stream()
-                    .filter(collectionMember -> filterUploadedDocs(collectionMember))
+                    .filter(this::filterUploadedDocs)
                     .collect(Collectors.toList());
 
             log.info("uploaded will {} docs for case {}", collect.size(), caseDetails.getId());
@@ -200,15 +200,20 @@ public class ZipFileService {
         if (secureDir == null) {
             File file = ResourceUtils.getFile("/" + zipName + ".zip");
             secureDir = file.toPath();
-            file.delete();
+            boolean isDeleted = file.delete();
+            if ((isDeleted)) {
+                log.info("Existing zip file deleted successfully");
+            } else {
+                log.info("Failed to delete existing zip file");
+            }
         }
 
         log.info("secureDir:" + secureDir.toAbsolutePath());
         File tempFile = Files.createTempFile(secureDir, zipName, ".zip").toFile();
-        tempFile.setReadable(true, true);
-        tempFile.setWritable(true, true);
-        tempFile.setExecutable(true, true);
-        log.info("tempFile:" + tempFile.toPath().toAbsolutePath());
+        boolean isReadable = tempFile.setReadable(true, true);
+        boolean isWritable = tempFile.setWritable(true, true);
+        log.info("tempFile: {} and file is isReadable {} and isWritable {}",
+                tempFile.toPath().toAbsolutePath(), isReadable, isWritable);
         return tempFile;
     }
 

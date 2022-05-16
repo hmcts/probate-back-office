@@ -28,7 +28,7 @@ public class BlobUpload {
     //Create a unique name for the container
     String containerName = "smee-and-ford-document-feed";
 
-    public void uploadFile(File blobFile) throws IOException {
+    public void uploadFile(File blobFile) {
 
         // Create a BlobServiceClient object which will be used to create a container client
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
