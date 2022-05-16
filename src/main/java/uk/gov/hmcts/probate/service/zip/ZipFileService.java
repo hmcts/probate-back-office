@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -22,7 +23,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -198,36 +198,36 @@ public class ZipFileService {
 
     public File createTempZipFile(String zipName) throws IOException {
         if (secureDir == null) {
-            secureDir = Files.createTempDirectory("zip");
-            secureDir.toFile().deleteOnExit();
+            File file = ResourceUtils.getFile("/" + zipName + ".zip");
+            secureDir = file.toPath();
+            file.delete();
         }
 
         log.info("secureDir:" + secureDir.toAbsolutePath());
-        Path tempFile = Files.createFile(
-                Paths.get(secureDir.toAbsolutePath() + "/" + zipName + ".zip"));
-        log.info("tempFile:" + tempFile.toAbsolutePath());
-        return tempFile.toFile();
+        File tempFile = Files.createTempFile(secureDir, zipName, ".zip").toFile();
+        tempFile.setReadable(true, true);
+        tempFile.setWritable(true, true);
+        tempFile.setExecutable(true, true);
+        log.info("tempFile:" + tempFile.toPath().toAbsolutePath());
+        return tempFile;
     }
 
     private void zipMultipleDocs(List<ZippedDocumentFile> files, File tempFile) throws IOException {
-        FileOutputStream fos = new FileOutputStream(tempFile);
-
-        ZipOutputStream zipOut = new ZipOutputStream(fos);
-        List<ZippedDocumentFile> filteredDocumentFiles = files.stream()
-                .filter(file -> file.getByteArrayResource() != null)
-                .collect(Collectors.toList());
-        for (ZippedDocumentFile file : filteredDocumentFiles) {
-            log.info("Zipping file {}", file.getZippedManifestData().getDocumentName());
-            ZipEntry zipEntry = new ZipEntry(file.getZippedManifestData().getDocumentName());
+        try (FileOutputStream fos = new FileOutputStream(tempFile); ZipOutputStream zipOut = new ZipOutputStream(fos)) {
+            List<ZippedDocumentFile> filteredDocumentFiles = files.stream()
+                    .filter(file -> file.getByteArrayResource() != null)
+                    .collect(Collectors.toList());
+            for (ZippedDocumentFile file : filteredDocumentFiles) {
+                log.info("Zipping file {}", file.getZippedManifestData().getDocumentName());
+                ZipEntry zipEntry = new ZipEntry(file.getZippedManifestData().getDocumentName());
+                zipOut.putNextEntry(zipEntry);
+                zipOut.write(file.getByteArrayResource().getByteArray());
+            }
+            ZippedDocumentFile manifestFile = generateManifestFile(files);
+            ZipEntry zipEntry = new ZipEntry(manifestFile.getZippedManifestData().getDocumentName());
             zipOut.putNextEntry(zipEntry);
-            zipOut.write(file.getByteArrayResource().getByteArray());
+            zipOut.write(manifestFile.getByteArrayResource().getByteArray());
         }
-        ZippedDocumentFile manifestFile = generateManifestFile(files);
-        ZipEntry zipEntry = new ZipEntry(manifestFile.getZippedManifestData().getDocumentName());
-        zipOut.putNextEntry(zipEntry);
-        zipOut.write(manifestFile.getByteArrayResource().getByteArray());
-        zipOut.close();
-        fos.close();
     }
 
     private ZippedDocumentFile generateManifestFile(List<ZippedDocumentFile> files) throws IOException {
