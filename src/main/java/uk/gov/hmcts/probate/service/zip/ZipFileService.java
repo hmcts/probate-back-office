@@ -200,11 +200,13 @@ public class ZipFileService {
         if (secureDir == null) {
             File file = ResourceUtils.getFile("/" + zipName + ".zip");
             secureDir = file.toPath();
-            boolean isDeleted = file.delete();
-            if ((isDeleted)) {
-                log.info("Existing zip file deleted successfully");
-            } else {
-                log.info("Failed to delete existing zip file");
+            if (file.exists()) {
+                boolean isDeleted = file.delete();
+                if ((isDeleted)) {
+                    log.info("Existing zip file deleted successfully");
+                } else {
+                    log.info("Failed to delete existing zip file");
+                }
             }
         }
 
@@ -240,7 +242,7 @@ public class ZipFileService {
         for (ZippedDocumentFile file : files) {
             jsonArray.put(objectMapper.writeValueAsString(file.getZippedManifestData()));
         }
-        ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
+        return ZippedDocumentFile.builder()
                 .byteArrayResource(new ByteArrayResource(jsonArray.toString().getBytes(StandardCharsets.UTF_8)))
                 .zippedManifestData(ZippedManifestData.builder()
                         .caseNumber("All")
@@ -248,7 +250,6 @@ public class ZipFileService {
                         .docFileType(JSON)
                         .errorDescription("").build())
                 .build();
-        return zippedDocumentFile;
     }
 
 }
