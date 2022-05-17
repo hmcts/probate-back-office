@@ -201,12 +201,7 @@ public class ZipFileService {
             File file = ResourceUtils.getFile("/" + zipName + ".zip");
             secureDir = file.toPath();
             if (file.exists()) {
-                boolean isDeleted = file.delete();
-                if ((isDeleted)) {
-                    log.info("Existing zip file deleted successfully");
-                } else {
-                    log.info("Failed to delete existing zip file");
-                }
+                Files.delete(file.toPath());
             }
         }
 
