@@ -234,10 +234,6 @@ dependencyManagement {
       entry 'netty-transport-native-kqueue'
       entry 'netty-transport-native-unix-common'
     }
-    // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '2.0.52.Final') {
-      entry 'netty-tcnative-classes'
-    }
   }
 }
 
