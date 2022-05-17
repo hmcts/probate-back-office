@@ -210,6 +210,9 @@ dependencyManagement {
       entry 'spring-security-crypto'
       entry 'spring-security-web'
     }
+    dependencySet(group: 'io.netty', version: '4.1.77.Final') {
+      entry 'netty-all'
+    }
   }
 }
 
