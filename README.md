@@ -107,40 +107,122 @@ docker-compose build
 
 Bring up the environment: 
 
+before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
+
 ```
-
-# build the jar
-./gradlew assemble
-
-# before you start ensure that any env vars setup on whatever terminal you are --creat-ing from
 XUI_LD_ID
 LD_SDK_BO_KEY
 LD_BO_USER_KEY
 LD_SDK_FE_KEY
 LD_FE_USER_KEY
+```
 
 # first time only
+```
 npx @hmcts/probate-dev-env --create
+```
 
 # spin up the docker containers
+```
 npx @hmcts/probate-dev-env
+```
 
-# Then wait at least 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+#### to stop
+```
+npx @hmcts/probate-dev-env --stop
+```
+
+#### to restart after stop
+```
+npx @hmcts/probate-dev-env --start
+```
+
+#### Then wait upto 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
+#### To enable PBA payments for solicitors and sharing a case run this after startup of everything
+```
+./bin/wiremock.sh
+```
+
+#### To clear out all wiremock requests
+```
+curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
+```
+
+#### Then check there are none
+```
+curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'accept: application/json'
+```
+
+#### re run the ./bin/wiremock above to apply as needed
 
 # to use local probate backoffice
+```
 docker-compose stop probate-back-office
 ./gradlew assemble
 docker-compose up -d --build probate-back-office
+```
+
+#### share case - manage-case setup
+```
+before --create make sure you have this env var setup
+LD_SDK_AM_KEY (see Sanjay for the value)
+npx @hmcts/probate-dev-env --create
+uncomment 2 docker images from the local docker-compose.yml: manage-case-assignment, xui-manage-org
+and uncomment manage-case-assignment dependency on probate-back-office docker image
+npx @hmcts/probate-dev-env
+
+after this setup from dev-env, do, from this probate-back-office branch, do
+./bin/share-a-case-setup.sh
+
+upload new xls from local
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
+./ccdImports/conversionScripts/importAllXLS.sh
+
+redeploy probate-backoffice image
+docker-compose stop probate-back-office && ./gradlew assemble && docker-compose up -d --build probate-back-office
+
+make sure probate-backoffice and manage-case-assignment docker images are running
+make sure wiremock is running and populated
+http://localhost:3455/
+login as one of the test PP users, create a case 
+* probatesolicitortestorgtest1@gmail.com Probate123
+* probatesolicitortestorg2test1@gmail.com Probate123
+you should be able to share that case with the other PP user
+
+if you are running low on memory you can stop probate-frontend, business-service, submit-service, orchestrtor etc
+```
+
+#### share case - manage-org setup
+```
+complete above
+create a case to share
+unshare that case from everyone
+go to
+http://localhost:3001/
+login with org user
+* probatesolicitortestorgman3@gmail.com Probate123
+click Unassigned cases link
+see unassigned cases + assign as needed
+
+when you want to return to manage-case
+run ./bin/wiremock.sh
+create cases + share per org from here
+```
+
+#### wiremock url
+```
+http://localhost:8991/__admin/mappings?limit=10
+```
+
 # to clear out all images
+```
 npx @hmcts/probate-dev-env --destroy
 docker container rm $(docker container ls -a -q)
 docker image rm $(docker image ls -a -q)
 docker volume rm $(docker volume ls -q)
-
 ```
 
 If you would like to test a new CCD config locally, you should run:
-
 ```
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
 ./ccdImports/conversionScripts/importAllXLS.sh

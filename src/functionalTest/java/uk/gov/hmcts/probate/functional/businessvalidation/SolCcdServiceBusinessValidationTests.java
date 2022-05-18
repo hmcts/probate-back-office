@@ -10,7 +10,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
@@ -52,6 +54,16 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL = "/case/sols-validate-will-and-codicil-dates";
     private static final String TODAY_YYYY_MM_DD = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
+    private static final String SOLS_CREATED_URL = "/case/sols-created";
+    private static final String SOLS_ACCESS_URL = "/case/sols-access";
+
+    private static final String SOLS_CASE_CREATION_PAYLOAD = "solsCaseCreationDefaultPayload.json";
+    private static final String SOLS_CASE_CREATE_EVENT_ID = "solicitorCreateApplication";
+    private static final String EVENT_PARM = "EVENT_PARM";
+
+
+    @Autowired
+    protected FunctionalTestUtils utils;
 
     @Before
     public void setUp() {
@@ -965,6 +977,21 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("Further Evidence", jsonPath.get("data.furtherEvidenceForApplication"));
     }
 
+    @Test
+    public void shouldTransformCaseWithApplicantOrganisationPolicy() throws IOException {
+        String json = utils.getJsonFromFile("success.solsCreateShareACase.json");
+        final ResponseBody body = validatePostSuccessForPayload(json, SOLS_CREATED_URL,
+                utils.getHeadersWithSolicitorUser());
+
+        final String response = body.asString();
+        final JsonPath jsonPath = JsonPath.from(response);
+        assertNotNull(jsonPath.get("data.applicantOrganisationPolicy"));
+        assertNotNull(jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationID"));
+        assertEquals("Probate Test Org",
+            jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationName"));
+        assertEquals("[APPLICANTSOLICITOR]",
+            jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"));
+    }
 
     private String transformCase(String jsonFileName, String path) throws IOException {
         final Response jsonResponse = RestAssured.given()
