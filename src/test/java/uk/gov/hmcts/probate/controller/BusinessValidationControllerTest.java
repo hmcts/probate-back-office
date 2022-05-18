@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.hamcrest.CoreMatchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,12 +10,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -31,12 +32,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -49,6 +50,7 @@ import java.util.Optional;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -144,6 +146,7 @@ public class BusinessValidationControllerTest {
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -175,15 +178,9 @@ public class BusinessValidationControllerTest {
     @Autowired
     private MockMvc mockMvc;
     private CaseDataBuilder caseDataBuilder;
-    @MockBean
-    private AppInsights appInsights;
-
 
     @MockBean
     private PDFManagementService pdfManagementService;
-
-    @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
 
     @MockBean
     private CaseStoppedService caseStoppedService;
@@ -191,8 +188,8 @@ public class BusinessValidationControllerTest {
     @MockBean
     private NotificationService notificationService;
 
-    @MockBean
-    private PBARetrievalService pbaRetrievalService;
+    @SpyBean
+    OrganisationsRetrievalService organisationsRetrievalService;
 
     @Before
     public void setup() {
@@ -249,6 +246,12 @@ public class BusinessValidationControllerTest {
             .outsideUKGrantCopies(EXTRA_OUTSIDE_UK)
             .totalFee(TOTAL_FEE)
             .scannedDocuments(SCANNED_DOCUMENTS_LIST);
+
+        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
+        organisationEntityResponse.setName("ORGANISATION_NAME");
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+
     }
 
     @Test
@@ -1181,6 +1184,18 @@ public class BusinessValidationControllerTest {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(SOLS_CREATE_VALIDATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void solsCaseCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+        String caseDetails = testUtils.getStringFromFile("caseDetailWithOrgPolicy.json");
+
+        mockMvc.perform(post("/case/sols-created")
+                .header("Authorization", AUTH_TOKEN)
+                .content(caseDetails)
+                .contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk())
+            .andExpect(content().string(CoreMatchers.containsString("data")));
     }
 }
 

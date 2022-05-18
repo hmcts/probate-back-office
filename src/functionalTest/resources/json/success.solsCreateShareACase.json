@@ -1,0 +1,73 @@
+{
+  "case_details": {
+    "case_data": {
+      "solsSolicitorWillSignSOT": "Yes",
+      "applicantOrganisationPolicy": {
+        "Organisation": {
+          "OrganisationID": null,
+          "OrganisationName": null
+        },
+        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITOR]",
+        "OrgPolicyReference": null
+      },
+      "solsSolicitorFirmName": "FirmName",
+      "solsSolicitorAddress": {
+        "AddressLine1": "Dusted Design Partners Ltd",
+        "AddressLine2": "65-68 Leadenhall Street",
+        "AddressLine3": "",
+        "County": "Greater London",
+        "PostTown": "London",
+        "PostCode": "EC3A 2AD",
+        "Country": "United Kingdom"
+      },
+      "solsSolicitorAppReference": "REFERENCE",
+      "solsSolicitorEmail": "1@1.com",
+      "solsSolicitorIsExec": "Yes",
+      "solsSolicitorIsApplying": "Yes",
+      "currentDate": "2022-04-04",
+      "currentDateFormatted": "4th April 2022",
+      "boSendToBulkPrint": "Yes",
+      "probateDocumentsGenerated": [ ],
+      "probateNotificationsGenerated": [ ],
+      "caseMatches": [ ],
+      "solsSOTForenames": "ppFirstName",
+      "solsSOTSurname": "ppLastName",
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateSotDocumentsGenerated": [ ],
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "bulkPrintId": [ ],
+      "paragraphDetails": [ ],
+      "bulkScanEnvelopes": [ ],
+      "primaryApplicantApplying": false,
+      "primaryApplicantNotApplying": false,
+      "valueForCaveatStopEmailNotification": "No",
+      "caveatStopNotificationRequested": false,
+      "caveatStopEmailNotificationRequested": false,
+      "caveatStopSendToBulkPrintRequested": true,
+      "docsReceivedEmailNotificationRequested": true,
+      "sendForBulkPrintingRequested": true,
+      "grantIssuedEmailNotificationRequested": true,
+      "grantReissuedEmailNotificationRequested": true,
+      "primaryApplicantFullName": "null null",
+      "deceasedFullName": "null null",
+      "languagePreference": "ENGLISH",
+      "defaultValueForEmailNotifications": "Yes",
+      "defaultValueForCaveatStopEmailNotification": "No",
+      "sendForBulkPrintingRequestedGrantReIssued": true
+    },
+    "last_modified": null,
+    "id": 1234123412341234,
+    "grantSignatureBase64": null,
+    "registryAddressLine1": null,
+    "registryAddressLine2": null,
+    "registryAddressLine3": null,
+    "registryAddressLine4": null,
+    "registryTown": null,
+    "registryPostcode": null,
+    "registryTelephone": null,
+    "ctscTelephone": null,
+    "state": "SolAppCreatedDeceasedDtls"
+  }
+}

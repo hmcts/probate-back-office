@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -84,6 +85,7 @@ public class CaseDataParent {
     private final String solsPBAPaymentReference;
     private final String solsOrgHasPBAs;
     private final String solsNeedsPBAPayment;
+    private final OrganisationPolicy applicantOrganisationPolicy;
 
     private final String reissueDate;
     private final String grantIssuedDate;

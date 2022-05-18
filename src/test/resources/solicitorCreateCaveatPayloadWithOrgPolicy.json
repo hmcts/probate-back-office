@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1542274092936666,
+    "id": 1542274092932452,
     "jurisdiction": "PROBATE",
     "case_type_id": "Caveat",
     "state": "SolAppCreated",
@@ -14,11 +14,10 @@
       8,
       695000000
     ],
-    "security_classification": "PUBLIC",
     "case_data": {
       "applicationType": "Solicitor",
       "registryLocation": "ctsc",
-      "solsSolicitorFirmName": "The Firm & Co",
+      "solsSolicitorFirmName": "The Firm",
       "caveatorEmailAddress": "caveator@probate-test.com",
       "solsSolicitorPhoneNumber": "07070707077",
       "caveatorAddress": {
@@ -30,14 +29,14 @@
         "PostCode": "2",
         "Country": ""
       },
-      "solsSolicitorAppReference": "REFREFREFREFREFREFREFREFREFREF",
+      "solsSolicitorAppReference": "REF",
       "applicantOrganisationPolicy": {
         "Organisation": {
-          "OrganisationID": null,
-          "OrganisationName": null
+          "OrganisationID": "orgID",
+          "OrganisationName": "orgName"
         },
-        "OrgPolicyCaseAssignedRole": "[APPLICANTSOLICITOR]",
-        "OrgPolicyReference": null
+        "OrgPolicyCaseAssignedRole": "org Role",
+        "OrgPolicyReference": "org Reference"
       }
     }
   }
