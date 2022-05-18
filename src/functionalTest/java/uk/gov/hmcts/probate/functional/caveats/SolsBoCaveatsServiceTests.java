@@ -32,6 +32,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_CONFIRMATION = "/caveat/confirmation";
     private static final String CAVEAT_EXTEND = "/caveat/extend";
     private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
+    private static final String CAVEAT_SOLICITOR_CREATED = "/caveat/sols-created";
     private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
     private static final String CAVEAT_VALIDATE = "/caveat/validate";
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
@@ -362,7 +363,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatSolicitorCreateReturnOkResponseCode() throws IOException {
         String json = utils.getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
-        final ResponseBody response = validatePostSuccessForPayload(json, CAVEAT_SOLICITOR_CREATE,
+        final ResponseBody response = validatePostSuccessForPayload(json, CAVEAT_SOLICITOR_CREATED,
                 utils.getHeadersWithSolicitorUser());
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
