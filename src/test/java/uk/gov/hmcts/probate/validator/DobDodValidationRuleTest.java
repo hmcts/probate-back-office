@@ -23,7 +23,6 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOB_IN_FUTURE;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_BEFORE_DOB;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_IN_FUTURE;
-import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_ON_DOB;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DobDodValidationRuleTest {
@@ -52,9 +51,6 @@ public class DobDodValidationRuleTest {
 
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_BEFORE_DOB))
                 .thenReturn(FieldErrorResponse.builder().code(CODE_DOD_BEFORE_DOB).build());
-
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOD_ON_DOB))
-                .thenReturn(FieldErrorResponse.builder().code(CODE_DOD_ON_DOB).build());
 
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, CODE_DOB_IN_FUTURE))
                 .thenReturn(FieldErrorResponse.builder().code(CODE_DOB_IN_FUTURE).build());
@@ -100,7 +96,7 @@ public class DobDodValidationRuleTest {
 
         List<FieldErrorResponse> validationErrors = underTest.validate(ccdDataMock);
 
-        assertEquals(CODE_DOD_ON_DOB, validationErrors.get(0).getCode());
+        assertEquals(0, validationErrors.size());
     }
 
     @Test

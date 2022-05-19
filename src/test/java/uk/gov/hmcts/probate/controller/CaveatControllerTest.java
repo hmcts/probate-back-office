@@ -3,25 +3,26 @@ package uk.gov.hmcts.probate.controller;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -42,6 +43,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CaveatControllerTest {
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     @Autowired
     private MockMvc mockMvc;
@@ -50,27 +52,22 @@ public class CaveatControllerTest {
     private TestUtils testUtils;
 
     @MockBean
-    private AppInsights appInsights;
-
-    @MockBean
     private NotificationService notificationService;
 
     @MockBean
     private PDFManagementService pdfManagementService;
-
-    @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
 
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Autowired
-    private EventValidationService eventValidationService;
+    @SpyBean
+    OrganisationsRetrievalService organisationsRetrievalService;
 
     @Before
     public void setUp() throws NotificationClientException, BadRequestException {
+        MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
         Document document = Document.builder().documentType(SENT_EMAIL).build();
@@ -79,18 +76,37 @@ public class CaveatControllerTest {
 
         when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), eq(SENT_EMAIL)))
             .thenReturn(Document.builder().documentType(SENT_EMAIL).build());
+        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
+        organisationEntityResponse.setName("ORGANISATION_NAME");
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+
     }
 
     @Test
     public void solsCaveatCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
-        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayload.json");
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
 
         mockMvc.perform(post("/caveat/solsCreate")
+            .header("Authorization", AUTH_TOKEN)
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    public void solsCaveatCreatedForOrganisation_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
+
+        mockMvc.perform(post("/caveat/sols-created")
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
@@ -109,6 +125,7 @@ public class CaveatControllerTest {
         String caveatPayload = testUtils.getStringFromFile("solicitorUpdateCaveatPayload.json");
 
         mockMvc.perform(post("/caveat/solsUpdate")
+            .header("Authorization", AUTH_TOKEN)
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
