@@ -14,6 +14,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -26,8 +28,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
@@ -120,11 +124,20 @@ public class CallbackResponseTransformer {
     private final TaskListUpdateService taskListUpdateService;
     private final CaseDataTransformer caseDataTransformer;
     private final PDFManagementService pdfManagementService;
+    private final OrganisationsRetrievalService organisationsRetrievalService;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
 
+    public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
+
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
+            callbackRequest.getCaseDetails().getData(), authToken));
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+    
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         return transformResponse(responseCaseDataBuilder.build());
@@ -1059,7 +1072,8 @@ public class CallbackResponseTransformer {
             .codicilsDamageCulpritName(caseData.getCodicilsDamageCulpritName())
             .codicilsDamageDateKnown(caseData.getCodicilsDamageDateKnown())
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
-            .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes());
+            .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
+            .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1073,6 +1087,24 @@ public class CallbackResponseTransformer {
 
 
         return builder;
+    }
+
+    public OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
+        OrganisationEntityResponse organisationEntityResponse = null;
+        if (null != authToken) {
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+        }
+        if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
+            return OrganisationPolicy.builder()
+            .organisation(Organisation.builder()
+                .organisationID(organisationEntityResponse.getOrganisationIdentifier())
+                .organisationName(organisationEntityResponse.getName())
+                .build())
+            .orgPolicyReference(caseData.getApplicantOrganisationPolicy().getOrgPolicyReference())
+            .orgPolicyCaseAssignedRole(caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
+            .build();
+        }
+        return null;
     }
 
     private boolean isPaperForm(CaseData caseData) {

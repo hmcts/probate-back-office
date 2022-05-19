@@ -33,4 +33,18 @@
         <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
         <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-cloud-starter-oauth2-2.2.5.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-oauth2@.*$</packageUrl>
+        <vulnerabilityName>CVE-2022-22969</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+    file name: launchdarkly-java-server-sdk-5.2.3.jar (shaded: com.google.code.gson:gson:2.7)
+    ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.google\.code\.gson/gson@.*$</packageUrl>
+        <cve>CVE-2022-25647</cve>
+    </suppress>
 </suppressions>
