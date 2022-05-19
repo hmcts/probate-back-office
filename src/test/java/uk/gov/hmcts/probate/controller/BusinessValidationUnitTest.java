@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -146,6 +147,8 @@ public class BusinessValidationUnitTest {
     private List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
     @Mock
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
+    @Mock
+    private AssignCaseAccessService assignCaseAccessService;
 
     private BusinessValidationController underTest;
 
@@ -176,7 +179,8 @@ public class BusinessValidationUnitTest {
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
-            solicitorPostcodeValidationRule);
+            solicitorPostcodeValidationRule,
+            assignCaseAccessService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -196,6 +200,29 @@ public class BusinessValidationUnitTest {
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
             bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldVerifySolsAccessWithNoErrors() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth",
+                "GrantOfRepresentation", callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldVerifySolsCreatedWithNoErrors() {
+        when(callbackResponseTransformerMock.createSolsCase(callbackRequestMock, "auth"))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.createSolsCaseWithOrganisation("auth",
+                callbackRequestMock);
 
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

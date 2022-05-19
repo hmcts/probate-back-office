@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -36,6 +37,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
@@ -98,6 +100,7 @@ public class BusinessValidationController {
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
+    private final AssignCaseAccessService assignCaseAccessService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -127,6 +130,24 @@ public class BusinessValidationController {
             return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-created")
+    public ResponseEntity<CallbackResponse> createSolsCaseWithOrganisation(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest request) {
+        logRequest("/sols-created", request);
+        return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
+    }
+
+    @PostMapping(path = "/sols-access")
+    public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestParam(value = "caseTypeId") String caseTypeId,
+        @RequestBody CallbackRequest request) {
+        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken, caseTypeId);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
+        return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
