@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.util.diagrams;
+package uk.gov.hmcts.probate.util.diagrams.diagramsnet;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -121,7 +121,7 @@ public class BuildFlowDiagram {
         }
         allRows.add(footer);
         textFileBuilderService.createFile(allRows, ",", CASE_TYPE_PREFIX + caseType
-                + "-flow.xml");
+                + "_" + filteredByRole + "_flow.xml");
     }
 
     private List<DiagramEvent> getAllEvents(String caseType, List<DiagramState> allStates) throws IOException {
@@ -189,6 +189,8 @@ public class BuildFlowDiagram {
             allDiagramStates.add(DiagramState.builder()
                     .id(state.get("ID").toString())
                     .name(state.get("Name").toString())
+                    .x(getPosition(state, 0))
+                    .y(getPosition(state, 1))
                     .build());
         }
 
@@ -197,6 +199,13 @@ public class BuildFlowDiagram {
                 .name("ALL")
                 .build());
         return allDiagramStates;
+    }
+
+    private int getPosition(Map<String, Object> state, int ind) {
+        if (state.get("Position") == null) {
+            return -1;
+        }
+        return Integer.valueOf(state.get("Position").toString().split(",")[ind]);
     }
 
     private void addEventAuths(String caseType, List<DiagramEvent> allEvents) throws IOException {
@@ -227,7 +236,7 @@ public class BuildFlowDiagram {
 
     private DiagramState getState(List<DiagramState> allDiagramStates, String find) {
         for (DiagramState diagramState : allDiagramStates) {
-            if (diagramState.id.equalsIgnoreCase(find)) {
+            if (diagramState.getId().equalsIgnoreCase(find)) {
                 return diagramState;
             }
         }

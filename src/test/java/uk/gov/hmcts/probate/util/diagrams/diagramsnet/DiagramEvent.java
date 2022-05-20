@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.util.diagrams;
+package uk.gov.hmcts.probate.util.diagrams.diagramsnet;
 
 import lombok.Builder;
 import lombok.Data;
@@ -12,15 +12,17 @@ public class DiagramEvent {
 
     private final String id;
     private final String name;
+    private final String description;
     private final DiagramState pre;
     private final DiagramState post;
     private final String start;
     private final String about;
     private final String submitted;
+    private final boolean showSummary;
 
     protected String getEventToStateArrows(int c, boolean showCallbacks) {
-        String source = pre == null ? "source=\"begin\"" : "source=\"" + pre.id + "\"";
-        String target = post == null ? "" : "target=\"" + post.id + "\"";
+        String source = pre == null ? "source=\"begin\"" : "source=\"" + pre.getId() + "\"";
+        String target = post == null ? "" : "target=\"" + post.getId() + "\"";
         String color = EVENT_COLORS[c % (EVENT_COLORS.length - 1)];
         String callbacks = showCallbacks ? "["
                 + (start == null ? "" : start) + ":"
@@ -30,7 +32,7 @@ public class DiagramEvent {
         String nameAndCallbacks = name + callbacks;
 
         String eventStr = "";
-        if (pre != null && post != null && pre.id != null && post.id != null && pre.id.equals(post.id)) {
+        if (pre != null && post != null && pre.getId() != null && post.getId() != null) {
             eventStr = "\n        <mxCell id=\"" + id + "\" value=\"" + nameAndCallbacks + "\" "
                     + "style=\"curved=1;html=1;jettySize=auto;orthogonalLoop=1;"
                     + "fontFamily=Courier New;fontSize=14;fontColor=#" + color + ";"
@@ -58,5 +60,9 @@ public class DiagramEvent {
     private String removeUri(String callback) {
         String toRemove = "http://\\$\\{CCD_DEF_CASE_SERVICE_BASE_URL\\}";
         return callback.replaceAll(toRemove, "");
+    }
+
+    public String getEventId() {
+        return this.getId() +"Event";
     }
 }
