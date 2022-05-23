@@ -217,7 +217,7 @@ configurations.all {
   resolutionStrategy {
     eachDependency { DependencyResolveDetails details ->
       if (details.requested.group in ['org.apache.tomcat.embed']) {
-        details.useVersion '9.0.58'
+        details.useVersion '9.0.63'
       }
       if (details.requested.group in ['org.hibernate']) {
         details.useVersion '5.6.5.Final'
