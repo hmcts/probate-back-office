@@ -90,7 +90,7 @@ public class ZipFileService {
 
     private ZippedDocumentFile getSmeeAndFordCaseData(List<ReturnedCaseDetails> cases) {
         byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
-        ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
+        return ZippedDocumentFile.builder()
                 .zippedManifestData(ZippedManifestData.builder()
                         .caseNumber("all")
                         .docFileType(CSV)
@@ -98,8 +98,6 @@ public class ZipFileService {
                         .build())
                 .byteArrayResource(new ByteArrayResource(bytes))
                 .build();
-
-        return zippedDocumentFile;
     }
 
     private Collection<ZippedDocumentFile> getWillDocuments(ReturnedCaseDetails caseDetails) {

@@ -125,11 +125,10 @@ public class ZipFileServiceTest {
         Files.delete(zipFile.toPath());
     }
 
-    @Test(expected = ZipFileException.class)
+    @Test
     public void shouldThrowExceptionAndZipFileShouldNotGenerated() {
         File zipFile = new File("");
-        zipFileService.generateZipFile(returnedCaseDetails, zipFile);
-        Assert.assertTrue(false);
+        Assert.assertThrows(ZipFileException.class, () -> zipFileService.generateZipFile(returnedCaseDetails, zipFile));
     }
 
     @Test

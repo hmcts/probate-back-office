@@ -1,11 +1,15 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.exception.ClientDataException;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
@@ -14,6 +18,7 @@ import uk.gov.hmcts.probate.service.evidencemanagement.builder.DocumentManagemen
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -81,5 +86,21 @@ public class EmUploadServiceTest {
             new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
 
         emUploadService.store(evidenceManagementFileUpload);
+    }
+
+    @Test
+    public void shouldGetDocumentById() {
+        String documentId = "12345678";
+        byte [] bytes = "123456".getBytes(StandardCharsets.UTF_8);
+        ByteArrayResource resource = new ByteArrayResource(bytes);
+        when(documentManagementURIBuilder.buildBinaryUrl(documentId)).thenReturn(URL);
+        when(evidenceManagementRestTemplate.exchange(eq(URL), eq(HttpMethod.GET), any(), eq(ByteArrayResource.class)))
+                .thenReturn(ResponseEntity.accepted().body(resource));
+
+        ByteArrayResource actual = emUploadService.getDocument(documentId);
+        Assert.assertEquals(resource, actual);
+        verify(documentManagementURIBuilder).buildBinaryUrl(documentId);
+        verify(evidenceManagementRestTemplate).exchange(eq(URL), eq(HttpMethod.GET),
+                any(), eq(ByteArrayResource.class));
     }
 }
