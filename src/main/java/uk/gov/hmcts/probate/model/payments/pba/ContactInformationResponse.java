@@ -7,7 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.time.LocalDateTime;
 
 
 @Data
@@ -17,20 +17,22 @@ import java.util.List;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ContactInformationResponse {
 
-    @JsonProperty(value = "addressLine1")
+    @JsonProperty
+    private String uprn;
+    @JsonProperty
+    private LocalDateTime created;
+    @JsonProperty
     private String addressLine1;
-    @JsonProperty(value = "addressLine2")
+    @JsonProperty
     private String addressLine2;
-    @JsonProperty(value = "addressLine3")
+    @JsonProperty
     private String addressLine3;
-    @JsonProperty(value = "townCity")
+    @JsonProperty
     private String townCity;
-    @JsonProperty(value = "county")
+    @JsonProperty
     private String county;
-    @JsonProperty(value = "country")
+    @JsonProperty
     private String country;
-    @JsonProperty(value = "postCode")
+    @JsonProperty
     private String postCode;
-    @JsonProperty(value = "dxAddress")
-    private List<DxAddressResponse> dxAddress;
 }
