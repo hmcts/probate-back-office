@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.zip;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -16,7 +15,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.ZippedDocumentFile;
 import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
+import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.evidencemanagement.upload.EmUploadService;
+import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,10 +25,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Arrays;
 import java.util.stream.Collectors;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -53,14 +55,20 @@ import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 public class ZipFileService {
     private final ObjectMapper objectMapper;
     private final EmUploadService emUploadService;
+    private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
+    private final FileSystemResourceService fileSystemResourceService;
     private Path secureDir = null;
     private static final String PDF = ".pdf";
+    private static final String CSV = ".csv";
     private static final String JSON = ".json";
+    private static final String DELIMITER = "|";
+    private static final String NEW_LINE = "\n";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT, INTESTACY_GRANT,
         WELSH_DIGITAL_GRANT, WELSH_ADMON_WILL_GRANT, WELSH_INTESTACY_GRANT};
     private static final DocumentType[] REISSUE_GRANT_TYPES = {DIGITAL_GRANT_REISSUE, INTESTACY_GRANT_REISSUE,
         ADMON_WILL_GRANT_REISSUE, WELSH_DIGITAL_GRANT_REISSUE, WELSH_INTESTACY_GRANT_REISSUE,
         WELSH_ADMON_WILL_GRANT_REISSUE};
+    private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
 
     public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile) {
         log.info("generateZipFile for {} cases", cases.size());
@@ -71,12 +79,27 @@ public class ZipFileService {
             filesToZip.addAll(getGrantDocuments(returnedCaseDetails));
             filesToZip.addAll(getReIssueGrantDocuments(returnedCaseDetails));
         }
+        filesToZip.add(getSmeeAndFordCaseData(cases));
         try {
             zipMultipleDocs(filesToZip, tempFile);
         } catch (IOException e) {
             log.info("Exception occurred while generating zip file: {}", e);
             throw new ZipFileException(e.getMessage());
         }
+    }
+
+    private ZippedDocumentFile getSmeeAndFordCaseData(List<ReturnedCaseDetails> cases) {
+        byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
+        ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
+                .zippedManifestData(ZippedManifestData.builder()
+                        .caseNumber("all")
+                        .docFileType(CSV)
+                        .docType("csv")
+                        .build())
+                .byteArrayResource(new ByteArrayResource(bytes))
+                .build();
+
+        return zippedDocumentFile;
     }
 
     private Collection<ZippedDocumentFile> getWillDocuments(ReturnedCaseDetails caseDetails) {
@@ -143,7 +166,7 @@ public class ZipFileService {
         return filesToZip;
     }
 
-    public Collection<ZippedDocumentFile> getReIssueGrantDocuments(ReturnedCaseDetails caseDetails) {
+    private Collection<ZippedDocumentFile> getReIssueGrantDocuments(ReturnedCaseDetails caseDetails) {
         List<ZippedDocumentFile> filesToZip = new ArrayList<>();
         List<CollectionMember<Document>> collect = caseDetails.getData()
                 .getProbateDocumentsGenerated().stream()
@@ -198,20 +221,20 @@ public class ZipFileService {
 
     public File createTempZipFile(String zipName) throws IOException {
         if (secureDir == null) {
-            File file = ResourceUtils.getFile("/" + zipName + ".zip");
-            secureDir = file.toPath();
+            secureDir = Paths.get("").toAbsolutePath();
+            File file = ResourceUtils.getFile(secureDir.toString() + "/" + zipName + ".zip");
             if (file.exists()) {
                 Files.delete(file.toPath());
             }
         }
 
-        log.info("secureDir:" + secureDir.toAbsolutePath());
-        File tempFile = Files.createTempFile(secureDir, zipName, ".zip").toFile();
-        boolean isReadable = tempFile.setReadable(true, true);
-        boolean isWritable = tempFile.setWritable(true, true);
+        log.info("secureDir:" + secureDir);
+        Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
+        boolean isReadable = tempFilePath.toFile().setReadable(true, true);
+        boolean isWritable = tempFilePath.toFile().setWritable(true, true);
         log.info("tempFile: {} and file is isReadable {} and isWritable {}",
-                tempFile.toPath().toAbsolutePath(), isReadable, isWritable);
-        return tempFile;
+                tempFilePath.toAbsolutePath(), isReadable, isWritable);
+        return tempFilePath.toFile();
     }
 
     private void zipMultipleDocs(List<ZippedDocumentFile> files, File tempFile) throws IOException {
@@ -232,15 +255,37 @@ public class ZipFileService {
         }
     }
 
-    private ZippedDocumentFile generateManifestFile(List<ZippedDocumentFile> files) throws IOException {
-        JSONArray jsonArray = new JSONArray();
+    private void addHeaderRow(StringBuilder data) {
+        String header = fileSystemResourceService.getFileFromResourceAsString(HEADER_ROW_FILE);
+        data.append(header);
+    }
+
+    private ZippedDocumentFile generateManifestFile(List<ZippedDocumentFile> files) {
+        StringBuilder data = new StringBuilder();
+        addHeaderRow(data);
+        data.append(NEW_LINE);
+
         for (ZippedDocumentFile file : files) {
-            jsonArray.put(objectMapper.writeValueAsString(file.getZippedManifestData()));
+            data.append(file.getZippedManifestData().getCaseNumber());
+            data.append(DELIMITER);
+            data.append(file.getZippedManifestData().getDocumentId());
+            data.append(DELIMITER);
+            data.append(file.getZippedManifestData().getDocType());
+            data.append(DELIMITER);
+            data.append(file.getZippedManifestData().getSubType());
+            data.append(DELIMITER);
+            data.append(file.getZippedManifestData().getCaseType());
+            data.append(DELIMITER);
+            data.append(file.getZippedManifestData().getDocumentName());
+            data.append(DELIMITER);
+            data.append(file.getZippedManifestData().getErrorDescription());
+            data.append(NEW_LINE);
         }
+
         return ZippedDocumentFile.builder()
-                .byteArrayResource(new ByteArrayResource(jsonArray.toString().getBytes(StandardCharsets.UTF_8)))
+                .byteArrayResource(new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8)))
                 .zippedManifestData(ZippedManifestData.builder()
-                        .caseNumber("All")
+                        .caseNumber("manifest")
                         .docType("cases")
                         .docFileType(JSON)
                         .errorDescription("").build())

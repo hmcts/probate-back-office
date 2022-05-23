@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -69,6 +70,10 @@ public class SmeeAndFordPersonalisationService {
     private String getSubject(String fromDate, String toDate) {
         return SUBJECT.replace(":fromDate", fromDate)
             .replace(":toDate", toDate);
+    }
+
+    public byte[] getSmeeAndFordByteArray(List<ReturnedCaseDetails> cases) {
+        return getSmeeAndFordBuiltData(cases).toString().getBytes(StandardCharsets.UTF_8);
     }
 
     private StringBuilder getSmeeAndFordBuiltData(List<ReturnedCaseDetails> cases) {
