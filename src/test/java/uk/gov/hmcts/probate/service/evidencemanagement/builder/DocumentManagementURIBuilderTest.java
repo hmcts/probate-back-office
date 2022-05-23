@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 public class DocumentManagementURIBuilderTest {
@@ -27,5 +28,10 @@ public class DocumentManagementURIBuilderTest {
     @Test
     public void shouldBuildUrlWithId() {
         assertThat(documentManagementURIBuilder.buildUrl(ID), is(HOST + URL + "/" + ID));
+    }
+
+    @Test
+    public void shouldBuildBinaryUrlWithId() {
+        assertEquals(documentManagementURIBuilder.buildBinaryUrl(ID), HOST + URL + "/" + ID + "/binary");
     }
 }
