@@ -25,8 +25,9 @@ public class BuildFlowDiagram {
     private static final String CASE_TYPE_GRANT = "Backoffice";
     private static final String CASE_TYPE_CAVEAT = "Caveat";
     private static final String ROLE_CW = "caseworker-probate-issuer";
+    private static final String ROLE_PP = "caseworker-probate-solicitor";
 
-    private String filteredByRole = ROLE_CW;
+    private String filteredByRole = ROLE_PP;
     private boolean showCallbacks = false;
     private int width = 1000;
     private int height = 1000;
@@ -121,7 +122,7 @@ public class BuildFlowDiagram {
         }
         allRows.add(footer);
         textFileBuilderService.createFile(allRows, ",", CASE_TYPE_PREFIX + caseType
-                + "_" + filteredByRole + "_flow.xml");
+                + "_" + filteredByRole + "_flow.drawio");
     }
 
     private List<DiagramEvent> getAllEvents(String caseType, List<DiagramState> allStates) throws IOException {
