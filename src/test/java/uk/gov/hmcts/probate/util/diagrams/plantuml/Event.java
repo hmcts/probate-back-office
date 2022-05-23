@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Event {
+public class Event implements Cell {
+    protected static final String COLOR_EVENT = "#ff4040";
+
     private final String id;
     private final String name;
     private final String description;
@@ -18,7 +20,10 @@ public class Event {
     protected String crud;
 
     public String getEventId() {
-        return this.getId() +"Event";
+        return this.getId() + "Event";
     }
 
+    public String getColor() {
+        return COLOR_EVENT;
+    }
 }

@@ -5,7 +5,6 @@ import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.service.filebuilder.TextFileBuilderService;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,6 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static uk.gov.hmcts.probate.util.diagrams.plantuml.Event.COLOR_EVENT;
+import static uk.gov.hmcts.probate.util.diagrams.plantuml.State.COLOR_STATE;
 
 @Slf4j
 public class BuildStateDiagram {
@@ -27,10 +29,6 @@ public class BuildStateDiagram {
     private static final String CASE_TYPE_CAVEAT = "Caveat";
     private static final String ROLE_CW = "caseworker-probate-issuer";
     private static final String ROLE_PP = "caseworker-probate-solicitor";
-    private static final String COLOR_STATE = " #bfbfff";
-    private static final String COLOR_STATE_READONLY = " #f2f2ff";
-    private static final String COLOR_EVENT = " #ff8080";
-    private static final String COLOR_EVENT_READONLY = " #ffe6e6";
     private static final String ARROW = " --> ";
     private static final String ARROW_TERMINATOR = " --> ";
     private static final String CR = " \n";
@@ -40,6 +38,7 @@ public class BuildStateDiagram {
     private String filteredByRoleName = ROLE_PP;
     private boolean showCallbacks = false;
     private boolean showCrud = false;
+    private boolean hideReadonly = false;
 
     public static void main(String[] args) throws IOException {
         new BuildStateDiagram().generateAll();
@@ -47,7 +46,7 @@ public class BuildStateDiagram {
 
     private void generateAll() throws IOException {
         generate(CASE_TYPE_GRANT);
-        //generate("Caveat");
+        generate(CASE_TYPE_CAVEAT);
     }
 
     private void generate(String caseType) throws IOException {
@@ -55,30 +54,36 @@ public class BuildStateDiagram {
         List<Event> allEvents = getAllEvents(caseType, allStates);
 
         String header = "@startuml" + CR;
+        String skin1 = "skinparam titleBorderRoundCorner 15" + CR;
+        String skin2 = "skinparam titleBorderThickness 2" + CR;
+        String skin3 = "skinparam titleBorderColor red" + CR;
+        String skin4 = "skinparam titleFontSize 24" + CR;
+        String skin5 = "skinparam titleBackgroundColor #00ff00" + CR;
+
+        String title = "title " + caseType + " flow" + (filteredByRole ? " filtered by role = " + filteredByRoleName: "")
+                + CR;
         String keyState = "state STATE" + COLOR_STATE + CR;
-        String keyStateReadonly = "state STATE_READONLY" + COLOR_STATE_READONLY + CR;
-        String noteState = "note left of STATE : States" + CR;
         String keyEvent = "state EVENT" + COLOR_EVENT + CR;
-        String keyEventReadonly = "state EVENT_READONLY" + COLOR_EVENT_READONLY + CR;
-        String noteEvent = "note left of EVENT : Events" + CR;
 
         String footer = "@enduml";
 
         List<String> allRows = new ArrayList<>();
         allRows.add(header);
+        allRows.add(skin1);
+        allRows.add(skin2);
+        allRows.add(skin3);
+        allRows.add(skin4);
+        allRows.add(skin5);
+        allRows.add(title);
         allRows.add(keyState);
-        allRows.add(keyStateReadonly);
-        allRows.add(noteState);
         allRows.add(keyEvent);
-        allRows.add(keyEventReadonly);
-        allRows.add(noteEvent);
         allRows.add(CR);
 
         for (State state : allStates) {
             String id = state.getStateId();
             String stateName = separateWithCRs(state.getName());
 
-            String stateRow = "state " + id + " as \"" + stateName + "\" " + getColorForState(state) + CR;
+            String stateRow = "state " + id + " as \"" + stateName + "\" " + state.getColorForCell() + CR;
             allRows.add(stateRow);
             List<String> iRows = getAllInformationRows(state);
             allRows.addAll(iRows);
@@ -88,7 +93,7 @@ public class BuildStateDiagram {
             String id = event.getEventId();
             String eventName = separateWithCRs(event.getName());
 
-            String eventRow = "state " + id + " as \"" + eventName + "\"" + getColorForEvent(event) + CR;
+            String eventRow = "state " + id + " as \"" + eventName + "\" " + event.getColorForCell() + CR;
             allRows.add(eventRow);
             List<String> iRows = getAllInformationRows(event);
             allRows.addAll(iRows);
@@ -128,7 +133,6 @@ public class BuildStateDiagram {
         allRows.add(footer);
         textFileBuilderService.createFile(allRows, ",", CASE_TYPE_PREFIX + caseType
                 + "_" + filteredByRoleName + "_state.txt");
-        File source = new File("");
     }
 
     private List<String> getAllInformationRows(Event event) {
@@ -252,13 +256,17 @@ public class BuildStateDiagram {
 
         List<Event> allAuthdEvents = new ArrayList<>();
         String allAuthEvents = getStringFromFile(BASE_DIR + caseType + "/AuthorisationCaseEvent.json");
-        Map<String, Object>[] authEvents = new ObjectMapper().readValue(allAuthEvents, HashMap[].class);
-        for (Map<String, Object> authEvent : authEvents) {
-            Event foundEvent = allEvents.stream().filter(e -> e.getId().equals(authEvent.get("CaseEventID"))).findFirst().get();
-            String userRole = authEvent.get("UserRole").toString();
+        Map<String, Object>[] authEventsMaps = new ObjectMapper().readValue(allAuthEvents, HashMap[].class);
+        for (Map<String, Object> authEventMap : authEventsMaps) {
+            String userRole = authEventMap.get("UserRole").toString();
             if (!filteredByRole || filteredByRoleName.equals(userRole)) {
-                foundEvent.setCrud(authEvent.get("CRUD").toString());
-                allAuthdEvents.add(foundEvent);
+                Event foundEvent = allEvents.stream()
+                        .filter(e -> e.getId().equals(authEventMap.get("CaseEventID")))
+                        .findFirst().get();
+                foundEvent.setCrud(authEventMap.get("CRUD").toString());
+                if (!(hideReadonly && foundEvent.isReadonly())) {
+                    allAuthdEvents.add(foundEvent);
+                }
             }
         }
         return allAuthdEvents;
@@ -299,14 +307,16 @@ public class BuildStateDiagram {
 
         List<State> allAuthdStates = new ArrayList<>();
         String allAuthSates = getStringFromFile(BASE_DIR + caseType + "/AuthorisationCaseState.json");
-        Map<String, Object>[] authStates = new ObjectMapper().readValue(allAuthSates, HashMap[].class);
-        for (Map<String, Object> state : authStates) {
-            String userRole = state.get("UserRole").toString();
+        Map<String, Object>[] authStatesMaps = new ObjectMapper().readValue(allAuthSates, HashMap[].class);
+        for (Map<String, Object> authStateMaps : authStatesMaps) {
+            String userRole = authStateMaps.get("UserRole").toString();
             if (!filteredByRole || filteredByRoleName.equals(userRole)) {
-                State foundState = allStates.stream().filter(s -> s.getId().equals(state.get("CaseStateID"))).findFirst().get();
-                foundState.setCrud(state.get("CRUD").toString());
+                State foundState = allStates.stream()
+                        .filter(s -> s.getId().equals(authStateMaps.get("CaseStateID")))
+                        .findFirst().get();
+                foundState.setCrud(authStateMaps.get("CRUD").toString());
 
-                if (foundState != null) {
+                if (foundState != null && !(hideReadonly && foundState.isReadonly())) {
                     allAuthdStates.add(State.builder()
                             .id(foundState.getId())
                             .name(foundState.getName())
@@ -363,24 +373,6 @@ public class BuildStateDiagram {
             i++;
         }
         return builder.toString();
-    }
-
-    private String getColorForState(State state) {
-        String col= COLOR_STATE;
-        if ("R".equals(state.getCrud())) {
-            col = COLOR_STATE_READONLY;
-        }
-
-        return col;
-    }
-
-    private String getColorForEvent(Event event) {
-        String col= COLOR_EVENT;
-        if ("R".equals(event.getCrud())) {
-            col = COLOR_EVENT_READONLY;
-        }
-
-        return col;
     }
 
 }

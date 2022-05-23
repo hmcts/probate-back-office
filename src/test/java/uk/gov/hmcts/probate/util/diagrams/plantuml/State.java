@@ -5,7 +5,9 @@ import lombok.Data;
 
 @Data
 @Builder
-public class State {
+public class State implements Cell {
+    protected static final String COLOR_STATE = "#4040ff";
+
     private final String id;
     private final String name;
     private final String description;
@@ -13,6 +15,10 @@ public class State {
 
     public String getStateId() {
         return this.getId() + "State";
+    }
+
+    public String getColor() {
+        return COLOR_STATE;
     }
 
 }
