@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.mockito.ArgumentMatchers.isNotNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -42,7 +44,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @Mock   
+    @Mock
     private FileSystemResourceService fileSystemResourceService;
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
@@ -60,24 +62,24 @@ public class SmeeAndFordPersonalisationServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/SmeeAndFordHeaderRow.csv"))
-            .thenReturn("Registry name|Date of Issue|Case reference number|Full name of deceased|All names which the " 
-                + "deceased was otherwise known as|Type of Grant|Date of death|Deceased Address|Deceased Town|" 
-                + "Deceased County|Deceased Postcode|Deceased Country|Applying executor 1 Name|Applying executor 1 " 
-                + "Address|Applying executor 1 Town|Applying executor 1 County|Applying executor 1 Postcode|Applying " 
-                + "executor 1 Country|Applying executor 2 Name|Applying executor 2 Address|Applying executor 2 Town|" 
-                + "Applying executor 2 County|Applying executor 2 Postcode|Applying executor 2 Country|Applying " 
-                + "executor 3 Name|Applying executor 3 Address|Applying executor 3 Town|Applying executor 3 County|" 
-                + "Applying executor 3 Postcode|Applying executor 3 Country|Primary applicant Name|Primary applicant " 
-                + "Address|Primary applicant Town|Primary applicant County|Primary applicant Postcode|Primary " 
-                + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|" 
-                + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to " 
+            .thenReturn("Registry name|Date of Issue|Case reference number|Full name of deceased|All names which the "
+                + "deceased was otherwise known as|Type of Grant|Date of death|Deceased Address|Deceased Town|"
+                + "Deceased County|Deceased Postcode|Deceased Country|Applying executor 1 Name|Applying executor 1 "
+                + "Address|Applying executor 1 Town|Applying executor 1 County|Applying executor 1 Postcode|Applying "
+                + "executor 1 Country|Applying executor 2 Name|Applying executor 2 Address|Applying executor 2 Town|"
+                + "Applying executor 2 County|Applying executor 2 Postcode|Applying executor 2 Country|Applying "
+                + "executor 3 Name|Applying executor 3 Address|Applying executor 3 Town|Applying executor 3 County|"
+                + "Applying executor 3 Postcode|Applying executor 3 Country|Primary applicant Name|Primary applicant "
+                + "Address|Primary applicant Town|Primary applicant County|Primary applicant Postcode|Primary "
+                + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|"
+                + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to "
                 + "Codicil being present|pdf file name field for Wills|pdf for Digital Grant");
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
                                                         int numExecs, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
-                                                        boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias, 
+                                                        boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias,
                                                         boolean hasDOD, boolean isWelsh) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = null;
         if (hasDeceasedAlias) {
@@ -318,5 +320,20 @@ public class SmeeAndFordPersonalisationServiceTest {
         String smeeAndFordRespnse = testUtils.getStringFromFile("smeeAndFordExpectedDataNullDOD.txt");
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
+    }
+
+    @Test
+    public void shouldGetSmeeAndFordByteArray() {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+                false, false, true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+                false, true, false, false).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        byte[] actual = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
+
+        assertThat(1497, is(actual.length));
     }
 }
