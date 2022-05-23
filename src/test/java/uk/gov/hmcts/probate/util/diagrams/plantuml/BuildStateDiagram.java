@@ -28,14 +28,18 @@ public class BuildStateDiagram {
     private static final String ROLE_CW = "caseworker-probate-issuer";
     private static final String ROLE_PP = "caseworker-probate-solicitor";
     private static final String COLOR_STATE = " #bfbfff";
+    private static final String COLOR_STATE_READONLY = " #f2f2ff";
     private static final String COLOR_EVENT = " #ff8080";
+    private static final String COLOR_EVENT_READONLY = " #ffe6e6";
     private static final String ARROW = " --> ";
     private static final String ARROW_TERMINATOR = " --> ";
     private static final String CR = " \n";
+    private static final String INFO_CRUD = "CRUD - ";
 
     private boolean filteredByRole = true;
     private String filteredByRoleName = ROLE_PP;
-    private boolean showCallbacks = true;
+    private boolean showCallbacks = false;
+    private boolean showCrud = false;
 
     public static void main(String[] args) throws IOException {
         new BuildStateDiagram().generateAll();
@@ -47,15 +51,15 @@ public class BuildStateDiagram {
     }
 
     private void generate(String caseType) throws IOException {
-        List<PlantUmlState> allStates = getAllStates(caseType);
-        List<PlantUmlEvent> allEvents = getAllEvents(caseType, allStates);
-        //addEventAuths(caseType, allEvents);
-
+        List<State> allStates = getAllStates(caseType);
+        List<Event> allEvents = getAllEvents(caseType, allStates);
 
         String header = "@startuml" + CR;
         String keyState = "state STATE" + COLOR_STATE + CR;
+        String keyStateReadonly = "state STATE_READONLY" + COLOR_STATE_READONLY + CR;
         String noteState = "note left of STATE : States" + CR;
         String keyEvent = "state EVENT" + COLOR_EVENT + CR;
+        String keyEventReadonly = "state EVENT_READONLY" + COLOR_EVENT_READONLY + CR;
         String noteEvent = "note left of EVENT : Events" + CR;
 
         String footer = "@enduml";
@@ -63,32 +67,36 @@ public class BuildStateDiagram {
         List<String> allRows = new ArrayList<>();
         allRows.add(header);
         allRows.add(keyState);
+        allRows.add(keyStateReadonly);
         allRows.add(noteState);
         allRows.add(keyEvent);
+        allRows.add(keyEventReadonly);
         allRows.add(noteEvent);
         allRows.add(CR);
 
-        for (PlantUmlState state : allStates) {
+        for (State state : allStates) {
             String id = state.getStateId();
             String stateName = separateWithCRs(state.getName());
 
-            String stateRow = "state " + id + " as \"" + stateName + "\" " + COLOR_STATE + CR;
+            String stateRow = "state " + id + " as \"" + stateName + "\" " + getColorForState(state) + CR;
             allRows.add(stateRow);
+            List<String> iRows = getAllInformationRows(state);
+            allRows.addAll(iRows);
 
         }
-        for (PlantUmlEvent event : allEvents) {
+        for (Event event : allEvents) {
             String id = event.getEventId();
             String eventName = separateWithCRs(event.getName());
 
-            String eventRow = "state " + id + " as \"" + eventName + "\"" + COLOR_EVENT + CR;
+            String eventRow = "state " + id + " as \"" + eventName + "\"" + getColorForEvent(event) + CR;
             allRows.add(eventRow);
-            List<String> cbRows = getAllCallbackRows(event);
-            allRows.addAll(cbRows);
+            List<String> iRows = getAllInformationRows(event);
+            allRows.addAll(iRows);
         }
         allRows.add(CR);
         allRows.add(CR);
         allRows.add(CR);
-        for (PlantUmlEvent event : allEvents) {
+        for (Event event : allEvents) {
             String eventId = event.getEventId();
             if (event.getPre() == null && event.getPost() == null) {
                 String preEventRow = "[*] " + ARROW_TERMINATOR + eventId + " \n";
@@ -123,27 +131,52 @@ public class BuildStateDiagram {
         File source = new File("");
     }
 
-    private List<String> getAllCallbackRows(PlantUmlEvent event) {
+    private List<String> getAllInformationRows(Event event) {
         List<String> all = new ArrayList<>();
         if (showCallbacks) {
-            String start = addEventCallback(event, event.getStart(), "1 - ");
+            String start = addEventInfo(event, event.getStart(), "1 - ");
             if (start != null) {
                 all.add(start);
             }
-            String about = addEventCallback(event, event.getAbout(), "2 - ");
+            String about = addEventInfo(event, event.getAbout(), "2 - ");
             if (about != null) {
                 all.add(about);
             }
-            String sub = addEventCallback(event, event.getSubmitted(), "3 - ");
+            String sub = addEventInfo(event, event.getSubmitted(), "3 - ");
             if (sub != null) {
                 all.add(sub);
+            }
+        }
+        if (showCrud) {
+            String crud = addEventInfo(event, event.getCrud(), INFO_CRUD);
+            if (crud != null && !"CRUD".equals(event.getCrud())) {
+                all.add(crud);
             }
         }
         return all;
     }
 
-    private String addEventCallback(PlantUmlEvent event, String cb, String prefix) {
-        return cb.isBlank() ? null : event.getEventId() + " : " + prefix + separateWithCRs(removeUri(cb)) + CR;
+    private List<String> getAllInformationRows(State state) {
+        List<String> all = new ArrayList<>();
+        if (showCrud) {
+            String crud = addStateInfo(state, state.getCrud(), INFO_CRUD);
+            if (crud != null && !"CRUD".equals(state.getCrud())) {
+                all.add(crud);
+            }
+        }
+        return all;
+    }
+
+    private String addEventInfo(Event event, String cb, String prefix) {
+        return addInfo(event.getEventId(), cb, prefix);
+    }
+
+    private String addStateInfo(State state, String cb, String prefix) {
+        return addInfo(state.getStateId(), cb, prefix);
+    }
+
+    private String addInfo(String id, String cb, String prefix) {
+        return cb.isBlank() ? null : id + " : " + prefix + separateWithCRs(removeUri(cb)) + CR;
     }
 
     private String removeUri(String callback) {
@@ -151,11 +184,11 @@ public class BuildStateDiagram {
         return callback.replaceAll(toRemove, "");
     }
 
-    private List<PlantUmlEvent> getAllEvents(String caseType, List<PlantUmlState> allStates) throws IOException {
+    private List<Event> getAllEvents(String caseType, List<State> allStates) throws IOException {
         String caseEvent = getStringFromFile(BASE_DIR + caseType + "/CaseEvent.json");
         Map<String, Object>[] caseEvents = new ObjectMapper().readValue(caseEvent, HashMap[].class);
 
-        List<PlantUmlEvent> allEvents = new ArrayList<>();
+        List<Event> allEvents = new ArrayList<>();
         for (Map<String, Object> eventMap : caseEvents) {
             String id = "";
             String name = "";
@@ -199,10 +232,10 @@ public class BuildStateDiagram {
 
             }
 
-            PlantUmlState preDiagramState = getState(allStates, pre);
-            PlantUmlState postDiagramState = getState(allStates, post);
+            State preDiagramState = getState(allStates, pre);
+            State postDiagramState = getState(allStates, post);
 
-            PlantUmlEvent plantUmlEvent = PlantUmlEvent.builder()
+            Event event = Event.builder()
                     .id(id)
                     .name(name)
                     .description(description)
@@ -213,27 +246,29 @@ public class BuildStateDiagram {
                     .submitted(submitted)
                     .showSummary(showSummary)
                     .build();
-            allEvents.add(plantUmlEvent);
+            allEvents.add(event);
         }
 
 
-        List<PlantUmlEvent> allAuthdEvents = new ArrayList<>();
+        List<Event> allAuthdEvents = new ArrayList<>();
         String allAuthEvents = getStringFromFile(BASE_DIR + caseType + "/AuthorisationCaseEvent.json");
         Map<String, Object>[] authEvents = new ObjectMapper().readValue(allAuthEvents, HashMap[].class);
         for (Map<String, Object> authEvent : authEvents) {
+            Event foundEvent = allEvents.stream().filter(e -> e.getId().equals(authEvent.get("CaseEventID"))).findFirst().get();
             String userRole = authEvent.get("UserRole").toString();
             if (!filteredByRole || filteredByRoleName.equals(userRole)) {
-                allAuthdEvents.add(allEvents.stream().filter(e -> e.getId().equals(authEvent.get("CaseEventID"))).findFirst().get());
+                foundEvent.setCrud(authEvent.get("CRUD").toString());
+                allAuthdEvents.add(foundEvent);
             }
         }
         return allAuthdEvents;
     }
 
-    private List<PlantUmlState> getAllStates(String caseType) throws IOException {
+    private List<State> getAllStates(String caseType) throws IOException {
         String caseSates = getStringFromFile(BASE_DIR + caseType + "/State.json");
         Map<String, Object>[] allStatesMap = new ObjectMapper().readValue(caseSates, HashMap[].class);
 
-        List<PlantUmlState> allStates = new ArrayList<>();
+        List<State> allStates = new ArrayList<>();
         for (Map<String, Object> statesMap : allStatesMap) {
             String id = "";
             String name = "";
@@ -253,27 +288,30 @@ public class BuildStateDiagram {
 
             }
 
-            PlantUmlState plantUmlState = PlantUmlState.builder()
+            State state = State.builder()
                     .id(id)
                     .name(name)
                     .description(description)
                     .build();
-            allStates.add(plantUmlState);
+            allStates.add(state);
         }
 
 
-        List<PlantUmlState> allAuthdStates = new ArrayList<>();
+        List<State> allAuthdStates = new ArrayList<>();
         String allAuthSates = getStringFromFile(BASE_DIR + caseType + "/AuthorisationCaseState.json");
         Map<String, Object>[] authStates = new ObjectMapper().readValue(allAuthSates, HashMap[].class);
         for (Map<String, Object> state : authStates) {
             String userRole = state.get("UserRole").toString();
             if (!filteredByRole || filteredByRoleName.equals(userRole)) {
-                PlantUmlState thisState = allStates.stream().filter(s -> s.getId().equals(state.get("CaseStateID"))).findFirst().get();
-                if (thisState != null) {
-                    allAuthdStates.add(PlantUmlState.builder()
-                            .id(thisState.getId())
-                            .name(thisState.getName())
-                            .description(thisState.getDescription())
+                State foundState = allStates.stream().filter(s -> s.getId().equals(state.get("CaseStateID"))).findFirst().get();
+                foundState.setCrud(state.get("CRUD").toString());
+
+                if (foundState != null) {
+                    allAuthdStates.add(State.builder()
+                            .id(foundState.getId())
+                            .name(foundState.getName())
+                            .description(foundState.getDescription())
+                            .crud(foundState.getCrud())
                             .build());
                 }
             }
@@ -282,10 +320,10 @@ public class BuildStateDiagram {
         return allAuthdStates;
     }
 
-    private PlantUmlState getState(List<PlantUmlState> allDiagramStates, String find) {
-        for (PlantUmlState PlantUmlState : allDiagramStates) {
-            if (PlantUmlState.getId().equalsIgnoreCase(find)) {
-                return PlantUmlState;
+    private State getState(List<State> allDiagramStates, String find) {
+        for (State State : allDiagramStates) {
+            if (State.getId().equalsIgnoreCase(find)) {
+                return State;
             }
         }
         return null;
@@ -325,6 +363,24 @@ public class BuildStateDiagram {
             i++;
         }
         return builder.toString();
+    }
+
+    private String getColorForState(State state) {
+        String col= COLOR_STATE;
+        if ("R".equals(state.getCrud())) {
+            col = COLOR_STATE_READONLY;
+        }
+
+        return col;
+    }
+
+    private String getColorForEvent(Event event) {
+        String col= COLOR_EVENT;
+        if ("R".equals(event.getCrud())) {
+            col = COLOR_EVENT_READONLY;
+        }
+
+        return col;
     }
 
 }

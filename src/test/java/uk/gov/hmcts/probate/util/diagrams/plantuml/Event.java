@@ -5,16 +5,17 @@ import lombok.Data;
 
 @Data
 @Builder
-public class PlantUmlEvent {
+public class Event {
     private final String id;
     private final String name;
     private final String description;
-    private final PlantUmlState pre;
-    private final PlantUmlState post;
+    private final State pre;
+    private final State post;
     private final String start;
     private final String about;
     private final String submitted;
     private final boolean showSummary;
+    protected String crud;
 
     public String getEventId() {
         return this.getId() +"Event";
