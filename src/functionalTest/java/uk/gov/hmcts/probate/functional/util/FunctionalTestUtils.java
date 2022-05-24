@@ -137,7 +137,8 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(userName, password);
+        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator
+            .generateClientToken(userName, password);
         final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(

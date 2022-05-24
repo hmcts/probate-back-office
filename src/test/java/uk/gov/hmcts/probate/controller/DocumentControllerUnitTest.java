@@ -26,7 +26,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotificationValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
@@ -69,7 +69,7 @@ public class DocumentControllerUnitTest {
     @Mock
     private EventValidationService eventValidationService;
     @Mock
-    private List<EmailAddressNotificationValidationRule> emailAddressNotificationValidationRules;
+    private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     @Mock
     private List<BulkPrintValidationRule> bulkPrintValidationRules;
     @Mock
@@ -99,7 +99,7 @@ public class DocumentControllerUnitTest {
         documentController = new DocumentController(documentGeneratorService, registryDetailsService,
             pdfManagementService, callbackResponseTransformer, caseDataTransformer, 
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
-            eventValidationService, emailAddressNotificationValidationRules, bulkPrintValidationRules, 
+            eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService);
     }
 
