@@ -172,7 +172,7 @@ public class ZipFileService {
                         .getDocumentType()))
                 .collect(Collectors.toList());
 
-        log.info("{} grant docs for case {}", collect.size(), caseDetails.getId());
+        log.info("{} re-issue grant docs for case {}", collect.size(), caseDetails.getId());
         for (CollectionMember<Document> doc : collect) {
             String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
             addZippedDocument(filesToZip, caseDetails, url, doc.getValue().getDocumentType().getTemplateName(), PDF);
@@ -187,34 +187,35 @@ public class ZipFileService {
     }
 
     private boolean filterUploadedDocs(CollectionMember<UploadDocument> collectionMember) {
-        return collectionMember.getValue().getDocumentType().getTemplateName().equalsIgnoreCase(WILL.getTemplateName());
+        return collectionMember.getValue().getDocumentType().equals(WILL);
     }
 
     private void addZippedDocument(List<ZippedDocumentFile> filesToZip, ReturnedCaseDetails returnedCaseDetails,
                                    String url, String documentTypeName, String docFileType) {
         String documentId = url.substring(url.indexOf("/documents/") + 11, url.lastIndexOf("/"));
-        ByteArrayResource byteArrayResource;
+        ByteArrayResource byteArrayResource = null;
         String errorDescription = "";
         try {
             byteArrayResource = emUploadService.getDocument(documentId);
         } catch (Exception e) {
-            byteArrayResource = null;
             errorDescription = "Exception adding file from case id: " + returnedCaseDetails.getId().toString()
                     + " document id: " + documentId;
             log.info(errorDescription);
+        } finally {
+            ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
+                    .byteArrayResource(byteArrayResource)
+                    .zippedManifestData(ZippedManifestData.builder()
+                            .caseNumber(returnedCaseDetails.getId().toString())
+                            .documentId(documentId)
+                            .docType(documentTypeName)
+                            .docFileType(docFileType)
+                            .subType(returnedCaseDetails.getData().getCaseType())
+                            .errorDescription(errorDescription).build())
+                    .build();
+            log.info("file added: {} for case id {}", zippedDocumentFile.getZippedManifestData().getDocumentName(),
+                    returnedCaseDetails.getId().toString());
+            filesToZip.add(zippedDocumentFile);
         }
-        ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
-                .byteArrayResource(byteArrayResource)
-                .zippedManifestData(ZippedManifestData.builder()
-                    .caseNumber(returnedCaseDetails.getId().toString())
-                    .documentId(documentId)
-                    .docType(documentTypeName)
-                    .docFileType(docFileType)
-                    .subType(returnedCaseDetails.getData().getCaseType())
-                    .errorDescription(errorDescription).build())
-                .build();
-        log.info("file added:" + zippedDocumentFile.getZippedManifestData().getDocumentName());
-        filesToZip.add(zippedDocumentFile);
     }
 
     public File createTempZipFile(String zipName) throws IOException {

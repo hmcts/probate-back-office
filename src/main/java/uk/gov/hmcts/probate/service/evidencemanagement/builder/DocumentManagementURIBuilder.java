@@ -28,6 +28,6 @@ public class DocumentManagementURIBuilder {
     }
 
     public String buildBinaryUrl(String id) {
-        return buildUrl() + "/" + id + "/binary";
+        return buildUrl(id) + "/binary";
     }
 }

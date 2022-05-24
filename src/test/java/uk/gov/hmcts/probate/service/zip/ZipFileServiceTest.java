@@ -13,9 +13,10 @@ import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.exception.ZipFileException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
@@ -93,24 +94,35 @@ public class ZipFileServiceTest {
 
     private ReturnedCaseDetails getNewCaseData(Long caseId) {
         DocumentLink link = DocumentLink.builder().documentBinaryUrl("/documents/12345/binary").build();
+
         Document grantDocument = Document.builder().documentType(DocumentType.DIGITAL_GRANT)
                 .documentLink(link)
                 .build();
         Document reIssueGrantDocument = Document.builder().documentType(DocumentType.DIGITAL_GRANT_REISSUE)
                 .documentLink(link)
                 .build();
-        UploadDocument willDocument = UploadDocument.builder().documentType(DocumentType.WILL)
-                .documentLink(link)
-                .build();
         List<CollectionMember<Document>> grantDocuments = new ArrayList<>();
         grantDocuments.add(new CollectionMember<>(grantDocument));
         grantDocuments.add(new CollectionMember<>(reIssueGrantDocument));
 
+        UploadDocument willDocument = UploadDocument.builder().documentType(DocumentType.WILL)
+                .documentLink(link)
+                .build();
         List<CollectionMember<UploadDocument>> willDocuments = new ArrayList<>();
         willDocuments.add(new CollectionMember<>(willDocument));
 
+        ScannedDocument scannedWillDocument = ScannedDocument.builder().type(DocumentType.OTHER.getTemplateName())
+                .subtype(DocumentType.WILL.getTemplateName())
+                .url(link)
+                .build();
+        List<CollectionMember<ScannedDocument>> scannedWillDocuments = new ArrayList<>();
+        scannedWillDocuments.add(new CollectionMember<>(scannedWillDocument));
+
         CaseData data = CaseData.builder().caseType(GrantType.Constants.GRANT_OF_PROBATE_NAME)
-                .probateDocumentsGenerated(grantDocuments).boDocumentsUploaded(willDocuments).build();
+                .probateDocumentsGenerated(grantDocuments)
+                .boDocumentsUploaded(willDocuments)
+                .scannedDocuments(scannedWillDocuments)
+                .build();
         ReturnedCaseDetails returnedCaseDetails = new ReturnedCaseDetails(data, null, caseId);
 
         return returnedCaseDetails;
@@ -121,6 +133,7 @@ public class ZipFileServiceTest {
         File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
         zipFileService.generateZipFile(returnedCaseDetails, zipFile);
         Assert.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
+        // add more test for each type of documents
         verify(emUploadService,times(9)).getDocument(anyString());
         Files.delete(zipFile.toPath());
     }

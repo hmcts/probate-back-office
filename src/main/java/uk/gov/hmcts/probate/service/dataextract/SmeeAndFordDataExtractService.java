@@ -45,6 +45,7 @@ public class SmeeAndFordDataExtractService {
         log.info("Sending email to Smee And Ford for {} filtered cases", cases.size());
         if (!cases.isEmpty()) {
             try {
+                // add toggle feature flag
                 return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
