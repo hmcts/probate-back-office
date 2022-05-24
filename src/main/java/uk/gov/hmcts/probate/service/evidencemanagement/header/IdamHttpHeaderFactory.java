@@ -47,7 +47,7 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
     }
 
     @Override
-    public HttpHeaders getAuthorizationHeadersForDocuments() {
+    public HttpHeaders getAuthorizationHeadersForDownloadDocuments() {
         HttpHeaders headers = new HttpHeaders();
         headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
         headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));

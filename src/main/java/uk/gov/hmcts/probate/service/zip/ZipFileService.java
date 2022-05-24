@@ -196,7 +196,7 @@ public class ZipFileService {
         ByteArrayResource byteArrayResource = null;
         String errorDescription = "";
         try {
-            byteArrayResource = emUploadService.getDocument(documentId);
+            byteArrayResource = emUploadService.getDocumentByteArrayById(documentId);
         } catch (Exception e) {
             errorDescription = "Exception adding file from case id: " + returnedCaseDetails.getId().toString()
                     + " document id: " + documentId;

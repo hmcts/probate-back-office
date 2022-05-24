@@ -75,8 +75,8 @@ public class EmUploadService implements UploadService {
             HashMap.class);
     }
 
-    public ByteArrayResource getDocument(String id) {
-        HttpEntity<Void> requestEntity = new HttpEntity<>(headers.getAuthorizationHeadersForDocuments());
+    public ByteArrayResource getDocumentByteArrayById(String id) {
+        HttpEntity<Void> requestEntity = new HttpEntity<>(headers.getAuthorizationHeadersForDownloadDocuments());
 
         String url = documentManagementURIBuilder.buildBinaryUrl(id);
         ResponseEntity<ByteArrayResource> response = evidenceManagementRestTemplate.exchange(

@@ -472,6 +472,9 @@ welsh:
     11: "Tachwedd"
     12: "Rhagfyr"
 
+storage:
+  connection: ${BLOB_STORAGE_CONNECTION_STRING:}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
   user:

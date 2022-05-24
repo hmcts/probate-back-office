@@ -83,7 +83,7 @@ public class ZipFileServiceTest {
         byteArrayResourceList.add(byteArrayResource2);
         byteArrayResourceList.add(byteArrayResource3);
 
-        when(emUploadService.getDocument(anyString())).thenReturn(byteArrayResource1, byteArrayResource2,
+        when(emUploadService.getDocumentByteArrayById(anyString())).thenReturn(byteArrayResource1, byteArrayResource2,
                 byteArrayResource3);
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/ManifestFileHeaderRow.csv"))
                 .thenReturn("Case reference number|Document id|Document type|"
@@ -134,7 +134,7 @@ public class ZipFileServiceTest {
         zipFileService.generateZipFile(returnedCaseDetails, zipFile);
         Assert.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         // add more test for each type of documents
-        verify(emUploadService,times(9)).getDocument(anyString());
+        verify(emUploadService,times(9)).getDocumentByteArrayById(anyString());
         Files.delete(zipFile.toPath());
     }
 

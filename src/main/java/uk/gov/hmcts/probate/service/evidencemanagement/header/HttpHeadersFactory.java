@@ -10,6 +10,6 @@ public interface HttpHeadersFactory {
 
     HttpHeaders getAuthorizationHeaders();
 
-    HttpHeaders getAuthorizationHeadersForDocuments();
+    HttpHeaders getAuthorizationHeadersForDownloadDocuments();
 
 }

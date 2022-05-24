@@ -97,7 +97,7 @@ public class EmUploadServiceTest {
         when(evidenceManagementRestTemplate.exchange(eq(URL), eq(HttpMethod.GET), any(), eq(ByteArrayResource.class)))
                 .thenReturn(ResponseEntity.accepted().body(resource));
 
-        ByteArrayResource actual = emUploadService.getDocument(documentId);
+        ByteArrayResource actual = emUploadService.getDocumentByteArrayById(documentId);
         Assert.assertEquals(resource, actual);
         verify(documentManagementURIBuilder).buildBinaryUrl(documentId);
         verify(evidenceManagementRestTemplate).exchange(eq(URL), eq(HttpMethod.GET),
