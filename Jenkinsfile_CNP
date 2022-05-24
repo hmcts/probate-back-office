@@ -1,6 +1,7 @@
 #!groovy
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.AppPipelineConfig
+import uk.gov.hmcts.contino.GithubAPI
 
 @Library("Infrastructure")
 
@@ -89,6 +90,10 @@ env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
 // Configure branches to sync with master branch
 def branchesToSync = ['demo', 'ithc', 'perftest']
+
+def checkForEnableNightlyLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
+}
 
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
@@ -181,6 +186,11 @@ withPipeline("java", product, component) {
   }
 
   after('functionalTest:preview') {
+    if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      sh 'yarn install'
+      sh 'yarn test:fullfunctional'
+    }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
