@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -45,11 +46,13 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -142,6 +145,10 @@ public class BusinessValidationUnitTest {
     private LegalStatementExecutorTransformer legalStatementExecutorTransformer;
     @Mock
     private List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
+    @Mock
+    private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
+    @Mock
+    private AssignCaseAccessService assignCaseAccessService;
 
     private BusinessValidationController underTest;
 
@@ -171,7 +178,9 @@ public class BusinessValidationUnitTest {
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule,
-            ihtEstateValidationRule);
+            ihtEstateValidationRule,
+            solicitorPostcodeValidationRule,
+            assignCaseAccessService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -191,6 +200,29 @@ public class BusinessValidationUnitTest {
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
             bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    public void shouldVerifySolsAccessWithNoErrors() {
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+
+        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth",
+                "GrantOfRepresentation", callbackRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldVerifySolsCreatedWithNoErrors() {
+        when(callbackResponseTransformerMock.createSolsCase(callbackRequestMock, "auth"))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response = underTest.createSolsCaseWithOrganisation("auth",
+                callbackRequestMock);
 
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -668,6 +700,25 @@ public class BusinessValidationUnitTest {
             underTest.validateIhtEstateData(callbackRequestMock);
         verify(ihtEstateValidationRule, times(1))
             .validate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateSolPostCode() {
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
+        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    public void shouldValidateMissingSolPostCode() {
+        List<String> errors = new ArrayList<>();
+        errors.add("some error");
+        when(callbackResponseMock.getErrors()).thenReturn(errors);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

@@ -86,7 +86,12 @@ public final class Constants {
     public static final String ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT = "/ ";
     public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT = "for executors who have"
         + " renounced their right to apply";
-
+    public static final String NOTARIAL_COPY_WILL_TEXT = "the notarial or court sealed copy of the will";
+    public static final String STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT
+        = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, "
+         + "and that it has not been revoked";
+    public static final String ORIGINAL_WILL_TEXT = "the original will";
+    public static final String ORIGINAL_WILL_WITH_CODICILS_TEXT = "the original will and any codicils";
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use

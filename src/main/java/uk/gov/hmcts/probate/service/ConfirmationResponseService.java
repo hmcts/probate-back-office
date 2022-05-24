@@ -246,16 +246,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
         keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
         keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
-
-        String solsWillType = ccdData.getSolsWillType();
-        String originalWill = "\n*   the original will";
-        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
-            originalWill = "";
-        } else if ("Yes".equals(ccdData.getWillHasCodicils())) {
-            originalWill = "\n*   the original will and any codicils";
-        }
-        
-        keyValue.put("{{originalWill}}", originalWill);
+        keyValue.put("{{originalWill}}", getWillLabel(caseData));
         
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
@@ -327,6 +318,10 @@ public class ConfirmationResponseService {
 
     private String getPA17FormLabel(CaseData caseData) {
         return markdownDecoratorService.getPA17FormLabel(caseData);
+    }
+
+    private String getWillLabel(CaseData caseData) {
+        return markdownDecoratorService.getWillLabel(caseData);
     }
 
     private String getAdmonWillRenunciationFormLabel(CCDData ccdData) {
