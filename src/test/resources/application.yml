@@ -48,6 +48,10 @@ pba:
     health.url: ${pba.retrieval.url}/health
     api: /refdata/external/v1/organisations/pbas
 
+prd:
+  organisations:
+    url: ${PRD_API_URL:http://localhost:8991}
+    api: /refdata/external/v1/organisations
 
 docmosis:
   service:
@@ -422,6 +426,10 @@ azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
   application-insights:
     instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
+
+aca:
+  api:
+    url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}
 
 case_document_am:
   url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}

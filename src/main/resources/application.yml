@@ -63,6 +63,11 @@ pba:
     health.url: ${pba.retrieval.url}/health
     api: /refdata/external/v1/organisations/pbas
 
+prd:
+  organisations:
+    url: ${PRD_API_URL:http://localhost:8991}
+    api: /refdata/external/v1/organisations
+
 docmosis:
   service:
     uri: ${PDF_SERVICE_BASEURL:https://docmosis.aat.platform.hmcts.net}
@@ -518,6 +523,10 @@ ld:
     key: ${LD_USER_KEY:dummy_key}
     firstName: Probate
     lastName: Backend
+
+aca:
+  api:
+    url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}
 
 case_document_am:
   url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
