@@ -1,1 +1,6 @@
-[]
+[
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "OrgPolicyCaseAssignedRole", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "OrgPolicyReference", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationID", "UserRole": "caseworker-caa", "CRUD": "CRUD"}
+]
