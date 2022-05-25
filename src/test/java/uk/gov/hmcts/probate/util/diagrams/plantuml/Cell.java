@@ -1,8 +1,5 @@
 package uk.gov.hmcts.probate.util.diagrams.plantuml;
 
-import lombok.Builder;
-import lombok.Data;
-
 public interface Cell {
     public static final int LIGHTEN_READONLY = 50;
     public static final int LIGHTEN_NO_ACCESS = 75;

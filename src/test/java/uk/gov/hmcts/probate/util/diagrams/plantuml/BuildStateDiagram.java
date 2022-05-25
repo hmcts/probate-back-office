@@ -34,6 +34,7 @@ public class BuildStateDiagram {
     private static final String CR = " \n";
     private static final String INFO_CRUD = "CRUD - ";
 
+    private String[] caseTypesToUse = {CASE_TYPE_GRANT};
     private boolean filteredByRole = true;
     private String filteredByRoleName = ROLE_PP;
     private boolean showCallbacks = false;
@@ -45,14 +46,12 @@ public class BuildStateDiagram {
     }
 
     private void generateAll() throws IOException {
-        generate(CASE_TYPE_GRANT);
-        generate(CASE_TYPE_CAVEAT);
+        for (String caseType : caseTypesToUse) {
+            generate(caseType);
+        }
     }
 
     private void generate(String caseType) throws IOException {
-        List<State> allStates = getAllStates(caseType);
-        List<Event> allEvents = getAllEvents(caseType, allStates);
-
         String header = "@startuml" + CR;
         String skin1 = "skinparam titleBorderRoundCorner 15" + CR;
         String skin2 = "skinparam titleBorderThickness 2" + CR;
@@ -60,12 +59,10 @@ public class BuildStateDiagram {
         String skin4 = "skinparam titleFontSize 24" + CR;
         String skin5 = "skinparam titleBackgroundColor #00ff00" + CR;
 
-        String title = "title " + caseType + " flow" + (filteredByRole ? " filtered by role = " + filteredByRoleName: "")
-                + CR;
+        String title = "title " + caseType + " flow"
+                + (filteredByRole ? " filtered by role = " + filteredByRoleName : "") + CR;
         String keyState = "state STATE" + COLOR_STATE + CR;
         String keyEvent = "state EVENT" + COLOR_EVENT + CR;
-
-        String footer = "@enduml";
 
         List<String> allRows = new ArrayList<>();
         allRows.add(header);
@@ -79,14 +76,17 @@ public class BuildStateDiagram {
         allRows.add(keyEvent);
         allRows.add(CR);
 
+        List<State> allStates = getAllStates(caseType);
+        List<Event> allEvents = getAllEvents(caseType, allStates);
+
         for (State state : allStates) {
             String id = state.getStateId();
             String stateName = separateWithCRs(state.getName());
 
             String stateRow = "state " + id + " as \"" + stateName + "\" " + state.getColorForCell() + CR;
             allRows.add(stateRow);
-            List<String> iRows = getAllInformationRows(state);
-            allRows.addAll(iRows);
+            List<String> informationRows = getAllInformationRows(state);
+            allRows.addAll(informationRows);
 
         }
         for (Event event : allEvents) {
@@ -95,8 +95,8 @@ public class BuildStateDiagram {
 
             String eventRow = "state " + id + " as \"" + eventName + "\" " + event.getColorForCell() + CR;
             allRows.add(eventRow);
-            List<String> iRows = getAllInformationRows(event);
-            allRows.addAll(iRows);
+            List<String> informationRows = getAllInformationRows(event);
+            allRows.addAll(informationRows);
         }
         allRows.add(CR);
         allRows.add(CR);
@@ -130,6 +130,7 @@ public class BuildStateDiagram {
             allRows.add(CR);
         }
 
+        String footer = "@enduml";
         allRows.add(footer);
         textFileBuilderService.createFile(allRows, ",", CASE_TYPE_PREFIX + caseType
                 + "_" + filteredByRoleName + "_state.txt");
@@ -331,9 +332,9 @@ public class BuildStateDiagram {
     }
 
     private State getState(List<State> allDiagramStates, String find) {
-        for (State State : allDiagramStates) {
-            if (State.getId().equalsIgnoreCase(find)) {
-                return State;
+        for (State state : allDiagramStates) {
+            if (state.getId().equalsIgnoreCase(find)) {
+                return state;
             }
         }
         return null;
