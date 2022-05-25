@@ -11,8 +11,9 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import java.util.Locale;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.emptyOrNullString;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,6 +28,6 @@ public class BusinessValidationMessageRetrieverTest {
     @Test
     public void shouldGetMessage() {
         String message = businessValidationMessageRetriever.getMessage("dodIsBeforeDob", null, Locale.UK);
-        assertThat(message, not(isEmptyOrNullString()));
+        assertThat(message, not(is(emptyOrNullString())));
     }
 }
