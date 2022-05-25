@@ -45,6 +45,7 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-v11-{{ .Values.global.environment }}.postgres.database.azure.com
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     PROBATE_POSTGRESQL_PORT: 5432
+    BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: false
   keyVaults:
     probate:
       secrets:

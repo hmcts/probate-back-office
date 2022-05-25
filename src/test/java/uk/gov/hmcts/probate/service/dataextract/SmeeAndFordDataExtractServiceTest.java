@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
+import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDateTime;
@@ -38,6 +40,10 @@ public class SmeeAndFordDataExtractServiceTest {
     private NotificationService notificationService;
     @Mock
     private FileTransferService fileTransferService;
+    @Mock
+    private ZipFileService zipFileService;
+    @Mock
+    private BlobUpload blobUpload;
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private CaseData caseData1;

@@ -31,6 +31,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -133,8 +135,20 @@ public class ZipFileServiceTest {
         File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
         zipFileService.generateZipFile(returnedCaseDetails, zipFile);
         Assert.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
-        // add more test for each type of documents
-        verify(emUploadService,times(9)).getDocumentByteArrayById(anyString());
+        ZipFile zip = new ZipFile(zipFile);
+        Assert.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.equalsIgnoreCase("all_cases_data.csv")));
+        Assert.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.equalsIgnoreCase("manifest_file.csv")));
+        Assert.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("scanned_will")));
+        Assert.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("uploaded_will")));
+        Assert.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("digitalGrant")));
+        Assert.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("digitalGrantReissue")));
+        verify(emUploadService,times(12)).getDocumentByteArrayById(anyString());
         Files.delete(zipFile.toPath());
     }
 

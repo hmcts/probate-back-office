@@ -475,6 +475,11 @@ welsh:
 storage:
   connection: ${BLOB_STORAGE_CONNECTION_STRING:}
 
+feature:
+  blobstorage:
+    smeeandford:
+      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:false}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
   user:

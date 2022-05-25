@@ -60,7 +60,6 @@ public class ZipFileService {
     private Path secureDir = null;
     private static final String PDF = ".pdf";
     private static final String CSV = ".csv";
-    private static final String JSON = ".json";
     private static final String DELIMITER = "|";
     private static final String NEW_LINE = "\n";
     private static final DocumentType[] GRANT_TYPES = {DIGITAL_GRANT, ADMON_WILL_GRANT, INTESTACY_GRANT,
@@ -92,9 +91,9 @@ public class ZipFileService {
         byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
         return ZippedDocumentFile.builder()
                 .zippedManifestData(ZippedManifestData.builder()
-                        .caseNumber("all")
+                        .caseNumber("all_cases")
                         .docFileType(CSV)
-                        .docType("csv")
+                        .docType("data")
                         .build())
                 .byteArrayResource(new ByteArrayResource(bytes))
                 .build();
@@ -285,8 +284,8 @@ public class ZipFileService {
                 .byteArrayResource(new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8)))
                 .zippedManifestData(ZippedManifestData.builder()
                         .caseNumber("manifest")
-                        .docType("cases")
-                        .docFileType(JSON)
+                        .docType("file")
+                        .docFileType(CSV)
                         .errorDescription("").build())
                 .build();
     }
