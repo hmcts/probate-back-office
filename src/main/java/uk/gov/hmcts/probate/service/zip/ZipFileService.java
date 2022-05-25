@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.zip;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -53,7 +52,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 @Service
 @RequiredArgsConstructor
 public class ZipFileService {
-    private final ObjectMapper objectMapper;
+
     private final EmUploadService emUploadService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private final FileSystemResourceService fileSystemResourceService;

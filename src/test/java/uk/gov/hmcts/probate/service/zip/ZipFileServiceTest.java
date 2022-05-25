@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.zip;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -52,8 +51,6 @@ public class ZipFileServiceTest {
     @Mock
     private FileSystemResourceService fileSystemResourceService;
 
-    private ObjectMapper objectMapper;
-
     private ZipFileService zipFileService;
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
@@ -64,8 +61,8 @@ public class ZipFileServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        zipFileService = new ZipFileService(new ObjectMapper(),
-                emUploadService, smeeAndFordPersonalisationService, fileSystemResourceService);
+        zipFileService = new ZipFileService(emUploadService, smeeAndFordPersonalisationService,
+                fileSystemResourceService);
 
         returnedCaseDetails.add(getNewCaseData(1L));
         returnedCaseDetails.add(getNewCaseData(2L));
