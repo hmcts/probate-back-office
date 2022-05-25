@@ -4,8 +4,8 @@ import org.junit.Test;
 
 import java.math.BigDecimal;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
-import static org.junit.Assert.assertThat;
 
 public class InheritanceTaxTest {
 

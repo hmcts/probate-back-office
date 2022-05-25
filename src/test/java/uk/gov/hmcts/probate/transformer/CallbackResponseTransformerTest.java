@@ -83,12 +83,12 @@ import java.util.Optional;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -969,7 +969,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
         assertNull(callbackResponse.getData().getPayments());
     }
-    
+
     @Test
     public void shouldTestForNullDOB() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
@@ -1712,7 +1712,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
     }
-    
+
     @Test
     public void shouldPreserveDeathRecordList() {
 
@@ -1727,7 +1727,7 @@ public class CallbackResponseTransformerTest {
 
         assertSame(mockList, callbackResponse.getData().getDeathRecords());
     }
-    
+
     @Test
     public void shouldTransformCaseForWhenCaseTypeIsNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
@@ -2097,7 +2097,7 @@ public class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getIhtFormId());
         assertSolsDetails(callbackResponse);
     }
-    
+
     @Test
     public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
         CaseData.CaseDataBuilder caseDataBuilder2;
@@ -2975,7 +2975,7 @@ public class CallbackResponseTransformerTest {
         underTest.defaultIht400421DatePageFlow(callbackRequestMock);
         verify(iht400421Defaulter).defaultPageFlowForIht400421(any(), any());
     }
-    
+
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname,
                                                                         String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
@@ -3161,7 +3161,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
         assertEquals(APP_REF, callbackResponse.getData().getPcqId());
-        
+
         assertEquals(YES, callbackResponse.getData().getWillHasVisibleDamage());
         assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getWillDamage().getDamageTypesList().get(0));
         assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getWillDamage().getDamageTypesList().get(1));
@@ -3189,7 +3189,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(DAMAGE_DATE, callbackResponse.getData().getCodicilsDamageDate());
         assertEquals(YES, callbackResponse.getData().getDeceasedWrittenWishes());
     }
-    
+
     private void assertCommonPayments(CallbackResponse callbackResponse) {
         assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }

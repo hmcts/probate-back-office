@@ -13,8 +13,8 @@ import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;

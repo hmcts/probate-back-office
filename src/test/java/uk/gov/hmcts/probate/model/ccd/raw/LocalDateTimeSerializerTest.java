@@ -11,12 +11,12 @@ import java.io.StringWriter;
 import java.io.Writer;
 import java.time.LocalDateTime;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
 public class LocalDateTimeSerializerTest {
-    
+
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final String LOCALDATE_POST_SERIALISATION = "\"2018-01-01T12:34:56.123Z\"";
 
