@@ -16,6 +16,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
 @Service
@@ -59,7 +60,7 @@ public class SmeeAndFordDataExtractService {
                     File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
                     zipFileService.generateZipFile(cases, tempFile);
                     blobUpload.uploadFile(tempFile);
-                    tempFile.delete();
+                    Files.delete(tempFile.toPath());
                 }
 
                 return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
