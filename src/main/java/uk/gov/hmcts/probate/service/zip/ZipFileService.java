@@ -187,7 +187,7 @@ public class ZipFileService {
     }
 
     private boolean filterUploadedDocs(CollectionMember<UploadDocument> collectionMember) {
-        return WILL.equals(collectionMember.getValue().getDocumentType());
+        return WILL.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getDocumentType().getTemplateName());
     }
 
     private void addZippedDocument(List<ZippedDocumentFile> filesToZip, ReturnedCaseDetails returnedCaseDetails,
