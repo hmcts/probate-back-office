@@ -2,6 +2,9 @@ buildscript {
   ext {
     springBootVersion = '2.6.7'
   }
+  repositories {
+    jcenter()
+  }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
     classpath("net.serenity-bdd:serenity-gradle-plugin:2.5.8")
@@ -183,9 +186,9 @@ jacocoTestReport {
 repositories {
   mavenLocal()
   mavenCentral()
-  //maven { url "https://repo.maven.apache.org/maven2" }
-  maven { url 'https://jitpack.io' }
   jcenter()
+  maven { url "https://repo.maven.apache.org/maven2" }
+  maven { url "https://jitpack.io" }
 }
 
 
