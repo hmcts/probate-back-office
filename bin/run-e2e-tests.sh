@@ -9,7 +9,7 @@ export E2E_AUTO_DELAY_ENABLED='true'
 export TESTS_FOR_ACCESSIBILITY='false'
 export E2E_OUTPUT_DIR='./functional-output/solicitor/xui'
 export RETRY_SCENARIOS=2
-export BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT='500'
+export BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT='200'
 
 yarn test:functional
 
