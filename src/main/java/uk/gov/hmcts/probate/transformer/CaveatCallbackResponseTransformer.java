@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -17,6 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
@@ -50,8 +54,9 @@ public class CaveatCallbackResponseTransformer {
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
     private final SolicitorPBADefaulter solicitorPBADefaulter;
+    private final OrganisationsRetrievalService organisationsRetrievalService;
 
-    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest, 
+    public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
                                                PaymentResponse paymentResponse, List<Document> documents,
                                                String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
@@ -66,7 +71,7 @@ public class CaveatCallbackResponseTransformer {
             paymentsList = new ArrayList<>();
             paymentsList.addAll(caveatData.getPayments());
         }
-        
+
         if (caveatData.getApplicationType() != null) {
             if (SOLICITOR.equals(caveatData.getApplicationType()) && paymentResponse != null) {
                 if (paymentsList == null) {
@@ -153,12 +158,43 @@ public class CaveatCallbackResponseTransformer {
 
     public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest) {
         ResponseCaveatData responseCaveatData = getResponseCaveatData(callbackRequest.getCaseDetails())
-            .applicationType(SOLICITOR)
-            .paperForm(NO)
-            .registryLocation(CTSC)
-            .build();
+                .applicationType(SOLICITOR)
+                .paperForm(NO)
+                .registryLocation(CTSC)
+                .build();
 
         return transformResponse(responseCaveatData);
+    }
+
+    public CaveatCallbackResponse transformForSolicitor(CaveatCallbackRequest callbackRequest, String authToken) {
+        ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(callbackRequest.getCaseDetails())
+            .applicationType(SOLICITOR)
+            .paperForm(NO)
+            .registryLocation(CTSC);
+        OrganisationPolicy organisationPolicy =
+            buildOrganisationPolicy(callbackRequest.getCaseDetails().getData(), authToken);
+        if (null != organisationPolicy) {
+            responseCaveatDataBuilder.applicantOrganisationPolicy(organisationPolicy);
+        }
+        return transformResponse(responseCaveatDataBuilder.build());
+    }
+
+    public OrganisationPolicy buildOrganisationPolicy(CaveatData caveatData, String authToken) {
+        OrganisationEntityResponse organisationEntityResponse = null;
+        if (null != authToken) {
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+        }
+        if (null != organisationEntityResponse && null != caveatData.getApplicantOrganisationPolicy()) {
+            return OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                    .organisationID(organisationEntityResponse.getOrganisationIdentifier())
+                    .organisationName(organisationEntityResponse.getName())
+                    .build())
+                .orgPolicyReference(caveatData.getApplicantOrganisationPolicy().getOrgPolicyReference())
+                .orgPolicyCaseAssignedRole(caveatData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
+                .build();
+        }
+        return null;
     }
 
     public CaveatCallbackResponse addMatches(CaveatCallbackRequest request, List<CaseMatch> newMatches) {
@@ -170,7 +206,8 @@ public class CaveatCallbackResponseTransformer {
 
         storedMatches.addAll(newMatches.stream().map(CollectionMember::new).collect(Collectors.toList()));
 
-        storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
+        storedMatches.sort(
+            Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(request.getCaseDetails());
@@ -250,7 +287,8 @@ public class CaveatCallbackResponseTransformer {
             .autoClosedExpiry(caveatData.getAutoClosedExpiry())
             .pcqId(caveatData.getPcqId())
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
-            .payments(caveatData.getPayments());
+            .payments(caveatData.getPayments())
+            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -286,11 +324,11 @@ public class CaveatCallbackResponseTransformer {
             eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
-    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest, 
+    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest,
                                                                       String authToken) {
-        ResponseCaveatDataBuilder responseCaseDataBuilder = 
+        ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(), 
+        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder, authToken);
 
         return transformResponse(responseCaseDataBuilder.build());

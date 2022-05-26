@@ -20,7 +20,7 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
 
     @Test
     public void shouldTransformAppCreatedSolDtlsStateCorrectly() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogress/01-appCreatedSolDtls.json", TASKLIST_UPDATE_URL,
+        verifyCaseProgressHtmlSolPost("caseprogress/01-appCreatedSolDtls.json", CASE_SOLS_CREATED,
             "/application-created-sol-dtls-html.txt", getSolicitorDtlsUrl());
     }
 
