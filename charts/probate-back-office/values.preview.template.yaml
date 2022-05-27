@@ -225,6 +225,7 @@ java:
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
+    BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
 
   keyVaults:
     probate:
