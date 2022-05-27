@@ -64,9 +64,9 @@ public class ZipFileServiceTest {
         zipFileService = new ZipFileService(emUploadService, smeeAndFordPersonalisationService,
                 fileSystemResourceService);
 
-        returnedCaseDetails.add(getNewCaseData(1L));
-        returnedCaseDetails.add(getNewCaseData(2L));
-        returnedCaseDetails.add(getNewCaseData(3L));
+        returnedCaseDetails.add(getNewCaseData(1234567812345678L));
+        returnedCaseDetails.add(getNewCaseData(1234567812345610L));
+        returnedCaseDetails.add(getNewCaseData(1234567812345620L));
 
         File file1 = ResourceUtils.getFile(this.getClass().getClassLoader().getResource("zip/TestPage1.pdf"));
         File file2 = ResourceUtils.getFile(this.getClass().getClassLoader().getResource("zip/TestPage2.pdf"));
