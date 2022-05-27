@@ -27,7 +27,8 @@ public class AssignCaseAccessService {
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String userId = result.get("id").toString().toLowerCase();
 
-        log.info("CaseId: {} of type {} assigning case access to user {}", caseId, caseTypeId, userId);
+        log.info("CaseId: {} of type {} assigning case access to user {} for token {}", caseId, caseTypeId, userId,
+                authorisationToken);
 
         String serviceToken = authTokenGenerator.generate();
         assignCaseAccessClient.assignCaseAccess(

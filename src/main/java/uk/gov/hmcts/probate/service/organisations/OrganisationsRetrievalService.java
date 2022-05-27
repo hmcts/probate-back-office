@@ -36,6 +36,7 @@ public class OrganisationsRetrievalService {
     protected String orgApi;
 
     public OrganisationEntityResponse getOrganisationEntity(String authToken) {
+        log.info("getOrganisationEntity.authToken:{}", authToken);
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
@@ -43,7 +44,6 @@ public class OrganisationsRetrievalService {
             ResponseEntity<OrganisationEntityResponse> responseEntity = restTemplate.exchange(uri, GET,
                 request, OrganisationEntityResponse.class);
 
-            log.info("responseEntity" + responseEntity.toString());
             return Objects.requireNonNull(responseEntity.getBody());
         } catch (Exception e) {
             log.error("Exception when looking up orgId for authToken={} for exception {}",
