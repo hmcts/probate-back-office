@@ -197,9 +197,9 @@ public class CitizenMandatoryFieldsValidatorV2Test {
                 .value("01012022")
                 .description("deceasedDateOfDeath").build();
         OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMaritalStatus")
+                .name("deceasedMartialStatus")
                 .value("widowed")
-                .description("deceasedMaritalStatus").build();
+                .description("deceasedMartialStatus").build();
         OCRField ihtEstateNetQualifyingValue = OCRField.builder()
                 .name("ihtEstateNetQualifyingValue")
                 .value("50000000")
@@ -261,9 +261,9 @@ public class CitizenMandatoryFieldsValidatorV2Test {
                 .value("01012022")
                 .description("deceasedDateOfDeath").build();
         OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMaritalStatus")
+                .name("deceasedMartialStatus")
                 .value("widowed")
-                .description("deceasedMaritalStatus").build();
+                .description("deceasedMartialStatus").build();
         OCRField ihtEstateNetQualifyingValue = OCRField.builder()
                 .name("ihtEstateNetQualifyingValue")
                 .value("10000000")
@@ -323,9 +323,9 @@ public class CitizenMandatoryFieldsValidatorV2Test {
                 .value("01012022")
                 .description("deceasedDateOfDeath").build();
         OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMaritalStatus")
+                .name("deceasedMartialStatus")
                 .value("neverMarried")
-                .description("deceasedMaritalStatus").build();
+                .description("deceasedMartialStatus").build();
         OCRField ihtEstateNetQualifyingValue = OCRField.builder()
                 .name("ihtEstateNetQualifyingValue")
                 .value("10000000")
@@ -384,9 +384,9 @@ public class CitizenMandatoryFieldsValidatorV2Test {
                 .value("01012022")
                 .description("deceasedDateOfDeath").build();
         OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMaritalStatus")
+                .name("deceasedMartialStatus")
                 .value("neverMarried")
-                .description("deceasedMaritalStatus").build();
+                .description("deceasedMartialStatus").build();
         OCRField ihtEstateNetQualifyingValue = OCRField.builder()
                 .name("ihtEstateNetQualifyingValue")
                 .value("50000000")

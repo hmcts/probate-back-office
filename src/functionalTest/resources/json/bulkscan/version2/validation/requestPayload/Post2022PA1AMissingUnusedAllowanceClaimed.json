@@ -66,7 +66,7 @@
       "description": "Was the deceased domiciled in England or Wales at the time of their death?"
     },
     {
-      "name": "deceasedMaritalStatus",
+      "name": "deceasedMartialStatus",
       "value": "widowed",
       "description": "What was the marital status of the person who has died when they died?"
     },

@@ -32,8 +32,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
         "Did the deceased die on or after 1 January 2022?");
     private static final String FALSE = "false";
     private static final String TRUE = "true";
-    public static final String IHT_ESTATE_NET_QUALIFYING_VALUE_KEY = "ihtEstateNetQualifyingValue";
-    public static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMaritalStatus";
+    public static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMartialStatus";
     public static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
 
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
