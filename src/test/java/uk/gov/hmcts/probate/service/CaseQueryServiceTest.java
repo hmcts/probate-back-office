@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
@@ -50,7 +51,7 @@ public class CaseQueryServiceTest {
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
     @Mock
-    private IdamAuthenticateUserService idamAuthenticateUserService;
+    private SecurityUtils securityUtils;
 
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -69,7 +70,7 @@ public class CaseQueryServiceTest {
         MockitoAnnotations.initMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
-        when(idamAuthenticateUserService.getIdamOauth2Token()).thenReturn("Bearer 123");
+        when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");

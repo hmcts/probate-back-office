@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
-import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -31,7 +31,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 @EnableFeignClients(basePackageClasses = ServiceAuthorisationApi.class)
 public class PBARetrievalService {
 
-    private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final SecurityUtils securityUtils;
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     @Value("${pba.retrieval.url}")
@@ -40,7 +40,7 @@ public class PBARetrievalService {
     protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
-        String emailId = idamAuthenticateUserService.getEmail(authToken);
+        String emailId = securityUtils.getEmail(authToken);
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken, emailId);
 
