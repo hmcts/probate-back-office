@@ -4,12 +4,15 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import feign.FeignException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +53,45 @@ public class AssignCaseAccessServiceTest {
         when(this.authTokenGenerator.generate()).thenReturn("Generate");
         doNothing().when(this.assignCaseAccessClient)
             .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
+        this.assignCaseAccessService.assignCaseAccess("42", "ABC123", "GrantOfRepersentation");
+        verify(this.idamApi).getUserDetails(anyString());
+        verify(this.ccdDataStoreService).removeCreatorRole(anyString(), anyString());
+        verify(this.authTokenGenerator).generate();
+        verify(this.assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
+    }
+
+    @Test
+    public void shouldThrowExceptionForAssignCaseAccess() {
+        HashMap<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", "Value");
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
+
+        when(this.idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        doNothing().when(this.ccdDataStoreService).removeCreatorRole(anyString(), anyString());
+        when(this.authTokenGenerator.generate()).thenReturn("Generate");
+        doThrow(FeignException.class).when(this.assignCaseAccessClient)
+                .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
+
+        this.assignCaseAccessService.assignCaseAccess("42", "ABC123", "GrantOfRepersentation");
+        verify(this.idamApi).getUserDetails(anyString());
+        verify(this.ccdDataStoreService, times(0)).removeCreatorRole(anyString(), anyString());
+        verify(this.authTokenGenerator).generate();
+        verify(this.assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
+    }
+
+    @Test
+    public void shouldThrowExceptionForRemoveCreatorRole() {
+        HashMap<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", "Value");
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
+
+        when(this.idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        when(this.authTokenGenerator.generate()).thenReturn("Generate");
+        doNothing().when(this.assignCaseAccessClient)
+                .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
+        doThrow(FeignException.class).when(this.ccdDataStoreService)
+                .removeCreatorRole(anyString(), anyString());
+
         this.assignCaseAccessService.assignCaseAccess("42", "ABC123", "GrantOfRepersentation");
         verify(this.idamApi).getUserDetails(anyString());
         verify(this.ccdDataStoreService).removeCreatorRole(anyString(), anyString());

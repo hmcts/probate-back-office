@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service.caseaccess;
 
+import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -27,17 +28,22 @@ public class AssignCaseAccessService {
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String userId = result.get("id").toString().toLowerCase();
 
-        log.info("CaseId: {} of type {} assigning case access to user {} for token {}", caseId, caseTypeId, userId,
-                authorisationToken);
+        log.info("CaseId: {} of type {} assigning case access to user {}", caseId, caseTypeId, userId);
 
         String serviceToken = authTokenGenerator.generate();
-        assignCaseAccessClient.assignCaseAccess(
-            authorisationToken,
-            serviceToken,
-            true,
-            buildAssignCaseAccessRequest(caseId, userId, caseTypeId)
-        );
-        ccdDataStoreService.removeCreatorRole(caseId, authorisationToken);
+
+        try {
+            assignCaseAccessClient.assignCaseAccess(
+                    authorisationToken,
+                    serviceToken,
+                    true,
+                    buildAssignCaseAccessRequest(caseId, userId, caseTypeId));
+
+            ccdDataStoreService.removeCreatorRole(caseId, authorisationToken);
+        } catch (FeignException fe) {
+            log.info("CaseId: {} cannot be assigned case access to user {}, because of assignCaseAccess or "
+                    + "removeCreatorRole exception {}", caseId, userId, fe.getMessage());
+        }
 
         log.info("CaseId: {} assigned case access to user {}", caseId, userId);
     }
