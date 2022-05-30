@@ -18,6 +18,10 @@ java:
   image: hmctspublic.azurecr.io/probate/back-office:latest
   aadIdentityName: probate
   ingressHost: probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  autoscaling:
+    enabled: true
+    maxReplicas: 4
+    targetCPUUtilizationPercentage: 80 # Default is 80% target CPU utilization
   environment:
     REFORM_TEAM: probate
     REFORM_SERVICE_NAME: back-office
@@ -35,6 +39,7 @@ java:
     CCD_DATA_STORE_API_HOST : http://ccd-data-store-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PRD_API_URL : http://rd-professional-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     PAYMENT_URL: http://payment-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    ACA_SERVICE_API_BASEURL: http://aac-manage-case-assignment-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
     PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-v11-{{ .Values.global.environment }}
     PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-v11-{{ .Values.global.environment }}.postgres.database.azure.com

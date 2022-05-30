@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
+import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -21,9 +22,15 @@ import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_WITH_CODICILS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
 @Service
@@ -40,6 +47,7 @@ public class MarkdownDecoratorService {
     private final SendDocumentsRenderer sendDocumentsRenderer;
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
     private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
+    private final NotarialWillBusinessRule notarialWillBusinessRule;
 
     public String getPA14FormLabel(CaseData caseData) {
         String label = "";
@@ -116,5 +124,20 @@ public class MarkdownDecoratorService {
             return BULLET + DISPENSE_NOTICE_SUPPORT_TEXT + caseData.getDispenseWithNoticeSupportingDocs();
         }
         return "";
+    }
+
+    public String getWillLabel(CaseData caseData) {
+        String solsWillType = caseData.getSolsWillType();
+        if (GRANT_TYPE_INTESTACY.equals(solsWillType)) {
+            return "";
+        }
+        if (notarialWillBusinessRule.isApplicable(caseData)) {
+            return BULLET + NOTARIAL_COPY_WILL_TEXT
+                + BULLET + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT;
+        } else if (YES.equals(caseData.getWillHasCodicils())) {
+            return BULLET + ORIGINAL_WILL_WITH_CODICILS_TEXT;
+        } else {
+            return BULLET + ORIGINAL_WILL_TEXT;
+        }
     }
 }

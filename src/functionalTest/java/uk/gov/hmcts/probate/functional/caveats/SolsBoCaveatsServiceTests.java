@@ -21,6 +21,7 @@ import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
@@ -31,10 +32,12 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_CONFIRMATION = "/caveat/confirmation";
     private static final String CAVEAT_EXTEND = "/caveat/extend";
     private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
+    private static final String CAVEAT_SOLICITOR_CREATED = "/caveat/sols-created";
     private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
     private static final String CAVEAT_VALIDATE = "/caveat/validate";
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
+    private static final String CAVEAT_SOLS_CREATED = "/caveat/solsCreate";
     private static final String DEFAULT_PAYLOAD = "caveatPayloadNotifications.json";
     private static final String DEFAULT_PAYLOAD_RESPONSE = "caveatPayloadNotificationsResponse.txt";
     private static final String DEFAULT_PAYLOAD_WELSH = "caveatPayloadNotificationsWelsh.json";
@@ -42,7 +45,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String DEFAULT_PAYLOAD_CTSC = "caveatPayloadNotificationsCTSC.json";
     private static final String DEFAULT_PAYLOAD_CTSC_RESPONSE = "caveatPayloadNotificationsCTSCResponse.txt";
     private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB = "caveatPayloadNotificationsCTSCNoDOB.json";
-    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE = "caveatPayloadNotificationsCTSCNoDOBResponse" 
+    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE = "caveatPayloadNotificationsCTSCNoDOBResponse"
         + ".txt";
     private static final String PAYLOAD_CAVEAT_NO_DOB = "caveatPayloadNoDOB.json";
     private static final String RESPONSE_CAVEAT_NO_DOB = "caveatPayloadNoDOBResponse.txt";
@@ -55,10 +58,10 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         "solicitorCaveatWithdrawnExpectedTextWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE = "caveatPayloadNotificationsSolicitorResponse.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_WELSH = "caveatPayloadNotificationsSolicitorWelsh.json";
-    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH = 
+    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH =
         "caveatPayloadNotificationsSolicitorResponseWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOB.json";
-    private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse" 
+    private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse"
         + ".txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH =
         "caveatPayloadNotificationsSolicitorNoDOBWelsh.json";
@@ -164,7 +167,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL, 
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
@@ -192,7 +195,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL, 
+        assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
 
@@ -239,7 +242,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH, 
+        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_NO_DOB_WELSH,
             EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
     }
@@ -359,11 +362,19 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaveatSolicitorCreateReturnOkResponseCode() throws IOException {
-        final ResponseBody response = validatePostSuccess(CAVEAT_SOLICITOR_CREATE_PAYLOAD, CAVEAT_SOLICITOR_CREATE);
+        String json = utils.getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
+        final ResponseBody response = validatePostSuccessForPayload(json, CAVEAT_SOLICITOR_CREATED,
+                utils.getHeadersWithSolicitorUser());
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertThat(jsonPath.get("data.applicationType"), is(equalTo("Solicitor")));
         assertThat(jsonPath.get("data.registryLocation"), is(equalTo("ctsc")));
         assertThat(jsonPath.get("data.errors"), is(nullValue()));
+        assertNotNull(jsonPath.get("data.applicantOrganisationPolicy"));
+        assertNotNull(jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationID"));
+        assertEquals("Probate Test Org",
+            jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationName"));
+        assertEquals("[APPLICANTSOLICITOR]",
+            jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"));
     }
 
     @Test
