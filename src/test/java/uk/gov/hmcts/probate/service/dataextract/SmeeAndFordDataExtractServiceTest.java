@@ -20,15 +20,16 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.*;
 
 public class SmeeAndFordDataExtractServiceTest {
 
@@ -46,8 +47,10 @@ public class SmeeAndFordDataExtractServiceTest {
     private BlobUpload blobUpload;
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     private CaseData caseData1;
     private CaseData caseData2;
+    private List<ReturnedCaseDetails> returnedCases;
 
     @Before
     public void setup() {
@@ -71,7 +74,7 @@ public class SmeeAndFordDataExtractServiceTest {
             .deceasedSurname("jones")
             .scannedDocuments(scannedDocuments)
             .build();
-        List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
+        returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
             .add(new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L))
             .build();
@@ -115,5 +118,21 @@ public class SmeeAndFordDataExtractServiceTest {
             .thenThrow(NotificationClientException.class);
 
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+    }
+
+    @Test
+    public void shouldExtractDataForDateRangeAndGenerateZipFileAndUpload()
+            throws NotificationClientException, IOException {
+        File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
+        smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
+        when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
+        doNothing().when(blobUpload).uploadFile(any());
+
+        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+
+        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+        verify(zipFileService, times(1)).createTempZipFile(anyString());
+        verify(zipFileService, times(1)).generateZipFile(returnedCases,zipFile);
+        verify(blobUpload, times(1)).uploadFile(zipFile);
     }
 }
