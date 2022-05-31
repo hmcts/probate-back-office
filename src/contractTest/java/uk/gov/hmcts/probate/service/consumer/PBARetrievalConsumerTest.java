@@ -17,7 +17,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
-import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -50,7 +50,7 @@ public class PBARetrievalConsumerTest {
     @Autowired
     PBARetrievalService pbaRetrievalService;
     @MockBean
-    IdamAuthenticateUserService idamAuthenticateUserService;
+    SecurityUtils securityUtils;
     @MockBean
     AuthTokenGenerator authTokenGenerator;
 
@@ -74,7 +74,7 @@ public class PBARetrievalConsumerTest {
     @PactTestFor(pactMethod = "generatePbaRetrievalPactFragment")
     public void verifyPbaRetrievePact() {
 
-        when(idamAuthenticateUserService.getEmail(SOME_AUTHORIZATION_TOKEN)).thenReturn(ORGANISATION_EMAIL);
+        when(securityUtils.getEmail(SOME_AUTHORIZATION_TOKEN)).thenReturn(ORGANISATION_EMAIL);
         when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
         List<String> pbas = pbaRetrievalService.getPBAs(SOME_AUTHORIZATION_TOKEN);
         assertThat(pbas.get(0), equalTo("paymentAccountA1"));
