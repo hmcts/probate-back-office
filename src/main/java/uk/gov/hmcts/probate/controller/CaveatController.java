@@ -113,6 +113,18 @@ public class CaveatController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/sols-created")
+    public ResponseEntity<CaveatCallbackResponse> createSolsCaseWithOrganisation(
+            @Validated({CaveatCreatedGroup.class})
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+
+        CaveatCallbackResponse caveatCallbackResponse =
+                caveatCallbackResponseTransformer.transformForSolicitor(caveatCallbackRequest, authToken);
+
+        return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
     @PostMapping(path = "/solsCreate")
     public ResponseEntity<CaveatCallbackResponse> createSolsCaveat(
         @Validated({CaveatCreatedGroup.class})
