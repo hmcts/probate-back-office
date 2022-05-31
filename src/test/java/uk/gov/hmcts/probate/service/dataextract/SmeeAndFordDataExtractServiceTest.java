@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.service.dataextract;
 
 import com.google.common.collect.ImmutableList;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -126,9 +125,8 @@ public class SmeeAndFordDataExtractServiceTest {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
     }
 
-    @Test
-    @Ignore
-    public void shouldExtractDataForDateRangeAndGenerateZipFileAndUpload()
+    @Test(expected = ClientException.class)
+    public void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException()
             throws NotificationClientException, IOException {
         File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
         smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
