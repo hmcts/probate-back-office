@@ -294,6 +294,7 @@ dependencies {
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
+  testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   testImplementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testImplementation("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
