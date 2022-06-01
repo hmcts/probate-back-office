@@ -10,9 +10,11 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 
 import java.util.Locale;
 
+import static java.util.Locale.UK;
 import static org.hamcrest.Matchers.isEmptyOrNullString;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -28,5 +30,13 @@ public class BusinessValidationMessageRetrieverTest {
     public void shouldGetMessage() {
         String message = businessValidationMessageRetriever.getMessage("dodIsBeforeDob", null, Locale.UK);
         assertThat(message, not(isEmptyOrNullString()));
+    }
+
+    @Test
+    public void testEmailForPaymentError() {
+        String[] empty = {};
+        String message = businessValidationMessageRetriever.getMessage(
+            "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);
+        assertTrue(message.contains("probatefeedback@justice.gov.uk"));
     }
 }
