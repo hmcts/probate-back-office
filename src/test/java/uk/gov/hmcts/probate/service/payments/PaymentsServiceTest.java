@@ -20,8 +20,10 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
+import java.util.Arrays;
 import java.util.Optional;
 
+import static java.util.Locale.UK;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -204,6 +206,31 @@ public class PaymentsServiceTest {
         } catch (BusinessValidationException e) {
             assertEquals("Unexpected Exception", e.getUserMessage());
             verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
+        }
+    }
+
+    @Test
+    public void shouldGetNewEmailWhenPaymentError() {
+        String userMessage = "USER MESSAGE";
+        String additionalMessage = "ADDITIONAL MESSAGE";
+        try {
+            when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
+            when(httpClientErrorExceptionMock.getStatusCode()).thenReturn(BAD_REQUEST);
+            when(httpClientErrorExceptionMock.getMessage()).thenReturn("duplicate payment");
+            String[] empty = {};
+
+            when(businessValidationMessageRetriever.getMessage(
+                "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK)).thenReturn(userMessage);
+            when(businessValidationMessageRetriever.getMessage(
+                "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK)).thenReturn(additionalMessage);
+
+            paymentsService.getCreditAccountPaymentResponse("Bearer .123", creditAccountPayment);
+
+        } catch (BusinessValidationException e) {
+            assertEquals(userMessage, e.getUserMessage());
+            assertEquals(Optional.of(additionalMessage),Arrays.stream(e.getAdditionalMessages()).findAny());
+            verify(businessValidationMessageRetriever, times(2)).getMessage(any(), any(), any());
         }
     }
 }
