@@ -112,6 +112,10 @@ sourceSets {
   }
 }
 
+test {
+  maxHeapSize = "1024m"
+  useJUnitPlatform()
+}
 
 processContractTestResources {
   duplicatesStrategy = DuplicatesStrategy.INCLUDE

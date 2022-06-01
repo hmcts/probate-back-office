@@ -8,12 +8,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import uk.gov.hmcts.probate.insights.AppInsights;
 
-import java.util.Locale;
-
+import static java.util.Locale.UK;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.not;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.emptyOrNullString;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.not;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,7 +27,15 @@ public class BusinessValidationMessageRetrieverTest {
 
     @Test
     public void shouldGetMessage() {
-        String message = businessValidationMessageRetriever.getMessage("dodIsBeforeDob", null, Locale.UK);
+        String message = businessValidationMessageRetriever.getMessage("dodIsBeforeDob", null, UK);
         assertThat(message, not(is(emptyOrNullString())));
+    }
+
+    @Test
+    public void testEmailForPaymentError() {
+        String[] empty = {};
+        String message = businessValidationMessageRetriever.getMessage(
+            "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);
+        assertThat(message, containsString("probatefeedback@justice.gov.uk"));
     }
 }
