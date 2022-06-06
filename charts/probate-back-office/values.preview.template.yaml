@@ -16,9 +16,9 @@ postgresql:
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
   environment:
-    POSTGRESQL_USERNAME=hmcts
-    POSTGRESQL_PASSWORD=hmcts
-    POSTGRESQL_DATABASE=ccd,probate,data-store,definition-store,user-profile,role_assignment
+    - POSTGRESQL_USERNAME=hmcts
+    - POSTGRESQL_PASSWORD=hmcts
+    - POSTGRESQL_DATABASE=role_assignment
   persistence:
     enabled: false
 
