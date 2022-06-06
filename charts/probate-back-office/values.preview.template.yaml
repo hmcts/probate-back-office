@@ -18,7 +18,8 @@ postgresql:
   auth:
     username: hmcts
     password: hmcts
-    database: hmcts
+    database: data-store
+    database: probate
   environment:
     - POSTGRESQL_USERNAME=hmcts
     - POSTGRESQL_PASSWORD=hmcts
