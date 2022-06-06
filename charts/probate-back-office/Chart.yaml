@@ -25,10 +25,10 @@ dependencies:
     repository: '@hmctspublic'
     condition: idam-pr.enabled
 
-#  - name: postgresql
-#    version: 11.3.0
-#    repository: https://charts.bitnami.com/bitnami
-#    condition: postgresql.enabled
+  - name: postgresql
+    version: 11.3.0
+    repository: https://charts.bitnami.com/bitnami
+    condition: postgresql.enabled
 
 #  - name: elasticsearch
 #    version: 13.0.2
