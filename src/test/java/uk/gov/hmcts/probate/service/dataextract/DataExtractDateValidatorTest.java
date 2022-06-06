@@ -95,6 +95,7 @@ class DataExtractDateValidatorTest {
             dataExtractDateValidator.dateValidator(date);
         });
     }
+
     private void assertNoThrow(String date1, String date2) {
         assertDoesNotThrow(() -> {
             dataExtractDateValidator.dateValidator(date1, date2);
