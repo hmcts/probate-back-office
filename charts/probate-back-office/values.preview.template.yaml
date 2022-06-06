@@ -19,6 +19,9 @@ postgresql:
   postgresqlPassword: hmcts
   persistence:
     enabled: false
+  auth:
+    username: hmcts
+    password: hmcts
 
 idam-pr:
   enabled: true
