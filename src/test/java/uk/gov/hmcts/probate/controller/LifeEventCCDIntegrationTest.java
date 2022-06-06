@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.controller;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
-import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -84,7 +84,7 @@ class LifeEventCCDIntegrationTest {
         );
     }
 
-    @After
+    @AfterEach
     public void reset() {
         wireMockServer.resetAll();
     }

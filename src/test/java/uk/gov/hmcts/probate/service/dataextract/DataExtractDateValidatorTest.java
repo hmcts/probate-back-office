@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.ClientException;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class DataExtractDateValidatorTest {
@@ -17,27 +18,27 @@ class DataExtractDateValidatorTest {
 
     @Test
     void shouldValidateDate() {
-        dataExtractDateValidator.dateValidator("2000-12-31");
+        assertNoThrow("2000-12-31");
     }
 
     @Test
     void shouldValidateEmptyFromDate() {
-        dataExtractDateValidator.dateValidator("", "2000-12-31");
+        assertNoThrow("", "2000-12-31");
     }
 
     @Test
     void shouldValidatenullFromDate() {
-        dataExtractDateValidator.dateValidator(null, "2000-12-31");
+        assertNoThrow(null, "2000-12-31");
     }
 
     @Test
     void shouldValidateDateFromTo() {
-        dataExtractDateValidator.dateValidator("2000-12-31", "2001-12-31");
+        assertNoThrow("2000-12-31", "2001-12-31");
     }
 
     @Test
     void shouldValidateDateFromToSame() {
-        dataExtractDateValidator.dateValidator("2000-12-31", "2000-12-31");
+        assertNoThrow("2000-12-31", "2000-12-31");
     }
 
     @Test
@@ -86,6 +87,17 @@ class DataExtractDateValidatorTest {
     void shouldThrowExceptionForFromDateNotBeforeToDate() {
         assertThrows(ClientException.class, () -> {
             dataExtractDateValidator.dateValidator("2001-12-31", "2001-01-31");
+        });
+    }
+
+    private void assertNoThrow(String date) {
+        assertDoesNotThrow(() -> {
+            dataExtractDateValidator.dateValidator(date);
+        });
+    }
+    private void assertNoThrow(String date1, String date2) {
+        assertDoesNotThrow(() -> {
+            dataExtractDateValidator.dateValidator(date1, date2);
         });
     }
 }
