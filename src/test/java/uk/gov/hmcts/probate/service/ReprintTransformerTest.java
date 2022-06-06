@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -51,9 +51,9 @@ public class ReprintTransformerTest {
 
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         responseCaseDataBuilder = ResponseCaseData.builder();
         when(caseDetails.getData()).thenReturn(caseData);

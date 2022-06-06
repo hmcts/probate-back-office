@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LifeEventControllerTest {
@@ -63,11 +63,11 @@ public class LifeEventControllerTest {
 
     @Captor
     private ArgumentCaptor<CaseDetails> caseDetailsArgumentCaptor;
-    
+
     @Captor
     private ArgumentCaptor<CallbackRequest> callbackRequestArgumentCaptor;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
@@ -82,7 +82,7 @@ public class LifeEventControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
-        
+
         verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
         final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
         assertThat(caseDetailsArgumentCaptorValue.getId()).isEqualTo(1621002468661478L);
@@ -96,7 +96,7 @@ public class LifeEventControllerTest {
     @Test
     public void shouldCountDeathRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
-        
+
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecordsAboutToStart")
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -106,7 +106,7 @@ public class LifeEventControllerTest {
         final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
         assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
     }
-    
+
     @Test
     public void shouldValidate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
@@ -115,14 +115,14 @@ public class LifeEventControllerTest {
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        
+
         verify(lifeEventValidationRule).validate(any());
     }
 
     @Test
     public void shouldLookupDeathRecordByNameAndDate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventPayload.json");
-        
+
         mockMvc.perform(post("/lifeevent/manualUpdateAboutToStart")
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
@@ -144,7 +144,7 @@ public class LifeEventControllerTest {
 
         verify(lifeEventValidationRule).validate(any());
     }
-    
+
     @Test
     public void shouldValidateSelectFromMultipleRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
@@ -153,7 +153,7 @@ public class LifeEventControllerTest {
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        
+
         verify(lifeEventValidationRule).validate(any());
     }
 

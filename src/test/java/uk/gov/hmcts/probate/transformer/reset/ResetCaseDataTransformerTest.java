@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.reset;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -27,7 +27,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ResetCaseDataTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
@@ -45,7 +45,7 @@ public class ResetCaseDataTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         trustCorpsExecutorList = new ArrayList<>();

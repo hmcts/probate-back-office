@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.caveat.request;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.service.AddressFormatterService;
@@ -31,7 +31,7 @@ public class CaveatDataTest {
     @InjectMocks
     private CaveatData underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         underTest = CaveatData.builder()

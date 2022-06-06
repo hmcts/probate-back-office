@@ -1,10 +1,11 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
@@ -25,6 +26,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
+@ExtendWith(MockitoExtension.class)
 public class CaseSearchServiceTest {
 
     @InjectMocks
@@ -42,9 +44,8 @@ public class CaseSearchServiceTest {
     @Mock
     private Case caseMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
 
         CaseData caseData = CaseData.builder()
                 .deceasedForenames("names")
@@ -53,15 +54,6 @@ public class CaseSearchServiceTest {
                 .deceasedAddress(SolsAddress.builder().postCode("SW12 0FA").build())
                 .build();
 
-        when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("names");
-        when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
-        when(caseMatchingCriteria.getDeceasedFullName()).thenReturn("name surname");
-        when(caseMatchingCriteria.getDeceasedAliases()).thenReturn(Collections.singletonList("name surname"));
-        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn("1900-01-01");
-        when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn("2000-01-01");
-
-        when(caseMock.getData()).thenReturn(caseData);
-        when(caseMock.getId()).thenReturn(1L);
         when(elasticSearchService.runQuery(any(CaseType.class), anyString()))
                 .thenReturn(new MatchedCases(Collections.singletonList(caseMock)));
     }
@@ -93,8 +85,6 @@ public class CaseSearchServiceTest {
         when(caseMatchingCriteria.getDeceasedForenames()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedFullName()).thenReturn(null);
-        when(caseMatchingCriteria.getDeceasedDateOfBirth()).thenReturn(null);
-        when(caseMatchingCriteria.getDeceasedDateOfDeath()).thenReturn(null);
 
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -18,7 +18,7 @@ public class TextFileBuilderServiceTest {
     private TextFileBuilderService textFileBuilderService;
     private List<String> data;
 
-    @Before
+    @BeforeEach
     public void setup() {
         textFileBuilderService = new TextFileBuilderService();
 

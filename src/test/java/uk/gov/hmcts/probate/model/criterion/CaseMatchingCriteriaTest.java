@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.model.criterion;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -44,9 +44,9 @@ public class CaseMatchingCriteriaTest {
     @Mock
     private WillLodgementDetails willLodgementDetails;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caveatDetails.getData()).thenReturn(caveatData);
         when(standingSearchDetails.getData()).thenReturn(standingSearchData);

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.businessrule;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -27,9 +27,9 @@ public class PA15FormBusinessRuleTest {
     @Mock
     private CaseData mockCaseData;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
@@ -142,5 +142,5 @@ public class PA15FormBusinessRuleTest {
         when(mockCaseData.getAdditionalExecutorsNotApplying()).thenReturn(null);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
-    
+
 }

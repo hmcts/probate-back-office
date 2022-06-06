@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.security;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.test.context.TestSecurityContextHolder;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SecurityUtilsTest {
 
     public static final String CODE = "CODE_VAL";

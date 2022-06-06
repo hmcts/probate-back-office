@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -39,7 +39,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APP
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SolicitorApplicationCompletionTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
@@ -63,7 +63,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));

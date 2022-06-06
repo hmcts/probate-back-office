@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
@@ -26,7 +24,6 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
 
-@RunWith(MockitoJUnitRunner.class)
 public class IHTValidationRuleTest {
 
     private static final BigDecimal HIGHER_VALUE = BigDecimal.valueOf(20f);
@@ -43,9 +40,9 @@ public class IHTValidationRuleTest {
 
     private IHTValidationRule underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         businessValidationError = FieldErrorResponse.builder().build();
 
         this.underTest = new IHTValidationRule(businessValidationMessageService);

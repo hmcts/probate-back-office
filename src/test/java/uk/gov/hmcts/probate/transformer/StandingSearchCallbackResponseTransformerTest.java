@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -30,7 +30,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.STANDING_SEARCH_LIFESPAN;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StandingSearchCallbackResponseTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -73,7 +73,7 @@ public class StandingSearchCallbackResponseTransformerTest {
 
     private StandingSearchData.StandingSearchDataBuilder standingSearchDataBuilder;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         standingSearchDataBuilder = StandingSearchData.builder()

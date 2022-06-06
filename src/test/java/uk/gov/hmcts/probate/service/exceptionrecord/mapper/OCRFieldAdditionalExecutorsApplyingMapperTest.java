@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
@@ -35,7 +35,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     private ExceptionRecordOCRFields ocrFields2;
     private ExceptionRecordOCRFields ocrFields3;
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
             .executorsApplying0applyingExecutorName(EXECUTOR_APPLYING_1_NAME)

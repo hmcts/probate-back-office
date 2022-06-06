@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -42,7 +42,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
-    @Mock   
+    @Mock
     private FileSystemResourceService fileSystemResourceService;
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
@@ -55,29 +55,29 @@ public class SmeeAndFordPersonalisationServiceTest {
 
     private TestUtils testUtils = new TestUtils();
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/SmeeAndFordHeaderRow.csv"))
-            .thenReturn("Registry name|Date of Issue|Case reference number|Full name of deceased|All names which the " 
-                + "deceased was otherwise known as|Type of Grant|Date of death|Deceased Address|Deceased Town|" 
-                + "Deceased County|Deceased Postcode|Deceased Country|Applying executor 1 Name|Applying executor 1 " 
-                + "Address|Applying executor 1 Town|Applying executor 1 County|Applying executor 1 Postcode|Applying " 
-                + "executor 1 Country|Applying executor 2 Name|Applying executor 2 Address|Applying executor 2 Town|" 
-                + "Applying executor 2 County|Applying executor 2 Postcode|Applying executor 2 Country|Applying " 
-                + "executor 3 Name|Applying executor 3 Address|Applying executor 3 Town|Applying executor 3 County|" 
-                + "Applying executor 3 Postcode|Applying executor 3 Country|Primary applicant Name|Primary applicant " 
-                + "Address|Primary applicant Town|Primary applicant County|Primary applicant Postcode|Primary " 
-                + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|" 
-                + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to " 
+            .thenReturn("Registry name|Date of Issue|Case reference number|Full name of deceased|All names which the "
+                + "deceased was otherwise known as|Type of Grant|Date of death|Deceased Address|Deceased Town|"
+                + "Deceased County|Deceased Postcode|Deceased Country|Applying executor 1 Name|Applying executor 1 "
+                + "Address|Applying executor 1 Town|Applying executor 1 County|Applying executor 1 Postcode|Applying "
+                + "executor 1 Country|Applying executor 2 Name|Applying executor 2 Address|Applying executor 2 Town|"
+                + "Applying executor 2 County|Applying executor 2 Postcode|Applying executor 2 Country|Applying "
+                + "executor 3 Name|Applying executor 3 Address|Applying executor 3 Town|Applying executor 3 County|"
+                + "Applying executor 3 Postcode|Applying executor 3 Country|Primary applicant Name|Primary applicant "
+                + "Address|Primary applicant Town|Primary applicant County|Primary applicant Postcode|Primary "
+                + "applicant Country|Gross|Net|Solicitor Name|Solicitor Reference|Solicitor Address|Solicitor Town|"
+                + "Solicitor County|Solicitor Postcode|Solicitor Country|date of birth|Field which alerts us to "
                 + "Codicil being present|pdf file name field for Wills|pdf for Digital Grant");
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
                                                         int numExecs, boolean hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
-                                                        boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias, 
+                                                        boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias,
                                                         boolean hasDOD, boolean isWelsh) {
         List<CollectionMember<ProbateAliasName>> deceasedAliases = null;
         if (hasDeceasedAlias) {

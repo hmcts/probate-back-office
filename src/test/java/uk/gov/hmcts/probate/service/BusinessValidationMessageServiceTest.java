@@ -1,12 +1,10 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 
 import java.util.Locale;
@@ -14,7 +12,6 @@ import java.util.Locale;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(MockitoJUnitRunner.class)
 public class BusinessValidationMessageServiceTest {
 
     @Mock
@@ -22,9 +19,9 @@ public class BusinessValidationMessageServiceTest {
 
     private BusinessValidationMessageService underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         underTest = new BusinessValidationMessageService(businessValidationMessageRetrieverMock);
     }
 
@@ -44,7 +41,7 @@ public class BusinessValidationMessageServiceTest {
         assertThat(error.getCode(), is(code));
         assertThat(error.getMessage(), is(message));
     }
-    
+
     @Test
     public void shouldValidateFormWithArgsWithNoErrors() {
         String code = "dobIsNull";

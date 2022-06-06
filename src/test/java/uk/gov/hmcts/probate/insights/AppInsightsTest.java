@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.insights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.TelemetryContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.Assert;
@@ -20,9 +20,9 @@ public class AppInsightsTest {
     @Mock
     private TelemetryClient telemetryClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         TelemetryContext telemetryContext = new TelemetryContext();
         telemetryContext.setInstrumentationKey("some-key");
         doReturn(telemetryContext).when(telemetryClient).getContext();

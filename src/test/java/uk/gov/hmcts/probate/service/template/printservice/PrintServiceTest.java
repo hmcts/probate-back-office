@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.template.printservice;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -16,7 +16,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class PrintServiceTest {
 
@@ -35,9 +35,9 @@ public class PrintServiceTest {
     @Mock
     AppInsights appInsights;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "someTemplateDirectory/");
         ReflectionTestUtils.setField(underTest, "printServiceHost", "somePrintServiceHost");
         ReflectionTestUtils.setField(underTest, "printServicePath", "somePrintServicePath/%s/probate/");

@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.validator;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
@@ -16,10 +16,10 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class LifeEventValidationRuleTest {
-    
+
     @Autowired
     private LifeEventValidationRule lifeEventValidationRule;
 
@@ -36,7 +36,7 @@ public class LifeEventValidationRuleTest {
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("Don't add or remove records here");
     }
-    
+
     @Test
     public void shouldThrowWhenRecordAddedInUI() {
         DeathRecord deathRecord = DeathRecord.builder().build();
@@ -52,7 +52,7 @@ public class LifeEventValidationRuleTest {
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("Don't add or remove records here");
     }
-    
+
     @Test
     public void shouldThrowWhenMultipleRecordsSelected() {
         DeathRecord deathRecord1 = DeathRecord
@@ -120,8 +120,8 @@ public class LifeEventValidationRuleTest {
             .numberOfDeathRecords(1)
             .build();
         final CaseDetails caseDetails = new CaseDetails(caseData, null, null);
-            
+
         lifeEventValidationRule.validate(caseDetails);
-  
+
     }
 }

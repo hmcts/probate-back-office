@@ -1,14 +1,12 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.properties.docmosis.TemplateProperties;
@@ -18,13 +16,13 @@ import uk.gov.hmcts.probate.model.docmosis.PdfDocumentRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.probate.model.ProbateDocumentType.CAVEAT_RAISED;
 
-@RunWith(MockitoJUnitRunner.class)
 public class DocmosisPdfGenerationServiceTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
@@ -36,9 +34,9 @@ public class DocmosisPdfGenerationServiceTest {
     @InjectMocks
     private DocmosisPdfGenerationService docmosisPdfGenerationService = new DocmosisPdfGenerationService();
 
-    @Before
+    @BeforeEach
     public void setup() throws IllegalAccessException {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
@@ -73,13 +71,13 @@ public class DocmosisPdfGenerationServiceTest {
         Assert.assertEquals(8, result.length);
     }
 
-    @Test(expected = PDFGenerationException.class)
+    @Test
     public void shouldThrowPDFGeneratedException() {
+        assertThrows(PDFGenerationException.class, () -> {
+            Map<String, Object> registry = new HashMap<>();
+            Map<String, Object> placeholders = new HashMap<>();
 
-        Map<String, Object> registry = new HashMap<>();
-        Map<String, Object> placeholders = new HashMap<>();
-
-        docmosisPdfGenerationService.generateDocFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
-
+            docmosisPdfGenerationService.generateDocFrom(CAVEAT_RAISED.getTemplateName(), placeholders);
+        });
     }
 }

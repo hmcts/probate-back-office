@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.ccd;
 
 import com.google.common.collect.ImmutableMap;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.JurisdictionId;
@@ -16,21 +16,22 @@ import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDataContent;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class CcdClientApiTest {
 
     private static final String AUTHORISATION = "XXJDHFHF";
@@ -154,30 +155,31 @@ public class CcdClientApiTest {
 
     }
 
-    @Test(expected = IllegalStateException.class)
+    @Test
     public void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
-        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
-        Long legacyId = 1L;
-        CaseDetails caseDetails1 = CaseDetails.builder().build();
-        CaseDetails caseDetails2 = CaseDetails.builder().build();
+        assertThrows(IllegalStateException.class, () -> {
+            CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+            Long legacyId = 1L;
+            CaseDetails caseDetails1 = CaseDetails.builder().build();
+            CaseDetails caseDetails2 = CaseDetails.builder().build();
 
-        when(coreCaseDataApi.searchForCaseworker(
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(String.class),
-            any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
+            when(coreCaseDataApi.searchForCaseworker(
+                    any(String.class),
+                    any(String.class),
+                    any(String.class),
+                    any(String.class),
+                    any(String.class),
+                    any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
 
-        SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation(AUTHORISATION)
-            .serviceAuthorisation(SERVICE_AUTHORISATION)
-            .userId(USER_ID)
-            .build();
+            SecurityDTO securityDTO = SecurityDTO.builder()
+                    .authorisation(AUTHORISATION)
+                    .serviceAuthorisation(SERVICE_AUTHORISATION)
+                    .userId(USER_ID)
+                    .build();
 
-        Optional<CaseDetails> actualCaseDetails =
-            ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
-
+            Optional<CaseDetails> actualCaseDetails =
+                    ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+        });
     }
 
     @Test

@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.probate.model.Relationship;
 

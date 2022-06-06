@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -63,9 +63,9 @@ public class PreviewLetterServiceTest {
     private DateFormatterService dateFormatterService;
     private CaseDetails caseDetails;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         DynamicListItem dynamicListItem = DynamicListItem.builder().code("will").label("WILL").build();
         DynamicListItem dynamicListItem2 = DynamicListItem.builder().code("codicil").label("CODICIL").build();
 

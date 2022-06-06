@@ -1,14 +1,16 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.ClientException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DataExtractDateValidatorTest {
 
     private DataExtractDateValidator dataExtractDateValidator;
 
-    @Before
+    @BeforeEach
     public void setup() {
         dataExtractDateValidator = new DataExtractDateValidator();
     }
@@ -38,38 +40,52 @@ public class DataExtractDateValidatorTest {
         dataExtractDateValidator.dateValidator("2000-12-31", "2000-12-31");
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowExceptionForInvalidaDate() {
-        dataExtractDateValidator.dateValidator("2000-14-31");
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator("2000-14-31");
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowExceptionForInvalidFromDate() {
-        dataExtractDateValidator.dateValidator("2000--31", "2001-12-31");
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator("2000--31", "2001-12-31");
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowExceptionForInvalidToDate() {
-        dataExtractDateValidator.dateValidator("2000-12-31", "2001");
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator("2000-12-31", "2001");
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowExceptionForNullDate() {
-        dataExtractDateValidator.dateValidator(null);
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator(null);
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowExceptionForNullFromToDates() {
-        dataExtractDateValidator.dateValidator(null, null);
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator(null, null);
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowExceptionForEmptyFromToDates() {
-        dataExtractDateValidator.dateValidator("", "");
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator("", "");
+        });
     }
-    
-    @Test(expected = ClientException.class)
+
+    @Test
     public void shouldThrowExceptionForFromDateNotBeforeToDate() {
-        dataExtractDateValidator.dateValidator("2001-12-31", "2001-01-31");
+        assertThrows(ClientException.class, () -> {
+            dataExtractDateValidator.dateValidator("2001-12-31", "2001-01-31");
+        });
     }
 }

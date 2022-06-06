@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;

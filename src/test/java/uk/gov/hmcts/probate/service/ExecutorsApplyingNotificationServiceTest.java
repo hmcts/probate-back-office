@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -29,7 +29,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     private List<CollectionMember<ExecutorsApplyingNotification>> expectedResponse;
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplyingList;
 
-    @Before
+    @BeforeEach
     public void setup() {
         expectedResponse = new ArrayList<>();
         additionalExecutorApplyingList = new ArrayList<>();

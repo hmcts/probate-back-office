@@ -1,14 +1,14 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -49,7 +49,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class NotificationControllerUnitTest {
 
     @Mock

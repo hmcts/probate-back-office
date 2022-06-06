@@ -1,24 +1,23 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
@@ -34,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class SolicitorCoversheetPDFDecoratorTest {
 
@@ -66,9 +65,9 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         setBusinessRuleMocksApplicable(false);
     }
 

@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -31,7 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CaveatPersonalisationServiceTest {
 
@@ -52,7 +52,7 @@ public class CaveatPersonalisationServiceTest {
     private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH = "deceased_date_of_birth_welsh_text";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
     private static final String PERSONALISATION_DATE_OF_BIRTH = "deceased_date_of_birth_text";
-    
+
     Registry registry = new Registry();
     HashMap<String, Object> personalisation = new HashMap<>();
     @Autowired
@@ -80,7 +80,7 @@ public class CaveatPersonalisationServiceTest {
     private CaseData caseDataSolicitor;
     private CaveatData returnedCaveatData;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         registry.setPhone("1234567890");
         registry.setName("CTSC");
@@ -150,7 +150,7 @@ public class CaveatPersonalisationServiceTest {
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatDetailsDobNull = new CaveatDetails(caveatDataDobNull, LAST_MODIFIED, ID);
-        
+
         CaveatData solsCaveatData = CaveatData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .caveatorForenames("first name")
@@ -181,7 +181,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("1234567890", response.get(PERSONALISATION_REGISTRY_PHONE));
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
-        assertEquals("Dyddiad geni’r ymadawedig yw: 10 Hydref 1900", 
+        assertEquals("Dyddiad geni’r ymadawedig yw: 10 Hydref 1900",
             response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
         assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
@@ -203,7 +203,7 @@ public class CaveatPersonalisationServiceTest {
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_DATE_OF_DEATH));
         assertEquals("", response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
-        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));    
+        assertEquals("", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
 
     @Test

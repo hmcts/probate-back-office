@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 
@@ -41,7 +41,7 @@ public class DeathRecordCCDServiceTest {
         assertEquals(deathRecord.getSex(), deceased.getSex().getValue());
         assertEquals(deathRecord.getAddress(), deceased.getAddress());
     }
-    
+
     @Test
     public void shouldHandleNull() {
         final uk.gov.hmcts.probate.model.ccd.raw.DeathRecord result =

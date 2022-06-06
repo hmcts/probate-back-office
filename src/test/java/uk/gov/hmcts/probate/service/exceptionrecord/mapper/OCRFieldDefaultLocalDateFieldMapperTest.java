@@ -1,12 +1,13 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OCRFieldDefaultLocalDateFieldMapperTest {
 
@@ -27,8 +28,10 @@ public class OCRFieldDefaultLocalDateFieldMapperTest {
         assertEquals(LocalDate.parse("2018-12-25", DateTimeFormatter.ofPattern("yyyy-MM-dd")), response);
     }
 
-    @Test(expected = OCRMappingException.class)
+    @Test
     public void testOcrDateFormatError() {
-        LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("Garbage");
+        assertThrows(OCRMappingException.class, () -> {
+            LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("Garbage");
+        });
     }
 }

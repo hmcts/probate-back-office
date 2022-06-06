@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr.pa8a;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -20,12 +20,12 @@ public class PA8ASolicitorMandatoryFieldsValidatorTest {
     @InjectMocks
     private PA8ASolicitorMandatoryFieldsValidator pa8ASolicitorMandatoryFieldsValidator;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         warnings = new ArrayList<>();
     }
-    
+
     @Test
     public void testSolictorMandatoryFieldsPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();

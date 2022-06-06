@@ -1,12 +1,10 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.header;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 
@@ -15,7 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
 public class IdamHttpHeaderFactoryTest {
 
     @Mock
@@ -24,9 +21,9 @@ public class IdamHttpHeaderFactoryTest {
     @InjectMocks
     private IdamHttpHeaderFactory underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test

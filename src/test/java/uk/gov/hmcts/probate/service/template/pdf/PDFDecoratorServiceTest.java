@@ -2,9 +2,11 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -14,8 +16,9 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCo
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorLegalStatementPDFDecorator;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVER;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -23,6 +26,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
+@ExtendWith(SpringExtension.class)
 public class PDFDecoratorServiceTest {
 
     private PDFDecoratorService pdfDecoratorService;
@@ -42,9 +46,9 @@ public class PDFDecoratorServiceTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         when(objectMapperMock.copy()).thenReturn(objectMapperMock);
         pdfDecoratorService = new PDFDecoratorService(objectMapperMock, solicitorCoversheetPDFDecoratorMock,
             solicitorLegalStatementPDFDecoratorMock);
@@ -76,16 +80,19 @@ public class PDFDecoratorServiceTest {
         assertEquals(expectedJson, json);
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void shouldNotDecorateThrowBadRequest() throws JsonProcessingException {
-        when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenThrow(JsonProcessingException.class);
+        assertThrows(BadRequestException.class, () -> {
+            when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock))
+                    .thenThrow(JsonProcessingException.class);
 
-        pdfDecoratorService.decorate(caveatCallbackRequestMock, SOLICITOR_COVERSHEET);
+            pdfDecoratorService.decorate(caveatCallbackRequestMock, SOLICITOR_COVERSHEET);
+        });
     }
 
     @Test
     public void shouldDecorateSolicitorCoversheet() throws JsonProcessingException {
-        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"}," 
+        String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
@@ -154,7 +161,7 @@ public class PDFDecoratorServiceTest {
 
         assertEquals(expectedJson, json);
     }
-    
+
     @Test
     public void shouldDecorateSolicitorLegalStatementAdmon() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"

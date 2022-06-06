@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -67,9 +67,9 @@ public class RedeclarationNotificationServiceTest {
     private static final Document SENT_EMAIL_DOCUMENT =
             Document.builder().documentType(DocumentType.SENT_EMAIL).build();
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         documentListSOT = new ArrayList<>();
         documentListEmail = new ArrayList<>();
         executorsApplying = new ArrayList<>();

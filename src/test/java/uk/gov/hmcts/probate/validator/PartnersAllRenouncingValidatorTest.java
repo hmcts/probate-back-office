@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.validator;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -28,9 +28,9 @@ public class PartnersAllRenouncingValidatorTest {
     private CaseData caseDataYesYesAllRenouncing;
     private CaseData caseDataYesNoAllRenouncing;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         caseDataSuccessorFirmAllRenouncing = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)

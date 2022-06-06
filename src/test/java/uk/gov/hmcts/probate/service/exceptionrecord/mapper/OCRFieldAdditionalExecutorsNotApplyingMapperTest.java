@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -13,6 +13,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
 
@@ -33,7 +34,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     private ExceptionRecordOCRFields ocrFields5;
     private ExceptionRecordOCRFields ocrFields6;
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
             .executorsNotApplying0notApplyingExecutorName(EXECUTOR_NOT_APPLYING_1_NAME)
@@ -113,15 +114,19 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
         assertEquals(0, response.size());
     }
 
-    @Test(expected = OCRMappingException.class)
+    @Test
     public void testMissingReasonExecutorNotApplyingShouldError() {
-        List<CollectionMember<ExecutorNotApplying>> response
-            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields5);
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<ExecutorNotApplying>> response
+                    = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields5);
+        });
     }
 
-    @Test(expected = OCRMappingException.class)
+    @Test
     public void testInvalidReasonExecutorNotApplyingShouldError() {
-        List<CollectionMember<ExecutorNotApplying>> response
-            = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<ExecutorNotApplying>> response
+                    = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);
+        });
     }
 }

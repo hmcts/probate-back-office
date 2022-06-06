@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -34,9 +34,9 @@ public class SolicitorPBADefaulterTest {
 
     List<String> allPBAs = Arrays.asList("PBA1111", "PBA2222", "PBA3333");
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(pbaRetrievalService.getPBAs(AUTH_TOKEN)).thenReturn(allPBAs);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");

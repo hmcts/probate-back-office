@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.transformer.assembly;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -37,7 +37,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class AssembleLetterTransformerTest {
     @Mock
     AssembleIncapacity assembleIncapacity;
@@ -76,7 +76,7 @@ public class AssembleLetterTransformerTest {
 
     private AssembleLetterTransformer assembleLetterTransformer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         assembleLetterTransformer = new AssembleLetterTransformer(assembleCaseworker,
             assembleFreeText, assembleEntitlement, assembleIHT, assembleMissingInformation, assembleForeignDomicile,

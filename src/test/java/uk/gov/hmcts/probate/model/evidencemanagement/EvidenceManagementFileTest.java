@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.evidencemanagement;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 

@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
@@ -20,7 +20,7 @@ import uk.gov.service.notify.SendEmailResponse;
 import static org.junit.Assert.assertEquals;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class DocumentTemplateServiceTest {
 

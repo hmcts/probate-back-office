@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -55,7 +55,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @ContextConfiguration(classes = {CaveatCallbackResponseTransformer.class})
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class CaveatCallbackResponseTransformerTest {
 
     public static final String ORGANISATION_NAME = "OrganisationName";
@@ -155,7 +155,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData bulkScanCaveatData;
 
-    @Before
+    @BeforeEach
     public void setup() {
         caveatDataBuilder = CaveatData.builder()
             .deceasedForenames(CAV_DECEASED_FORENAMES)
@@ -206,19 +206,24 @@ public class CaveatCallbackResponseTransformerTest {
             .bulkScanCaseReference(BULK_SCAN_REFERENCE)
             .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
+    }
 
+    private void setupMocks() {
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+
     }
 
     @Test
     public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.transformForSolicitor(caveatCallbackRequestMock);
         assertCommonSolsCaveats(caveatCallbackResponse);
     }
 
     @Test
     public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponseWithAuth() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformForSolicitor(caveatCallbackRequestMock, "FAKE_TOKEN");
         assertCommonSolsCaveats(caveatCallbackResponse);
@@ -226,6 +231,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithPayment() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -250,6 +256,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithMultiplePayments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -284,6 +291,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -302,6 +310,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatExpiryDateChange() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -321,6 +330,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithBulkPrintId() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -339,6 +349,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatMessageContentChange() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.generalMessage(caveatCallbackRequestMock, document);
 
         assertCommon(caveatCallbackResponse);
@@ -348,6 +359,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldDefaultValuesCaveatRaisedEmailNotification() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
 
         assertCommon(caveatCallbackResponse);
@@ -357,6 +369,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldDefaultValuesCaveatRaisedEmailNotificationWhenNoEmail() {
+        setupMocks();
         CaveatData caseData = caveatDataBuilder.caveatorEmailAddress(null)
             .build();
         when(caveatDetailsMock.getData()).thenReturn(caseData);
@@ -368,6 +381,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldDefaultValuesBulkPrintlNotification() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
 
         assertCommon(caveatCallbackResponse);
@@ -383,6 +397,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatExpiry() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -403,6 +418,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, null);
@@ -414,6 +430,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoCaveatExtendDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -431,6 +448,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatWithdrawn() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -451,6 +469,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatWithdrawnWithNoDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, null);
 
@@ -462,6 +481,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldConvertRequestToDataBeanWithCaveatWithdrawnNoCaveatWithdrawnDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -528,6 +548,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldCovertSolsPBANumbers() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
 
@@ -537,6 +558,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     @Test
     public void shouldExtendCaveatExpiry() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
 

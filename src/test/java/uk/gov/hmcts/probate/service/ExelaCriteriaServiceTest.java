@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -18,7 +18,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ExelaCriteriaServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -34,7 +34,7 @@ public class ExelaCriteriaServiceTest {
 
     private ExelaCriteriaService exelaCriteriaService = new ExelaCriteriaService();
 
-    @Before
+    @BeforeEach
     public void setup() {
         final CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
                 "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),

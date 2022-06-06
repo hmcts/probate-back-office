@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.response;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -93,8 +93,8 @@ public class ResponseCaseDataParentTest {
     public void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
                 new AdditionalExecutorTrustCorps(
-                        "Executor forename", 
-                        "Executor surname", 
+                        "Executor forename",
+                        "Executor surname",
                         "Solicitor"
                 ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();

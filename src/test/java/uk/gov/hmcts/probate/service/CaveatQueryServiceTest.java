@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -26,6 +26,7 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -58,9 +59,9 @@ public class CaveatQueryServiceTest {
     @InjectMocks
     private CaveatQueryService caveatQueryService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
         when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
@@ -87,17 +88,19 @@ public class CaveatQueryServiceTest {
         assertEquals("Smith", caveatData.getDeceasedSurname());
     }
 
-    @Test(expected = BusinessValidationException.class)
+    @Test
     public void shouldNotFindCaveatWithCaveatIDMatch() {
-        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
-                .build();
-        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+        assertThrows(BusinessValidationException.class, () -> {
+            List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
+                    .build();
+            ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
 
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+            when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
 
-        caveatQueryService.findCaveatById(CaseType.CAVEAT,
-                "1234567812345678");
-        verify(businessValidationMessageRetrieverMock).getMessage(any(), any(), any());
+            caveatQueryService.findCaveatById(CaseType.CAVEAT,
+                    "1234567812345678");
+            verify(businessValidationMessageRetrieverMock).getMessage(any(), any(), any());
+        });
     }
 
     @Test
@@ -108,9 +111,11 @@ public class CaveatQueryServiceTest {
                 .isInstanceOf(CaseMatchingException.class);
     }
 
-    @Test(expected = ClientDataException.class)
+    @Test
     public void testExceptionWithNullFromRestTemplatePost() {
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");
+        assertThrows(ClientDataException.class, () -> {
+            when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
+            caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");
+        });
     }
 }

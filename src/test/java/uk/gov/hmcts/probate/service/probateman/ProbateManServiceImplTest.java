@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.probateman;
 
 import com.google.common.collect.ImmutableMap;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManModel;
@@ -26,13 +26,14 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 import static uk.gov.hmcts.probate.model.ccd.EventId.IMPORT_GOR_CASE;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ProbateManServiceImplTest {
 
     private static final Long ID = 1L;
@@ -58,7 +59,7 @@ public class ProbateManServiceImplTest {
 
     private ProbateManServiceImpl probateManService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mappers = ImmutableMap.<ProbateManType, ProbateManMapper>builder()
             .put(ProbateManType.GRANT_APPLICATION, grantApplicationMapper)
@@ -101,24 +102,30 @@ public class ProbateManServiceImplTest {
             GRANT_OF_REPRESENTATION, IMPORT_GOR_CASE, securityDTO);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionWhenRepositoryNotPresentInRepositoryConfig() {
-        probateManService.saveToCcd(ID, ProbateManType.WILL_LODGEMENT);
+        assertThrows(IllegalArgumentException.class, () -> {
+            probateManService.saveToCcd(ID, ProbateManType.WILL_LODGEMENT);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionWhenCannotFindEntityInProbateManDB() {
-        when(caveatRepository.findById(ID)).thenReturn(Optional.empty());
+        assertThrows(IllegalArgumentException.class, () -> {
+            when(caveatRepository.findById(ID)).thenReturn(Optional.empty());
 
-        probateManService.saveToCcd(ID, ProbateManType.CAVEAT);
+            probateManService.saveToCcd(ID, ProbateManType.CAVEAT);
+        });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void shouldThrowExceptionWhenMapperNotPresentInMapperConfig() {
-        Caveat caveat = new Caveat();
-        when(caveatRepository.findById(ID)).thenReturn(Optional.of(caveat));
+        assertThrows(IllegalArgumentException.class, () -> {
+            Caveat caveat = new Caveat();
+            when(caveatRepository.findById(ID)).thenReturn(Optional.of(caveat));
 
-        probateManService.saveToCcd(ID, ProbateManType.CAVEAT);
+            probateManService.saveToCcd(ID, ProbateManType.CAVEAT);
+        });
     }
 
     @Test

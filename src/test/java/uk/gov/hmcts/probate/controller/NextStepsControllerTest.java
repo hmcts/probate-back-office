@@ -2,15 +2,15 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,11 +28,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class NextStepsControllerTest {
-  
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
     private static final String NEXTSTEPS_VALIDATE_URL = "/nextsteps/validate";
@@ -49,7 +49,7 @@ public class NextStepsControllerTest {
     @MockBean
     AppInsights appInsights;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
@@ -146,7 +146,7 @@ public class NextStepsControllerTest {
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT surname cannot be empty"));
     }
 
-    
+
     @Test
     public void shouldConfirmNextStepsWithNullApplicationFeeError() throws Exception {
         caseDataBuilder.applicationFee(null);

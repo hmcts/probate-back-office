@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -90,9 +90,9 @@ public class DocumentTransformerTest {
 
     private List<Document> documents = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         digitalGrant = Document.builder().documentType(DIGITAL_GRANT).build();
         coversheet = Document.builder().documentType(GRANT_COVERSHEET).build();

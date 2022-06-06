@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -27,7 +27,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSOTIncomplete assembleSOTIncomplete = new AssembleSOTIncomplete(assemblerBase);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(SotPa1pRedec, new String[] {"SotPa1pRedec", "FL-PRB-GNO-ENG-00110.docx",
             "PA1P: Part B - Full redec of application"});

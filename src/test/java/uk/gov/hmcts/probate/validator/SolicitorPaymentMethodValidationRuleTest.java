@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -13,13 +13,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SolicitorPaymentMethodValidationRuleTest {
 
     @Mock
@@ -37,7 +38,7 @@ public class SolicitorPaymentMethodValidationRuleTest {
 
     private SolicitorPaymentMethodValidationRule underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = new SolicitorPaymentMethodValidationRule(businessValidationMessageRetriever);
 
@@ -49,11 +50,13 @@ public class SolicitorPaymentMethodValidationRuleTest {
             .thenReturn("The solicitor payment method selected is not 'fee account'");
     }
 
-    @Test(expected = BusinessValidationException.class)
+    @Test
     public void shouldThrowExceptionForChequePaymentMethodChosen() {
-        when(caseDataMock.getSolsPaymentMethods()).thenReturn("cheque");
+        assertThrows(BusinessValidationException.class, () -> {
+            when(caseDataMock.getSolsPaymentMethods()).thenReturn("cheque");
 
-        underTest.validate(caseDetailsMock);
+            underTest.validate(caseDetailsMock);
+        });
     }
 
     @Test()
@@ -64,11 +67,13 @@ public class SolicitorPaymentMethodValidationRuleTest {
         verify(businessValidationMessageRetriever, never()).getMessage(any(), any(), any());
     }
 
-    @Test(expected = BusinessValidationException.class)
+    @Test
     public void shouldThrowExceptionForChequePaymentMethodChosenCaveat() {
-        when(caveatDataMock.getSolsPaymentMethods()).thenReturn("cheque");
+        assertThrows(BusinessValidationException.class, () -> {
+            when(caveatDataMock.getSolsPaymentMethods()).thenReturn("cheque");
 
-        underTest.validate(caveatDetailsMock);
+            underTest.validate(caveatDetailsMock);
+        });
     }
 
     @Test()

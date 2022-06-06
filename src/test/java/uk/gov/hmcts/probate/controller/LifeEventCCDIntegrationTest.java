@@ -4,17 +4,17 @@ import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.core.WireMockConfiguration;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,7 +34,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.awaitility.Awaitility.await;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest()
 @TestPropertySource("classpath:LifeEventCCDIntegrationTest.properties")
 @AutoConfigureMockMvc
@@ -52,7 +52,7 @@ public class LifeEventCCDIntegrationTest {
     private WebApplicationContext webApplicationContext;
 
 
-    @BeforeClass
+    @BeforeAll
     public static void start() {
         wireMockServer = new WireMockServer(WireMockConfiguration.options().port(9400));
         wireMockServer.start();
@@ -63,7 +63,7 @@ public class LifeEventCCDIntegrationTest {
         wireMockServer.stop();
     }
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();

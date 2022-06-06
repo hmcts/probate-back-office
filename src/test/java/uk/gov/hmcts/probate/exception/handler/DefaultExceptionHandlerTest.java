@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.exception.handler;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
@@ -55,9 +55,9 @@ public class DefaultExceptionHandlerTest {
     @InjectMocks
     private DefaultExceptionHandler underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
@@ -154,7 +154,7 @@ public class DefaultExceptionHandlerTest {
         assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
-    
+
     @Test
     public void shouldReturnOCRMappingException() {
         when(ocrMappingException.getMessage()).thenReturn(EXCEPTION_MESSAGE);

@@ -1,23 +1,25 @@
 package uk.gov.hmcts.probate.service.ocr;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.DIED_AFTER_SWITCH_DATE;
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.IHT_205_COMPLETED_ONLINE;
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.IHT_207_COMPLETED;
@@ -35,13 +37,13 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     @InjectMocks
     private CitizenMandatoryFieldsValidatorV2 citizenMandatoryFieldsValidatorV2;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         warnings = new ArrayList<>();
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate("01012022")).thenReturn(true);
     }
-    
+
     @Test
     public void shouldCheckIht207CompletedIfIht400421completedFalse() {
         List<OCRField> ocrFields = new ArrayList<>();
@@ -95,7 +97,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
         verify(mandatoryFieldsValidatorUtils, times(1)).addWarning(argumentCaptor.capture(), any());
         List<String> argumentCaptorValues = argumentCaptor.getAllValues();
         assertEquals(1, argumentCaptorValues.size());
-        assertEquals("Deceased date of death not consistent with the question: " 
+        assertEquals("Deceased date of death not consistent with the question: "
             + "Did the deceased die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate)",
             argumentCaptorValues.get(0));
     }
@@ -272,7 +274,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
         assertEquals(IHT_205_COMPLETED_ONLINE.getValue(), defaultKeyValueArgumentCaptorValues.get(2).getValue());
-        
+
     }
 
     @Test

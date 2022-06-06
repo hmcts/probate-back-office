@@ -3,16 +3,16 @@ package uk.gov.hmcts.probate.service;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -46,7 +46,7 @@ import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFI
 import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY;
 
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventCCDService.class)
 public class LifeEventCCDServiceTest {
 
@@ -72,7 +72,7 @@ public class LifeEventCCDServiceTest {
     LocalDate localDate;
     V1Death v1Death;
 
-    @Before
+    @BeforeEach
     public void setup() {
         final String firstName = "Wibble";
         final String lastName = "Wobble";
@@ -146,7 +146,7 @@ public class LifeEventCCDServiceTest {
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
 
     }
-    
+
     @Test
     public void shouldUpdateCCDWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);

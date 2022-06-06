@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -37,7 +37,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class DocumentsReceivedNotificationServiceTest {
 
@@ -82,7 +82,7 @@ public class DocumentsReceivedNotificationServiceTest {
     @Mock
     private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException, NotificationClientException {
         personalCaseDataBirmingham = new CaseDetails(CaseData.builder()
             .applicationType(PERSONAL)

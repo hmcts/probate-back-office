@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
@@ -44,9 +45,9 @@ public class HmrcDataExtractServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private CaseData caseData;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
@@ -71,7 +72,7 @@ public class HmrcDataExtractServiceTest {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-        
+
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
@@ -84,7 +85,7 @@ public class HmrcDataExtractServiceTest {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-        
+
         hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
         verify(fileTransferService, times(1)).uploadFile(any());
@@ -98,7 +99,7 @@ public class HmrcDataExtractServiceTest {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
-        
+
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
         verify(fileTransferService).uploadFile(any());
@@ -119,34 +120,38 @@ public class HmrcDataExtractServiceTest {
         verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowClientExceptionWhenFindingCases() {
-        List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-            ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
+        assertThrows(ClientException.class, () -> {
+            List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
+                    ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
+            when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+            when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
-        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
+            hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2000-12-31");
 
-        verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
-        verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
+            verify(fileTransferService).uploadFile(any());
+            verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
+            verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowClientExceptionWhenFindingCasesFromTo() {
-        List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-            ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
-        when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
+        assertThrows(ClientException.class, () -> {
+            List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
+                    ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
+            when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+            when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
+            when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
 
-        hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
+            hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
 
-        verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
-        verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
-        
-        verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
+            verify(fileTransferService).uploadFile(any());
+            verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
+            verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
+
+            verify(hmrcFileService, times(0)).createHmrcFile(any(), anyString());
+        });
     }
 }

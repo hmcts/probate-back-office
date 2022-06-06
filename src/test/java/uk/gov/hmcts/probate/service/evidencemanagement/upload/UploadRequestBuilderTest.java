@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;

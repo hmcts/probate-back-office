@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
@@ -42,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(properties = {"markdown.templatesDirectory=templates/markdown/"})
 public class ConfirmationResponseServiceFeatureTest {

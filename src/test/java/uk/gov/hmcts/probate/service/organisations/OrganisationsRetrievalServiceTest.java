@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.organisations;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,6 +17,7 @@ import java.net.URI;
 import java.util.Optional;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -71,13 +72,15 @@ public class OrganisationsRetrievalServiceTest {
         assertEquals(null, organisationEntity);
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void testOrganisationEntityExceptionWithNoBearer() {
-        MockitoAnnotations.openMocks(this);
+        assertThrows(ClientException.class, () -> {
+            MockitoAnnotations.openMocks(this);
 
-        organisationsRetrievalService.orgApi = "/test_api";
-        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
-        organisationsRetrievalService.getOrganisationEntity("something else");
+            organisationsRetrievalService.orgApi = "/test_api";
+            organisationsRetrievalService.orgUri = "http://localhost:8080/test";
+            organisationsRetrievalService.getOrganisationEntity("something else");
+        });
     }
 }
 

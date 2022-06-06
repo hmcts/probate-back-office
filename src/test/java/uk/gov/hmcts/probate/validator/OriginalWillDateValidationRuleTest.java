@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class OriginalWillDateValidationRuleTest {
     @InjectMocks
@@ -27,9 +27,9 @@ public class OriginalWillDateValidationRuleTest {
     @Mock
     private CCDData ccdDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test

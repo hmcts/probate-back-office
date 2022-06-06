@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.probate.config.EvidenceManagementRestTemplate;
 import uk.gov.hmcts.probate.exception.ClientDataException;
@@ -20,12 +20,13 @@ import java.util.HashMap;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class EmUploadServiceTest {
 
     private static final String URL = "URL";
@@ -73,13 +74,15 @@ public class EmUploadServiceTest {
         verify(documentManagementURIBuilder).buildUrl();
     }
 
-    @Test(expected = ClientDataException.class)
+    @Test
     public void testExceptionWithNullFromApiCall() throws IOException {
-        when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
-        when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(null);
-        EvidenceManagementFileUpload evidenceManagementFileUpload =
-            new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
+        assertThrows(ClientDataException.class, () -> {
+            when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
+            when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(null);
+            EvidenceManagementFileUpload evidenceManagementFileUpload =
+                    new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
 
-        emUploadService.store(evidenceManagementFileUpload);
+            emUploadService.store(evidenceManagementFileUpload);
+        });
     }
 }

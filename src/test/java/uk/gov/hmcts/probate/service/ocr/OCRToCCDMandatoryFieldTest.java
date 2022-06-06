@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -41,9 +41,9 @@ public class OCRToCCDMandatoryFieldTest {
     @InjectMocks
     private OCRToCCDMandatoryField ocrToCCDMandatoryField;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ocrFields = new ArrayList<>();
     }
 

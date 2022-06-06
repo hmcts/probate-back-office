@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -21,7 +21,7 @@ public class EscalatedTaskListRendererTest {
     private CaseDataBuilder caseDataBuilder;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         caseDataBuilder = CaseData.builder()

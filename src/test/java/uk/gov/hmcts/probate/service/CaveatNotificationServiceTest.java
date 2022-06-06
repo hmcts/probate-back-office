@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -113,9 +113,9 @@ public class CaveatNotificationServiceTest {
     private ResponseCaveatData responseCaveatData;
     private List<Document> documents = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         caveatData = CaveatData.builder()
             .registryLocation("leeds")

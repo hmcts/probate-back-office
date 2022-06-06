@@ -1,11 +1,12 @@
 package uk.gov.hmcts.probate.service.probateman;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -13,7 +14,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.CaseSearchService;
-import uk.gov.hmcts.probate.service.LegacySearchService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,10 +22,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class LegacySearchServiceImplTest {
 
-    private LegacySearchService legacySearchService;
+    @InjectMocks
+    private LegacySearchServiceImpl legacySearchService;
 
     @Mock
     private CaseSearchService caseSearchService;
@@ -36,10 +37,8 @@ public class LegacySearchServiceImplTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        legacySearchService = new LegacySearchServiceImpl(caseSearchService);
-
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
     }
 

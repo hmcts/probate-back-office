@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.AdoptiveRelative;
@@ -13,6 +13,7 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class OCRFieldAdoptiveRelativesMapperTest {
 
@@ -44,7 +45,7 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     private ExceptionRecordOCRFields ocrFieldsInOutError;
     private ObjectMapper objectMapper;
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws Exception {
         objectMapper = new ObjectMapper();
         ocrFields = ExceptionRecordOCRFields.builder()
@@ -122,9 +123,11 @@ public class OCRFieldAdoptiveRelativesMapperTest {
         assertEquals("\"out\"", objectMapper.writeValueAsString(InOut.OUT));
     }
 
-    @Test(expected = OCRMappingException.class)
+    @Test
     public void testGetAdoptedRelativesWithInvalidInOutValue() {
-        List<CollectionMember<AdoptiveRelative>> response
-            = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<AdoptiveRelative>> response
+                    = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);
+        });
     }
 }

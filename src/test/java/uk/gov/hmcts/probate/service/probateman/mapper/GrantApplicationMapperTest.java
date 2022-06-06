@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
@@ -19,7 +19,7 @@ import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class GrantApplicationMapperTest {
 
@@ -95,7 +95,7 @@ public class GrantApplicationMapperTest {
     private void assertPaSpecificDetails(GrantOfRepresentationData grantApplicationData) {
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
         assertThat(grantApplicationData.getPrimaryApplicantAddress())
-            .isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
+            .usingRecursiveComparison().isEqualTo(expectedPrimaryAddress);
         assertThat(grantApplicationData.getPrimaryApplicantForenames()).isEqualTo(PRIMARY_APPLICANT_FORENAMES);
         assertThat(grantApplicationData.getPrimaryApplicantSurname()).isEqualTo(PRIMARY_APPLICANT_SURNAME);
     }
@@ -104,7 +104,7 @@ public class GrantApplicationMapperTest {
         Address expectedPrimaryAddress = buildAddress(PRIMARY_APPLICANT_ADDRESS);
         assertThat(grantApplicationData.getSolsSolicitorAppReference()).isEqualTo(SOLICITOR_REFERENCE);
         assertThat(grantApplicationData.getSolsSolicitorAddress())
-            .isEqualToComparingFieldByFieldRecursively(expectedPrimaryAddress);
+            .usingRecursiveComparison().isEqualTo(expectedPrimaryAddress);
         assertThat(grantApplicationData.getSolsSolicitorFirmName())
             .isEqualTo(PRIMARY_APPLICANT_FORENAMES + " " + PRIMARY_APPLICANT_SURNAME);
     }
@@ -119,7 +119,7 @@ public class GrantApplicationMapperTest {
         assertThat(grantApplicationData.getDeceasedDateOfBirth()).isEqualTo(DATE_OF_BIRTH);
         assertThat(grantApplicationData.getDeceasedDateOfDeath()).isEqualTo(DATE_OF_DEATH);
         assertThat(grantApplicationData.getDeceasedAddress())
-            .isEqualToComparingFieldByFieldRecursively(expectedDeceasedAddress);
+            .usingRecursiveComparison().isEqualTo(expectedDeceasedAddress);
         assertThat(grantApplicationData.getGrantType()).isEqualTo(GrantType.GRANT_OF_PROBATE);
         assertThat(grantApplicationData.getLegacyId()).isEqualTo(ID);
         assertThat(grantApplicationData.getLegacyType()).isEqualTo(LEGACY_TYPE);

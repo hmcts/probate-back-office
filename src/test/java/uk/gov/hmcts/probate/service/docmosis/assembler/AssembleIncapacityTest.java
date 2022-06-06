@@ -1,7 +1,10 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -13,12 +16,13 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Inca
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapMedical;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapOneExec;
 
+@ExtendWith(SpringExtension.class)
 public class AssembleIncapacityTest extends AssembleTestBase {
     private AssembleIncapacity assembleIncapacity =
         new AssembleIncapacity(assemblerBase);
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(IncapGen, new String[]{"IncapGen", "FL-PRB-GNO-ENG-00101.docx", "General"});
         code2Expected.put(IncapOneExec, new String[]{"IncapOneExec", "FL-PRB-GNO-ENG-00102.docx", "One executor"});

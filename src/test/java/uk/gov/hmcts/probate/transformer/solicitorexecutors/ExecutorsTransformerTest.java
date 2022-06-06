@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -61,7 +61,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ExecutorsTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
@@ -76,7 +76,7 @@ public class ExecutorsTransformerTest {
 
     @InjectMocks
     private ExecutorsTransformer solicitorExecutorTransformerMock;
-    
+
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
     private List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
@@ -85,7 +85,7 @@ public class ExecutorsTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_APPLYING));
@@ -458,7 +458,7 @@ public class ExecutorsTransformerTest {
         verify(executorListMapperServiceMock, times(1))
                 .addSolicitorToNotApplyingList(any(), any());
     }
-    
+
 
     @Test
     public void shouldRemoveSolicitorInfoFromCaseworkerNotApplying_IsApplying() {

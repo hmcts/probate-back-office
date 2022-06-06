@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class OCRPopulatedValueMapperTest {
     private List<OCRField> ocrFields = new ArrayList<>();
     private OCRPopulatedValueMapper ocrPopulatedValueMapper = new OCRPopulatedValueMapper();
 
-    @Before
+    @BeforeEach
     public void setup() {
         OCRField field1 = OCRField.builder()
                 .name("deceasedForenames")

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.payments;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -21,9 +21,9 @@ public class PaymentFeeBuilderTest {
     @InjectMocks
     private PaymentFeeBuilder paymentFeeBuilder;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(feeServiceConfiguration.getJurisdiction1()).thenReturn("feeJurisdiction1");
         when(feeServiceConfiguration.getJurisdiction2()).thenReturn("feeJurisdiction2");
     }

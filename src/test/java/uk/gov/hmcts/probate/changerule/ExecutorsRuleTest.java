@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.changerule;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -17,7 +17,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 
@@ -43,9 +43,9 @@ public class ExecutorsRuleTest {
     @Mock
     private AdditionalExecutorPartners additionalPartnersExecutor1Mock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
 
         List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
         when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);

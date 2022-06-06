@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -105,9 +105,9 @@ public class GenericMapperServiceTest {
     @InjectMocks
     private GenericMapperService genericMapperService;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         registry.setPhone("01010101010101");
         registry.setAddressLine1("registry address 1");

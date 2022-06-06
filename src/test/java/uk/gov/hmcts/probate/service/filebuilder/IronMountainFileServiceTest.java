@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -36,7 +36,7 @@ public class IronMountainFileServiceTest {
     private static final String FILE_NAME = "testFile.txt";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
-    @Before
+    @BeforeEach
     public void setup() {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
                 new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")

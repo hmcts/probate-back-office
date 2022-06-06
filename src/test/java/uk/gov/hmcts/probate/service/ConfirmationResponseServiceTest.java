@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
@@ -118,9 +118,9 @@ public class ConfirmationResponseServiceTest {
     @Captor
     private ArgumentCaptor<Map<String, String>> nextStepsKeyValueMap;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         underTest = new ConfirmationResponseService(messageResourceServiceMock, markdownSubstitutionServiceMock,
             markdownDecoratorService,

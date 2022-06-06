@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 public class PrintServiceTemplateControllerTest {
@@ -38,16 +39,18 @@ public class PrintServiceTemplateControllerTest {
     @MockBean
     private AppInsights appInsights;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void shouldErrorForLegalStatement() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
 
-        underTest.getAllDocuments(caseDetailsMock, bindingResultMock);
+            underTest.getAllDocuments(caseDetailsMock, bindingResultMock);
+        });
     }
 
     @Test

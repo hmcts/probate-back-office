@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
@@ -31,9 +31,9 @@ public class RegistryDetailsServiceTest {
     @InjectMocks
     private final RegistryDetailsService registryDetailsService = new RegistryDetailsService(registriesProperties);
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         registry = new Registry();
         registry.setPhone("01010101010101");

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr.pa1p;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -14,16 +14,16 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 
 public class PA1PSolicitorMandatoryFieldsValidatorTest {
-    
+
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
 
     @InjectMocks
     private PA1PSolicitorMandatoryFieldsValidator pa1PSolicitorMandatoryFieldsValidator;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         warnings = new ArrayList<>();
     }
 

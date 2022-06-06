@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -27,10 +27,6 @@ import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +35,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
@@ -105,9 +101,9 @@ public class TaskStateRendererTest {
 
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         CaseDataBuilder caseDataBuilder = CaseData.builder()
             .escalatedDate(LocalDate.of(2020, 1, 1));
         caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -120,7 +116,7 @@ public class TaskStateRendererTest {
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced1);
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced2);
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingDied);
-    }    
+    }
 
     public void shouldRenderCorrectHtmlForState_CaseCreatedSolDtls() {
         final String expectedHtml = "<div><a href=\""

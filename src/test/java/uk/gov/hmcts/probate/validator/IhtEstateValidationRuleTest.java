@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -19,7 +17,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-@RunWith(MockitoJUnitRunner.class)
 public class IhtEstateValidationRuleTest {
     private IhtEstateValidationRule ihtEstateValidationRule;
     @Mock
@@ -35,9 +32,9 @@ public class IhtEstateValidationRuleTest {
     private static final BigDecimal ESTATE_NQV_BETWEEN = BigDecimal.valueOf(500000 * 100);
     private static final BigDecimal ESTATE_NQV_LARGER = BigDecimal.valueOf(700000 * 100);
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         this.ihtEstateValidationRule = new IhtEstateValidationRule(businessValidationMessageRetriever);
@@ -187,7 +184,7 @@ public class IhtEstateValidationRuleTest {
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
-    
+
     @Test
     public void testValidateNoMessageNoGrossIhtValue() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(null);

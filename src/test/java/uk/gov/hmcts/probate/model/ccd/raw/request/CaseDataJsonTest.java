@@ -2,13 +2,13 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import org.hamcrest.Matchers;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @JsonTest
 public class CaseDataJsonTest {
 
@@ -28,7 +28,7 @@ public class CaseDataJsonTest {
 
     private TestUtils testUtils = new TestUtils();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         jsonContent = testUtils.getStringFromFile("paCaseData.json");
     }

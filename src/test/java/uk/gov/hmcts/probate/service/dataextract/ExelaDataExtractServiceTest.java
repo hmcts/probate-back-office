@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -53,9 +54,9 @@ public class ExelaDataExtractServiceTest {
     private CaseData caseData1;
     private CaseData caseData2;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
@@ -141,26 +142,30 @@ public class ExelaDataExtractServiceTest {
         verify(notificationService, times(0)).sendExelaEmail(any());
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowClientException() throws NotificationClientException {
-        List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
-            .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
-            .build();
-        when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
-        when(notificationService.sendExelaEmail(any())).thenThrow(NotificationClientException.class);
+        assertThrows(ClientException.class, () -> {
+            List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
+                    .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
+                    .build();
+            when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
+            when(notificationService.sendExelaEmail(any())).thenThrow(NotificationClientException.class);
 
-        exelaDataExtractService.performExelaExtractForDate("2000-12-31");
+            exelaDataExtractService.performExelaExtractForDate("2000-12-31");
+        });
     }
 
-    @Test(expected = ClientException.class)
+    @Test
     public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
-        List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
-                .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
-                .build();
-        when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
-        when(notificationService.sendExelaEmail(any())).thenThrow(NotificationClientException.class);
+        assertThrows(ClientException.class, () -> {
+            List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
+                    .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
+                    .build();
+            when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
+            when(notificationService.sendExelaEmail(any())).thenThrow(NotificationClientException.class);
 
-        exelaDataExtractService.performExelaExtractForDateRange("2000-12-30", "2000-12-31");
+            exelaDataExtractService.performExelaExtractForDateRange("2000-12-30", "2000-12-31");
+        });
     }
 
 }

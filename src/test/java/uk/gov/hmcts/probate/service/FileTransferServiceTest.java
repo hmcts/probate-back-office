@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service;
 
 import feign.Request;
 import feign.Response;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -31,14 +31,14 @@ public class FileTransferServiceTest {
 
     @InjectMocks
     FileTransferService fileTransferService;
-    
+
     Response response;
-    
+
     File file;
-    
-    @Before
+
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         Map headers = Collections.singletonMap("key", Arrays.asList("value1", "value2"));
         Request request = Request.create(Request.HttpMethod.PUT, "url", headers, null, Charset.defaultCharset());
         response = Response.builder().status(201)

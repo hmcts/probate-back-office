@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 
@@ -20,7 +20,7 @@ public class ApplicationTypeMapperTest {
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorNoRepName;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorNoFirmName;
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
             .build();

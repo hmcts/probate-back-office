@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.caseprogress;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.StateConstants;
 
 import static org.junit.Assert.assertEquals;

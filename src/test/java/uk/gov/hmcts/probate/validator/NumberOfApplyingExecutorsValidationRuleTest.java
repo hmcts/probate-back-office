@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.validator;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -48,9 +48,9 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         .applyingExecutorAddress(SOLICITOR_ADDRESS)
         .build());
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         caseDataMock = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)

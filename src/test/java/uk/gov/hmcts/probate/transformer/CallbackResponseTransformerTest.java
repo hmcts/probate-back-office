@@ -2,14 +2,13 @@ package uk.gov.hmcts.probate.transformer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.BooleanUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -49,8 +48,8 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
@@ -123,7 +122,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REIS
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class CallbackResponseTransformerTest {
 
     public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
@@ -479,7 +478,7 @@ public class CallbackResponseTransformerTest {
     @Mock
     private Iht400421Defaulter iht400421Defaulter;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         caseDataBuilder = CaseData.builder()
@@ -3094,12 +3093,12 @@ public class CallbackResponseTransformerTest {
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
-        Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
-        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
-        Assert.assertThat(new BigDecimal("10000"),
+        assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
+        assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
+        assertThat(new BigDecimal("10000"),
             comparesEqualTo(callbackResponse.getData().getIhtEstateGrossValue()));
-        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
-        Assert.assertThat(new BigDecimal("9000"),
+        assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
+        assertThat(new BigDecimal("9000"),
             comparesEqualTo(callbackResponse.getData().getIhtEstateNetQualifyingValue()));
         assertEquals("10000", callbackResponse.getData().getIhtEstateGrossValueField());
         assertEquals("9000", callbackResponse.getData().getIhtEstateNetValueField());

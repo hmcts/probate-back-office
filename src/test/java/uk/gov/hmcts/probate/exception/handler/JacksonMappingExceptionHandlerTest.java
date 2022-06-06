@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.exception.handler;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import java.util.Arrays;
 
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class JacksonMappingExceptionHandlerTest {
 
@@ -23,9 +23,9 @@ public class JacksonMappingExceptionHandlerTest {
     @Mock
     private JsonMappingException jsonMappingException;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test

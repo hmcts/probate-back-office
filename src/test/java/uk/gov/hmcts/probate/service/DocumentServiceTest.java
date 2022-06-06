@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -46,9 +46,9 @@ public class DocumentServiceTest {
     @Mock
     private Document document;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(document.getDocumentType()).thenReturn(DIGITAL_GRANT_DRAFT);
         when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());

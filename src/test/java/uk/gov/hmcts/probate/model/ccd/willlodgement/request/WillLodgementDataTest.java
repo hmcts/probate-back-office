@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.willlodgement.request;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
 import java.time.LocalDate;
@@ -19,7 +19,7 @@ public class WillLodgementDataTest {
     @InjectMocks
     private WillLodgementData underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         underTest = WillLodgementData.builder()

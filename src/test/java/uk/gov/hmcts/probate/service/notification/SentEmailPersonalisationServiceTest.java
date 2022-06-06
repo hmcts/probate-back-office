@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.service.CaveatQueryService;
@@ -18,7 +18,7 @@ import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class SentEmailPersonalisationServiceTest {
 
@@ -54,7 +54,7 @@ public class SentEmailPersonalisationServiceTest {
     private static final String PERSONALISATION_SENT_EMAIL_SUBJECT_RESPONSE = "subjectResponse";
     private static final String PERSONALISATION_SENT_EMAIL_SENT_ON_RESPONSE = "sentOnResponse";
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         sentEmail = SentEmail.builder()

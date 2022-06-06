@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.payments;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
@@ -25,7 +25,7 @@ import java.util.Arrays;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CreditAccountPaymentTransformerTest {
 
@@ -74,7 +74,7 @@ public class CreditAccountPaymentTransformerTest {
     @Autowired
     private CreditAccountPaymentTransformer creditAccountPaymentTransformer;
 
-    @Before
+    @BeforeEach
     public void setup() {
         when(caseDetails.getId()).thenReturn(1234L);
         when(caseDetails.getData()).thenReturn(caseData);
@@ -194,7 +194,7 @@ public class CreditAccountPaymentTransformerTest {
         assertEquals(1, creditAccountPayment.getFees().size());
         assertEquals(paymentFeeApplication, creditAccountPayment.getFees().get(0));
     }
-    
+
     @Test
     public void shouldTransformAllForCaveats() {
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caveatDetails,

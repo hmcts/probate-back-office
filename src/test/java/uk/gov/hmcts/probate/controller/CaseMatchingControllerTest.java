@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -43,7 +43,7 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 import static uk.gov.hmcts.probate.model.CaseType.STANDING_SEARCH;
 import static uk.gov.hmcts.probate.model.CaseType.WILL_LODGEMENT;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class CaseMatchingControllerTest {
@@ -72,7 +72,7 @@ public class CaseMatchingControllerTest {
     @Captor
     private ArgumentCaptor<List<CollectionMember<CaseMatch>>> caseMatchListCaptor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(any(), any(CaseMatchingCriteria.class));
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();

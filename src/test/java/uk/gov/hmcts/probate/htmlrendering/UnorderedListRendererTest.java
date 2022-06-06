@@ -1,12 +1,13 @@
 package uk.gov.hmcts.probate.htmlrendering;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
 public class UnorderedListRendererTest {
-    
+
     @Test
     public void shouldRenderUnorderedListCorrectly() {
         List<String> testListItems = List.of("Test list item 1", "Test list item 2");

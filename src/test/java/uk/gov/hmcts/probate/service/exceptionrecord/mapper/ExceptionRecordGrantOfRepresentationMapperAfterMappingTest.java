@@ -1,19 +1,18 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
-import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -21,7 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration
 public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
 
@@ -377,7 +376,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertFalse(response.getApplyingAsAnAttorney());
     }
-    
+
     @Test
     public void testIhtFormEstateNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
@@ -427,7 +426,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(Long.valueOf(80000000), response.getIhtEstateNetQualifyingValue());
     }
-    
+
     @Test
     public void testIhtEstateNetQualifyingValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
@@ -435,7 +434,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtEstateNetQualifyingValue());
     }
-    
+
     @Test
     public void testIhtUnusedAllowanceClaimedTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(TRUE).build();
@@ -460,7 +459,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getIhtUnusedAllowanceClaimed());
     }
-    
+
     @Configuration
     public static class Config {
 
@@ -508,7 +507,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         public OCRFieldIhtFormEstateValuesCompletedMapper ocrFieldIhtFormEstateValuesCompletedMapper() {
             return new OCRFieldIhtFormEstateValuesCompletedMapper();
         }
-        
+
         @Bean
         public OCRFieldIhtFormCompletedOnlineMapper ocrFieldIhtFormCompletedOnlineMapper() {
             return new OCRFieldIhtFormCompletedOnlineMapper();
@@ -518,17 +517,17 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         public OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper() {
             return new OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper();
         }
-        
+
         @Bean
         public ExceptedEstateDateOfDeathChecker eeDateOfDeathChecker() {
             return new ExceptedEstateDateOfDeathChecker();
         }
-        
+
         @Bean
         public OCRFieldIhtFormTypeMapper ocrFieldIhtFormTypeMapper() {
             return new OCRFieldIhtFormTypeMapper();
         }
-        
+
         @Bean
         public OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper() {
             return new OCRFieldIhtMoneyMapper();

@@ -2,19 +2,20 @@ package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class CaseExtraDecoratorTest {
 
     @InjectMocks
@@ -32,10 +33,12 @@ public class CaseExtraDecoratorTest {
         assertEquals("someJson", actual);
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void shouldThrowExceptionWhenDecorateCaseData() throws JsonProcessingException {
-        when(objectMapperMock.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
-        caseExtraDecorator.decorate(caseDataMock);
+        assertThrows(BadRequestException.class, () -> {
+            when(objectMapperMock.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
+            caseExtraDecorator.decorate(caseDataMock);
+        });
     }
 
     @Test

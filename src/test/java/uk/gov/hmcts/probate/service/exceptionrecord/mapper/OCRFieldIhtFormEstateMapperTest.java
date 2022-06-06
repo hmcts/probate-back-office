@@ -1,24 +1,25 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import org.junit.Before;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.when;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.IhtFormEstate;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
+import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+
+@ExtendWith(SpringExtension.class)
 public class OCRFieldIhtFormEstateMapperTest {
-    
+
     @Mock
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
@@ -27,18 +28,18 @@ public class OCRFieldIhtFormEstateMapperTest {
 
     private static final String PRE_EE_DECEASED_DATE_OF_DEATH = "01012021";
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
-    
+
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(exceptedEstateDateOfDeathChecker
             .isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH)).thenReturn(false);
         when(exceptedEstateDateOfDeathChecker
             .isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH)).thenReturn(true);
     }
-    
+
     @Test
     public void testCorrectFormTypeIHT207() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
@@ -56,11 +57,11 @@ public class OCRFieldIhtFormEstateMapperTest {
             .formVersion("2")
             .iht400421Completed("true")
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
-            .build();        
+            .build();
         IhtFormEstate response = ocrFieldIhtFormEstateMapper.ihtFormEstate(ocrFields);
         assertEquals(IhtFormEstate.optionIHT400421, response);
     }
-    
+
     @Test
     public void shouldReturnNullWhenPreEEDod() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
@@ -78,5 +79,5 @@ public class OCRFieldIhtFormEstateMapperTest {
         IhtFormEstate response = ocrFieldIhtFormEstateMapper.ihtFormEstate(ocrFields);
         assertNull(response);
     }
-    
+
 }

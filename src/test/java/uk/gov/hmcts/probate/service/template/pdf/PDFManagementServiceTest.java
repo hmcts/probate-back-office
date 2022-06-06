@@ -2,13 +2,13 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.Link;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
@@ -35,6 +35,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -50,7 +51,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(SpringExtension.class)
 public class PDFManagementServiceTest {
 
     @Mock
@@ -99,7 +100,7 @@ public class PDFManagementServiceTest {
 
     private PDFManagementService underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetails);
         when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetails);
@@ -377,42 +378,51 @@ public class PDFManagementServiceTest {
         assertEquals(href, response.getDocumentLink().getDocumentUrl());
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void shouldThrowExceptionIfUnableToDecryptSignatureFile() throws IOException {
-        when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey");
+        assertThrows(BadRequestException.class, () -> {
+            when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey");
 
-        Document response =
-            underTest.generateAndUpload(willLodgementCallbackRequestMock, WILL_LODGEMENT_DEPOSIT_RECEIPT);
+            Document response =
+                    underTest.generateAndUpload(willLodgementCallbackRequestMock, WILL_LODGEMENT_DEPOSIT_RECEIPT);
+        });
     }
 
-    @Test(expected = BadRequestException.class)
+    @Test
     public void shouldThrowExceptionForInvalidRequest() throws IOException {
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
-            .thenThrow(BadRequestException.class);
+        assertThrows(BadRequestException.class, () -> {
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
+                    .thenThrow(BadRequestException.class);
 
-        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+        });
     }
 
-    @Test(expected = ConnectionException.class)
+    @Test
     public void shouldThrowExceptionWhenUnableToGeneratePDF() throws IOException {
-        String json = "{}";
+        assertThrows(ConnectionException.class, () -> {
+            String json = "{}";
 
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json)).thenThrow(new ConnectionException(""));
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+                    .thenThrow(new ConnectionException(""));
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
-        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+        });
     }
 
-    @Test(expected = ConnectionException.class)
+    @Test
     public void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
-        String json = "{}";
+        assertThrows(ConnectionException.class, () -> {
+            String json = "{}";
 
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenThrow(new IOException());
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+                    .thenReturn(evidenceManagementFileUpload);
+            when(uploadServiceMock.store(evidenceManagementFileUpload)).thenThrow(new IOException());
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
-        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+        });
     }
 
     @Test
@@ -420,32 +430,36 @@ public class PDFManagementServiceTest {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
     }
 
-    @Test(expected = ConnectionException.class)
+    @Test
     public void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
-        String json = "{}";
+        assertThrows(ConnectionException.class, () -> {
+            String json = "{}";
 
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        optionalLink = Optional.of(link);
-        when(evidenceManagementFile.getLink(IanaLinkRelations.SELF)).thenReturn(optionalLink);
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+                    .thenReturn(evidenceManagementFileUpload);
+            when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+            optionalLink = Optional.of(link);
+            when(evidenceManagementFile.getLink(IanaLinkRelations.SELF)).thenReturn(optionalLink);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
-        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+        });
     }
 
-    @Test(expected = ConnectionException.class)
+    @Test
     public void shouldThrowConnectExceptionWhenSelfLinkNotPresent() throws IOException {
-        String json = "{}";
+        assertThrows(ConnectionException.class, () -> {
+            String json = "{}";
 
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
-        optionalLink = Optional.of(link);
-        when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+                    .thenReturn(evidenceManagementFileUpload);
+            when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
+            optionalLink = Optional.of(link);
+            when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
-        underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+        });
     }
 
     private void mockLinks(String href) {

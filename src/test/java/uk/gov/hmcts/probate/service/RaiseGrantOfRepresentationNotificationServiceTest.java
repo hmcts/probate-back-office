@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -44,7 +44,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class RaiseGrantOfRepresentationNotificationServiceTest {
 
@@ -82,7 +82,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
     private NotificationClient notificationClient;
     private CallbackRequest callbackRequest;
 
-    @Before
+    @BeforeEach
     public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
@@ -96,7 +96,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
             .thenReturn(letterResponse);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void shouldHandleGrantReceivedNotificationPersonalWithEmail()
         throws NotificationClientException, BadRequestException {
@@ -124,7 +124,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
             response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentType());
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void shouldHandleGrantReceivedNotificationPersonalWithoutEmail()
         throws NotificationClientException, BadRequestException {

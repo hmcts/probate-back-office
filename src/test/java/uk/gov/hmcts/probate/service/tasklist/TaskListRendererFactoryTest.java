@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_CREATED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_AWAIT_REDEC;
@@ -31,11 +31,11 @@ public class TaskListRendererFactoryTest {
 
     private BaseTaskListRenderer renderer;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
-    
+
     @Test
     public void shouldReturnCorrectRendererForState_CaseCreated() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_CREATED.getId());
@@ -51,7 +51,7 @@ public class TaskListRendererFactoryTest {
     @Test
     public void shouldReturnCorrectRendererForState_BOCaseStopped() {
         renderer = taskListRendererFactory.getTaskListRenderer(BO_CASE_STOPPED.getId());
-        assertEquals(stoppedTaskListRenderer, renderer);    
+        assertEquals(stoppedTaskListRenderer, renderer);
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TaskListRendererFactoryTest {
     @Test
     public void shouldReturnCorrectRendererForState_BOCaseStoppedAwaitRedec() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_STOPPED_AWAIT_REDEC.getId());
-        assertEquals(stoppedTaskListRenderer, renderer);    
+        assertEquals(stoppedTaskListRenderer, renderer);
     }
 
     @Test

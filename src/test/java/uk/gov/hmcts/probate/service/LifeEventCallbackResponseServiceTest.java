@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventCallbackResponseService.class)
 public class LifeEventCallbackResponseServiceTest {
 
@@ -38,7 +38,7 @@ public class LifeEventCallbackResponseServiceTest {
     private CallbackResponse response;
     private List<CollectionMember<DeathRecord>> deathRecords;
  
-    @Before
+    @BeforeEach
     public void setup() {
         response = CallbackResponse.builder().data(ResponseCaseData.builder().build()).build();
         when(callbackResponseTransformer.updateTaskList(any(CallbackRequest.class))).thenReturn(response);

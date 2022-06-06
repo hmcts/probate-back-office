@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.validator;
 
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -35,9 +35,9 @@ public class ExecutorsAddressValidationRuleTest {
 
     private FieldErrorResponse executorAddressIsNullError;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         executorAddressIsNullError = FieldErrorResponse.builder().message("executorAddressIsNull").build();
 

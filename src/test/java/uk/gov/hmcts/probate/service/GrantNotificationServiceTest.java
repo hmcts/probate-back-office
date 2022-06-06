@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -68,9 +68,9 @@ public class GrantNotificationServiceTest {
     private ReturnedCaseDetails returnedCaseDetails2;
     private ReturnedCaseDetails returnedCaseDetails3;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         caseData1 = CaseData.builder()
             .registryLocation("Registry1")

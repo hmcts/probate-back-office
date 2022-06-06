@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.htmlrendering;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 

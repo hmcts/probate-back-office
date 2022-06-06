@@ -1,24 +1,24 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import org.junit.Rule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.IhtFormType;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class OCRFieldIhtFormTypeMapperTest {
 
 
@@ -40,14 +40,14 @@ public class OCRFieldIhtFormTypeMapperTest {
     @Rule
     public ExpectedException expectedEx = ExpectedException.none();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         when(exceptedEstateDateOfDeathChecker
             .isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH)).thenReturn(false);
         when(exceptedEstateDateOfDeathChecker
             .isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH)).thenReturn(true);
     }
-    
+
     @Test
     public void testCorrectFormTypeIHT205() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
@@ -93,12 +93,14 @@ public class OCRFieldIhtFormTypeMapperTest {
         assertEquals(IhtFormType.optionIHT400421, response);
     }
 
-    @Test(expected = OCRMappingException.class)
+    @Test
     public void testExceptionForUnknownForm5() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .ihtFormId(UNKNOWN_FORM)
-            .build();
-        ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertThrows(OCRMappingException.class, () -> {
+            ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                    .ihtFormId(UNKNOWN_FORM)
+                    .build();
+            ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        });
     }
 
     @Test
@@ -117,7 +119,7 @@ public class OCRFieldIhtFormTypeMapperTest {
         IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
         assertNull(response);
     }
-    
+
     @Test
     public void shouldReturnNullWhenPostEEDodFormType2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()

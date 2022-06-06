@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.transformer;
 
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -42,9 +42,9 @@ public class CaveatDataTransformerTest {
     private static final String SOL_PAY_REF = "solsPayRef";
     private static final String SOL_PAY_FEE_ACCT_NUMBER = "solsFeeAccountNumber";
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caveatDeatilsMock);
         when(caveatDeatilsMock.getData()).thenReturn(caveatDataMock);
     }

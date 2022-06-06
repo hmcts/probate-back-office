@@ -1,13 +1,12 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
-import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.Caveat;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
@@ -20,7 +19,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class CaveatMapperTest {
 
@@ -87,7 +88,7 @@ public class CaveatMapperTest {
 
         CaveatData caveatData = caveatMapper.toCcdData(caveat);
 
-        Assertions.assertThat(caveatData).isEqualToComparingOnlyGivenFields(expectedCaveatData,
+        assertThat(caveatData).usingRecursiveComparison().isEqualTo(expectedCaveatData).comparingOnlyFields(
                 "deceasedForenames",
                 "deceasedSurname",
                 "deceasedFullAliasNameList",

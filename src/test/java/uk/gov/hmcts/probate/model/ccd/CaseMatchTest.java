@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 
 import static org.junit.Assert.assertEquals;

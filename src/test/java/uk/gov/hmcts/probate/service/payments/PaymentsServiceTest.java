@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.payments;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -10,7 +10,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
@@ -25,6 +25,7 @@ import java.util.Optional;
 
 import static java.util.Locale.UK;
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -35,7 +36,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class PaymentsServiceTest {
     @MockBean(name = "restTemplate")
@@ -71,12 +72,14 @@ public class PaymentsServiceTest {
         assertEquals(paymentResponse, returnedPaymentResponse);
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void shouldGetExceptionOnNullPaymentResponse() {
-        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
-            any(HttpEntity.class), any(Class.class))).thenReturn(ResponseEntity.of(Optional.empty()));
+        assertThrows(NullPointerException.class, () -> {
+            when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                    any(HttpEntity.class), any(Class.class))).thenReturn(ResponseEntity.of(Optional.empty()));
 
-        paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN, creditAccountPayment);
+            paymentsService.getCreditAccountPaymentResponse(AUTH_TOKEN, creditAccountPayment);
+        });
     }
 
     @Test
@@ -160,7 +163,7 @@ public class PaymentsServiceTest {
             verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
         }
     }
-    
+
     @Test
     public void shouldFailWith400DuplicatePayment() {
         try {
@@ -193,7 +196,7 @@ public class PaymentsServiceTest {
             verify(businessValidationMessageRetriever, times(0)).getMessage(any(), any(), any());
         }
     }
-    
+
     @Test
     public void shouldFailWithOtherError() {
         try {

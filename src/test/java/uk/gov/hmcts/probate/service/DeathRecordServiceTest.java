@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 

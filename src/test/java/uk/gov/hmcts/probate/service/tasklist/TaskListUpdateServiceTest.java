@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -58,9 +58,9 @@ public class TaskListUpdateServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long ID = 1L;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
         when(stoppedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();

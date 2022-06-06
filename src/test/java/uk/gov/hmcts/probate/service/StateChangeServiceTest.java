@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
@@ -34,10 +34,10 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StateChangeServiceTest {
 
     private static final String WILL_TYPE_PROBATE = "WillLeft";
@@ -83,9 +83,9 @@ public class StateChangeServiceTest {
     private CollectionMember<ExecutorsApplyingNotification> execResponseNotReceived;
     private CollectionMember<ExecutorsApplyingNotification> execResponseNotificationNo;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
 
         underTest = new StateChangeService(applicantSiblingsRule, diedOrNotApplyingRule,
             entitledMinorityRule, executorsStateRule, immovableEstateRule, lifeInterestRule, minorityInterestRule,

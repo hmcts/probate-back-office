@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,9 +23,9 @@ public class IhtEstateDefaulterTest {
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilderMock;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(ihtEstateDefaulter, "ihtEstateSwitchDate", "2022-01-01");
 
     }
@@ -43,7 +43,7 @@ public class IhtEstateDefaulterTest {
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).dateOfDeathAfterEstateSwitch("Yes");
     }
-    
+
     @Test
     public void shouldNotSwitchPageFlowForDateAfter2022Jan1() {
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2021, 12, 31));

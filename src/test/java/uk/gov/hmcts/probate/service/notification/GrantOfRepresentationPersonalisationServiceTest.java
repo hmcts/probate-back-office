@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -35,7 +35,7 @@ import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 public class GrantOfRepresentationPersonalisationServiceTest {
 
@@ -82,7 +82,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private List<ReturnedCaseDetails> exelaCaseDataNoSubtype = new ArrayList<>();
     private List<ReturnedCaseDetails> exelaCaseDataNoDOB = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument

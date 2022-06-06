@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -100,9 +100,9 @@ public class DocumentGeneratorServiceTest {
     @Mock
     private PlaceholderDecorator placeholderDecorator;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         Registry registry = new Registry();
         registry.setPhone("01010101010101");

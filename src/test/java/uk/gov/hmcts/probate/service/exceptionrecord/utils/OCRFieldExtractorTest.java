@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class OCRFieldExtractorTest {
     private static final String FIRST_NAME_VALUE = "Bob";
     private List<OCRField> ocrFields = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ocrFields.add(OCRField.builder().name(FIRST_NAME_KEY).value(FIRST_NAME_VALUE).build());
         ocrFields.add(OCRField.builder().name(MIDDLE_NAME_KEY).value(MIDDLE_NAME_VALUE).build());

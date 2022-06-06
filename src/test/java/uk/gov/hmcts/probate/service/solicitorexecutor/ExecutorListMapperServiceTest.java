@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -22,7 +20,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -55,7 +53,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APP
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ExecutorListMapperServiceTest {
 
     @InjectMocks
@@ -73,9 +70,9 @@ public class ExecutorListMapperServiceTest {
     @Mock
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         additionalExecutorsApplyingMock = new ArrayList<>();
         additionalExecutorsApplyingMock.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
         additionalExecutorsApplyingMock.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_APPLYING));

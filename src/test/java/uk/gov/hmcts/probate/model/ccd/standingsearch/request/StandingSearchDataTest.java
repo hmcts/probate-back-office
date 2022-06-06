@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.standingsearch.request;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
 import static org.junit.Assert.assertEquals;
@@ -16,7 +16,7 @@ public class StandingSearchDataTest {
     @InjectMocks
     private StandingSearchData underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         underTest = StandingSearchData.builder()

@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -46,7 +46,7 @@ public class HmrcFileServiceTest {
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =

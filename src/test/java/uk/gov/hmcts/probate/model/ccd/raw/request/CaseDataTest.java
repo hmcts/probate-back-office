@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -28,7 +28,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
@@ -92,10 +92,10 @@ public class CaseDataTest {
 
     private CaseData underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
-        initMocks(this);
+        openMocks(this);
 
         when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
         when(additionalExecutors2Mock.getValue()).thenReturn(additionalExecutor2Mock);
@@ -824,7 +824,7 @@ public class CaseDataTest {
     }
 
     @Test
-                
+
     public void shouldApplyNonTrustCorpOptionAttributes() {
         CollectionMember<AdditionalExecutorPartners> otherPartner = new CollectionMember<>(
                 new AdditionalExecutorPartners(
@@ -936,7 +936,7 @@ public class CaseDataTest {
         assertEquals("WillCulpritLN", caseData.getWillDamageCulpritName().getLastName());
         assertEquals("Yes", caseData.getWillDamageDateKnown());
         assertEquals("1/12/2020", caseData.getWillDamageDate());
-        
+
 
         assertEquals("Yes", caseData.getCodicilsHasVisibleDamage());
         assertEquals("Type1C", caseData.getCodicilsDamage().getDamageTypesList().get(0));
@@ -950,7 +950,7 @@ public class CaseDataTest {
         assertEquals("CodCulpritLN", caseData.getCodicilsDamageCulpritName().getLastName());
         assertEquals("Yes", caseData.getCodicilsDamageDateKnown());
         assertEquals("9/2021", caseData.getCodicilsDamageDate());
-        
+
         assertEquals("Yes", caseData.getDeceasedWrittenWishes());
     }
 }

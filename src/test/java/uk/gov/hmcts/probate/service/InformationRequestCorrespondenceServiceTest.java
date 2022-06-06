@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -58,10 +58,10 @@ public class InformationRequestCorrespondenceServiceTest {
     private CollectionMember<ExecutorsApplyingNotification> execApplying;
     private CollectionMember<ExecutorsApplyingNotification> execApplyingNotifIsNo;
 
-    @Before
+    @BeforeEach
     public void setup() throws NotificationClientException {
         documents = new ArrayList<>();
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         execApplying = new CollectionMember<>("1",
             ExecutorsApplyingNotification.builder()
                 .email("executor1@probate-test.com")

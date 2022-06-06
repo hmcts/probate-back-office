@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -32,9 +32,9 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     private FieldErrorResponse fieldErrorResponsePrimary;
     private FieldErrorResponse fieldErrorResponseSolicitor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         fieldErrorResponsePrimary = FieldErrorResponse.builder()
             .message("primary missing")
             .build();

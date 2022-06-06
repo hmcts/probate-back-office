@@ -1,16 +1,16 @@
 package uk.gov.hmcts.probate.controller;
 
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,7 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 public class ExceptionRecordControllerTest {
@@ -71,7 +71,7 @@ public class ExceptionRecordControllerTest {
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         exceptionRecordPayloadCitizenPA8A =
@@ -426,7 +426,7 @@ public class ExceptionRecordControllerTest {
                         + "This Exception Record can not be created as a case: 1001\"]")));
     }
 
-    @Ignore
+    @Disabled
     public void testErrorReturnedForUnimplementedFormType() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA8A.replace("PA8A", "PPPP"))

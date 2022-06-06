@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -43,9 +43,9 @@ public class CaveatDocmosisServiceTest {
     @Mock
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         registry.setName("leeds");
         registry.setPhone("123456789");
         registries = mapper.convertValue(registry, Map.class);
