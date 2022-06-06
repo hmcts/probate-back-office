@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 
-public class SolicitorLegalStatementNextStepsTransformerTest {
+class SolicitorLegalStatementNextStepsTransformerTest {
 
     @InjectMocks
     SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
@@ -33,7 +33,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     }
 
     @Test
-    public void shouldTransformLegalStatmentAmendStatesForProbate() {
+    void shouldTransformLegalStatmentAmendStatesForProbate() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("WillLeft");
         solicitorLegalStatementNextStepsTransformer
@@ -49,7 +49,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     }
 
     @Test
-    public void shouldTransformLegalStatmentAmendStatesForIntestacy() {
+    void shouldTransformLegalStatmentAmendStatesForIntestacy() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("NoWill");
         solicitorLegalStatementNextStepsTransformer
@@ -65,7 +65,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     }
 
     @Test
-    public void shouldTransformLegalStatmentAmendStatesForAdmon() {
+    void shouldTransformLegalStatmentAmendStatesForAdmon() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("WillLeftAnnexed");
         solicitorLegalStatementNextStepsTransformer

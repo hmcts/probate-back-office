@@ -34,7 +34,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
 @ExtendWith(SpringExtension.class)
-public class WillLodgementCallbackResponseTransformerTest {
+class WillLodgementCallbackResponseTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -125,7 +125,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformWillLodgementCallbackRequestToWillLodgementCallbackResponse() {
+    void shouldTransformWillLodgementCallbackRequestToWillLodgementCallbackResponse() {
         WillLodgementCallbackResponse willLodgementCallbackResponse =
             underTest.transform(willLodgementCallbackRequestMock);
 
@@ -133,7 +133,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForWillLodgementWithDeceasedAliasNames() {
+    void shouldTransformCaseForWillLodgementWithDeceasedAliasNames() {
         List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
         ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(WL_DECEASED_FULL_ALIAS_NAME).build();
@@ -153,7 +153,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetWillLodgementUploadedDocuments() {
+    void shouldGetWillLodgementUploadedDocuments() {
         List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
         documents.add(createUploadDocuments("0"));
         willLodgementDataBuilder.documentsUploaded(documents);
@@ -169,7 +169,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddMatches() {
+    void shouldAddMatches() {
         List<CaseMatch> matches = new ArrayList<>();
         matches.add(CaseMatch.builder().fullName("Name One").build());
         matches.add(CaseMatch.builder().fullName("Name Two").build());
@@ -255,7 +255,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetWillLodgementGeneratedDocuments() {
+    void shouldGetWillLodgementGeneratedDocuments() {
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .documentType(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT)

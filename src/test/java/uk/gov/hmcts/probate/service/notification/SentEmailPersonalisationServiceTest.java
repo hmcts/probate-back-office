@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class SentEmailPersonalisationServiceTest {
+class SentEmailPersonalisationServiceTest {
 
     @Autowired
     private SentEmailPersonalisationService sentEmailPersonalisationService;
@@ -67,7 +67,7 @@ public class SentEmailPersonalisationServiceTest {
     }
 
     @Test
-    public void getPersonalisationContentIsOk() {
+    void getPersonalisationContentIsOk() {
         Map<String, Object> response = sentEmailPersonalisationService.getPersonalisation(sentEmail);
 
         assertEquals(PERSONALISATION_SENT_EMAIL_SENT_ON_RESPONSE, response.get(PERSONALISATION_SENT_EMAIL_SENT_ON));

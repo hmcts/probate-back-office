@@ -24,7 +24,7 @@ import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.IHT_205_COMPLETED_ONLINE;
 import static uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2.IHT_207_COMPLETED;
 
-public class CitizenMandatoryFieldsValidatorV2Test {
+class CitizenMandatoryFieldsValidatorV2Test {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
 
@@ -45,7 +45,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldCheckIht207CompletedIfIht400421completedFalse() {
+    void shouldCheckIht207CompletedIfIht400421completedFalse() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -69,7 +69,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldCheckDateOfDeathAgainstSwitchDate() {
+    void shouldCheckDateOfDeathAgainstSwitchDate() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -103,7 +103,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldNotCheckDateOfDeathAgainstSwitchDate() {
+    void shouldNotCheckDateOfDeathAgainstSwitchDate() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -127,7 +127,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldCheckSwitchDateAndIHTEstateFields() {
+    void shouldCheckSwitchDateAndIHTEstateFields() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -179,7 +179,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldCheckSwitchDateAndIHT205CompletedOnline() {
+    void shouldCheckSwitchDateAndIHT205CompletedOnline() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -213,7 +213,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldNotCheckIHT205CompletedOnline() {
+    void shouldNotCheckIHT205CompletedOnline() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -241,7 +241,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldCheckIHTCompletedOnline() {
+    void shouldCheckIHTCompletedOnline() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")
@@ -278,7 +278,7 @@ public class CitizenMandatoryFieldsValidatorV2Test {
     }
 
     @Test
-    public void shouldCheckIHTFormIdSetCorrectly() {
+    void shouldCheckIHTFormIdSetCorrectly() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField iht400421completed = OCRField.builder()
             .name("iht400421completed")

@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sols
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecTitle;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.soplsRedecWillsForDom;
 
-public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
+class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSolicitorRedeclaration assembleSolicitorRedeclaration =
         new AssembleSolicitorRedeclaration(assemblerBase);
@@ -47,7 +47,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecDate() {
+    void shouldPopulateSolsRedecDate() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecCodicil(solsRedecCodicil,
             CaseData.builder().build());
@@ -55,7 +55,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecSotSigned() {
+    void shouldPopulateSolsRedecSotSigned() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecSotSigned(solsRedecSotSigned,
             CaseData.builder().build());
@@ -63,7 +63,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecDomicile() {
+    void shouldPopulateSolsRedecDomicile() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecDomicile(solsRedecDomicile,
             CaseData.builder().build());
@@ -71,7 +71,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolssoplsRedecWillsForDom() {
+    void shouldPopulateSolssoplsRedecWillsForDom() {
 
         List<ParagraphDetail> response =
             assembleSolicitorRedeclaration.solsRedecWillsForeignDomicile(soplsRedecWillsForDom,
@@ -80,7 +80,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecMinority() {
+    void shouldPopulateSolsRedecMinority() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecMinorityInterest(solsRedecMinority,
             CaseData.builder().build());
@@ -88,7 +88,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecNetEstate() {
+    void shouldPopulateSolsRedecNetEstate() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecNetEstate(solsRedecNetEstate,
             CaseData.builder().build());
@@ -96,7 +96,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecTitle() {
+    void shouldPopulateSolsRedecTitle() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecTitle(solsRedecTitle,
             CaseData.builder().build());
@@ -104,7 +104,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecClearing() {
+    void shouldPopulateSolsRedecClearing() {
 
         List<ParagraphDetail> response = assembleSolicitorRedeclaration.solsRedecClearing(solsRedecClearing,
             CaseData.builder().build());
@@ -112,7 +112,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsRedecIntestacy() {
+    void shouldPopulateSolsRedecIntestacy() {
 
         List<ParagraphDetail> response =
             assembleSolicitorRedeclaration.solsRedecIntestacyForeignDomicile(solsRedecClearing,
@@ -122,7 +122,7 @@ public class AssembleSolicitorRedeclarationTest extends AssembleTestBase {
 
 
     @Test
-    public void shouldPopulateSolsRedecSotDate() {
+    void shouldPopulateSolsRedecSotDate() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();

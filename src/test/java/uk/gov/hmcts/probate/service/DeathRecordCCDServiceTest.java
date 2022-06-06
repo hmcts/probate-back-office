@@ -15,12 +15,12 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DeathRecordCCDServiceTest {
+class DeathRecordCCDServiceTest {
 
     DeathRecordCCDService deathRecordCCDService = new DeathRecordCCDService();
 
     @Test
-    public void shouldMapDeathRecordToCCDFormat() {
+    void shouldMapDeathRecordToCCDFormat() {
         Deceased deceased = new Deceased();
         deceased.setForenames("Firstname");
         deceased.setSurname("LastName");
@@ -43,7 +43,7 @@ public class DeathRecordCCDServiceTest {
     }
 
     @Test
-    public void shouldHandleNull() {
+    void shouldHandleNull() {
         final uk.gov.hmcts.probate.model.ccd.raw.DeathRecord result =
             deathRecordCCDService.mapDeathRecord(null);
 
@@ -52,7 +52,7 @@ public class DeathRecordCCDServiceTest {
 
 
     @Test
-    public void shouldHandleNullDeceased() {
+    void shouldHandleNullDeceased() {
         V1Death v1Death = new V1Death();
         v1Death.setId(1234);
 
@@ -65,7 +65,7 @@ public class DeathRecordCCDServiceTest {
 
 
     @Test
-    public void mapDeathRecordsCCDShouldHandleEmptyList() {
+    void mapDeathRecordsCCDShouldHandleEmptyList() {
         final List<CollectionMember<DeathRecord>>
             collectionMembers = deathRecordCCDService
             .mapDeathRecords(Collections.emptyList());
@@ -73,7 +73,7 @@ public class DeathRecordCCDServiceTest {
     }
 
     @Test
-    public void mapDeathRecordsCCDShouldHandleNull() {
+    void mapDeathRecordsCCDShouldHandleNull() {
         final List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
             collectionMembers = deathRecordCCDService.mapDeathRecords(null);
         assert (collectionMembers.isEmpty());
@@ -81,7 +81,7 @@ public class DeathRecordCCDServiceTest {
 
 
     @Test
-    public void mapDeathRecordsCCDShouldHandleListWithNullElement() {
+    void mapDeathRecordsCCDShouldHandleListWithNullElement() {
         ArrayList list = new ArrayList();
         list.add(null);
         final List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.DeathRecord>>
@@ -90,7 +90,7 @@ public class DeathRecordCCDServiceTest {
     }
 
     @Test
-    public void shouldMapDeathRecordCCD() {
+    void shouldMapDeathRecordCCD() {
         Deceased deceased = new Deceased();
         deceased.setForenames("Firstname");
         deceased.setSurname("LastName");

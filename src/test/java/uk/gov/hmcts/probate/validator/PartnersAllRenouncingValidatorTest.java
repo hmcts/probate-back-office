@@ -12,7 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
-public class PartnersAllRenouncingValidatorTest {
+class PartnersAllRenouncingValidatorTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
@@ -77,7 +77,7 @@ public class PartnersAllRenouncingValidatorTest {
     }
 
     @Test
-    public void shouldThrowErrorSuccAllRenouncing() {
+    void shouldThrowErrorSuccAllRenouncing() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataSuccessorFirmAllRenouncing, LAST_MODIFIED, CASE_ID);
 
@@ -90,7 +90,7 @@ public class PartnersAllRenouncingValidatorTest {
     }
 
     @Test
-    public void shouldThrowErrorAllRenouncing() {
+    void shouldThrowErrorAllRenouncing() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataFirmAllRenouncing, LAST_MODIFIED, CASE_ID);
 
@@ -103,7 +103,7 @@ public class PartnersAllRenouncingValidatorTest {
     }
 
     @Test
-    public void shouldNotThrowError() {
+    void shouldNotThrowError() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNotAllRenouncing, LAST_MODIFIED, CASE_ID);
 
@@ -112,7 +112,7 @@ public class PartnersAllRenouncingValidatorTest {
     }
 
     @Test
-    public void shouldNotThrowErrorNoNoAllRenouncing() {
+    void shouldNotThrowErrorNoNoAllRenouncing() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoNoAllRenouncing, LAST_MODIFIED, CASE_ID);
 
@@ -121,7 +121,7 @@ public class PartnersAllRenouncingValidatorTest {
     }
 
     @Test
-    public void shouldNotThrowErrorYesYesAllRenouncing() {
+    void shouldNotThrowErrorYesYesAllRenouncing() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataYesYesAllRenouncing, LAST_MODIFIED, CASE_ID);
 
@@ -130,7 +130,7 @@ public class PartnersAllRenouncingValidatorTest {
     }
 
     @Test
-    public void shouldNotThrowErrorYesNoAllRenouncing() {
+    void shouldNotThrowErrorYesNoAllRenouncing() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataYesNoAllRenouncing, LAST_MODIFIED, CASE_ID);
 

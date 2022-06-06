@@ -31,7 +31,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.STANDING_SEARCH_LIFESPAN;
 
 @ExtendWith(SpringExtension.class)
-public class StandingSearchCallbackResponseTransformerTest {
+class StandingSearchCallbackResponseTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -100,7 +100,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformStandingSearchCallbackRequestToStandingSearchCallbackResponse() {
+    void shouldTransformStandingSearchCallbackRequestToStandingSearchCallbackResponse() {
         StandingSearchCallbackResponse standingSearchCallbackResponse =
             underTest.transform(standingSearchCallbackRequestMock);
 
@@ -108,7 +108,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForStandingSearchWithDeceasedAliasNames() {
+    void shouldTransformCaseForStandingSearchWithDeceasedAliasNames() {
         List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
         ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(SS_DECEASED_FULL_ALIAS_NAME).build();
@@ -128,7 +128,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetStandingSearchUploadedDocuments() {
+    void shouldGetStandingSearchUploadedDocuments() {
         List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
         documents.add(createUploadDocuments("0"));
         standingSearchDataBuilder.documentsUploaded(documents);
@@ -144,7 +144,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
+    void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
         StandingSearchCallbackResponse standingSearchCallbackResponse =
             underTest.standingSearchCreated(standingSearchCallbackRequestMock);
 

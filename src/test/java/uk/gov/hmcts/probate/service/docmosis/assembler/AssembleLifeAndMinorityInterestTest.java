@@ -23,7 +23,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotP
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ7;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pRedec;
 
-public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
+class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleLifeAndMinorityInterest assembleLifeAndMinorityInterest =
         new AssembleLifeAndMinorityInterest(assemblerBase);
@@ -62,7 +62,7 @@ public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateAdmonWillLife() {
+    void shouldPopulateAdmonWillLife() {
 
         List<ParagraphDetail> response = assembleLifeAndMinorityInterest.admonWillLife(SotPa1pRedec,
             CaseData.builder().build());
@@ -70,7 +70,7 @@ public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateAdmonWillMinority() {
+    void shouldPopulateAdmonWillMinority() {
 
         List<ParagraphDetail> response = assembleLifeAndMinorityInterest.admonWillMinority(SotPa1aRedec,
             CaseData.builder().build());
@@ -78,7 +78,7 @@ public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIntestacyLife() {
+    void shouldPopulateIntestacyLife() {
 
         List<ParagraphDetail> response = assembleLifeAndMinorityInterest.intestacyLife(SotNotSigned,
             CaseData.builder().build());
@@ -87,7 +87,7 @@ public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
 
 
     @Test
-    public void shouldPopulateIntestacyLifeAndMinority() {
+    void shouldPopulateIntestacyLifeAndMinority() {
 
         List<ParagraphDetail> response = assembleLifeAndMinorityInterest.intestacyLifeandMinority(SotPa1pQ2,
             CaseData.builder().build());
@@ -95,7 +95,7 @@ public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIntestacyMinority() {
+    void shouldPopulateIntestacyMinority() {
 
         List<ParagraphDetail> response = assembleLifeAndMinorityInterest.intestacyMinority(SotPa1pQ2,
             CaseData.builder().build());
@@ -103,7 +103,7 @@ public class AssembleLifeAndMinorityInterestTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIntestacyParentalResponsibility() {
+    void shouldPopulateIntestacyParentalResponsibility() {
 
         List<ParagraphDetail> response = assembleLifeAndMinorityInterest.intestacyParentalResponsibility(SotPa1pQ2,
             CaseData.builder().build());

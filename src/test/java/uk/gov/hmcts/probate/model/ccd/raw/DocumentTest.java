@@ -8,9 +8,9 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class DocumentTest {
+class DocumentTest {
     @Test
-    public void canDeserialiseDateAdded() throws IOException {
+    void canDeserialiseDateAdded() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 

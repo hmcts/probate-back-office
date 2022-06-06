@@ -48,7 +48,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 
 
-public class CaveatNotificationServiceTest {
+class CaveatNotificationServiceTest {
 
     private static final long ID = 1234567891234567L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -147,7 +147,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testSolsCaveatRaise() throws NotificationClientException {
+    void testSolsCaveatRaise() throws NotificationClientException {
         documents.add(sentEmail);
 
         responseCaveatData = ResponseCaveatData.builder()
@@ -172,7 +172,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatRaiseWithEmail() throws NotificationClientException {
+    void testCaveatRaiseWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .build();
@@ -202,7 +202,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatRaiseWithNoEmailNoBulkPrint() throws NotificationClientException {
+    void testCaveatRaiseWithNoEmailNoBulkPrint() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("No")
@@ -234,7 +234,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatRaiseWithNoEmailBulkPrintValidSendLetter() throws NotificationClientException {
+    void testCaveatRaiseWithNoEmailBulkPrintValidSendLetter() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("Yes")
@@ -278,7 +278,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testSolicitorCaveatRaiseWithEmail() throws NotificationClientException {
+    void testSolicitorCaveatRaiseWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .caveatorEmailAddress("caveator@probate-test.com")
@@ -310,7 +310,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testSolicitorCaveatRaiseWithNoEmail() throws NotificationClientException {
+    void testSolicitorCaveatRaiseWithNoEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .applicationType(ApplicationType.SOLICITOR)
@@ -341,7 +341,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testGenerateExpiryDateWithCaveatorEmailAddress() throws NotificationClientException {
+    void testGenerateExpiryDateWithCaveatorEmailAddress() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .caveatorEmailAddress("caveator@probate-test.com")
@@ -375,7 +375,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testGenerateExpiryDateWithoutCaveatorEmailAddress() throws NotificationClientException {
+    void testGenerateExpiryDateWithoutCaveatorEmailAddress() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .applicationType(ApplicationType.SOLICITOR)
@@ -408,7 +408,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatExtendWithError() throws NotificationClientException {
+    void testCaveatExtendWithError() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .build();
@@ -433,7 +433,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatExtendWithEmail() throws NotificationClientException {
+    void testCaveatExtendWithEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .build();
@@ -462,7 +462,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatExtendWithNoEmail() throws NotificationClientException {
+    void testCaveatExtendWithNoEmail() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .build();
@@ -487,7 +487,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatExtendWithNoEmailNoBP() throws NotificationClientException {
+    void testCaveatExtendWithNoEmailNoBP() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("No")
@@ -518,7 +518,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatExtendWithNoEmailBulkPrintValidSendLetter() throws NotificationClientException {
+    void testCaveatExtendWithNoEmailBulkPrintValidSendLetter() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("Yes")
@@ -562,7 +562,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testCaveatExtendWithNoEmailBulkPrintNullSendLetter() throws NotificationClientException {
+    void testCaveatExtendWithNoEmailBulkPrintNullSendLetter() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .sendToBulkPrintRequested("Yes")
@@ -601,7 +601,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testWithDrawEmail() throws NotificationClientException {
+    void testWithDrawEmail() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .caveatorEmailAddress("caveator@probate-test.com").build();
@@ -629,7 +629,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testWithdrawnBluckPrint() throws NotificationClientException {
+    void testWithdrawnBluckPrint() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .caveatorEmailAddress("caveator@probate-test.com")
@@ -673,7 +673,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testWithdrawnBluckPrintValidationFailure() throws NotificationClientException {
+    void testWithdrawnBluckPrintValidationFailure() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .caveatorEmailAddress("caveator@probate-test.com")
@@ -712,7 +712,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testWithdrawnWithoutEmailOrBulkPrint() throws NotificationClientException {
+    void testWithdrawnWithoutEmailOrBulkPrint() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("No")
             .caveatorEmailAddress("caveator@probate-test.com")
@@ -752,7 +752,7 @@ public class CaveatNotificationServiceTest {
     }
 
     @Test
-    public void testWithDrawNotificationValidationFailure() throws NotificationClientException {
+    void testWithDrawNotificationValidationFailure() throws NotificationClientException {
         CaveatData caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")
             .build();

@@ -38,7 +38,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_NAME;
 
 @ExtendWith(SpringExtension.class)
-public class ResetResponseCaseDataTransformerTest {
+class ResetResponseCaseDataTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -101,7 +101,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTitleAndClearingPartnerOptions() {
+    void shouldResetTitleAndClearingPartnerOptions() {
 
         caseDataBuilder
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
@@ -130,7 +130,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTitleAndClearingTrustCorpOptions() {
+    void shouldResetTitleAndClearingTrustCorpOptions() {
 
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
@@ -157,7 +157,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetSuccessorFirmName() {
+    void shouldResetSuccessorFirmName() {
 
         caseDataBuilder
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME);
@@ -178,7 +178,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetDispenseWithNoticeOptions() {
+    void shouldResetDispenseWithNoticeOptions() {
 
         caseDataBuilder
                 .dispenseWithNotice(NO)

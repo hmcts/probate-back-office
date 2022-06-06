@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class OCRFieldIhtFormTypeMapperTest {
+class OCRFieldIhtFormTypeMapperTest {
 
 
     @Mock
@@ -49,7 +49,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT205() {
+    void testCorrectFormTypeIHT205() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(IHT205_FORM)
             .build();
@@ -58,7 +58,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT207() {
+    void testCorrectFormTypeIHT207() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(IHT207_FORM)
             .build();
@@ -67,7 +67,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT400421() {
+    void testCorrectFormTypeIHT400421() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(IHT400421_FORM)
             .build();
@@ -76,7 +76,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT421() {
+    void testCorrectFormTypeIHT421() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(IHT421_FORM)
             .build();
@@ -85,7 +85,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT400() {
+    void testCorrectFormTypeIHT400() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(IHT400_FORM)
             .build();
@@ -94,7 +94,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void testExceptionForUnknownForm5() {
+    void testExceptionForUnknownForm5() {
         assertThrows(OCRMappingException.class, () -> {
             ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                     .ihtFormId(UNKNOWN_FORM)
@@ -104,7 +104,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenIhtFormIdIsNull() {
+    void shouldReturnNullWhenIhtFormIdIsNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();
         IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
@@ -112,7 +112,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenIhtFormIdIsEmptyString() {
+    void shouldReturnNullWhenIhtFormIdIsEmptyString() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId("")
             .build();
@@ -121,7 +121,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenPostEEDodFormType2() {
+    void shouldReturnNullWhenPostEEDodFormType2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormId(IHT400421_FORM)
             .formVersion("2")
@@ -132,7 +132,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldMap400421FormType2() {
+    void shouldMap400421FormType2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
@@ -143,7 +143,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldMap207FormType2() {
+    void shouldMap207FormType2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
@@ -154,7 +154,7 @@ public class OCRFieldIhtFormTypeMapperTest {
     }
 
     @Test
-    public void shouldMapIHT205completedOnlineFormType2() {
+    void shouldMapIHT205completedOnlineFormType2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
@@ -166,7 +166,7 @@ public class OCRFieldIhtFormTypeMapperTest {
 
 
     @Test
-    public void shouldReturnNullIHT205completedOnlineTrueFormType2() {
+    void shouldReturnNullIHT205completedOnlineTrueFormType2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)

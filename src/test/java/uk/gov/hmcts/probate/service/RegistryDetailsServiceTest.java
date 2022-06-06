@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
-public class RegistryDetailsServiceTest {
+class RegistryDetailsServiceTest {
 
     private static final String REGISTRY_LOCATION = "bristol";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -54,7 +54,7 @@ public class RegistryDetailsServiceTest {
     }
 
     @Test
-    public void testCaseDetailsHaveRegistryMappedCorrectly() {
+    void testCaseDetailsHaveRegistryMappedCorrectly() {
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryTelephone(),
             is(registry.getPhone()));
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine1(),

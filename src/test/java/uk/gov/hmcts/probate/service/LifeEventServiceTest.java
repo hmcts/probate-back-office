@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventService.class)
-public class LifeEventServiceTest {
+class LifeEventServiceTest {
 
     final Long caseId = 1234L;
     final String firstName = "Wibble";
@@ -79,7 +79,7 @@ public class LifeEventServiceTest {
     }
 
     @Test
-    public void shouldPropagateExceptionWhenSearchingByNameAndDate() {
+    void shouldPropagateExceptionWhenSearchingByNameAndDate() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
             "Test exception"));
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -90,7 +90,7 @@ public class LifeEventServiceTest {
     }
 
     @Test
-    public void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
+    void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenReturn(emptyList());
         Exception exception = assertThrows(BusinessValidationException.class, () -> {
             lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
@@ -101,7 +101,7 @@ public class LifeEventServiceTest {
 
 
     @Test
-    public void shouldSearchByNameAndDate() {
+    void shouldSearchByNameAndDate() {
         lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
         verify(deathService).searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate));
         verify(deathRecordCCDService).mapDeathRecords(eq(deathRecords));

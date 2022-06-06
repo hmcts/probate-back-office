@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class SecurityUtilsTest {
+class SecurityUtilsTest {
 
     public static final String CODE = "CODE_VAL";
     private static final String SERVICE_TOKEN = "XXXXXX12345";
@@ -43,7 +43,7 @@ public class SecurityUtilsTest {
 
 
     @Test
-    public void shouldGetAuthorisation() {
+    void shouldGetAuthorisation() {
         TestSecurityContextHolder.getContext().setAuthentication(
             new TestingAuthenticationToken("user", USER_TOKEN, "ROLE_USER"));
 
@@ -53,7 +53,7 @@ public class SecurityUtilsTest {
     }
 
     @Test
-    public void shouldSecurityContextUserAsCaseworker() {
+    void shouldSecurityContextUserAsCaseworker() {
         ReflectionTestUtils.setField(securityUtils, "authRedirectUrl", REDIRECT);
         ReflectionTestUtils.setField(securityUtils, "authClientId", AUTH_CLIENT_ID);
         ReflectionTestUtils.setField(securityUtils, "authClientSecret", AUTH_CLIENT_SECRET);
@@ -70,7 +70,7 @@ public class SecurityUtilsTest {
     }
 
     @Test
-    public void shouldGetUserEmail() {
+    void shouldGetUserEmail() {
         UserInfo userInfo = UserInfo.builder().sub("solicitor@probate-test.com").build();
         when(idamApi.retrieveUserInfo("AuthToken")).thenReturn(userInfo);
         String email = securityUtils.getEmail("AuthToken");
@@ -79,7 +79,7 @@ public class SecurityUtilsTest {
     }
 
     @Test
-    public void shouldReturnCacheToken() {
+    void shouldReturnCacheToken() {
         ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", CASEWORKER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", CASEWORKER_PASSWORD);
 

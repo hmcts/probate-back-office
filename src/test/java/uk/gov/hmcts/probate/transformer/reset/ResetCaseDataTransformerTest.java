@@ -28,7 +28,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 
 @ExtendWith(SpringExtension.class)
-public class ResetCaseDataTransformerTest {
+class ResetCaseDataTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -64,7 +64,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTrustCorpsList() {
+    void shouldResetTrustCorpsList() {
         caseDataBuilder
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList);
@@ -83,7 +83,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetPartnerList() {
+    void shouldResetPartnerList() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .otherPartnersApplyingAsExecutors(partnerExecutorList);
@@ -102,7 +102,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTitleAndClearingExecutorLists() {
+    void shouldResetTitleAndClearingExecutorLists() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .otherPartnersApplyingAsExecutors(partnerExecutorList);
@@ -118,7 +118,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetPowerReservedExecutorLists() {
+    void shouldResetPowerReservedExecutorLists() {
         caseDataBuilder
                 .dispenseWithNotice(NO)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);

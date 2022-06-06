@@ -12,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-public class ScannedDocumentMapperTest {
+class ScannedDocumentMapperTest {
 
     private static final String DOC_NAME_PREFIX1 = "Test1";
     private ScannedDocumentMapper scannedDocumentMapper = new ScannedDocumentMapper();
@@ -34,7 +34,7 @@ public class ScannedDocumentMapperTest {
     }
 
     @Test
-    public void testScannedDocument() {
+    void testScannedDocument() {
         InputScannedDoc inputDoc = getSampleInputDocument(DOC_NAME_PREFIX1);
         CollectionMember<ScannedDocument> scannedDocumentCollectionMember
             = scannedDocumentMapper.toCaseDoc(inputDoc, null);
@@ -50,14 +50,14 @@ public class ScannedDocumentMapperTest {
     }
 
     @Test
-    public void testNoScannedDocument() {
+    void testNoScannedDocument() {
         CollectionMember<ScannedDocument> scannedDocumentCollectionMember
             = scannedDocumentMapper.toCaseDoc(null, null);
         assertNull(scannedDocumentCollectionMember);
     }
 
     @Test
-    public void shouldUPdateCaseDoc() {
+    void shouldUPdateCaseDoc() {
         InputScannedDoc inputDoc = getSampleInputDocument(DOC_NAME_PREFIX1);
         uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
             collectionMember
@@ -67,7 +67,7 @@ public class ScannedDocumentMapperTest {
     }
 
     @Test
-    public void shouldNoUpdateCaseDocForNullExceptionDoc() {
+    void shouldNoUpdateCaseDocForNullExceptionDoc() {
         uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
             collectionMember
             = scannedDocumentMapper.updateCaseDoc(null, "Ref1");

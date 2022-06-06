@@ -47,7 +47,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-public class NextStepsUnitTest {
+class NextStepsUnitTest {
 
     private NextStepsController underTest;
 
@@ -128,7 +128,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoErrors() {
+    void shouldValidateWithNoErrors() {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
@@ -152,7 +152,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoFeeValueNoErrors() {
+    void shouldValidateWithNoFeeValueNoErrors() {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
@@ -170,7 +170,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithPaymentError() {
+    void shouldValidateWithPaymentError() {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
@@ -189,7 +189,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithPaymentChequeError() {
+    void shouldValidateWithPaymentChequeError() {
         assertThrows(BusinessValidationException.class, () -> {
             when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
             when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
@@ -206,7 +206,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithError() {
+    void shouldValidateWithError() {
         assertThrows(BadRequestException.class, () -> {
             when(caseDetailsMock.getData()).thenReturn(caseDataMock);
             when(bindingResultMock.hasErrors()).thenReturn(true);
@@ -218,7 +218,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithErrorAndLogRequest() throws JsonProcessingException {
+    void shouldValidateWithErrorAndLogRequest() throws JsonProcessingException {
         assertThrows(BadRequestException.class, () -> {
             when(caseDetailsMock.getData()).thenReturn(caseDataMock);
             when(bindingResultMock.hasErrors()).thenReturn(true);
@@ -231,7 +231,7 @@ public class NextStepsUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoErrorsForStateChange() {
+    void shouldValidateWithNoErrorsForStateChange() {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
         when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))

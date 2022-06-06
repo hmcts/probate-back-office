@@ -47,7 +47,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProbateManControllerTest {
+class ProbateManControllerTest {
 
     private static final String ID = "1234567";
 
@@ -89,7 +89,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetGrantApplication() throws Exception {
+    void shouldGetGrantApplication() throws Exception {
         ProbateManModel grantApplication = GrantApplicationCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.GRANT_APPLICATION))
             .thenReturn(grantApplication);
@@ -103,7 +103,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetWillLodgement() throws Exception {
+    void shouldGetWillLodgement() throws Exception {
         ProbateManModel willLodgement = WillLodgementCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.WILL_LODGEMENT))
             .thenReturn(willLodgement);
@@ -116,7 +116,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetCaveat() throws Exception {
+    void shouldGetCaveat() throws Exception {
         ProbateManModel caveat = CaveatCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.CAVEAT))
             .thenReturn(caveat);
@@ -130,7 +130,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetStandingSearch() throws Exception {
+    void shouldGetStandingSearch() throws Exception {
         ProbateManModel standingSearch = StandingSearchCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.STANDING_SEARCH))
             .thenReturn(standingSearch);
@@ -144,7 +144,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldPostLegacySearch() throws Exception {
+    void shouldPostLegacySearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);
@@ -164,7 +164,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldPostDoImport() throws Exception {
+    void shouldPostDoImport() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);
@@ -185,7 +185,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldResetSearch() throws Exception {
+    void shouldResetSearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);

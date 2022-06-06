@@ -31,7 +31,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CaveatQueryServiceTest {
+class CaveatQueryServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
@@ -82,14 +82,14 @@ public class CaveatQueryServiceTest {
     }
 
     @Test
-    public void findCaveatWithCaveatIDMatch() {
+    void findCaveatWithCaveatIDMatch() {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT,
                 "1234567812345678");
         assertEquals("Smith", caveatData.getDeceasedSurname());
     }
 
     @Test
-    public void shouldNotFindCaveatWithCaveatIDMatch() {
+    void shouldNotFindCaveatWithCaveatIDMatch() {
         assertThrows(BusinessValidationException.class, () -> {
             List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
                     .build();
@@ -104,7 +104,7 @@ public class CaveatQueryServiceTest {
     }
 
     @Test
-    public void testHttpExceptionCaughtWithBadPost() {
+    void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
         Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"))
@@ -112,7 +112,7 @@ public class CaveatQueryServiceTest {
     }
 
     @Test
-    public void testExceptionWithNullFromRestTemplatePost() {
+    void testExceptionWithNullFromRestTemplatePost() {
         assertThrows(ClientDataException.class, () -> {
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
             caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");

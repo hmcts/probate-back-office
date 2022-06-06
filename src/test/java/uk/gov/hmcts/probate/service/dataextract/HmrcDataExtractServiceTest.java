@@ -29,7 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class HmrcDataExtractServiceTest {
+class HmrcDataExtractServiceTest {
     @Mock
     private CaseQueryService caseQueryService;
     @Mock
@@ -68,7 +68,7 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractFoundCases() {
+    void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -81,7 +81,7 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractWhenNoCasesFound() {
+    void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -95,7 +95,7 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractFoundCasesToFrom() {
+    void shouldExtractFoundCasesToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
@@ -108,7 +108,7 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractForNoCasesFoundToFrom() {
+    void shouldExtractForNoCasesFoundToFrom() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -121,7 +121,7 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionWhenFindingCases() {
+    void shouldThrowClientExceptionWhenFindingCases() {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
@@ -137,7 +137,7 @@ public class HmrcDataExtractServiceTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionWhenFindingCasesFromTo() {
+    void shouldThrowClientExceptionWhenFindingCasesFromTo() {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();

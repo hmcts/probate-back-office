@@ -36,7 +36,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 
-public class ReprintTransformerTest {
+class ReprintTransformerTest {
     @InjectMocks
     private ReprintTransformer reprintTransformer;
 
@@ -60,7 +60,7 @@ public class ReprintTransformerTest {
     }
 
     @Test
-    public void shouldCreateMultipleListItems() {
+    void shouldCreateMultipleListItems() {
         Document grant = Document.builder()
             .documentType(DIGITAL_GRANT)
             .documentFileName("Grant1")
@@ -119,7 +119,7 @@ public class ReprintTransformerTest {
     }
 
     @Test
-    public void shouldCreateSingleGeneratedListItems() {
+    void shouldCreateSingleGeneratedListItems() {
         createAndAssertGeneratedListItem(DIGITAL_GRANT, "Grant1", "Grant");
         createAndAssertGeneratedListItem(WELSH_DIGITAL_GRANT, "WGrant1", "Grant");
 
@@ -135,12 +135,12 @@ public class ReprintTransformerTest {
     }
 
     @Test
-    public void shouldCreateSingleScannedListItems() {
+    void shouldCreateSingleScannedListItems() {
         createAndAssertScannedListItem("Other", "will", "Will1", "Will");
     }
 
     @Test
-    public void shouldNotCreateForNullItems() {
+    void shouldNotCreateForNullItems() {
         generatedDocs = null;
         scannedDocs = null;
         sotDocs = null;
@@ -149,13 +149,13 @@ public class ReprintTransformerTest {
     }
 
     @Test
-    public void shouldNotCreateForEmptyScannedItems() {
+    void shouldNotCreateForEmptyScannedItems() {
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(0));
     }
 
     @Test
-    public void shouldNotCreateForEmptyGeneratedItems() {
+    void shouldNotCreateForEmptyGeneratedItems() {
         ScannedDocument doc = ScannedDocument.builder()
             .type("Extra")
             .fileName("scFileName")

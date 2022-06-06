@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class FullAliasNameMapperTest {
+class FullAliasNameMapperTest {
 
     private static final String DECEASED_ALIAS_NAME1 = "DeadANF1";
     private static final String DECEASED_ALIAS_NAME2 = "DeadANF2";
@@ -30,7 +30,7 @@ public class FullAliasNameMapperTest {
     private FullAliasNameMapper aliasNameMapper;
 
     @Test
-    public void shouldMapToCollection() {
+    void shouldMapToCollection() {
 
         List<CollectionMember<FullAliasName>> aliasCollection =
             aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAMES);
@@ -41,7 +41,7 @@ public class FullAliasNameMapperTest {
     }
 
     @Test
-    public void shouldMapEmptyNamesToEmptyCollection() {
+    void shouldMapEmptyNamesToEmptyCollection() {
 
         List<CollectionMember<FullAliasName>> expectedAliasNames = Collections.emptyList();
         List<CollectionMember<FullAliasName>> aliasCollection = aliasNameMapper.toFullAliasNameMember(null);
@@ -51,7 +51,7 @@ public class FullAliasNameMapperTest {
     }
 
     @Test
-    public void shouldMapToCollectionOneAliasOnly() {
+    void shouldMapToCollectionOneAliasOnly() {
 
         List<CollectionMember<FullAliasName>> aliasCollection =
             aliasNameMapper.toFullAliasNameMember(DECEASED_ALIAS_NAME1);

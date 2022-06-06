@@ -13,7 +13,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class IhtEstateNotCompletedBusinessRuleTest {
+class IhtEstateNotCompletedBusinessRuleTest {
 
     @InjectMocks
     private IhtEstateNotCompletedBusinessRule underTest;
@@ -27,13 +27,13 @@ public class IhtEstateNotCompletedBusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForCompleted() {
+    void shouldBeApplicableForCompleted() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldBeApplicableForNotCompleted() {
+    void shouldBeApplicableForNotCompleted() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
         assertTrue(underTest.isApplicable(mockCaseData));
     }

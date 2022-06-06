@@ -13,7 +13,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class AuthenticatedTranslationBusinessRuleTest {
+class AuthenticatedTranslationBusinessRuleTest {
 
     @InjectMocks
     private AuthenticatedTranslationBusinessRule underTest;
@@ -27,13 +27,13 @@ public class AuthenticatedTranslationBusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForNonEnglishWill() {
+    void shouldBeApplicableForNonEnglishWill() {
         when(mockCaseData.getEnglishWill()).thenReturn(NO);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNotBeApplicableForEnglishWill() {
+    void shouldNotBeApplicableForEnglishWill() {
         when(mockCaseData.getEnglishWill()).thenReturn(YES);
         assertFalse(underTest.isApplicable(mockCaseData));
     }

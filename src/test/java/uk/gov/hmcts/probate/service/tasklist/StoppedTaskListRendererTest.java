@@ -10,7 +10,7 @@ import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 
-public class StoppedTaskListRendererTest {
+class StoppedTaskListRendererTest {
 
     public static final Long ID = 1L;
     public static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -29,7 +29,7 @@ public class StoppedTaskListRendererTest {
     }
 
     @Test
-    public void shouldRenderStoppedCaseProgressHtmlCorrectly() {
+    void shouldRenderStoppedCaseProgressHtmlCorrectly() {
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState(BO_CASE_STOPPED.getId());
         final String expectedHtml = "<div class=\"width-50\">\n\n"

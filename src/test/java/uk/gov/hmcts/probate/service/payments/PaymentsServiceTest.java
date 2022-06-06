@@ -38,7 +38,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class PaymentsServiceTest {
+class PaymentsServiceTest {
     @MockBean(name = "restTemplate")
     private RestTemplate restTemplate;
     @MockBean
@@ -62,7 +62,7 @@ public class PaymentsServiceTest {
     private static final String AUTH_TOKEN = "Bearer .AUTH";
 
     @Test
-    public void shouldGetPaymentResponse() {
+    void shouldGetPaymentResponse() {
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
             any(HttpEntity.class), any(Class.class))).thenReturn(ResponseEntity.of(Optional.of(paymentResponse)));
 
@@ -73,7 +73,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldGetExceptionOnNullPaymentResponse() {
+    void shouldGetExceptionOnNullPaymentResponse() {
         assertThrows(NullPointerException.class, () -> {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                     any(HttpEntity.class), any(Class.class))).thenReturn(ResponseEntity.of(Optional.empty()));
@@ -83,7 +83,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailOnAccountDeletedWith403() {
+    void shouldFailOnAccountDeletedWith403() {
         try {
             String body = "{\"reference\":\"RC-1599-4778-4711-5958\",\"date_created\":\"2020-09-07T11:24:07.160+0000\","
                 + "\"status\":\"failed\",\"payment_group_reference\":\"2020-1599477846961\","
@@ -104,7 +104,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWith404() {
+    void shouldFailWith404() {
         try {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                 any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
@@ -119,7 +119,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWith422() {
+    void shouldFailWith422() {
         try {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                 any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
@@ -134,7 +134,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWith400() {
+    void shouldFailWith400() {
         try {
             when(httpClientErrorExceptionMock.getMessage()).thenReturn("other 400 failure");
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
@@ -150,7 +150,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWith400WithNullMessage() {
+    void shouldFailWith400WithNullMessage() {
         try {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                 any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
@@ -165,7 +165,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWith400DuplicatePayment() {
+    void shouldFailWith400DuplicatePayment() {
         try {
             when(httpClientErrorExceptionMock.getMessage()).thenReturn("duplicate payment");
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
@@ -183,7 +183,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWith5XX() {
+    void shouldFailWith5XX() {
         try {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                 any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
@@ -198,7 +198,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldFailWithOtherError() {
+    void shouldFailWithOtherError() {
         try {
             when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
                 any(HttpEntity.class), any(Class.class))).thenThrow(httpClientErrorExceptionMock);
@@ -213,7 +213,7 @@ public class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldGetNewEmailWhenPaymentError() {
+    void shouldGetNewEmailWhenPaymentError() {
         String userMessage = "USER MESSAGE";
         String additionalMessage = "ADDITIONAL MESSAGE";
         try {

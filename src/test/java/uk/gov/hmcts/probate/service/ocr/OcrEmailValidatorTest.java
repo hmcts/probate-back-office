@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
 
-public class OcrEmailValidatorTest {
+class OcrEmailValidatorTest {
 
     private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primaryApplicantEmailAddress";
     private static final String CAVEATOR_EMAIL_ADDRESS = "caveatorEmailAddress";
@@ -52,7 +52,7 @@ public class OcrEmailValidatorTest {
 
 
     @Test
-    public void shouldCreateWarningForAnInvalidField() {
+    void shouldCreateWarningForAnInvalidField() {
 
         final OCRField field = OCRField
             .builder()
@@ -66,7 +66,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldCreateWarningForEachInvalidField() {
+    void shouldCreateWarningForEachInvalidField() {
         final List<OCRField> fields = emailFields
             .keySet()
             .stream()
@@ -86,7 +86,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldNotCreateWarningForValidField() {
+    void shouldNotCreateWarningForValidField() {
         final List<OCRField> fields = emailFields
             .keySet()
             .stream()
@@ -103,7 +103,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldCreateWarningForNullField() {
+    void shouldCreateWarningForNullField() {
 
         final OCRField field = OCRField
             .builder()
@@ -116,7 +116,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldCreateWarningForEmptyField() {
+    void shouldCreateWarningForEmptyField() {
 
         final OCRField field = OCRField
             .builder()
@@ -131,7 +131,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldNotCreateWarningNonEmailField() {
+    void shouldNotCreateWarningNonEmailField() {
         final OCRField field = OCRField
             .builder()
             .name("executorsNotApplying_0_notApplyingExecutorName")

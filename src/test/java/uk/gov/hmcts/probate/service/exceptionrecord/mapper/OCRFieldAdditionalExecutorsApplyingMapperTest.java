@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class OCRFieldAdditionalExecutorsApplyingMapperTest {
+class OCRFieldAdditionalExecutorsApplyingMapperTest {
 
     private static final String EXECUTOR_APPLYING_1_NAME = "Conner O'Mailey";
     private static final String EXECUTOR_APPLYING_1_OTHER_NAMES = "Connie O";
@@ -72,7 +72,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     }
 
     @Test
-    public void testAdditionalExecutorApplying() {
+    void testAdditionalExecutorApplying() {
         List<CollectionMember<ExecutorApplying>> response
             = ocrFieldAdditionalExecutorsApplyingMapper.toAdditionalCollectionMember(ocrFields);
         assertEquals(EXECUTOR_APPLYING_1_NAME, response.get(0).getValue().getApplyingExecutorName());
@@ -89,7 +89,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     }
 
     @Test
-    public void testTwoAdditionalExecutorApplying() {
+    void testTwoAdditionalExecutorApplying() {
         List<CollectionMember<ExecutorApplying>> response
             = ocrFieldAdditionalExecutorsApplyingMapper.toAdditionalCollectionMember(ocrFields2);
         assertEquals(EXECUTOR_APPLYING_1_NAME, response.get(0).getValue().getApplyingExecutorName());
@@ -116,7 +116,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     }
 
     @Test
-    public void testNoAdditionalExecutorApplying() {
+    void testNoAdditionalExecutorApplying() {
         List<CollectionMember<ExecutorApplying>> response
             = ocrFieldAdditionalExecutorsApplyingMapper.toAdditionalCollectionMember(ocrFields3);
         assertEquals(0, response.size());

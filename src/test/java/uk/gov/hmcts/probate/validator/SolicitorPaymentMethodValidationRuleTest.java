@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
 @ExtendWith(SpringExtension.class)
-public class SolicitorPaymentMethodValidationRuleTest {
+class SolicitorPaymentMethodValidationRuleTest {
 
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -51,7 +51,7 @@ public class SolicitorPaymentMethodValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowExceptionForChequePaymentMethodChosen() {
+    void shouldThrowExceptionForChequePaymentMethodChosen() {
         assertThrows(BusinessValidationException.class, () -> {
             when(caseDataMock.getSolsPaymentMethods()).thenReturn("cheque");
 
@@ -68,7 +68,7 @@ public class SolicitorPaymentMethodValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowExceptionForChequePaymentMethodChosenCaveat() {
+    void shouldThrowExceptionForChequePaymentMethodChosenCaveat() {
         assertThrows(BusinessValidationException.class, () -> {
             when(caveatDataMock.getSolsPaymentMethods()).thenReturn("cheque");
 

@@ -26,7 +26,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 
 @Slf4j
-public class DocumentServiceTest {
+class DocumentServiceTest {
 
     @InjectMocks
     private DocumentService documentService;
@@ -61,7 +61,7 @@ public class DocumentServiceTest {
     }
 
     @Test
-    public void shouldExpiryDocument() throws JsonProcessingException {
+    void shouldExpiryDocument() throws JsonProcessingException {
         doNothing().when(uploadService).expire(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
@@ -70,7 +70,7 @@ public class DocumentServiceTest {
     }
 
     @Test
-    public void shouldProduceWaringLog() throws JsonProcessingException {
+    void shouldProduceWaringLog() throws JsonProcessingException {
         doThrow(JsonProcessingException.class).when(uploadService).expire(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);

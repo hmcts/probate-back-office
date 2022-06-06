@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class SolicitorPostcodeValidationRuleTest {
+class SolicitorPostcodeValidationRuleTest {
     @InjectMocks
     private SolicitorPostcodeValidationRule underTest;
 
@@ -32,7 +32,7 @@ public class SolicitorPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfSolicitorPostCodeMissing() {
+    void shouldErrorIfSolicitorPostCodeMissing() {
         SolsAddress solAddress = SolsAddress.builder().build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);
@@ -48,7 +48,7 @@ public class SolicitorPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldNotErrorIfSolicitorHasPostCode() {
+    void shouldNotErrorIfSolicitorHasPostCode() {
         SolsAddress solAddress = SolsAddress.builder().postCode("SOME PC").build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);

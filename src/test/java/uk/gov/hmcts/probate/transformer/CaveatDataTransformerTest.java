@@ -17,7 +17,7 @@ import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class CaveatDataTransformerTest {
+class CaveatDataTransformerTest {
 
     @Mock
     private CaveatCallbackRequest callbackRequestMock;
@@ -50,7 +50,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaveats() {
+    void shouldTransformCaveats() {
         when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
         when(caveatDataMock.getCaveatorEmailAddress()).thenReturn(CAVEATOR_EMAIL);
 
@@ -61,7 +61,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaveatsWithNoEmail() {
+    void shouldTransformCaveatsWithNoEmail() {
         when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
 
         CaveatData caveatData = underTest.transformCaveats(callbackRequestMock);
@@ -71,7 +71,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformSolsCaveats() {
+    void shouldTransformSolsCaveats() {
         when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
         when(caveatDataMock.getCaveatorEmailAddress()).thenReturn(CAVEATOR_EMAIL);
         when(caveatDataMock.getRegistryLocation()).thenReturn(REGISTRY_LOCATION);
@@ -97,7 +97,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformSolsCaveatsWithNullValues() {
+    void shouldTransformSolsCaveatsWithNullValues() {
         when(caveatDeatilsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
         CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
@@ -111,7 +111,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformSolsCaveatsWithAllNullValues() {
+    void shouldTransformSolsCaveatsWithAllNullValues() {
         CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
 
         assertEquals("", caveatData.getCaveatorEmailAddress());

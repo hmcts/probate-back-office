@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class GrantApplicationMapperTest {
+class GrantApplicationMapperTest {
 
     private static final String ID = "12345";
     private static final String LEGACY_TYPE = "Legacy LEGACY APPLICATION";
@@ -49,7 +49,7 @@ public class GrantApplicationMapperTest {
     private GrantApplicationMapper grantApplicationMapper;
 
     @Test
-    public void shouldMapToCcdDataForPersonalApplication() {
+    void shouldMapToCcdDataForPersonalApplication() {
         GrantApplication grantApplication = buildBasicApplication();
 
         GrantOfRepresentationData grantApplicationData = grantApplicationMapper.toCcdData(grantApplication);
@@ -62,7 +62,7 @@ public class GrantApplicationMapperTest {
     }
 
     @Test
-    public void shouldMapToCcdDataForSolicitorApplication() {
+    void shouldMapToCcdDataForSolicitorApplication() {
         GrantApplication grantApplication = buildBasicApplication();
         grantApplication.setSolicitorReference(SOLICITOR_REFERENCE);
 
@@ -76,7 +76,7 @@ public class GrantApplicationMapperTest {
     }
 
     @Test
-    public void shouldMapToCcdDataForPersonalApplicationWithNullIHTValues() {
+    void shouldMapToCcdDataForPersonalApplicationWithNullIHTValues() {
         GrantApplication grantApplication = buildBasicApplication();
         grantApplication.setNetEstateValue(null);
         grantApplication.setGrossEstateValue(null);

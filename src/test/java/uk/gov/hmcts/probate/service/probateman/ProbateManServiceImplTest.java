@@ -34,7 +34,7 @@ import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION
 import static uk.gov.hmcts.probate.model.ccd.EventId.IMPORT_GOR_CASE;
 
 @ExtendWith(SpringExtension.class)
-public class ProbateManServiceImplTest {
+class ProbateManServiceImplTest {
 
     private static final Long ID = 1L;
 
@@ -74,7 +74,7 @@ public class ProbateManServiceImplTest {
     }
 
     @Test
-    public void shouldSaveToCcd() {
+    void shouldSaveToCcd() {
         SecurityDTO securityDTO = SecurityDTO.builder().build();
         GrantApplication grantApplication = new GrantApplication();
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder().build();
@@ -103,14 +103,14 @@ public class ProbateManServiceImplTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenRepositoryNotPresentInRepositoryConfig() {
+    void shouldThrowExceptionWhenRepositoryNotPresentInRepositoryConfig() {
         assertThrows(IllegalArgumentException.class, () -> {
             probateManService.saveToCcd(ID, ProbateManType.WILL_LODGEMENT);
         });
     }
 
     @Test
-    public void shouldThrowExceptionWhenCannotFindEntityInProbateManDB() {
+    void shouldThrowExceptionWhenCannotFindEntityInProbateManDB() {
         assertThrows(IllegalArgumentException.class, () -> {
             when(caveatRepository.findById(ID)).thenReturn(Optional.empty());
 
@@ -119,7 +119,7 @@ public class ProbateManServiceImplTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenMapperNotPresentInMapperConfig() {
+    void shouldThrowExceptionWhenMapperNotPresentInMapperConfig() {
         assertThrows(IllegalArgumentException.class, () -> {
             Caveat caveat = new Caveat();
             when(caveatRepository.findById(ID)).thenReturn(Optional.of(caveat));
@@ -129,7 +129,7 @@ public class ProbateManServiceImplTest {
     }
 
     @Test
-    public void shouldGetProbateManModel() {
+    void shouldGetProbateManModel() {
         GrantApplication grantApplication = new GrantApplication();
         when(grantApplicationRepository.findById(ID)).thenReturn(Optional.of(grantApplication));
 
@@ -140,7 +140,7 @@ public class ProbateManServiceImplTest {
     }
 
     @Test
-    public void shouldRetrieveCCdCase() {
+    void shouldRetrieveCCdCase() {
         String caseType = GRANT_OF_REPRESENTATION.name();
         Long legacyId = 1L;
         Optional<CaseDetails> caseDetails = Optional.empty();

@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 
-public class RedeclarationNotificationServiceTest {
+class RedeclarationNotificationServiceTest {
 
     @Mock
     private NotificationService notificationService;
@@ -104,7 +104,7 @@ public class RedeclarationNotificationServiceTest {
     }
 
     @Test
-    public void handleRedeclarationNotificationShouldBeSuccessful() {
+    void handleRedeclarationNotificationShouldBeSuccessful() {
         CallbackResponse response = redeclarationNotificationService.handleRedeclarationNotification(callbackRequest);
 
         assertEquals(1, response.getData().getProbateSotDocumentsGenerated().size());

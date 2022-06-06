@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class SolicitorPBAPaymentDefaulterTest {
+class SolicitorPBAPaymentDefaulterTest {
     @InjectMocks
     private SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
 
@@ -34,7 +34,7 @@ public class SolicitorPBAPaymentDefaulterTest {
     }
 
     @Test
-    public void shouldSkipPBAPageForNoTotalFee() {
+    void shouldSkipPBAPageForNoTotalFee() {
         when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.ZERO);
         when(feeServiceMock.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
@@ -46,7 +46,7 @@ public class SolicitorPBAPaymentDefaulterTest {
     }
 
     @Test
-    public void shouldUsePBAPageForTotalFee() {
+    void shouldUsePBAPageForTotalFee() {
         when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(500100));
         when(feeServiceMock.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");

@@ -10,10 +10,10 @@ import java.util.Map;
 
 import static org.junit.Assert.assertTrue;
 
-public class EvidenceManagementFileTest {
+class EvidenceManagementFileTest {
 
     @Test
-    public void shouldSetLinks() {
+    void shouldSetLinks() {
         EvidenceManagementFile evidenceManagementFile = new EvidenceManagementFile();
         evidenceManagementFile.setDocumentType("TEST_DOCUMENT_TYPE");
         evidenceManagementFile.setSize(200L);

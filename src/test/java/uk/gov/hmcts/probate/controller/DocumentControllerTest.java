@@ -71,7 +71,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_REC
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DocumentControllerTest {
+class DocumentControllerTest {
 
     private static final String LETTER_UUID = "c387262a-c8a6-44eb-9aea-a740460f9302";
     @Autowired
@@ -193,7 +193,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantDraftGrantOfRepresentation() throws Exception {
+    void generateGrantDraftGrantOfRepresentation() throws Exception {
 
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
@@ -214,7 +214,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateDigitalGrant() throws Exception {
+    void generateDigitalGrant() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -234,7 +234,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateDigitalGrantWithBulkPrint() throws Exception {
+    void generateDigitalGrantWithBulkPrint() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -254,7 +254,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateDigitalGrantReissueWithBulkPrint() throws Exception {
+    void generateDigitalGrantReissueWithBulkPrint() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrint.json");
 
@@ -271,7 +271,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateDigitalGrantIfLocalPrint() throws Exception {
+    void generateDigitalGrantIfLocalPrint() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -290,7 +290,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateDigitalGrantIntestacy() throws Exception {
+    void generateDigitalGrantIntestacy() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -307,7 +307,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateWelshDigitalGrant() throws Exception {
+    void generateWelshDigitalGrant() throws Exception {
 
         String payload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
 
@@ -324,7 +324,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateWelshDigitalGrantDraft() throws Exception {
+    void generateWelshDigitalGrantDraft() throws Exception {
         String payload = testUtils.getStringFromFile("welshGrantOfProbatPayloadDraft.json");
 
         MvcResult result = mockMvc.perform(post("/document/generate-grant-draft")
@@ -340,7 +340,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantDraftIntestacy() throws Exception {
+    void generateGrantDraftIntestacy() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(INTESTACY_GRANT_DRAFT).build());
@@ -360,7 +360,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantDraftAdmonWill() throws Exception {
+    void generateGrantDraftAdmonWill() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT_DRAFT).build());
@@ -380,7 +380,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantAdmonWill() throws Exception {
+    void generateGrantAdmonWill() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(ADMON_WILL_GRANT).build());
@@ -400,7 +400,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantIntestacy() throws Exception {
+    void generateGrantIntestacy() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(INTESTACY_GRANT).build());
@@ -420,7 +420,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldNotGenerateGrantDraftEdgeCase() throws Exception {
+    void shouldNotGenerateGrantDraftEdgeCase() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(EDGE_CASE).build());
@@ -439,7 +439,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldNotGenerateGrantEdgeCaseBulkPrint() throws Exception {
+    void shouldNotGenerateGrantEdgeCaseBulkPrint() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
 
@@ -453,7 +453,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldNotGenerateGrantEdgeCaseReissue() throws Exception {
+    void shouldNotGenerateGrantEdgeCaseReissue() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
 
@@ -467,7 +467,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldNotSendToBulkPrintIfEdgeCaseReissue() throws Exception {
+    void shouldNotSendToBulkPrintIfEdgeCaseReissue() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithEdgeCaseBulkPrint.json");
 
@@ -480,7 +480,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldGenerateGrantDefaultCaseType() throws Exception {
+    void shouldGenerateGrantDefaultCaseType() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.PREVIEW), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT_DRAFT).build());
@@ -498,7 +498,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateWillLodgementReceipt() throws Exception {
+    void generateWillLodgementReceipt() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("willLodgementPayloadNotifications.json");
 
@@ -513,7 +513,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldReturnGrantPAValidateUnSuccessful() throws Exception {
+    void shouldReturnGrantPAValidateUnSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/document/generate-grant")
@@ -528,7 +528,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldReturnGrantSolsValidateSuccessfulEmailNotRequested() throws Exception {
+    void shouldReturnGrantSolsValidateSuccessfulEmailNotRequested() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -546,7 +546,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantDraftReissueGrantOfRepresentation() throws Exception {
+    void generateGrantDraftReissueGrantOfRepresentation() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -559,7 +559,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantReissueGrantOfRepresentation() throws Exception {
+    void generateGrantReissueGrantOfRepresentation() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -572,7 +572,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantReissueGrantOfRepresentationWithNoEmail() throws Exception {
+    void generateGrantReissueGrantOfRepresentationWithNoEmail() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsNoReissueEmail.json");
 
@@ -585,7 +585,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void generateGrantReissueGrantOfRepresentationWithNoEmailPdfSize3() throws Exception {
+    void generateGrantReissueGrantOfRepresentationWithNoEmailPdfSize3() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationspdfSizeThree.json");
 
@@ -598,7 +598,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void testGenerateStatementOfTruthReturnsOk() throws Exception {
+    void testGenerateStatementOfTruthReturnsOk() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-sot")
@@ -610,7 +610,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateWithPaperCase() throws Exception {
+    void shouldValidateWithPaperCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
         mockMvc
@@ -621,7 +621,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateWithDigitalCase() throws Exception {
+    void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
         mockMvc
@@ -631,7 +631,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateAssembleLetter() throws Exception {
+    void shouldValidateAssembleLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
         mockMvc.perform(post("/document/assembleLetter").content(payload).contentType(MediaType.APPLICATION_JSON))
@@ -640,7 +640,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidatePreviewLetter() throws Exception {
+    void shouldValidatePreviewLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
         mockMvc.perform(post("/document/previewLetter").content(payload).contentType(MediaType.APPLICATION_JSON))
@@ -649,7 +649,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldValidateGenerateLetter() throws Exception {
+    void shouldValidateGenerateLetter() throws Exception {
         String payload = testUtils.getStringFromFile("generateLetter.json");
 
         mockMvc.perform(post("/document/generateLetter").content(payload).contentType(MediaType.APPLICATION_JSON))
@@ -658,7 +658,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldDefaultReprintValues() throws Exception {
+    void shouldDefaultReprintValues() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayload.json");
 
         mockMvc.perform(post("/document/default-reprint-values")
@@ -671,7 +671,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldSendForReprint() throws Exception {
+    void shouldSendForReprint() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("welshGrantOfProbatPayloadReprintGrant.json");
 
         mockMvc.perform(post("/document/reprint")
@@ -686,7 +686,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldHandleEvidenceToYesFromNull() throws Exception {
+    void shouldHandleEvidenceToYesFromNull() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledYesFromNull.json");
 
         mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
@@ -695,7 +695,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldHandleEvidenceToYes() throws Exception {
+    void shouldHandleEvidenceToYes() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledYes.json");
 
         mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
@@ -704,7 +704,7 @@ public class DocumentControllerTest {
     }
 
     @Test
-    public void shouldHandleEvidenceToNo() throws Exception {
+    void shouldHandleEvidenceToNo() throws Exception {
         String payload = testUtils.getStringFromFile("evidenceHandledNo.json");
 
         mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))

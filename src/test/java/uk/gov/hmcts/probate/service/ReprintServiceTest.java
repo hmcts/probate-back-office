@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ReprintServiceTest {
+class ReprintServiceTest {
 
     @InjectMocks
     ReprintService reprintService;
@@ -63,7 +63,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedGrantDocument() {
+    void shouldReprintSelectedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("GrantFileName")
@@ -89,7 +89,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedGrantDocumentNoLetterId() {
+    void shouldReprintSelectedGrantDocumentNoLetterId() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("GrantFileName")
@@ -115,7 +115,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedReissuedGrantDocument() {
+    void shouldReprintSelectedReissuedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("ReissuedGrantFileName")
@@ -141,7 +141,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedSOTDocument() {
+    void shouldReprintSelectedSOTDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("SOTFileName")
@@ -167,7 +167,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedWillDocument() {
+    void shouldReprintSelectedWillDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("WillFileName")
@@ -193,7 +193,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldThowExceptionForNoSelection() {
+    void shouldThowExceptionForNoSelection() {
         assertThrows(BadRequestException.class, () -> {
             DynamicList doc = DynamicList.builder()
                     .build();
@@ -204,7 +204,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldThowExceptionForNoLabelSelection() {
+    void shouldThowExceptionForNoLabelSelection() {
         assertThrows(BadRequestException.class, () -> {
             DynamicList doc = DynamicList.builder()
                     .value(DynamicListItem.builder()
@@ -218,7 +218,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldThowExceptionForNoCodeSelection() {
+    void shouldThowExceptionForNoCodeSelection() {
         assertThrows(BadRequestException.class, () -> {
             DynamicList doc = DynamicList.builder()
                     .value(DynamicListItem.builder()
@@ -232,7 +232,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionForUnknownDocType() {
+    void shouldThrowExceptionForUnknownDocType() {
         assertThrows(BadRequestException.class, () -> {
             DynamicList reprintDoc = DynamicList.builder()
                     .value(DynamicListItem.builder()
@@ -253,7 +253,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldNotReprintSelectedGrantDocumentWhenFileNamesDontMatch() {
+    void shouldNotReprintSelectedGrantDocumentWhenFileNamesDontMatch() {
         assertThrows(BadRequestException.class, () -> {
             DynamicList reprintDoc = DynamicList.builder()
                     .value(DynamicListItem.builder()
@@ -274,7 +274,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldNotReprintSelectedWillDocumentForFileNameMismatch() {
+    void shouldNotReprintSelectedWillDocumentForFileNameMismatch() {
         assertThrows(BadRequestException.class, () -> {
             DynamicList reprintDoc = DynamicList.builder()
                     .value(DynamicListItem.builder()

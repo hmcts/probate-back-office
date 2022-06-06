@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class OCRFieldIhtMoneyMapperTest {
+class OCRFieldIhtMoneyMapperTest {
 
     OCRFieldIhtMoneyMapper ocrFieldIhtMoneyMapper = new OCRFieldIhtMoneyMapper();
 
@@ -20,13 +20,13 @@ public class OCRFieldIhtMoneyMapperTest {
     public ExpectedException expectedEx = ExpectedException.none();
 
     @Test
-    public void testPoundsToPennies() {
+    void testPoundsToPennies() {
         Long response = ocrFieldIhtMoneyMapper.poundsToPennies(MONETARY_TEST_VALUE_INPUT);
         assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
     }
 
     @Test
-    public void testExceptionForToPenniesNotNumeric() throws Exception {
+    void testExceptionForToPenniesNotNumeric() throws Exception {
         assertThrows(OCRMappingException.class, () -> {
             expectedEx.expect(OCRMappingException.class);
             expectedEx

@@ -37,7 +37,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
 
-public class SmeeAndFordPersonalisationServiceTest {
+class SmeeAndFordPersonalisationServiceTest {
 
     @InjectMocks
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -207,7 +207,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapAllAttributes() throws IOException {
+    void shouldMapAllAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             false, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
@@ -226,7 +226,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
+    void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             false, true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
@@ -245,7 +245,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
+    void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1, true, true, true, true,
             false, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0, true, true, false,
@@ -264,7 +264,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
+    void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3, true, true, true, true,
             false, true, true).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4, true, true, false,
@@ -283,7 +283,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
+    void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
             true, false, true, false).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, false, true,
@@ -302,7 +302,7 @@ public class SmeeAndFordPersonalisationServiceTest {
     }
 
     @Test
-    public void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
+    void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
         returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
             false, false, true).build(), LAST_MODIFIED, ID);
         returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,

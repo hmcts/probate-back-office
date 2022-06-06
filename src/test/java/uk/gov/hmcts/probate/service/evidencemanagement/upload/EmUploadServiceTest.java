@@ -27,7 +27,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class EmUploadServiceTest {
+class EmUploadServiceTest {
 
     private static final String URL = "URL";
 
@@ -44,7 +44,7 @@ public class EmUploadServiceTest {
     private HttpHeadersFactory httpHeadersFactory;
 
     @Test
-    public void shouldStoreFile() throws Exception {
+    void shouldStoreFile() throws Exception {
         EvidenceManagementFile evidenceManagementFile = new EvidenceManagementFile();
         evidenceManagementFile.setDocumentType("TEST_DOCUMENT_TYPE");
         evidenceManagementFile.setSize(200L);
@@ -75,7 +75,7 @@ public class EmUploadServiceTest {
     }
 
     @Test
-    public void testExceptionWithNullFromApiCall() throws IOException {
+    void testExceptionWithNullFromApiCall() throws IOException {
         assertThrows(ClientDataException.class, () -> {
             when(documentManagementURIBuilder.buildUrl()).thenReturn(URL);
             when(evidenceManagementRestTemplate.postForObject(eq(URL), any(), eq(HashMap.class))).thenReturn(null);

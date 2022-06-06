@@ -38,7 +38,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
-public class AssembleLetterTransformerTest {
+class AssembleLetterTransformerTest {
     @Mock
     AssembleIncapacity assembleIncapacity;
     @Mock
@@ -88,7 +88,7 @@ public class AssembleLetterTransformerTest {
     }
 
     @Test
-    public void shouldSetupNoParagraphsFromMocks() {
+    void shouldSetupNoParagraphsFromMocks() {
         Categories categories = Categories.builder().build();
         when(caseDataMock.getCategories()).thenReturn(categories);
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
@@ -101,7 +101,7 @@ public class AssembleLetterTransformerTest {
     }
 
     @Test
-    public void shouldSetupDefaultParagraphsFromMocks() {
+    void shouldSetupDefaultParagraphsFromMocks() {
         Categories categories = Categories.builder().build();
         when(caseDataMock.getCategories()).thenReturn(categories);
 
@@ -124,7 +124,7 @@ public class AssembleLetterTransformerTest {
     }
 
     @Test
-    public void shouldSetupAllParagraphsFromMocks() {
+    void shouldSetupAllParagraphsFromMocks() {
         Categories categories = Mockito.mock(Categories.class);
 
         List<String> forDom = Arrays.asList("ForDomAffidavit");

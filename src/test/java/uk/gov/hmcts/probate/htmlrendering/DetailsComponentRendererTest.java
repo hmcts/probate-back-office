@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class DetailsComponentRendererTest {
+class DetailsComponentRendererTest {
     @Test
-    public void shouldRenderDetailsCorrectly() {
+    void shouldRenderDetailsCorrectly() {
         String expectedValue = "<details class=\"govuk-details\" data-module=\"govuk-details\">\n"
                 + "  <summary class=\"govuk-details__summary\">\n"
                 + "    <span class=\"govuk-details__summary-text\">\n"

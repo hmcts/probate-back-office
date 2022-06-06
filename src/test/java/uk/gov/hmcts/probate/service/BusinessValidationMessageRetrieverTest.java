@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.not;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class BusinessValidationMessageRetrieverTest {
+class BusinessValidationMessageRetrieverTest {
 
     @Autowired
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -26,13 +26,13 @@ public class BusinessValidationMessageRetrieverTest {
     AppInsights appInsights;
 
     @Test
-    public void shouldGetMessage() {
+    void shouldGetMessage() {
         String message = businessValidationMessageRetriever.getMessage("dodIsBeforeDob", null, UK);
         assertThat(message, not(is(emptyOrNullString())));
     }
 
     @Test
-    public void testEmailForPaymentError() {
+    void testEmailForPaymentError() {
         String[] empty = {};
         String message = businessValidationMessageRetriever.getMessage(
             "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);

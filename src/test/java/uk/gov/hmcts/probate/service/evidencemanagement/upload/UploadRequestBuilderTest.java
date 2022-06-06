@@ -12,10 +12,10 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class UploadRequestBuilderTest {
+class UploadRequestBuilderTest {
 
     @Test
-    public void shouldPrepareRequest() {
+    void shouldPrepareRequest() {
         byte[] bytes = {32, 43, 86};
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 

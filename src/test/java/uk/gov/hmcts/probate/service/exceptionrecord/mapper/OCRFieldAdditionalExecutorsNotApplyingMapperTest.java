@@ -15,7 +15,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
+class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
 
     private static final String EXECUTOR_NOT_APPLYING_1_NAME = "Conner O'Mailey";
     private static final String EXECUTOR_NOT_APPLYING_1_REASON = "A";
@@ -70,7 +70,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     }
 
     @Test
-    public void testExecutorsNotApplying() {
+    void testExecutorsNotApplying() {
         List<CollectionMember<ExecutorNotApplying>> response
             = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields);
         assertEquals(EXECUTOR_NOT_APPLYING_1_NAME, response.get(0).getValue().getNotApplyingExecutorName());
@@ -81,7 +81,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     }
 
     @Test
-    public void testMultipleExecutorsNotApplying() {
+    void testMultipleExecutorsNotApplying() {
         List<CollectionMember<ExecutorNotApplying>> response
             = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields2);
         assertEquals(EXECUTOR_NOT_APPLYING_1_NAME, response.get(0).getValue().getNotApplyingExecutorName());
@@ -101,21 +101,21 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     }
 
     @Test
-    public void testNoExecutorNotApplying() {
+    void testNoExecutorNotApplying() {
         List<CollectionMember<ExecutorNotApplying>> response
             = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields3);
         assertEquals(0, response.size());
     }
 
     @Test
-    public void testNullExecutorNotApplyingShouldReturnNoRow() {
+    void testNullExecutorNotApplyingShouldReturnNoRow() {
         List<CollectionMember<ExecutorNotApplying>> response
             = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields4);
         assertEquals(0, response.size());
     }
 
     @Test
-    public void testMissingReasonExecutorNotApplyingShouldError() {
+    void testMissingReasonExecutorNotApplyingShouldError() {
         assertThrows(OCRMappingException.class, () -> {
             List<CollectionMember<ExecutorNotApplying>> response
                     = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields5);
@@ -123,7 +123,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
     }
 
     @Test
-    public void testInvalidReasonExecutorNotApplyingShouldError() {
+    void testInvalidReasonExecutorNotApplyingShouldError() {
         assertThrows(OCRMappingException.class, () -> {
             List<CollectionMember<ExecutorNotApplying>> response
                     = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);

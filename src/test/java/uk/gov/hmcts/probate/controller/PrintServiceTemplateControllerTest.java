@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class PrintServiceTemplateControllerTest {
+class PrintServiceTemplateControllerTest {
 
     @InjectMocks
     private PrintServiceTemplateController underTest;
@@ -45,7 +45,7 @@ public class PrintServiceTemplateControllerTest {
     }
 
     @Test
-    public void shouldErrorForLegalStatement() {
+    void shouldErrorForLegalStatement() {
         assertThrows(BadRequestException.class, () -> {
             when(bindingResultMock.hasErrors()).thenReturn(true);
 
@@ -54,7 +54,7 @@ public class PrintServiceTemplateControllerTest {
     }
 
     @Test
-    public void shouldReturnAllDocumentsWithNoErrors() {
+    void shouldReturnAllDocumentsWithNoErrors() {
         List<DocumentResponse> docs = new ArrayList<>();
         DocumentResponse doc = new DocumentResponse("name", "type", "url");
         docs.add(doc);
@@ -70,7 +70,7 @@ public class PrintServiceTemplateControllerTest {
     }
 
     @Test
-    public void shouldReturnSolicitorTemplateWithNoErrors() {
+    void shouldReturnSolicitorTemplateWithNoErrors() {
         when(printServiceMock.getSolicitorCaseDetailsTemplateForPrintService()).thenReturn("some template");
 
         ResponseEntity<String> response = underTest.getSolicitorCaseDetailsTemplate();
@@ -80,7 +80,7 @@ public class PrintServiceTemplateControllerTest {
     }
 
     @Test
-    public void shouldReturnPATemplateWithNoErrors() {
+    void shouldReturnPATemplateWithNoErrors() {
         when(printServiceMock.getPACaseDetailsTemplateForPrintService()).thenReturn("some pa template");
 
         ResponseEntity<String> response = underTest.getPACaseDetailsTemplate();

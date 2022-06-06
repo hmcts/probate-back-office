@@ -39,7 +39,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-public class CaveatControllerUnitTest {
+class CaveatControllerUnitTest {
 
     private CaveatController underTest;
 
@@ -99,7 +99,7 @@ public class CaveatControllerUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoErrors() throws NotificationClientException {
+    void shouldValidateWithNoErrors() throws NotificationClientException {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
@@ -118,7 +118,7 @@ public class CaveatControllerUnitTest {
     }
 
     @Test
-    public void shouldValidateWithPaymentMethodErrors() throws NotificationClientException {
+    void shouldValidateWithPaymentMethodErrors() throws NotificationClientException {
         assertThrows(BusinessValidationException.class, () -> {
             when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
             doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRuleMock)
@@ -128,7 +128,7 @@ public class CaveatControllerUnitTest {
     }
 
     @Test
-    public void shouldValidateWithPaymentErrors() throws NotificationClientException {
+    void shouldValidateWithPaymentErrors() throws NotificationClientException {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
@@ -147,7 +147,7 @@ public class CaveatControllerUnitTest {
     }
 
     @Test
-    public void shouldDefaultSolsPBA() {
+    void shouldDefaultSolsPBA() {
         when(caveatCallbackResponseTransformer.transformCaseForSolicitorPBANumbers(caveatCallbackRequest, AUTH))
             .thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.defaulsSolicitorNextStepsForPBANumbers(AUTH,

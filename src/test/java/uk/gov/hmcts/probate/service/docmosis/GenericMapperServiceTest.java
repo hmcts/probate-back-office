@@ -24,7 +24,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
-public class GenericMapperServiceTest {
+class GenericMapperServiceTest {
     private static final String DECEASED_FORNAME_KEY = "deceasedForenames";
     private static final String DECEASED_FORNAME_VALUE = "Nigel";
     private static final String DECEASED_SURNAME_KEY = "deceasedSurname";
@@ -159,7 +159,7 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testCaseDataIsMappedSuccessfullyWithFormattedDOD() {
+    void testCaseDataIsMappedSuccessfullyWithFormattedDOD() {
         Map<String, Object> returnedMap = genericMapperService.addCaseData(callbackRequest.getCaseDetails().getData());
         expectedMappedCaseData().keySet().stream()
             .forEach((key) -> {
@@ -168,7 +168,7 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testRegistryMappedSuccessfully() {
+    void testRegistryMappedSuccessfully() {
         Map<String, Object> returnedMap =
             genericMapperService.addCaseDataWithRegistryProperties(callbackRequest.getCaseDetails());
         expectedMappedRegistries().keySet().stream()
@@ -178,7 +178,7 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testImagesMappedSuccessfully() {
+    void testImagesMappedSuccessfully() {
         Map<String, Object> returnedMap = genericMapperService.addCaseDataWithImages(images,
             callbackRequest.getCaseDetails());
         expectedImages().keySet().stream()
@@ -188,13 +188,13 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testAllFieldsAreAppendedToExistingMap() {
+    void testAllFieldsAreAppendedToExistingMap() {
         assertEquals(expectedMappedCaseData().size() + 8,
             genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME, APPEND_ADDRESS).size());
     }
 
     @Test
-    public void testAppendedValuesMatchExpected() {
+    void testAppendedValuesMatchExpected() {
         Map<String, Object> resultMap = genericMapperService.appendExecutorDetails(expectedMappedCaseData(),
             APPEND_NAME, APPEND_ADDRESS);
 
@@ -209,7 +209,7 @@ public class GenericMapperServiceTest {
     }
 
     @Test
-    public void testPartPopulatedAddressIsAppendedWithExistingValues() {
+    void testPartPopulatedAddressIsAppendedWithExistingValues() {
         SolsAddress address = SolsAddress.builder().addressLine1("321 street").postCode("AB").build();
 
         assertEquals("321 street", genericMapperService.appendExecutorDetails(expectedMappedCaseData(), APPEND_NAME,

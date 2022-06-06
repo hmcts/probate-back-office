@@ -24,7 +24,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class FileTransferServiceTest {
+class FileTransferServiceTest {
 
     @Mock
     private FileTransferApi fileTransferApi;
@@ -50,7 +50,7 @@ public class FileTransferServiceTest {
     }
 
     @Test
-    public void shouldSendFile() throws FileNotFoundException {
+    void shouldSendFile() throws FileNotFoundException {
         when(fileTransferApi.sendFile(any(), any(), any(), any(), any(), any(), any(),
             any(), any(), any(), any())).thenReturn(response);
 

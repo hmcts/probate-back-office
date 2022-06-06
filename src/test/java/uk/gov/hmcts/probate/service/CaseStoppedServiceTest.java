@@ -16,7 +16,7 @@ import java.time.LocalDate;
 import static org.junit.Assert.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
-public class CaseStoppedServiceTest {
+class CaseStoppedServiceTest {
 
     @InjectMocks
     private CaseStoppedService caseStoppedService;
@@ -36,7 +36,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldIncrementGrantDelayedNotificationDateByStoppedPeriodWhenCaseResolved() {
+    void shouldIncrementGrantDelayedNotificationDateByStoppedPeriodWhenCaseResolved() {
 
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
         caseDetails.getData().setGrantAwaitingDocumentationNotificationDate(LocalDate.now().plusWeeks(3));
@@ -50,7 +50,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantDelayedNotificationDateWhenNoticationSent() {
+    void shouldNotIncrementGrantDelayedNotificationDateWhenNoticationSent() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.YES);
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
@@ -61,7 +61,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantDelayedNotificationDateWhenGrantNotificationDateIsNull() {
+    void shouldNotIncrementGrantDelayedNotificationDateWhenGrantNotificationDateIsNull() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
         caseDetails.getData().setGrantDelayedNotificationDate(null);
@@ -73,7 +73,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantDelayedNotificationDateWhenGrantStoppedDateIsNull() {
+    void shouldNotIncrementGrantDelayedNotificationDateWhenGrantStoppedDateIsNull() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
@@ -85,7 +85,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantAwaitingDocsNotificationDateWhenNoDocDateIsSet() {
+    void shouldNotIncrementGrantAwaitingDocsNotificationDateWhenNoDocDateIsSet() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));

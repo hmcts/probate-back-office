@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class RenouncingRuleTest {
+class RenouncingRuleTest {
 
     @InjectMocks
     private RenouncingRule underTest;
@@ -26,21 +26,21 @@ public class RenouncingRuleTest {
     }
 
     @Test
-    public void shouldNeedChange() {
+    void shouldNeedChange() {
         when(caseDataMock.getSolsSpouseOrCivilRenouncing()).thenReturn("No");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldNotNeedChange() {
+    void shouldNotNeedChange() {
         when(caseDataMock.getSolsMinorityInterest()).thenReturn("Yes");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodyRenouncing", underTest.getConfirmationBodyMessageKey());
     }
 }

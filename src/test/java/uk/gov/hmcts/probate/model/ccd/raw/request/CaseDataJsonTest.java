@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.is;
 
 @ExtendWith(SpringExtension.class)
 @JsonTest
-public class CaseDataJsonTest {
+class CaseDataJsonTest {
 
     private String jsonContent;
 
@@ -34,7 +34,7 @@ public class CaseDataJsonTest {
     }
 
     @Test
-    public void shouldDeserializePaymentsCorrectly() throws Exception {
+    void shouldDeserializePaymentsCorrectly() throws Exception {
         CaseData caseData = jacksonTester.parseObject(jsonContent);
         assertThat(caseData.getPayments(), Matchers.hasSize(1));
         assertThat(caseData.getPayments().get(0).getValue().getAmount(), is("27000"));
@@ -47,7 +47,7 @@ public class CaseDataJsonTest {
     }
 
     @Test
-    public void canDeserialiseDateAdded() throws IOException {
+    void canDeserialiseDateAdded() throws IOException {
 
         final CaseData caseData = CaseData.builder()
                 .deceasedDateOfDeath(LocalDate.of(2000,01,04))

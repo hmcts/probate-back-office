@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 
-public class MarkdownTransformationServiceTest {
+class MarkdownTransformationServiceTest {
 
     @InjectMocks
     private MarkdownTransformationService markdownTransformationService;
@@ -28,7 +28,7 @@ public class MarkdownTransformationServiceTest {
     }
 
     @Test
-    public void toHtml() {
+    void toHtml() {
         String html = markdownTransformationService.toHtml("test");
 
         verify(parser).parse("test");

@@ -23,7 +23,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.probate.model.ProbateDocumentType.CAVEAT_RAISED;
 
-public class DocmosisPdfGenerationServiceTest {
+class DocmosisPdfGenerationServiceTest {
 
     @Mock(answer = Answers.RETURNS_DEEP_STUBS)
     TemplateProperties templateProperties;
@@ -40,7 +40,7 @@ public class DocmosisPdfGenerationServiceTest {
     }
 
     @Test
-    public void testBasicDocmosisPdfGenerationServiceCall() {
+    void testBasicDocmosisPdfGenerationServiceCall() {
 
         ResponseEntity<byte[]> responseEntityBytes = ResponseEntity.ok("A String".getBytes());
         when(restTemplate
@@ -72,7 +72,7 @@ public class DocmosisPdfGenerationServiceTest {
     }
 
     @Test
-    public void shouldThrowPDFGeneratedException() {
+    void shouldThrowPDFGeneratedException() {
         assertThrows(PDFGenerationException.class, () -> {
             Map<String, Object> registry = new HashMap<>();
             Map<String, Object> placeholders = new HashMap<>();

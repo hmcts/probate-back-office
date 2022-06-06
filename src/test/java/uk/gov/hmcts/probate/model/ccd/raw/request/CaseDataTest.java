@@ -32,7 +32,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class CaseDataTest {
+class CaseDataTest {
 
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
@@ -137,7 +137,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldReturnPrimaryApplicantFullName() {
+    void shouldReturnPrimaryApplicantFullName() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -148,7 +148,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldReturnDeceasedFullName() {
+    void shouldReturnDeceasedFullName() {
         final CaseData caseData = CaseData.builder()
             .deceasedForenames(DECEASED_FIRST_NAME)
             .deceasedSurname(DECEASED_SURNAME)
@@ -262,7 +262,7 @@ public class CaseDataTest {
     //    }
 
     @Test
-    public void shouldReturnDODFormattedWithST() {
+    void shouldReturnDODFormattedWithST() {
         final CaseData caseData = CaseData.builder()
             .deceasedDateOfDeath(LOCAL_DATE)
             .build();
@@ -271,13 +271,13 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithSTPublic() {
+    void shouldReturnDODFormattedWithSTPublic() {
         CaseData caseData = CaseData.builder().build();
         assertEquals("1st January 2000", caseData.convertDate(LOCAL_DATE));
     }
 
     @Test
-    public void shouldReturnDODFormattedWithND() {
+    void shouldReturnDODFormattedWithND() {
         final CaseData caseData = CaseData.builder()
             .deceasedDateOfDeath(LocalDate.of(2000, 01, 02))
             .build();
@@ -286,7 +286,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithRD() {
+    void shouldReturnDODFormattedWithRD() {
         final CaseData caseData = CaseData.builder()
             .deceasedDateOfDeath(LocalDate.of(2000, 01, 03))
             .build();
@@ -295,7 +295,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithTH() {
+    void shouldReturnDODFormattedWithTH() {
         final CaseData caseData = CaseData.builder()
             .deceasedDateOfDeath(LocalDate.of(2000, 01, 04))
             .build();
@@ -304,7 +304,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldThrowParseException() {
+    void shouldThrowParseException() {
         final CaseData caseData = CaseData.builder()
             .deceasedDateOfDeath(LocalDate.of(300000, 01, 04))
             .build();
@@ -313,7 +313,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailRequestInfoNotificationRequestedTrue() {
+    void isBoEmailRequestInfoNotificationRequestedTrue() {
         final CaseData caseData = CaseData.builder()
             .boEmailRequestInfoNotification(YES)
             .build();
@@ -322,7 +322,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailRequestInfoNotificationRequestedFromDefaultTrue() {
+    void isBoEmailRequestInfoNotificationRequestedFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -332,7 +332,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailRequestInfoNotificationRequestedFalse() {
+    void isBoEmailRequestInfoNotificationRequestedFalse() {
         final CaseData caseData = CaseData.builder()
             .boEmailRequestInfoNotification(NO)
             .build();
@@ -341,7 +341,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailRequestInfoNotificationRequestedFromDefaultFalse() {
+    void isBoEmailRequestInfoNotificationRequestedFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress(null)
@@ -351,7 +351,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailDocsReceivedNotificationTrue() {
+    void isBoEmailDocsReceivedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
             .boEmailDocsReceivedNotification(YES)
             .build();
@@ -360,7 +360,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailDocsReceivedNotificationFromDefaultTrue() {
+    void isBoEmailDocsReceivedNotificationFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -370,7 +370,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailDocsReceivedNotificationFalse() {
+    void isBoEmailDocsReceivedNotificationFalse() {
         final CaseData caseData = CaseData.builder()
             .boEmailDocsReceivedNotification(NO)
             .build();
@@ -379,7 +379,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailDocsReceivedNotificationFromDefaultFalse() {
+    void isBoEmailDocsReceivedNotificationFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress(null)
@@ -389,7 +389,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantIssuedNotificationTrue() {
+    void isBoEmailGrantIssuedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
             .boEmailGrantIssuedNotification(YES)
             .build();
@@ -398,7 +398,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantIssuedNotificationFromDefaultTrue() {
+    void isBoEmailGrantIssuedNotificationFromDefaultTrue() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -408,7 +408,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantIssuedNotificationFalse() {
+    void isBoEmailGrantIssuedNotificationFalse() {
         final CaseData caseData = CaseData.builder()
             .boEmailGrantIssuedNotification(NO)
             .build();
@@ -417,7 +417,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantIssuedNotificationFromDefaultFalse() {
+    void isBoEmailGrantIssuedNotificationFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress(null)
@@ -427,7 +427,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantReissuedNotificationTrue() {
+    void isBoEmailGrantReissuedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
             .boEmailGrantReissuedNotification(YES)
             .build();
@@ -436,7 +436,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantReissuedNotificationWithDefaultTrue() {
+    void isBoEmailGrantReissuedNotificationWithDefaultTrue() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -446,7 +446,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantReissuedNotificationFalse() {
+    void isBoEmailGrantReissuedNotificationFalse() {
         final CaseData caseData = CaseData.builder()
             .boEmailGrantIssuedNotification(NO)
             .build();
@@ -455,7 +455,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoEmailGrantReissuedNotificationWithDefaultFalse() {
+    void isBoEmailGrantReissuedNotificationWithDefaultFalse() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress(null)
@@ -465,7 +465,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoCaveatStopEmailNotificationTrue() {
+    void isBoCaveatStopEmailNotificationTrue() {
         final CaseData caseData = CaseData.builder()
             .boCaveatStopEmailNotification(YES)
             .build();
@@ -474,7 +474,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoCaveatStopEmailNotificationWithDefaultTrue() {
+    void isBoCaveatStopEmailNotificationWithDefaultTrue() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -484,7 +484,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoCaveatStopEmailNotificationFalse() {
+    void isBoCaveatStopEmailNotificationFalse() {
         final CaseData caseData = CaseData.builder()
             .boCaveatStopEmailNotification(NO)
             .build();
@@ -493,7 +493,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void isBoCaveatStopEmailNotificationWithDefaultFalse() {
+    void isBoCaveatStopEmailNotificationWithDefaultFalse() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress(null)
@@ -503,14 +503,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void probateDocumentsGeneratedDefaultsCorrectly() {
+    void probateDocumentsGeneratedDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(new ArrayList<>(), caseData.getProbateDocumentsGenerated());
     }
 
     @Test
-    public void probateDocumentsGeneratedIgnoresDefault() {
+    void probateDocumentsGeneratedIgnoresDefault() {
         List<CollectionMember<Document>> probateDocuments = new ArrayList<>();
         CollectionMember<Document> probateDocument =
             new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
@@ -526,14 +526,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void probateNotificationsGeneratedDefaultsCorrectly() {
+    void probateNotificationsGeneratedDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(new ArrayList<>(), caseData.getProbateNotificationsGenerated());
     }
 
     @Test
-    public void probateNotificationsGeneratedIgnoresDefault() {
+    void probateNotificationsGeneratedIgnoresDefault() {
         List<CollectionMember<Document>> probateNotifications = new ArrayList<>();
         CollectionMember<Document> probateNotification =
             new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
@@ -549,14 +549,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void probateSotDocumentsGeneratedDefaultsCorrectly() {
+    void probateSotDocumentsGeneratedDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(new ArrayList<>(), caseData.getProbateSotDocumentsGenerated());
     }
 
     @Test
-    public void probateSotDocumentsGeneratedIgnoresDefault() {
+    void probateSotDocumentsGeneratedIgnoresDefault() {
         List<CollectionMember<Document>> probateSOTDocuments = new ArrayList<>();
         CollectionMember<Document> probateSOTDocument =
             new CollectionMember<>(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE)
@@ -572,14 +572,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void caseMatchesDefaultsCorrectly() {
+    void caseMatchesDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(new ArrayList<>(), caseData.getCaseMatches());
     }
 
     @Test
-    public void caseMatchesIgnoresDefault() {
+    void caseMatchesIgnoresDefault() {
         List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
         CollectionMember<CaseMatch> caseMatch =
             new CollectionMember<>(CaseMatch.builder().fullName("Name One").build());
@@ -593,14 +593,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void boCaveatStopSendToBulkPrintDefaultsCorrectly() {
+    void boCaveatStopSendToBulkPrintDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(YES, caseData.getBoCaveatStopSendToBulkPrint());
     }
 
     @Test
-    public void boCaveatStopSendToBulkPrintIgnoresDefault() {
+    void boCaveatStopSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
             .boCaveatStopSendToBulkPrint(NO)
             .build();
@@ -609,14 +609,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void boGrantReissueSendToBulkPrintDefaultsCorrectly() {
+    void boGrantReissueSendToBulkPrintDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(YES, caseData.getBoGrantReissueSendToBulkPrint());
     }
 
     @Test
-    public void boGrantReissueSendToBulkPrintIgnoresDefault() {
+    void boGrantReissueSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
             .boGrantReissueSendToBulkPrint(NO)
             .build();
@@ -625,14 +625,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void boRequestInfoSendToBulkPrintDefaultsCorrectly() {
+    void boRequestInfoSendToBulkPrintDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(YES, caseData.getBoRequestInfoSendToBulkPrint());
     }
 
     @Test
-    public void boRequestInfoSendToBulkPrintIgnoresDefault() {
+    void boRequestInfoSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
             .boRequestInfoSendToBulkPrint(NO)
             .build();
@@ -641,14 +641,14 @@ public class CaseDataTest {
     }
 
     @Test
-    public void boAssembleLetterSendToBulkPrintDefaultsCorrectly() {
+    void boAssembleLetterSendToBulkPrintDefaultsCorrectly() {
         final CaseData caseData = CaseData.builder().build();
 
         assertEquals(YES, caseData.getBoAssembleLetterSendToBulkPrint());
     }
 
     @Test
-    public void boAssembleLetterSendToBulkPrintIgnoresDefault() {
+    void boAssembleLetterSendToBulkPrintIgnoresDefault() {
         final CaseData caseData = CaseData.builder()
             .boAssembleLetterSendToBulkPrint(NO)
             .build();
@@ -657,7 +657,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
+    void shouldGetDefaultValueForEmailNotificationsWhenPrimaryAppEmailSet() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantEmailAddress("primary@probate-test.com")
             .solsSolicitorEmail(null)
@@ -673,7 +673,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldGetDefaultValueForEmailNotificationsWhenSolicitorEmailSet() {
+    void shouldGetDefaultValueForEmailNotificationsWhenSolicitorEmailSet() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantEmailAddress(null)
             .solsSolicitorEmail("solicitor@probate-test.com")
@@ -689,7 +689,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldGetDefaultValueForEmailNotificationsWhenEmailAddressNotSet() {
+    void shouldGetDefaultValueForEmailNotificationsWhenEmailAddressNotSet() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantEmailAddress("")
             .solsSolicitorEmail(null)
@@ -699,7 +699,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldApplyParentAttributes() {
+    void shouldApplyParentAttributes() {
         DynamicList reprintDocument =
             DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
         DynamicList solsAmendLegalStatmentSelect =
@@ -742,7 +742,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldApplySolicitorInfoAttributes() {
+    void shouldApplySolicitorInfoAttributes() {
         final CaseData caseData = CaseData.builder()
                 .solsForenames("Solicitor Forename")
                 .solsSurname("Solicitor Surname")
@@ -755,7 +755,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldApplyTrustCorpAttributes() {
+    void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
@@ -861,7 +861,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldApplyTrustCorpNoneOfTheseAttributes() {
+    void shouldApplyTrustCorpNoneOfTheseAttributes() {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
@@ -880,7 +880,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldApplySolicitorLegalStatementAttributes() {
+    void shouldApplySolicitorLegalStatementAttributes() {
         final CaseData caseData = CaseData.builder()
                 .executorsApplyingLegalStatement(additionalExecutorsApplyingList)
                 .executorsNotApplyingLegalStatement(additionalExecutorsNotApplyingList)
@@ -891,7 +891,7 @@ public class CaseDataTest {
     }
 
     @Test
-    public void shouldApplyWillConditionAttributes() {
+    void shouldApplyWillConditionAttributes() {
         final CaseData caseData = CaseData.builder()
             .willHasVisibleDamage("Yes")
             .willDamage(Damage.builder()

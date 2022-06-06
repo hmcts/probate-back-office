@@ -31,7 +31,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class NextStepsControllerTest {
+class NextStepsControllerTest {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String NEXTSTEPS_CONFIRMATION_URL = "/nextsteps/confirmation";
@@ -56,7 +56,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithNoErrorsWithPaymentMethodNull() throws Exception {
+    void shouldConfirmNextStepsWithNoErrorsWithPaymentMethodNull() throws Exception {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR)
             .paperPaymentMethod(null)
             .build();
@@ -70,7 +70,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithNoErrors() throws Exception {
+    void shouldConfirmNextStepsWithNoErrors() throws Exception {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -82,7 +82,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithSolicitorFirmIsNullError() throws Exception {
+    void shouldConfirmNextStepsWithSolicitorFirmIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorFirmName(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -98,7 +98,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithSolsSolicitorFirmPostcodeIsNullError() throws Exception {
+    void shouldConfirmNextStepsWithSolsSolicitorFirmPostcodeIsNullError() throws Exception {
         caseDataBuilder
             .solsSolicitorAddress(SolsAddress.builder().addressLine1(CaseDataTestBuilder.SOLICITOR_FIRM_LINE1).build());
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -115,7 +115,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithSolsSOTForenamesIsNullError() throws Exception {
+    void shouldConfirmNextStepsWithSolsSOTForenamesIsNullError() throws Exception {
         caseDataBuilder.solsSOTForenames(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -131,7 +131,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithSolsSOTSurnameIsNullError() throws Exception {
+    void shouldConfirmNextStepsWithSolsSOTSurnameIsNullError() throws Exception {
         caseDataBuilder.solsSOTSurname(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -148,7 +148,7 @@ public class NextStepsControllerTest {
 
 
     @Test
-    public void shouldConfirmNextStepsWithNullApplicationFeeError() throws Exception {
+    void shouldConfirmNextStepsWithNullApplicationFeeError() throws Exception {
         caseDataBuilder.applicationFee(null);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -166,7 +166,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithNullTotalFeeError() throws Exception {
+    void shouldConfirmNextStepsWithNullTotalFeeError() throws Exception {
         caseDataBuilder.totalFee(null);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -184,7 +184,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithNullUKFeeError() throws Exception {
+    void shouldConfirmNextStepsWithNullUKFeeError() throws Exception {
         caseDataBuilder.feeForUkCopies(null);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -202,7 +202,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldConfirmNextStepsWithNullNonUKFeeError() throws Exception {
+    void shouldConfirmNextStepsWithNullNonUKFeeError() throws Exception {
         caseDataBuilder.feeForNonUkCopies(null);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -220,7 +220,7 @@ public class NextStepsControllerTest {
     }
 
     @Test
-    public void shouldProduceEmptyConfirmNextStepsWithNoErrorsForReviewStateChange() throws Exception {
+    void shouldProduceEmptyConfirmNextStepsWithNoErrorsForReviewStateChange() throws Exception {
         caseDataBuilder.solsSOTNeedToUpdate("Yes");
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);

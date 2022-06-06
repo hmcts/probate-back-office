@@ -21,7 +21,7 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINC
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 
-public class PA17FormBusinessRuleTest {
+class PA17FormBusinessRuleTest {
 
 
     @InjectMocks
@@ -36,73 +36,73 @@ public class PA17FormBusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForTCTPartAllRenouncing() {
+    void shouldBeApplicableForTCTPartAllRenouncing() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldBeApplicableForTCTPartOthersRenouncing() {
+    void shouldBeApplicableForTCTPartOthersRenouncing() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldBeApplicableForTCTPartSuccOthersRenouncing() {
+    void shouldBeApplicableForTCTPartSuccOthersRenouncing() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_PARTNER_SUCCESSOR_OTHERS_RENOUNCING);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldBeApplicableForTCTPartSuccAllRenouncing() {
+    void shouldBeApplicableForTCTPartSuccAllRenouncing() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForTCTPartSuccPowerRes() {
+    void shouldNOTBeApplicableForTCTPartSuccPowerRes() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForTCTPartPowerRes() {
+    void shouldNOTBeApplicableForTCTPartPowerRes() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_PARTNER_POWER_RESERVED);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForTCTSolePrinSucc() {
+    void shouldNOTBeApplicableForTCTSolePrinSucc() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_SOLE_PRINCIPLE_SUCCESSOR);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForTCTSolePrin() {
+    void shouldNOTBeApplicableForTCTSolePrin() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForTCTTrustCorpResWithSDJ() {
+    void shouldNOTBeApplicableForTCTTrustCorpResWithSDJ() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_TRUST_CORP_SDJ);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForTCTTrustCorpResWithApp() {
+    void shouldNOTBeApplicableForTCTTrustCorpResWithApp() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_TRUST_CORP);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForNull() {
+    void shouldNOTBeApplicableForNull() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn(null);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNOTBeApplicableForEmpty() {
+    void shouldNOTBeApplicableForEmpty() {
         when(mockCaseData.getTitleAndClearingType()).thenReturn("");
         assertFalse(underTest.isApplicable(mockCaseData));
     }

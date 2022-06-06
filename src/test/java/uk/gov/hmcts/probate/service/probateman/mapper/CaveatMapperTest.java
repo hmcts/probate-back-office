@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CaveatMapperTest {
+class CaveatMapperTest {
 
     @Value("${ccd.gateway.host}")
     private String printServiceHost;
@@ -51,7 +51,7 @@ public class CaveatMapperTest {
     AppInsights appInsights;
 
     @Test
-    public void shouldMapToCcdData() {
+    void shouldMapToCcdData() {
         Caveat caveat = new Caveat();
         caveat.setDeceasedForenames(DECEASED_FORENAMES);
         caveat.setDeceasedSurname(DECEASED_SURNAME);

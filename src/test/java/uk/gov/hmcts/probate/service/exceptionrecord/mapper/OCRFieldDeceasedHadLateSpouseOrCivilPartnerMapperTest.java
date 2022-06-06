@@ -16,7 +16,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
-public class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
+class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
 
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
 
@@ -36,7 +36,7 @@ public class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
 
 
     @Test
-    public void shouldReturnTrue() {
+    void shouldReturnTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
@@ -50,7 +50,7 @@ public class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
     }
 
     @Test
-    public void shouldReturnFalse() {
+    void shouldReturnFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
@@ -64,7 +64,7 @@ public class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
     }
 
     @Test
-    public void shouldReturnNull() {
+    void shouldReturnNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();
         Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper

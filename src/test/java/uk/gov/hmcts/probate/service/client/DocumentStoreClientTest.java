@@ -27,7 +27,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class DocumentStoreClientTest {
+class DocumentStoreClientTest {
 
     @Mock
     private CloseableHttpClient closeableHttpClientMock;
@@ -46,7 +46,7 @@ public class DocumentStoreClientTest {
     }
 
     @Test
-    public void shouldReturnDocumentInBytes() throws IOException {
+    void shouldReturnDocumentInBytes() throws IOException {
         when(closeableHttpClientMock.execute(any(HttpGet.class))).thenReturn(closeableHttpResponseMock);
 
         DocumentLink documentLink = DocumentLink.builder()
@@ -64,9 +64,9 @@ public class DocumentStoreClientTest {
     }
 
     @Test
-    public void shouldThrowIOException() {
+    void shouldThrowIOException() throws IOException {
+        doThrow(new IOException()).when(closeableHttpClientMock).execute(any(HttpGet.class));
         IOException e = assertThrows(IOException.class, () -> {
-            doThrow(new IOException()).when(closeableHttpClientMock).execute(any(HttpGet.class));
             DocumentLink documentLink = DocumentLink.builder()
                     .documentBinaryUrl("http://localhost")
                     .build();

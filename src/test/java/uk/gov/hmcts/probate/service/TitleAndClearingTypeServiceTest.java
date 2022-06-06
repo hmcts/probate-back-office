@@ -14,7 +14,7 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SU
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 
 @ExtendWith(SpringExtension.class)
-public class TitleAndClearingTypeServiceTest {
+class TitleAndClearingTypeServiceTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -25,7 +25,7 @@ public class TitleAndClearingTypeServiceTest {
     private CaseDetails caseDetailsMock;
 
     @Test
-    public void shouldReturnTrueIfTitleAndClearingTypeIsPartner() {
+    void shouldReturnTrueIfTitleAndClearingTypeIsPartner() {
 
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED);
 
@@ -37,7 +37,7 @@ public class TitleAndClearingTypeServiceTest {
     }
 
     @Test
-    public void shouldReturnTrueIfTitleAndClearingTypeIsTrustCorp() {
+    void shouldReturnTrueIfTitleAndClearingTypeIsTrustCorp() {
 
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ);
 
@@ -49,7 +49,7 @@ public class TitleAndClearingTypeServiceTest {
     }
 
     @Test
-    public void shouldReturnTrueIfTitleAndClearingTypeIsSuccessorFirm() {
+    void shouldReturnTrueIfTitleAndClearingTypeIsSuccessorFirm() {
 
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED);
 

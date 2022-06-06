@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class SolsHealthIndicatorTest {
+class SolsHealthIndicatorTest {
 
     private static final String URL = "http://url.com";
     private static final String HEALTH = "/health";
@@ -38,7 +38,7 @@ public class SolsHealthIndicatorTest {
     }
 
     @Test
-    public void shouldReturnStatusOfUpWhenHttpStatusIsOK() {
+    void shouldReturnStatusOfUpWhenHttpStatusIsOK() {
         when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         Health health = solsHealthIndicator.health();
@@ -48,7 +48,7 @@ public class SolsHealthIndicatorTest {
     }
 
     @Test
-    public void shouldReturnStatusOfDownWhenHttpStatusIsNotOK() {
+    void shouldReturnStatusOfDownWhenHttpStatusIsNotOK() {
         when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenReturn(responseEntity);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         when(responseEntity.getStatusCodeValue()).thenReturn(HttpStatus.NO_CONTENT.value());
@@ -61,7 +61,7 @@ public class SolsHealthIndicatorTest {
     }
 
     @Test
-    public void shouldReturnStatusOfDownWhenResourceAccessExceptionIsThrown() {
+    void shouldReturnStatusOfDownWhenResourceAccessExceptionIsThrown() {
         final String message = "EXCEPTION MESSAGE";
         when(restTemplate.getForEntity(URL + HEALTH, String.class)).thenThrow(new ResourceAccessException(message));
 
@@ -74,7 +74,7 @@ public class SolsHealthIndicatorTest {
     }
 
     @Test
-    public void shouldReturnStatusOfDownWhenHttpStatusCodeExceptionIsThrown() {
+    void shouldReturnStatusOfDownWhenHttpStatusCodeExceptionIsThrown() {
         when(restTemplate.getForEntity(URL + HEALTH, String.class))
             .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
@@ -87,7 +87,7 @@ public class SolsHealthIndicatorTest {
     }
 
     @Test
-    public void shouldReturnStatusOfDownWhenUnknownHttpStatusCodeExceptionIsThrown() {
+    void shouldReturnStatusOfDownWhenUnknownHttpStatusCodeExceptionIsThrown() {
         final String statusText = "status text";
         when(restTemplate.getForEntity(URL + HEALTH, String.class))
             .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));

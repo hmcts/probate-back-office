@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class TaskListControllerTest {
+class TaskListControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +47,7 @@ public class TaskListControllerTest {
     }
 
     @Test
-    public void taskListUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void taskListUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String taskListPayload = testUtils.getStringFromFile("standingSearchPayload.json");
 

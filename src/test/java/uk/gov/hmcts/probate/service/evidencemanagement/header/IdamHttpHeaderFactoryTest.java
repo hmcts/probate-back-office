@@ -13,7 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-public class IdamHttpHeaderFactoryTest {
+class IdamHttpHeaderFactoryTest {
 
     @Mock
     private HttpServletRequest httpServletRequest;
@@ -27,7 +27,7 @@ public class IdamHttpHeaderFactoryTest {
     }
 
     @Test
-    public void getMultiPartHttpHeader() {
+    void getMultiPartHttpHeader() {
         HttpHeaders httpHeaders = underTest.getMultiPartHttpHeader();
 
         assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
@@ -36,7 +36,7 @@ public class IdamHttpHeaderFactoryTest {
     }
 
     @Test
-    public void getApplicationJsonHttpHeader() {
+    void getApplicationJsonHttpHeader() {
         HttpHeaders httpHeaders = underTest.getApplicationJsonHttpHeader();
 
         assertTrue(httpHeaders.containsKey("ServiceAuthorization"));
@@ -45,7 +45,7 @@ public class IdamHttpHeaderFactoryTest {
     }
 
     @Test
-    public void getAuthorizationHeaders() {
+    void getAuthorizationHeaders() {
         HttpHeaders httpHeaders = underTest.getAuthorizationHeaders();
 
         assertTrue(httpHeaders.containsKey("Authorization"));

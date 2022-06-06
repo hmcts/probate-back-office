@@ -18,13 +18,13 @@ import static java.util.Collections.emptyList;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class LifeEventValidationRuleTest {
+class LifeEventValidationRuleTest {
 
     @Autowired
     private LifeEventValidationRule lifeEventValidationRule;
 
     @Test
-    public void shouldThrowWhenNumberOfDeathRecordsMatchCollectionSize() {
+    void shouldThrowWhenNumberOfDeathRecordsMatchCollectionSize() {
         final CaseData caseData = CaseData.builder()
             .deathRecords(emptyList())
             .numberOfDeathRecords(1)
@@ -38,7 +38,7 @@ public class LifeEventValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowWhenRecordAddedInUI() {
+    void shouldThrowWhenRecordAddedInUI() {
         DeathRecord deathRecord = DeathRecord.builder().build();
         CollectionMember collectionMember = new CollectionMember(null, deathRecord);
         final CaseData caseData = CaseData.builder()
@@ -54,7 +54,7 @@ public class LifeEventValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowWhenMultipleRecordsSelected() {
+    void shouldThrowWhenMultipleRecordsSelected() {
         DeathRecord deathRecord1 = DeathRecord
             .builder()
             .systemNumber(1)
@@ -80,7 +80,7 @@ public class LifeEventValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowWhenNoRecordsSelected() {
+    void shouldThrowWhenNoRecordsSelected() {
         DeathRecord deathRecord1 = DeathRecord
             .builder()
             .systemNumber(1)
@@ -107,7 +107,7 @@ public class LifeEventValidationRuleTest {
 
 
     @Test
-    public void shouldNotThrowWhenValid() {
+    void shouldNotThrowWhenValid() {
         DeathRecord deathRecord1 = DeathRecord
             .builder()
             .systemNumber(1)

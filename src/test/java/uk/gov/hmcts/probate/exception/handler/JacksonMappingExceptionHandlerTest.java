@@ -15,7 +15,7 @@ import java.util.Arrays;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class JacksonMappingExceptionHandlerTest {
+class JacksonMappingExceptionHandlerTest {
 
     @InjectMocks
     private JacksonMappingExceptionHandler jacksonMappingExceptionHandler;
@@ -29,7 +29,7 @@ public class JacksonMappingExceptionHandlerTest {
     }
 
     @Test
-    public void shouldHandleMessageNotReadableException() {
+    void shouldHandleMessageNotReadableException() {
         JsonMappingException.Reference reference1 = Mockito.mock(JsonMappingException.Reference.class);
         when(reference1.getFieldName()).thenReturn("field1");
 

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class MinorityInterestRuleTest {
+class MinorityInterestRuleTest {
 
     @InjectMocks
     private MinorityInterestRule underTest;
@@ -26,21 +26,21 @@ public class MinorityInterestRuleTest {
     }
 
     @Test
-    public void shouldNeedChange() {
+    void shouldNeedChange() {
         when(caseDataMock.getSolsMinorityInterest()).thenReturn("Yes");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldNotNeedChange() {
+    void shouldNotNeedChange() {
         when(caseDataMock.getSolsMinorityInterest()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodyMinorityInterest", underTest.getConfirmationBodyMessageKey());
     }
 }

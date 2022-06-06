@@ -32,7 +32,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ExelaDataExtractServiceTest {
+class ExelaDataExtractServiceTest {
     @InjectMocks
     private ExelaDataExtractService exelaDataExtractService;
     @Mock
@@ -88,7 +88,7 @@ public class ExelaDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractForDateForFilteredCases() throws NotificationClientException {
+    void shouldExtractForDateForFilteredCases() throws NotificationClientException {
         List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
             .build();
@@ -103,7 +103,7 @@ public class ExelaDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractForDateRangeForFilteredCases() throws NotificationClientException {
+    void shouldExtractForDateRangeForFilteredCases() throws NotificationClientException {
         List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
                 .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
                 .add(new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L))
@@ -121,7 +121,7 @@ public class ExelaDataExtractServiceTest {
     }
 
     @Test
-    public void shouldNotExtractForDateForNoFilteredCases() throws NotificationClientException {
+    void shouldNotExtractForDateForNoFilteredCases() throws NotificationClientException {
         List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
@@ -132,7 +132,7 @@ public class ExelaDataExtractServiceTest {
     }
 
     @Test
-    public void shouldNotExtractForDateRangeForNoFilteredCases() throws NotificationClientException {
+    void shouldNotExtractForDateRangeForNoFilteredCases() throws NotificationClientException {
         List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
                 .build();
         when(exelaCriteriaService.getFilteredCases(any())).thenReturn(filteredCases);
@@ -143,7 +143,7 @@ public class ExelaDataExtractServiceTest {
     }
 
     @Test
-    public void shouldThrowClientException() throws NotificationClientException {
+    void shouldThrowClientException() throws NotificationClientException {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
                     .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))
@@ -156,7 +156,7 @@ public class ExelaDataExtractServiceTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
+    void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> filteredCases = new ImmutableList.Builder<ReturnedCaseDetails>()
                     .add(new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L))

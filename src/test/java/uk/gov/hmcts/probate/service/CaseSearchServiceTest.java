@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(MockitoExtension.class)
-public class CaseSearchServiceTest {
+class CaseSearchServiceTest {
 
     @InjectMocks
     private CaseSearchService caseSearchService;
@@ -59,7 +59,7 @@ public class CaseSearchServiceTest {
     }
 
     @Test
-    public void findCases() {
+    void findCases() {
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")
@@ -81,7 +81,7 @@ public class CaseSearchServiceTest {
     }
 
     @Test
-    public void findCasesWithMissingNameData() {
+    void findCasesWithMissingNameData() {
         when(caseMatchingCriteria.getDeceasedForenames()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedSurname()).thenReturn(null);
         when(caseMatchingCriteria.getDeceasedFullName()).thenReturn(null);
@@ -107,7 +107,7 @@ public class CaseSearchServiceTest {
     }
 
     @Test
-    public void findCaseByRecordId() {
+    void findCaseByRecordId() {
         when(caseMatchingCriteria.getRecordId()).thenReturn("1234");
 
         CaseMatch caseMatch = CaseMatch.builder()

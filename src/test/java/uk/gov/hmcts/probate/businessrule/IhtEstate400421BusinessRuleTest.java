@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
-public class IhtEstate400421BusinessRuleTest {
+class IhtEstate400421BusinessRuleTest {
 
     @InjectMocks
     private IhtEstate400421BusinessRule underTest;
@@ -29,28 +29,28 @@ public class IhtEstate400421BusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForCompletedAndIHT400421() {
+    void shouldBeApplicableForCompletedAndIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNotBeApplicableForNotCompletedAndIHT400421() {
+    void shouldNotBeApplicableForNotCompletedAndIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
         when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNotBeApplicableForNotCompletedAndNotIHT400421() {
+    void shouldNotBeApplicableForNotCompletedAndNotIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
         when(mockCaseData.getIhtFormEstate()).thenReturn(IHT207_VALUE);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldNotBeApplicableForCompletedAndNotIHT400421() {
+    void shouldNotBeApplicableForCompletedAndNotIHT400421() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         when(mockCaseData.getIhtFormEstate()).thenReturn(IHT207_VALUE);
         assertFalse(underTest.isApplicable(mockCaseData));

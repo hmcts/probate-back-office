@@ -23,7 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class MarkdownSubstitutionServiceTest {
+class MarkdownSubstitutionServiceTest {
 
     private static final String RESOURCE_PATH = "template/nextSteps.md";
 
@@ -49,7 +49,7 @@ public class MarkdownSubstitutionServiceTest {
     }
 
     @Test
-    public void shouldGenerateMarkdown() {
+    void shouldGenerateMarkdown() {
         when(fileSystemResourceService.getFileSystemResource(any(String.class)))
                 .thenReturn(Optional.of(fileSystemResource));
 
@@ -62,7 +62,7 @@ public class MarkdownSubstitutionServiceTest {
     }
 
     @Test
-    public void shouldThrowRuntimeExceptionWhenGeneratePageCouldNotParseFile() {
+    void shouldThrowRuntimeExceptionWhenGeneratePageCouldNotParseFile() {
         assertThrows(RuntimeException.class, () -> {
             when(fileSystemResourceService.getFileSystemResource(any(String.class)))
                     .thenReturn(Optional.empty());
@@ -73,7 +73,7 @@ public class MarkdownSubstitutionServiceTest {
     }
 
     @Test
-    public void shouldThrowRuntimeExceptionWhenFileDoesNotExist() {
+    void shouldThrowRuntimeExceptionWhenFileDoesNotExist() {
         assertThrows(RuntimeException.class, () -> {
             when(fileSystemResource.getFile()).thenReturn(new File(UUID.randomUUID().toString()));
             when(fileSystemResourceService.getFileSystemResource(any(String.class)))

@@ -52,7 +52,7 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class BulkPrintServiceTest {
+class BulkPrintServiceTest {
 
     @InjectMocks
     private BulkPrintService bulkPrintService;
@@ -84,7 +84,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintWithNoExtraCopies() {
+    void testSuccessfulSendToBulkPrintWithNoExtraCopies() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -126,7 +126,7 @@ public class BulkPrintServiceTest {
 
 
     @Test
-    public void testSuccessfulSendToBulkPrintWithSixExtraCopies() {
+    void testSuccessfulSendToBulkPrintWithSixExtraCopies() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -171,7 +171,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testHttpClientException() {
+    void testHttpClientException() {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -211,7 +211,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldThrowException() {
+    void shouldThrowException() {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
             .postCode("EC2")
@@ -250,7 +250,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldThrowIOException() throws IOException {
+    void shouldThrowIOException() throws IOException {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -290,7 +290,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldThrowCaveatsIOException() throws IOException {
+    void shouldThrowCaveatsIOException() throws IOException {
 
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
             .proAddressLine2("Address 2")
@@ -331,7 +331,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldThrowCaveatsException() throws IOException {
+    void shouldThrowCaveatsException() throws IOException {
 
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
             .proAddressLine2("Address 2")
@@ -372,7 +372,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testHttpClientExceptionCaveats() {
+    void testHttpClientExceptionCaveats() {
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
                 .proAddressLine2("Address 2")
                 .proPostCode("EC2")
@@ -412,7 +412,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintForCaveats() {
+    void testSuccessfulSendToBulkPrintForCaveats() {
 
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address 1")
                 .proAddressLine2("Address 2")
@@ -455,52 +455,52 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrant() {
+    void testSuccessfulSendToBulkPrintGrant() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintIntestacyGrant() {
+    void testSuccessfulSendToBulkPrintIntestacyGrant() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.INTESTACY_GRANT);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintAdmonWillGrant() {
+    void testSuccessfulSendToBulkPrintAdmonWillGrant() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.ADMON_WILL_GRANT);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrantReissue() {
+    void testSuccessfulSendToBulkPrintGrantReissue() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.DIGITAL_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintIntestacyGrantReissue() {
+    void testSuccessfulSendToBulkPrintIntestacyGrantReissue() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.INTESTACY_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissue() {
+    void testSuccessfulSendToBulkPrintAdmonWillGrantReissue() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.ADMON_WILL_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintGrantReissueWelsh() {
+    void testSuccessfulSendToBulkPrintGrantReissueWelsh() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_DIGITAL_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintIntestacyGrantReissueWelsh() {
+    void testSuccessfulSendToBulkPrintIntestacyGrantReissueWelsh() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_INTESTACY_GRANT_REISSUE);
     }
 
     @Test
-    public void testSuccessfulSendToBulkPrintAdmonWillGrantReissueWelsh() {
+    void testSuccessfulSendToBulkPrintAdmonWillGrantReissueWelsh() {
         testSuccessfulSendToBulkPrintForDocumentType(DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE);
     }
 
     @Test
-    public void testUnSuccessfulValidateEmailThrowsError() throws BulkPrintException {
+    void testUnSuccessfulValidateEmailThrowsError() throws BulkPrintException {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -550,7 +550,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void testNoSendToBulkPrintReturnsNull() {
+    void testNoSendToBulkPrintReturnsNull() {
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
                 .postCode("EC2")
@@ -569,7 +569,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void sendToBulkPrintWith50ExtraCopiesWDG() {
+    void sendToBulkPrintWith50ExtraCopiesWDG() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -615,7 +615,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void sendToBulkPrintWith50ExtraCopiesWIG() {
+    void sendToBulkPrintWith50ExtraCopiesWIG() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -661,7 +661,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void sendToBulkPrintWith50ExtraCopiesAWDG() {
+    void sendToBulkPrintWith50ExtraCopiesAWDG() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
                 .addressLine2("Address 2")
@@ -710,7 +710,7 @@ public class BulkPrintServiceTest {
     private ArgumentCaptor<LetterV3> letterV3ArgumentCaptor;
 
     @Test
-    public void shouldSendToBulkPrintForReprint() {
+    void shouldSendToBulkPrintForReprint() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
@@ -763,7 +763,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldSendToBulkPrintForReprintWillNullLetterId() {
+    void shouldSendToBulkPrintForReprintWillNullLetterId() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")
@@ -813,7 +813,7 @@ public class BulkPrintServiceTest {
     }
 
     @Test
-    public void shouldErrorOnSendToBulkPrintForReprint() {
+    void shouldErrorOnSendToBulkPrintForReprint() {
 
         SolsAddress address = SolsAddress.builder().addressLine1("Address 1")
             .addressLine2("Address 2")

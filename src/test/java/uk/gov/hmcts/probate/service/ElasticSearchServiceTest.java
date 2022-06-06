@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ElasticSearchServiceTest {
+class ElasticSearchServiceTest {
 
     @InjectMocks
     private ElasticSearchService elasticSearchService;
@@ -59,7 +59,7 @@ public class ElasticSearchServiceTest {
     }
 
     @Test
-    public void runQuery() {
+    void runQuery() {
         MatchedCases matchedCases = elasticSearchService.runQuery(CaseType.LEGACY, "{}");
 
         assertEquals(1, matchedCases.getCases().size());
@@ -68,7 +68,7 @@ public class ElasticSearchServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionRunningQuery() {
+    void shouldThrowExceptionRunningQuery() {
         assertThrows(CaseMatchingException.class, () -> {
             when(restTemplate.postForObject(any(URI.class), any(), eq(MatchedCases.class)))
                     .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));

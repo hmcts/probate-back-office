@@ -22,7 +22,7 @@ import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {CcdDataStoreService.class})
 @ExtendWith(SpringExtension.class)
-public class CcdDataStoreServiceTest {
+class CcdDataStoreServiceTest {
     @MockBean
     private AuthTokenGenerator authTokenGenerator;
 
@@ -36,7 +36,7 @@ public class CcdDataStoreServiceTest {
     private IdamApi idamApi;
 
     @Test
-    public void testRemoveCreatorRole() {
+    void testRemoveCreatorRole() {
         HashMap<String, Object> stringObjectMap = new HashMap<>();
         stringObjectMap.put("id", "Value");
         ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);

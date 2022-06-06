@@ -26,7 +26,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class EventValidationServiceTest {
+class EventValidationServiceTest {
 
     @InjectMocks
     private EventValidationService eventValidationService;
@@ -57,7 +57,7 @@ public class EventValidationServiceTest {
 
 
     @Test
-    public void shouldGatherValidationErrors() {
+    void shouldGatherValidationErrors() {
 
         List<FieldErrorResponse> fieldErrorResponses = eventValidationService
             .validate(ccdDataMock, Collections.singletonList(validationRule));
@@ -67,7 +67,7 @@ public class EventValidationServiceTest {
     }
 
     @Test
-    public void shouldGatherPaymentValidationErrors() {
+    void shouldGatherPaymentValidationErrors() {
 
         List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
             FieldErrorResponse.builder().build());
@@ -86,7 +86,7 @@ public class EventValidationServiceTest {
     }
 
     @Test
-    public void shouldGatherCaveatPaymentValidationErrors() {
+    void shouldGatherCaveatPaymentValidationErrors() {
 
         List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
             FieldErrorResponse.builder().build());

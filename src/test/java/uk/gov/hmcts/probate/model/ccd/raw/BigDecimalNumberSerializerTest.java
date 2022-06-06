@@ -15,10 +15,10 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class BigDecimalNumberSerializerTest {
+class BigDecimalNumberSerializerTest {
 
     @Test
-    public void shouldSerialize() throws IOException {
+    void shouldSerialize() throws IOException {
         Writer jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();

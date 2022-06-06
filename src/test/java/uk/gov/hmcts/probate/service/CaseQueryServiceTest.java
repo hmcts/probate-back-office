@@ -35,7 +35,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
-public class CaseQueryServiceTest {
+class CaseQueryServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
@@ -90,7 +90,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDatedDocumentReturnsCaseList() {
+    void findCasesWithDatedDocumentReturnsCaseList() {
         List<ReturnedCaseDetails> cases =
             caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");
 
@@ -100,7 +100,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findAllCasesWithDatedDocumentReturnsCaseList() {
+    void findAllCasesWithDatedDocumentReturnsCaseList() {
         caseQueryService.dataExtractPaginationSize = 1;
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("invokingService",
             "2021-01-01");
@@ -111,7 +111,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePages() {
+    void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePages() {
         caseQueryService.dataExtractPaginationSize = 3;
         ReturnedCases returnedCases1 = getReturnedCases(3, 0, 5);
         ReturnedCases returnedCases2 = getReturnedCases(2, 3, 5);
@@ -133,7 +133,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePagesExact() {
+    void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePagesExact() {
         caseQueryService.dataExtractPaginationSize = 3;
         ReturnedCases returnedCases1 = getReturnedCases(3, 0, 6);
         ReturnedCases returnedCases2 = getReturnedCases(3, 3, 6);
@@ -157,7 +157,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePagesPlus() {
+    void findAllCasesWithDatedDocumentReturnsCaseListForMultiplePagesPlus() {
         caseQueryService.dataExtractPaginationSize = 3;
         ReturnedCases returnedCases1 = getReturnedCases(3, 0, 7);
         ReturnedCases returnedCases2 = getReturnedCases(3, 3, 7);
@@ -201,7 +201,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesInitiatedBySchedulerReturnsCaseList() {
+    void findCasesInitiatedBySchedulerReturnsCaseList() {
         when(headers.getAuthorizationHeaders()).thenThrow(NullPointerException.class);
         List<ReturnedCaseDetails> cases = caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
             "2021-01-01");
@@ -212,7 +212,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseListExela() {
+    void findCasesWithDateRangeReturnsCaseListExela() {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
         ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
@@ -228,7 +228,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeThrowsError() {
+    void findCasesWithDateRangeThrowsError() {
         assertThrows(ClientDataException.class, () -> {
             CaseData caseData = CaseData.builder()
                     .deceasedSurname("Smith")
@@ -248,7 +248,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseListHMRC() {
+    void findCasesWithDateRangeReturnsCaseListHMRC() {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
         ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
@@ -264,7 +264,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
+    void findCasesWithDateRangeReturnsCaseListSmeeAndFord() {
         when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
         ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
         ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
@@ -281,7 +281,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void testHttpExceptionCaughtWithBadPost() {
+    void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
         Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
@@ -290,7 +290,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesForGrantDelayed() {
+    void findCasesForGrantDelayed() {
         List<ReturnedCaseDetails> cases = caseQueryService.findCasesForGrantDelayed("2019-02-05");
 
         assertEquals(1, cases.size());
@@ -299,7 +299,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void findCasesForGrantAwaitingDocs() {
+    void findCasesForGrantAwaitingDocs() {
         CaseData caseData = CaseData.builder()
             .deceasedSurname("Smith")
             .build();
@@ -333,7 +333,7 @@ public class CaseQueryServiceTest {
     }
 
     @Test
-    public void testExceptionWithNullFromRestTemplatePost() {
+    void testExceptionWithNullFromRestTemplatePost() {
         assertThrows(ClientDataException.class, () -> {
             when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
             caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService", "2021-01-01");

@@ -19,7 +19,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 @ExtendWith(SpringExtension.class)
-public class ExelaCriteriaServiceTest {
+class ExelaCriteriaServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
@@ -121,31 +121,31 @@ public class ExelaCriteriaServiceTest {
     }
 
     @Test
-    public void testValidCaseShouldBeReturned() {
+    void testValidCaseShouldBeReturned() {
         cases.add(case1);
         assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 
     @Test
-    public void testBoundaryCaseShouldBeReturned() {
+    void testBoundaryCaseShouldBeReturned() {
         cases.add(case2);
         assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 
     @Test
-    public void testInvalidDocumentsShouldNotReturnCase() {
+    void testInvalidDocumentsShouldNotReturnCase() {
         cases.add(case3);
         assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(0));
     }
 
     @Test
-    public void testEmptySubtypePrecedingValidSubtypeShouldReturnCase() {
+    void testEmptySubtypePrecedingValidSubtypeShouldReturnCase() {
         cases.add(case4);
         assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 
     @Test
-    public void testSurnamesSortedAlphabetically() {
+    void testSurnamesSortedAlphabetically() {
         cases.add(case1);
         cases.add(case5);
         cases.add(case6);
@@ -156,7 +156,7 @@ public class ExelaCriteriaServiceTest {
     }
 
     @Test
-    public void testSurnameCaseDoesNotEffectOrder() {
+    void testSurnameCaseDoesNotEffectOrder() {
         cases.add(case1);
         cases.add(case5);
         cases.add(case6);

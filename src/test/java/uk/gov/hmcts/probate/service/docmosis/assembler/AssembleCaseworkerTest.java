@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class AssembleCaseworkerTest {
+class AssembleCaseworkerTest {
 
     private static final String YES = "Yes";
     private AssemblerBase assemblerBase = new AssemblerBase();
@@ -16,7 +16,7 @@ public class AssembleCaseworkerTest {
     private AssembleCaseworker assembleCaseworker = new AssembleCaseworker(assemblerBase);
 
     @Test
-    public void testCaseworker() {
+    void testCaseworker() {
 
         List<ParagraphDetail> response =
             assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());

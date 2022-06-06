@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class NoNotorialWillCopyRuleTest {
+class NoNotorialWillCopyRuleTest {
 
     @InjectMocks
     private NoNotorialWillCopyRule underTest;
@@ -26,7 +26,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNeedChange() {
+    void shouldNeedChange() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("No");
 
@@ -34,7 +34,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithWillAccessOriginal() {
+    void shouldNotNeedChangeWithWillAccessOriginal() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("Yes");
 
@@ -42,7 +42,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithWillNoAccessOriginal() {
+    void shouldNotNeedChangeWithWillNoAccessOriginal() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("Yes");
 
@@ -50,7 +50,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithWillAccessOriginalNoNotirialCopy() {
+    void shouldNotNeedChangeWithWillAccessOriginalNoNotirialCopy() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("No");
 
@@ -58,7 +58,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertThrows(UnsupportedOperationException.class, () -> {
             underTest.getConfirmationBodyMessageKey();
         });

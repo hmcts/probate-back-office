@@ -33,7 +33,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
 
-public class PreviewLetterServiceTest {
+class PreviewLetterServiceTest {
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
@@ -131,7 +131,7 @@ public class PreviewLetterServiceTest {
     }
 
     @Test
-    public void testAddLetterDataNoMatchedDetailOptional() {
+    void testAddLetterDataNoMatchedDetailOptional() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
         Map<String, Object> placeholders = previewLetterService.addLetterData(caseDetails);

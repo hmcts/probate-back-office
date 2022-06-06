@@ -40,7 +40,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @ExtendWith(SpringExtension.class)
-public class SolicitorApplicationCompletionTransformerTest {
+class SolicitorApplicationCompletionTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -92,7 +92,7 @@ public class SolicitorApplicationCompletionTransformerTest {
 
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
 
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
@@ -114,7 +114,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
+    void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -141,7 +141,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
         caseDataBuilder
             .primaryApplicantForenames(EXEC_FIRST_NAME)
             .primaryApplicantSurname(EXEC_SURNAME)
@@ -161,7 +161,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
         caseDataBuilder
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
@@ -180,7 +180,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
         caseDataBuilder
             .primaryApplicantIsApplying(NO)
             .solsSolicitorIsApplying(NO)

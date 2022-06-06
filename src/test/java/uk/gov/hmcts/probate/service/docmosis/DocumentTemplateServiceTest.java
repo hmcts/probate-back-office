@@ -22,7 +22,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DocumentTemplateServiceTest {
+class DocumentTemplateServiceTest {
 
     @Autowired
     private DocumentTemplateService documentTemplateService;
@@ -43,7 +43,7 @@ public class DocumentTemplateServiceTest {
     private SendEmailResponse sendEmailResponse;
 
     @Test
-    public void shouldGetGrantOfProbateTemplate() {
+    void shouldGetGrantOfProbateTemplate() {
         DocumentType responseEnglish = documentTemplateService
             .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
                 DocumentCaseType.GOP);
@@ -88,7 +88,7 @@ public class DocumentTemplateServiceTest {
 
 
     @Test
-    public void shouldGetIntestacyTemplate() {
+    void shouldGetIntestacyTemplate() {
         DocumentType responseEnglish = documentTemplateService
             .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
                 DocumentCaseType.INTESTACY);
@@ -131,7 +131,7 @@ public class DocumentTemplateServiceTest {
     }
 
     @Test
-    public void shouldGetAdmonWillTemplate() {
+    void shouldGetAdmonWillTemplate() {
         DocumentType responseEnglish = documentTemplateService
             .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
                 DocumentCaseType.ADMON_WILL);

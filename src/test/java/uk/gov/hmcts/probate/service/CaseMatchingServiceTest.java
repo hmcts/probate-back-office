@@ -25,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
-public class CaseMatchingServiceTest {
+class CaseMatchingServiceTest {
 
     @InjectMocks
     private CaseMatchingService caseMatchingService;
@@ -74,7 +74,7 @@ public class CaseMatchingServiceTest {
     }
 
     @Test
-    public void findMatches() {
+    void findMatches() {
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")

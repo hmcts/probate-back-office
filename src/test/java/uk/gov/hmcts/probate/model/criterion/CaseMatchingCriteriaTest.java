@@ -18,7 +18,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CaseMatchingCriteriaTest {
+class CaseMatchingCriteriaTest {
 
     @Mock
     private CaseData caseData;
@@ -54,7 +54,7 @@ public class CaseMatchingCriteriaTest {
     }
 
     @Test
-    public void shouldCreateCriteriaOfCaseDetails() {
+    void shouldCreateCriteriaOfCaseDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
 
         Assert.assertNotNull(caseMatchingCriteria);
@@ -62,7 +62,7 @@ public class CaseMatchingCriteriaTest {
     }
 
     @Test
-    public void shouldCreateCriteriaOfCaveatDetails() {
+    void shouldCreateCriteriaOfCaveatDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caveatDetails);
 
         Assert.assertNotNull(caseMatchingCriteria);
@@ -70,7 +70,7 @@ public class CaseMatchingCriteriaTest {
     }
 
     @Test
-    public void shouldCreateCriteriaOfStandingSearchDetails() {
+    void shouldCreateCriteriaOfStandingSearchDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(standingSearchDetails);
 
         Assert.assertNotNull(caseMatchingCriteria);
@@ -79,7 +79,7 @@ public class CaseMatchingCriteriaTest {
 
 
     @Test
-    public void shouldCreateCriteriaOfWillLodgementDetails() {
+    void shouldCreateCriteriaOfWillLodgementDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(willLodgementDetails);
 
         Assert.assertNotNull(caseMatchingCriteria);

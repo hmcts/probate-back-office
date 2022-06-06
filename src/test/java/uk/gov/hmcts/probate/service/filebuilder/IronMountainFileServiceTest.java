@@ -25,7 +25,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class IronMountainFileServiceTest {
+class IronMountainFileServiceTest {
 
     private IronMountainFileService ironmountainFileService = new IronMountainFileService(new TextFileBuilderService());
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
@@ -96,7 +96,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testIronMountainFileBuilt() throws IOException {
+    void testIronMountainFileBuilt() throws IOException {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
@@ -105,7 +105,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testIronMountainFileBuiltWithEmptyIHTValues() throws IOException {
+    void testIronMountainFileBuiltWithEmptyIHTValues() throws IOException {
         caseData.ihtGrossValue(null);
         caseData.ihtNetValue(null);
         builtData = caseData.build();
@@ -116,7 +116,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testFileIsBuildWithEmptyOptionalValues() throws IOException {
+    void testFileIsBuildWithEmptyOptionalValues() throws IOException {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
                 new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
                         .applyingExecutorAddress(SolsAddress.builder().build()).build());
@@ -137,7 +137,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
+    void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
         caseData.primaryApplicantIsApplying("No");
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
@@ -147,7 +147,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testSolicitorApplicationTypeDisplaysSolicitorInformation() throws IOException {
+    void testSolicitorApplicationTypeDisplaysSolicitorInformation() throws IOException {
         caseData.applicationType(ApplicationType.SOLICITOR);
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
@@ -157,7 +157,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
+    void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
@@ -166,7 +166,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testRegistryLocationCtscMapped() throws IOException {
+    void testRegistryLocationCtscMapped() throws IOException {
         caseData.registryLocation("ctsc");
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
@@ -176,7 +176,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testSolicitorAsGranteeWhenNoExecutorsAndPrimaryApplicantNotApplying() throws IOException {
+    void testSolicitorAsGranteeWhenNoExecutorsAndPrimaryApplicantNotApplying() throws IOException {
         caseData.applicationType(ApplicationType.SOLICITOR);
         caseData.primaryApplicantIsApplying("No");
         caseData.additionalExecutorsApplying(null);
@@ -188,7 +188,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testAddExceptionForIncorrectCaseData() throws IOException {
+    void testAddExceptionForIncorrectCaseData() throws IOException {
         caseData2.applicationType(null);
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);

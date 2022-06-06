@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PA1PSolicitorMandatoryFieldsValidatorTest {
+class PA1PSolicitorMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
@@ -28,7 +28,7 @@ public class PA1PSolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testSolicitorAllMandatoryFieldsPresentPA1PSolicitor() {
+    void testSolicitorAllMandatoryFieldsPresentPA1PSolicitor() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -37,7 +37,7 @@ public class PA1PSolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testSolicitorMissingMandatoryFieldsPA1P() {
+    void testSolicitorMissingMandatoryFieldsPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("solsSolicitorIsApplying", "True");
@@ -54,7 +54,7 @@ public class PA1PSolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testSolicitorMissingPaymentMethodFieldsPA1P() {
+    void testSolicitorMissingPaymentMethodFieldsPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("paperPaymentMethod", "PBA");

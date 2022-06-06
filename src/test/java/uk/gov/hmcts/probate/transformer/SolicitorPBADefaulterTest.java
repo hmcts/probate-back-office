@@ -18,7 +18,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class SolicitorPBADefaulterTest {
+class SolicitorPBADefaulterTest {
     @InjectMocks
     private SolicitorPBADefaulter solicitorPBADefaulter;
 
@@ -44,7 +44,7 @@ public class SolicitorPBADefaulterTest {
     }
 
     @Test
-    public void shouldReturnListOfPBAs() {
+    void shouldReturnListOfPBAs() {
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
 
         solicitorPBADefaulter.defaultFeeAccounts(caseDataMock, responseCaseDataBuilder, AUTH_TOKEN);
@@ -60,7 +60,7 @@ public class SolicitorPBADefaulterTest {
     }
 
     @Test
-    public void shouldReturnNoPBAs() {
+    void shouldReturnNoPBAs() {
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
         when(pbaRetrievalService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
 
@@ -72,7 +72,7 @@ public class SolicitorPBADefaulterTest {
     }
 
     @Test
-    public void shouldReturnListOfPBAsForCaveats() {
+    void shouldReturnListOfPBAsForCaveats() {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = ResponseCaveatData.builder();
 
         solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatDataMock, responseCaseDataBuilder, AUTH_TOKEN);
@@ -88,7 +88,7 @@ public class SolicitorPBADefaulterTest {
     }
 
     @Test
-    public void shouldReturnNoPBAsForCaveats() {
+    void shouldReturnNoPBAsForCaveats() {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder = ResponseCaveatData.builder();
         when(pbaRetrievalService.getPBAs(AUTH_TOKEN)).thenReturn(Collections.emptyList());
 

@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
+class OCRFieldIhtFormEstateValuesCompletedMapperTest {
 
     private static final String PRE_EE_DECEASED_DATE_OF_DEATH = "01012021";
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
@@ -35,7 +35,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenIhtEstateFieldsAreAllPresent() {
+    void shouldReturnFalseWhenIhtEstateFieldsAreAllPresent() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
             .ihtEstateGrossValue("1000000")
@@ -46,7 +46,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenIhtEstateFieldsAreAllEmpty() {
+    void shouldReturnFalseWhenIhtEstateFieldsAreAllEmpty() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
             .ihtEstateGrossValue("")
@@ -57,7 +57,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenIHT207() {
+    void shouldReturnTrueWhenIHT207() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
             .iht207Completed("true")
@@ -67,7 +67,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenIHT400421() {
+    void shouldReturnTrueWhenIHT400421() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
             .iht400421Completed("true")
@@ -76,7 +76,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenIHT400421PreEEDod() {
+    void shouldReturnNullWhenIHT400421PreEEDod() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
             .ihtFormEstate("IHT400421")
@@ -85,7 +85,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    public void shouldReturnNull() {
+    void shouldReturnNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();
         assertNull(ocrFieldIhtFormEstateValuesCompletedMapper.toIhtFormEstateValuesCompleted(ocrFields));

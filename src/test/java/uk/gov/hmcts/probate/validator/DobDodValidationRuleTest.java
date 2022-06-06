@@ -25,7 +25,7 @@ import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_BEFOR
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_IN_FUTURE;
 
 @ExtendWith(SpringExtension.class)
-public class DobDodValidationRuleTest {
+class DobDodValidationRuleTest {
 
     private static final LocalDate DATE_31_DEC_1970 = LocalDate.of(1970, 12, 31);
     private static final LocalDate DATE_30_DEC_1970 = LocalDate.of(1970, 12, 30);
@@ -60,7 +60,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccessWhenDeceasedIsNull() {
+    void testValidateWithSuccessWhenDeceasedIsNull() {
         when(ccdDataMock.getDeceased()).thenReturn(null);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -70,7 +70,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateSuccessWithDobBeforeDod() {
+    void shouldValidateSuccessWithDobBeforeDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_31_DEC_1970);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_01_JAN_1971);
 
@@ -80,7 +80,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobAfterDod() {
+    void shouldValidateFailureWithDobAfterDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_31_DEC_1970);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_30_DEC_1970);
 
@@ -90,7 +90,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobEqualsDod() {
+    void shouldValidateFailureWithDobEqualsDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_31_DEC_1970);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_31_DEC_1970);
 
@@ -100,7 +100,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobInTheFuture() {
+    void shouldValidateFailureWithDobInTheFuture() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_01_JAN_2099);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_02_JAN_2099);
 
@@ -110,7 +110,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDodInTheFuture() {
+    void shouldValidateFailureWithDodInTheFuture() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_01_JAN_1971);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_02_JAN_2099);
 

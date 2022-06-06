@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class DocumentManagementURIBuilderTest {
+class DocumentManagementURIBuilderTest {
 
     private static final String URL = "URL";
     private static final String HOST = "HOST";
@@ -20,12 +20,12 @@ public class DocumentManagementURIBuilderTest {
     }
 
     @Test
-    public void shouldBuildUrl() {
+    void shouldBuildUrl() {
         assertThat(documentManagementURIBuilder.buildUrl(), is(HOST + URL));
     }
 
     @Test
-    public void shouldBuildUrlWithId() {
+    void shouldBuildUrlWithId() {
         assertThat(documentManagementURIBuilder.buildUrl(ID), is(HOST + URL + "/" + ID));
     }
 }

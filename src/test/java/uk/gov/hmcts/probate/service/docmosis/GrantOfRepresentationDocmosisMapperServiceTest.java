@@ -39,7 +39,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 
-public class GrantOfRepresentationDocmosisMapperServiceTest {
+class GrantOfRepresentationDocmosisMapperServiceTest {
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
@@ -127,7 +127,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholders() {
+    void testCreateDataAsPlaceholders() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
         Map<String, Object> placeholders =

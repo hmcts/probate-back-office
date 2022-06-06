@@ -12,7 +12,7 @@ import java.util.Locale;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 
-public class BusinessValidationMessageServiceTest {
+class BusinessValidationMessageServiceTest {
 
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetrieverMock;
@@ -26,7 +26,7 @@ public class BusinessValidationMessageServiceTest {
     }
 
     @Test
-    public void shouldValidateFormWithNoErrors() {
+    void shouldValidateFormWithNoErrors() {
         String code = "dobIsNull";
         String param = "someParam";
         String message = "Date of birth cannot be empty";
@@ -43,7 +43,7 @@ public class BusinessValidationMessageServiceTest {
     }
 
     @Test
-    public void shouldValidateFormWithArgsWithNoErrors() {
+    void shouldValidateFormWithArgsWithNoErrors() {
         String code = "dobIsNull";
         String param = "someParam";
         String message = "Date of birth cannot be empty";

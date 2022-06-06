@@ -18,7 +18,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class PrintServiceTest {
+class PrintServiceTest {
 
     @InjectMocks
     private PrintService underTest;
@@ -48,7 +48,7 @@ public class PrintServiceTest {
     }
 
     @Test
-    public void shouldReturnAllSolicitorDocuments() {
+    void shouldReturnAllSolicitorDocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
@@ -61,7 +61,7 @@ public class PrintServiceTest {
     }
 
     @Test
-    public void shouldReturnAllPADocuments() {
+    void shouldReturnAllPADocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
@@ -74,13 +74,13 @@ public class PrintServiceTest {
     }
 
     @Test
-    public void shouldGetSolicitorTemplateForCaseDetails() {
+    void shouldGetSolicitorTemplateForCaseDetails() {
         String template = underTest.getSolicitorCaseDetailsTemplateForPrintService();
         assertEquals("some Solicitor template", template);
     }
 
     @Test
-    public void shouldGetPATemplateForCaseDetails() {
+    void shouldGetPATemplateForCaseDetails() {
         String template = underTest.getPACaseDetailsTemplateForPrintService();
         assertEquals("some Personal template", template);
     }

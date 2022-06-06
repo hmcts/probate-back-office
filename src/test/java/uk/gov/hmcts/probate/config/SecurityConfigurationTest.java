@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
 @SpringBootTest(properties = {"s2s.enabled=true"})
-public class SecurityConfigurationTest {
+class SecurityConfigurationTest {
 
     private static final String PRINCIPAL = "ccd-datamgmt-api";
 
@@ -82,41 +82,41 @@ public class SecurityConfigurationTest {
     }
 
     @Test
-    public void shouldGetSwaggerUiWithStatusCodeOkAuthenticated() throws Exception {
+    void shouldGetSwaggerUiWithStatusCodeOkAuthenticated() throws Exception {
         mvc.perform(get("/swagger-ui/index.html")).andExpect(status().isOk()).andExpect(unauthenticated());
     }
 
     @Test
-    public void shouldGet404ForFormLogin() throws Exception {
+    void shouldGet404ForFormLogin() throws Exception {
         mvc.perform(formLogin().user("user").password("password")).andExpect(status().isNotFound());
     }
 
     @Test
-    public void shouldGet404ForLogout() throws Exception {
+    void shouldGet404ForLogout() throws Exception {
         mvc.perform(logout()).andExpect(status().isNotFound());
     }
 
     @Test
-    public void shouldAuthenticateForEndpointWithServiceAuthorizationHeader() throws Exception {
+    void shouldAuthenticateForEndpointWithServiceAuthorizationHeader() throws Exception {
         mvc.perform(post("/case/sols-validate").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
             .andExpect(authenticated());
     }
 
     @Test
-    public void shouldAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+    void shouldAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
         mvc.perform(post("/notify/grant-delayed-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz")
             .header(AUTHORIZATION, "Bearer jddslfjsdlfj"))
             .andExpect(authenticated());
     }
 
     @Test
-    public void shouldNotAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+    void shouldNotAuthenticateForEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
         mvc.perform(post("/notify/grant-delayed-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
             .andExpect(unauthenticated());
     }
 
     @Test
-    public void shouldAuthenticateForAwaitDocsEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+    void shouldAuthenticateForAwaitDocsEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
         mvc.perform(
             post("/notify/grant-awaiting-documents-scheduled").header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz")
                 .header(AUTHORIZATION, "Bearer jddslfjsdlfj"))
@@ -124,7 +124,7 @@ public class SecurityConfigurationTest {
     }
 
     @Test
-    public void shouldNotAuthenticateForAwaitDocEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
+    void shouldNotAuthenticateForAwaitDocEndpointWithServiceAndUserAuthorizationHeader() throws Exception {
         mvc.perform(post("/notify/grant-awaiting-documents-scheduled")
             .header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
             .andExpect(unauthenticated());
@@ -133,7 +133,7 @@ public class SecurityConfigurationTest {
     @TestConfiguration
     @EnableWebSecurity
     @ComponentScan("uk.gov.hmcts.probate")
-    public class Configuration {
+    class Configuration {
 
     }
 }

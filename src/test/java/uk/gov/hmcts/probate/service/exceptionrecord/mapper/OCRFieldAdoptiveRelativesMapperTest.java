@@ -15,7 +15,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class OCRFieldAdoptiveRelativesMapperTest {
+class OCRFieldAdoptiveRelativesMapperTest {
 
     private static final String ADOPTED_RELATIVE_1_NAME = "Conner O'Mailey";
     private static final String ADOPTED_RELATIVE_1_RELATIONSHIP = "Brother";
@@ -83,7 +83,7 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     }
 
     @Test
-    public void testGetAdoptedRelatives() {
+    void testGetAdoptedRelatives() {
         List<CollectionMember<AdoptiveRelative>> response =
             ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFields);
         assertEquals(ADOPTED_RELATIVE_1_NAME, response.get(0).getValue().getName());
@@ -93,7 +93,7 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     }
 
     @Test
-    public void testGetMultipleAdoptedRelatives() throws JsonProcessingException {
+    void testGetMultipleAdoptedRelatives() throws JsonProcessingException {
         List<CollectionMember<AdoptiveRelative>> response
             = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsMultiple);
         assertEquals(ADOPTED_RELATIVE_1_NAME, response.get(0).getValue().getName());
@@ -118,13 +118,13 @@ public class OCRFieldAdoptiveRelativesMapperTest {
     }
 
     @Test
-    public void testObjectMapperInOut() throws JsonProcessingException {
+    void testObjectMapperInOut() throws JsonProcessingException {
         assertEquals("\"in\"", objectMapper.writeValueAsString(InOut.IN));
         assertEquals("\"out\"", objectMapper.writeValueAsString(InOut.OUT));
     }
 
     @Test
-    public void testGetAdoptedRelativesWithInvalidInOutValue() {
+    void testGetAdoptedRelativesWithInvalidInOutValue() {
         assertThrows(OCRMappingException.class, () -> {
             List<CollectionMember<AdoptiveRelative>> response
                     = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);

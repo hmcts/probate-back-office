@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
-public class OCRFieldIhtFormCompletedOnlineMapperTest {
+class OCRFieldIhtFormCompletedOnlineMapperTest {
 
     @Mock
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
@@ -40,7 +40,7 @@ public class OCRFieldIhtFormCompletedOnlineMapperTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenIht205completedOnline() {
+    void shouldReturnTrueWhenIht205completedOnline() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .iht205completedOnline("true")
@@ -50,7 +50,7 @@ public class OCRFieldIhtFormCompletedOnlineMapperTest {
     }
 
     @Test
-    public void shouldReturnNull() {
+    void shouldReturnNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .iht205completedOnline("false")
@@ -60,7 +60,7 @@ public class OCRFieldIhtFormCompletedOnlineMapperTest {
     }
 
     @Test
-    public void shouldReturnUseYesNoMapperForExistingFormFalse() {
+    void shouldReturnUseYesNoMapperForExistingFormFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline("false")
             .build();
@@ -69,7 +69,7 @@ public class OCRFieldIhtFormCompletedOnlineMapperTest {
     }
 
     @Test
-    public void shouldReturnUseYesNoMapperForExistingFormTrue() {
+    void shouldReturnUseYesNoMapperForExistingFormTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline("true")
             .build();

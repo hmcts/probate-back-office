@@ -28,7 +28,7 @@ import java.util.Map;
 
 @ExtendWith(SpringExtension.class)
 @JsonTest
-public class PdfServiceHtmlTemplateTest {
+class PdfServiceHtmlTemplateTest {
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
@@ -134,7 +134,7 @@ public class PdfServiceHtmlTemplateTest {
     }
 
     @Test
-    public void shouldGenerateCorrectHtml() throws Exception {
+    void shouldGenerateCorrectHtml() throws Exception {
         Map<String, Object> valuesMap = objectMapper.readValue(jsonData, MapType.REFERENCE);
         valuesMap.put("case_extras", null);
         String templateString = new String(Files.readAllBytes(Paths.get(getClass()

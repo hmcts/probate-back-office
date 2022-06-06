@@ -11,7 +11,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class WelshMonthTranslationTest {
+class WelshMonthTranslationTest {
 
     @MockBean
     private AppInsights appInsights;
@@ -20,7 +20,7 @@ public class WelshMonthTranslationTest {
     private WelshMonthTranslation welshMonthTranslation;
 
     @Test
-    public void convertDateInWelsh() {
+    void convertDateInWelsh() {
         final String dateInWelsh = welshMonthTranslation.getMonths().get(5);
         Assert.assertEquals("Mai", dateInWelsh);
     }

@@ -27,7 +27,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TR
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
 @ExtendWith(SpringExtension.class)
-public class PDFDecoratorServiceTest {
+class PDFDecoratorServiceTest {
 
     private PDFDecoratorService pdfDecoratorService;
 
@@ -55,7 +55,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotDecorateForCaveatRequest() throws JsonProcessingException {
+    void shouldNotDecorateForCaveatRequest() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock)).thenReturn(caseDetailsJson);
@@ -68,7 +68,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotDecorateForNonCoversheet() throws JsonProcessingException {
+    void shouldNotDecorateForNonCoversheet() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
@@ -81,7 +81,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotDecorateThrowBadRequest() throws JsonProcessingException {
+    void shouldNotDecorateThrowBadRequest() throws JsonProcessingException {
         assertThrows(BadRequestException.class, () -> {
             when(objectMapperMock.writeValueAsString(caveatCallbackRequestMock))
                     .thenThrow(JsonProcessingException.class);
@@ -91,7 +91,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldDecorateSolicitorCoversheet() throws JsonProcessingException {
+    void shouldDecorateSolicitorCoversheet() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
@@ -109,7 +109,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldDecorateSolicitorLegalStatementProbateTC() throws JsonProcessingException {
+    void shouldDecorateSolicitorLegalStatementProbateTC() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
@@ -127,7 +127,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldDecorateSolicitorLegalStatementProbate() throws JsonProcessingException {
+    void shouldDecorateSolicitorLegalStatementProbate() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
@@ -145,7 +145,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldDecorateSolicitorLegalStatementIntestacy() throws JsonProcessingException {
+    void shouldDecorateSolicitorLegalStatementIntestacy() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";
@@ -163,7 +163,7 @@ public class PDFDecoratorServiceTest {
     }
 
     @Test
-    public void shouldDecorateSolicitorLegalStatementAdmon() throws JsonProcessingException {
+    void shouldDecorateSolicitorLegalStatementAdmon() throws JsonProcessingException {
         String caseDetailsJson = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"}}";
         String caseExtraJson = "{\"showPa16Form\" : \"Yes\",\"pa16FormText\" : \"<PA16FormText>\"}";

@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class NotApplyingExecutorsMapperTest {
+class NotApplyingExecutorsMapperTest {
 
     @InjectMocks
     private NotApplyingExecutorsMapper underTest;
@@ -48,7 +48,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithPrimary() {
+    void shouldGetNotApplyingExecsWithPrimary() {
         when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
@@ -60,7 +60,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithPrimaryIncuded() {
+    void shouldGetNotApplyingExecsWithPrimaryIncuded() {
         when(caseDataMock.getSolsSOTName()).thenReturn("solsAdditionalExecutorFN solsAdditionalExecutorLN");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
@@ -72,7 +72,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetApplyingExecsWithoutPrimaryWithSOTName() {
+    void shouldGetApplyingExecsWithoutPrimaryWithSOTName() {
         when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
 
@@ -83,7 +83,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithoutNullLists() {
+    void shouldGetNotApplyingExecsWithoutNullLists() {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
         when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(null);
 

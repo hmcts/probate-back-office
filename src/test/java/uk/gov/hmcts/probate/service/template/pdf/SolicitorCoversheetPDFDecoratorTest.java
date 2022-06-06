@@ -35,7 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class SolicitorCoversheetPDFDecoratorTest {
+class SolicitorCoversheetPDFDecoratorTest {
 
     @InjectMocks
     private SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
@@ -82,7 +82,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldNotProvideAdditionalDecoration() {
+    void shouldNotProvideAdditionalDecoration() {
         String caseJson = "";
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -90,7 +90,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvidePA14Decoration() {
+    void shouldProvidePA14Decoration() {
         when(pa14FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa14Form\":\"Yes\",\"pa14FormUrl\":\"PA14FormURL\","
             + "\"pa14FormText\":\"PA14FormTEXT\"}";
@@ -108,7 +108,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvidePA15Decoration() {
+    void shouldProvidePA15Decoration() {
         when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa15Form\":\"Yes\",\"pa15FormUrl\":\"PA15FormURL\","
             + "\"pa15FormText\":\"PA15FormTEXT\"}";
@@ -125,7 +125,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvidePA16Decoration() {
+    void shouldProvidePA16Decoration() {
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
             + "\"pa16FormText\":\"PA16FormTEXT\"}";
@@ -139,7 +139,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideAdditionalDecorationPA17() {
+    void shouldProvideAdditionalDecorationPA17() {
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
             + "\"pa17FormText\":\"PA17FormTEXT\"}";
@@ -152,7 +152,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideIhtEstate207Decoration() {
+    void shouldProvideIhtEstate207Decoration() {
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class))).thenReturn(extra);
@@ -164,7 +164,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideAdmonWillRenunciationDecoration() {
+    void shouldProvideAdmonWillRenunciationDecoration() {
         when(admonWillRenunicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showAdmonWillRenunciation\": \"Yes\","
             + "\"pa15FormUrl\":\"PA15FormURL\", \"admonWillRenunciationText\":\"admonWillRenunciationText\""
@@ -179,7 +179,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
+    void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
         when(tcResolutionLodgedWithApplicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"tcResolutionLodgedWithAppText\":\"a certified copy of the resolution\"}";
         when(caseExtraDecorator.decorate(any())).thenReturn(extra);
@@ -191,7 +191,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideAllDecorations() {
+    void shouldProvideAllDecorations() {
         when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);

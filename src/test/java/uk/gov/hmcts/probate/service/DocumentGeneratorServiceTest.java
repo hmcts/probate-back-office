@@ -40,7 +40,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
-public class DocumentGeneratorServiceTest {
+class DocumentGeneratorServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -192,7 +192,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
+    void testGenerateReissueDraftProducesCorrectDocumentForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap,
             DocumentType.DIGITAL_GRANT_REISSUE_DRAFT))
             .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_DRAFT_REISSUE_FILE_NAME).build());
@@ -209,7 +209,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueDraftProducesCorrectDocumentForIntestacy() {
+    void testGenerateReissueDraftProducesCorrectDocumentForIntestacy() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
                 LAST_MODIFIED, CASE_ID);
@@ -229,7 +229,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueDraftProducesCorrectDocumentForAdmonWill() {
+    void testGenerateReissueDraftProducesCorrectDocumentForAdmonWill() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").build(),
                 LAST_MODIFIED, CASE_ID);
@@ -249,7 +249,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueProducesFinalVersionForGOP() {
+    void testGenerateReissueProducesFinalVersionForGOP() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.DIGITAL_GRANT_REISSUE))
             .thenReturn(Document.builder().documentFileName(DIGITAL_GRANT_REISSUE_FILE_NAME).build());
 
@@ -262,7 +262,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueProducesFinalVersionForIntestacy() {
+    void testGenerateReissueProducesFinalVersionForIntestacy() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol").build(),
                 LAST_MODIFIED, CASE_ID);
@@ -282,7 +282,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueProducesFinalVersionForAdmonWill() {
+    void testGenerateReissueProducesFinalVersionForAdmonWill() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol").build(),
                 LAST_MODIFIED, CASE_ID);
@@ -302,7 +302,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshAdmonWillVersionFinal() {
+    void testGenerateProducesWelshAdmonWillVersionFinal() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -325,7 +325,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshAdmonWillVersionDraft() {
+    void testGenerateProducesWelshAdmonWillVersionDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -347,7 +347,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshDigitalGrantFinal() {
+    void testGenerateProducesWelshDigitalGrantFinal() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -369,7 +369,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshDigitalGrantDraft() {
+    void testGenerateProducesWelshDigitalGrantDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -391,7 +391,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshIntestacyGrantDraft() {
+    void testGenerateProducesWelshIntestacyGrantDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -413,7 +413,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshIntestacyGrantFinal() {
+    void testGenerateProducesWelshIntestacyGrantFinal() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -435,7 +435,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshDigitalGrantReissueDraft() {
+    void testGenerateProducesWelshDigitalGrantReissueDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -457,7 +457,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshIntestacyGrantReissueDraft() {
+    void testGenerateProducesWelshIntestacyGrantReissueDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -479,7 +479,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshAdmonGrantReissueDraft() {
+    void testGenerateProducesWelshAdmonGrantReissueDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -501,7 +501,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshDigitalGrantReissue() {
+    void testGenerateProducesWelshDigitalGrantReissue() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("gop").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -523,7 +523,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshIntestacyGrantReissue() {
+    void testGenerateProducesWelshIntestacyGrantReissue() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("intestacy").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -545,7 +545,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateProducesWelshAdmonWIllGrantReissue() {
+    void testGenerateProducesWelshAdmonWIllGrantReissue() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("admonWill").registryLocation("Bristol")
                 .languagePreferenceWelsh(Constants.YES).build(),
@@ -567,7 +567,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueProducesNewEdgeCaseDocumentForDraft() {
+    void testGenerateReissueProducesNewEdgeCaseDocumentForDraft() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").build(),
                 LAST_MODIFIED, CASE_ID);
@@ -578,7 +578,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateReissueProducesNewEdgeCaseDocumentForFinal() {
+    void testGenerateReissueProducesNewEdgeCaseDocumentForFinal() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol").build(),
                 LAST_MODIFIED, CASE_ID);
@@ -589,7 +589,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateCoversheetReturnsCorrectDocumentType() {
+    void testGenerateCoversheetReturnsCorrectDocumentType() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
             .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         assertEquals(DocumentType.GRANT_COVERSHEET,
@@ -597,7 +597,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateCoversheetReturnsCorrectDocumentTypeForSpecificExec() {
+    void testGenerateCoversheetReturnsCorrectDocumentTypeForSpecificExec() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.GRANT_COVERSHEET))
             .thenReturn(Document.builder().documentType(DocumentType.GRANT_COVERSHEET).build());
         assertEquals(DocumentType.GRANT_COVERSHEET,
@@ -606,7 +606,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateRequestInformationReturnsCorrectDocumentType() {
+    void testGenerateRequestInformationReturnsCorrectDocumentType() {
         ExecutorsApplyingNotification executor = ExecutorsApplyingNotification.builder().name("Bob").build();
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.SOT_INFORMATION_REQUEST))
             .thenReturn(Document.builder().documentType(DocumentType.SOT_INFORMATION_REQUEST).build());
@@ -616,7 +616,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateRequestInformationReturnsCorrectDocumentTypeForSolicitors() {
+    void testGenerateRequestInformationReturnsCorrectDocumentTypeForSolicitors() {
         expectedMap.clear();
         expectedMap.put("applicantName", "Bob Sot");
         expectedMap.put("fullRedec", "No");
@@ -633,7 +633,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testStatementOfTruthReturnedSuccessfullyForPersonalCase() {
+    void testStatementOfTruthReturnedSuccessfullyForPersonalCase() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.STATEMENT_OF_TRUTH))
             .thenReturn(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build());
         assertEquals(Document.builder().documentType(DocumentType.STATEMENT_OF_TRUTH).build(),
@@ -641,7 +641,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testStatementOfTruthReturnedSuccessfullyForSolsGopCase() {
+    void testStatementOfTruthReturnedSuccessfullyForSolsGopCase() {
         when(pdfManagementService.generateAndUpload(callbackRequestSolsGop, DocumentType.LEGAL_STATEMENT_PROBATE))
             .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE).build());
         assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE).build(),
@@ -649,7 +649,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testStatementOfTruthReturnedSuccessfullyForSolsIntestacyCase() {
+    void testStatementOfTruthReturnedSuccessfullyForSolsIntestacyCase() {
         when(pdfManagementService
             .generateAndUpload(callbackRequestSolsIntestacy, DocumentType.LEGAL_STATEMENT_INTESTACY))
             .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_INTESTACY).build());
@@ -658,7 +658,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testStatementOfTruthReturnedSuccessfullyForSolsAdmonWillCase() {
+    void testStatementOfTruthReturnedSuccessfullyForSolsAdmonWillCase() {
         when(pdfManagementService.generateAndUpload(callbackRequestSolsAdmon, DocumentType.LEGAL_STATEMENT_ADMON))
             .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build());
         assertEquals(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_ADMON).build(),
@@ -666,7 +666,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void redeclarationOfSOTWelsh() {
+    void redeclarationOfSOTWelsh() {
         expectedMap.put("deceasedDateOfBirth", String.valueOf(LocalDate.of(2018, 10, 19)));
         expectedMap.put("deceasedDateOfDeath", String.valueOf(LocalDate.of(2018, 10, 19)));
 
@@ -687,7 +687,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateLetter() {
+    void testGenerateLetter() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
             .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
@@ -695,7 +695,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateLetterWithWaterMark() {
+    void testGenerateLetterWithWaterMark() {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.ASSEMBLED_LETTER))
             .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
@@ -703,7 +703,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGeneratePDFDocument() {
+    void testGeneratePDFDocument() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("digitalGrant").registryLocation("Bristol")
                 .build(),
@@ -726,7 +726,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateEdgeCasePDFDocument() {
+    void testGenerateEdgeCasePDFDocument() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder().caseType("edgeCase").registryLocation("Bristol")
                 .build(),
@@ -739,7 +739,7 @@ public class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateTrustCorpsProbateLegalStatementForSchema2() {
+    void testGenerateTrustCorpsProbateLegalStatementForSchema2() {
         when(pdfManagementService.generateAndUpload(callbackRequestTrustCorpSolsGop,
                 DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS))
                 .thenReturn(Document.builder().documentType(DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS).build());

@@ -22,7 +22,7 @@ import static org.junit.Assert.assertTrue;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
-public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
+class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
 
     private static final String TRUE = "True";
     private static final String FALSE = "False";
@@ -67,7 +67,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     private ApplicationTypeMapper applicationTypeMapper;
 
     @Test
-    public void testSetSolsPaymentMethodIsSolicitorGrantOfProbate() {
+    void testSetSolsPaymentMethodIsSolicitorGrantOfProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(TRUE)
             .solsSolicitorFirmName("Firm Name")
@@ -79,7 +79,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsPaymentMethodIsSolicitorIntestacy() {
+    void testSetSolsPaymentMethodIsSolicitorIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(TRUE)
             .solsSolicitorFirmName("Firm Name")
@@ -91,7 +91,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsPaymentMethodIsPersonal() {
+    void testSetSolsPaymentMethodIsPersonal() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(null)
             .primaryApplicantForenames("Joe")
@@ -105,7 +105,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeSingleNameGrantOfProbate() {
+    void testSetSolsSolicitorRepresentativeSingleNameGrantOfProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(TRUE)
             .solsSolicitorFirmName("Firm Name")
@@ -118,7 +118,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeThreeNameIntestacy() {
+    void testSetSolsSolicitorRepresentativeThreeNameIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(TRUE)
             .solsSolicitorFirmName("Firm Name")
@@ -131,7 +131,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeNameTwoNamesGrantOfProbate() {
+    void testSetSolsSolicitorRepresentativeNameTwoNamesGrantOfProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(TRUE)
             .solsSolicitorFirmName("Firm Name")
@@ -144,7 +144,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeNameNoNamesIntestacy() {
+    void testSetSolsSolicitorRepresentativeNameNoNamesIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(TRUE)
             .solsSolicitorFirmName("Firm Name")
@@ -157,7 +157,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetDomicilityIHTCertTrue() {
+    void testSetDomicilityIHTCertTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .domicilityEntrustingDocument(null)
             .domicilitySuccessionIHTCert(TRUE)
@@ -168,7 +168,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetDomicilityIHTCertNullIfNotTrue() {
+    void testSetDomicilityIHTCertNullIfNotTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .domicilityEntrustingDocument(FALSE)
             .domicilitySuccessionIHTCert(null)
@@ -179,7 +179,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIHTReferenceClearedIfNotOnline() {
+    void testIHTReferenceClearedIfNotOnline() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline(FALSE)
             .ihtReferenceNumber("REF123456789")
@@ -192,7 +192,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIHTFormIdClearedIfOnline() {
+    void testIHTFormIdClearedIfOnline() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline(TRUE)
             .ihtReferenceNumber("REF123456789")
@@ -205,7 +205,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void setDerivedFamilyBooleansTrue() {
+    void setDerivedFamilyBooleansTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .childrenUnderEighteenSurvived("1")
             .childrenOverEighteenSurvived(null)
@@ -264,7 +264,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void setDerivedFamilyIntestacyBooleansNull() {
+    void setDerivedFamilyIntestacyBooleansNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .childrenUnderEighteenSurvived("0")
             .childrenOverEighteenSurvived(null)
@@ -357,7 +357,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetApplyingAsAnAttorneyBooleanTrue() {
+    void testSetApplyingAsAnAttorneyBooleanTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .attorneyOnBehalfOfName("Fred and Sons")
             .attorneyOnBehalfOfAddressLine1("12 Grren Park")
@@ -370,7 +370,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetApplyingAsAnAttorneyBooleanFalse() {
+    void testSetApplyingAsAnAttorneyBooleanFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
@@ -378,7 +378,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtFormEstateNull() {
+    void testIhtFormEstateNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -386,7 +386,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtEstateGrossValue() {
+    void testIhtEstateGrossValue() {
         ExceptionRecordOCRFields ocrFields =
             ExceptionRecordOCRFields.builder().ihtEstateGrossValue("1,000,000").build();
         GrantOfRepresentationData response =
@@ -395,7 +395,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtEstateGrossValueNull() {
+    void testIhtEstateGrossValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -403,7 +403,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtEstateNetValue() {
+    void testIhtEstateNetValue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtEstateNetValue("900,0000").build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -411,7 +411,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtEstateNetValueNull() {
+    void testIhtEstateNetValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -419,7 +419,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtEstateNetQualifyingValue() {
+    void testIhtEstateNetQualifyingValue() {
         ExceptionRecordOCRFields ocrFields =
             ExceptionRecordOCRFields.builder().ihtEstateNetQualifyingValue("800,000").build();
         GrantOfRepresentationData response =
@@ -428,7 +428,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtEstateNetQualifyingValueNull() {
+    void testIhtEstateNetQualifyingValueNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -436,7 +436,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtUnusedAllowanceClaimedTrue() {
+    void testIhtUnusedAllowanceClaimedTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(TRUE).build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -444,7 +444,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtUnusedAllowanceClaimedFalse() {
+    void testIhtUnusedAllowanceClaimedFalse() {
         ExceptionRecordOCRFields ocrFields =
             ExceptionRecordOCRFields.builder().ihtUnusedAllowanceClaimed(FALSE).build();
         GrantOfRepresentationData response =
@@ -453,7 +453,7 @@ public class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    public void testIhtUnusedAllowanceClaimedNull() {
+    void testIhtUnusedAllowanceClaimedNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder().build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);

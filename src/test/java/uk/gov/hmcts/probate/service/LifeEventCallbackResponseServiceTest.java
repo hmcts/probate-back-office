@@ -25,19 +25,19 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventCallbackResponseService.class)
-public class LifeEventCallbackResponseServiceTest {
+class LifeEventCallbackResponseServiceTest {
 
     @Autowired
     LifeEventCallbackResponseService lifeEventCallbackResponseService;
-    
+
     @MockBean
     LifeEventService lifeEventService;
     @MockBean
     CallbackResponseTransformer callbackResponseTransformer;
-    
+
     private CallbackResponse response;
     private List<CollectionMember<DeathRecord>> deathRecords;
- 
+
     @BeforeEach
     public void setup() {
         response = CallbackResponse.builder().data(ResponseCaseData.builder().build()).build();
@@ -47,25 +47,25 @@ public class LifeEventCallbackResponseServiceTest {
     }
 
     @Test
-    public void shouldSetNumberOfDeathRecordsOnCallbackResponse() {
+    void shouldSetNumberOfDeathRecordsOnCallbackResponse() {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
             .deathRecords(deathRecords)
             .build(),
             null, null);
 
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        final CallbackResponse callbackResponse = 
+        final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.setNumberOfDeathRecords(callbackRequest);
         assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
     }
 
     @Test
-    public void shouldDeathRecordsOnCallbackResponse() {
+    void shouldDeathRecordsOnCallbackResponse() {
         final CaseDetails caseDetails = mock(CaseDetails.class);
         when(lifeEventService.getDeathRecordsByNamesAndDate(caseDetails)).thenReturn(deathRecords);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        
-        final CallbackResponse callbackResponse = 
+
+        final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.getDeathRecordsByNamesAndDate(callbackRequest);
         assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
         assertEquals(callbackResponse.getData().getDeathRecords(), deathRecords);

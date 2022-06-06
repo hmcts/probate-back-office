@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class StandingSearchControllerTest {
+class StandingSearchControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -47,7 +47,7 @@ public class StandingSearchControllerTest {
     }
 
     @Test
-    public void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String standingSearchPayload = testUtils.getStringFromFile("standingSearchPayload.json");
 

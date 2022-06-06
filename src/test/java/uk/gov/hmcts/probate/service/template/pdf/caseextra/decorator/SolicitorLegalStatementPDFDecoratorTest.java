@@ -14,7 +14,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class SolicitorLegalStatementPDFDecoratorTest {
+class SolicitorLegalStatementPDFDecoratorTest {
 
     @InjectMocks
     private SolicitorLegalStatementPDFDecorator solicitorLegalStatementPDFDecorator;
@@ -27,7 +27,7 @@ public class SolicitorLegalStatementPDFDecoratorTest {
     private CaseData caseDataMock;
 
     @Test
-    public void shouldDecorateForIhtEstateNotCompleted() {
+    void shouldDecorateForIhtEstateNotCompleted() {
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         when(caseExtraDecorator.decorate(any(IhtEstateConfirmCaseExtra.class))).thenReturn("someJson");
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
@@ -35,7 +35,7 @@ public class SolicitorLegalStatementPDFDecoratorTest {
     }
 
     @Test
-    public void shouldNotDecorate() {
+    void shouldNotDecorate() {
         when(ihtEstateNotCompletedBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         String actual = solicitorLegalStatementPDFDecorator.decorate(caseDataMock);
         assertEquals("", actual);

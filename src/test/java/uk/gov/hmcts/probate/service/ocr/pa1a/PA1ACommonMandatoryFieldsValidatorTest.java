@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PA1ACommonMandatoryFieldsValidatorTest {
+class PA1ACommonMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
@@ -28,7 +28,7 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
+    void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "ihtFormCompletedOnline");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
@@ -38,7 +38,7 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
+    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
@@ -49,7 +49,7 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
+    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");

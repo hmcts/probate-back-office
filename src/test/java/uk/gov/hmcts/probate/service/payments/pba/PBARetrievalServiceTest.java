@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class PBARetrievalServiceTest {
+class PBARetrievalServiceTest {
 
     @InjectMocks
     private PBARetrievalService pbaRetrievalService;
@@ -55,7 +55,7 @@ public class PBARetrievalServiceTest {
     }
 
     @Test
-    public void shouldReturnPBAs() {
+    void shouldReturnPBAs() {
         when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
@@ -73,7 +73,7 @@ public class PBARetrievalServiceTest {
     }
 
     @Test
-    public void shouldReturnNoPBAsForLookupForbidden() {
+    void shouldReturnNoPBAsForLookupForbidden() {
         when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
@@ -87,7 +87,7 @@ public class PBARetrievalServiceTest {
     }
 
     @Test
-    public void shouldErrorOnGetIdamUserDetails() {
+    void shouldErrorOnGetIdamUserDetails() {
         assertThrows(NullPointerException.class, () -> {
             when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn(null);
 
@@ -96,7 +96,7 @@ public class PBARetrievalServiceTest {
     }
 
     @Test
-    public void shouldFailOnAuthTokenMatch() {
+    void shouldFailOnAuthTokenMatch() {
         assertThrows(ClientException.class, () -> {
             when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 

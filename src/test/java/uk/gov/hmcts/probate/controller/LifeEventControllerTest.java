@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LifeEventControllerTest {
+class LifeEventControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -73,7 +73,7 @@ public class LifeEventControllerTest {
     }
 
     @Test
-    public void lifeEventUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void lifeEventUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String payload = testUtils.getStringFromFile("lifeEventPayload.json");
 
@@ -94,7 +94,7 @@ public class LifeEventControllerTest {
     }
 
     @Test
-    public void shouldCountDeathRecords() throws Exception {
+    void shouldCountDeathRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecordsAboutToStart")
@@ -108,7 +108,7 @@ public class LifeEventControllerTest {
     }
 
     @Test
-    public void shouldValidate() throws Exception {
+    void shouldValidate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
@@ -120,7 +120,7 @@ public class LifeEventControllerTest {
     }
 
     @Test
-    public void shouldLookupDeathRecordByNameAndDate() throws Exception {
+    void shouldLookupDeathRecordByNameAndDate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventPayload.json");
 
         mockMvc.perform(post("/lifeevent/manualUpdateAboutToStart")
@@ -134,7 +134,7 @@ public class LifeEventControllerTest {
     }
 
     @Test
-    public void shouldValidateManualUpdate() throws Exception {
+    void shouldValidateManualUpdate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/manualUpdate")
@@ -146,7 +146,7 @@ public class LifeEventControllerTest {
     }
 
     @Test
-    public void shouldValidateSelectFromMultipleRecords() throws Exception {
+    void shouldValidateSelectFromMultipleRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")

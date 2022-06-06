@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
-public class OCRToCCDMandatoryFieldTest {
+class OCRToCCDMandatoryFieldTest {
 
     private List<OCRField> ocrFields;
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
@@ -48,7 +48,7 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testCitizenMandatoryFieldsPresentPA1P() {
+    void testCitizenMandatoryFieldsPresentPA1P() {
         ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
 
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
@@ -57,7 +57,7 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testSolicitorAllMandatoryFieldsPresentPA1P() {
+    void testSolicitorAllMandatoryFieldsPresentPA1P() {
         ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
 
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1P).size());
@@ -66,7 +66,7 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testCitizenMandatoryFieldsPresentPA1A() {
+    void testCitizenMandatoryFieldsPresentPA1A() {
         ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
 
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
@@ -75,7 +75,7 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testSolicitorAllMandatoryFieldsPresentPA1A() {
+    void testSolicitorAllMandatoryFieldsPresentPA1A() {
         ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
 
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
@@ -84,7 +84,7 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testCitizenMandatoryFieldsPresentPA8A() {
+    void testCitizenMandatoryFieldsPresentPA8A() {
         ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
 
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());
@@ -93,7 +93,7 @@ public class OCRToCCDMandatoryFieldTest {
     }
 
     @Test
-    public void testSolicitorMandatoryFieldsPresentPA8A() {
+    void testSolicitorMandatoryFieldsPresentPA8A() {
         ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
 
         assertEquals(0, ocrToCCDMandatoryField.ocrToCCDMandatoryFields(ocrFields, FormType.PA1A).size());

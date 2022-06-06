@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class RedeclarationSoTValidationRuleTest {
+class RedeclarationSoTValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -42,7 +42,7 @@ public class RedeclarationSoTValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowPaperCaseIsNotDigital() {
+    void shouldThrowPaperCaseIsNotDigital() {
         CaseDetails caseDetails =
             new CaseDetails(caseDataPaper, LAST_MODIFIED, CASE_ID);
 
@@ -55,7 +55,7 @@ public class RedeclarationSoTValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowWhenCaseIsDigital() {
+    void shouldNotThrowWhenCaseIsDigital() {
         CaseDetails caseDetails =
             new CaseDetails(caseDataDigital, LAST_MODIFIED, CASE_ID);
 

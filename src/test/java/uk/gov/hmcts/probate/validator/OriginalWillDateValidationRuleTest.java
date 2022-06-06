@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class OriginalWillDateValidationRuleTest {
+class OriginalWillDateValidationRuleTest {
     @InjectMocks
     private OriginalWillSignedDateValidationRule underTest;
 
@@ -33,7 +33,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsToday() {
+    void shouldErrorIfDateIsToday() {
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now());
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
@@ -46,7 +46,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsInTheFuture() {
+    void shouldErrorIfDateIsInTheFuture() {
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now().plusDays(1));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
@@ -59,7 +59,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsAfterDateOfDeath() {
+    void shouldErrorIfDateIsAfterDateOfDeath() {
         LocalDate dod = LocalDate.now().minusDays(2);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod.plusDays(1));
@@ -74,7 +74,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsOnDateOfDeath() {
+    void shouldErrorIfDateIsOnDateOfDeath() {
         LocalDate dod = LocalDate.now().minusDays(1);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod);
@@ -89,7 +89,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldGetTwoErrorsIfDateIsAfterDateOfDeathAndToday() {
+    void shouldGetTwoErrorsIfDateIsAfterDateOfDeathAndToday() {
         LocalDate dod = LocalDate.now().minusDays(1);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod.plusDays(1));
@@ -105,7 +105,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldPassIfDateIsInThePastAndAfterDateOfDeath() {
+    void shouldPassIfDateIsInThePastAndAfterDateOfDeath() {
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.now().minusDays(1));
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now().minusDays(2));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();

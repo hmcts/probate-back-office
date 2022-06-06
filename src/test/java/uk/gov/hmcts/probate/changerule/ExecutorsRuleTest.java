@@ -21,7 +21,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 
-public class ExecutorsRuleTest {
+class ExecutorsRuleTest {
     private static final String YES = "Yes";
     private static final String NO = "No";
 
@@ -54,7 +54,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldStopWithoutPrimary() {
+    void shouldStopWithoutPrimary() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(NO);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
@@ -62,7 +62,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldNotStopWithPrimary() {
+    void shouldNotStopWithPrimary() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(NO);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(YES);
 
@@ -70,7 +70,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldNotChangeStateWithPrimary() {
+    void shouldNotChangeStateWithPrimary() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
@@ -78,7 +78,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldReturnTrueWhenExecutorListIsNullAndPrimaryApplicantIsNotApplying() {
+    void shouldReturnTrueWhenExecutorListIsNullAndPrimaryApplicantIsNotApplying() {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
 
@@ -86,7 +86,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenMultipleExecutorListsAreNotEmpty() {
+    void shouldReturnFalseWhenMultipleExecutorListsAreNotEmpty() {
         when(additionalExecutor1Mock.getAdditionalApplying()).thenReturn(YES);
         when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
         List<CollectionMember<AdditionalExecutor>> additionalExecutorsList = new ArrayList<>();
@@ -103,7 +103,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenExecutorListIsNullAndPrimaryApplicantIsNotApplyingPtnrsRenouncingOnePartner() {
+    void shouldReturnFalseWhenExecutorListIsNullAndPrimaryApplicantIsNotApplyingPtnrsRenouncingOnePartner() {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
         when(caseDataMock.getAdditionalExecutorsTrustCorpList()).thenReturn(null);
@@ -117,7 +117,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldReturnFalseWhenExecutorListIsNullAndPrimaryApplicantIsNotApplyingTc() {
+    void shouldReturnFalseWhenExecutorListIsNullAndPrimaryApplicantIsNotApplyingTc() {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
         when(caseDataMock.getPrimaryApplicantIsApplying()).thenReturn(NO);
         when(caseDataMock.getOtherPartnersApplyingAsExecutors()).thenReturn(null);
@@ -132,7 +132,7 @@ public class ExecutorsRuleTest {
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodyNoApplyingExecutors", undertest.getConfirmationBodyMessageKey());
     }
 }

@@ -26,7 +26,7 @@ import static uk.gov.hmcts.probate.model.ApplicationState.EXAMINING;
 import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 
 @Slf4j
-public class TaskListUpdateServiceTest {
+class TaskListUpdateServiceTest {
 
     @InjectMocks
     private TaskListUpdateService taskListUpdateService;
@@ -68,7 +68,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_CaseCreated() {
+    void shouldBuildCaseProgressHtmlCorrectly_CaseCreated() {
         caseDetails.setState(CASE_CREATED.getId());
 
         String expectedCaseProgressCaseCreatedHtml = "<div class=\"govuk-grid-row\">"
@@ -209,7 +209,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOExamining() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOExamining() {
         caseDetails.setState(EXAMINING.getId());
 
         String expectedCaseProgressCaseCreatedHtml =
@@ -357,7 +357,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOCaseStopped() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOCaseStopped() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(stoppedTaskListRenderer);
 
         caseDetails.setState(BO_CASE_STOPPED.getId());
@@ -369,7 +369,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedReissue() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedReissue() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(stoppedTaskListRenderer);
 
         caseDetails.setState(CASE_STOPPED_REISSUE.getId());
@@ -381,7 +381,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedAwaitRedec() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedAwaitRedec() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(stoppedTaskListRenderer);
 
         caseDetails.setState(CASE_STOPPED_AWAIT_REDEC.getId());
@@ -393,7 +393,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BORegistrarEscalation() {
+    void shouldBuildCaseProgressHtmlCorrectly_BORegistrarEscalation() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(escalatedTaskListRenderer);
 
         caseDetails.setState(REGISTRAR_ESCALATION.getId());

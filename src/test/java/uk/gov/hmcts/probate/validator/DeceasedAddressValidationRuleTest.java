@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 
-public class DeceasedAddressValidationRuleTest {
+class DeceasedAddressValidationRuleTest {
 
     @InjectMocks
     private DeceasedAddressValidationRule deceasedAddressValidationRule;
@@ -52,7 +52,7 @@ public class DeceasedAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
@@ -62,7 +62,7 @@ public class DeceasedAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
+    void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getPostCode()).thenReturn("PC");
 
@@ -73,7 +73,7 @@ public class DeceasedAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
+    void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(null);
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
@@ -82,7 +82,7 @@ public class DeceasedAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressErrorMessageWhenEmptyAddressLine1Provided() {
+    void shouldReturnAddressErrorMessageWhenEmptyAddressLine1Provided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getPostCode()).thenReturn("PC");
         when(addressMock.getAddressLine1()).thenReturn("");
@@ -94,7 +94,7 @@ public class DeceasedAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressErrorMessageWhenNullAddressLine1Provided() {
+    void shouldReturnAddressErrorMessageWhenNullAddressLine1Provided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getPostCode()).thenReturn("PC");
         when(addressMock.getAddressLine1()).thenReturn(null);
@@ -106,7 +106,7 @@ public class DeceasedAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldNotReturnErrorMessagesWhenAddressProvided() {
+    void shouldNotReturnErrorMessagesWhenAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);

@@ -12,19 +12,19 @@ import static uk.gov.hmcts.probate.util.EmailAddressUtils.VALID_EMAIL_ADDRESSES;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class EmailValidationServiceTest {
+class EmailValidationServiceTest {
 
     private final EmailValidationService emailValidationService = new EmailValidationService();
 
     @Test
-    public void shouldAssertEmailsAsValid() {
+    void shouldAssertEmailsAsValid() {
         for (String email : VALID_EMAIL_ADDRESSES) {
             assertTrue(emailValidationService.validateEmailAddress(email));
         }
     }
 
     @Test
-    public void shouldAssertEmailsAsFalse() {
+    void shouldAssertEmailsAsFalse() {
         for (String email : INVALID_EMAIL_ADDRESSES) {
             assertFalse(emailValidationService.validateEmailAddress(email));
         }

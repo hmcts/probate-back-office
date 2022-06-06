@@ -13,7 +13,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Witn
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessExecution;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessSignature;
 
-public class AssembleWitnessTest extends AssembleTestBase {
+class AssembleWitnessTest extends AssembleTestBase {
     private AssembleWitness assembleWitness = new AssembleWitness(assemblerBase);
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
 
@@ -32,7 +32,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessExecution() {
+    void shouldPopulateWitnessExecution() {
 
         List<ParagraphDetail> response = assembleWitness.witnessExecution(WitnessExecution,
             CaseData.builder().build());
@@ -40,7 +40,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessSignature() {
+    void shouldPopulateWitnessSignature() {
 
         List<ParagraphDetail> response = assembleWitness.witnessSignature(WitnessSignature,
             CaseData.builder().build());
@@ -48,7 +48,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessDate() {
+    void shouldPopulateWitnessDate() {
 
         List<ParagraphDetail> response = assembleWitness.witnessDate(WitnessDate,
             CaseData.builder().build());
@@ -56,7 +56,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessConsent() {
+    void shouldPopulateWitnessConsent() {
 
         List<ParagraphDetail> response = assembleWitness.witnessConsent(WitnessConsent,
             CaseData.builder().build());

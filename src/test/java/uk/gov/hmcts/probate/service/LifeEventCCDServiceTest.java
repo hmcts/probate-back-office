@@ -48,7 +48,7 @@ import static uk.gov.hmcts.probate.service.LifeEventCCDService.LIFE_EVENT_VERIFI
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventCCDService.class)
-public class LifeEventCCDServiceTest {
+class LifeEventCCDServiceTest {
 
     final Long caseId = 1234L;
     @Autowired
@@ -101,7 +101,7 @@ public class LifeEventCCDServiceTest {
     }
 
     @Test
-    public void shouldSearchForDeathRecordsByNamesAndDate() {
+    void shouldSearchForDeathRecordsByNamesAndDate() {
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
 
         verify(deathService, timeout(1000))
@@ -109,13 +109,13 @@ public class LifeEventCCDServiceTest {
     }
 
     @Test
-    public void shouldConvertReturnedDeathRecords() {
+    void shouldConvertReturnedDeathRecords() {
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
         verify(deathRecordService, timeout(1000)).mapDeathRecords(same(deathRecords));
     }
 
     @Test
-    public void shouldUpdateCCDWhenOneRecordFound() {
+    void shouldUpdateCCDWhenOneRecordFound() {
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
@@ -132,7 +132,7 @@ public class LifeEventCCDServiceTest {
     }
 
     @Test
-    public void shouldUpdateCCDWhenDeathRecordVerificationUnsuccessful() {
+    void shouldUpdateCCDWhenDeathRecordVerificationUnsuccessful() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(emptyList());
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
@@ -148,7 +148,7 @@ public class LifeEventCCDServiceTest {
     }
 
     @Test
-    public void shouldUpdateCCDWhenMultipleRecordsFound() {
+    void shouldUpdateCCDWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(deathRecords);
@@ -168,7 +168,7 @@ public class LifeEventCCDServiceTest {
     }
 
     @Test
-    public void shouldUpdateCCDWhenError() {
+    void shouldUpdateCCDWhenError() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
             "Test exception"));
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);

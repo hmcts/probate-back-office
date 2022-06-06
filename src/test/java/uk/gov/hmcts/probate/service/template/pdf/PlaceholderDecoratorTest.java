@@ -17,7 +17,7 @@ import static org.junit.Assert.assertNotNull;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class PlaceholderDecoratorTest {
+class PlaceholderDecoratorTest {
 
     private static final String DECEASED_DATE_OF_DEATH = "deceasedDateOfDeath";
     private static final String DECEASED_DATE_OF_DEATH_IN_WELSH = "deceasedDateOfDeathInWelsh";
@@ -35,7 +35,7 @@ public class PlaceholderDecoratorTest {
     private PlaceholderDecorator placeholderDecorator;
 
     @Test
-    public void decorate_when_both_date_provided() {
+    void decorate_when_both_date_provided() {
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put(DECEASED_DATE_OF_DEATH, String.valueOf(LocalDate.of(2018,10,19)));
         placeholders.put(GRANT_ISSUED_DATE, String.valueOf(LocalDate.of(2019,12,23)));
@@ -46,7 +46,7 @@ public class PlaceholderDecoratorTest {
     }
 
     @Test
-    public void decorate_when_reissue() {
+    void decorate_when_reissue() {
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put(GRANT_REISSUED_DATE, String.valueOf(LocalDate.of(2019,12,23)));
         placeholderDecorator.decorate(placeholders);
@@ -54,7 +54,7 @@ public class PlaceholderDecoratorTest {
     }
 
     @Test
-    public void decorate_date_of_birth() {
+    void decorate_date_of_birth() {
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put(DECEASED_DATE_OF_BIRTH, String.valueOf(LocalDate.of(2018,10,19)));
         placeholderDecorator.decorate(placeholders);
@@ -62,7 +62,7 @@ public class PlaceholderDecoratorTest {
     }
 
     @Test
-    public void decorate_when_grant_issued_not_provided() {
+    void decorate_when_grant_issued_not_provided() {
         Map<String, Object> placeholders = new HashMap<>();
         placeholders.put(DECEASED_DATE_OF_DEATH, String.valueOf(LocalDate.of(2018,10,19)));
         placeholderDecorator.decorate(placeholders);

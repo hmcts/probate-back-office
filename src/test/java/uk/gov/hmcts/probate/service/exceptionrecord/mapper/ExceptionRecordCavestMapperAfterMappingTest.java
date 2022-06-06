@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
-public class ExceptionRecordCavestMapperAfterMappingTest {
+class ExceptionRecordCavestMapperAfterMappingTest {
 
     @Autowired
     private ExceptionRecordCaveatMapper exceptionRecordCaveatMapper;
@@ -65,7 +65,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsPaymentMethodIsSolicitor() {
+    void testSetSolsPaymentMethodIsSolicitor() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
                 .solsSolicitorRepresentativeName("Sonny Solicitor")
@@ -75,7 +75,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsPaymentMethodIsPersonal() {
+    void testSetSolsPaymentMethodIsPersonal() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .caveatorForenames("Joe")
                 .caveatorSurnames("Smith")
@@ -87,7 +87,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorEmailIsSolicitor() {
+    void testSetSolsSolicitorEmailIsSolicitor() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
                 .caveatorEmailAddress("caveator@probate-test.com")
@@ -98,7 +98,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorEmailIsCitizen() {
+    void testSetSolsSolicitorEmailIsCitizen() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .caveatorEmailAddress("caveator@probate-test.com")
                 .solsSolicitorEmail("solicitor@probate-test.com")
@@ -108,7 +108,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeSingleName() {
+    void testSetSolsSolicitorRepresentativeSingleName() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
                 .caveatorForenames("Tom")
@@ -121,7 +121,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeThreeName() {
+    void testSetSolsSolicitorRepresentativeThreeName() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
                 .caveatorForenames("Tom")
@@ -134,7 +134,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeNameTwoNames() {
+    void testSetSolsSolicitorRepresentativeNameTwoNames() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
                 .caveatorForenames("Tom")
@@ -147,7 +147,7 @@ public class ExceptionRecordCavestMapperAfterMappingTest {
     }
 
     @Test
-    public void testSetSolsSolicitorRepresentativeNameNoNames() {
+    void testSetSolsSolicitorRepresentativeNameNoNames() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsSolicitorFirmName("Firm Name")
                 .caveatorForenames("Tom")

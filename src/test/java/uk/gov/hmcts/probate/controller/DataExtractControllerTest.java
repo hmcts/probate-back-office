@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class DataExtractControllerTest {
+class DataExtractControllerTest {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @MockBean
@@ -56,20 +56,20 @@ public class DataExtractControllerTest {
     }
 
     @Test
-    public void ironMountainShouldReturnOkResponseOnValidDateFormat() throws Exception {
+    void ironMountainShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain?date=2019-03-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform Iron Mountain data extract finished"));
     }
 
     @Test
-    public void ironMountainShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+    void ironMountainShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void shouldThrowClientExceptionWithBadRequestForIronMountainWithIncorrectDateFormat() throws Exception {
+    void shouldThrowClientExceptionWithBadRequestForIronMountainWithIncorrectDateFormat() throws Exception {
         doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
             .dateValidator("2019-2-3");
         mockMvc.perform(post("/data-extract/iron-mountain?date=2019-2-3"))
@@ -77,21 +77,21 @@ public class DataExtractControllerTest {
     }
 
     @Test
-    public void hmrcShouldReturnOkResponseOnValidDatesFormat() throws Exception {
+    void hmrcShouldReturnOkResponseOnValidDatesFormat() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-03-13&toDate=2019-04-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform HMRC data extract finished"));
     }
 
     @Test
-    public void hmrcShouldReturnOkResponseOnSameDates() throws Exception {
+    void hmrcShouldReturnOkResponseOnSameDates() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-03-13&toDate=2019-03-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Perform HMRC data extract finished"));
     }
 
     @Test
-    public void hmrcShouldReturnErroResponseOnInvalidDates() throws Exception {
+    void hmrcShouldReturnErroResponseOnInvalidDates() throws Exception {
         doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
             .dateValidator("2019-09-13", "2019-04-13");
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-09-13&toDate=2019-04-13"))
@@ -99,19 +99,19 @@ public class DataExtractControllerTest {
     }
 
     @Test
-    public void hmrcShouldReturnErroResponseOnMissingDates() throws Exception {
+    void hmrcShouldReturnErroResponseOnMissingDates() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-09-13"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void hmrcShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+    void hmrcShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void shouldThrowClientExceptionWithBadRequestForHmrcWithIncorrectDateFormat() throws Exception {
+    void shouldThrowClientExceptionWithBadRequestForHmrcWithIncorrectDateFormat() throws Exception {
         doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
             .dateValidator("2019-2-3");
         mockMvc.perform(post("/data-extract/hmrc?date=2019-2-3"))
@@ -119,33 +119,33 @@ public class DataExtractControllerTest {
     }
 
     @Test
-    public void exelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
+    void exelaShouldReturnOkResponseOnValidDateFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-13"))
             .andExpect(status().isAccepted())
             .andExpect(content().string("Exela data extract finished"));
     }
 
     @Test
-    public void exelaShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
+    void exelaShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-14"))
                 .andExpect(status().isAccepted())
                 .andExpect(content().string("Exela data extract finished"));
     }
 
     @Test
-    public void exelaShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+    void exelaShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/exela"))
             .andExpect(status().is4xxClientError());
     }
 
     @Test
-    public void smeeAndFordShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
+    void smeeAndFordShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
         mockMvc.perform(post("/data-extract/smee-and-ford?fromDate=2019-02-13&toDate=2019-02-13"))
             .andExpect(status().isAccepted());
     }
 
     @Test
-    public void smeeAndFordShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+    void smeeAndFordShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/smee-and-ford"))
             .andExpect(status().is4xxClientError());
     }

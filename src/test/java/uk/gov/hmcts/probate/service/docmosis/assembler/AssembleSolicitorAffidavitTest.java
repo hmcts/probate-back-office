@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.sols
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidRecital;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsAffidSearch;
 
-public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
+class AssembleSolicitorAffidavitTest extends AssembleTestBase {
 
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSolicitorAffidavit assembleSolicitorAffidavit = new AssembleSolicitorAffidavit(assemblerBase);
@@ -50,7 +50,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidAliasInt() {
+    void shouldPopulateSolsAffidAliasInt() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidAliasIntestacy(solsAffidAliasInt,
             CaseData.builder().build());
@@ -58,7 +58,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidAlias() {
+    void shouldPopulateSolsAffidAlias() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidAlias(solsAffidAlias,
             CaseData.builder().build());
@@ -66,7 +66,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidExec() {
+    void shouldPopulateSolsAffidExec() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidExec(solsAffidExec,
             CaseData.builder().build());
@@ -74,7 +74,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulatesolSAffidHandwriting() {
+    void shouldPopulatesolSAffidHandwriting() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidHandwriting(solsAffidHandwriting,
             CaseData.builder().build());
@@ -82,7 +82,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidIdentity() {
+    void shouldPopulateSolsAffidIdentity() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidIdentity(solsAffidIdentity,
             CaseData.builder().build());
@@ -90,7 +90,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidKnowledge() {
+    void shouldPopulateSolsAffidKnowledge() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidKnowledge(solsAffidKnowledge,
             CaseData.builder().build());
@@ -98,7 +98,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidAlterations() {
+    void shouldPopulateSolsAffidAlterations() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidAlterations(solsAffidAlterations,
             CaseData.builder().build());
@@ -106,7 +106,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidDate() {
+    void shouldPopulateSolsAffidDate() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidDate(solsAffidDate,
             CaseData.builder().build());
@@ -114,7 +114,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidSearch() {
+    void shouldPopulateSolsAffidSearch() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidSearch(solsAffidSearch,
             CaseData.builder().build());
@@ -122,7 +122,7 @@ public class AssembleSolicitorAffidavitTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsAffidRecital() {
+    void shouldPopulateSolsAffidRecital() {
 
         List<ParagraphDetail> response = assembleSolicitorAffidavit.solsAffidMisRecital(solsAffidRecital,
             CaseData.builder().build());

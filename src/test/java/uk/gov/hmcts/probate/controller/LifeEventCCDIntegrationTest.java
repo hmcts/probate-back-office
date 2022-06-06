@@ -38,7 +38,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest()
 @TestPropertySource("classpath:LifeEventCCDIntegrationTest.properties")
 @AutoConfigureMockMvc
-public class LifeEventCCDIntegrationTest {
+class LifeEventCCDIntegrationTest {
 
     private static WireMockServer wireMockServer;
 
@@ -90,7 +90,7 @@ public class LifeEventCCDIntegrationTest {
     }
 
     @Test
-    public void shouldUpdateCCDIfSingleRecordReturned() throws Exception {
+    void shouldUpdateCCDIfSingleRecordReturned() throws Exception {
         wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(
                 "[\n"
@@ -122,7 +122,7 @@ public class LifeEventCCDIntegrationTest {
     }
 
     @Test
-    public void shouldUpdateCCDWithDeathRecordVerificationFailedNoRecordsReturned() throws Exception {
+    void shouldUpdateCCDWithDeathRecordVerificationFailedNoRecordsReturned() throws Exception {
         wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(
                 "[]"))
@@ -144,7 +144,7 @@ public class LifeEventCCDIntegrationTest {
     }
 
     @Test
-    public void shouldUpdateCCDIfMultipleRecordsReturned() throws Exception {
+    void shouldUpdateCCDIfMultipleRecordsReturned() throws Exception {
 
         wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
             .willReturn(okJson(

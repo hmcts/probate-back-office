@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ContextConfiguration(classes = {AssignCaseAccessService.class})
 @ExtendWith(SpringExtension.class)
-public class AssignCaseAccessServiceTest {
+class AssignCaseAccessServiceTest {
     @MockBean
     private AssignCaseAccessClient assignCaseAccessClient;
 
@@ -40,7 +40,7 @@ public class AssignCaseAccessServiceTest {
     private IdamApi idamApi;
 
     @Test
-    public void testAssignCaseAccess() {
+    void testAssignCaseAccess() {
         HashMap<String, Object> stringObjectMap = new HashMap<>();
         stringObjectMap.put("id", "Value");
         ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);

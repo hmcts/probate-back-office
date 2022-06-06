@@ -45,7 +45,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(properties = {"markdown.templatesDirectory=templates/markdown/"})
-public class ConfirmationResponseServiceFeatureTest {
+class ConfirmationResponseServiceFeatureTest {
 
     private static final String REASON_MENTALLY_INCAPABLE = "MentallyIncapable";
     private static final String REASON_RENOUNCED = "Renunciation";
@@ -90,7 +90,7 @@ public class ConfirmationResponseServiceFeatureTest {
     private CaseData caseDataMock;
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithNoAdditionalOptions() throws Exception {
         CCDData ccdData = createCCDataBuilder().build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
@@ -101,7 +101,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithNoWill() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithNoWill() throws Exception {
         CCDData ccdData = createCCDataBuilder().solsWillType(WILL_TYPE_INTESTACY).build();
         when(caseDataMock.getSolsWillType()).thenReturn(WILL_TYPE_INTESTACY);
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
@@ -113,7 +113,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithRenouncingExecutor() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithRenouncingExecutor() throws Exception {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(createAdditionalExecutor("Tim", "Smith", false,
             REASON_RENOUNCED));
         when(caseDataMock.getOtherExecutorExists()).thenReturn("Yes");
@@ -128,7 +128,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithMultipleRenouncingExecutors() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithMultipleRenouncingExecutors() throws Exception {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(createAdditionalExecutor("Tim", "Smith", false,
             REASON_RENOUNCED));
         when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(createAdditionalExecutorNotApplying("John",
@@ -150,7 +150,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithDeadExecutor() throws Exception {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         CCDData ccdData = createCCDataBuilder().executors(Collections.singletonList(deadExecutor)).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
@@ -162,7 +162,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithMultipleDeadExecutors() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithMultipleDeadExecutors() throws Exception {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         Executor deadExecutor2 = createDeadExecutor("John", "Martin");
         CCDData ccdData = createCCDataBuilder().executors(Arrays.asList(deadExecutor, deadExecutor2)).build();
@@ -176,7 +176,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithIHT400421() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithIHT400421() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT400421")).build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
@@ -187,7 +187,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithTcResolutionLodgedWithinApp() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithTcResolutionLodgedWithinApp() throws Exception {
         CCDData ccdData = createCCDataBuilder().titleAndClearingType("TCTTrustCorpResWithApp").build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
@@ -199,7 +199,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptions() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptions() throws Exception {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         CCDData ccdData = createCCDataBuilder()
             .executors(Arrays.asList(deadExecutor))
@@ -216,7 +216,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptionsAndMultiples()
+    void shouldGenerateCorrectConfirmationBodyWithAllCombinationsForAdditionalOptionsAndMultiples()
         throws Exception {
         Executor deadExecutor = createDeadExecutor("Bob", "Martin");
         Executor deadExecutor2 = createDeadExecutor("John", "Martin");
@@ -239,7 +239,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectConfirmationBodyCaveats() throws Exception {
+    void shouldGenerateCorrectConfirmationBodyCaveats() throws Exception {
         CaveatData caveatData = createCaveatDataBuilder().build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(caveatData);
 
@@ -249,7 +249,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectCordicilsConfirmationBody() throws Exception {
+    void shouldGenerateCorrectCordicilsConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).willHasCodicils("Yes").build();
         when(caseDataMock.getWillHasCodicils()).thenReturn(YES);
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
@@ -261,7 +261,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectIHT217ConfirmationBody() throws Exception {
+    void shouldGenerateCorrectIHT217ConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT205")).iht217("Yes").build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
             caseDataMock);
@@ -272,7 +272,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectPA14FormConfirmationBody() throws Exception {
+    void shouldGenerateCorrectPA14FormConfirmationBody() throws Exception {
         when(caseDataMock.getOtherExecutorExists()).thenReturn("Yes");
         List<CollectionMember<AdditionalExecutor>> all = new ArrayList<>();
         all.addAll(createAdditionalExecutor("Tim", "Smith", false, REASON_MENTALLY_INCAPABLE));
@@ -289,7 +289,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectPA15FormConfirmationBody() throws Exception {
+    void shouldGenerateCorrectPA15FormConfirmationBody() throws Exception {
         when(caseDataMock.getOtherExecutorExists()).thenReturn("Yes");
         List<CollectionMember<AdditionalExecutor>> all = new ArrayList<>();
         all.addAll(createAdditionalExecutor("Tim", "Smith", false, REASON_RENOUNCED));
@@ -306,7 +306,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectPA16FormConfirmationBody() throws Exception {
+    void shouldGenerateCorrectPA16FormConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().build();
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn("No");
         when(caseDataMock.getSolsSpouseOrCivilRenouncing()).thenReturn("Yes");
@@ -320,7 +320,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateCorrectPA17FormConfirmationBody() throws Exception {
+    void shouldGenerateCorrectPA17FormConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().build();
         when(caseDataMock.getTitleAndClearingType()).thenReturn("TCTPartOthersRenouncing");
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
@@ -332,7 +332,7 @@ public class ConfirmationResponseServiceFeatureTest {
     }
 
     @Test
-    public void shouldGenerateNotarialCopyConfirmationBody() throws Exception {
+    void shouldGenerateNotarialCopyConfirmationBody() throws Exception {
         CCDData ccdData = createCCDataBuilder().build();
         when(caseDataMock.getWillAccessNotarial()).thenReturn(YES);
         AfterSubmitCallbackResponse confirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,

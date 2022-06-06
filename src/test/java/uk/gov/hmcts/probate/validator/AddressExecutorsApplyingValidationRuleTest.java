@@ -20,7 +20,7 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class AddressExecutorsApplyingValidationRuleTest {
+class AddressExecutorsApplyingValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -83,7 +83,7 @@ public class AddressExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowApplyingExecAddressIsEmpty() {
+    void shouldThrowApplyingExecAddressIsEmpty() {
         CaseDetails caseDetailsEmpty =
             new CaseDetails(caseDataEmpty, LAST_MODIFIED, CASE_ID);
 
@@ -97,7 +97,7 @@ public class AddressExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowApplyingExecAddressIsNull() {
+    void shouldThrowApplyingExecAddressIsNull() {
         CaseDetails caseDetailsNull =
             new CaseDetails(caseDataNull, LAST_MODIFIED, CASE_ID);
 
@@ -111,7 +111,7 @@ public class AddressExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowWhenApplyingExecEmailIsNotEmpty() {
+    void shouldNotThrowWhenApplyingExecEmailIsNotEmpty() {
         CaseDetails caseDetailsNotEmpty =
             new CaseDetails(caseDataNotEmpty, LAST_MODIFIED, CASE_ID);
 
@@ -119,7 +119,7 @@ public class AddressExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowWhenApplyingExecEmailIsNotEmptyForSolicitor() {
+    void shouldNotThrowWhenApplyingExecEmailIsNotEmptyForSolicitor() {
         CaseDetails caseDetailsNotEmptySolicitor =
             new CaseDetails(caseDataNotEmptySolicitor, LAST_MODIFIED, CASE_ID);
 

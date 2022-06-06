@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class WillLodgementMapperTest {
+class WillLodgementMapperTest {
 
     private static final String ID = "12345";
     private static final String LEGACY_TYPE = "Legacy WILL";
@@ -41,7 +41,7 @@ public class WillLodgementMapperTest {
     private WillLodgementMapper willLodgementMapper;
 
     @Test
-    public void shouldMapToCcdData() {
+    void shouldMapToCcdData() {
         WillLodgement willLodgement = new WillLodgement();
         willLodgement.setAliasNames(DECEASED_ALIAS_NAMES);
         willLodgement.setDeceasedForenames(FORENAMES);

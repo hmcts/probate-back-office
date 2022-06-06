@@ -17,7 +17,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class FileSystemResourceServiceTest {
+class FileSystemResourceServiceTest {
 
     @InjectMocks
     private FileSystemResourceService underTest;
@@ -28,25 +28,25 @@ public class FileSystemResourceServiceTest {
     }
 
     @Test
-    public void getFileSystemResourceSuccess() {
+    void getFileSystemResourceSuccess() {
         Optional<FileSystemResource> resource = underTest.getFileSystemResource("success.json");
         assertTrue(resource.isPresent());
     }
 
     @Test
-    public void getFileSystemResourceAsStringSuccess() {
+    void getFileSystemResourceAsStringSuccess() {
         String resource = underTest.getFileFromResourceAsString("success.json");
         assertNotNull(resource);
     }
 
     @Test
-    public void getFileSystemResourceFileNotFound() {
+    void getFileSystemResourceFileNotFound() {
         Optional<FileSystemResource> resource = underTest.getFileSystemResource("file_not_found.json");
         assertTrue(!resource.isPresent());
     }
 
     @Test
-    public void shouldReturnNullWhenGettingFileFromResourceStringAndFileIsNotPresent() {
+    void shouldReturnNullWhenGettingFileFromResourceStringAndFileIsNotPresent() {
         FileSystemResourceService fileSystemResourceServiceSpy = Mockito.spy(new FileSystemResourceService());
         when(fileSystemResourceServiceSpy.getFileSystemResource(anyString())).thenReturn(Optional.empty());
 
@@ -56,7 +56,7 @@ public class FileSystemResourceServiceTest {
     }
 
     @Test
-    public void shouldReturnNullFromResourceStringAndIOExceptionIsThrown() {
+    void shouldReturnNullFromResourceStringAndIOExceptionIsThrown() {
         FileSystemResourceService fileSystemResourceServiceSpy = Mockito.spy(new FileSystemResourceService());
         File mockFile = Mockito.mock(File.class);
         FileSystemResource fileSystemResource = mock(FileSystemResource.class);

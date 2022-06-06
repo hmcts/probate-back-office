@@ -13,7 +13,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
-public class AppInsightsTest {
+class AppInsightsTest {
     private AppInsights classUnderTest;
     private String instrumentKey = "key";
 
@@ -30,12 +30,12 @@ public class AppInsightsTest {
     }
 
     @Test
-    public void trackRequest() {
+    void trackRequest() {
         classUnderTest.trackEvent(REQUEST_SENT.toString(), classUnderTest.trackingMap("uri", "http://testurl.com"));
     }
 
     @Test
-    public void testTelemetry() {
+    void testTelemetry() {
         TelemetryContext telemetryContext = new TelemetryContext();
         telemetryContext.setInstrumentationKey("key");
 

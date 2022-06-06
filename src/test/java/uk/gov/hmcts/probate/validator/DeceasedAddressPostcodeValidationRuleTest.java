@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 
-public class DeceasedAddressPostcodeValidationRuleTest {
+class DeceasedAddressPostcodeValidationRuleTest {
 
     @InjectMocks
     private DeceasedAddressPostcodeValidationRule deceasedAddressPostcodeValidationRule;
@@ -51,7 +51,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
@@ -61,7 +61,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getAddressLine1()).thenReturn("line1");
 
@@ -72,7 +72,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
+    void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(null);
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
@@ -81,7 +81,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNullPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenNullPostcodeProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getAddressLine1()).thenReturn("line1");
         when(addressMock.getPostCode()).thenReturn(null);
@@ -93,7 +93,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenEmptyPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenEmptyPostcodeProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getAddressLine1()).thenReturn("line1");
         when(addressMock.getPostCode()).thenReturn("");
@@ -105,7 +105,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
+    void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
         when(deceasedMock.getAddress())
             .thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
 

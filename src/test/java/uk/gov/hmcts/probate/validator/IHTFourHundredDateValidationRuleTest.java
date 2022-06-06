@@ -16,7 +16,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class IHTFourHundredDateValidationRuleTest {
+class IHTFourHundredDateValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -43,13 +43,13 @@ public class IHTFourHundredDateValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccess() {
+    void testValidateWithSuccess() {
         CaseDetails caseDetails = new CaseDetails(caseDataWithValidDate, LAST_MODIFIED, CASE_ID);
         underTest.validate(caseDetails);
     }
 
     @Test
-    public void testValidateFailureWithDate20DaysBeforeToday() {
+    void testValidateFailureWithDate20DaysBeforeToday() {
         when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn("message1", "message2",
             "message3");
 
@@ -66,7 +66,7 @@ public class IHTFourHundredDateValidationRuleTest {
     }
 
     @Test
-    public void testValidateFailureWithDateInFuture() {
+    void testValidateFailureWithDateInFuture() {
         CaseDetails caseDetails = new CaseDetails(caseDataWithInvalidDateInFuture, LAST_MODIFIED, CASE_ID);
         Assertions.assertThatThrownBy(() -> {
             underTest.validate(caseDetails);

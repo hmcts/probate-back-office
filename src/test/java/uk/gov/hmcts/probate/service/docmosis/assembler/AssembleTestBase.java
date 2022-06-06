@@ -8,7 +8,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class AssembleTestBase {
+class AssembleTestBase {
     protected AssemblerBase assemblerBase = new AssemblerBase();
     protected CaseData caseData = CaseData.builder().build();
 

@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class ImmovableEstateRuleTest {
+class ImmovableEstateRuleTest {
 
     @InjectMocks
     private ImmovableEstateRule underTest;
@@ -26,21 +26,21 @@ public class ImmovableEstateRuleTest {
     }
 
     @Test
-    public void shouldNeedChange() {
+    void shouldNeedChange() {
         when(caseDataMock.getImmovableEstate()).thenReturn("No");
 
         assertTrue(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldNotNeedChange() {
+    void shouldNotNeedChange() {
         when(caseDataMock.getImmovableEstate()).thenReturn("Yes");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodyNotImmovableEstate", underTest.getConfirmationBodyMessageKey());
     }
 }

@@ -24,7 +24,7 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
 
-public class IHTValidationRuleTest {
+class IHTValidationRuleTest {
 
     private static final BigDecimal HIGHER_VALUE = BigDecimal.valueOf(20f);
     private static final BigDecimal LOWER_VALUE = BigDecimal.valueOf(1f);
@@ -50,7 +50,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccess() {
+    void testValidateWithSuccess() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
 
@@ -61,7 +61,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccessWhenEqual() {
+    void testValidateWithSuccessWhenEqual() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
 
@@ -72,7 +72,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccessWhenIhtIsNull() {
+    void testValidateWithSuccessWhenIhtIsNull() {
         when(ccdDataMock.getIht()).thenReturn(null);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -82,7 +82,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateFailureWhenProbateNetHigherThanGross() {
+    void testValidateFailureWhenProbateNetHigherThanGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS))
@@ -97,7 +97,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateFailureWhenIHTNetHigherThanGross() {
+    void testValidateFailureWhenIHTNetHigherThanGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
         when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
@@ -114,7 +114,7 @@ public class IHTValidationRuleTest {
     }
 
     @Test
-    public void testValidateSuccessWhenIhtValuesNetIsTheSameAsGross() {
+    void testValidateSuccessWhenIhtValuesNetIsTheSameAsGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);

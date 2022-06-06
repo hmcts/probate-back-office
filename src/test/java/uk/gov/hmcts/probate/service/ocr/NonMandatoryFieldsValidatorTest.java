@@ -14,7 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
-public class NonMandatoryFieldsValidatorTest {
+class NonMandatoryFieldsValidatorTest {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
 
     @Mock
@@ -29,7 +29,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagSolsWillTypeCaseWarningPA1A() {
+    void testFlagSolsWillTypeCaseWarningPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
 
         ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
@@ -43,7 +43,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagSolsWillTypeReasonCaseWarningPA1A() {
+    void testFlagSolsWillTypeReasonCaseWarningPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         ocrFields.add(
             OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
@@ -57,7 +57,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagAsSolicitorCaseWarningPA1A() {
+    void testFlagAsSolicitorCaseWarningPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
 
         assertEquals("The form has been flagged as a Solictor case.",
@@ -65,7 +65,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagAsSolicitorCaseWarningPA8A() {
+    void testFlagAsSolicitorCaseWarningPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         List<String> warningsResult = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA8A);
@@ -74,7 +74,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testEmailFieldWarning() {
+    void testEmailFieldWarning() {
         List<OCRField> ocrFields = new ArrayList<>();
         final OCRField field = OCRField
             .builder()
@@ -87,7 +87,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagAsSolicitorCaseWarningPA1P() {
+    void testFlagAsSolicitorCaseWarningPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         List<String> warningsResult = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA1P);
@@ -95,7 +95,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagSolsWillTypeCaseWarningPA1P() {
+    void testFlagSolsWillTypeCaseWarningPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
         List<String> warningsResponse = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
@@ -109,7 +109,7 @@ public class NonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFlagSolsWillTypeReasonCaseWarningPA1P() {
+    void testFlagSolsWillTypeReasonCaseWarningPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         ocrFields.add(
             OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());

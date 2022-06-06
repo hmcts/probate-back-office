@@ -26,7 +26,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
 
-public class NumberOfApplyingExecutorsValidationRuleTest {
+class NumberOfApplyingExecutorsValidationRuleTest {
 
     @InjectMocks
     private NumberOfApplyingExecutorsValidationRule underTest;
@@ -65,7 +65,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorForTooManyExecutors() {
+    void shouldErrorForTooManyExecutors() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(EXEC);
         execsApplying.add(EXEC);
@@ -86,7 +86,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     }
 
     @Test
-    public void shouldNotErrorForExecutors() {
+    void shouldNotErrorForExecutors() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(EXEC);
         execsApplying.add(EXEC);

@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PA8ACitizenMandatoryFieldsValidatorTest {
+class PA8ACitizenMandatoryFieldsValidatorTest {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
 
@@ -27,7 +27,7 @@ public class PA8ACitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testAllMandatoryFieldsPresentPA8A() {
+    void testAllMandatoryFieldsPresentPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -36,7 +36,7 @@ public class PA8ACitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingMandatoryFieldsReturnSuccessfullyForPA8A() {
+    void testMissingMandatoryFieldsReturnSuccessfullyForPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addDeceasedMandatoryFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -45,7 +45,7 @@ public class PA8ACitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testOptionalFieldsNotAddedForPA8A() {
+    void testOptionalFieldsNotAddedForPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
         ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
@@ -55,7 +55,7 @@ public class PA8ACitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
+    void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
         ocrFields.remove(ocrFields.size() - 1);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);

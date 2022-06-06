@@ -18,7 +18,7 @@ import static org.mockito.Mockito.when;
 
 
 @ExtendWith(SpringExtension.class)
-public class OCRFieldIhtFormEstateMapperTest {
+class OCRFieldIhtFormEstateMapperTest {
 
     @Mock
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
@@ -41,7 +41,7 @@ public class OCRFieldIhtFormEstateMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT207() {
+    void testCorrectFormTypeIHT207() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .iht207Completed("true")
@@ -52,7 +52,7 @@ public class OCRFieldIhtFormEstateMapperTest {
     }
 
     @Test
-    public void testCorrectFormTypeIHT400421() {
+    void testCorrectFormTypeIHT400421() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .iht400421Completed("true")
@@ -63,7 +63,7 @@ public class OCRFieldIhtFormEstateMapperTest {
     }
 
     @Test
-    public void shouldReturnNullWhenPreEEDod() {
+    void shouldReturnNullWhenPreEEDod() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("2")
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
@@ -73,7 +73,7 @@ public class OCRFieldIhtFormEstateMapperTest {
     }
 
     @Test
-    public void shouldReturnNullForOldform() {
+    void shouldReturnNullForOldform() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();
         IhtFormEstate response = ocrFieldIhtFormEstateMapper.ihtFormEstate(ocrFields);

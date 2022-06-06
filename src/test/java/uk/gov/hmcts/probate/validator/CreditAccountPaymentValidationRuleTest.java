@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CreditAccountPaymentValidationRuleTest {
+class CreditAccountPaymentValidationRuleTest {
 
     @InjectMocks
     private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
@@ -49,7 +49,7 @@ public class CreditAccountPaymentValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnNoErrors() {
+    void shouldReturnNoErrors() {
         when(paymentResponse.getStatus()).thenReturn("Success");
         List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(PBA_CODE,
             CASE_ID.toString(), paymentResponse);
@@ -57,7 +57,7 @@ public class CreditAccountPaymentValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnErrors() {
+    void shouldReturnErrors() {
         when(paymentResponse.getStatus()).thenReturn("Failure");
         when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().code(
             "PBAError").build()).build());

@@ -15,13 +15,13 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
-public class LocalDateTimeSerializerTest {
+class LocalDateTimeSerializerTest {
 
     private static final LocalDateTime scannedDate = LocalDateTime.parse("2018-01-01T12:34:56.123");
     private static final String LOCALDATE_POST_SERIALISATION = "\"2018-01-01T12:34:56.123Z\"";
 
     @Test
-    public void shouldSerialize() throws IOException {
+    void shouldSerialize() throws IOException {
         Writer jsonWriter = new StringWriter();
         JsonGenerator jsonGenerator = new JsonFactory().createGenerator(jsonWriter);
         SerializerProvider serializerProvider = new ObjectMapper().getSerializerProvider();

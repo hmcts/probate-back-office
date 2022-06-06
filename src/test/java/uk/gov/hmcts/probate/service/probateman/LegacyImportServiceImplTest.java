@@ -31,7 +31,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class LegacyImportServiceImplTest {
+class LegacyImportServiceImplTest {
     private static final String DO_IMPORT_YES = "Yes";
     private static final Long LEGACY_ID = 20001L;
     private static final String LEGACY_CASE_URL =
@@ -55,7 +55,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldImportLegacyCasesWhenLegacyCaseFound() {
+    void shouldImportLegacyCasesWhenLegacyCaseFound() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -90,7 +90,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldImportLegacyCasesWhenLegacyCaseFoundButNotFoundWhenUpdating() {
+    void shouldImportLegacyCasesWhenLegacyCaseFoundButNotFoundWhenUpdating() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -121,7 +121,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldThrowExceptionImportingLegacyCasesAndNoneFound() {
+    void shouldThrowExceptionImportingLegacyCasesAndNoneFound() {
         assertThrows(RuntimeException.class, () -> {
             CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
             when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
@@ -139,7 +139,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldFindCaseWhenImportingLegacyCasesForException() {
+    void shouldFindCaseWhenImportingLegacyCasesForException() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -176,7 +176,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldBeValidRowsToImport() {
+    void shouldBeValidRowsToImport() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
         CaseLink caseLink = CaseLink.builder().caseReference("someCaseReference").build();
@@ -195,7 +195,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldNotBeValidRowsToImport() {
+    void shouldNotBeValidRowsToImport() {
         CaseMatch caseMatch1 = Mockito.mock(CaseMatch.class);
         when(caseMatch1.getDoImport()).thenReturn(DO_IMPORT_YES);
         when(caseMatch1.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);

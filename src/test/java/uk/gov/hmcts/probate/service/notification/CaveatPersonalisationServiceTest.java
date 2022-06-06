@@ -33,7 +33,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CaveatPersonalisationServiceTest {
+class CaveatPersonalisationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -170,7 +170,7 @@ public class CaveatPersonalisationServiceTest {
     }
 
     @Test
-    public void getPersonalisationContentIsOk() {
+    void getPersonalisationContentIsOk() {
         Map<String, String> response = caveatPersonalisationService.getCaveatPersonalisation(caveatDetails, registry);
 
         assertEquals("cav first name cav surname", response.get(PERSONALISATION_APPLICANT_NAME));
@@ -188,7 +188,7 @@ public class CaveatPersonalisationServiceTest {
     }
 
     @Test
-    public void getPersonalisationContentIsOkDOBNull() {
+    void getPersonalisationContentIsOkDOBNull() {
         Map<String, String> response = caveatPersonalisationService
             .getCaveatPersonalisation(caveatDetailsDobNull, registry);
 
@@ -207,7 +207,7 @@ public class CaveatPersonalisationServiceTest {
     }
 
     @Test
-    public void getSolsCaveatsPersonalisationIsOk() {
+    void getSolsCaveatsPersonalisationIsOk() {
         Map<String, String> response =
             caveatPersonalisationService.getSolsCaveatPersonalisation(solsCaveatDetails, registry);
 
@@ -222,7 +222,7 @@ public class CaveatPersonalisationServiceTest {
 
 
     @Test
-    public void getCaveatStopPersonalisationContentIsOk() {
+    void getCaveatStopPersonalisationContentIsOk() {
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, caseDataPersonal.getBoCaseStopCaveatId()))
             .thenReturn(returnedCaveatData);
 
@@ -235,7 +235,7 @@ public class CaveatPersonalisationServiceTest {
     }
 
     @Test
-    public void getCaveatStopPersonalisationContentSolsIsOk() {
+    void getCaveatStopPersonalisationContentSolsIsOk() {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, "name");
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, caseDataSolicitor.getBoCaseStopCaveatId()))
             .thenReturn(returnedCaveatData);

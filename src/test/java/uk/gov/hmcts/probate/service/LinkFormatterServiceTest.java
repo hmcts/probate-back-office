@@ -7,7 +7,7 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.Assert.assertEquals;
 
-public class LinkFormatterServiceTest {
+class LinkFormatterServiceTest {
 
     @InjectMocks
     private LinkFormatterService underTest;
@@ -18,25 +18,25 @@ public class LinkFormatterServiceTest {
     }
 
     @Test
-    public void shouldFillLink() {
+    void shouldFillLink() {
         assertEquals("before <a href=\"HREF\" target=\"_blank\">LINK</a> after", underTest.formatLink("before", "HREF",
             "LINK", "after"));
     }
 
     @Test
-    public void shouldFillLinkNoBefore() {
+    void shouldFillLinkNoBefore() {
         assertEquals("<a href=\"HREF\" target=\"_blank\">LINK</a> after", underTest.formatLink("", "HREF", "LINK",
             "after"));
     }
 
     @Test
-    public void shouldFillLinkNoAfter() {
+    void shouldFillLinkNoAfter() {
         assertEquals("before <a href=\"HREF\" target=\"_blank\">LINK</a>", underTest.formatLink("before", "HREF",
             "LINK", ""));
     }
 
     @Test
-    public void shouldFillLinkNoBeforeOrAfter() {
+    void shouldFillLinkNoBeforeOrAfter() {
         assertEquals("<a href=\"HREF\" target=\"_blank\">LINK</a>", underTest.formatLink("", "HREF", "LINK", ""));
     }
 }

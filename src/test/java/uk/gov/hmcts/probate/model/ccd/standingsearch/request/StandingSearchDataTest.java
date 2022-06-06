@@ -6,7 +6,7 @@ import org.mockito.InjectMocks;
 
 import static org.junit.Assert.assertEquals;
 
-public class StandingSearchDataTest {
+class StandingSearchDataTest {
 
     private static final String SS_DECEASED_FORENAMES = "Forenames";
     private static final String SS_DECEASED_SURNAME = "Surname";
@@ -28,7 +28,7 @@ public class StandingSearchDataTest {
     }
 
     @Test
-    public void shouldReturnDeceasedFullNameForStandingSearch() {
+    void shouldReturnDeceasedFullNameForStandingSearch() {
         final StandingSearchData standingSearchData = StandingSearchData.builder()
                 .deceasedForenames(SS_DECEASED_FORENAMES)
                 .deceasedSurname(SS_DECEASED_SURNAME)
@@ -38,7 +38,7 @@ public class StandingSearchDataTest {
     }
 
     @Test
-    public void shouldReturnCaveatorFullNameForStandingSearch() {
+    void shouldReturnCaveatorFullNameForStandingSearch() {
         final StandingSearchData standingSearchData = StandingSearchData.builder()
                 .applicantForenames(SS_APPLICANT_FORENAMES)
                 .applicantSurname(SS_APPLICANT_SURNAME)

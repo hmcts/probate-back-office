@@ -11,7 +11,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Component
-public class OCRFieldMartialStatusMapperTest {
+class OCRFieldMartialStatusMapperTest {
 
     private static final String OCR_FORM_NEVER_MARRIED = "neverMarried";
     private static final String OCR_FORM_WIDOWED = "widowed";
@@ -22,49 +22,49 @@ public class OCRFieldMartialStatusMapperTest {
     private OCRFieldMartialStatusMapper martialStatusMapper = new OCRFieldMartialStatusMapper();
 
     @Test
-    public void testMartialStatusNeverMarried() {
+    void testMartialStatusNeverMarried() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(OCR_FORM_NEVER_MARRIED);
         assertEquals(MaritalStatus.NEVER_MARRIED, response);
     }
 
     @Test
-    public void testMartialStatusWidowed() {
+    void testMartialStatusWidowed() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(OCR_FORM_WIDOWED);
         assertEquals(MaritalStatus.WIDOWED, response);
     }
 
     @Test
-    public void testMartialStatusMarriedCivilPartnership() {
+    void testMartialStatusMarriedCivilPartnership() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(OCR_FORM_MARRIED_CIVIL_PARTNERSHIP);
         assertEquals(MaritalStatus.MARRIED, response);
     }
 
     @Test
-    public void testMartialStatusDivorcedCivilPartnership() {
+    void testMartialStatusDivorcedCivilPartnership() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(OCR_FORM_DIVORCED_CIVIL_PARTNERSHIP);
         assertEquals(MaritalStatus.DIVORCED, response);
     }
 
     @Test
-    public void testMartialStatusJudicial() {
+    void testMartialStatusJudicial() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(OCR_FORM_JUDICIALLY);
         assertEquals(MaritalStatus.JUDICIALLY_SEPARATED, response);
     }
 
     @Test
-    public void testMartialStatusNull() {
+    void testMartialStatusNull() {
         MaritalStatus response = martialStatusMapper.toMartialStatus(null);
         assertNull(response);
     }
 
     @Test
-    public void testMartialStatusEmpty() {
+    void testMartialStatusEmpty() {
         MaritalStatus response = martialStatusMapper.toMartialStatus("");
         assertNull(response);
     }
 
     @Test
-    public void testMartialStatusError() {
+    void testMartialStatusError() {
         assertThrows(OCRMappingException.class, () -> {
             MaritalStatus response = martialStatusMapper.toMartialStatus("notfound");
             assertTrue(false);

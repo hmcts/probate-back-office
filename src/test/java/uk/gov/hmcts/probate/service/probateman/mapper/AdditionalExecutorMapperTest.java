@@ -19,7 +19,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class AdditionalExecutorMapperTest {
+class AdditionalExecutorMapperTest {
 
     private static final String GRANTEE1_FORENAMES = "GR1FN1 GR1FN2";
     private static final String GRANTEE1_SURNAME = "GR1SN";
@@ -39,7 +39,7 @@ public class AdditionalExecutorMapperTest {
     private AdditionalExecutorMapper additionalExecutorMapper;
 
     @Test
-    public void shouldMapToExecutorApplyingList() {
+    void shouldMapToExecutorApplyingList() {
 
         GrantApplication grantApplication = new GrantApplication();
         grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);
@@ -72,7 +72,7 @@ public class AdditionalExecutorMapperTest {
     }
 
     @Test
-    public void shouldMapToLimitedExecutorApplyingList() {
+    void shouldMapToLimitedExecutorApplyingList() {
 
         GrantApplication grantApplication = new GrantApplication();
         grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);

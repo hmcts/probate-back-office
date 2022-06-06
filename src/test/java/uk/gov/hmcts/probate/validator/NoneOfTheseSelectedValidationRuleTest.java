@@ -12,7 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
-public class NoneOfTheseSelectedValidationRuleTest {
+class NoneOfTheseSelectedValidationRuleTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
@@ -71,7 +71,7 @@ public class NoneOfTheseSelectedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowErrorNoneOfTheseSelected() {
+    void shouldThrowErrorNoneOfTheseSelected() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoYes, LAST_MODIFIED, CASE_ID);
 
@@ -83,7 +83,7 @@ public class NoneOfTheseSelectedValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorYesNo() {
+    void shouldNotThrowErrorYesNo() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataYesNo, LAST_MODIFIED, CASE_ID);
 
@@ -91,7 +91,7 @@ public class NoneOfTheseSelectedValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorNoNo() {
+    void shouldNotThrowErrorNoNo() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoNo, LAST_MODIFIED, CASE_ID);
 
@@ -99,7 +99,7 @@ public class NoneOfTheseSelectedValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorYesYes() {
+    void shouldNotThrowErrorYesYes() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataYesYes, LAST_MODIFIED, CASE_ID);
 
@@ -107,7 +107,7 @@ public class NoneOfTheseSelectedValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorNoYesNoneOfTheseNotSelected() {
+    void shouldNotThrowErrorNoYesNoneOfTheseNotSelected() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoYesNoneOfTheseNotSelected, LAST_MODIFIED, CASE_ID);
 

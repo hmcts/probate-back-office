@@ -9,7 +9,7 @@ import org.springframework.context.MessageSource;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class MessageResourceServiceTest {
+class MessageResourceServiceTest {
 
     @Mock
     private MessageSource resourceMessageSource;
@@ -24,7 +24,7 @@ public class MessageResourceServiceTest {
     }
 
     @Test
-    public void shouldReturnMessage() {
+    void shouldReturnMessage() {
 
         when(resourceMessageSource.getMessage("someMessageId", null, null)).thenReturn("someMessageValue");
         String message = underTest.getMessage("someMessageId");

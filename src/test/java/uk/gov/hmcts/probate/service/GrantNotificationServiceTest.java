@@ -37,7 +37,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT;
 import static uk.gov.hmcts.probate.model.ccd.EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
 
-public class GrantNotificationServiceTest {
+class GrantNotificationServiceTest {
 
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     @InjectMocks
@@ -108,7 +108,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantDelayed() throws NotificationClientException {
+    void shouldNotifyForGrantDelayed() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -134,7 +134,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantDelayedForIdentifiedOrSent() throws NotificationClientException {
+    void shouldNotifyForGrantDelayedForIdentifiedOrSent() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -160,7 +160,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantDelayedForNoIdentifiedOrSent() throws NotificationClientException {
+    void shouldNotNotifyForGrantDelayedForNoIdentifiedOrSent() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -189,7 +189,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantDelayedForNoIdentified() throws NotificationClientException {
+    void shouldNotNotifyForGrantDelayedForNoIdentified() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -217,7 +217,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantDelayedForNoSent() throws NotificationClientException {
+    void shouldNotNotifyForGrantDelayedForNoSent() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -245,7 +245,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantDelayedWithNotificationException() throws NotificationClientException {
+    void shouldNotifyForGrantDelayedWithNotificationException() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -278,7 +278,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantDelayedWithCCDException() throws NotificationClientException {
+    void shouldNotifyForGrantDelayedWithCCDException() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -310,7 +310,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantDelayedWithCCDUpdateException() throws NotificationClientException {
+    void shouldNotifyForGrantDelayedWithCCDUpdateException() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -335,7 +335,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
+    void shouldThrowExceptionForMissingEmailAddressForGrantDelayed() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -354,7 +354,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantAwaitingDocs() throws NotificationClientException {
+    void shouldNotifyForGrantAwaitingDocs() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -386,7 +386,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantAwaitingDocsForNotIdentifiedOrNotified() throws NotificationClientException {
+    void shouldNotifyForGrantAwaitingDocsForNotIdentifiedOrNotified() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -420,7 +420,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantAwaitingDocsForNoIdentificationNoNotification()
+    void shouldNotNotifyForGrantAwaitingDocsForNoIdentificationNoNotification()
         throws NotificationClientException {
         documents.add(sentEmail);
 
@@ -450,7 +450,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantAwaitingDocsForNoIdentification() throws NotificationClientException {
+    void shouldNotNotifyForGrantAwaitingDocsForNoIdentification() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -478,7 +478,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotNotifyForGrantAwaitingDocsForNoNotification() throws NotificationClientException {
+    void shouldNotNotifyForGrantAwaitingDocsForNoNotification() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -506,7 +506,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldNotifyForGrantAwaitingDocsWithCCDUpdateException() throws NotificationClientException {
+    void shouldNotifyForGrantAwaitingDocsWithCCDUpdateException() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";
@@ -531,7 +531,7 @@ public class GrantNotificationServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionForMissingEmailAddressForGrantAwaitingDocs() throws NotificationClientException {
+    void shouldThrowExceptionForMissingEmailAddressForGrantAwaitingDocs() throws NotificationClientException {
         documents.add(sentEmail);
 
         String dateString = "31-12-2020";

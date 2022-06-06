@@ -53,7 +53,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APP
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 
-public class ExecutorListMapperServiceTest {
+class ExecutorListMapperServiceTest {
 
     @InjectMocks
     private ExecutorListMapperService underTest;
@@ -97,7 +97,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldUpdateSolNotApplyingExec() {
+    void shouldUpdateSolNotApplyingExec() {
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
         newExecsNotApplying = underTest
                 .addSolicitorToNotApplyingList(callbackRequestMock.getCaseDetails().getData(),
@@ -109,7 +109,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldAddSolNotApplyingExec() {
+    void shouldAddSolNotApplyingExec() {
         additionalExecutorsNotApplyingMock.remove(1);
         assertEquals(1, additionalExecutorsNotApplyingMock.size());
         assertEquals(EXEC_ID, additionalExecutorsNotApplyingMock.get(0).getId());
@@ -124,7 +124,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapAdditionalExecutorsApplyingList() {
+    void shouldMapAdditionalExecutorsApplyingList() {
         CaseData caseData = CaseData.builder().additionalExecutorsApplying(additionalExecutorsApplyingMock).build();
         List<CollectionMember<AdditionalExecutorApplying>> result = underTest
                 .mapAdditionalApplyingExecutors(caseData);
@@ -136,7 +136,7 @@ public class ExecutorListMapperServiceTest {
 
 
     @Test
-    public void shouldRemoveSolApplyingExec() {
+    void shouldRemoveSolApplyingExec() {
         additionalExecutorsApplyingMock.remove(1);
         List<CollectionMember<AdditionalExecutorApplying>> newExecsApplying;
         newExecsApplying = underTest.removeSolicitorFromApplyingList(additionalExecutorsApplyingMock);
@@ -148,7 +148,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldRemoveSolNotApplyingExec() {
+    void shouldRemoveSolNotApplyingExec() {
         additionalExecutorsNotApplyingMock.remove(1);
         List<CollectionMember<AdditionalExecutorNotApplying>> newExecsNotApplying;
         newExecsNotApplying = underTest.removeSolicitorFromNotApplyingList(additionalExecutorsNotApplyingMock);
@@ -159,7 +159,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromTrustCorpExecsToApplyingExecs() {
+    void shouldMapFromTrustCorpExecsToApplyingExecs() {
         List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsExecutorList = new ArrayList<>();
         trustCorpsExecutorList.add(TRUST_CORP_EXEC);
         CaseData caseData = CaseData.builder()
@@ -184,7 +184,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromPartnerExecsToApplyingExecs() {
+    void shouldMapFromPartnerExecsToApplyingExecs() {
         List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList = new ArrayList<>();
         partnerExecutorList.add(PARTNER_EXEC);
         CaseData caseData = CaseData.builder().otherPartnersApplyingAsExecutors(partnerExecutorList).build();
@@ -205,7 +205,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromDispenseWithNoticeExecutorsToNotApplyingExecutors() {
+    void shouldMapFromDispenseWithNoticeExecutorsToNotApplyingExecutors() {
         List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecs = new ArrayList<>();
         dispenseWithNoticeExecs.add(DISPENSE_WITH_NOTICE_EXEC);
         CaseData caseData = CaseData.builder().dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecs).build();
@@ -223,7 +223,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromSolsAdditionalExecToApplyingExecutors() {
+    void shouldMapFromSolsAdditionalExecToApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
         solsAdditionalExecs.add(SOLS_EXEC_ADDITIONAL_APPLYING);
         CollectionMember<AdditionalExecutor> emptyApplying = new CollectionMember(EXEC_ID,
@@ -259,7 +259,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromSolsAdditionalExecToNotApplyingExecutors() {
+    void shouldMapFromSolsAdditionalExecToNotApplyingExecutors() {
         List<CollectionMember<AdditionalExecutor>> solsAdditionalExecs = new ArrayList<>();
         solsAdditionalExecs.add(SOLS_EXEC_NOT_APPLYING);
         CaseData caseData = CaseData.builder().solsAdditionalExecutorList(solsAdditionalExecs).build();
@@ -278,7 +278,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromFromSolicitorToApplyingExecutor() {
+    void shouldMapFromFromSolicitorToApplyingExecutor() {
         CollectionMember<AdditionalExecutorApplying> result =
                 underTest.mapFromSolicitorToApplyingExecutor(caseDetailsMock.getData());
         CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
@@ -294,7 +294,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromPrimaryApplicantToApplyingExecutor() {
+    void shouldMapFromPrimaryApplicantToApplyingExecutor() {
         CollectionMember<AdditionalExecutorApplying> result =
                 underTest.mapFromPrimaryApplicantToApplyingExecutor(caseDetailsMock.getData());
         CollectionMember<AdditionalExecutorApplying> expected = new CollectionMember(
@@ -312,7 +312,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorpPosn() {
+    void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorpPosn() {
         CaseData cd = CaseData.builder()
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)
                 .solsSOTSurname(SOLICITOR_SOT_SURNAME)
@@ -347,7 +347,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromPrimaryApplicantToNotApplyingExecutor() {
+    void shouldMapFromPrimaryApplicantToNotApplyingExecutor() {
         CollectionMember<AdditionalExecutorNotApplying> result =
                 underTest.mapFromPrimaryApplicantToNotApplyingExecutor(caseDetailsMock.getData());
         CollectionMember<AdditionalExecutorNotApplying> expected = new CollectionMember(
@@ -392,7 +392,7 @@ public class ExecutorListMapperServiceTest {
     }
 
     @Test
-    public void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorps() {
+    void shouldMapFromPrimaryApplicantToApplyingExecutorTrustCorps() {
 
         CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder()
                 .solsSOTForenames(SOLICITOR_SOT_FORENAME)

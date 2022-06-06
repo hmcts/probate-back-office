@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-public class SolsExecutorRuleTest {
+class SolsExecutorRuleTest {
 
     @InjectMocks
     private SolsExecutorRule underTest;
@@ -26,7 +26,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeSolIsExecAndIntestacy() {
+    void shouldNeedChangeSolIsExecAndIntestacy() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
@@ -35,7 +35,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeSolIsExecAndIntestacyYesNo() {
+    void shouldNeedChangeSolIsExecAndIntestacyYesNo() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
@@ -44,7 +44,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeSolIsExecAndIntestacyNoYes() {
+    void shouldNeedChangeSolIsExecAndIntestacyNoYes() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
@@ -53,7 +53,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeSolIsExecAndIntestacyNoNo() {
+    void shouldNotNeedChangeSolIsExecAndIntestacyNoNo() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
@@ -62,7 +62,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeSolIsExecAndAdmonWill() {
+    void shouldNeedChangeSolIsExecAndAdmonWill() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("Yes");
@@ -71,7 +71,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeIfGrantOfProbate() {
+    void shouldNotNeedChangeIfGrantOfProbate() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeft");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
 
@@ -79,7 +79,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeIfSolIsNOTExecAndIntestacy() {
+    void shouldNotNeedChangeIfSolIsNOTExecAndIntestacy() {
         when(caseDataMock.getSolsWillType()).thenReturn("NoWill");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
@@ -88,7 +88,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeIfSolIsNOTExecAndAdmonWill() {
+    void shouldNotNeedChangeIfSolIsNOTExecAndAdmonWill() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
@@ -97,7 +97,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeIfSolIsNOTExecAndAdmonWillYesNoPowerReserved() {
+    void shouldNeedChangeIfSolIsNOTExecAndAdmonWillYesNoPowerReserved() {
         when(caseDataMock.getSolsWillType()).thenReturn("WillLeftAnnexed");
         when(caseDataMock.getSolsSolicitorIsExec()).thenReturn("Yes");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
@@ -107,7 +107,7 @@ public class SolsExecutorRuleTest {
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodySolsExecutor", underTest.getConfirmationBodyMessageKey());
     }
 }

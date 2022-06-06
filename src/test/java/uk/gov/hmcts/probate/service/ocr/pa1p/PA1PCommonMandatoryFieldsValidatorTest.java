@@ -13,7 +13,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class PA1PCommonMandatoryFieldsValidatorTest {
+class PA1PCommonMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
@@ -28,7 +28,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testNoPrimaryApplicantHasAlasKeyReturnSuccessfullyForPA1A() {
+    void testNoPrimaryApplicantHasAlasKeyReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "primaryApplicantHasAlias");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
@@ -38,7 +38,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
+    void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -51,7 +51,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
+    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -63,7 +63,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
+    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 

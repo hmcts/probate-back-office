@@ -15,13 +15,13 @@ import static org.hamcrest.Matchers.notNullValue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class BadRequestExceptionTest {
+class BadRequestExceptionTest {
 
     @Mock
     private Errors errors;
 
     @Test
-    public void shouldCreateBadRequestException() {
+    void shouldCreateBadRequestException() {
         final String message = "MESSAGE";
         FieldError fieldError = new FieldError("", "field", "defaultMessage");
         when(errors.getFieldErrors()).thenReturn(Collections.singletonList(fieldError));

@@ -29,7 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class IronMountainDataExtractServiceTest {
+class IronMountainDataExtractServiceTest {
     @Mock
     private CaseQueryService caseQueryService;
     @Mock
@@ -68,7 +68,7 @@ public class IronMountainDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractFoundCases() {
+    void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -81,7 +81,7 @@ public class IronMountainDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractWhenNoCasesFound() {
+    void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -94,7 +94,7 @@ public class IronMountainDataExtractServiceTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionWhenFindingCases() {
+    void shouldThrowClientExceptionWhenFindingCases() {
         assertThrows(ClientException.class, () -> {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();

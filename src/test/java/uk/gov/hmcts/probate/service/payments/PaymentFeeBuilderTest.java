@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class PaymentFeeBuilderTest {
+class PaymentFeeBuilderTest {
     @Mock
     private FeeServiceConfiguration feeServiceConfiguration;
 
@@ -29,7 +29,7 @@ public class PaymentFeeBuilderTest {
     }
 
     @Test
-    public void shouldBuildPaymentFeeFromFeeResponse() {
+    void shouldBuildPaymentFeeFromFeeResponse() {
         FeeResponse feeResponse = FeeResponse.builder().feeAmount(BigDecimal.valueOf(1.50)).code("feeCode").description(
             "feeDescription").version(
             "feeVersion").build();

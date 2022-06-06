@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class OrganisationsRetrievalServiceTest {
+class OrganisationsRetrievalServiceTest {
 
     @InjectMocks
     private OrganisationsRetrievalService organisationsRetrievalService;
@@ -38,7 +38,7 @@ public class OrganisationsRetrievalServiceTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Test
-    public void testOrganisationEntityGetsReturnedOk() {
+    void testOrganisationEntityGetsReturnedOk() {
         MockitoAnnotations.openMocks(this);
 
         organisationEntityResponse = new OrganisationEntityResponse();
@@ -60,7 +60,7 @@ public class OrganisationsRetrievalServiceTest {
     }
 
     @Test
-    public void testOrganisationEntityReturnsNullWhenException() {
+    void testOrganisationEntityReturnsNullWhenException() {
         MockitoAnnotations.openMocks(this);
 
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
@@ -73,7 +73,7 @@ public class OrganisationsRetrievalServiceTest {
     }
 
     @Test
-    public void testOrganisationEntityExceptionWithNoBearer() {
+    void testOrganisationEntityExceptionWithNoBearer() {
         assertThrows(ClientException.class, () -> {
             MockitoAnnotations.openMocks(this);
 

@@ -13,7 +13,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class PA16FormBusinessRuleTest {
+class PA16FormBusinessRuleTest {
 
     @InjectMocks
     private PA16FormBusinessRule underTest;
@@ -27,7 +27,7 @@ public class PA16FormBusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForChildAdoptedNoApplicantSiblingsRenouncing() {
+    void shouldBeApplicableForChildAdoptedNoApplicantSiblingsRenouncing() {
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
         when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
@@ -35,7 +35,7 @@ public class PA16FormBusinessRuleTest {
     }
 
     @Test
-    public void shouldBeApplicableForChildNoApplicantSiblingsYesRenouncing() {
+    void shouldBeApplicableForChildNoApplicantSiblingsYesRenouncing() {
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("Child");
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
         when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
@@ -43,7 +43,7 @@ public class PA16FormBusinessRuleTest {
     }
 
     @Test
-    public void shouldNOTBeApplicableForNotChildAdoptedNoApplicantSiblingsNoRenouncing() {
+    void shouldNOTBeApplicableForNotChildAdoptedNoApplicantSiblingsNoRenouncing() {
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
         when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
@@ -51,7 +51,7 @@ public class PA16FormBusinessRuleTest {
     }
 
     @Test
-    public void shouldNOTBeApplicableForChildAdoptedYesApplicantSiblingsYesRenouncing() {
+    void shouldNOTBeApplicableForChildAdoptedYesApplicantSiblingsYesRenouncing() {
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
         when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(YES);
@@ -59,7 +59,7 @@ public class PA16FormBusinessRuleTest {
     }
 
     @Test
-    public void shouldNOTBeApplicableForChildAdoptedNoApplicantSiblingsNoRenouncing() {
+    void shouldNOTBeApplicableForChildAdoptedNoApplicantSiblingsNoRenouncing() {
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
         when(mockCaseData.getSolsSpouseOrCivilRenouncing()).thenReturn(NO);

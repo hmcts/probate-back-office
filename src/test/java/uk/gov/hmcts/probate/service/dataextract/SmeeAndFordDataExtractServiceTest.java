@@ -29,7 +29,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class SmeeAndFordDataExtractServiceTest {
+class SmeeAndFordDataExtractServiceTest {
 
     @InjectMocks
     private SmeeAndFordDataExtractService smeeAndFordDataExtractService;
@@ -78,21 +78,21 @@ public class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractForDate() throws NotificationClientException {
+    void shouldExtractForDate() throws NotificationClientException {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
     @Test
-    public void shouldExtractForDateRange() throws NotificationClientException {
+    void shouldExtractForDateRange() throws NotificationClientException {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }
 
     @Test
-    public void shouldExtractForDateForNoCasesFound() throws NotificationClientException {
+    void shouldExtractForDateForNoCasesFound() throws NotificationClientException {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
 
@@ -105,7 +105,7 @@ public class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
+    void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
         assertThrows(ClientException.class, () -> {
             when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
                     .thenThrow(NotificationClientException.class);

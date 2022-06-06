@@ -20,7 +20,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-public class EmailAddressNotifyApplicantValidationRuleTest {
+class EmailAddressNotifyApplicantValidationRuleTest {
 
     @InjectMocks
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -49,7 +49,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldPassPersonalWithEmail() {
+    void shouldPassPersonalWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -61,7 +61,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldPassSolicitorWithEmail() {
+    void shouldPassSolicitorWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
             .solsSolicitorEmail("solicitor@probate-test.com")
@@ -73,7 +73,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldFailPersonalWithNoEmail() {
+    void shouldFailPersonalWithNoEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
             .build();
@@ -84,7 +84,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldFailSolicitorWithNoEmail() {
+    void shouldFailSolicitorWithNoEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
             .build();

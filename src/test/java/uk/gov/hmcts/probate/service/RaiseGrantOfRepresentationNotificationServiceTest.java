@@ -46,7 +46,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class RaiseGrantOfRepresentationNotificationServiceTest {
+class RaiseGrantOfRepresentationNotificationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -98,7 +98,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
 
     @Disabled
     @Test
-    public void shouldHandleGrantReceivedNotificationPersonalWithEmail()
+    void shouldHandleGrantReceivedNotificationPersonalWithEmail()
         throws NotificationClientException, BadRequestException {
 
         CaseDetails caseDetails =
@@ -126,7 +126,7 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
 
     @Disabled
     @Test
-    public void shouldHandleGrantReceivedNotificationPersonalWithoutEmail()
+    void shouldHandleGrantReceivedNotificationPersonalWithoutEmail()
         throws NotificationClientException, BadRequestException {
 
         CaseDetails caseDetails =

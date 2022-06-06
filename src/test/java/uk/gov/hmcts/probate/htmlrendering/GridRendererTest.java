@@ -4,9 +4,9 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class GridRendererTest {
+class GridRendererTest {
     @Test
-    public void shouldRenderGridCorrectly() {
+    void shouldRenderGridCorrectly() {
         final String testValue = "<h>A title</h>\n"
             + "<gridRow><gridCol-two-thirds><p><secText>Some text</secText></p>"
             + "</gridCol-two-thirds><gridCol-one-third>&nbsp;</gridCol-one-third></gridRow>\n"

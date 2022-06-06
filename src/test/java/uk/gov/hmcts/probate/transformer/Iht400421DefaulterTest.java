@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT205_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
-public class Iht400421DefaulterTest {
+class Iht400421DefaulterTest {
     @InjectMocks
     private Iht400421Defaulter iht400421Defaulter;
 
@@ -33,28 +33,28 @@ public class Iht400421DefaulterTest {
     }
 
     @Test
-    public void shouldShowIht400421DatePageForPre2022Flow() {
+    void shouldShowIht400421DatePageForPre2022Flow() {
         when(caseDataMock.getIhtFormId()).thenReturn(IHT400421_VALUE);
         iht400421Defaulter.defaultPageFlowForIht400421(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).showIht400421Page("Yes");
     }
 
     @Test
-    public void shouldNotShowIht400421DatePageForPre2022Flow() {
+    void shouldNotShowIht400421DatePageForPre2022Flow() {
         when(caseDataMock.getIhtFormId()).thenReturn(IHT205_VALUE);
         iht400421Defaulter.defaultPageFlowForIht400421(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).showIht400421Page("No");
     }
 
     @Test
-    public void shouldShowIht400421DatePageForPost2022Flow() {
+    void shouldShowIht400421DatePageForPost2022Flow() {
         when(ihtEstate400421BusinessRule.isApplicable(any())).thenReturn(true);
         iht400421Defaulter.defaultPageFlowForIht400421(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).showIht400421Page("Yes");
     }
 
     @Test
-    public void shouldNotShowIht400421DatePageForPost2022Flow() {
+    void shouldNotShowIht400421DatePageForPost2022Flow() {
         when(ihtEstate400421BusinessRule.isApplicable(any())).thenReturn(false);
         iht400421Defaulter.defaultPageFlowForIht400421(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).showIht400421Page("No");

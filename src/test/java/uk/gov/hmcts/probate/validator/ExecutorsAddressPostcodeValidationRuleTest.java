@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-public class ExecutorsAddressPostcodeValidationRuleTest {
+class ExecutorsAddressPostcodeValidationRuleTest {
 
     @InjectMocks
     private ExecutorsAddressPostcodeValidationRule executorsAddressPostcodeValidationRule;
@@ -51,7 +51,7 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(executor.getAddress()).thenReturn(null);
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
@@ -61,7 +61,7 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
@@ -71,7 +71,7 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
+    void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
         when(executor.getAddress())
             .thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
 

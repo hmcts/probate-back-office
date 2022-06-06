@@ -27,7 +27,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
-public class DefaultExceptionHandlerTest {
+class DefaultExceptionHandlerTest {
 
     private static final String EXCEPTION_MESSAGE = "Message";
 
@@ -61,7 +61,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldPassUpstreamBadRequestBackAsIs() {
+    void shouldPassUpstreamBadRequestBackAsIs() {
         when(clientException.getStatusCode()).thenReturn(BAD_REQUEST.value());
         when(clientException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
@@ -73,7 +73,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnServiceUnavailableForConnectionException() {
+    void shouldReturnServiceUnavailableForConnectionException() {
         when(connectionException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<ErrorResponse> response = underTest.handle(connectionException);
@@ -84,7 +84,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldHandleMissingPDFDataAsStatusUN() {
+    void shouldHandleMissingPDFDataAsStatusUN() {
         final FieldErrorResponse bve1Mock = FieldErrorResponse.builder()
             .param("Object")
             .field("field1")
@@ -109,7 +109,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnNotificationClientException() {
+    void shouldReturnNotificationClientException() {
         when(notificationClientException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<ErrorResponse> response = underTest.handle(notificationClientException);
@@ -120,7 +120,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnBusinessValidationException() {
+    void shouldReturnBusinessValidationException() {
         when(businessValidationException.getUserMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<CallbackResponse> response = underTest.handle(businessValidationException);
@@ -130,7 +130,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnBusinessValidationExceptionWithMultipleErrors() {
+    void shouldReturnBusinessValidationExceptionWithMultipleErrors() {
         when(businessValidationException.getUserMessage()).thenReturn(EXCEPTION_MESSAGE);
         String[] arr = {"message1", "message2", "message3"};
         when(businessValidationException.getAdditionalMessages()).thenReturn(arr);
@@ -145,7 +145,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnNotFoundException() {
+    void shouldReturnNotFoundException() {
         when(notFoundException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<ErrorResponse> response = underTest.handle(notFoundException);
@@ -156,7 +156,7 @@ public class DefaultExceptionHandlerTest {
     }
 
     @Test
-    public void shouldReturnOCRMappingException() {
+    void shouldReturnOCRMappingException() {
         when(ocrMappingException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<ValidationResponse> response = underTest.handle(ocrMappingException);

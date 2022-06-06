@@ -20,7 +20,7 @@ import java.util.List;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class NotificationsExecutorsApplyingValidationRuleTest {
+class NotificationsExecutorsApplyingValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -118,7 +118,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowErrorNotificationIsNoSingle() {
+    void shouldThrowErrorNotificationIsNoSingle() {
         CaseDetails caseDetailsNotificationSingleNo =
             new CaseDetails(caseDataNotificationNoSingle, LAST_MODIFIED, CASE_ID);
 
@@ -130,7 +130,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowErrorNotificationIsNoMultiple() {
+    void shouldThrowErrorNotificationIsNoMultiple() {
         CaseDetails caseDetailsNotificationMultipleNo =
             new CaseDetails(caseDataNotificationNoMultiple, LAST_MODIFIED, CASE_ID);
 
@@ -142,7 +142,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowNotificationIsYesSingle() {
+    void shouldNotThrowNotificationIsYesSingle() {
         CaseDetails caseDetailsNotificationYesSingle =
             new CaseDetails(caseDataNotificationYesSingle, LAST_MODIFIED, CASE_ID);
 
@@ -151,7 +151,7 @@ public class NotificationsExecutorsApplyingValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowNotificationIsYesMultiple() {
+    void shouldNotThrowNotificationIsYesMultiple() {
         CaseDetails caseDetailsNotificationYesMultiple =
             new CaseDetails(caseDataNotificationYesMultiple, LAST_MODIFIED, CASE_ID);
 

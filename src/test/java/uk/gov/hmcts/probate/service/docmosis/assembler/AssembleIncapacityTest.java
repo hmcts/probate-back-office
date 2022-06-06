@@ -17,7 +17,7 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Inca
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapOneExec;
 
 @ExtendWith(SpringExtension.class)
-public class AssembleIncapacityTest extends AssembleTestBase {
+class AssembleIncapacityTest extends AssembleTestBase {
     private AssembleIncapacity assembleIncapacity =
         new AssembleIncapacity(assemblerBase);
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
@@ -33,7 +33,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapGen() {
+    void shouldPopulateIncapGen() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityGeneral(IncapGen,
             CaseData.builder().build());
@@ -41,7 +41,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapOneExec() {
+    void shouldPopulateIncapOneExec() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityOneExecutor(IncapOneExec,
             CaseData.builder().build());
@@ -49,7 +49,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapInstitutedExec() {
+    void shouldPopulateIncapInstitutedExec() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityInstitutedExecutor(IncapInstitutedExec,
             CaseData.builder().build());
@@ -57,7 +57,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapMedical() {
+    void shouldPopulateIncapMedical() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityMedicalEvidence(IncapMedical,
             CaseData.builder().build());

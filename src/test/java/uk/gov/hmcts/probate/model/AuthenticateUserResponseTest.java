@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.assertEquals;
 
-public class AuthenticateUserResponseTest {
+class AuthenticateUserResponseTest {
     AuthenticateUserResponse authenticateUserResponse;
 
     @BeforeEach
@@ -14,7 +14,7 @@ public class AuthenticateUserResponseTest {
     }
 
     @Test
-    public void testGetCode() {
+    void testGetCode() {
         assertEquals("123", authenticateUserResponse.getCode());
     }
 }

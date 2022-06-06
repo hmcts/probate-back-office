@@ -10,13 +10,13 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import static org.junit.Assert.assertEquals;
 
 @ExtendWith(SpringExtension.class)
-public class AddressFormatterServiceTest {
+class AddressFormatterServiceTest {
 
     @InjectMocks
     private AddressFormatterService addressFormatterService;
 
     @Test
-    public void shouldReturnFormattedAddress() {
+    void shouldReturnFormattedAddress() {
         ProbateAddress probateAddress = ProbateAddress.builder()
                 .proAddressLine1("addressLine1")
                 .proAddressLine2("addressLine2")
@@ -31,7 +31,7 @@ public class AddressFormatterServiceTest {
     }
 
     @Test
-    public void shouldReturnFormattedAddressWillNulls() {
+    void shouldReturnFormattedAddressWillNulls() {
         ProbateAddress probateAddress = ProbateAddress.builder()
                 .proAddressLine1("addressLine1")
                 .proPostCode("postcode")
@@ -41,7 +41,7 @@ public class AddressFormatterServiceTest {
     }
 
     @Test
-    public void shouldReturnBlankStringFormattedAddress() {
+    void shouldReturnBlankStringFormattedAddress() {
         assertEquals(Strings.EMPTY, addressFormatterService.formatAddress(null));
     }
 

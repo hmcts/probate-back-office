@@ -12,7 +12,7 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 
-public class AssembleEntitlementTest {
+class AssembleEntitlementTest {
 
     private static final String YES = "Yes";
     private AssemblerBase assemblerBase = new AssemblerBase();
@@ -20,7 +20,7 @@ public class AssembleEntitlementTest {
     private AssembleEntitlement assembleEntitlement = new AssembleEntitlement(assemblerBase);
 
     @Test
-    public void testExecutorNotAccountedForSingleApplicant() {
+    void testExecutorNotAccountedForSingleApplicant() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -36,7 +36,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void testExecutorNotAccountedForMultipleApplicant() {
+    void testExecutorNotAccountedForMultipleApplicant() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -65,7 +65,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementAttorneryAndExec() {
+    void shouldGetEntitlementAttorneryAndExec() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -94,7 +94,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementLeadingGrantApplication() {
+    void shouldGetEntitlementLeadingGrantApplication() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -123,7 +123,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementNoTitle() {
+    void shouldGetEntitlementNoTitle() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -151,7 +151,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementFamilyTree() {
+    void shouldGetEntitlementFamilyTree() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -179,7 +179,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementConfirmDeath() {
+    void shouldGetEntitlementConfirmDeath() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -208,7 +208,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementSubsitituteExec() {
+    void shouldGetEntitlementSubsitituteExec() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -237,7 +237,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementPrejudic() {
+    void shouldGetEntitlementPrejudic() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -265,7 +265,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementWrongExec() {
+    void shouldGetEntitlementWrongExec() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -293,7 +293,7 @@ public class AssembleEntitlementTest {
     }
 
     @Test
-    public void shouldGetEntitlementTwoApplications() {
+    void shouldGetEntitlementTwoApplications() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")

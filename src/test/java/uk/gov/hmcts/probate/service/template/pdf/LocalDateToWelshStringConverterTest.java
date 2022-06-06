@@ -13,7 +13,7 @@ import java.time.LocalDate;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class LocalDateToWelshStringConverterTest {
+class LocalDateToWelshStringConverterTest {
 
     @MockBean
     private AppInsights appInsights;
@@ -22,7 +22,7 @@ public class LocalDateToWelshStringConverterTest {
     private LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     @Test
-    public void convertDateInWelsh() {
+    void convertDateInWelsh() {
         LocalDate localDate = LocalDate.of(2019, 12, 23);
         final String dateInWelsh = localDateToWelshStringConverter.convert(localDate);
         Assert.assertEquals("23 Rhagfyr 2019", dateInWelsh);

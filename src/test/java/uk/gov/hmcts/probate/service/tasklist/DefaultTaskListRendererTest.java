@@ -56,7 +56,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.WILL_EXISTS;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class DefaultTaskListRendererTest {
+class DefaultTaskListRendererTest {
 
     @InjectMocks
     private DefaultTaskListRenderer renderer;
@@ -290,7 +290,7 @@ public class DefaultTaskListRendererTest {
     }
 
     @Test
-    public void shouldRenderDefaultCaseProgressHtmlCorrectly() {
+    void shouldRenderDefaultCaseProgressHtmlCorrectly() {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState("BOExamining");
         when(taskStateRendererMock.renderByReplace(TaskListState.TL_STATE_EXAMINE_APPLICATION,

@@ -16,7 +16,7 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SU
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 
-public class PractitionersPositionInTrustValidationRuleTest {
+class PractitionersPositionInTrustValidationRuleTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
@@ -82,7 +82,7 @@ public class PractitionersPositionInTrustValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorNoYesNotTrustCorp() {
+    void shouldNotThrowErrorNoYesNotTrustCorp() {
         final CaseDetails caseDetails =
                 new CaseDetails(caseDataNoYesNoPosInTrust, LAST_MODIFIED, CASE_ID);
 
@@ -90,7 +90,7 @@ public class PractitionersPositionInTrustValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorYesYesTrustCorpNoPosInTrust() {
+    void shouldNotThrowErrorYesYesTrustCorpNoPosInTrust() {
         final CaseDetails caseDetails =
                 new CaseDetails(caseDataYesYesTrustCorpNoPosInTrust, LAST_MODIFIED, CASE_ID);
 
@@ -98,7 +98,7 @@ public class PractitionersPositionInTrustValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorYesNoTrustCorpNoPosInTrust() {
+    void shouldNotThrowErrorYesNoTrustCorpNoPosInTrust() {
         final CaseDetails caseDetails =
                 new CaseDetails(caseDataYesNoTrustCorpNoPosInTrust, LAST_MODIFIED, CASE_ID);
 
@@ -106,7 +106,7 @@ public class PractitionersPositionInTrustValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorNoNoTrustCorpNoPosInTrust() {
+    void shouldNotThrowErrorNoNoTrustCorpNoPosInTrust() {
         final CaseDetails caseDetails =
                 new CaseDetails(caseDataNoNoTrustCorpNoPosInTrust, LAST_MODIFIED, CASE_ID);
 
@@ -114,7 +114,7 @@ public class PractitionersPositionInTrustValidationRuleTest {
     }
 
     @Test
-    public void shouldNotThrowErrorNoYesTrustCorpWithPosInTrust() {
+    void shouldNotThrowErrorNoYesTrustCorpWithPosInTrust() {
         final CaseDetails caseDetails =
                 new CaseDetails(caseDataNoYesTrustCorpWithPosInTrust, LAST_MODIFIED, CASE_ID);
 
@@ -123,7 +123,7 @@ public class PractitionersPositionInTrustValidationRuleTest {
 
 
     @Test
-    public void shouldThrowPositionRequiredNoYesTrustCorp() {
+    void shouldThrowPositionRequiredNoYesTrustCorp() {
         final CaseDetails caseDetailsTc =
                 new CaseDetails(caseDataNoYesTrustCorpNoPosInTrust, LAST_MODIFIED, CASE_ID);
 

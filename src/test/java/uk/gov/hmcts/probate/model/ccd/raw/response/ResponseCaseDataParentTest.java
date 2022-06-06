@@ -15,10 +15,10 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
 
-public class ResponseCaseDataParentTest {
+class ResponseCaseDataParentTest {
 
     @Test
-    public void shouldApplyParentAttributes() {
+    void shouldApplyParentAttributes() {
         DynamicList reprintDocument =
             DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
         DynamicList solsAmendLegalStatmentSelect =
@@ -60,7 +60,7 @@ public class ResponseCaseDataParentTest {
     }
 
     @Test
-    public void shouldApplyDeathCertAttributes() {
+    void shouldApplyDeathCertAttributes() {
 
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .deceasedDeathCertificate("deathCertificate")
@@ -76,7 +76,7 @@ public class ResponseCaseDataParentTest {
     }
 
     @Test
-    public void shouldApplySolicitorInfoAttributes() {
+    void shouldApplySolicitorInfoAttributes() {
 
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .solsForenames("Solicitor Forename")
@@ -90,7 +90,7 @@ public class ResponseCaseDataParentTest {
     }
 
     @Test
-    public void shouldApplyTrustCorpAttributes() {
+    void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
@@ -159,7 +159,7 @@ public class ResponseCaseDataParentTest {
     }
 
     @Test
-    public void shouldApplyNonTrustCorpOptionAttributes() {
+    void shouldApplyNonTrustCorpOptionAttributes() {
         CollectionMember<AdditionalExecutorPartners> otherPartner = new CollectionMember<>(
                 new AdditionalExecutorPartners(
                         "Executor forename",
@@ -189,7 +189,7 @@ public class ResponseCaseDataParentTest {
     }
 
     @Test
-    public void shouldApplyTrustCorpNoneOfTheseAttributes() {
+    void shouldApplyTrustCorpNoneOfTheseAttributes() {
         final ResponseCaseDataParent responseCaseDataParent = ResponseCaseDataParent.builder()
                 .titleAndClearingType("TCTNoT")
                 .build();

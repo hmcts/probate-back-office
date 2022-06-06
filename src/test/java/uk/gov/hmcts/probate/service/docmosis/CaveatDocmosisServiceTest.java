@@ -25,7 +25,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CaveatDocmosisServiceTest {
+class CaveatDocmosisServiceTest {
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
@@ -55,7 +55,7 @@ public class CaveatDocmosisServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholders() {
+    void testCreateDataAsPlaceholders() {
         CaveatData caveatData = CaveatData.builder()
             .registryLocation("leeds")
             .expiryDate(LocalDate.of(2019, 12, 31))
@@ -74,7 +74,7 @@ public class CaveatDocmosisServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholdersCoverSheet() {
+    void testCreateDataAsPlaceholdersCoverSheet() {
         CaveatData caveatData = CaveatData.builder()
             .registryLocation("leeds")
             .build();

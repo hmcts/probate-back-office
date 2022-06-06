@@ -27,7 +27,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class CreditAccountPaymentTransformerTest {
+class CreditAccountPaymentTransformerTest {
 
     @Mock
     private CaseDetails caseDetails;
@@ -112,7 +112,7 @@ public class CreditAccountPaymentTransformerTest {
 
 
     @Test
-    public void shouldTransformAll() {
+    void shouldTransformAll() {
         when(caseData.getExtraCopiesOfGrant()).thenReturn(1L);
         when(caseData.getOutsideUKGrantCopies()).thenReturn(2L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(216.20));
@@ -128,7 +128,7 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
-    public void shouldTransformApplicationOnly() {
+    void shouldTransformApplicationOnly() {
         when(caseData.getExtraCopiesOfGrant()).thenReturn(0L);
         when(caseData.getOutsideUKGrantCopies()).thenReturn(0L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
@@ -142,7 +142,7 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
-    public void shouldTransformApplicationOnlyWithNulls() {
+    void shouldTransformApplicationOnlyWithNulls() {
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
 
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
@@ -154,7 +154,7 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
-    public void shouldTransformApplicationAndUKCopiesOnly() {
+    void shouldTransformApplicationAndUKCopiesOnly() {
         when(caseData.getExtraCopiesOfGrant()).thenReturn(1L);
         when(caseData.getOutsideUKGrantCopies()).thenReturn(0L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
@@ -169,7 +169,7 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
-    public void shouldTransformApplicationAndOverseasCopiesOnly() {
+    void shouldTransformApplicationAndOverseasCopiesOnly() {
         when(caseData.getExtraCopiesOfGrant()).thenReturn(0L);
         when(caseData.getOutsideUKGrantCopies()).thenReturn(2L);
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(215.00));
@@ -184,7 +184,7 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
-    public void shouldTransformAllWithNullCopies() {
+    void shouldTransformAllWithNullCopies() {
         when(feesResponse.getTotalAmount()).thenReturn(BigDecimal.valueOf(216.20));
 
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caseDetails,
@@ -196,7 +196,7 @@ public class CreditAccountPaymentTransformerTest {
     }
 
     @Test
-    public void shouldTransformAllForCaveats() {
+    void shouldTransformAllForCaveats() {
         CreditAccountPayment creditAccountPayment = creditAccountPaymentTransformer.transform(caveatDetails,
             feeResponseCaveat);
 

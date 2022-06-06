@@ -50,7 +50,7 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @ExtendWith(SpringExtension.class)
-public class NotificationControllerUnitTest {
+class NotificationControllerUnitTest {
 
     @Mock
     DocumentGeneratorService documentGeneratorService;
@@ -89,7 +89,7 @@ public class NotificationControllerUnitTest {
     private Document document;
 
     @Test
-    public void shouldSendApplicationReceived() throws NotificationClientException {
+    void shouldSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
         ResponseEntity<ProbateDocument> stringResponseEntity =
             notificationController.sendApplicationReceivedNotification(callbackRequest);
@@ -97,7 +97,7 @@ public class NotificationControllerUnitTest {
     }
 
     @Test
-    public void shouldNotSendApplicationReceivedForPaper() throws NotificationClientException {
+    void shouldNotSendApplicationReceivedForPaper() throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm("Yes").build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
@@ -109,7 +109,7 @@ public class NotificationControllerUnitTest {
     }
 
     @Test
-    public void shouldNotSendApplicationReceivedForPCitizenPaperAsNull() throws NotificationClientException {
+    void shouldNotSendApplicationReceivedForPCitizenPaperAsNull() throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().paperForm(null).build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
@@ -121,7 +121,7 @@ public class NotificationControllerUnitTest {
     }
 
     @Test
-    public void shouldAddDocumentEvenIfNoEmailAddressPresent() throws NotificationClientException {
+    void shouldAddDocumentEvenIfNoEmailAddressPresent() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
         CaseDetails caseDetails =
             new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED,
@@ -134,7 +134,7 @@ public class NotificationControllerUnitTest {
     }
 
     @Test
-    public void shouldHandleErrorsFromSendApplicationReceived() throws NotificationClientException {
+    void shouldHandleErrorsFromSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED, "This is an error", "This is another error");
 
         ResponseEntity<ProbateDocument> stringResponseEntity =
@@ -144,7 +144,7 @@ public class NotificationControllerUnitTest {
     }
 
     @Test
-    public void shouldSendDocumentsReceived() throws NotificationClientException {
+    void shouldSendDocumentsReceived() throws NotificationClientException {
         setUpMocks(DOCUMENTS_RECEIVED);
         notificationController.sendDocumentReceivedNotification(callbackRequest);
         verify(documentsReceivedNotificationService).handleDocumentReceivedNotification(callbackRequest);

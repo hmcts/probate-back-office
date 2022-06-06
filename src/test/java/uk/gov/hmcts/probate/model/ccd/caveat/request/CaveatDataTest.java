@@ -11,7 +11,7 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
-public class CaveatDataTest {
+class CaveatDataTest {
 
     private static final String CAV_DECEASED_FORENAMES = "Deceased_fn";
     private static final String CAV_DECEASED_SURNAME = "Deceased_ln";
@@ -43,7 +43,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnDeceasedFullNameForCaveat() {
+    void shouldReturnDeceasedFullNameForCaveat() {
         final CaveatData caveatData = CaveatData.builder()
             .deceasedForenames(CAV_DECEASED_FORENAMES)
             .deceasedSurname(CAV_DECEASED_SURNAME)
@@ -53,7 +53,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnCaveatorFullNameForCaveat() {
+    void shouldReturnCaveatorFullNameForCaveat() {
         final CaveatData caveatData = CaveatData.builder()
             .caveatorForenames(CAV_CAVEATOR_FORENAMES)
             .caveatorSurname(CAV_CAVEATOR_SURNAME)
@@ -63,7 +63,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnApplicantFullNameForSolsCaveat() {
+    void shouldReturnApplicantFullNameForSolsCaveat() {
         final CaveatData caveatData = CaveatData.builder()
             .caveatorForenames(CAV_CAVEATOR_FORENAMES)
             .caveatorSurname(CAV_CAVEATOR_SURNAME)
@@ -74,7 +74,7 @@ public class CaveatDataTest {
 
 
     @Test
-    public void shouldReturnDeceasedFullNameForSolsCaveat() {
+    void shouldReturnDeceasedFullNameForSolsCaveat() {
         final CaveatData caveatData = CaveatData.builder()
             .deceasedForenames(CAV_CAVEATOR_FORENAMES)
             .deceasedSurname(CAV_CAVEATOR_SURNAME)
@@ -85,7 +85,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnDefaultEmailNotificationCaveat() {
+    void shouldReturnDefaultEmailNotificationCaveat() {
         final CaveatData caveatData = CaveatData.builder()
             .caveatorEmailAddress(CAV_CAVEATOR_EMAIL)
             .build();
@@ -94,7 +94,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnSubmissionDateFormattedWithST() {
+    void shouldReturnSubmissionDateFormattedWithST() {
         final CaveatData caveatData = CaveatData.builder()
             .applicationSubmittedDate(LOCAL_DATE)
             .build();
@@ -103,7 +103,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnSubmissionDateFormattedWithND() {
+    void shouldReturnSubmissionDateFormattedWithND() {
         final CaveatData caveatData = CaveatData.builder()
             .applicationSubmittedDate(LocalDate.of(2000, 01, 02))
             .build();
@@ -112,7 +112,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnSubmissionDateFormattedWithRD() {
+    void shouldReturnSubmissionDateFormattedWithRD() {
         final CaveatData caveatData = CaveatData.builder()
             .applicationSubmittedDate(LocalDate.of(2000, 01, 03))
             .build();
@@ -121,7 +121,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnSubmissionDateFormattedWithTH() {
+    void shouldReturnSubmissionDateFormattedWithTH() {
         final CaveatData caveatData = CaveatData.builder()
             .applicationSubmittedDate(LocalDate.of(2000, 01, 04))
             .build();
@@ -130,7 +130,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldThrowParseException() {
+    void shouldThrowParseException() {
         final CaveatData caveatData = CaveatData.builder()
             .applicationSubmittedDate(LocalDate.of(300000, 01, 04))
             .build();
@@ -139,7 +139,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnExpiryDateFormattedWithST() {
+    void shouldReturnExpiryDateFormattedWithST() {
         final CaveatData caveatData = CaveatData.builder()
             .expiryDate(LOCAL_DATE)
             .build();
@@ -148,7 +148,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnExpiryDateFormattedWithND() {
+    void shouldReturnExpiryDateFormattedWithND() {
         final CaveatData caveatData = CaveatData.builder()
             .expiryDate(LocalDate.of(2000, 01, 02))
             .build();
@@ -157,7 +157,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnExpiryDateFormattedWithRD() {
+    void shouldReturnExpiryDateFormattedWithRD() {
         final CaveatData caveatData = CaveatData.builder()
             .expiryDate(LocalDate.of(2000, 01, 03))
             .build();
@@ -166,7 +166,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnExpiryDateFormattedWithTH() {
+    void shouldReturnExpiryDateFormattedWithTH() {
         final CaveatData caveatData = CaveatData.builder()
             .expiryDate(LocalDate.of(2000, 01, 04))
             .build();
@@ -175,7 +175,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnCaveatorFullAddressLongForCaveat() {
+    void shouldReturnCaveatorFullAddressLongForCaveat() {
 
         ProbateAddress caveatorAddress = new ProbateAddress();
 
@@ -197,7 +197,7 @@ public class CaveatDataTest {
     }
 
     @Test
-    public void shouldReturnCaveatorFullAddressShortForCaveat() {
+    void shouldReturnCaveatorFullAddressShortForCaveat() {
 
         ProbateAddress caveatorAddress = new ProbateAddress();
 

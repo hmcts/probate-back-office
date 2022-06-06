@@ -27,7 +27,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
-public class InformationRequestCorrespondenceServiceTest {
+class InformationRequestCorrespondenceServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "2", "0", "0", "0", "0"};
     private static final Long ID = 123456789L;
@@ -97,7 +97,7 @@ public class InformationRequestCorrespondenceServiceTest {
     }
 
     @Test
-    public void testEmailInformationRequestMultipleExecSuccessful() throws NotificationClientException {
+    void testEmailInformationRequestMultipleExecSuccessful() throws NotificationClientException {
         List<CollectionMember<ExecutorsApplyingNotification>> executorsApplyingList = new ArrayList<>();
         executorsApplyingList.add(execApplyingNotifIsNo);
         executorsApplyingList.add(execApplying);
@@ -115,7 +115,7 @@ public class InformationRequestCorrespondenceServiceTest {
     }
 
     @Test
-    public void testEmailInformationRequestSuccessful() throws NotificationClientException {
+    void testEmailInformationRequestSuccessful() throws NotificationClientException {
         when(notificationService.sendEmail(eq(State.CASE_STOPPED_REQUEST_INFORMATION), eq(caseDetails),
             any(ExecutorsApplyingNotification.class)))
             .thenReturn(GENERIC_DOCUMENT);
@@ -124,13 +124,13 @@ public class InformationRequestCorrespondenceServiceTest {
     }
 
     @Test
-    public void testGenerateLetterWithCoversheetReturnsSuccessful() {
+    void testGenerateLetterWithCoversheetReturnsSuccessful() {
         assertEquals(documents, informationRequestCorrespondenceService.generateLetterWithCoversheet(callbackRequest,
             execApplying.getValue()));
     }
 
     @Test
-    public void testGetLetterIdReturnsSuccessful() {
+    void testGetLetterIdReturnsSuccessful() {
         assertEquals("123", informationRequestCorrespondenceService.getLetterId(documents, callbackRequest).get(0));
     }
 

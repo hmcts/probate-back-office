@@ -22,7 +22,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class StandingSearchMapperTest {
+class StandingSearchMapperTest {
 
     @Value("${ccd.gateway.host}")
     private String printServiceHost;
@@ -51,7 +51,7 @@ public class StandingSearchMapperTest {
     AppInsights appInsights;
 
     @Test
-    public void shouldMapToCcdData() {
+    void shouldMapToCcdData() {
         StandingSearch standingSearch = new StandingSearch();
         standingSearch.setDeceasedForenames(DECEASED_FORENAMES);
         standingSearch.setDeceasedSurname(DECEASED_SURNAME);

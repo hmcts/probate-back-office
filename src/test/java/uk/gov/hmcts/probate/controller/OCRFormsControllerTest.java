@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class OCRFormsControllerTest {
+class OCRFormsControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -77,7 +77,7 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1P() throws Exception {
         mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -86,7 +86,7 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
+    void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/forms/PA1P/validate-ocr")
                 .content(ocrPayload)
@@ -97,7 +97,7 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
         mockMvc.perform(post("/forms/PA1A/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -106,7 +106,7 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA8A() throws Exception {
         mockMvc.perform(post("/forms/PA8A/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -115,7 +115,7 @@ public class OCRFormsControllerTest {
     }
 
     @Test
-    public void testInvalidFormTypeThrowsNotFound() throws Exception {
+    void testInvalidFormTypeThrowsNotFound() throws Exception {
         mockMvc.perform(post("/forms/test/validate-ocr")
                 .content(ocrPayload)
                 .contentType(MediaType.APPLICATION_JSON))

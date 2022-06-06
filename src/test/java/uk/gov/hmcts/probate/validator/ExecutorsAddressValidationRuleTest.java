@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-public class ExecutorsAddressValidationRuleTest {
+class ExecutorsAddressValidationRuleTest {
 
     @InjectMocks
     private ExecutorsAddressValidationRule executorsAddressValidationRule;
@@ -51,7 +51,7 @@ public class ExecutorsAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(executor.getAddress()).thenReturn(null);
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
@@ -61,7 +61,7 @@ public class ExecutorsAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
+    void shouldReturnAddressErrorMessageWhenNoAddressLineProvided() {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().postCode("PS1 0LS").build());
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
@@ -71,7 +71,7 @@ public class ExecutorsAddressValidationRuleTest {
     }
 
     @Test
-    public void shouldNotReturnErrorMessagesWhenAddressProvided() {
+    void shouldNotReturnErrorMessagesWhenAddressProvided() {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);

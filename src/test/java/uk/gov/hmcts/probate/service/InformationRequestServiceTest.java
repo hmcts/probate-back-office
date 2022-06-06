@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 
-public class InformationRequestServiceTest {
+class InformationRequestServiceTest {
 
     private static final SolsAddress ADDRESS =
         SolsAddress.builder().addressLine1("Address line 1").postCode("AB1 2CD").build();
@@ -110,7 +110,7 @@ public class InformationRequestServiceTest {
     }
 
     @Test
-    public void testEmailRequestReturnsSentEmailDocumentSuccessfully() {
+    void testEmailRequestReturnsSentEmailDocumentSuccessfully() {
         CollectionMember<Document> documentCollectionMember =
             new CollectionMember<>(Document.builder().documentType(DocumentType.SENT_EMAIL).build());
         documentList = new ArrayList<>();

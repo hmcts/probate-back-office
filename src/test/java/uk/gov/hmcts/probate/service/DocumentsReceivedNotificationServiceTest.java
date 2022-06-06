@@ -39,7 +39,7 @@ import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DocumentsReceivedNotificationServiceTest {
+class DocumentsReceivedNotificationServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -135,7 +135,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
+    void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -150,7 +150,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
+    void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -165,7 +165,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
+    void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirminghamFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -179,7 +179,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
+    void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirminghamFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);

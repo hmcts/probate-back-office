@@ -15,7 +15,7 @@ import java.io.IOException;
 
 @ExtendWith(SpringExtension.class)
 @JsonTest
-public class StandingSearchJsonTest {
+class StandingSearchJsonTest {
     private String jsonContent;
 
     @Autowired
@@ -29,7 +29,7 @@ public class StandingSearchJsonTest {
     }
 
     @Test
-    public void canDeserialiseLastModified() throws IOException {
+    void canDeserialiseLastModified() throws IOException {
         StandingSearchCallbackRequest standingSearchDetails = jacksonTester.parseObject(jsonContent);
         Assert.assertEquals("2018", standingSearchDetails.getCaseDetails().getLastModified()[0]);
     }

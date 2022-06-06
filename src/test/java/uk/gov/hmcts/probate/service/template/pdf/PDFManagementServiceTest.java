@@ -52,7 +52,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
 @ExtendWith(SpringExtension.class)
-public class PDFManagementServiceTest {
+class PDFManagementServiceTest {
 
     @Mock
     private PDFGeneratorService pdfGeneratorServiceMock;
@@ -113,7 +113,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadIntestacyCoversheet() throws IOException {
+    void shouldGenerateAndUploadIntestacyCoversheet() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(SOLICITOR_COVERSHEET, json))
             .thenReturn(evidenceManagementFileUpload);
@@ -132,7 +132,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
+    void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
             .thenReturn(evidenceManagementFileUpload);
@@ -151,7 +151,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadProbateTrustCorpsLegalStatement() throws IOException {
+    void shouldGenerateAndUploadProbateTrustCorpsLegalStatement() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE_TRUST_CORPS, json))
                 .thenReturn(evidenceManagementFileUpload);
@@ -170,7 +170,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
+    void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_INTESTACY, json))
             .thenReturn(evidenceManagementFileUpload);
@@ -189,7 +189,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
+    void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_ADMON, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
@@ -207,7 +207,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadDigitalGrant() throws IOException {
+    void shouldGenerateAndUploadDigitalGrant() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(DIGITAL_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
@@ -225,7 +225,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadIntestacyGrant() throws IOException {
+    void shouldGenerateAndUploadIntestacyGrant() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(INTESTACY_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
@@ -243,7 +243,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
+    void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(ADMON_WILL_GRANT, json)).thenReturn(evidenceManagementFileUpload);
         when(uploadServiceMock.store(evidenceManagementFileUpload)).thenReturn(evidenceManagementFile);
@@ -261,7 +261,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
+    void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
         String json = "{}";
         when(pdfGeneratorServiceMock.generatePdf(WILL_LODGEMENT_DEPOSIT_RECEIPT, json))
             .thenReturn(evidenceManagementFileUpload);
@@ -282,7 +282,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadSentEmail() throws IOException {
+    void shouldGenerateAndUploadSentEmail() throws IOException {
         String json = "{}";
 
         when(pdfGeneratorServiceMock.generatePdf(SENT_EMAIL, json)).thenReturn(evidenceManagementFileUpload);
@@ -301,7 +301,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadCaveatRaised() throws IOException {
+    void shouldGenerateAndUploadCaveatRaised() throws IOException {
         String json = "{}";
 
         when(pdfGeneratorServiceMock.generatePdf(CAVEAT_RAISED, json)).thenReturn(evidenceManagementFileUpload);
@@ -320,7 +320,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
+    void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
         String json = "{}";
 
         when(pdfGeneratorServiceMock
@@ -340,7 +340,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadGrantRaised() throws IOException {
+    void shouldGenerateAndUploadGrantRaised() throws IOException {
         String json = "{}";
 
         when(pdfGeneratorServiceMock.generatePdf(GRANT_RAISED, json)).thenReturn(evidenceManagementFileUpload);
@@ -359,7 +359,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadDocmosisDocumentGrantRaised() throws IOException {
+    void shouldGenerateAndUploadDocmosisDocumentGrantRaised() throws IOException {
         String json = "{}";
 
         when(pdfGeneratorServiceMock
@@ -379,7 +379,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionIfUnableToDecryptSignatureFile() throws IOException {
+    void shouldThrowExceptionIfUnableToDecryptSignatureFile() throws IOException {
         assertThrows(BadRequestException.class, () -> {
             when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey");
 
@@ -389,7 +389,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionForInvalidRequest() throws IOException {
+    void shouldThrowExceptionForInvalidRequest() throws IOException {
         assertThrows(BadRequestException.class, () -> {
             when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE))
                     .thenThrow(BadRequestException.class);
@@ -399,7 +399,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenUnableToGeneratePDF() throws IOException {
+    void shouldThrowExceptionWhenUnableToGeneratePDF() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 
@@ -412,7 +412,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
+    void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 
@@ -426,12 +426,12 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void testGetDecodedSignatureReturnsBase64String() {
+    void testGetDecodedSignatureReturnsBase64String() {
         assertThat(underTest.getDecodedSignature(), is("dGhpcyBpcyBhIHRleHQgbWVzc2FnZS4K"));
     }
 
     @Test
-    public void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
+    void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 
@@ -447,7 +447,7 @@ public class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldThrowConnectExceptionWhenSelfLinkNotPresent() throws IOException {
+    void shouldThrowConnectExceptionWhenSelfLinkNotPresent() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 

@@ -19,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class PA1PCitizenMandatoryFieldsValidatorTest {
+class PA1PCitizenMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
@@ -41,7 +41,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testAllMandatoryFieldsPresentPA1PCitizen() {
+    void testAllMandatoryFieldsPresentPA1PCitizen() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -51,7 +51,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testOptionalFieldsNotAddedForPA1P() {
+    void testOptionalFieldsNotAddedForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("non-mandatoryField", "test");
@@ -62,7 +62,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
+    void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("solsSolicitorIsApplying");
@@ -75,7 +75,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testAllMandatoryFieldsPresentPA1PCitizenV2() {
+    void testAllMandatoryFieldsPresentPA1PCitizenV2() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         ocrFieldTestUtils.addAllV2Data(ocrFields);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
@@ -88,7 +88,7 @@ public class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingMandatoryFieldsForPA1PCitizenV2() {
+    void testMissingMandatoryFieldsForPA1PCitizenV2() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);

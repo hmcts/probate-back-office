@@ -16,7 +16,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class CaseExtraDecoratorTest {
+class CaseExtraDecoratorTest {
 
     @InjectMocks
     private CaseExtraDecorator caseExtraDecorator;
@@ -27,14 +27,14 @@ public class CaseExtraDecoratorTest {
     private CaseData caseDataMock;
 
     @Test
-    public void shouldDecorateCaseData() throws JsonProcessingException {
+    void shouldDecorateCaseData() throws JsonProcessingException {
         when(objectMapperMock.writeValueAsString(any())).thenReturn("someJson");
         String actual = caseExtraDecorator.decorate(caseDataMock);
         assertEquals("someJson", actual);
     }
 
     @Test
-    public void shouldThrowExceptionWhenDecorateCaseData() throws JsonProcessingException {
+    void shouldThrowExceptionWhenDecorateCaseData() throws JsonProcessingException {
         assertThrows(BadRequestException.class, () -> {
             when(objectMapperMock.writeValueAsString(any())).thenThrow(JsonProcessingException.class);
             caseExtraDecorator.decorate(caseDataMock);
@@ -42,7 +42,7 @@ public class CaseExtraDecoratorTest {
     }
 
     @Test
-    public void shouldCombineJsons() {
+    void shouldCombineJsons() {
         String actual = caseExtraDecorator.combineDecorations("{\"first\":\"firstValue\"}",
             "{\"second\":\"secondValue\"}");
         assertEquals("{\"first\":\"firstValue\",\"second\":\"secondValue\"}", actual);

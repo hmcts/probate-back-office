@@ -23,7 +23,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class LegacySearchServiceImplTest {
+class LegacySearchServiceImplTest {
 
     @InjectMocks
     private LegacySearchServiceImpl legacySearchService;
@@ -43,7 +43,7 @@ public class LegacySearchServiceImplTest {
     }
 
     @Test
-    public void shouldFindLegacyCaseMatches() {
+    void shouldFindLegacyCaseMatches() {
         List<CaseMatch> expectedCaseMatches = new ArrayList<>();
         CaseMatch caseMatch1 = CaseMatch.builder().build();
         expectedCaseMatches.add(caseMatch1);

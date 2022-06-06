@@ -13,7 +13,7 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-public class TextFileBuilderServiceTest {
+class TextFileBuilderServiceTest {
 
     private TextFileBuilderService textFileBuilderService;
     private List<String> data;
@@ -28,12 +28,12 @@ public class TextFileBuilderServiceTest {
     }
 
     @Test
-    public void testFileContentsMatch() throws IOException {
+    void testFileContentsMatch() throws IOException {
         assertThat(createFile("testFile.txt").readLine(), is("Bob|Smith|"));
     }
 
     @Test
-    public void testEmptyListItemsDisplayDelimiter() throws IOException {
+    void testEmptyListItemsDisplayDelimiter() throws IOException {
         data.add("");
         data.add("");
 
@@ -41,7 +41,7 @@ public class TextFileBuilderServiceTest {
     }
 
     @Test
-    public void testFileNameIsSanitised() throws IOException {
+    void testFileNameIsSanitised() throws IOException {
         assertThat(createFile("te/st/F/il///e.//tx/t").readLine(), is("Bob|Smith|"));
     }
 

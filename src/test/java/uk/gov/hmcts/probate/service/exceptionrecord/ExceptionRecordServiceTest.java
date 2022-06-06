@@ -53,7 +53,7 @@ import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class ExceptionRecordServiceTest {
+class ExceptionRecordServiceTest {
 
     private static final String EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = "Caveat";
     private static final String EXCEPTION_RECORD_CAVEAT_EVENT_ID = "raiseCaveat";
@@ -145,7 +145,7 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void createCaveatCaseFromExceptionRecord() {
+    void createCaveatCaseFromExceptionRecord() {
         SuccessfulTransformationResponse response =
             erService.createCaveatCaseFromExceptionRecord(erRequestCaveat, warnings);
         CaveatData caveatDataResponse = (CaveatData) response.getCaseCreationDetails().getCaseData();
@@ -155,19 +155,19 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void testRequestForPA8A() {
+    void testRequestForPA8A() {
         assertEquals("qwertyuio", erRequestCaveat.getEnvelopeId());
         assertEquals(false, erRequestCaveat.getIsAutomatedProcess());
     }
 
     @Test
-    public void testRequestForPA1P() {
+    void testRequestForPA1P() {
         assertEquals("qwertyuio", erRequestGrantOfProbate.getEnvelopeId());
         assertEquals(false, erRequestGrantOfProbate.getIsAutomatedProcess());
     }
 
     @Test
-    public void shouldUpdateCaveatCaseFromExceptionRecord() throws IOException, NotificationClientException {
+    void shouldUpdateCaveatCaseFromExceptionRecord() throws IOException, NotificationClientException {
         exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         caveatCaseUpdateRequest =
             getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
@@ -190,7 +190,7 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void shouldUpdateCaveatCaseFromExceptionRecordWithUnmatchedCaveatNumbersWarning()
+    void shouldUpdateCaveatCaseFromExceptionRecordWithUnmatchedCaveatNumbersWarning()
         throws IOException, NotificationClientException {
         exceptionRecordPayloadPA8A =
             testUtils.getStringFromFile("updateExceptionRecordDataPA8ADiffCaseNumbers.json");
@@ -218,7 +218,7 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void shouldNotUpdateCaveatCaseFromExceptionRecordNoAdditionalDocuments()
+    void shouldNotUpdateCaveatCaseFromExceptionRecordNoAdditionalDocuments()
         throws IOException, NotificationClientException {
         assertThrows(OCRMappingException.class, () -> {
             exceptionRecordPayloadPA8A =
@@ -242,7 +242,7 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void shouldNotUpdateCaveatCaseFromExceptionRecordNoDocuments()
+    void shouldNotUpdateCaveatCaseFromExceptionRecordNoDocuments()
         throws IOException, NotificationClientException {
         assertThrows(OCRMappingException.class, () -> {
             exceptionRecordPayloadPA8A =
@@ -266,7 +266,7 @@ public class ExceptionRecordServiceTest {
     }
 
     @Test
-    public void createGrantOfProbateCaseFromExceptionRecord() {
+    void createGrantOfProbateCaseFromExceptionRecord() {
         SuccessfulTransformationResponse response =
             erService
                 .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbate, GrantType.GRANT_OF_PROBATE,

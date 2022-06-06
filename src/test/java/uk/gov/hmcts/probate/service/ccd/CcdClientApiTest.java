@@ -32,7 +32,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class CcdClientApiTest {
+class CcdClientApiTest {
 
     private static final String AUTHORISATION = "XXJDHFHF";
     private static final String SERVICE_AUTHORISATION = "uifhuhfsd";
@@ -46,7 +46,7 @@ public class CcdClientApiTest {
     private CcdClientApi ccdClientApi;
 
     @Test
-    public void shouldCreateCase() {
+    void shouldCreateCase() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         CaseData caseData = CaseData.builder().build();
         EventId eventId = EventId.IMPORT_GOR_CASE;
@@ -101,7 +101,7 @@ public class CcdClientApiTest {
     }
 
     @Test
-    public void shouldRetrieveCase() {
+    void shouldRetrieveCase() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
         CaseDetails caseDetails = CaseDetails.builder().build();
@@ -129,7 +129,7 @@ public class CcdClientApiTest {
     }
 
     @Test
-    public void shouldNotFindCase() {
+    void shouldNotFindCase() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
 
@@ -156,7 +156,7 @@ public class CcdClientApiTest {
     }
 
     @Test
-    public void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
+    void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
         assertThrows(IllegalStateException.class, () -> {
             CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
             Long legacyId = 1L;
@@ -183,7 +183,7 @@ public class CcdClientApiTest {
     }
 
     @Test
-    public void shouldReadCaseDetails() {
+    void shouldReadCaseDetails() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
 
@@ -208,7 +208,7 @@ public class CcdClientApiTest {
     }
 
     @Test
-    public void updateCaseAsCitizen() {
+    void updateCaseAsCitizen() {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
 
         CaseDetails caseDetails = Mockito.mock(CaseDetails.class);

@@ -8,7 +8,7 @@ import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import static org.junit.Assert.assertEquals;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class ApplicationTypeMapperTest {
+class ApplicationTypeMapperTest {
 
     private static final String SOLS_SOLICITORS_FIRM_NAME = "Chapman and Sons";
     private static final String SOLS_SOLICITORS_REPRESENTITIVE_NAME = "Bob Chapman";
@@ -45,53 +45,53 @@ public class ApplicationTypeMapperTest {
     }
 
     @Test
-    public void testApplicationTypeGrantOfRepresentationIsPersonal() {
+    void testApplicationTypeGrantOfRepresentationIsPersonal() {
         ApplicationType applicationType = applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFields);
         assertEquals(ApplicationType.PERSONAL, applicationType);
     }
 
     @Test
-    public void testApplicationTypeGrantOfRepresentationIsSolicitor() {
+    void testApplicationTypeGrantOfRepresentationIsSolicitor() {
         ApplicationType applicationType =
             applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitor);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 
     @Test
-    public void testApplicationTypeGrantOfRepresentationIsSolicitorMissingFirmName() {
+    void testApplicationTypeGrantOfRepresentationIsSolicitorMissingFirmName() {
         ApplicationType applicationType =
             applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitorNoFirmName);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 
     @Test
-    public void testApplicationTypeGrantOfRepresentationIsSolicitorMissingRepName() {
+    void testApplicationTypeGrantOfRepresentationIsSolicitorMissingRepName() {
         ApplicationType applicationType =
             applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitorNoRepName);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 
     @Test
-    public void testApplicationTypeCaveatIsPersonal() {
+    void testApplicationTypeCaveatIsPersonal() {
         ApplicationType applicationType = applicationTypeMapper.toApplicationTypeCaveat(ocrFields);
         assertEquals(ApplicationType.PERSONAL, applicationType);
     }
 
     @Test
-    public void testApplicationTypeCaveatIsSolicitor() {
+    void testApplicationTypeCaveatIsSolicitor() {
         ApplicationType applicationType = applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitor);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 
     @Test
-    public void testApplicationTypeCaveatIsSolicitorMissingFirmName() {
+    void testApplicationTypeCaveatIsSolicitorMissingFirmName() {
         ApplicationType applicationType =
             applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitorNoFirmName);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 
     @Test
-    public void testApplicationTypeCaveatIsSolicitorMissingRepName() {
+    void testApplicationTypeCaveatIsSolicitorMissingRepName() {
         ApplicationType applicationType =
             applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitorNoRepName);
         assertEquals(ApplicationType.SOLICITORS, applicationType);

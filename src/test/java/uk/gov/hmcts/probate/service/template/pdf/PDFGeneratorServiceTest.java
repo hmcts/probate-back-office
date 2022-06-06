@@ -35,7 +35,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 
 @ExtendWith(MockitoExtension.class)
-public class PDFGeneratorServiceTest {
+class PDFGeneratorServiceTest {
 
     @Mock
     private FileSystemResourceService fileSystemResourceServiceMock;
@@ -66,7 +66,7 @@ public class PDFGeneratorServiceTest {
     }
 
     @Test
-    public void shouldGeneratePDFWithBytesAndPDFContentType() {
+    void shouldGeneratePDFWithBytesAndPDFContentType() {
         when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
                 .thenReturn("<htmlTemplate>");
@@ -76,7 +76,7 @@ public class PDFGeneratorServiceTest {
     }
 
     @Test
-    public void shouldGeneratePDFFromDocmosisWithBytesAndPDFContentType() {
+    void shouldGeneratePDFFromDocmosisWithBytesAndPDFContentType() {
 
         Map<String, Object> registry =  new HashMap<>();
         registry.put("name", "Bristol District Probate Registry");
@@ -106,7 +106,7 @@ public class PDFGeneratorServiceTest {
     }
 
     @Test
-    public void shouldThrowClientException() {
+    void shouldThrowClientException() {
         assertThrows(ClientException.class, () -> {
             when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
             when(pdfServiceClient.generateFromHtml(any(), any())).thenReturn("MockedBytes".getBytes());
@@ -119,7 +119,7 @@ public class PDFGeneratorServiceTest {
     }
 
     @Test
-    public void shouldThrowPDFConnectionException() {
+    void shouldThrowPDFConnectionException() {
         assertThrows(ClientException.class, () -> {
             when(pdfServiceClientExceptionMock.getMessage()).thenReturn("blah");
             when(fileSystemResourceServiceMock.getFileFromResourceAsString(anyString()))
@@ -130,7 +130,7 @@ public class PDFGeneratorServiceTest {
     }
 
     @Test
-    public void shouldThrowDocmosisPDFConnectionException() {
+    void shouldThrowDocmosisPDFConnectionException() {
         assertThrows(ClientException.class, () -> {
             Map<String, Object> registry =  new HashMap<>();
             registry.put("name", "Bristol District Probate Registry");
