@@ -15,6 +15,9 @@ postgresql:
       CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
   postgresqlUsername: hmcts
   postgresqlPassword: hmcts
+  auth.username: "hmcts"
+  auth.password: "hmcts"
+  auth.database: "hmcts"
   environment:
     - POSTGRESQL_USERNAME=hmcts
     - POSTGRESQL_PASSWORD=hmcts
