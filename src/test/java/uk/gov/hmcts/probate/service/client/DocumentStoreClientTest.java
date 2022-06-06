@@ -5,11 +5,9 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -19,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import java.io.IOException;
 import java.time.LocalDate;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -29,9 +28,6 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 public class DocumentStoreClientTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
 
     @Mock
     private CloseableHttpClient closeableHttpClientMock;
@@ -69,7 +65,7 @@ public class DocumentStoreClientTest {
 
     @Test
     public void shouldThrowIOException() {
-        assertThrows(IOException.class, () -> {
+        IOException e = assertThrows(IOException.class, () -> {
             doThrow(new IOException()).when(closeableHttpClientMock).execute(any(HttpGet.class));
             DocumentLink documentLink = DocumentLink.builder()
                     .documentBinaryUrl("http://localhost")
@@ -81,14 +77,11 @@ public class DocumentStoreClientTest {
                     .documentLink(documentLink)
                     .build();
 
-            expectedException.expect(IOException.class);
-            expectedException.expectMessage(containsString(document.getDocumentFileName()));
-
             byte[] bytes = documentStoreClient.retrieveDocument(document, "");
 
             assertNull(bytes);
         });
-
+        assertThat(e.getMessage(), containsString("test.pdf"));
     }
 
 }
