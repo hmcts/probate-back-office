@@ -15,6 +15,7 @@ echo probatesolicitortestorgtestman=$probatesolicitortestorgtestman
 
 
 # clear all existing
+echo clearing all wiremock setup
 curl -X 'DELETE' 'http://localhost:8991/__admin/mappings' -H 'accept: */*'
 
 # pba account successful
@@ -750,4 +751,5 @@ http://localhost:8991/__admin/mappings/new
 # make responses persistent in Docker volume
 curl -X POST http://localhost:8991/__admin/mappings/save
 
+echo listing all wiremock setup
 curl -X 'GET' 'http://localhost:8991/__admin/mappings?limit=100&offset=0' -H 'accept: application/json'
