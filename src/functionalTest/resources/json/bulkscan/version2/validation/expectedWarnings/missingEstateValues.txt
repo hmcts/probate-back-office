@@ -1,4 +1,3 @@
 gross value of the estate for inheritance tax (ihtEstateGrossValue) is mandatory.
 net value of the estate for inheritance tax (ihtEstateNetValue) is mandatory.
 net qualifying value of the estate (ihtEstateNetQualifyingValue) is mandatory.
-Are you claiming against this estate the unused proportion of the inheritance tax nil-rate band of a pre-deceased spouse or civil partner of the deceased? (ihtUnusedAllowanceClaimed) is mandatory.
