@@ -2,11 +2,12 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class DocumentTest {
     @Test
@@ -18,6 +19,6 @@ class DocumentTest {
         String json = objectMapper.writeValueAsString(document);
 
         Document documentFromJson = objectMapper.readValue(json, Document.class);
-        Assert.assertEquals(document.getDocumentDateAdded(), documentFromJson.getDocumentDateAdded());
+        assertEquals(document.getDocumentDateAdded(), documentFromJson.getDocumentDateAdded());
     }
 }

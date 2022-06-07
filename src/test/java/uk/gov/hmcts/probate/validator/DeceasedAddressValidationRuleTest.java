@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -111,7 +110,7 @@ class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        Assert.assertTrue(errors.isEmpty());
+        assertTrue(errors.isEmpty());
     }
 
 }

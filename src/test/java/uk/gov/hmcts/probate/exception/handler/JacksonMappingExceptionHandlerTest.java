@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.exception.handler;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +11,8 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -41,8 +42,8 @@ class JacksonMappingExceptionHandlerTest {
         ResponseEntity responseEntity = jacksonMappingExceptionHandler
             .handleMessageNotReadableException(jsonMappingException);
 
-        Assert.assertNotNull(responseEntity);
-        Assert.assertEquals("JsonParseError", ((FieldErrorResponse) responseEntity.getBody()).getCode());
-        Assert.assertEquals("field1.field2", ((FieldErrorResponse) responseEntity.getBody()).getField());
+        assertNotNull(responseEntity);
+        assertEquals("JsonParseError", ((FieldErrorResponse) responseEntity.getBody()).getCode());
+        assertEquals("field1.field2", ((FieldErrorResponse) responseEntity.getBody()).getField());
     }
 }

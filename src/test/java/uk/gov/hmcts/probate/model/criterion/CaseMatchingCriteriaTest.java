@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.model.criterion;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetai
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -57,7 +57,7 @@ class CaseMatchingCriteriaTest {
     void shouldCreateCriteriaOfCaseDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(caseDetails, times(1)).getData();
     }
 
@@ -65,7 +65,7 @@ class CaseMatchingCriteriaTest {
     void shouldCreateCriteriaOfCaveatDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caveatDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(caveatDetails, times(1)).getData();
     }
 
@@ -73,7 +73,7 @@ class CaseMatchingCriteriaTest {
     void shouldCreateCriteriaOfStandingSearchDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(standingSearchDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(standingSearchDetails, times(1)).getData();
     }
 
@@ -82,7 +82,7 @@ class CaseMatchingCriteriaTest {
     void shouldCreateCriteriaOfWillLodgementDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(willLodgementDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(willLodgementDetails, times(1)).getData();
     }
 }

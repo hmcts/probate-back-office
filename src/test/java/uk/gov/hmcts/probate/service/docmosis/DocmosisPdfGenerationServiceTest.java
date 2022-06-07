@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Answers;
@@ -16,6 +15,7 @@ import uk.gov.hmcts.probate.model.docmosis.PdfDocumentRequest;
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -68,7 +68,7 @@ class DocmosisPdfGenerationServiceTest {
         byte[] result = docmosisPdfGenerationService.generateDocFrom(CAVEAT_RAISED.getTemplateName(),
             placeholders);
 
-        Assert.assertEquals(8, result.length);
+        assertEquals(8, result.length);
     }
 
     @Test

@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +9,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 
 import java.time.LocalDate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -25,6 +26,6 @@ class LocalDateToWelshStringConverterTest {
     void convertDateInWelsh() {
         LocalDate localDate = LocalDate.of(2019, 12, 23);
         final String dateInWelsh = localDateToWelshStringConverter.convert(localDate);
-        Assert.assertEquals("23 Rhagfyr 2019", dateInWelsh);
+        assertEquals("23 Rhagfyr 2019", dateInWelsh);
     }
 }

@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @JsonTest
@@ -55,6 +55,6 @@ class CaseDataJsonTest {
 
         CaseData caseDataFromJson = jacksonTester.parseObject(jacksonTester.write(caseData).getJson());
 
-        Assert.assertEquals(caseData.getDeceasedDateOfDeath(), caseDataFromJson.getDeceasedDateOfDeath());
+        assertEquals(caseData.getDeceasedDateOfDeath(), caseDataFromJson.getDeceasedDateOfDeath());
     }
 }
