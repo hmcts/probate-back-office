@@ -27,17 +27,18 @@ esac
 
 binFolder=$(dirname "$0")
 
-userToken="$(${binFolder}/idam-user-token.sh)"
-serviceToken="$(${binFolder}/idam-service-token.sh ccd_gw)"
-ccdUrl=${CCD_DEF_URL:-http://localhost:4451}
+userToken=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
+serviceToken=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+ccdUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
 
-echo "User token ${userToken}"
-echo "Service token ${serviceToken}"
+echo "Creating CCD role: ${role}"
 
-curl -XPUT \
-  $CURL_OPTS \
-  $ccdUrl/api/user-role \
+curl --insecure --fail --show-error --silent --output /dev/null -X PUT \
+  ${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}/api/user-role \
   -H "Authorization: Bearer ${userToken}" \
   -H "ServiceAuthorization: Bearer ${serviceToken}" \
   -H "Content-Type: application/json" \
-  -d '{"role":"'${role}'","security_classification":"'${classification}'"}'
+  -d '{
+    "role": "'${role}'",
+    "security_classification": "'${classification}'"
+  }'

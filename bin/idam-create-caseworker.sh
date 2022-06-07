@@ -4,7 +4,7 @@
 ## Options:
 ##    - role: Comma-separated list of roles. Roles must exist in IDAM (i.e `caseworker-probate,caseworker-probate-solicitor`)
 ##    - email: Email address
-##    - password: User's password. Default to `Pa55word11`. Weak passwords that do not match the password criteria by SIDAM will cause use creation to fail, and such failure may not be expressly communicated to the user. 
+##    - password: User's password. Default to `Pa55word11`. Weak passwords that do not match the password criteria by SIDAM will cause use creation to fail, and such failure may not be expressly communicated to the user.
 ##    - surname: Last name. Default to `Test`.
 ##    - forename: First name. Default to `User`.
 ##
@@ -38,6 +38,6 @@ done
 rolesJson="${rolesJson}]"
 
 curl -XPOST \
-  http://localhost:5000/testing-support/accounts \
+  "${IDAM_API_BASE_URL:-http://localhost:5000}"/testing-support/accounts \
   -H "Content-Type: application/json" \
   -d '{"email":"'${email}'","forename":"'${forename}'","surname":"'${surname}'","password":"'${password}'","levelOfAccess":1, "roles": '${rolesJson}', "userGroup": {"code": "caseworker"}}'

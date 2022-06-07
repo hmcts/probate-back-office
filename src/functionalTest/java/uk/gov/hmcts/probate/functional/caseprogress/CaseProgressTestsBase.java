@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.caseprogress.TaskState;
 import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
@@ -16,6 +17,7 @@ import static org.junit.Assert.assertEquals;
 public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
     protected static final String TASKLIST_UPDATE_URL = "/tasklist/update";
+    protected static final String CASE_SOLS_CREATED = "/case/sols-created";
     protected static final String CASE_PRINTED_URL = "/case/casePrinted";
     protected static final String CASE_DOCS_RECEIVED_URL = "/notify/documents-received";
     protected static final String SOLS_VALIDATE_URL = "/case/sols-validate";
@@ -31,23 +33,25 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
 
-    protected void verifyCaseProgressHtmlSolPost(String jsonFile, String postUrl, String expectedHtmlFile) {
+    protected void verifyCaseProgressHtmlSolPost(String jsonFile, String postUrl, String expectedHtmlFile)
+        throws IOException {
         verifyCaseProgressHtml(jsonFile, postUrl, expectedHtmlFile, true, null);
     }
 
     protected void verifyCaseProgressHtmlSolPost(String jsonFile, String postUrl, String expectedHtmlFile,
-                                          String nextStepUrl) {
+                                          String nextStepUrl) throws IOException {
 
         verifyCaseProgressHtml(jsonFile, postUrl, expectedHtmlFile, true, nextStepUrl);
     }
 
-    protected void verifyCaseProgressHtmlCwPost(String jsonFile, String postUrl, String expectedHtmlFile) {
+    protected void verifyCaseProgressHtmlCwPost(String jsonFile, String postUrl, String expectedHtmlFile)
+        throws IOException {
         verifyCaseProgressHtml(jsonFile, postUrl, expectedHtmlFile, false, null);
     }
 
     protected void verifyCaseProgressHtml(String jsonFile, String postUrl, String expectedHtmlFile,
                                         boolean forSolicitorJsonPost,
-                                        String nextStepUrl) {
+                                        String nextStepUrl) throws IOException {
         final var response = forSolicitorJsonPost
                 ? postSolJson(jsonFile, postUrl) : postCwJson(jsonFile, postUrl);
 
@@ -93,7 +97,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
-    private String postSolJson(String jsonFileName, String path) {
+    private String postSolJson(String jsonFileName, String path) throws IOException {
         final Response jsonResponse = RestAssured.given()
                 .config(config)
                 .relaxedHTTPSValidation()
@@ -105,7 +109,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         return jsonResponse.getBody().asString();
     }
 
-    private String postCwJson(String jsonFileName, String path) {
+    private String postCwJson(String jsonFileName, String path) throws IOException {
         final Response jsonResponse = RestAssured.given()
                 .config(config)
                 .relaxedHTTPSValidation()

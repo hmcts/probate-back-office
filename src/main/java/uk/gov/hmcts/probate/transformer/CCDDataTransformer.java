@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.DateTimeException;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class CCDDataTransformer {
         return CCDData.builder()
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
-            .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails().getLastModified()))
+            .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails()))
             .solsWillType(caseData.getSolsWillType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
             .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
@@ -132,7 +133,7 @@ public class CCDDataTransformer {
             .extraCopiesOfGrant(caseData.getExtraCopiesOfGrant())
             .outsideUKGrantCopies(caseData.getOutsideUKGrantCopies())
             .paymentMethod(caseData.getSolsPaymentMethods())
-            .solsPBANumber(caseData.getSolsPBANumber() == null 
+            .solsPBANumber(caseData.getSolsPBANumber() == null
                 || caseData.getSolsPBANumber().getValue() == null ? null :
                 caseData.getSolsPBANumber().getValue().getCode())
             .solsPBAPaymentReference(caseData.getSolsPBAPaymentReference())
@@ -210,11 +211,18 @@ public class CCDDataTransformer {
         return executors;
     }
 
-    private LocalDate getCaseSubmissionDate(String[] lastModified) {
-        try {
-            return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
-        } catch (ArrayIndexOutOfBoundsException | NumberFormatException | DateTimeException | NullPointerException e) {
-            log.warn(e.getMessage(), e);
+    private LocalDate getCaseSubmissionDate(CaseDetails caseDetails) {
+        String[] lastModified = caseDetails.getLastModified();
+        if (lastModified != null && lastModified.length >= 3 && lastModified[0] != null && lastModified[1] != null
+                && lastModified[2] != null) {
+            try {
+                return LocalDate.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]));
+            } catch (NumberFormatException | DateTimeException e) {
+                log.warn("CCDDataTransformer.getCaseSubmissionDate for case {}, error {}", caseDetails.getId(),
+                        e.getMessage());
+                return null;
+            }
+        } else {
             return null;
         }
     }

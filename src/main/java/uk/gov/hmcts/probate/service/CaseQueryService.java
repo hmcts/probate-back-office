@@ -21,12 +21,12 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import javax.annotation.Nullable;
 import java.net.URI;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -67,13 +67,13 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_hmrc.json";
     private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_smeeford.json";
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
-    private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final SecurityUtils securityUtils;
     private final FileSystemResourceService fileSystemResourceService;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
@@ -91,10 +91,11 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
+                .sort(SORT_COLUMN)
                 .toString();
 
         return runQueryWithPagination(invokedFrom + " findGrantIssuedCasesWithGrantIssuedDate", jsonQuery,
-                queryDate, null);
+                queryDate, queryDate);
     }
 
     public List<ReturnedCaseDetails> findAllCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
@@ -103,9 +104,11 @@ public class CaseQueryService {
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
                 .from(0)
+                .sort(SORT_COLUMN)
                 .toString();
 
-        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate, null);
+        return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate,
+                queryDate);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
@@ -145,9 +148,13 @@ public class CaseQueryService {
         query.must(matchQuery(KEY_GRANT_DELAYED_NOTIFICATION_DATE, queryDate));
         query.mustNot(existsQuery(KEY_GRANT_DELAYED_NOTIFICATION_SENT));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize).from(0).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(0)
+                .sort(SORT_COLUMN)
+                .toString();
 
-        return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, null);
+        return runQueryWithPagination("findCasesForGrantDelayed", jsonQuery, queryDate, queryDate);
     }
 
     public List<ReturnedCaseDetails> findCasesForGrantAwaitingDocumentation(String queryDate) {
@@ -164,10 +171,14 @@ public class CaseQueryService {
         query.mustNot(existsQuery(KEY_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT));
         query.mustNot(existsQuery(KEY_EVIDENCE_HANDLED));
 
-        String jsonQuery = new SearchSourceBuilder().query(query).size(dataExtractPaginationSize).from(0).toString();
+        String jsonQuery = new SearchSourceBuilder().query(query)
+                .size(dataExtractPaginationSize)
+                .from(0)
+                .sort(SORT_COLUMN)
+                .toString();
 
         return runQueryWithPagination("findCasesForGrantAwaitingDocumentation", jsonQuery, queryDate,
-                null);
+                queryDate);
     }
 
     private List<ReturnedCaseDetails> runQueryWithPagination(String queryName, String jsonQuery,
@@ -180,11 +191,13 @@ public class CaseQueryService {
         int total = 10000000;
         String paginatedQry = jsonQuery;
         while (index < total) {
-            log.info("Querying for {} from date:{} to date:{}, from page:{} to page:{}", queryName, queryDateStart,
+            log.info("Querying for {} from date:{} to date:{}, from index:{} to index:{}", queryName, queryDateStart,
                     queryDateEnd, pageStart, (pageStart + dataExtractPaginationSize));
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
             pagedResults = cases.getCases();
+            log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
+                    pagedResults.get(pagedResults.size() - 1).getId());
             allResults.addAll(pagedResults);
             index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;
@@ -196,7 +209,7 @@ public class CaseQueryService {
 
     @Nullable
     private ReturnedCases runQuery(String jsonQuery) {
-        log.info("CaseQueryService runQuery: " + jsonQuery);
+        log.debug("CaseQueryService runQuery: " + jsonQuery);
         URI uri = UriComponentsBuilder
             .fromHttpUrl(ccdDataStoreAPIConfiguration.getHost() + ccdDataStoreAPIConfiguration.getCaseMatchingPath())
             .queryParam(CASE_TYPE_ID, CASE_TYPE.getCode())
@@ -211,8 +224,8 @@ public class CaseQueryService {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
-            tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
-            log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
+            tokenHeaders.add(AUTHORIZATION, securityUtils.getCaseworkerToken());
+            log.info("DONE securityUtils.getCaseworkerToken()");
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
         }

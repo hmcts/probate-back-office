@@ -5,6 +5,8 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.io.IOException;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
@@ -17,7 +19,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
 
     @Test
-    public void verifyGenerateSolsCoverSheetGopRenouncingExecutors() {
+    public void verifyGenerateSolsCoverSheetGopRenouncingExecutors() throws IOException {
         String payload = "/caseprogress/04a-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
@@ -27,7 +29,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetGopWillHasCodicils() {
+    public void verifyGenerateSolsCoverSheetGopWillHasCodicils() throws IOException {
         String payload = "/caseprogress/04b-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
@@ -37,7 +39,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetGopIht217() {
+    public void verifyGenerateSolsCoverSheetGopIht217() throws IOException {
         String payload = "/caseprogress/04c-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
@@ -47,17 +49,16 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetGopPA17Form() {
+    public void verifyGenerateSolsCoverSheetGopPA17Form() throws IOException {
         String payload = "/caseprogress/04d-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         String expectedText = utils
             .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
         assertTrue(response.contains(expectedText));
-
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetIntestacy() {
+    public void verifyGenerateSolsCoverSheetIntestacy() throws IOException {
         String payload = "/caseprogressintestacy/04-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
         String expectedText = utils
@@ -67,7 +68,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetIntestacyPA16Form() {
+    public void verifyGenerateSolsCoverSheetIntestacyPA16Form() throws IOException {
         String payload = "/caseprogressintestacy/04b-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
         String expectedText = utils
@@ -77,7 +78,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetAdmonWill() {
+    public void verifyGenerateSolsCoverSheetAdmonWill() throws IOException {
         String payload = "/caseprogressadmonwill/04-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_ADMON_URL, "solsCoversheetDocument");
         String expectedText = utils
@@ -87,7 +88,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() {
+    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
         String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
         String payload = dir + "caseCreate.json";
@@ -105,7 +106,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesNo() {
+    public void verifyGenerateSolsGopExpectedEstatesNo() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         String payload = dir + "caseCreate.json";
@@ -123,7 +124,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() {
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
         String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
         String payload = dir + "caseCreate.json";
@@ -141,7 +142,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() {
+    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
         //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
         String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
         String payload = dir + "caseCreate.json";
@@ -159,10 +160,18 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsCoverSheetGopTcResolutionLodgedWithinApplication() {
+    public void verifyGenerateSolsCoverSheetGopTcResolutionLodgedWithinApplication() throws IOException {
         String payload = "/caseprogress/04e-caseCreated.json";
         String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
         assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
+    }
 
+    @Test
+    public void verifyGenerateSolsCoverSheetGopNotarialWill() throws IOException {
+        String payload = "/caseprogress/04-caseCreated-notarial.json";
+        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String expectedText = utils
+            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillNotarial");
+        assertTrue(response.contains(expectedText));
     }
 }

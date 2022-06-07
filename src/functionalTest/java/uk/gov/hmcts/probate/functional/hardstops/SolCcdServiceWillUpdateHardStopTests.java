@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
+import java.io.IOException;
+
 import static io.restassured.RestAssured.given;
 import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
@@ -27,7 +29,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateWillUpdateProbateWithoutHardStop() {
+    public void validateWillUpdateProbateWithoutHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -40,7 +42,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateWillUpdateIntestacyWithoutHardStop() {
+    public void validateWillUpdateIntestacyWithoutHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -53,7 +55,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateWillUpdateAnnexedWithoutHardStop() {
+    public void validateWillUpdateAnnexedWithoutHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -66,7 +68,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopWithNoWillAccessOriginalProbate() {
+    public void validateHardStopWithNoWillAccessOriginalProbate() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -79,7 +81,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopWithNoWillAccessOriginalAdmon() {
+    public void validateHardStopWithNoWillAccessOriginalAdmon() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -93,7 +95,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     // We no longer stop these
     @Test
-    public void validateHardMessageWithNoOriginalWill() {
+    public void validateHardMessageWithNoOriginalWill() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()

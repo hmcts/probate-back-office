@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -36,6 +37,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
@@ -47,6 +49,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -91,12 +94,13 @@ public class BusinessValidationController {
     private final CodicilDateValidationRule codicilDateValidationRule;
     private final OriginalWillSignedDateValidationRule originalWillSignedDateValidationRule;
     private final List<TitleAndClearingPageValidationRule> allTitleAndClearingValidationRules;
-
     private final CaseStoppedService caseStoppedService;
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     private final IhtEstateValidationRule ihtEstateValidationRule;
+    private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
+    private final AssignCaseAccessService assignCaseAccessService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -112,6 +116,38 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         ihtEstateValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+    }
+
+    @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateSolsCreate(
+            @Validated({ApplicationCreatedGroup.class}) @RequestBody
+                    CallbackRequest callbackRequest) {
+
+        final List<ValidationRule> solPcValidation = Arrays.asList(solicitorPostcodeValidationRule);
+
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
+        if (response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/sols-created")
+    public ResponseEntity<CallbackResponse> createSolsCaseWithOrganisation(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest request) {
+        logRequest("/sols-created", request);
+        return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
+    }
+
+    @PostMapping(path = "/sols-access")
+    public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestParam(value = "caseTypeId") String caseTypeId,
+        @RequestBody CallbackRequest request) {
+        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken, caseTypeId);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
+        return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -200,7 +236,7 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         var rules = new ValidationRule[]{codicilDateValidationRule, originalWillSignedDateValidationRule};
         final List<ValidationRule> gopPage1ValidationRules = Arrays.asList(rules);
-        
+
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest,
                 gopPage1ValidationRules);
 

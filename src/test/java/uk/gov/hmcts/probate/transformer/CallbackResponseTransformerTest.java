@@ -13,6 +13,8 @@ import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
@@ -44,9 +46,11 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
@@ -87,6 +91,7 @@ import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -283,6 +288,9 @@ public class CallbackResponseTransformerTest {
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
 
+    public static final String ORGANISATION_NAME = "OrganisationName";
+    public static final String ORG_ID = "OrgID";
+
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
         new CollectionMember<>(null,
             EstateItem.builder()
@@ -453,6 +461,8 @@ public class CallbackResponseTransformerTest {
     private SolicitorPBADefaulter solicitorPBADefaulter;
     @Mock
     private SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    @Mock
+    private OrganisationsRetrievalService organisationsRetrievalService;
     @Mock
     private PaymentResponse paymentResponseMock;
 
@@ -3517,6 +3527,7 @@ public class CallbackResponseTransformerTest {
         caseDataBuilder.willAccessOriginal(NO);
         caseDataBuilder.noOriginalWillAccessReason(NO_ACCESS_WILL_REASON);
         caseDataBuilder.willHasCodicils(NO);
+        caseDataBuilder.willAccessNotarial(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -3526,6 +3537,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getWillAccessOriginal());
         assertEquals(NO_ACCESS_WILL_REASON, callbackResponse.getData().getNoOriginalWillAccessReason());
         assertEquals(NO, callbackResponse.getData().getWillHasCodicils());
+        assertEquals(YES, callbackResponse.getData().getWillAccessNotarial());
     }
 
     @Test
@@ -3572,4 +3584,49 @@ public class CallbackResponseTransformerTest {
         verify(solicitorExecutorTransformerMock, times(1))
                 .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
     }
+
+    @Test
+    public void testBuildOrganisationPolicy() {
+        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+            .thenReturn(new OrganisationEntityResponse());
+
+        assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+    }
+
+    @Test
+    public void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
+        when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
+        assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+    }
+
+    @Test
+    public void testBuildOrganisationPolicyValues() {
+
+        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
+        organisationEntityResponse.setName(ORGANISATION_NAME);
+
+        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+            .thenReturn(organisationEntityResponse);
+        OrganisationPolicy organisationPolicy = mock(OrganisationPolicy.class);
+        when(organisationPolicy.getOrgPolicyCaseAssignedRole()).thenReturn("Org Policy Case Assigned Role");
+        when(organisationPolicy.getOrgPolicyReference()).thenReturn("Org Policy Reference");
+
+        CaseData caseData = CaseData.builder().applicantOrganisationPolicy(organisationPolicy)
+            .build();
+        OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
+            .buildOrganisationPolicy(caseData, "ABC123");
+        assertEquals("Org Policy Case Assigned Role",
+            actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
+        assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
+        Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
+        assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
+        assertEquals(ORG_ID, organisationResult.getOrganisationID());
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
+        verify(organisationPolicy).getOrgPolicyReference();
+    }
+
 }
