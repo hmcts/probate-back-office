@@ -1,10 +1,8 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -36,9 +34,6 @@ class OCRFieldIhtFormTypeMapperTest {
     private static final String UNKNOWN_FORM = "UNKNOWNFORM";
     private static final String PRE_EE_DECEASED_DATE_OF_DEATH = "01012021";
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
-
-    @Rule
-    public ExpectedException expectedEx = ExpectedException.none();
 
     @BeforeEach
     public void setUp() {
