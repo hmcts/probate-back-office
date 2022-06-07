@@ -9,8 +9,8 @@ import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUploa
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class UploadRequestBuilderTest {
 

@@ -18,7 +18,7 @@ import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
 import static uk.gov.hmcts.probate.util.CommonVariables.DIRECTOR;

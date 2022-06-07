@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.eq;
@@ -623,7 +623,7 @@ class CaveatNotificationServiceTest {
             .withdrawn(eq(caveatCallbackRequest), listArgumentCaptor.capture(), isNull());
         List<Document> passedDocument = listArgumentCaptor.getValue();
 
-        assertEquals("Document matched", passedDocument.get(0), document);
+        assertEquals(passedDocument.get(0), document);
         verify(notificationService).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
     }
@@ -664,7 +664,7 @@ class CaveatNotificationServiceTest {
             listArgumentCaptor.capture(), eq(sendLetterResponse.letterId.toString()));
         List<Document> passedDocument = listArgumentCaptor.getValue();
 
-        assertEquals("Document size", 2, passedDocument.size());
+        assertEquals(2, passedDocument.size());
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
         verify(bulkPrintService).sendToBulkPrintForCaveat(eq(caveatCallbackRequest), eq(document), eq(coversheet));
@@ -742,7 +742,7 @@ class CaveatNotificationServiceTest {
             .withdrawn(eq(caveatCallbackRequest), listArgumentCaptor.capture(), isNull());
         List<Document> passedDocument = listArgumentCaptor.getValue();
 
-        assertEquals("Document size", 2, passedDocument.size());
+        assertEquals(2, passedDocument.size());
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService, never()).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
         verify(bulkPrintService, never())

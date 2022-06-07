@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
@@ -29,7 +28,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -284,9 +283,9 @@ class CaseQueryServiceTest {
     void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
-            "2021-01-01"))
-            .isInstanceOf(CaseMatchingException.class);
+        assertThrows(CaseMatchingException.class, () ->
+                caseQueryService.findGrantIssuedCasesWithGrantIssuedDate("invokingService",
+            "2021-01-01"));
     }
 
     @Test

@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -25,7 +24,7 @@ import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -107,8 +106,8 @@ class CaveatQueryServiceTest {
     void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"))
-                .isInstanceOf(CaseMatchingException.class);
+        assertThrows(CaseMatchingException.class, () ->
+                caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"));
     }
 
     @Test

@@ -5,10 +5,10 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Component
 class OCRFieldMartialStatusMapperTest {

@@ -13,7 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(MockitoExtension.class)
 class CaseStoppedServiceTest {

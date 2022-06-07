@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.service.docmosis.assembler;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class TemplateTest {
 

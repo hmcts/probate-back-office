@@ -7,7 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 
 class StoppedTaskListRendererTest {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
 class AppStoppedTaskListRendererTest {

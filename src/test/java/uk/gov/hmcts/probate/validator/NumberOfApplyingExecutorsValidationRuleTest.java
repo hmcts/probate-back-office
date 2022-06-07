@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -18,6 +17,9 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
@@ -78,11 +80,11 @@ class NumberOfApplyingExecutorsValidationRuleTest {
         when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
             caseDetailsMock.getData())).thenReturn(execsApplying);
 
-        Assertions.assertThatThrownBy(() -> {
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
-        })
-            .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("The total number executors applying cannot exceed 4 for case id 0");
+        });
+        assertThat(bve.getMessage(),
+                containsString("The total number executors applying cannot exceed 4 for case id 0"));
     }
 
     @Test

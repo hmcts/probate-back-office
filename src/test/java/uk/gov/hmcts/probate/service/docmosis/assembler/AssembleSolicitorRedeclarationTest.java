@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecClearing;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecCodicil;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.solsRedecDomicile;

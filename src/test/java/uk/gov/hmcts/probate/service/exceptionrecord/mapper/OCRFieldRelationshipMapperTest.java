@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.probate.model.Relationship;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @Component
 class OCRFieldRelationshipMapperTest {

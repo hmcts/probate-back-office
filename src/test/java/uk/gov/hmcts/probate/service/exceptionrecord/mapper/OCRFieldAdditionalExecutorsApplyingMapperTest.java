@@ -8,7 +8,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApp
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class OCRFieldAdditionalExecutorsApplyingMapperTest {
 

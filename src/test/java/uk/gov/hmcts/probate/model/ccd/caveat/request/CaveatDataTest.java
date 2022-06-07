@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.service.DateFormatterService;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CaveatDataTest {
 

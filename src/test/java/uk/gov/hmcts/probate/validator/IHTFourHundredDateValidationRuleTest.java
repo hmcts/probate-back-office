@@ -12,7 +12,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 

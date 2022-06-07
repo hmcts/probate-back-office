@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +11,8 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallb
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.io.IOException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @JsonTest
@@ -31,6 +32,6 @@ class StandingSearchJsonTest {
     @Test
     void canDeserialiseLastModified() throws IOException {
         StandingSearchCallbackRequest standingSearchDetails = jacksonTester.parseObject(jsonContent);
-        Assert.assertEquals("2018", standingSearchDetails.getCaseDetails().getLastModified()[0]);
+        assertEquals("2018", standingSearchDetails.getCaseDetails().getLastModified()[0]);
     }
 }

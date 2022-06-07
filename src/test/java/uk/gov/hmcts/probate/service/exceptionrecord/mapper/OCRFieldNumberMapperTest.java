@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Component

@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 class CaveatDataTransformerTest {

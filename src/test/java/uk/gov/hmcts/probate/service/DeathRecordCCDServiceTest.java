@@ -11,9 +11,9 @@ import java.util.Collections;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class DeathRecordCCDServiceTest {
 
@@ -59,7 +59,7 @@ class DeathRecordCCDServiceTest {
         final uk.gov.hmcts.probate.model.ccd.raw.DeathRecord result =
             deathRecordCCDService.mapDeathRecord(v1Death);
 
-        assertNotNull(null, result);
+        assertNotNull(result);
         assertEquals(1234, result.getSystemNumber());
     }
 

@@ -24,8 +24,8 @@ import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -85,11 +85,11 @@ class LifeEventControllerTest {
 
         verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
         final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
-        assertThat(caseDetailsArgumentCaptorValue.getId()).isEqualTo(1621002468661478L);
+        assertEquals(caseDetailsArgumentCaptorValue.getId().longValue(), 1621002468661478L);
         final CaseData data = caseDetailsArgumentCaptorValue.getData();
-        assertThat(data.getDeceasedForenames()).isEqualTo("John");
-        assertThat(data.getDeceasedSurname()).isEqualTo("Cook");
-        assertThat(data.getDeceasedDateOfDeath().toString()).isEqualTo("2006-11-16");
+        assertEquals("John", data.getDeceasedForenames());
+        assertEquals("Cook", data.getDeceasedSurname());
+        assertEquals("2006-11-16", data.getDeceasedDateOfDeath().toString());
         verify(securityUtils).getSecurityDTO();
     }
 
@@ -104,7 +104,7 @@ class LifeEventControllerTest {
 
         verify(lifeEventCallbackResponseService).setNumberOfDeathRecords(callbackRequestArgumentCaptor.capture());
         final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
-        assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
+        assertEquals(1621002468661478L, callbackRequest.getCaseDetails().getId());
     }
 
     @Test
@@ -130,7 +130,7 @@ class LifeEventControllerTest {
 
         verify(lifeEventCallbackResponseService).getDeathRecordsByNamesAndDate(callbackRequestArgumentCaptor.capture());
         final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
-        assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
+        assertEquals(1621002468661478L, callbackRequest.getCaseDetails().getId());
     }
 
     @Test
