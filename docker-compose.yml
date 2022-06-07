@@ -164,77 +164,6 @@ services:
     ports:
       - 4502:8080
 
-  shared-db:
-    image: hmctsprivate.azurecr.io/idam/shared-db:latest
-    ports:
-      - 5051:5432
-
-  sidam-api:
-    image: "hmctspublic.azurecr.io/idam/api:stable"
-    environment:
-      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
-      TESTING_SUPPORT_ENABLED: "true"
-      IDAMHEALTHCHECK_AM_ENABLED: "false"
-      IDAMHEALTHCHECK_IDM_ENABLED: "false"
-      STRATEGIC_ADMIN_URL: http://localhost:8082
-      STRATEGIC_WEBPUBLIC_URL: http://localhost:3501
-      SPRING_PROFILES_ACTIVE: local
-      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
-      SPRING_DATASOURCE_USERNAME: openidm
-      SPRING_DATASOURCE_PASSWORD: openidm
-      SPRING_DATA_ELASTICSEARCH_PROPERTIES_PATH_HOME: /tmp/es
-      SECURITY_OAUTH2_CLIENT_CLIENTSECRET: password
-      SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://localhost:3501/login
-      SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://localhost:3501/login
-      IDAM_SPI_FORGEROCK_AM_ROOT: http://fr-am:8080/openam
-      IDAM_SPI_FORGEROCK_AM_TOPLEVELHOST: fr-am
-      IDAM_SPI_FORGEROCK_AM_USERNAME: amadmin
-      IDAM_SPI_FORGEROCK_AM_PASSWORD: Pa55word11
-      IDAM_SPI_FORGEROCK_AM_JWKSURIFOROAUTH2CLIENTS: http://fr-am:8080/openam/oauth2/hmcts/connect/jwk_uri
-      IDAM_SPI_FORGEROCK_IDM_ROOT: http://fr-idm:18080/openidm
-      IDAM_SPI_FORGEROCK_IDM_USERNAME: openidm-admin
-      IDAM_SPI_FORGEROCK_IDM_PASSWORD: openidm-admin
-      APPSETTING_NODE_PATH: es/
-    ports:
-      - 5000:5000
-    depends_on:
-      - fr-am
-      - fr-idm
-      - shared-db
-
-  fr-am:
-    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
-    environment:
-      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
-    ports:
-      - 2889:8080
-      - 1389:1389
-    depends_on:
-      - shared-db
-
-  fr-idm:
-    image: "hmctsprivate.azurecr.io/idam/idam-fr-idm:latest"
-    environment:
-      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
-    ports:
-      - 18080:18080
-      - 9010:9010
-    depends_on:
-      - fr-am
-      - shared-db
-
-  shared-database:
-    image: postgres
-    volumes:
-      - ./compose/database:/docker-entrypoint-initdb.d
-    environment:
-      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment,role_assignment
-      DB_USERNAME:
-      DB_PASSWORD:
-      POSTGRES_HOST_AUTH_METHOD: trust
-    ports:
-      - 5050:5432
-
   dm-store:
     image: hmctspublic.azurecr.io/dm/store:latest
     environment:
@@ -302,9 +231,9 @@ services:
       ENABLE_FEE_LOADER: "true"
     ports:
       - 4411:8080
-    depends_on:
-      - sidam-api
-      - shared-database
+    #depends_on:
+      #- sidam-api
+     # - shared-database
 
   payments-api:
     image: hmctspublic.azurecr.io/payment/api:latest
@@ -473,8 +402,8 @@ services:
     ports:
       - 4104:4104
     depends_on:
-      - sidam-api
-      - shared-database
+     # - sidam-api
+     # - shared-database
       - service-auth-provider-api
       - dm-store
 #      - manage-case-assignment

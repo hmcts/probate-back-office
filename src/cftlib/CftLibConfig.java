@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate;
+package uk.gov.hmcts.cftlib;
 
 import java.io.File;
 
@@ -8,7 +8,7 @@ import uk.gov.hmcts.rse.ccd.lib.api.CFTLib;
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLibConfigurer;
 
 @Component
-public class CftlibConfig implements CFTLibConfigurer {
+public class CftLibConfig implements CFTLibConfigurer {
     @Override
     public void configure(CFTLib lib) throws Exception {
         lib.createIdamUser("test@user.com", "caseworker", "caseworker-probate", "caseworker-probate-solicitor");
