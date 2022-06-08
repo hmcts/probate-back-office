@@ -52,7 +52,7 @@ public class StoppedTaskListRendererTest {
             + "<p class=\"govuk-body-s\">You will need the case reference or the deceased's full name when you call."
             + "</p><br/>"
             + "<p class=\"govuk-body-s\">Telephone: 0300 303 0648</p><p class=\"govuk-body-s\">"
-            + "Monday to Friday 8am to 6pm, Saturday 8am to 2pm (except public holidays)</p><br/>"
+            + "Monday to Friday, 8am to 6pm. Closed on Saturdays, Sundays and bank holidays</p><br/>"
             + "<p class=\"govuk-body-s\">Welsh language: 0300 303 0654</p><p class=\"govuk-body-s\">"
             + "Monday to Friday, 8am to 5pm (except public holidays)</p><br/>\n\n"
             + "<a href=\"https://www.gov.uk/call-charges\" target=\"_blank\" rel=\"noopener noreferrer\" "

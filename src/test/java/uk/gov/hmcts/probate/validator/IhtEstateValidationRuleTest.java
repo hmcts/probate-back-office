@@ -14,6 +14,8 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import java.math.BigDecimal;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -187,12 +189,22 @@ public class IhtEstateValidationRuleTest {
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
     }
-    
+
     @Test
     public void testValidateNoMessageNoGrossIhtValue() {
         when(caseDataMock.getIhtEstateGrossValue()).thenReturn(null);
         when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(ESTATE_NQV_SMALLER);
         when(caseDataMock.getIhtUnusedAllowanceClaimed()).thenReturn(YES);
         ihtEstateValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    public void testNvqBetweenValues() {
+        assertTrue(ihtEstateValidationRule.isNqvBetweenValues(ESTATE_NQV_BETWEEN));
+    }
+
+    @Test
+    public void testNvqOutsideValues() {
+        assertFalse(ihtEstateValidationRule.isNqvBetweenValues(ESTATE_NQV_SMALLER));
     }
 }

@@ -67,7 +67,7 @@
     },
     {
       "name": "deceasedMartialStatus",
-      "value": "WIDOWED",
+      "value": "neverMarried",
       "description": "What was the marital status of the person who has died when they died?"
     },
     {
@@ -97,9 +97,9 @@
       "description": "net value of the estate for inheritance tax"
     },
     {
-      "name": "ihtUnusedAllowanceClaimed",
-      "value": "true",
-      "description": "Are you claiming against this estate the unused proportion of the inheritance\ntax nil-rate band of a pre-deceased spouse or civil partner of the deceased?"
+      "name": "ihtEstateNetQualifyingValue",
+      "value": "500,000",
+      "description": "net qualifying value of the estate"
     },
     {
       "name": "ihtGrossValue",

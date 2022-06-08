@@ -90,7 +90,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingDiedAfterSwitchDate.json");
         List<String> expectedWarnings =
-            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings" 
+            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings"
                 + "/missingDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
@@ -104,7 +104,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
             utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/wrongDiedAfterSwitchDate.txt");
         validateOCRWarnings(PA1P, jsonRequest, WARNINGS, expectedWarnings);
     }
-    
+
     @Test
     public void shouldWarnForMissingEstateValues() {
         String jsonRequest =
@@ -154,6 +154,35 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
         String jsonRequest =
                 utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                         + "Post2022PA1PValidExecutor0EmailAddress.json");
+        List<String> expectedWarnings = emptyList();
+        validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
+    }
+
+    @Test
+    public void shouldWarnForMissingIhtUnusedAllowanceClaimed() {
+        String jsonRequest =
+            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
+                + "Post2022PA1AMissingUnusedAllowanceClaimed.json");
+        List<String> expectedWarnings =
+            utils.getLinesFromFile("/json/bulkscan/version2/validation/expectedWarnings/"
+                + "missingUnusedAllowanceClaimed.txt");
+        validateOCRWarnings(PA1A, jsonRequest, WARNINGS, expectedWarnings);
+    }
+
+    @Test
+    public void shouldNotWarnForMissingIhtUnusedAllowanceClaimedIfNotWidowed() {
+        String jsonRequest =
+            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
+                + "Post2022PA1AMissingUnusedAllowanceClaimedNotWidowed.json");
+        List<String> expectedWarnings = emptyList();
+        validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
+    }
+
+    @Test
+    public void shouldWarnForMissingIhtUnusedAllowanceClaimedIfNQVOutOfRange() {
+        String jsonRequest =
+            utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
+                + "Post2022PA1AMissingUnusedAllowanceClaimedNQVOutOfRange.json");
         List<String> expectedWarnings = emptyList();
         validateOCRWarnings(PA1A, jsonRequest, SUCCESS, expectedWarnings);
     }

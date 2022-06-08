@@ -478,7 +478,7 @@ services:
       - shared-database
       - service-auth-provider-api
       - dm-store
-#      - manage-case-assignment
+      - manage-case-assignment
 
   probate-frontend:
     image: hmctspublic.azurecr.io/probate/frontend:latest
@@ -638,42 +638,42 @@ services:
       - ccd-api-gateway
       - ccd-data-store-api
 
-#  manage-case-assignment:
-#    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
-#    environment:
-#      IDAM_OIDC_URL: http://sidam-api:5000
-#      IDAM_API_URL: http://sidam-api:5000
-#      IDAM_CLIENT_ID: aac_manage_case_assignment
-#      IDAM_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
-#      IDAM_CLIENT_REDIRECT_URL: http://localhost:3501/oauth2/callback
-#      IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
-#      IDAM_CAA_PASSWORD: "Password12"
-#      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker@mailnesia.com"
-#      IDAM_NOC_APPROVER_PASSWORD: "Password12"
-#      IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
-#      IDAM_SYSTEM_USER_PASSWORD: "Password12"
-#      IDAM_URL: http://sidam-api:5000
-#      S2S_URL: http://service-auth-provider-api:8080
-#      MANAGE_CASE_S2S_AUTHORISED_SERVICES: ccd_gw,xui_webapp,ccd_data,fpl_case_service,probate_backend,xui_mo_webapp
-#      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
-#      CCD_DATA_STORE_ALLOWED_SERVICE: xui_webapp
-#      CCD_DEFINITION_STORE_ALLOWED_SERVICE: xui_webapp
-#      CCD_DEFINITION_STORE_API_BASE_URL: http://ccd-definition-store-api:4451
-#      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
-#      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
-#      MCA_CONDITIONAL_APIS_CASE_ASSIGNMENTS_ENABLED: "true"
-#      PRD_HOST: http://wiremock:8080
-#      NOTIFY_MCA_API_KEY: "notify-test-api-key"
-#    #  JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006'
-#    #  JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5008"
-#    ports:
-#      - 4454:4454
-#      - 5008:5008
-#    depends_on:
-#      - sidam-api
-#      - shared-database
-#      - ccd-data-store-api
-#      - service-auth-provider-api
+  manage-case-assignment:
+    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+    environment:
+      IDAM_OIDC_URL: http://sidam-api:5000
+      IDAM_API_URL: http://sidam-api:5000
+      IDAM_CLIENT_ID: aac_manage_case_assignment
+      IDAM_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
+      IDAM_CLIENT_REDIRECT_URL: http://localhost:3501/oauth2/callback
+      IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
+      IDAM_CAA_PASSWORD: "Password12"
+      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker@mailnesia.com"
+      IDAM_NOC_APPROVER_PASSWORD: "Password12"
+      IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
+      IDAM_SYSTEM_USER_PASSWORD: "Password12"
+      IDAM_URL: http://sidam-api:5000
+      S2S_URL: http://service-auth-provider-api:8080
+      MANAGE_CASE_S2S_AUTHORISED_SERVICES: ccd_gw,xui_webapp,ccd_data,fpl_case_service,probate_backend,xui_mo_webapp
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      CCD_DATA_STORE_ALLOWED_SERVICE: xui_webapp
+      CCD_DEFINITION_STORE_ALLOWED_SERVICE: xui_webapp
+      CCD_DEFINITION_STORE_API_BASE_URL: http://ccd-definition-store-api:4451
+      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
+      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
+      MCA_CONDITIONAL_APIS_CASE_ASSIGNMENTS_ENABLED: "true"
+      PRD_HOST: http://wiremock:8080
+      NOTIFY_MCA_API_KEY: "notify-test-api-key"
+    #  JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006'
+    #  JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5008"
+    ports:
+      - 4454:4454
+      - 5008:5008
+    depends_on:
+      - sidam-api
+      - shared-database
+      - ccd-data-store-api
+      - service-auth-provider-api
 #
 #  xui-manage-org:
 #    image: hmctspublic.azurecr.io/xui/mo-webapp:latest
