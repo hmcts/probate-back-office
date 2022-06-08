@@ -12,7 +12,9 @@ public class AdditionalExecutorApplyingTest {
 
     @Before
     public void setUp() throws Exception {
-        additionalExecutorApplying = AdditionalExecutorApplying.builder().applyingExecutorAgreed(APPLYING_EXECUTOR_AGREED).applyingExecutorInvitationId(APPLYING_EXECUTOR_INVITATION_ID).build();
+        additionalExecutorApplying = AdditionalExecutorApplying.builder()
+            .applyingExecutorAgreed(APPLYING_EXECUTOR_AGREED)
+            .applyingExecutorInvitationId(APPLYING_EXECUTOR_INVITATION_ID).build();
     }
 
     @Test
