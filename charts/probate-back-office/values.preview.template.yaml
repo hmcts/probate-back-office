@@ -150,7 +150,7 @@ ccd:
         - es-${SERVICE_FQDN}
   logstash:
     image:
-      repository: hmctspublic.azurecr.io/ccd/logstash:ccd-probate-logstash-latest
+      repository: hmctspublic.azurecr.io/ccd/ccd-probate-logstash-latest
       tag: latest
       pullPolicy: Always
     logstashJavaOpts: -Xmx1g -Xms512M
