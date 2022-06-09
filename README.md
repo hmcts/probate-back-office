@@ -501,6 +501,10 @@ You must link a probate-frontend pr to a probate-orchestrator pr and that to you
 ```
 BACK_OFFICE_API_URL: "http://probate-back-office-pr-1101.service.core-compute-preview.internal"
 ```
+* To access XUI on preview env, use your PR url prefix with xui
+```
+ "http://xui-probate-back-office-pr-1101.service.core-compute-preview.internal"
+```
 * upgrade the Chart.yaml version in probate-orchestrator-service
 ```
 version: 1.0.1
