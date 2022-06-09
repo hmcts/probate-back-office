@@ -17,13 +17,7 @@ public class DocumentLink {
     @JsonProperty(value = "document_filename")
     private String documentFilename;
 
-    public DocumentLink() {
-        super();
-    }
+    @JsonProperty(value = "document_hash")
+    private String documentHash;
 
-    public DocumentLink(String documentUrl, String documentBinaryUrl, String documentFilename) {
-        this.documentUrl = documentUrl;
-        this.documentBinaryUrl = documentBinaryUrl;
-        this.documentFilename = documentFilename;
-    }
 }
