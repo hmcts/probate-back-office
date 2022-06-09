@@ -15,7 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.zip.ZippedDocumentFile;
 import uk.gov.hmcts.probate.model.zip.ZippedManifestData;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.EmUploadService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 
 import java.io.File;
@@ -53,7 +53,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 @RequiredArgsConstructor
 public class ZipFileService {
 
-    private final EmUploadService emUploadService;
+    private final DocumentManagementService documentManagementService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
     private final FileSystemResourceService fileSystemResourceService;
     private Path secureDir = null;
@@ -189,12 +189,12 @@ public class ZipFileService {
     }
 
     private void addZippedDocument(List<ZippedDocumentFile> filesToZip, ReturnedCaseDetails returnedCaseDetails,
-                                   String url, String documentTypeName, String docFileType) {
-        String documentId = url.substring(url.indexOf("/documents/") + 11, url.lastIndexOf("/"));
+                                   String binaryUrl, String documentTypeName, String docFileType) {
+        String documentId = binaryUrl.substring(binaryUrl.indexOf("/documents/") + 11, binaryUrl.lastIndexOf("/"));
         ByteArrayResource byteArrayResource = null;
         String errorDescription = "";
         try {
-            byteArrayResource = emUploadService.getDocumentByteArrayById(documentId);
+            byteArrayResource = new ByteArrayResource(documentManagementService.getDocumentByBinaryUrl(binaryUrl));
         } catch (Exception e) {
             errorDescription = "Exception adding file from case id: " + returnedCaseDetails.getId().toString()
                     + " document id: " + documentId;

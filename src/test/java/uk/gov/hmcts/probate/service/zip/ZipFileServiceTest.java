@@ -19,7 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.EmUploadService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
@@ -43,7 +43,7 @@ import static org.mockito.Mockito.times;
 public class ZipFileServiceTest {
 
     @Mock
-    private EmUploadService emUploadService;
+    private DocumentManagementService documentManagementService;
 
     @Mock
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -61,7 +61,7 @@ public class ZipFileServiceTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
-        zipFileService = new ZipFileService(emUploadService, smeeAndFordPersonalisationService,
+        zipFileService = new ZipFileService(documentManagementService, smeeAndFordPersonalisationService,
                 fileSystemResourceService);
 
         returnedCaseDetails.add(getNewCaseData(1234567812345678L));
@@ -82,8 +82,10 @@ public class ZipFileServiceTest {
         byteArrayResourceList.add(byteArrayResource2);
         byteArrayResourceList.add(byteArrayResource3);
 
-        when(emUploadService.getDocumentByteArrayById(anyString())).thenReturn(byteArrayResource1, byteArrayResource2,
-                byteArrayResource3);
+        when(documentManagementService.getDocumentByBinaryUrl(anyString())).thenReturn(
+                byteArrayResource1.getByteArray(),
+                byteArrayResource2.getByteArray(),
+                byteArrayResource3.getByteArray());
         when(fileSystemResourceService.getFileFromResourceAsString("templates/dataExtracts/ManifestFileHeaderRow.csv"))
                 .thenReturn("Case reference number|Document id|Document type|"
                         + "Document sub type|Case type|Document file name|Error description");
@@ -145,7 +147,7 @@ public class ZipFileServiceTest {
                 .anyMatch(name -> name.contains("digitalGrant")));
         Assert.assertTrue(zip.stream().map(ZipEntry::getName)
                 .anyMatch(name -> name.contains("digitalGrantReissue")));
-        verify(emUploadService,times(12)).getDocumentByteArrayById(anyString());
+        verify(documentManagementService,times(12)).getDocumentByBinaryUrl(anyString());
         Files.delete(zipFile.toPath());
     }
 

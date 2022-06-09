@@ -51,8 +51,8 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }
-        
-        return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(), 
+
+        return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
             documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
             documentUploadRequest.getFiles(), PRIVATE);
     }
@@ -88,13 +88,18 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     @Override
     public byte[] getDocument(Document document) throws IOException {
+        String binaryUrl = document.getDocumentLink().getDocumentBinaryUrl();
+        return getDocumentByBinaryUrl(binaryUrl);
+    }
+
+    @Override
+    public byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String auth = securityDTO.getAuthorisation();
         String s2s = securityDTO.getServiceAuthorisation();
 
-        String binaryUrl = document.getDocumentLink().getDocumentBinaryUrl();
         ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
-            binaryUrl);
+                binaryUrl);
         Resource body = response.getBody();
         if (body != null) {
             return IOUtils.toByteArray(body.getInputStream());
