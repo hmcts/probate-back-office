@@ -138,7 +138,7 @@ ccd:
       - name: cluster.initial_master_nodes
         value: ""
       - name: action.auto_create_index
-        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
+        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
     persistence:
       enabled: false
     ingress:
