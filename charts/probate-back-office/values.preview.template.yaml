@@ -13,6 +13,8 @@ postgresql:
   auth:
     username: hmcts
     password: hmcts
+  volumePermissions:
+    enabled: true
   primary:
     initdb:
       scripts:
