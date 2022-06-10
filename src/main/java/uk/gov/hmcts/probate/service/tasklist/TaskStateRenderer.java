@@ -137,8 +137,8 @@ public class TaskStateRenderer {
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
-                .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
-                .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
+                .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details)) //TODO
+                .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))//TODO
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
