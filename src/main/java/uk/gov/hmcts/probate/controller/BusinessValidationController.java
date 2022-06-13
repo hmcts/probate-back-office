@@ -403,7 +403,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
-
+        notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         Document document = null;
         final CaseData data = callbackRequest.getCaseDetails().getData();
         if (hasRequiredEmailAddress(data)) {

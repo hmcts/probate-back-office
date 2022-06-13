@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
@@ -47,6 +48,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class NextStepsController {
 
     private final EventValidationService eventValidationService;
+    private final NotificationService notificationService;
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
@@ -134,7 +136,7 @@ public class NextStepsController {
             log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
-
+        notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
         CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
