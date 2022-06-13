@@ -8,12 +8,11 @@ postgresql:
   resources:
     requests:
       cpu: 25m
-  persistence:
-    enabled: false
   auth:
     username: hmcts
     password: hmcts
   primary:
+    persistence.enabled: false
     initdb:
       scripts:
          create.sql: |
