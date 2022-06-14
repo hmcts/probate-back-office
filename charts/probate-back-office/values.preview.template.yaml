@@ -8,12 +8,11 @@ postgresql:
   resources:
     requests:
       cpu: 25m
-  persistence:
-    enabled: false
   auth:
     username: hmcts
     password: hmcts
   primary:
+    persistence.enabled: false
     initdb:
       scripts:
          create.sql: |
@@ -151,7 +150,7 @@ ccd:
   logstash:
     image:
       repository: hmctspublic.azurecr.io/ccd/logstash
-      tag: latest
+      tag: ccd-probate-logstash-latest
       pullPolicy: Always
     logstashJavaOpts: -Xmx1g -Xms512M
     persistence:
