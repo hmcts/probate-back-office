@@ -62,6 +62,7 @@ public class DocumentsReceivedNotificationService {
             } else {
                 reasonIgnored = NOTIFICATION_NOT_REQUESTED;
             }
+            log.info("No notification on Document received for case: {} " + reasonIgnored, caseDetails.getId());
             response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
         }
         return response;
