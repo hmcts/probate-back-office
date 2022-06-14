@@ -32,6 +32,7 @@ public class DocumentsReceivedNotificationService {
     private static final String BULK_SCAN = "created from bulk scan";
     private static final String NOTIFICATION_OFF = "toggle documents-received-notification-toggle off";
     private static final String NOTIFICATION_NOT_REQUESTED = "notification not requested";
+
     public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest)
         throws NotificationClientException {
 
@@ -53,9 +54,9 @@ public class DocumentsReceivedNotificationService {
             }
         } else {
             String reasonIgnored;
-            if(!isNotificationToggleOn) {
+            if (!isNotificationToggleOn) {
                 reasonIgnored = NOTIFICATION_OFF;
-            } else if(isBulkScan) {
+            } else if (isBulkScan) {
                 reasonIgnored = BULK_SCAN;
             } else {
                 reasonIgnored = NOTIFICATION_NOT_REQUESTED;
