@@ -82,6 +82,9 @@ public class DocumentsReceivedNotificationServiceTest {
     @Mock
     private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
+    @Mock
+    private FeatureToggleService featureToggleService;
+
     @Before
     public void setup() throws IOException, NotificationClientException {
         personalCaseDataBirmingham = new CaseDetails(CaseData.builder()
@@ -135,7 +138,23 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
+    public void handleDocumentReceivedPersonalNotificationToggleOn() throws NotificationClientException {
+        callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
+        doReturn(callbackResponse).when(eventValidationService)
+            .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
+        doReturn(callbackResponseWithData).when(callbackResponseTransformer)
+            .addDocuments(any(), eq(expectedOneDocument), any(), any());
+        doReturn(true).when(featureToggleService)
+                .isFeatureToggleOn("documents-received-notification-toggle", false);
+        CallbackResponse callbackResponse =
+            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+    }
+
+    @Test
+    public void handleDocumentReceivedPersonalNotificationDefaultOff() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -146,7 +165,7 @@ public class DocumentsReceivedNotificationServiceTest {
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
-        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
 
     @Test

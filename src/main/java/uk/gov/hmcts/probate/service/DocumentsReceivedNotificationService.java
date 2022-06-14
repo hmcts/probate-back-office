@@ -27,7 +27,11 @@ public class DocumentsReceivedNotificationService {
     private final NotificationService notificationService;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
-
+    private final FeatureToggleService featureToggleService;
+    private static final String DOCUMENTS_RECEIVED_NOTIFICATION_TOGGLE = "documents-received-notification-toggle";
+    private static final String BULK_SCAN = "created from bulk scan";
+    private static final String NOTIFICATION_OFF = "toggle documents-received-notification-toggle off";
+    private static final String NOTIFICATION_NOT_REQUESTED = "notification not requested";
     public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest)
         throws NotificationClientException {
 
@@ -37,27 +41,40 @@ public class DocumentsReceivedNotificationService {
         CallbackResponse response;
 
         List<Document> documents = new ArrayList<>();
-
-        if (caseData.isDocsReceivedEmailNotificationRequested() && !isCaseCreatedFromBulkScan(caseData)) {
+        boolean isNotificationToggleOn = isNotificationFeatureToggleOn();
+        boolean isBulkScan = isCaseCreatedFromBulkScan(caseData);
+        boolean isNotificationRequested = caseData.isDocsReceivedEmailNotificationRequested();
+        if (isNotificationToggleOn && isNotificationRequested && !isBulkScan) {
             response =
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
             }
         } else {
-            if (isCaseCreatedFromBulkScan(caseData)) {
-                log.info("Document received notification ignored for case: {} created from bulk scan.",
-                    caseDetails.getId());
+            String reasonIgnored;
+            if(!isNotificationToggleOn) {
+                reasonIgnored = NOTIFICATION_OFF;
+            } else if(isBulkScan) {
+                reasonIgnored = BULK_SCAN;
+            } else {
+                reasonIgnored = NOTIFICATION_NOT_REQUESTED;
             }
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            log.info("No notification on Document received for case: {} " + reasonIgnored, caseDetails.getId());
 
         }
+        response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
         return response;
     }
 
     private boolean isCaseCreatedFromBulkScan(final CaseData caseData) {
-        return (StringUtils.isBlank(caseData.getBulkScanCaseReference()) ? false : true);
+        return (!StringUtils.isBlank(caseData.getBulkScanCaseReference()));
     }
+
+    private boolean isNotificationFeatureToggleOn() {
+        return featureToggleService.isFeatureToggleOn(
+            DOCUMENTS_RECEIVED_NOTIFICATION_TOGGLE, false);
+    }
+
+
 }
