@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -159,13 +160,14 @@ public class DocumentsReceivedNotificationServiceTest {
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
-        doReturn(callbackResponseWithData).when(callbackResponseTransformer)
-            .addDocuments(any(), eq(expectedOneDocument), any(), any());
+        doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
+            .addDocuments(any(), any(), any(), any());
+        doReturn(false).when(featureToggleService)
+            .isFeatureToggleOn("documents-received-notification-toggle", false);
 
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
-
-        assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertTrue(callbackResponse.getData().getProbateNotificationsGenerated().isEmpty());
     }
 
     @Test
@@ -176,6 +178,8 @@ public class DocumentsReceivedNotificationServiceTest {
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
+        doReturn(true).when(featureToggleService)
+            .isFeatureToggleOn("documents-received-notification-toggle", false);
 
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);

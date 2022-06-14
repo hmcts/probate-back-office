@@ -51,6 +51,7 @@ public class DocumentsReceivedNotificationService {
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
             }
         } else {
             String reasonIgnored;
@@ -61,10 +62,8 @@ public class DocumentsReceivedNotificationService {
             } else {
                 reasonIgnored = NOTIFICATION_NOT_REQUESTED;
             }
-            log.info("No notification on Document received for case: {} " + reasonIgnored, caseDetails.getId());
-
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
         }
-        response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
         return response;
     }
 
