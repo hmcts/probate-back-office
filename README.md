@@ -614,6 +614,11 @@ Here are some other functionalities it provides:
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
 
+# PR XUI testing
+A sample xui url for BO testing on the deployed env is:
+
+https://xui-probate-back-office-pr-1809.service.core-compute-preview.internal
+
 # e2e Testing
 To run Probate Practitioner tests on ExUI locally do the following:
     1. Update the config.js file
