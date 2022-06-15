@@ -202,7 +202,7 @@ public class NotificationControllerTest {
 
         when(redeclarationNotificationService.handleRedeclarationNotification(any())).thenReturn(successfulResponse);
 
-        when(featureToggleService.isFeatureToggleOn("documents-received-notification-toggle", false)).thenReturn(true);
+        when(featureToggleService.isFeatureToggleOn("probate-documents-received-notification", false)).thenReturn(true);
 
     }
 
@@ -419,7 +419,7 @@ public class NotificationControllerTest {
     @Test
     public void shouldReturnEmailSolsValidateUnSuccessful() throws Exception {
         doReturn(true).when(featureToggleService)
-            .isFeatureToggleOn("documents-received-notification-toggle", false);
+            .isFeatureToggleOn("probate-documents-received-notification", false);
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
@@ -454,7 +454,7 @@ public class NotificationControllerTest {
     public void shouldReturnEmailPAValidateUnSuccessful() throws Exception {
 
         doReturn(true).when(featureToggleService)
-            .isFeatureToggleOn("documents-received-notification-toggle", false);
+            .isFeatureToggleOn("probate-documents-received-notification", false);
 
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 

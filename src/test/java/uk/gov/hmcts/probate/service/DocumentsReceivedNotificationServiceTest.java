@@ -147,7 +147,7 @@ public class DocumentsReceivedNotificationServiceTest {
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
         doReturn(true).when(featureToggleService)
-                .isFeatureToggleOn("documents-received-notification-toggle", false);
+                .isFeatureToggleOn("probate-documents-received-notification", false);
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
@@ -163,7 +163,7 @@ public class DocumentsReceivedNotificationServiceTest {
         doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
             .addDocuments(any(), any(), any(), any());
         doReturn(false).when(featureToggleService)
-            .isFeatureToggleOn("documents-received-notification-toggle", false);
+            .isFeatureToggleOn("probate-documents-received-notification", false);
 
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
@@ -179,7 +179,7 @@ public class DocumentsReceivedNotificationServiceTest {
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
         doReturn(true).when(featureToggleService)
-            .isFeatureToggleOn("documents-received-notification-toggle", false);
+            .isFeatureToggleOn("probate-documents-received-notification", false);
 
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);

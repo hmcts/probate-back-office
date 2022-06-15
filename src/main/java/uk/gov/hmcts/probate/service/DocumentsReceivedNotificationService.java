@@ -28,9 +28,9 @@ public class DocumentsReceivedNotificationService {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
     private final FeatureToggleService featureToggleService;
-    private static final String DOCUMENTS_RECEIVED_NOTIFICATION_TOGGLE = "documents-received-notification-toggle";
+    private static final String DOCUMENTS_RECEIVED_NOTIFICATION_TOGGLE = "probate-documents-received-notification";
     private static final String BULK_SCAN = "created from bulk scan";
-    private static final String NOTIFICATION_OFF = "toggle documents-received-notification-toggle off";
+    private static final String NOTIFICATION_OFF = "toggle probate-documents-received-notification off";
     private static final String NOTIFICATION_NOT_REQUESTED = "notification not requested";
 
     public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest)
