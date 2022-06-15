@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -12,15 +12,15 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-public class EmailAddressNotifyApplicantValidationRuleTest {
+class EmailAddressNotifyApplicantValidationRuleTest {
 
     @InjectMocks
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -32,9 +32,9 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     private FieldErrorResponse fieldErrorResponsePrimary;
     private FieldErrorResponse fieldErrorResponseSolicitor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         fieldErrorResponsePrimary = FieldErrorResponse.builder()
             .message("primary missing")
             .build();
@@ -49,7 +49,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldPassPersonalWithEmail() {
+    void shouldPassPersonalWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
             .primaryApplicantEmailAddress("primary@probate-test.com")
@@ -61,7 +61,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldPassSolicitorWithEmail() {
+    void shouldPassSolicitorWithEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
             .solsSolicitorEmail("solicitor@probate-test.com")
@@ -73,7 +73,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldFailPersonalWithNoEmail() {
+    void shouldFailPersonalWithNoEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.PERSONAL.name())
             .build();
@@ -84,7 +84,7 @@ public class EmailAddressNotifyApplicantValidationRuleTest {
     }
 
     @Test
-    public void shouldFailSolicitorWithNoEmail() {
+    void shouldFailSolicitorWithNoEmail() {
         ccdData = CCDData.builder()
             .applicationType(ApplicationType.SOLICITOR.name())
             .build();

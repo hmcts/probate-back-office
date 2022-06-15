@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -68,10 +68,10 @@ import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class NotificationControllerTest {
+class NotificationControllerTest {
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
@@ -134,7 +134,7 @@ public class NotificationControllerTest {
     private CallbackResponse errorResponse;
     private CallbackResponse successfulResponse;
 
-    @Before
+    @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
         errors.add("Bulk Print is currently unavailable please contact support desk.");
         errorResponse = CallbackResponse.builder().errors(errors).build();
@@ -201,7 +201,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void solicitorDocumentsReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void solicitorDocumentsReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -213,7 +213,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void personalDocumentsReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalDocumentsReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
@@ -225,7 +225,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void personalApplicationReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalApplicationReceivedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
@@ -237,7 +237,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void personalApplicationReceivedForPaperShouldReturnDataEmptyResponse() throws Exception {
+    void personalApplicationReceivedForPaperShouldReturnDataEmptyResponse() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotificationsPaper.json");
 
@@ -249,7 +249,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void solicitorGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -267,7 +267,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void solicitorAdmonWillGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void solicitorAdmonWillGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -285,7 +285,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void solicitorIntestacyGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void solicitorIntestacyGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -303,7 +303,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void solicitorEdgeCaseGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void solicitorEdgeCaseGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -321,7 +321,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void personalGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalGrantIssuedShouldReturnDataPayloadOkResponseCode() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
             .thenReturn(Document.builder().documentType(DIGITAL_GRANT).build());
@@ -339,7 +339,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void solicitorCaseStoppedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void solicitorCaseStoppedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -351,7 +351,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void personalCaseStoppedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalCaseStoppedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
@@ -363,7 +363,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void caseStoppedWithNotificationsRequestedShouldReturnOk() throws Exception {
+    void caseStoppedWithNotificationsRequestedShouldReturnOk() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationsRequestedPayload.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
@@ -374,7 +374,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void caseStoppedWithNoEmailNotificationAndNoBulkPrintRequestedShouldReturnOk() throws
+    void caseStoppedWithNoEmailNotificationAndNoBulkPrintRequestedShouldReturnOk() throws
         Exception {
         String solicitorPayload =
             testUtils.getStringFromFile("stopNotificationNoEmailRequestedAndNoBulkPrintPayload.json");
@@ -387,7 +387,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
+    void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
         when(bulkPrintService
             .sendToBulkPrintForGrant(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
                 .builder().build()))).thenReturn(null);
@@ -402,7 +402,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailSolsValidateSuccessful() throws Exception {
+    void shouldReturnEmailSolsValidateSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -411,7 +411,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailSolsValidateUnSuccessful() throws Exception {
+    void shouldReturnEmailSolsValidateUnSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -424,7 +424,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailPAValidateSuccessful() throws Exception {
+    void shouldReturnEmailPAValidateSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -433,7 +433,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailPAValidateFromBulkScanSuccessful() throws Exception {
+    void shouldReturnEmailPAValidateFromBulkScanSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsFromBulkScan.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -442,7 +442,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailPAValidateUnSuccessful() throws Exception {
+    void shouldReturnEmailPAValidateUnSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -455,7 +455,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnPAApplicantReceivedValidateUnSuccessfulCaseStopped() throws Exception {
+    void shouldReturnPAApplicantReceivedValidateUnSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/notify/application-received")
@@ -465,7 +465,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailSolsValidateSuccessfulCaseStopped() throws Exception {
+    void shouldReturnEmailSolsValidateSuccessfulCaseStopped() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -474,7 +474,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailSolsValidateUnSuccessfulCaseStopped() throws Exception {
+    void shouldReturnEmailSolsValidateUnSuccessfulCaseStopped() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -486,7 +486,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailPAValidateSuccessfulCaseStopped() throws Exception {
+    void shouldReturnEmailPAValidateSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -495,7 +495,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnEmailPAValidateUnSuccessfulCaseStopped() throws Exception {
+    void shouldReturnEmailPAValidateUnSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -507,7 +507,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulForRequestInformationDefaultValues() throws Exception {
+    void shouldReturnSuccessfulForRequestInformationDefaultValues() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(REQUEST_INFO_DEFAULT_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -517,7 +517,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseForInformationRequest() throws Exception {
+    void shouldReturnSuccessfulResponseForInformationRequest() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -527,7 +527,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseForRedeclarationSot() throws Exception {
+    void shouldReturnSuccessfulResponseForRedeclarationSot() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(REDECLARATION_SOT).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -537,7 +537,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseFoRaiseGrant() throws Exception {
+    void shouldReturnSuccessfulResponseFoRaiseGrant() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
         Document raiseGrantDoc = Document.builder().documentType(GRANT_RAISED).build();
         doReturn(raiseGrantDoc).when(notificationService).sendEmail(any(), any());
@@ -549,7 +549,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseFoRaiseGrantWithoutEmail() throws Exception {
+    void shouldReturnSuccessfulResponseFoRaiseGrantWithoutEmail() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
         Document raiseGrantDoc = Document.builder().documentType(GRANT_RAISED).build();
         doReturn(raiseGrantDoc).when(notificationService).sendEmail(any(), any());
@@ -561,7 +561,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseForStartGrantDelayNotification() throws Exception {
+    void shouldReturnSuccessfulResponseForStartGrantDelayNotification() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
         when(callbackResponseTransformer.transformCase(any())).thenReturn(successfulResponse);
         mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE).content(personalPayload)
@@ -574,7 +574,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseForGrantDelayed() throws Exception {
+    void shouldReturnSuccessfulResponseForGrantDelayed() throws Exception {
         GrantScheduleResponse response =
             GrantScheduleResponse.builder().scheduleResponseData(Arrays.asList("returnString")).build();
         when(grantNotificationService.handleGrantDelayedNotification("aDate")).thenReturn(response);
@@ -583,7 +583,7 @@ public class NotificationControllerTest {
     }
 
     @Test
-    public void shouldReturnSuccessfulResponseForGrantAwaitingDocs() throws Exception {
+    void shouldReturnSuccessfulResponseForGrantAwaitingDocs() throws Exception {
         GrantScheduleResponse response =
             GrantScheduleResponse.builder().scheduleResponseData(Arrays.asList("returnString")).build();
         when(grantNotificationService.handleAwaitingDocumentationNotification("aDate")).thenReturn(response);

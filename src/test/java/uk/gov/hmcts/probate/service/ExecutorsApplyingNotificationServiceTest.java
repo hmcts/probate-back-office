@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -12,10 +12,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
 
-public class ExecutorsApplyingNotificationServiceTest {
+class ExecutorsApplyingNotificationServiceTest {
 
     private static final SolsAddress ADDRESS = SolsAddress.builder()
         .addressLine1("123 street")
@@ -29,7 +29,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     private List<CollectionMember<ExecutorsApplyingNotification>> expectedResponse;
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplyingList;
 
-    @Before
+    @BeforeEach
     public void setup() {
         expectedResponse = new ArrayList<>();
         additionalExecutorApplyingList = new ArrayList<>();
@@ -60,7 +60,7 @@ public class ExecutorsApplyingNotificationServiceTest {
 
 
     @Test
-    public void testPaAndExecutorIsAddedToExecutorsApplyingNotificationList() {
+    void testPaAndExecutorIsAddedToExecutorsApplyingNotificationList() {
         additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com",
                 EXECUTOR_TYPE_NAMED));
 
@@ -87,7 +87,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testPaNotApplyingAddsExecutorsOnly() {
+    void testPaNotApplyingAddsExecutorsOnly() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -109,7 +109,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testPaApplyingIsNull() {
+    void testPaApplyingIsNull() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -129,7 +129,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testPaApplyingIsNotApplying() {
+    void testPaApplyingIsNotApplying() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -145,7 +145,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testPaIsApplying() {
+    void testPaIsApplying() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -165,7 +165,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testMultipleExecutorsAreAddedSuccessfully() {
+    void testMultipleExecutorsAreAddedSuccessfully() {
         additionalExecutorApplyingList.add(buildExecApplying("Tommy Tank", "executor1@probate-test.com",
                 EXECUTOR_TYPE_NAMED));
         additionalExecutorApplyingList.add(buildExecApplying("Bobby Bank", "executor2@probate-test.com",
@@ -207,7 +207,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testSingleExecutorIsAddedSuccessfully() {
+    void testSingleExecutorIsAddedSuccessfully() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -228,7 +228,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testNoExecutorsReturnsSuccessfully() {
+    void testNoExecutorsReturnsSuccessfully() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -241,7 +241,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testEmptyExecutorsReturnsSuccessfully() {
+    void testEmptyExecutorsReturnsSuccessfully() {
         caseDataPersonal = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantForenames("Bob")
@@ -255,7 +255,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testExecutorsApplyingNotificationsIsCleared() {
+    void testExecutorsApplyingNotificationsIsCleared() {
         CollectionMember<ExecutorsApplyingNotification> executorNotification1 =
             buildExecNotification("Tommy Tank", "executor1@probate-test.com", "1");
 
@@ -288,7 +288,7 @@ public class ExecutorsApplyingNotificationServiceTest {
     }
 
     @Test
-    public void testSolicitorIsAddedToExecutorsApplyingNotificationList() {
+    void testSolicitorIsAddedToExecutorsApplyingNotificationList() {
         additionalExecutorApplyingList.add(buildExecApplying("Timmy Tom", "executor1@probate-test.com",
                 "Professional"));
 

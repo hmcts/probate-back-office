@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.insights.AppInsights;
@@ -30,14 +30,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class GrantOfRepresentationPersonalisationServiceTest {
+class GrantOfRepresentationPersonalisationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -82,7 +82,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     private List<ReturnedCaseDetails> exelaCaseDataNoSubtype = new ArrayList<>();
     private List<ReturnedCaseDetails> exelaCaseDataNoDOB = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument
@@ -172,7 +172,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getPersonalisationContentIsOk() {
+    void getPersonalisationContentIsOk() {
         String welshDeceaseDateOfDeath = "27 Mai 2019";
         when(localDateToWelshStringConverter.convert(isA(LocalDate.class))).thenReturn(welshDeceaseDateOfDeath);
         Map<String, Object> response = grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -194,7 +194,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getPersonalisationContentIsOkFromCaseData() {
+    void getPersonalisationContentIsOkFromCaseData() {
         String welshDeceaseDateOfDeath = "27 Mai 2019";
         when(localDateToWelshStringConverter.convert(isA(LocalDate.class))).thenReturn(welshDeceaseDateOfDeath);
         Map<String, Object> response =
@@ -217,7 +217,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getExelaPersonalisationContentIsOk() {
+    void getExelaPersonalisationContentIsOk() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseData);
 
@@ -227,7 +227,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getExelaPersonalisationContentIsOkWithCommas() {
+    void getExelaPersonalisationContentIsOkWithCommas() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataWithCommas);
 
@@ -237,7 +237,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getExelaPersonalisationContentIsOkNoWillReference() {
+    void getExelaPersonalisationContentIsOkNoWillReference() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoWillReference);
 
@@ -248,7 +248,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
 
 
     @Test
-    public void getExelaPersonalisationContentIsOkNoSubType() {
+    void getExelaPersonalisationContentIsOkNoSubType() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoSubtype);
 
@@ -258,7 +258,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getExelaPersonalisationContentWithExceptionInData() {
+    void getExelaPersonalisationContentWithExceptionInData() {
         Map<String, String> response =
             grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataNoDOB);
 
@@ -268,7 +268,7 @@ public class GrantOfRepresentationPersonalisationServiceTest {
     }
 
     @Test
-    public void getAddSingleAddressee() {
+    void getAddSingleAddressee() {
         Map<String, Object> currentMap = new HashMap<>();
         String addressee = "addressee name";
 

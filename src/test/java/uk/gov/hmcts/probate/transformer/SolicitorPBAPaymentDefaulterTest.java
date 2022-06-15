@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -12,11 +12,11 @@ import uk.gov.hmcts.probate.service.fee.FeeService;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class SolicitorPBAPaymentDefaulterTest {
+class SolicitorPBAPaymentDefaulterTest {
     @InjectMocks
     private SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
 
@@ -28,13 +28,13 @@ public class SolicitorPBAPaymentDefaulterTest {
     @Mock
     private FeesResponse feesResponseMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void shouldSkipPBAPageForNoTotalFee() {
+    void shouldSkipPBAPageForNoTotalFee() {
         when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.ZERO);
         when(feeServiceMock.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");
@@ -46,7 +46,7 @@ public class SolicitorPBAPaymentDefaulterTest {
     }
 
     @Test
-    public void shouldUsePBAPageForTotalFee() {
+    void shouldUsePBAPageForTotalFee() {
         when(caseDataMock.getIhtNetValue()).thenReturn(BigDecimal.valueOf(500100));
         when(feeServiceMock.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
         when(caseDataMock.getSolsSolicitorAppReference()).thenReturn("SolAppRef");

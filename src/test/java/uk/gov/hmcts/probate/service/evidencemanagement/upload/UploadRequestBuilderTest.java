@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.upload;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
@@ -9,13 +9,13 @@ import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUploa
 
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class UploadRequestBuilderTest {
+class UploadRequestBuilderTest {
 
     @Test
-    public void shouldPrepareRequest() {
+    void shouldPrepareRequest() {
         byte[] bytes = {32, 43, 86};
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 

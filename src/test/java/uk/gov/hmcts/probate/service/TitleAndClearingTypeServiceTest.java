@@ -1,20 +1,20 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 
-@RunWith(MockitoJUnitRunner.class)
-public class TitleAndClearingTypeServiceTest {
+@ExtendWith(SpringExtension.class)
+class TitleAndClearingTypeServiceTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -25,7 +25,7 @@ public class TitleAndClearingTypeServiceTest {
     private CaseDetails caseDetailsMock;
 
     @Test
-    public void shouldReturnTrueIfTitleAndClearingTypeIsPartner() {
+    void shouldReturnTrueIfTitleAndClearingTypeIsPartner() {
 
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED);
 
@@ -37,7 +37,7 @@ public class TitleAndClearingTypeServiceTest {
     }
 
     @Test
-    public void shouldReturnTrueIfTitleAndClearingTypeIsTrustCorp() {
+    void shouldReturnTrueIfTitleAndClearingTypeIsTrustCorp() {
 
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ);
 
@@ -49,7 +49,7 @@ public class TitleAndClearingTypeServiceTest {
     }
 
     @Test
-    public void shouldReturnTrueIfTitleAndClearingTypeIsSuccessorFirm() {
+    void shouldReturnTrueIfTitleAndClearingTypeIsSuccessorFirm() {
 
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED);
 

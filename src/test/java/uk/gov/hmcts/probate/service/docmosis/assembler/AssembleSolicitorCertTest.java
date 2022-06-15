@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -24,11 +24,11 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotP
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pRedec;
 
 
-public class AssembleSolicitorCertTest extends AssembleTestBase {
+class AssembleSolicitorCertTest extends AssembleTestBase {
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSolicitorCert assembleSolicitorCert = new AssembleSolicitorCert(assemblerBase);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(SotPa1pRedec, new String[] {"SotPa1pRedec", "FL-PRB-GNO-ENG-00110.docx",
             "PA1P: Part B - Full redec of application"});
@@ -62,7 +62,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertAlias() {
+    void shouldPopulateSolsCertAlias() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertAlias(SotPa1pRedec,
             CaseData.builder().build());
@@ -70,7 +70,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertDeceasedAddress() {
+    void shouldPopulateSolsCertDeceasedAddress() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertDeceasedAddress(SotPa1pRedec,
             CaseData.builder().build());
@@ -78,7 +78,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertDeponentsAddress() {
+    void shouldPopulateSolsCertDeponentsAddress() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertDeponentsAddress(SotPa1pRedec,
             CaseData.builder().build());
@@ -86,7 +86,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertDivorce() {
+    void shouldPopulateSolsCertDivorce() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertDivorce(SotPa1pRedec,
             CaseData.builder().build());
@@ -94,7 +94,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertDivorceDissolved() {
+    void shouldPopulateSolsCertDivorceDissolved() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertDivorceDissolved(SotPa1pRedec,
             CaseData.builder().build());
@@ -102,7 +102,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertDob() {
+    void shouldPopulateSolsCertDob() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertDob(SotPa1pRedec,
             CaseData.builder().build());
@@ -110,7 +110,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertDod() {
+    void shouldPopulateSolsCertDod() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertDod(SotPa1pRedec,
             CaseData.builder().build());
@@ -118,7 +118,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertEpaLpa() {
+    void shouldPopulateSolsCertEpaLpa() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertEpaLpa(SotPa1pRedec,
             CaseData.builder().build());
@@ -126,7 +126,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertExecName() {
+    void shouldPopulateSolsCertExecName() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertExecName(SotPa1pRedec,
             CaseData.builder().build());
@@ -134,7 +134,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertExecNotAccounted() {
+    void shouldPopulateSolsCertExecNotAccounted() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertExecNotAccounted(SotPa1pRedec,
             CaseData.builder().build());
@@ -142,7 +142,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertFirmSucceeded() {
+    void shouldPopulateSolsCertFirmSucceeded() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertFirmSuccceeded(SotPa1pRedec,
             CaseData.builder().build());
@@ -150,7 +150,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertLifeMinority() {
+    void shouldPopulateSolsCertLifeMinority() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertLifeMinority(SotPa1pRedec,
             CaseData.builder().build());
@@ -158,7 +158,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertOtherWill() {
+    void shouldPopulateSolsCertOtherWill() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertOtherWill(SotPa1pRedec,
             CaseData.builder().build());
@@ -166,7 +166,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertPartnersDod() {
+    void shouldPopulateSolsCertPartnersDod() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertPartnersDod(SotPa1pRedec,
             CaseData.builder().build());
@@ -174,7 +174,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertPowerReserved() {
+    void shouldPopulateSolsCertPowerReserved() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertPowerReserved(SotPa1pRedec,
             CaseData.builder().build());
@@ -182,7 +182,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertSettledLand() {
+    void shouldPopulateSolsCertSettledLand() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertSettledLand(SotPa1pRedec,
             CaseData.builder().build());
@@ -190,7 +190,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertSpouse() {
+    void shouldPopulateSolsCertSpouse() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertSpouse(SotPa1pRedec,
             CaseData.builder().build());
@@ -198,7 +198,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertSurvivalExec() {
+    void shouldPopulateSolsCertSurvivalExec() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertSurvivalExec(SotPa1pRedec,
             CaseData.builder().build());
@@ -206,7 +206,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertTrustCorp() {
+    void shouldPopulateSolsCertTrustCorp() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertTrustCorp(SotPa1pRedec,
             CaseData.builder().build());
@@ -214,7 +214,7 @@ public class AssembleSolicitorCertTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsCertWillSeparatePages() {
+    void shouldPopulateSolsCertWillSeparatePages() {
 
         List<ParagraphDetail> response = assembleSolicitorCert.solsCertWillSeparatePages(SotPa1pRedec,
             CaseData.builder().build());

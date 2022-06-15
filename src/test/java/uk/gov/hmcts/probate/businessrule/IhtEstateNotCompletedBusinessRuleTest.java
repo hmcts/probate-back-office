@@ -1,19 +1,19 @@
 package uk.gov.hmcts.probate.businessrule;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
-public class IhtEstateNotCompletedBusinessRuleTest {
+class IhtEstateNotCompletedBusinessRuleTest {
 
     @InjectMocks
     private IhtEstateNotCompletedBusinessRule underTest;
@@ -21,19 +21,19 @@ public class IhtEstateNotCompletedBusinessRuleTest {
     @Mock
     private CaseData mockCaseData;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldBeApplicableForCompleted() {
+    void shouldBeApplicableForCompleted() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
     @Test
-    public void shouldBeApplicableForNotCompleted() {
+    void shouldBeApplicableForNotCompleted() {
         when(mockCaseData.getIhtFormEstateValuesCompleted()).thenReturn(NO);
         assertTrue(underTest.isApplicable(mockCaseData));
     }

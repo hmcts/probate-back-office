@@ -1,18 +1,18 @@
 package uk.gov.hmcts.probate.changerule;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class ApplicantSiblingsRuleTest {
+class ApplicantSiblingsRuleTest {
 
     @InjectMocks
     private ApplicantSiblingsRule underTest;
@@ -20,13 +20,13 @@ public class ApplicantSiblingsRuleTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldNeedChange() {
+    void shouldNeedChange() {
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn("Yes");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("Child");
 
@@ -34,7 +34,7 @@ public class ApplicantSiblingsRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeChild() {
+    void shouldNotNeedChangeChild() {
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn("No");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("Child");
 
@@ -42,7 +42,7 @@ public class ApplicantSiblingsRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeChildAdopted() {
+    void shouldNotNeedChangeChildAdopted() {
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn("No");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
 
@@ -50,14 +50,14 @@ public class ApplicantSiblingsRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithSpouseOrCivil() {
+    void shouldNotNeedChangeWithSpouseOrCivil() {
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodyApplicantSiblings", underTest.getConfirmationBodyMessageKey());
     }
 }

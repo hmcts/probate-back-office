@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Deceased;
@@ -13,8 +13,8 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
@@ -24,8 +24,8 @@ import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOB_IN_FU
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_BEFORE_DOB;
 import static uk.gov.hmcts.probate.validator.DobDodValidationRule.CODE_DOD_IN_FUTURE;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DobDodValidationRuleTest {
+@ExtendWith(SpringExtension.class)
+class DobDodValidationRuleTest {
 
     private static final LocalDate DATE_31_DEC_1970 = LocalDate.of(1970, 12, 31);
     private static final LocalDate DATE_30_DEC_1970 = LocalDate.of(1970, 12, 30);
@@ -44,7 +44,7 @@ public class DobDodValidationRuleTest {
 
     private DobDodValidationRule underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         underTest = new DobDodValidationRule(businessValidationMessageService);
         when(ccdDataMock.getDeceased()).thenReturn(deceasedMock);
@@ -60,7 +60,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccessWhenDeceasedIsNull() {
+    void testValidateWithSuccessWhenDeceasedIsNull() {
         when(ccdDataMock.getDeceased()).thenReturn(null);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -70,7 +70,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateSuccessWithDobBeforeDod() {
+    void shouldValidateSuccessWithDobBeforeDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_31_DEC_1970);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_01_JAN_1971);
 
@@ -80,7 +80,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobAfterDod() {
+    void shouldValidateFailureWithDobAfterDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_31_DEC_1970);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_30_DEC_1970);
 
@@ -90,7 +90,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobEqualsDod() {
+    void shouldValidateFailureWithDobEqualsDod() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_31_DEC_1970);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_31_DEC_1970);
 
@@ -100,7 +100,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDobInTheFuture() {
+    void shouldValidateFailureWithDobInTheFuture() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_01_JAN_2099);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_02_JAN_2099);
 
@@ -110,7 +110,7 @@ public class DobDodValidationRuleTest {
     }
 
     @Test
-    public void shouldValidateFailureWithDodInTheFuture() {
+    void shouldValidateFailureWithDodInTheFuture() {
         when(deceasedMock.getDateOfBirth()).thenReturn(DATE_01_JAN_1971);
         when(deceasedMock.getDateOfDeath()).thenReturn(DATE_02_JAN_2099);
 

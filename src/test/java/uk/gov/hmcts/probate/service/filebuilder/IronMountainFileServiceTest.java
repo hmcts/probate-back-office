@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -22,10 +22,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
-public class IronMountainFileServiceTest {
+class IronMountainFileServiceTest {
 
     private IronMountainFileService ironmountainFileService = new IronMountainFileService(new TextFileBuilderService());
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
@@ -36,7 +36,7 @@ public class IronMountainFileServiceTest {
     private static final String FILE_NAME = "testFile.txt";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
-    @Before
+    @BeforeEach
     public void setup() {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
                 new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
@@ -96,7 +96,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testIronMountainFileBuilt() throws IOException {
+    void testIronMountainFileBuilt() throws IOException {
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
@@ -105,7 +105,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testIronMountainFileBuiltWithEmptyIHTValues() throws IOException {
+    void testIronMountainFileBuiltWithEmptyIHTValues() throws IOException {
         caseData.ihtGrossValue(null);
         caseData.ihtNetValue(null);
         builtData = caseData.build();
@@ -116,7 +116,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testFileIsBuildWithEmptyOptionalValues() throws IOException {
+    void testFileIsBuildWithEmptyOptionalValues() throws IOException {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
                 new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
                         .applyingExecutorAddress(SolsAddress.builder().build()).build());
@@ -137,7 +137,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
+    void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
         caseData.primaryApplicantIsApplying("No");
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
@@ -147,7 +147,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testSolicitorApplicationTypeDisplaysSolicitorInformation() throws IOException {
+    void testSolicitorApplicationTypeDisplaysSolicitorInformation() throws IOException {
         caseData.applicationType(ApplicationType.SOLICITOR);
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
@@ -157,7 +157,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
+    void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
@@ -166,7 +166,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testRegistryLocationCtscMapped() throws IOException {
+    void testRegistryLocationCtscMapped() throws IOException {
         caseData.registryLocation("ctsc");
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
@@ -176,7 +176,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testSolicitorAsGranteeWhenNoExecutorsAndPrimaryApplicantNotApplying() throws IOException {
+    void testSolicitorAsGranteeWhenNoExecutorsAndPrimaryApplicantNotApplying() throws IOException {
         caseData.applicationType(ApplicationType.SOLICITOR);
         caseData.primaryApplicantIsApplying("No");
         caseData.additionalExecutorsApplying(null);
@@ -188,7 +188,7 @@ public class IronMountainFileServiceTest {
     }
 
     @Test
-    public void testAddExceptionForIncorrectCaseData() throws IOException {
+    void testAddExceptionForIncorrectCaseData() throws IOException {
         caseData2.applicationType(null);
         builtData = caseData2.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);

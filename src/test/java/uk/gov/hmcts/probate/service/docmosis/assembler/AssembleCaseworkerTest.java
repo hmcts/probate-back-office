@@ -1,14 +1,14 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AssembleCaseworkerTest {
+class AssembleCaseworkerTest {
 
     private static final String YES = "Yes";
     private AssemblerBase assemblerBase = new AssemblerBase();
@@ -16,7 +16,7 @@ public class AssembleCaseworkerTest {
     private AssembleCaseworker assembleCaseworker = new AssembleCaseworker(assemblerBase);
 
     @Test
-    public void testCaseworker() {
+    void testCaseworker() {
 
         List<ParagraphDetail> response =
             assembleCaseworker.caseworker(ParagraphCode.Caseworker, CaseData.builder().build());

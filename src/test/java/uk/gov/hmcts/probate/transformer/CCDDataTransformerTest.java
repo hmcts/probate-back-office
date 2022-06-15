@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -29,10 +29,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
@@ -41,7 +41,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.UPLOADED_LEGAL_STATEMENT;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 
-public class CCDDataTransformerTest {
+class CCDDataTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -94,9 +94,9 @@ public class CCDDataTransformerTest {
     @InjectMocks
     private CCDDataTransformer underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -184,7 +184,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBean() {
+    void shouldConvertRequestToDataBean() {
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
 
@@ -193,7 +193,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithUploadedLegalStatement() {
+    void shouldConvertRequestToDataBeanWithUploadedLegalStatement() {
         ArrayList<CollectionMember<UploadDocument>> uploaded = new ArrayList<>();
         uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
                 .builder().documentType(UPLOADED_LEGAL_STATEMENT).build()));
@@ -210,7 +210,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithNoUploadedLegalStatements() {
+    void shouldConvertRequestToDataBeanWithNoUploadedLegalStatements() {
         ArrayList<CollectionMember<UploadDocument>> uploaded = new ArrayList<>();
         uploaded.add(new CollectionMember<UploadDocument>(UploadDocument
                 .builder().documentType(LEGAL_STATEMENT_PROBATE).build()));
@@ -225,7 +225,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithFeeServiceForCheque() {
+    void shouldConvertRequestToDataBeanWithFeeServiceForCheque() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_CHEQUE);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
@@ -256,7 +256,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithFeeServiceForFee() {
+    void shouldConvertRequestToDataBeanWithFeeServiceForFee() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
@@ -270,7 +270,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithNoPBAsSet() {
+    void shouldConvertRequestToDataBeanWithNoPBAsSet() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
@@ -287,7 +287,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithNoPBAValueSet() {
+    void shouldConvertRequestToDataBeanWithNoPBAValueSet() {
 
         when(caseDataMock.getSolsPaymentMethods()).thenReturn(PAYMENT_METHOD_FEE);
         when(caseDataMock.getTotalFee()).thenReturn(TOTAL_FEE);
@@ -304,7 +304,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithFeeDataMissing() {
+    void shouldConvertRequestToDataBeanWithFeeDataMissing() {
         when(caseDataMock.getFeeForUkCopies()).thenReturn(null);
         when(caseDataMock.getFeeForNonUkCopies()).thenReturn(null);
 
@@ -316,7 +316,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithLastModifiedDate() {
+    void shouldConvertRequestToDataBeanWithLastModifiedDate() {
 
         when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"2022", "1", "1", "1"});
 
@@ -327,7 +327,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithNoLastModifiedDate() {
+    void shouldConvertRequestToDataBeanWithNoLastModifiedDate() {
         when(caseDetailsMock.getLastModified()).thenReturn(null);
 
         CCDData ccdData = underTest.transform(callbackRequestMock);
@@ -337,7 +337,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithLastModifiedDateEmptyData() {
+    void shouldConvertRequestToDataBeanWithLastModifiedDateEmptyData() {
         String[] lmDate = {};
         when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
 
@@ -348,7 +348,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithLastModifiedDateMissingData() {
+    void shouldConvertRequestToDataBeanWithLastModifiedDateMissingData() {
         String[] lmDate = {null, null, null, null, null, null, null, null};
         when(caseDetailsMock.getLastModified()).thenReturn(lmDate);
 
@@ -359,7 +359,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullSecondElement() {
+    void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullSecondElement() {
 
         when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"", null});
 
@@ -370,7 +370,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullThirdElement() {
+    void shouldConvertRequestToDataBeanWhenLastModifiedDateHasNullThirdElement() {
 
         when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"", "", null});
 
@@ -381,7 +381,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateNFE() {
+    void shouldConvertRequestToDataBeanWhenLastModifiedDateNFE() {
 
         when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"1", "2", "number"});
 
@@ -392,7 +392,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWhenLastModifiedDateInvalidDate() {
+    void shouldConvertRequestToDataBeanWhenLastModifiedDateInvalidDate() {
 
         when(caseDetailsMock.getLastModified()).thenReturn(new String[]{"2022", "1", "50"});
 
@@ -403,7 +403,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPA16Form() {
+    void shouldConvertRequestToDataBeanForPA16Form() {
 
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
         when(caseDataMock.getSolsApplicantSiblings()).thenReturn(NO);
@@ -419,7 +419,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPA17Form() {
+    void shouldConvertRequestToDataBeanForPA17Form() {
 
         when(caseDataMock.getTitleAndClearingType()).thenReturn("TCTPartAllRenouncing");
 
@@ -430,7 +430,7 @@ public class CCDDataTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForIhtEstate() {
+    void shouldConvertRequestToDataBeanForIhtEstate() {
 
         when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
         when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);

@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -24,18 +24,18 @@ import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class LifeEventControllerTest {
+class LifeEventControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -63,17 +63,17 @@ public class LifeEventControllerTest {
 
     @Captor
     private ArgumentCaptor<CaseDetails> caseDetailsArgumentCaptor;
-    
+
     @Captor
     private ArgumentCaptor<CallbackRequest> callbackRequestArgumentCaptor;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void lifeEventUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void lifeEventUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String payload = testUtils.getStringFromFile("lifeEventPayload.json");
 
@@ -82,21 +82,21 @@ public class LifeEventControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
-        
+
         verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
         final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
-        assertThat(caseDetailsArgumentCaptorValue.getId()).isEqualTo(1621002468661478L);
+        assertEquals(caseDetailsArgumentCaptorValue.getId().longValue(), 1621002468661478L);
         final CaseData data = caseDetailsArgumentCaptorValue.getData();
-        assertThat(data.getDeceasedForenames()).isEqualTo("John");
-        assertThat(data.getDeceasedSurname()).isEqualTo("Cook");
-        assertThat(data.getDeceasedDateOfDeath().toString()).isEqualTo("2006-11-16");
+        assertEquals("John", data.getDeceasedForenames());
+        assertEquals("Cook", data.getDeceasedSurname());
+        assertEquals("2006-11-16", data.getDeceasedDateOfDeath().toString());
         verify(securityUtils).getSecurityDTO();
     }
 
     @Test
-    public void shouldCountDeathRecords() throws Exception {
+    void shouldCountDeathRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
-        
+
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecordsAboutToStart")
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -104,25 +104,25 @@ public class LifeEventControllerTest {
 
         verify(lifeEventCallbackResponseService).setNumberOfDeathRecords(callbackRequestArgumentCaptor.capture());
         final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
-        assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
+        assertEquals(1621002468661478L, callbackRequest.getCaseDetails().getId());
     }
-    
+
     @Test
-    public void shouldValidate() throws Exception {
+    void shouldValidate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        
+
         verify(lifeEventValidationRule).validate(any());
     }
 
     @Test
-    public void shouldLookupDeathRecordByNameAndDate() throws Exception {
+    void shouldLookupDeathRecordByNameAndDate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventPayload.json");
-        
+
         mockMvc.perform(post("/lifeevent/manualUpdateAboutToStart")
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
@@ -130,11 +130,11 @@ public class LifeEventControllerTest {
 
         verify(lifeEventCallbackResponseService).getDeathRecordsByNamesAndDate(callbackRequestArgumentCaptor.capture());
         final CallbackRequest callbackRequest = callbackRequestArgumentCaptor.getValue();
-        assertThat(callbackRequest.getCaseDetails().getId()).isEqualTo(1621002468661478L);
+        assertEquals(1621002468661478L, callbackRequest.getCaseDetails().getId());
     }
 
     @Test
-    public void shouldValidateManualUpdate() throws Exception {
+    void shouldValidateManualUpdate() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/manualUpdate")
@@ -144,16 +144,16 @@ public class LifeEventControllerTest {
 
         verify(lifeEventValidationRule).validate(any());
     }
-    
+
     @Test
-    public void shouldValidateSelectFromMultipleRecords() throws Exception {
+    void shouldValidateSelectFromMultipleRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
-        
+
         verify(lifeEventValidationRule).validate(any());
     }
 
