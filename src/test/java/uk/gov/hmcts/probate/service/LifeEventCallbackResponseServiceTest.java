@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -23,22 +23,22 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventCallbackResponseService.class)
-public class LifeEventCallbackResponseServiceTest {
+class LifeEventCallbackResponseServiceTest {
 
     @Autowired
     LifeEventCallbackResponseService lifeEventCallbackResponseService;
-    
+
     @MockBean
     LifeEventService lifeEventService;
     @MockBean
     CallbackResponseTransformer callbackResponseTransformer;
-    
+
     private CallbackResponse response;
     private List<CollectionMember<DeathRecord>> deathRecords;
- 
-    @Before
+
+    @BeforeEach
     public void setup() {
         response = CallbackResponse.builder().data(ResponseCaseData.builder().build()).build();
         when(callbackResponseTransformer.updateTaskList(any(CallbackRequest.class))).thenReturn(response);
@@ -47,25 +47,25 @@ public class LifeEventCallbackResponseServiceTest {
     }
 
     @Test
-    public void shouldSetNumberOfDeathRecordsOnCallbackResponse() {
+    void shouldSetNumberOfDeathRecordsOnCallbackResponse() {
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
             .deathRecords(deathRecords)
             .build(),
             null, null);
 
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        final CallbackResponse callbackResponse = 
+        final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.setNumberOfDeathRecords(callbackRequest);
         assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
     }
 
     @Test
-    public void shouldDeathRecordsOnCallbackResponse() {
+    void shouldDeathRecordsOnCallbackResponse() {
         final CaseDetails caseDetails = mock(CaseDetails.class);
         when(lifeEventService.getDeathRecordsByNamesAndDate(caseDetails)).thenReturn(deathRecords);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        
-        final CallbackResponse callbackResponse = 
+
+        final CallbackResponse callbackResponse =
             lifeEventCallbackResponseService.getDeathRecordsByNamesAndDate(callbackRequest);
         assertEquals(callbackResponse.getData().getNumberOfDeathRecords(), 5);
         assertEquals(callbackResponse.getData().getDeathRecords(), deathRecords);

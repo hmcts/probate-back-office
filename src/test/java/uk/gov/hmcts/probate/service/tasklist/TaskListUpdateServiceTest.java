@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,8 +14,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
@@ -26,7 +26,7 @@ import static uk.gov.hmcts.probate.model.ApplicationState.EXAMINING;
 import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 
 @Slf4j
-public class TaskListUpdateServiceTest {
+class TaskListUpdateServiceTest {
 
     @InjectMocks
     private TaskListUpdateService taskListUpdateService;
@@ -58,9 +58,9 @@ public class TaskListUpdateServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long ID = 1L;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(defaultTaskListRenderer);
         when(stoppedTaskListRenderer.renderHtml(caseDetails)).thenCallRealMethod();
@@ -68,7 +68,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_CaseCreated() {
+    void shouldBuildCaseProgressHtmlCorrectly_CaseCreated() {
         caseDetails.setState(CASE_CREATED.getId());
 
         String expectedCaseProgressCaseCreatedHtml = "<div class=\"govuk-grid-row\">"
@@ -209,7 +209,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOExamining() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOExamining() {
         caseDetails.setState(EXAMINING.getId());
 
         String expectedCaseProgressCaseCreatedHtml =
@@ -357,7 +357,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOCaseStopped() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOCaseStopped() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(stoppedTaskListRenderer);
 
         caseDetails.setState(BO_CASE_STOPPED.getId());
@@ -369,7 +369,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedReissue() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedReissue() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(stoppedTaskListRenderer);
 
         caseDetails.setState(CASE_STOPPED_REISSUE.getId());
@@ -381,7 +381,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedAwaitRedec() {
+    void shouldBuildCaseProgressHtmlCorrectly_BOCaseStoppedAwaitRedec() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(stoppedTaskListRenderer);
 
         caseDetails.setState(CASE_STOPPED_AWAIT_REDEC.getId());
@@ -393,7 +393,7 @@ public class TaskListUpdateServiceTest {
     }
 
     @Test
-    public void shouldBuildCaseProgressHtmlCorrectly_BORegistrarEscalation() {
+    void shouldBuildCaseProgressHtmlCorrectly_BORegistrarEscalation() {
         when(taskListRendererFactory.getTaskListRenderer(anyString())).thenReturn(escalatedTaskListRenderer);
 
         caseDetails.setState(REGISTRAR_ESCALATION.getId());

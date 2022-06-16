@@ -1,27 +1,27 @@
 package uk.gov.hmcts.probate.exception;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
 import java.util.Collections;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BadRequestExceptionTest {
+@ExtendWith(SpringExtension.class)
+class BadRequestExceptionTest {
 
     @Mock
     private Errors errors;
 
     @Test
-    public void shouldCreateBadRequestException() {
+    void shouldCreateBadRequestException() {
         final String message = "MESSAGE";
         FieldError fieldError = new FieldError("", "field", "defaultMessage");
         when(errors.getFieldErrors()).thenReturn(Collections.singletonList(fieldError));

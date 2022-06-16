@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
@@ -51,8 +51,8 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APP
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
-@RunWith(MockitoJUnitRunner.class)
-public class LegalStatementExecutorTransformerTest {
+@ExtendWith(SpringExtension.class)
+class LegalStatementExecutorTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -75,7 +75,7 @@ public class LegalStatementExecutorTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
@@ -104,7 +104,7 @@ public class LegalStatementExecutorTransformerTest {
 
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
         execsApplying.add(new CollectionMember<>(EXEC_ID, EXECUTOR_APPLYING));
@@ -139,7 +139,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
+    void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -166,7 +166,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldOutputCorrectPluralWhoSharesInProfitText() {
+    void shouldOutputCorrectPluralWhoSharesInProfitText() {
         final List<String> companyProfits = new ArrayList<>(asList("Partners", "Shareholders"));
 
         final CaseData caseData = CaseData.builder()
@@ -179,7 +179,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldOutputCorrectPluralWhoSharesInProfitText_SingularValue() {
+    void shouldOutputCorrectPluralWhoSharesInProfitText_SingularValue() {
         final List<String> companyProfits = new ArrayList<>(asList("Partner", "Shareholder"));
 
         final CaseData caseData = CaseData.builder()
@@ -192,7 +192,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
         caseDataBuilder
                 .primaryApplicantForenames(EXEC_FIRST_NAME)
                 .primaryApplicantSurname(EXEC_SURNAME)
@@ -213,7 +213,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
         caseDataBuilder
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
@@ -232,7 +232,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldFormatCaseDataForLegalStatement() {
+    void shouldFormatCaseDataForLegalStatement() {
         List<CollectionMember<CodicilAddedDate>> codicilAddedDate = new ArrayList<>();
         codicilAddedDate.add(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(DATE).build()));
 
@@ -265,7 +265,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldOutputCorrectSingularWhoSharesInProfitText() {
+    void shouldOutputCorrectSingularWhoSharesInProfitText() {
         final List<String> companyProfits = new ArrayList<>(asList("Partners", "Shareholders"));
 
         final CaseData caseData = CaseData.builder()
@@ -278,7 +278,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldOutputCorrectSingularWhoSharesInProfitText_SingularValue() {
+    void shouldOutputCorrectSingularWhoSharesInProfitText_SingularValue() {
         final List<String> companyProfits = new ArrayList<>(asList("Partner", "Shareholder"));
 
         final CaseData caseData = CaseData.builder()
@@ -291,7 +291,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldNotSetSolicitorAsExecutorTwice() {
+    void shouldNotSetSolicitorAsExecutorTwice() {
         caseDataBuilder
                 .solsSolicitorIsApplying(YES)
                 .solsSolicitorIsExec(YES)
@@ -312,7 +312,7 @@ public class LegalStatementExecutorTransformerTest {
         List<CollectionMember<AdditionalExecutorNotApplying>> execsNotApplying =
                 new ArrayList<>();
 
-        legalStatementExecutorTransformerMock.createLegalStatementExecutorLists(execsApplying, 
+        legalStatementExecutorTransformerMock.createLegalStatementExecutorLists(execsApplying,
                 execsNotApplying,
                 caseDetailsMock.getData());
 
@@ -323,7 +323,7 @@ public class LegalStatementExecutorTransformerTest {
     }
 
     @Test
-    public void shouldNotSetNotApplyingSolicitorAsExecutorTwice() {
+    void shouldNotSetNotApplyingSolicitorAsExecutorTwice() {
         caseDataBuilder
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorIsExec(YES)
