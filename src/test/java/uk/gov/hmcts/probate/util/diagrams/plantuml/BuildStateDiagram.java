@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.util.diagrams.plantuml.Event.COLOR_EVENT;
 import static uk.gov.hmcts.probate.util.diagrams.plantuml.State.COLOR_STATE;
 
 @Slf4j
-public class BuildStateDiagram {
+class BuildStateDiagram {
     //use https://plantuml.com/
     private TextFileBuilderService textFileBuilderService = new TextFileBuilderService();
 

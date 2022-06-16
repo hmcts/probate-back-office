@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,11 +14,13 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
-public class ExecutorsAddressPostcodeValidationRuleTest {
+class ExecutorsAddressPostcodeValidationRuleTest {
 
     @InjectMocks
     private ExecutorsAddressPostcodeValidationRule executorsAddressPostcodeValidationRule;
@@ -35,9 +36,9 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
 
     private FieldErrorResponse executorPostcodeIsNullError;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         executorPostcodeIsNullError = FieldErrorResponse.builder().message("executorPostcodeIsNull").build();
 
@@ -51,33 +52,33 @@ public class ExecutorsAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(executor.getAddress()).thenReturn(null);
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
         when(executor.getAddress()).thenReturn(SolsAddress.builder().addressLine1("1 White St").build());
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
-        Assert.assertEquals(1, errors.size());
-        Assert.assertTrue(errors.contains(executorPostcodeIsNullError));
+        assertEquals(1, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
     @Test
-    public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
+    void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
         when(executor.getAddress())
             .thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
-        Assert.assertTrue(errors.isEmpty());
+        assertTrue(errors.isEmpty());
     }
 
 }

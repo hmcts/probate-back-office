@@ -1,20 +1,20 @@
 package uk.gov.hmcts.probate.model;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AuthenticateUserResponseTest {
+class AuthenticateUserResponseTest {
     AuthenticateUserResponse authenticateUserResponse;
 
-    @Before
+    @BeforeEach
     public void setup() {
         authenticateUserResponse = new AuthenticateUserResponse("123");
     }
 
     @Test
-    public void testGetCode() {
+    void testGetCode() {
         assertEquals("123", authenticateUserResponse.getCode());
     }
 }

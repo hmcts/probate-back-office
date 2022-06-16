@@ -1,17 +1,18 @@
 package uk.gov.hmcts.probate.config.documents;
 
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 
-@RunWith(SpringRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class WelshMonthTranslationTest {
+class WelshMonthTranslationTest {
 
     @MockBean
     private AppInsights appInsights;
@@ -20,8 +21,8 @@ public class WelshMonthTranslationTest {
     private WelshMonthTranslation welshMonthTranslation;
 
     @Test
-    public void convertDateInWelsh() {
+    void convertDateInWelsh() {
         final String dateInWelsh = welshMonthTranslation.getMonths().get(5);
-        Assert.assertEquals("Mai", dateInWelsh);
+        assertEquals("Mai", dateInWelsh);
     }
 }

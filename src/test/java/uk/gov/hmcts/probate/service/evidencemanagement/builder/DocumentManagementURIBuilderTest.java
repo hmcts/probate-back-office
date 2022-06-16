@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.evidencemanagement.builder;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 
-public class DocumentManagementURIBuilderTest {
+class DocumentManagementURIBuilderTest {
 
     private static final String URL = "URL";
     private static final String HOST = "HOST";
@@ -14,18 +14,18 @@ public class DocumentManagementURIBuilderTest {
 
     private DocumentManagementURIBuilder documentManagementURIBuilder;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         documentManagementURIBuilder = new DocumentManagementURIBuilder(HOST, URL);
     }
 
     @Test
-    public void shouldBuildUrl() {
+    void shouldBuildUrl() {
         assertThat(documentManagementURIBuilder.buildUrl(), is(HOST + URL));
     }
 
     @Test
-    public void shouldBuildUrlWithId() {
+    void shouldBuildUrlWithId() {
         assertThat(documentManagementURIBuilder.buildUrl(ID), is(HOST + URL + "/" + ID));
     }
 }

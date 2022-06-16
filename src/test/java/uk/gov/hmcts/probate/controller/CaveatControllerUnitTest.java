@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -36,12 +34,12 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CaveatControllerUnitTest {
+class CaveatControllerUnitTest {
 
     private CaveatController underTest;
 
@@ -89,9 +87,9 @@ public class CaveatControllerUnitTest {
     @Mock
     private PaymentResponse paymentResponseMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
@@ -101,7 +99,7 @@ public class CaveatControllerUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoErrors() throws NotificationClientException {
+    void shouldValidateWithNoErrors() throws NotificationClientException {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
@@ -119,16 +117,18 @@ public class CaveatControllerUnitTest {
         assertThat(response.getBody(), is(caveatCallbackResponse));
     }
 
-    @Test(expected = BusinessValidationException.class)
-    public void shouldValidateWithPaymentMethodErrors() throws NotificationClientException {
-        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-        doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRuleMock)
-            .validate(caveatDetailsMock);
-        underTest.validate(AUTH, caveatCallbackRequest, bindingResultMock);
+    @Test
+    void shouldValidateWithPaymentMethodErrors() throws NotificationClientException {
+        assertThrows(BusinessValidationException.class, () -> {
+            when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+            doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRuleMock)
+                    .validate(caveatDetailsMock);
+            underTest.validate(AUTH, caveatCallbackRequest, bindingResultMock);
+        });
     }
 
     @Test
-    public void shouldValidateWithPaymentErrors() throws NotificationClientException {
+    void shouldValidateWithPaymentErrors() throws NotificationClientException {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
@@ -147,7 +147,7 @@ public class CaveatControllerUnitTest {
     }
 
     @Test
-    public void shouldDefaultSolsPBA() {
+    void shouldDefaultSolsPBA() {
         when(caveatCallbackResponseTransformer.transformCaseForSolicitorPBANumbers(caveatCallbackRequest, AUTH))
             .thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.defaulsSolicitorNextStepsForPBANumbers(AUTH,

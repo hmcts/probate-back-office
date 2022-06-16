@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,13 +22,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class IronMountainDataExtractServiceTest {
+class IronMountainDataExtractServiceTest {
     @Mock
     private CaseQueryService caseQueryService;
     @Mock
@@ -44,9 +45,9 @@ public class IronMountainDataExtractServiceTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private CaseData caseData;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
@@ -67,7 +68,7 @@ public class IronMountainDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractFoundCases() {
+    void shouldExtractFoundCases() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
             ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -80,7 +81,7 @@ public class IronMountainDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractWhenNoCasesFound() {
+    void shouldExtractWhenNoCasesFound() {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
         when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
@@ -92,18 +93,20 @@ public class IronMountainDataExtractServiceTest {
         verify(ironMountainFileService, times(1)).createIronMountainFile(any(), anyString());
     }
 
-    @Test(expected = ClientException.class)
-    public void shouldThrowClientExceptionWhenFindingCases() {
-        List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
-            ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
-        when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-        when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
+    @Test
+    void shouldThrowClientExceptionWhenFindingCases() {
+        assertThrows(ClientException.class, () -> {
+            List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
+                    ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
+            when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
+            when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
-        ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
+            ironMountainDataExtractService.performIronMountainExtractForDate("2000-12-31");
 
-        verify(fileTransferService).uploadFile(any());
-        verify(fileExtractDateFormatter).getIronMountainFormattedFileDate(any());
-        verify(ironMountainFileService, times(0)).createIronMountainFile(any(), anyString());
+            verify(fileTransferService).uploadFile(any());
+            verify(fileExtractDateFormatter).getIronMountainFormattedFileDate(any());
+            verify(ironMountainFileService, times(0)).createIronMountainFile(any(), anyString());
+        });
     }
 
 }

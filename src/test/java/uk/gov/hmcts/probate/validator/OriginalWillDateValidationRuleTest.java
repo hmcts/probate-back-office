@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -11,13 +11,13 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class OriginalWillDateValidationRuleTest {
+class OriginalWillDateValidationRuleTest {
     @InjectMocks
     private OriginalWillSignedDateValidationRule underTest;
 
@@ -27,13 +27,13 @@ public class OriginalWillDateValidationRuleTest {
     @Mock
     private CCDData ccdDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldErrorIfDateIsToday() {
+    void shouldErrorIfDateIsToday() {
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now());
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
@@ -46,7 +46,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsInTheFuture() {
+    void shouldErrorIfDateIsInTheFuture() {
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now().plusDays(1));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
@@ -59,7 +59,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsAfterDateOfDeath() {
+    void shouldErrorIfDateIsAfterDateOfDeath() {
         LocalDate dod = LocalDate.now().minusDays(2);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod.plusDays(1));
@@ -74,7 +74,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorIfDateIsOnDateOfDeath() {
+    void shouldErrorIfDateIsOnDateOfDeath() {
         LocalDate dod = LocalDate.now().minusDays(1);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod);
@@ -89,7 +89,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldGetTwoErrorsIfDateIsAfterDateOfDeathAndToday() {
+    void shouldGetTwoErrorsIfDateIsAfterDateOfDeathAndToday() {
         LocalDate dod = LocalDate.now().minusDays(1);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod.plusDays(1));
@@ -105,7 +105,7 @@ public class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    public void shouldPassIfDateIsInThePastAndAfterDateOfDeath() {
+    void shouldPassIfDateIsInThePastAndAfterDateOfDeath() {
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.now().minusDays(1));
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now().minusDays(2));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
