@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.probateman;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -24,13 +24,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class LegacyImportServiceImplTest {
+@ExtendWith(SpringExtension.class)
+class LegacyImportServiceImplTest {
     private static final String DO_IMPORT_YES = "Yes";
     private static final Long LEGACY_ID = 20001L;
     private static final String LEGACY_CASE_URL =
@@ -48,13 +49,13 @@ public class LegacyImportServiceImplTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         legacyImportService = new LegacyImportServiceImpl(probateManService, repositories);
     }
 
     @Test
-    public void shouldImportLegacyCasesWhenLegacyCaseFound() {
+    void shouldImportLegacyCasesWhenLegacyCaseFound() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -89,7 +90,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldImportLegacyCasesWhenLegacyCaseFoundButNotFoundWhenUpdating() {
+    void shouldImportLegacyCasesWhenLegacyCaseFoundButNotFoundWhenUpdating() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -119,24 +120,26 @@ public class LegacyImportServiceImplTest {
         assertThat(legacyCaseMatches.size(), equalTo(1));
     }
 
-    @Test(expected = RuntimeException.class)
-    public void shouldThrowExceptionImportingLegacyCasesAndNoneFound() {
-        CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
-        when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
-        when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
-        when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
-        CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
-        List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
-        legacyRows.add(memberRow);
+    @Test
+    void shouldThrowExceptionImportingLegacyCasesAndNoneFound() {
+        assertThrows(RuntimeException.class, () -> {
+            CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
+            when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
+            when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
+            when(caseMatch.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);
+            CollectionMember<CaseMatch> memberRow = new CollectionMember<>(caseMatch);
+            List<CollectionMember<CaseMatch>> legacyRows = new ArrayList<>();
+            legacyRows.add(memberRow);
 
-        RuntimeException ste = Mockito.mock(RuntimeException.class);
-        when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenThrow(ste);
+            RuntimeException ste = Mockito.mock(RuntimeException.class);
+            when(probateManService.saveToCcd(LEGACY_ID, ProbateManType.GRANT_APPLICATION)).thenThrow(ste);
 
-        legacyImportService.importLegacyRows(legacyRows);
+            legacyImportService.importLegacyRows(legacyRows);
+        });
     }
 
     @Test
-    public void shouldFindCaseWhenImportingLegacyCasesForException() {
+    void shouldFindCaseWhenImportingLegacyCasesForException() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getType()).thenReturn(LegacyCaseType.GRANT_OF_REPRESENTATION.getName());
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
@@ -173,7 +176,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldBeValidRowsToImport() {
+    void shouldBeValidRowsToImport() {
         CaseMatch caseMatch = Mockito.mock(CaseMatch.class);
         when(caseMatch.getDoImport()).thenReturn(DO_IMPORT_YES);
         CaseLink caseLink = CaseLink.builder().caseReference("someCaseReference").build();
@@ -192,7 +195,7 @@ public class LegacyImportServiceImplTest {
     }
 
     @Test
-    public void shouldNotBeValidRowsToImport() {
+    void shouldNotBeValidRowsToImport() {
         CaseMatch caseMatch1 = Mockito.mock(CaseMatch.class);
         when(caseMatch1.getDoImport()).thenReturn(DO_IMPORT_YES);
         when(caseMatch1.getLegacyCaseViewUrl()).thenReturn(LEGACY_CASE_URL);

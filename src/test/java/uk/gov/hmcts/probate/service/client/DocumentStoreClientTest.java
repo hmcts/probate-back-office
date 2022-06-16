@@ -5,32 +5,29 @@ import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class DocumentStoreClientTest {
-
-    @Rule
-    public ExpectedException expectedException = ExpectedException.none();
+@ExtendWith(SpringExtension.class)
+class DocumentStoreClientTest {
 
     @Mock
     private CloseableHttpClient closeableHttpClientMock;
@@ -40,7 +37,7 @@ public class DocumentStoreClientTest {
     @InjectMocks
     private DocumentStoreClient documentStoreClient;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         HttpEntity entity = new ByteArrayEntity(new byte[2566]);
         closeableHttpResponseMock.setEntity(entity);
@@ -49,7 +46,7 @@ public class DocumentStoreClientTest {
     }
 
     @Test
-    public void shouldReturnDocumentInBytes() throws IOException {
+    void shouldReturnDocumentInBytes() throws IOException {
         when(closeableHttpClientMock.execute(any(HttpGet.class))).thenReturn(closeableHttpResponseMock);
 
         DocumentLink documentLink = DocumentLink.builder()
@@ -67,25 +64,24 @@ public class DocumentStoreClientTest {
     }
 
     @Test
-    public void shouldThrowIOException() throws IOException {
-
+    void shouldThrowIOException() throws IOException {
         doThrow(new IOException()).when(closeableHttpClientMock).execute(any(HttpGet.class));
-        DocumentLink documentLink = DocumentLink.builder()
-                .documentBinaryUrl("http://localhost")
-                .build();
-        Document document = Document.builder()
-                .documentFileName("test.pdf")
-                .documentGeneratedBy("test")
-                .documentDateAdded(LocalDate.now())
-                .documentLink(documentLink)
-                .build();
+        IOException e = assertThrows(IOException.class, () -> {
+            DocumentLink documentLink = DocumentLink.builder()
+                    .documentBinaryUrl("http://localhost")
+                    .build();
+            Document document = Document.builder()
+                    .documentFileName("test.pdf")
+                    .documentGeneratedBy("test")
+                    .documentDateAdded(LocalDate.now())
+                    .documentLink(documentLink)
+                    .build();
 
-        expectedException.expect(IOException.class);
-        expectedException.expectMessage(containsString(document.getDocumentFileName()));
+            byte[] bytes = documentStoreClient.retrieveDocument(document, "");
 
-        byte[] bytes = documentStoreClient.retrieveDocument(document, "");
-
-        assertNull(bytes);
+            assertNull(bytes);
+        });
+        assertThat(e.getMessage(), containsString("test.pdf"));
     }
 
 }

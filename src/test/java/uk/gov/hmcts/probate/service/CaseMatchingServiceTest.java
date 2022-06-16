@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -18,14 +18,14 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
-public class CaseMatchingServiceTest {
+class CaseMatchingServiceTest {
 
     @InjectMocks
     private CaseMatchingService caseMatchingService;
@@ -45,9 +45,9 @@ public class CaseMatchingServiceTest {
     @Mock
     private Case caseMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         CaseData caseData = CaseData.builder()
                 .deceasedForenames("names")
@@ -74,7 +74,7 @@ public class CaseMatchingServiceTest {
     }
 
     @Test
-    public void findMatches() {
+    void findMatches() {
         CaseMatch caseMatch = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("1").build())
                 .fullName("names surname")

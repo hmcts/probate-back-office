@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -33,13 +33,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
 
-public class GrantOfRepresentationDocmosisMapperServiceTest {
+class GrantOfRepresentationDocmosisMapperServiceTest {
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
@@ -75,9 +75,9 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     private CaveatData caveatData;
     private CaseDetails caseDetails;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         registry.setName("leeds");
         registry.setPhone("123456789");
@@ -127,7 +127,7 @@ public class GrantOfRepresentationDocmosisMapperServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholders() {
+    void testCreateDataAsPlaceholders() {
         DateFormat generatedDateFormat = new SimpleDateFormat(DATE_INPUT_FORMAT);
 
         Map<String, Object> placeholders =

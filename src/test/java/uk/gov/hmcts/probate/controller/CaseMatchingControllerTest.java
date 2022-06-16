@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -43,10 +43,10 @@ import static uk.gov.hmcts.probate.model.CaseType.LEGACY;
 import static uk.gov.hmcts.probate.model.CaseType.STANDING_SEARCH;
 import static uk.gov.hmcts.probate.model.CaseType.WILL_LODGEMENT;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CaseMatchingControllerTest {
+class CaseMatchingControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -72,14 +72,14 @@ public class CaseMatchingControllerTest {
     @Captor
     private ArgumentCaptor<List<CollectionMember<CaseMatch>>> caseMatchListCaptor;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(any(), any(CaseMatchingCriteria.class));
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void caseMatchingSearchFromGrantFlow() throws Exception {
+    void caseMatchingSearchFromGrantFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -97,7 +97,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingSearchFromCaveatFlow() throws Exception {
+    void caseMatchingSearchFromCaveatFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -115,7 +115,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingSearchFromStandingSearchFlow() throws Exception {
+    void caseMatchingSearchFromStandingSearchFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -133,7 +133,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingSearchFromWillLodgementFlow() throws Exception {
+    void caseMatchingSearchFromWillLodgementFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
@@ -151,7 +151,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromGrantFlow() throws Exception {
+    void caseMatchingImportFromGrantFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
@@ -167,7 +167,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromGrantFlowWithInvalidRowSelection() throws Exception {
+    void caseMatchingImportFromGrantFlowWithInvalidRowSelection() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
@@ -180,7 +180,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromCaveatFlow() throws Exception {
+    void caseMatchingImportFromCaveatFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
@@ -196,7 +196,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromCaveatFlowWithInvalidRowSelection() throws Exception {
+    void caseMatchingImportFromCaveatFlowWithInvalidRowSelection() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
@@ -209,7 +209,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromStandingSearchFlow() throws Exception {
+    void caseMatchingImportFromStandingSearchFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
@@ -225,7 +225,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromStandingSearchFlowWithInvalidRowSelection() throws Exception {
+    void caseMatchingImportFromStandingSearchFlowWithInvalidRowSelection() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
 
@@ -238,7 +238,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromWillLodgementFlow() throws Exception {
+    void caseMatchingImportFromWillLodgementFlow() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
@@ -254,7 +254,7 @@ public class CaseMatchingControllerTest {
     }
 
     @Test
-    public void caseMatchingImportFromWillLodgementFlowWithInvalidRowSelection() throws Exception {
+    void caseMatchingImportFromWillLodgementFlowWithInvalidRowSelection() throws Exception {
 
         String solicitorPayload = testUtils.getStringFromFile("payloadWithCaseMatches.json");
 

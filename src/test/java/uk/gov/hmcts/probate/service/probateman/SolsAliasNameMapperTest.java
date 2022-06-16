@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service.probateman;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.service.probateman.mapper.SolsAliasNameMapper;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -16,11 +16,11 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class SolsAliasNameMapperTest {
+class SolsAliasNameMapperTest {
 
     private static final String DECEASED_ALIAS_NAME1 = "DeadANF1";
     private static final String DECEASED_ALIAS_NAME2 = "DeadANF2";
@@ -31,7 +31,7 @@ public class SolsAliasNameMapperTest {
     private SolsAliasNameMapper aliasNameMapper;
 
     @Test
-    public void shouldMapToCollection() {
+    void shouldMapToCollection() {
 
         List<CollectionMember<SolsAliasName>> aliasCollection =
             aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAMES);
@@ -42,7 +42,7 @@ public class SolsAliasNameMapperTest {
     }
 
     @Test
-    public void shouldMapEmptyNamesToEmptyCollection() {
+    void shouldMapEmptyNamesToEmptyCollection() {
 
         List<CollectionMember<SolsAliasName>> expectedAliasNames = Collections.emptyList();
         List<CollectionMember<SolsAliasName>> aliasCollection = aliasNameMapper.toCollectionMember(null);
@@ -52,7 +52,7 @@ public class SolsAliasNameMapperTest {
     }
 
     @Test
-    public void shouldMapToCollectionOneAliasOnly() {
+    void shouldMapToCollectionOneAliasOnly() {
 
         List<CollectionMember<SolsAliasName>> aliasCollection =
             aliasNameMapper.toCollectionMember(DECEASED_ALIAS_NAME1);

@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.organisations;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -16,11 +16,12 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import java.net.URI;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class OrganisationsRetrievalServiceTest {
+class OrganisationsRetrievalServiceTest {
 
     @InjectMocks
     private OrganisationsRetrievalService organisationsRetrievalService;
@@ -37,7 +38,7 @@ public class OrganisationsRetrievalServiceTest {
     private AuthTokenGenerator authTokenGenerator;
 
     @Test
-    public void testOrganisationEntityGetsReturnedOk() {
+    void testOrganisationEntityGetsReturnedOk() {
         MockitoAnnotations.openMocks(this);
 
         organisationEntityResponse = new OrganisationEntityResponse();
@@ -59,7 +60,7 @@ public class OrganisationsRetrievalServiceTest {
     }
 
     @Test
-    public void testOrganisationEntityReturnsNullWhenException() {
+    void testOrganisationEntityReturnsNullWhenException() {
         MockitoAnnotations.openMocks(this);
 
         when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
@@ -71,13 +72,15 @@ public class OrganisationsRetrievalServiceTest {
         assertEquals(null, organisationEntity);
     }
 
-    @Test(expected = ClientException.class)
-    public void testOrganisationEntityExceptionWithNoBearer() {
-        MockitoAnnotations.openMocks(this);
+    @Test
+    void testOrganisationEntityExceptionWithNoBearer() {
+        assertThrows(ClientException.class, () -> {
+            MockitoAnnotations.openMocks(this);
 
-        organisationsRetrievalService.orgApi = "/test_api";
-        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
-        organisationsRetrievalService.getOrganisationEntity("something else");
+            organisationsRetrievalService.orgApi = "/test_api";
+            organisationsRetrievalService.orgUri = "http://localhost:8080/test";
+            organisationsRetrievalService.getOrganisationEntity("something else");
+        });
     }
 }
 
