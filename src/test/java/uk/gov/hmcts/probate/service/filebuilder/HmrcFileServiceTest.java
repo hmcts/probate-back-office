@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class HmrcFileServiceTest {
+class HmrcFileServiceTest {
     private static final String FILE_DATE = "20190101-123456";
     private static final String FILE_NAME = "1_20190101.dat";
     private static final String[] LAST_MODIFIED = {"2019", "3", "3", "0", "0", "0", "0"};
@@ -46,7 +46,7 @@ public class HmrcFileServiceTest {
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
@@ -195,7 +195,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHmrcFileBuiltForSolicitor() throws IOException {
+    void testHmrcFileBuiltForSolicitor() throws IOException {
         builtData = caseDataSolictor.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1111222233334444L);
         caseList.add(createdCase);
@@ -204,7 +204,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHmrcFileBuiltForPersonal() throws IOException {
+    void testHmrcFileBuiltForPersonal() throws IOException {
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
@@ -213,7 +213,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHmrcFileBuiltForPersonalForEmptyGrossNetValues() throws IOException {
+    void testHmrcFileBuiltForPersonalForEmptyGrossNetValues() throws IOException {
         caseDataPersonal.ihtGrossValue(null);
         caseDataPersonal.ihtNetValue(null);
         builtData = caseDataPersonal.build();
@@ -225,7 +225,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testHmrcFileBuiltForMultiples() throws IOException {
+    void testHmrcFileBuiltForMultiples() throws IOException {
         builtData = caseDataPersonal.build();
         caseList.add(new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L));
         builtData = caseDataSolictor.build();
@@ -235,7 +235,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testFileIsBuiltWithEmptyOptionalValues() throws IOException {
+    void testFileIsBuiltWithEmptyOptionalValues() throws IOException {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
             new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
                 .applyingExecutorAddress(SolsAddress.builder().build()).build());
@@ -254,7 +254,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
+    void testPrimaryApplicantAsNoChangesGrantee() throws IOException {
         caseDataPersonal.primaryApplicantIsApplying("No");
         builtData = caseDataPersonal.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 4444555566667777L);
@@ -264,7 +264,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
+    void testCarriageReturnInAddressIsReplacedWithSpace() throws IOException {
         builtData = caseDataCarriageReturns.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
@@ -273,7 +273,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testMissingAddressIsReplacedWithSpace() throws IOException {
+    void testMissingAddressIsReplacedWithSpace() throws IOException {
         builtData = caseDataMissingData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
         caseList.add(createdCase);
@@ -282,7 +282,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testMissingIHTReplacedWithX() throws IOException {
+    void testMissingIHTReplacedWithX() throws IOException {
         caseDataMissingData.ihtFormId(null);
         builtData = caseDataMissingData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);
@@ -294,7 +294,7 @@ public class HmrcFileServiceTest {
     }
 
     @Test
-    public void testOtherIHTRefusesCaseRow() throws IOException {
+    void testOtherIHTRefusesCaseRow() throws IOException {
         caseDataMissingData.ihtFormId("OTHER");
         builtData = caseDataMissingData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 5555666677778888L);

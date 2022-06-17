@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -18,6 +17,9 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXECUTOR_TYPE_NAMED;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
@@ -26,7 +28,7 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FORENAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_FULLNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_SOT_SURNAME;
 
-public class NumberOfApplyingExecutorsValidationRuleTest {
+class NumberOfApplyingExecutorsValidationRuleTest {
 
     @InjectMocks
     private NumberOfApplyingExecutorsValidationRule underTest;
@@ -48,9 +50,9 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         .applyingExecutorAddress(SOLICITOR_ADDRESS)
         .build());
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         caseDataMock = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -65,7 +67,7 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
     }
 
     @Test
-    public void shouldErrorForTooManyExecutors() {
+    void shouldErrorForTooManyExecutors() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(EXEC);
         execsApplying.add(EXEC);
@@ -78,15 +80,15 @@ public class NumberOfApplyingExecutorsValidationRuleTest {
         when(executorsTransformer.setExecutorApplyingListWithSolicitorInfo(execsApplying,
             caseDetailsMock.getData())).thenReturn(execsApplying);
 
-        Assertions.assertThatThrownBy(() -> {
+        BusinessValidationException bve = assertThrows(BusinessValidationException.class, () -> {
             underTest.validate(caseDetailsMock);
-        })
-            .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("The total number executors applying cannot exceed 4 for case id 0");
+        });
+        assertThat(bve.getMessage(),
+                containsString("The total number executors applying cannot exceed 4 for case id 0"));
     }
 
     @Test
-    public void shouldNotErrorForExecutors() {
+    void shouldNotErrorForExecutors() {
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(EXEC);
         execsApplying.add(EXEC);

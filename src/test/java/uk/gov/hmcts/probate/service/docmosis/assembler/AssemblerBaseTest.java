@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -8,14 +8,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AssemblerBaseTest {
+class AssemblerBaseTest {
 
     private AssemblerBase assemblerBase = new AssemblerBase();
 
     @Test
-    public void testCreate2ListItems() {
+    void testCreate2ListItems() {
         String item1Code = "codeOne";
         String item1Label = "labelOne";
         String item2Code = "codeTwo";
@@ -29,7 +29,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetStaticParagraphsDetails() {
+    void testGetStaticParagraphsDetails() {
 
         List<ParagraphDetail> response = assemblerBase.getStaticParagraphDetails(ParagraphCode.Caseworker);
         assertEquals(ParagraphField.valueOf(ParagraphField.CASEWORKER.toString()).getFieldCode(),
@@ -41,7 +41,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetTextParagraphsDetails() {
+    void testGetTextParagraphsDetails() {
 
         List<ParagraphDetail> response = assemblerBase.getTextParagraphDetails(ParagraphCode.EntExecNoAcc);
         assertEquals("Text", response.get(0).getEnableType().name());
@@ -51,7 +51,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetSingleTextParagraphsDetails() {
+    void testGetSingleTextParagraphsDetails() {
         ParagraphField paragraphField = ParagraphField.MISS_INFO_DECEASED_COUNTRY;
         ParagraphDetail response = assemblerBase.getSingleTextParagraphDetails(paragraphField, "templateName");
         assertEquals("Text", response.getEnableType().name());
@@ -61,7 +61,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetTextAreaParagraphsDetails() {
+    void testGetTextAreaParagraphsDetails() {
 
         List<ParagraphDetail> response = assemblerBase.getTextAreaParagraphDetails(ParagraphCode.FreeText);
         assertEquals("TextArea", response.get(0).getEnableType().name());
@@ -71,7 +71,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetTextParagraphDetailWithDefaultValue() {
+    void testGetTextParagraphDetailWithDefaultValue() {
         ParagraphField paragraphField = ParagraphField.MISS_INFO_DECEASED_COUNTRY;
         List<String> textValues = new ArrayList<>();
         ParagraphDetail response =
@@ -84,7 +84,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetSingleTextParagraphDetailWithDefaultValue() {
+    void testGetSingleTextParagraphDetailWithDefaultValue() {
 
         List<String> textValues = new ArrayList<>();
         textValues.add("test value one");
@@ -98,7 +98,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testCreateDynamicListParagraphDetail() {
+    void testCreateDynamicListParagraphDetail() {
         DynamicListItem dynamicListItem =
             DynamicListItem.builder().code("IHT421Await").label("Awaiting IHT421").build();
 
@@ -120,7 +120,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetDateParagraphDetailWithDefaultValue() {
+    void testGetDateParagraphDetailWithDefaultValue() {
         List<ParagraphDetail> response = assemblerBase.getDateParagraphDetails(ParagraphCode.MissInfoAwaitResponse);
         assertEquals("Date", response.get(0).getEnableType().name());
         assertEquals("Date of request", response.get(0).getLabel());
@@ -129,7 +129,7 @@ public class AssemblerBaseTest {
     }
 
     @Test
-    public void testGetSingleDateParagraphDetailWithDefaultValue() {
+    void testGetSingleDateParagraphDetailWithDefaultValue() {
         ParagraphField paragraphField = ParagraphField.DATE_OF_REQUEST;
         ParagraphDetail response = assemblerBase.getSingleDateParagraphDetails(paragraphField, "templateName");
         assertEquals("Date", response.getEnableType().name());

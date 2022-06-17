@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class Event implements Cell {
+class Event implements Cell {
     protected static final String COLOR_EVENT = "#ff4040";
 
     private final String id;

@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.model.ccd;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-public class CaseMatchTest {
+class CaseMatchTest {
 
     @Test
-    public void shouldMatchByIdForDifferentRefs() {
+    void shouldMatchByIdForDifferentRefs() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .id("11111")
@@ -25,7 +25,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldMatchByIdForNullRefs() {
+    void shouldMatchByIdForNullRefs() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .id("11111")
@@ -39,7 +39,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldMatchOnlyByCaseLinkRef() {
+    void shouldMatchOnlyByCaseLinkRef() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .id("11111")
@@ -55,7 +55,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByIdOnly() {
+    void shouldNotMatchByIdOnly() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .id("22222")
@@ -69,7 +69,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldMatchByCaseLinkRefOnly() {
+    void shouldMatchByCaseLinkRefOnly() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
@@ -83,7 +83,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByCaseLinkRefOnly() {
+    void shouldNotMatchByCaseLinkRefOnly() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
@@ -97,7 +97,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByCaseLinkWithNullRef() {
+    void shouldNotMatchByCaseLinkWithNullRef() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .caseLink(CaseLink.builder().build())
@@ -111,7 +111,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByCaseLinkWithNullRefOnOther() {
+    void shouldNotMatchByCaseLinkWithNullRefOnOther() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .caseLink(CaseLink.builder().caseReference("SomeRef1").build())
@@ -125,7 +125,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByCaseLinkWithNullRefOnBoth() {
+    void shouldNotMatchByCaseLinkWithNullRefOnBoth() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .caseLink(CaseLink.builder().build())
@@ -139,7 +139,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldMatchByLegacyCaseUrlSame() {
+    void shouldMatchByLegacyCaseUrlSame() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .legacyCaseViewUrl("legacy1")
@@ -153,7 +153,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByLegacyCaseUrlDifferent() {
+    void shouldNotMatchByLegacyCaseUrlDifferent() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .legacyCaseViewUrl("legacy1")
@@ -167,7 +167,7 @@ public class CaseMatchTest {
     }
 
     @Test
-    public void shouldNotMatchByLegacyCaseUrlEmpty() {
+    void shouldNotMatchByLegacyCaseUrlEmpty() {
 
         CaseMatch caseMatch1 = CaseMatch.builder()
                 .build();

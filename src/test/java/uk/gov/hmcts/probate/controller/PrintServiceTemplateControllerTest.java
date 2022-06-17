@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -18,10 +18,11 @@ import uk.gov.hmcts.probate.service.template.printservice.PrintService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.when;
 
-public class PrintServiceTemplateControllerTest {
+class PrintServiceTemplateControllerTest {
 
     @InjectMocks
     private PrintServiceTemplateController underTest;
@@ -38,20 +39,22 @@ public class PrintServiceTemplateControllerTest {
     @MockBean
     private AppInsights appInsights;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
-    }
-
-    @Test(expected = BadRequestException.class)
-    public void shouldErrorForLegalStatement() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-
-        underTest.getAllDocuments(caseDetailsMock, bindingResultMock);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void shouldReturnAllDocumentsWithNoErrors() {
+    void shouldErrorForLegalStatement() {
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+
+            underTest.getAllDocuments(caseDetailsMock, bindingResultMock);
+        });
+    }
+
+    @Test
+    void shouldReturnAllDocumentsWithNoErrors() {
         List<DocumentResponse> docs = new ArrayList<>();
         DocumentResponse doc = new DocumentResponse("name", "type", "url");
         docs.add(doc);
@@ -67,7 +70,7 @@ public class PrintServiceTemplateControllerTest {
     }
 
     @Test
-    public void shouldReturnSolicitorTemplateWithNoErrors() {
+    void shouldReturnSolicitorTemplateWithNoErrors() {
         when(printServiceMock.getSolicitorCaseDetailsTemplateForPrintService()).thenReturn("some template");
 
         ResponseEntity<String> response = underTest.getSolicitorCaseDetailsTemplate();
@@ -77,7 +80,7 @@ public class PrintServiceTemplateControllerTest {
     }
 
     @Test
-    public void shouldReturnPATemplateWithNoErrors() {
+    void shouldReturnPATemplateWithNoErrors() {
         when(printServiceMock.getPACaseDetailsTemplateForPrintService()).thenReturn("some pa template");
 
         ResponseEntity<String> response = underTest.getPACaseDetailsTemplate();

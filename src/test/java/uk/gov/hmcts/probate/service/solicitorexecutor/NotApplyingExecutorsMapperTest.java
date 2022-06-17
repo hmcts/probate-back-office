@@ -1,11 +1,9 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -14,12 +12,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-@RunWith(MockitoJUnitRunner.class)
-public class NotApplyingExecutorsMapperTest {
+class NotApplyingExecutorsMapperTest {
 
     @InjectMocks
     private NotApplyingExecutorsMapper underTest;
@@ -27,9 +24,9 @@ public class NotApplyingExecutorsMapperTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         AdditionalExecutor solsAdditionalExecutor1 = getSolsAddExec(1, false, "Reason1");
         AdditionalExecutor solsAdditionalExecutor2 = getSolsAddExec(2, false, "Reason2");
         AdditionalExecutor solsAdditionalExecutor3 = getSolsAddExec(3, true, null);
@@ -51,7 +48,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithPrimary() {
+    void shouldGetNotApplyingExecsWithPrimary() {
         when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
@@ -63,7 +60,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithPrimaryIncuded() {
+    void shouldGetNotApplyingExecsWithPrimaryIncuded() {
         when(caseDataMock.getSolsSOTName()).thenReturn("solsAdditionalExecutorFN solsAdditionalExecutorLN");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
         when(caseDataMock.getSolsSolicitorNotApplyingReason()).thenReturn("Reason1");
@@ -75,7 +72,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetApplyingExecsWithoutPrimaryWithSOTName() {
+    void shouldGetApplyingExecsWithoutPrimaryWithSOTName() {
         when(caseDataMock.getSolsSOTName()).thenReturn("sotFN sotLN");
         when(caseDataMock.getSolsSolicitorIsApplying()).thenReturn("No");
 
@@ -86,7 +83,7 @@ public class NotApplyingExecutorsMapperTest {
     }
 
     @Test
-    public void shouldGetNotApplyingExecsWithoutNullLists() {
+    void shouldGetNotApplyingExecsWithoutNullLists() {
         when(caseDataMock.getSolsAdditionalExecutorList()).thenReturn(null);
         when(caseDataMock.getAdditionalExecutorsNotApplying()).thenReturn(null);
 

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
@@ -11,10 +11,11 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Component
-public class OCRFieldAddressMapperTest {
+class OCRFieldAddressMapperTest {
 
     private static final String ATTORNEY_ON_BEHALF_OF_NAME = "Conner O'Mailey";
     private static final String ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1 = "Petty Ireland";
@@ -42,7 +43,7 @@ public class OCRFieldAddressMapperTest {
 
     private ExceptionRecordOCRFields ocrFieldsPostcodeError;
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
             .attorneyOnBehalfOfName(ATTORNEY_ON_BEHALF_OF_NAME)
@@ -135,7 +136,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testPrimaryApplicantAddress() {
+    void testPrimaryApplicantAddress() {
         Address response = addressMapper.toPrimaryApplicantAddress(ocrFields);
         assertEquals(PRIMARY_APPLICANT_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
@@ -145,7 +146,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testCaveatWithCaveatAddress() {
+    void testCaveatWithCaveatAddress() {
         Address response = addressMapper.toCaveatorAddress(ocrFieldsCaveatAddress);
         assertEquals(CAVEAT_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
@@ -155,7 +156,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testCaveatWithSolicitorsAddress() {
+    void testCaveatWithSolicitorsAddress() {
         Address response = addressMapper.toCaveatorAddress(ocrFieldsSolicitorsAddress);
         assertEquals(SOLICITORS_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
@@ -165,7 +166,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testDeceasedAddress() {
+    void testDeceasedAddress() {
         Address response = addressMapper.toDeceasedAddress(ocrFields);
         assertEquals(DECEASED_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
@@ -175,7 +176,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testSolicitorAddress() {
+    void testSolicitorAddress() {
         Address response = addressMapper.toSolicitorAddress(ocrFields);
         assertEquals(SOLICITOR_ADDRESS_LINE1, response.getAddressLine1());
         assertEquals(ADDRESS_LINE2, response.getAddressLine2());
@@ -185,7 +186,7 @@ public class OCRFieldAddressMapperTest {
     }
 
     @Test
-    public void testAttorneyNamesAndAddress() {
+    void testAttorneyNamesAndAddress() {
         List<CollectionMember<AttorneyNamesAndAddress>> response = addressMapper.toAttorneyOnBehalfOfAddress(ocrFields);
         assertEquals(ATTORNEY_ON_BEHALF_OF_NAME, response.get(0).getValue().getName());
         assertEquals(ATTORNEY_ON_BEHALF_OF_ADDRESS_LINE1, response.get(0).getValue().getAddress().getAddressLine1());
@@ -195,34 +196,44 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_POST_CODE.toUpperCase(), response.get(0).getValue().getAddress().getPostCode());
     }
 
-    @Test(expected = OCRMappingException.class)
-    public void testPrimaryApplicantAddressPostcodeError() {
-        Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
-    }
-
-    @Test(expected = OCRMappingException.class)
-    public void testCaveatAddressPostcodeError() {
-        Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
-    }
-
-    @Test(expected = OCRMappingException.class)
-    public void testDeceasedAddressPostcodeError() {
-        Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
-    }
-
-    @Test(expected = OCRMappingException.class)
-    public void testSolicitorAddressPostcodeError() {
-        Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
-    }
-
-    @Test(expected = OCRMappingException.class)
-    public void testAttorneyNamesAndAddressPostcodeError() {
-        List<CollectionMember<AttorneyNamesAndAddress>> response =
-            addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
+    @Test
+    void testPrimaryApplicantAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
+        });
     }
 
     @Test
-    public void testPrimaryApplicantAddressPostcodeCorrectErrorMessage() {
+    void testCaveatAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
+        });
+    }
+
+    @Test
+    void testDeceasedAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
+        });
+    }
+
+    @Test
+    void testSolicitorAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
+        });
+    }
+
+    @Test
+    void testAttorneyNamesAndAddressPostcodeError() {
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<AttorneyNamesAndAddress>> response =
+                    addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
+        });
+    }
+
+    @Test
+    void testPrimaryApplicantAddressPostcodeCorrectErrorMessage() {
         String errorMessage = null;
         try {
             Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
@@ -232,15 +243,19 @@ public class OCRFieldAddressMapperTest {
         assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
     }
 
-    @Test(expected = OCRMappingException.class)
-    public void testAttorneyNameWithMissingNameError() {
-        List<CollectionMember<AttorneyNamesAndAddress>> response =
-            addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsAttorneyMissingName);
+    @Test
+    void testAttorneyNameWithMissingNameError() {
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<AttorneyNamesAndAddress>> response =
+                    addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsAttorneyMissingName);
+        });
     }
 
-    @Test(expected = OCRMappingException.class)
-    public void testAttorneyNameWithMissingAddressError() {
-        List<CollectionMember<AttorneyNamesAndAddress>> response =
-            addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsAttorneyMissingAddress);
+    @Test
+    void testAttorneyNameWithMissingAddressError() {
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<AttorneyNamesAndAddress>> response =
+                    addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsAttorneyMissingAddress);
+        });
     }
 }

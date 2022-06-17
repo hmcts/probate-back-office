@@ -2,14 +2,13 @@ package uk.gov.hmcts.probate.transformer;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.apache.commons.lang3.BooleanUtils;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -49,8 +48,8 @@ import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
-import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
+import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
@@ -83,13 +82,13 @@ import java.util.Optional;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
@@ -123,8 +122,8 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REIS
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CallbackResponseTransformerTest {
+@ExtendWith(SpringExtension.class)
+class CallbackResponseTransformerTest {
 
     public static final String DECEASED_DEATH_CERTIFICATE = "deathCertificate";
     private static final String[] LAST_MODIFIED_STR = {"2018", "1", "2", "0", "0", "0", "0"};
@@ -479,7 +478,7 @@ public class CallbackResponseTransformerTest {
     @Mock
     private Iht400421Defaulter iht400421Defaulter;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         caseDataBuilder = CaseData.builder()
@@ -786,7 +785,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForWithStateChange() {
+    void shouldConvertRequestToDataBeanForWithStateChange() {
         CallbackResponse callbackResponse =
             underTest.transformWithConditionalStateChange(callbackRequestMock, CHANGED_STATE);
 
@@ -798,7 +797,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithNoStateChange() {
+    void shouldConvertRequestToDataBeanWithNoStateChange() {
         CallbackResponse callbackResponse =
             underTest.transformWithConditionalStateChange(callbackRequestMock, ORIGINAL_STATE);
 
@@ -809,7 +808,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithExecutorDetails() {
+    void shouldConvertRequestToDataBeanForPaymentWithExecutorDetails() {
 
         when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
         when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
@@ -831,7 +830,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
+    void shouldConvertRequestToDataBeanForPaymentWithLegalStatementDocNullWhenPdfServiceTemplateIsNull() {
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .build();
@@ -844,7 +843,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddDigitalGrantDraftToGeneratedDocuments() {
+    void shouldAddDigitalGrantDraftToGeneratedDocuments() {
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .documentType(DIGITAL_GRANT_DRAFT)
@@ -860,7 +859,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
+    void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
             .payments(null)
@@ -881,7 +880,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUpload() {
+    void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUpload() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
                 .solsFeeAccountNumber(FEE_ACCT_NUMBER)
                 .solsLegalStatementUpload(legalStatementUploadMock)
@@ -902,7 +901,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndExistingPayments() {
+    void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndExistingPayments() {
         List<CollectionMember<Payment>> payments = new ArrayList<>();
         Payment payment = Payment.builder().reference("RC1").method("something").status("Other").build();
         payments.add(new CollectionMember<Payment>(payment));
@@ -935,7 +934,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSchemaVersionCorrectly() {
+    void shouldSetSchemaVersionCorrectly() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -947,7 +946,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithFeeAccountNoPayment() {
+    void shouldConvertRequestToDataBeanForPaymentWithFeeAccountNoPayment() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
             .payments(null)
@@ -969,9 +968,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
         assertNull(callbackResponse.getData().getPayments());
     }
-    
+
     @Test
-    public void shouldTestForNullDOB() {
+    void shouldTestForNullDOB() {
         CaseData caseData = caseDataBuilder.deceasedDateOfBirth(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -983,7 +982,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTestForNullDOD() throws JsonProcessingException {
+    void shouldTestForNullDOD() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.deceasedDateOfDeath(null)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -995,7 +994,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanForPaymentWithCheque() throws JsonProcessingException {
+    void shouldConvertRequestToDataBeanForPaymentWithCheque() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
                 .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
@@ -1017,7 +1016,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddDocumentsToProbateDocumentsAndNotificationsGenerated() {
+    void shouldAddDocumentsToProbateDocumentsAndNotificationsGenerated() {
         Document grantDocument = Document.builder().documentType(DIGITAL_GRANT).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1036,7 +1035,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSize() {
+    void shouldSetSendLetterIdAndPdfSize() {
         Document grantDocument = Document.builder().documentType(DIGITAL_GRANT).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1056,7 +1055,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeInWelshDigitalGrant() {
+    void shouldSetSendLetterIdAndPdfSizeInWelshDigitalGrant() {
         Document grantDocument = Document.builder().documentType(WELSH_DIGITAL_GRANT).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1075,7 +1074,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeInWelshIntestacyGrant() {
+    void shouldSetSendLetterIdAndPdfSizeInWelshIntestacyGrant() {
         Document grantDocument = Document.builder().documentType(WELSH_INTESTACY_GRANT).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1094,7 +1093,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeInWelshAdmonWillGrant() {
+    void shouldSetSendLetterIdAndPdfSizeInWelshAdmonWillGrant() {
         Document grantDocument = Document.builder().documentType(WELSH_ADMON_WILL_GRANT).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1113,7 +1112,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeGrantReissue() {
+    void shouldSetSendLetterIdAndPdfSizeGrantReissue() {
         Document grantDocument = Document.builder().documentType(DIGITAL_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1136,7 +1135,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeAdmonWillGrantReissue() {
+    void shouldSetSendLetterIdAndPdfSizeAdmonWillGrantReissue() {
         Document grantDocument = Document.builder().documentType(ADMON_WILL_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1160,7 +1159,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeIntestacyGrantReissue() {
+    void shouldSetSendLetterIdAndPdfSizeIntestacyGrantReissue() {
         Document grantDocument = Document.builder().documentType(INTESTACY_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1184,7 +1183,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeWelshGrantReissue() {
+    void shouldSetSendLetterIdAndPdfSizeWelshGrantReissue() {
         Document grantDocument = Document.builder().documentType(WELSH_DIGITAL_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1207,7 +1206,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeWelshIntestacyReissue() {
+    void shouldSetSendLetterIdAndPdfSizeWelshIntestacyReissue() {
         Document grantDocument = Document.builder().documentType(WELSH_INTESTACY_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1230,7 +1229,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSendLetterIdAndPdfSizeWelshAdmonWillReissue() {
+    void shouldSetSendLetterIdAndPdfSizeWelshAdmonWillReissue() {
         Document grantDocument = Document.builder().documentType(WELSH_ADMON_WILL_GRANT_REISSUE).build();
         Document grantIssuedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
@@ -1253,7 +1252,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetGrantIssuedDateForEdgeCase() {
+    void shouldSetGrantIssuedDateForEdgeCase() {
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .documentType(EDGE_CASE)
@@ -1269,7 +1268,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddDocumentToProbateNotificationsGenerated() {
+    void shouldAddDocumentToProbateNotificationsGenerated() {
         Document documentsReceivedSentEmail = Document.builder().documentType(SENT_EMAIL).build();
 
         CallbackResponse callbackResponse = underTest.addDocuments(callbackRequestMock,
@@ -1284,7 +1283,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddNoDocumentButSetNotificationRequested() {
+    void shouldAddNoDocumentButSetNotificationRequested() {
         List<Document> documents = new ArrayList<>();
 
         CaseData caseData = caseDataBuilder
@@ -1302,7 +1301,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddMatches() {
+    void shouldAddMatches() {
         CaseMatch caseMatch = CaseMatch.builder().build();
 
         CallbackResponse response = underTest.addMatches(callbackRequestMock, Collections.singletonList(caseMatch));
@@ -1315,7 +1314,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSelectForQA() {
+    void shouldSelectForQA() {
         CallbackResponse response = underTest.selectForQA(callbackRequestMock);
 
         assertCommon(response);
@@ -1325,7 +1324,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldNotSelectForQA() {
+    void shouldNotSelectForQA() {
         caseDataBuilder.boExaminationChecklistRequestQA(null);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(caseDetailsMock.getState()).thenReturn("CurrentStateId");
@@ -1336,7 +1335,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithStopDetailsChange() {
+    void shouldConvertRequestToDataBeanWithStopDetailsChange() {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(CAVEAT_STOPPED).build());
 
@@ -1349,7 +1348,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldNotIncludeBulkPrintIdWithOtherDocType() {
+    void shouldNotIncludeBulkPrintIdWithOtherDocType() {
         List<Document> documents = new ArrayList<>();
         documents.add(Document.builder().documentType(DIGITAL_GRANT).build());
 
@@ -1359,14 +1358,14 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCallbackRequestToCallbackResponse() {
+    void shouldTransformCallbackRequestToCallbackResponse() {
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
         assertCommon(callbackResponse);
     }
 
     @Test
-    public void verifyTrustCorpFieldsAreReset() {
+    void verifyTrustCorpFieldsAreReset() {
         underTest.transformCase(callbackRequestMock);
 
         verify(resetResponseCaseDataTransformer, times(1))
@@ -1374,7 +1373,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void verifyExecutorListsAreSet() {
+    void verifyExecutorListsAreSet() {
         caseDataBuilder
                 .additionalExecutorsApplying(additionalExecutorsApplyingMock)
                 .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
@@ -1390,7 +1389,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformPersonalCaseForDeceasedAliasNamesExist() {
+    void shouldTransformPersonalCaseForDeceasedAliasNamesExist() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
         deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
@@ -1411,7 +1410,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformPersonalCaseForEmptyDeceasedNames() {
+    void shouldTransformPersonalCaseForEmptyDeceasedNames() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
 
@@ -1431,7 +1430,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithDeceasedAliasNames() {
+    void shouldTransformCaseForSolicitorWithDeceasedAliasNames() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
 
         List<CollectionMember<AliasName>> deceasedAliasNamesList = new ArrayList<>();
@@ -1452,7 +1451,7 @@ public class CallbackResponseTransformerTest {
 
 
     @Test
-    public void shouldTransformCaseForSolicitorWithProbate() {
+    void shouldTransformCaseForSolicitorWithProbate() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
 
@@ -1468,7 +1467,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithIntestacy() {
+    void shouldTransformCaseForSolicitorWithIntestacy() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
 
@@ -1484,7 +1483,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithAdmon() {
+    void shouldTransformCaseForSolicitorWithAdmon() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
 
@@ -1500,7 +1499,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForPAWithIHTOnlineYes() {
+    void shouldTransformCaseForPAWithIHTOnlineYes() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(YES);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
@@ -1515,7 +1514,7 @@ public class CallbackResponseTransformerTest {
 
 
     @Test
-    public void shouldTransformCaseForSolsEmailEmpty() {
+    void shouldTransformCaseForSolsEmailEmpty() {
         caseDataBuilder.solsSolicitorEmail("");
         caseDataBuilder.applicationType(SOLICITOR);
 
@@ -1531,7 +1530,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForPAEmailEmpty() {
+    void shouldTransformCaseForPAEmailEmpty() {
         caseDataBuilder.primaryApplicantEmailAddress("");
         caseDataBuilder.applicationType(PERSONAL);
 
@@ -1547,7 +1546,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForPAEmailIsNotEmpty() {
+    void shouldTransformCaseForPAEmailIsNotEmpty() {
         caseDataBuilder.primaryApplicantEmailAddress("primary@probate-test.com");
         caseDataBuilder.applicationType(PERSONAL);
 
@@ -1563,7 +1562,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForPAWithPrimaryApplicantAlias() {
+    void shouldTransformCaseForPAWithPrimaryApplicantAlias() {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
         caseDataBuilder.primaryApplicantSameWillName(YES);
         caseDataBuilder.primaryApplicantAliasReason("Other");
@@ -1581,7 +1580,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForPAWithPrimaryApplicantAliasOtherToBeNull() {
+    void shouldTransformCaseForPAWithPrimaryApplicantAliasOtherToBeNull() {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
         caseDataBuilder.primaryApplicantSameWillName(YES);
         caseDataBuilder.primaryApplicantAliasReason("Marriage");
@@ -1599,7 +1598,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForPAWithIHTOnlineNo() {
+    void shouldTransformCaseForPAWithIHTOnlineNo() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
@@ -1613,7 +1612,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformForSolDeceasedDomicileEngAndWales() {
+    void shouldTransformForSolDeceasedDomicileEngAndWales() {
         caseDataBuilder
             .applicationType(SOLICITOR)
             .recordId(null)
@@ -1633,7 +1632,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformForSolDeceasedForeignDomicile() {
+    void shouldTransformForSolDeceasedForeignDomicile() {
         caseDataBuilder
             .applicationType(SOLICITOR)
             .recordId(null)
@@ -1651,7 +1650,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolsExecAliasIsNull() {
+    void shouldTransformCaseForSolsExecAliasIsNull() {
         caseDataBuilder.applicationType(SOLICITOR);
         caseDataBuilder.recordId(null);
         caseDataBuilder.paperForm(NO);
@@ -1668,7 +1667,7 @@ public class CallbackResponseTransformerTest {
 
 
     @Test
-    public void shouldTransformCaseForWhenPaperFormIsNO() {
+    void shouldTransformCaseForWhenPaperFormIsNO() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
@@ -1683,7 +1682,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForWhenPaperFormIsNull() {
+    void shouldTransformCaseForWhenPaperFormIsNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
@@ -1698,7 +1697,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForWhenCaseTypeIsGOP() {
+    void shouldTransformCaseForWhenCaseTypeIsGOP() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
@@ -1712,9 +1711,9 @@ public class CallbackResponseTransformerTest {
         assertEquals(null, callbackResponse.getData().getIhtReferenceNumber());
         assertEquals(CASE_TYPE_GRANT_OF_PROBATE, callbackResponse.getData().getCaseType());
     }
-    
+
     @Test
-    public void shouldPreserveDeathRecordList() {
+    void shouldPreserveDeathRecordList() {
 
         final List mockList = mock(List.class);
 
@@ -1727,9 +1726,9 @@ public class CallbackResponseTransformerTest {
 
         assertSame(mockList, callbackResponse.getData().getDeathRecords());
     }
-    
+
     @Test
-    public void shouldTransformCaseForWhenCaseTypeIsNull() {
+    void shouldTransformCaseForWhenCaseTypeIsNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
         caseDataBuilder.ihtReferenceNumber(IHT_REFERENCE);
@@ -1744,7 +1743,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetUploadedDocuments() {
+    void shouldGetUploadedDocuments() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
         documents.add(createUploadDocuments("0"));
@@ -1763,7 +1762,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetPaperIntestacyApplication() {
+    void shouldGetPaperIntestacyApplication() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
@@ -1882,7 +1881,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetPaperGOPApplication() {
+    void shouldGetPaperGOPApplication() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         List<CollectionMember<EstateItem>> estate = new ArrayList<>();
         estate.add(createEstateItems("0"));
@@ -2000,7 +1999,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetPaperGOPApplicationWithDocument() {
+    void shouldGetPaperGOPApplicationWithDocument() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.paperForm(YES);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2016,7 +2015,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseWithScannedDocuments() {
+    void shouldTransformCaseWithScannedDocuments() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
 
@@ -2029,7 +2028,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefaultYesToBulkPrint() {
+    void shouldDefaultYesToBulkPrint() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2042,7 +2041,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefaultSolicitorsInfoToNull() {
+    void shouldDefaultSolicitorsInfoToNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2060,7 +2059,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSolicitorsInfoWhenApplicationTypeIsNull() {
+    void shouldSetSolicitorsInfoWhenApplicationTypeIsNull() {
         caseDataBuilder.applicationType(null);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2072,7 +2071,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSolicitorsInfoWhenApplicationTypeIht() {
+    void shouldSetSolicitorsInfoWhenApplicationTypeIht() {
         caseDataBuilder.ihtReferenceNumber("123456");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2085,7 +2084,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNotChosen() {
+    void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNotChosen() {
         caseDataBuilder.ihtReferenceNumber("123456");
         caseDataBuilder.ihtFormId(null);
 
@@ -2097,9 +2096,9 @@ public class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getIhtFormId());
         assertSolsDetails(callbackResponse);
     }
-    
+
     @Test
-    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
+    void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsNull() {
         CaseData.CaseDataBuilder caseDataBuilder2;
         caseDataBuilder2 = CaseData.builder().ihtReferenceNumber(null);
 
@@ -2111,7 +2110,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsEmpty() {
+    void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsEmpty() {
         CaseData.CaseDataBuilder caseDataBuilder2;
         caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("");
 
@@ -2124,7 +2123,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetGrantIssuedDate() {
+    void shouldSetGrantIssuedDate() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -2141,7 +2140,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetGrantReissuedDateAtReissue() {
+    void shouldSetGrantReissuedDateAtReissue() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -2158,7 +2157,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetDateOfDeathType() {
+    void shouldSetDateOfDeathType() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2170,7 +2169,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetCodicilsNumberNullWhenWillHasCodicilsNo() {
+    void shouldSetCodicilsNumberNullWhenWillHasCodicilsNo() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.willHasCodicils(NO);
 
@@ -2183,7 +2182,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetDeceasedDeathCertificateNull() {
+    void shouldSetDeceasedDeathCertificateNull() {
         caseDataBuilder.deceasedDeathCertificate(DECEASED_DEATH_CERTIFICATE);
         caseDataBuilder.deceasedDiedEngOrWales(NO);
 
@@ -2196,7 +2195,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetDeceasedForeignDeathCertTranslationNull() {
+    void shouldSetDeceasedForeignDeathCertTranslationNull() {
         caseDataBuilder.deceasedForeignDeathCertTranslation(YES);
         caseDataBuilder.deceasedForeignDeathCertInEnglish(YES);
         caseDataBuilder.deceasedDiedEngOrWales(NO);
@@ -2210,7 +2209,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetDeceasedEnglishForeignDeathCertANDForeignDeathCertTranslationNull() {
+    void shouldSetDeceasedEnglishForeignDeathCertANDForeignDeathCertTranslationNull() {
         caseDataBuilder.deceasedForeignDeathCertInEnglish(NO);
         caseDataBuilder.deceasedForeignDeathCertTranslation(YES);
         caseDataBuilder.deceasedDiedEngOrWales(YES);
@@ -2225,7 +2224,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetSOT() {
+    void shouldSetSOT() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2238,7 +2237,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefaultRequestInformationValues() {
+    void shouldDefaultRequestInformationValues() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2249,7 +2248,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddInformationRequestDocumentsSentEmail() {
+    void shouldAddInformationRequestDocumentsSentEmail() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         Document document = Document.builder()
@@ -2268,7 +2267,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddInformationRequestDocumentsSOT() {
+    void shouldAddInformationRequestDocumentsSOT() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         Document document = Document.builder()
@@ -2287,7 +2286,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldResolveStopCaseCreated() {
+    void shouldResolveStopCaseCreated() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
             .resolveStopState(CASE_CREATED);
 
@@ -2298,7 +2297,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldResolveStopCasePrinted() {
+    void shouldResolveStopCasePrinted() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
             .resolveStopState(CASE_PRINTED);
 
@@ -2309,7 +2308,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldResolveStopCaseReadyForExamining() {
+    void shouldResolveStopCaseReadyForExamining() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
             .resolveStopState(READY_FOR_EXAMINATION);
 
@@ -2320,7 +2319,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldResolveStopCaseExamining() {
+    void shouldResolveStopCaseExamining() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
             .resolveStopState(EXAMINING);
 
@@ -2331,7 +2330,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForLetter() {
+    void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2341,7 +2340,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForLetterWithDocument() {
+    void shouldTransformCaseForLetterWithDocument() {
         Document letter = Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2358,7 +2357,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForLetterPreview() {
+    void shouldTransformCaseForLetterPreview() {
         Document letter = Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2370,7 +2369,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddSOTToGeneratedDocuments() {
+    void shouldAddSOTToGeneratedDocuments() {
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .documentType(STATEMENT_OF_TRUTH)
@@ -2386,7 +2385,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void testAddSotDocumentReturnsTransformedCaseWithDocAdded() {
+    void testAddSotDocumentReturnsTransformedCaseWithDocAdded() {
         doAnswer(invoke -> {
             callbackRequestMock.getCaseDetails().getData().getProbateSotDocumentsGenerated()
                 .add(new CollectionMember<>(SOT_DOC));
@@ -2398,7 +2397,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldUpdateParentBuilderAttributes() {
+    void shouldUpdateParentBuilderAttributes() {
         DynamicList reprintDocument =
             DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
         DynamicList solsAmendLegalStatmentSelect =
@@ -2436,7 +2435,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldApplySolicitorInfoAttributes() {
+    void shouldApplySolicitorInfoAttributes() {
         caseDataBuilder
                 .solsForenames("Solicitor Forename")
                 .solsSurname("Solicitor Surname")
@@ -2454,7 +2453,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldApplyTrustCorpAttributes() {
+    void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
@@ -2525,14 +2524,14 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolLSAmendTransformerGoP() throws JsonProcessingException {
+    void shouldCallSolLSAmendTransformerGoP() throws JsonProcessingException {
         underTest.transformCaseForSolicitorLegalStatementRegeneration(callbackRequestMock);
         verify(solicitorLegalStatementNextStepsTransformer).transformLegalStatmentAmendStates(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextSingleExecSolApplying() {
+    void checkSolsReviewCheckBoxesTextSingleExecSolApplying() {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.solsSolicitorIsApplying(YES).build());
 
@@ -2548,7 +2547,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextSingleExecSolNotApplying() {
+    void checkSolsReviewCheckBoxesTextSingleExecSolNotApplying() {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
@@ -2564,7 +2563,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextMultiExecsSolApplying() {
+    void checkSolsReviewCheckBoxesTextMultiExecsSolApplying() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         AdditionalExecutorApplying additionalExecutorApplying = AdditionalExecutorApplying.builder()
             .applyingExecutorName(SOLICITOR_SOT_NAME).build();
@@ -2586,7 +2585,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplying() {
+    void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplying() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
             .applyingExecutorName("James smith").build();
@@ -2605,7 +2604,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplyingPrimaryApplicantNotApplying() {
+    void checkSolsReviewCheckBoxesTextMultiExecsSolNotApplyingPrimaryApplicantNotApplying() {
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecs = new ArrayList<>();
         AdditionalExecutorApplying additionalExecutorApplyingSecond = AdditionalExecutorApplying.builder()
             .applyingExecutorName("James smith").build();
@@ -2623,7 +2622,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextAdmonWill() {
+    void checkSolsReviewCheckBoxesTextAdmonWill() {
         CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_ADMON).build();
         String professionalName = caseData.getSolsSOTName();
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
@@ -2633,7 +2632,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void checkSolsReviewCheckBoxesTextIntestacy() {
+    void checkSolsReviewCheckBoxesTextIntestacy() {
         CaseData caseData = caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY).build();
         String professionalName = caseData.getSolsSOTName();
         List<CollectionMember<AdditionalExecutorApplying>> listOfApplyingExecs =
@@ -2643,7 +2642,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
+    void shouldCallSolLSAmendTransformerAdmon() throws JsonProcessingException {
         caseDataBuilder.solsWillType("WillLeftAnnexed");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2653,7 +2652,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolsPBATransformer() {
+    void shouldCallSolsPBATransformer() {
         underTest.transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
         verify(solicitorPBADefaulter).defaultFeeAccounts(any(CaseData.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class),
@@ -2663,21 +2662,21 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldCallSolsPBAPaymentsTransformer() {
+    void shouldCallSolsPBAPaymentsTransformer() {
         underTest.transformCaseForSolicitorPBATotalPayment(callbackRequestMock);
         verify(solicitorPBAPaymentDefaulter).defaultPageFlowForPayments(any(CaseData.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 
     @Test
-    public void shouldCallReprintTransformer() {
+    void shouldCallReprintTransformer() {
         underTest.transformCaseForReprint(callbackRequestMock);
         verify(reprintTransformer)
             .transformReprintDocuments(any(CaseDetails.class), any(ResponseCaseData.ResponseCaseDataBuilder.class));
     }
 
     @Test
-    public void shouldAddBPInformationForGrantReprint() {
+    void shouldAddBPInformationForGrantReprint() {
         Document document = Document.builder()
             .documentType(DIGITAL_GRANT)
             .build();
@@ -2691,7 +2690,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForAdmonWillReprint() {
+    void shouldAddBPInformationForAdmonWillReprint() {
         Document document = Document.builder()
             .documentType(ADMON_WILL_GRANT)
             .build();
@@ -2705,7 +2704,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForIntestacyReprint() {
+    void shouldAddBPInformationForIntestacyReprint() {
         Document document = Document.builder()
             .documentType(INTESTACY_GRANT)
             .build();
@@ -2719,7 +2718,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshGrantReprint() {
+    void shouldAddBPInformationForWelshGrantReprint() {
         Document document = Document.builder()
             .documentType(WELSH_DIGITAL_GRANT)
             .build();
@@ -2733,7 +2732,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshAdmonWillReprint() {
+    void shouldAddBPInformationForWelshAdmonWillReprint() {
         Document document = Document.builder()
             .documentType(WELSH_ADMON_WILL_GRANT)
             .build();
@@ -2747,7 +2746,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshIntestacyReprint() {
+    void shouldAddBPInformationForWelshIntestacyReprint() {
         Document document = Document.builder()
             .documentType(WELSH_INTESTACY_GRANT)
             .build();
@@ -2761,7 +2760,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForGrantReissueReprint() {
+    void shouldAddBPInformationForGrantReissueReprint() {
         Document document = Document.builder()
             .documentType(DIGITAL_GRANT_REISSUE)
             .build();
@@ -2777,7 +2776,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshGrantReissueReprint() {
+    void shouldAddBPInformationForWelshGrantReissueReprint() {
         Document document = Document.builder()
             .documentType(WELSH_DIGITAL_GRANT_REISSUE)
             .build();
@@ -2796,7 +2795,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshAdmonWillReissueReprint() {
+    void shouldAddBPInformationForWelshAdmonWillReissueReprint() {
         Document document = Document.builder()
             .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
             .build();
@@ -2817,7 +2816,7 @@ public class CallbackResponseTransformerTest {
 
 
     @Test
-    public void shouldAddBPInformationForWelshIntestacyReissueReprint() {
+    void shouldAddBPInformationForWelshIntestacyReissueReprint() {
         Document document = Document.builder()
             .documentType(WELSH_INTESTACY_GRANT_REISSUE)
             .build();
@@ -2837,7 +2836,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldNotAddBPInformationForWelshGrantReissueNoLetterIdReprint() {
+    void shouldNotAddBPInformationForWelshGrantReissueNoLetterIdReprint() {
         Document document = Document.builder()
             .documentType(WELSH_DIGITAL_GRANT_REISSUE)
             .build();
@@ -2853,7 +2852,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldNotAddBPInformationForWelshAdmonWillReissueNoLetterIdReprint() {
+    void shouldNotAddBPInformationForWelshAdmonWillReissueNoLetterIdReprint() {
         Document document = Document.builder()
             .documentType(WELSH_ADMON_WILL_GRANT_REISSUE)
             .build();
@@ -2869,7 +2868,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldNotAddBPInformationForWelshIntestacyReissueNoLetterIdReprint() {
+    void shouldNotAddBPInformationForWelshIntestacyReissueNoLetterIdReprint() {
         Document document = Document.builder()
             .documentType(WELSH_INTESTACY_GRANT_REISSUE)
             .build();
@@ -2885,7 +2884,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForAdmonWillReissueReprint() {
+    void shouldAddBPInformationForAdmonWillReissueReprint() {
         Document document = Document.builder()
             .documentType(ADMON_WILL_GRANT_REISSUE)
             .build();
@@ -2901,7 +2900,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForIntestacyReissueReprint() {
+    void shouldAddBPInformationForIntestacyReissueReprint() {
         Document document = Document.builder()
             .documentType(INTESTACY_GRANT_REISSUE)
             .build();
@@ -2917,7 +2916,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWelshSOTReprint() {
+    void shouldAddBPInformationForWelshSOTReprint() {
         Document document = Document.builder()
             .documentType(WELSH_STATEMENT_OF_TRUTH)
             .build();
@@ -2933,7 +2932,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForSOTReprint() {
+    void shouldAddBPInformationForSOTReprint() {
         Document document = Document.builder()
             .documentType(STATEMENT_OF_TRUTH)
             .build();
@@ -2949,7 +2948,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddBPInformationForWillReprint() {
+    void shouldAddBPInformationForWillReprint() {
         Document document = Document.builder()
             .documentType(OTHER)
             .build();
@@ -2965,17 +2964,17 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldSetIhtEstateValues() {
+    void shouldSetIhtEstateValues() {
         underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
         verify(ihtEstateDefaulter).defaultPageFlowIhtSwitchDate(any(), any());
     }
 
     @Test
-    public void shouldSetIht400421PageFlow() {
+    void shouldSetIht400421PageFlow() {
         underTest.defaultIht400421DatePageFlow(callbackRequestMock);
         verify(iht400421Defaulter).defaultPageFlowForIht400421(any(), any());
     }
-    
+
     private CollectionMember<ProbateAliasName> createdDeceasedAliasName(String id, String forename, String lastname,
                                                                         String onGrant) {
         ProbateAliasName pan = ProbateAliasName.builder()
@@ -3094,12 +3093,12 @@ public class CallbackResponseTransformerTest {
         assertEquals(NUM_CODICILS, callbackResponse.getData().getWillNumberOfCodicils());
 
         assertEquals(IHT_FORM_ID, callbackResponse.getData().getIhtFormId());
-        Assert.assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
-        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
-        Assert.assertThat(new BigDecimal("10000"),
+        assertThat(new BigDecimal("10000"), comparesEqualTo(callbackResponse.getData().getIhtGrossValue()));
+        assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtNetValue()));
+        assertThat(new BigDecimal("10000"),
             comparesEqualTo(callbackResponse.getData().getIhtEstateGrossValue()));
-        Assert.assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
-        Assert.assertThat(new BigDecimal("9000"),
+        assertThat(new BigDecimal("9000"), comparesEqualTo(callbackResponse.getData().getIhtEstateNetValue()));
+        assertThat(new BigDecimal("9000"),
             comparesEqualTo(callbackResponse.getData().getIhtEstateNetQualifyingValue()));
         assertEquals("10000", callbackResponse.getData().getIhtEstateGrossValueField());
         assertEquals("9000", callbackResponse.getData().getIhtEstateNetValueField());
@@ -3161,7 +3160,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(RESIDUARY, callbackResponse.getData().getSolsResiduary());
         assertEquals(RESIDUARY_TYPE, callbackResponse.getData().getSolsResiduaryType());
         assertEquals(APP_REF, callbackResponse.getData().getPcqId());
-        
+
         assertEquals(YES, callbackResponse.getData().getWillHasVisibleDamage());
         assertEquals(DAMAGE_TYPE_1, callbackResponse.getData().getWillDamage().getDamageTypesList().get(0));
         assertEquals(DAMAGE_TYPE_2, callbackResponse.getData().getWillDamage().getDamageTypesList().get(1));
@@ -3189,7 +3188,7 @@ public class CallbackResponseTransformerTest {
         assertEquals(DAMAGE_DATE, callbackResponse.getData().getCodicilsDamageDate());
         assertEquals(YES, callbackResponse.getData().getDeceasedWrittenWishes());
     }
-    
+
     private void assertCommonPayments(CallbackResponse callbackResponse) {
         assertEquals(PAYMENTS_LIST, callbackResponse.getData().getPayments());
     }
@@ -3322,14 +3321,14 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void bulkScanGrantOfRepresentationTransform() {
+    void bulkScanGrantOfRepresentationTransform() {
         CaseCreationDetails grantOfRepresentationDetails
             = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationData);
         assertBulkScanCaseCreationDetails(grantOfRepresentationDetails);
     }
 
     @Test
-    public void shouldSetCorrectPrintIdForBulkScanGrantRaise() {
+    void shouldSetCorrectPrintIdForBulkScanGrantRaise() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -3492,7 +3491,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldInvokeGenerateTaskList() {
+    void shouldInvokeGenerateTaskList() {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED_STR, 1L);
@@ -3506,7 +3505,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithProbateAndSetWillAndCodicilDates() {
+    void shouldTransformCaseForSolicitorWithProbateAndSetWillAndCodicilDates() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
 
@@ -3521,7 +3520,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForSolicitorWithProbateNoWillAndWillReason() {
+    void shouldTransformCaseForSolicitorWithProbateNoWillAndWillReason() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
         caseDataBuilder.willAccessOriginal(NO);
@@ -3541,7 +3540,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
+    void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
@@ -3561,7 +3560,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformForDeceasedDetails() {
+    void shouldTransformForDeceasedDetails() {
         caseDataBuilder.applicationType(SOLICITOR)
                 .caseType(GRANT_OF_PROBATE_NAME)
                 .solsWillType(WILL_TYPE_PROBATE)
@@ -3586,7 +3585,7 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void testBuildOrganisationPolicy() {
+    void testBuildOrganisationPolicy() {
         when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
             .thenReturn(new OrganisationEntityResponse());
 
@@ -3595,14 +3594,14 @@ public class CallbackResponseTransformerTest {
     }
 
     @Test
-    public void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
+    void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
         when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
         assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
         verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
     }
 
     @Test
-    public void testBuildOrganisationPolicyValues() {
+    void testBuildOrganisationPolicyValues() {
 
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
