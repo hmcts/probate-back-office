@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate;
+
 import java.io.File;
-
 import org.springframework.stereotype.Component;
-
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLib;
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLibConfigurer;
 
