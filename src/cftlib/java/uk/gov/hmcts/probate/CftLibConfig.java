@@ -13,6 +13,7 @@ public class CftLibConfig implements CFTLibConfigurer {
 
         lib.createIdamUser("testCW@user.com", "caseworker", "caseworker-probate", "caseworker-probate-solicitor");
         lib.createIdamUser("testAdmin@user.com", "caseworker-probate-caseadmin");
+        lib.createIdamUser("data.store.idam.system.user@gmail.com","caseworker");
         lib.createRoles(
             "caseworker",
             "caseworker-probate",
