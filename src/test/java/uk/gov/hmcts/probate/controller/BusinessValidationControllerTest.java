@@ -69,7 +69,7 @@ class BusinessValidationControllerTest {
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
-    private static final Long ID = 1L;
+    private static final Long ID = 1234567890123456L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
@@ -250,7 +250,8 @@ class BusinessValidationControllerTest {
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
         organisationEntityResponse.setName("ORGANISATION_NAME");
-        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(ID.toString(),
+                AUTH_TOKEN);
 
     }
 
