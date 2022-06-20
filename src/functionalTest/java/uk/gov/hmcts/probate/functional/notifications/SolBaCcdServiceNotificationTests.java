@@ -7,11 +7,14 @@ import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.mockito.Mockito.when;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -38,9 +41,13 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String EMAIL_NOTIFICATION_DOCUMENT_URL = "DocumentLink.document_binary_url";
 
+    @MockBean
+    FeatureToggleService featureToggleServiceMock;
+
     @Before
     public void setUp() {
         initialiseConfig();
+        when(featureToggleServiceMock.isFeatureToggleOn("probate-documents-received-notification", Boolean.FALSE)).thenReturn(Boolean.TRUE);
     }
 
     @Test
