@@ -53,7 +53,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenSpouseApplyingAndIHT400421() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
         assertTrue(underTest.isApplicable(mockCaseData));
@@ -61,7 +61,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenSpouseApplyingAndIHT400421NoDocumentsUploaded() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
         when(boDocumentsUploaded.isEmpty()).thenReturn(true);
@@ -70,7 +70,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenSpouseApplyingAndIHT400421NoTIntestacyApplication() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
         when(mockCaseData.getSolsWillType()).thenReturn(GRANT_TYPE_PROBATE);
@@ -79,7 +79,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenChildApplyingAndIHT400421DeceasedDivorced() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(DIVORCED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -88,7 +88,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenChildApplyingAndIHT400421DeceasedDivorcedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(DIVORCED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -97,7 +97,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenChildApplyingAndIHT400421DeceasedWidowed() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(WIDOWED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -106,7 +106,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenChildApplyingAndIHT400421DeceasedWidowedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(WIDOWED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -115,7 +115,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenChildApplyingAndIHT400421DeceasedJudiciallySeparated() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(JUDICIALLY_SEPARATED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -124,7 +124,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenChildApplyingAndIHT400421DeceasedJudiciallySeparatedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(JUDICIALLY_SEPARATED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -133,7 +133,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenChildApplyingAndIHT400421DeceasedNeverMarried() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(NEVER_MARRIED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -142,7 +142,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenChildApplyingAndIHT400421DeceasedNeverMarriedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(NEVER_MARRIED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -151,7 +151,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedDivorced() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(DIVORCED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -160,7 +160,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedDivorcedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(DIVORCED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -169,7 +169,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedWidowed() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(WIDOWED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -178,7 +178,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedWidowedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(WIDOWED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -187,7 +187,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedJudiciallySeparated() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(JUDICIALLY_SEPARATED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -196,7 +196,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedJudiciallySeparatedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(JUDICIALLY_SEPARATED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
@@ -205,7 +205,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedNeverMarried() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(NEVER_MARRIED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
@@ -214,7 +214,7 @@ class NoDocumentsRequiredBusinessRuleTest {
 
     @Test
     void shouldNotBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedNeverMarriedApplicantHasSiblings() {
-        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(NEVER_MARRIED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(YES);
