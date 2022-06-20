@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.ChangeRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
@@ -74,6 +75,7 @@ public class ConfirmationResponseService {
     private final SolsExecutorRule solsExecutorConfirmationResponseRule;
     private final SpouseOrCivilRule spouseOrCivilConfirmationResponseRule;
     private final IhtEstate207BusinessRule ihtEstate207BusinessRule;
+    private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
@@ -247,7 +249,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
         keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
         keyValue.put("{{originalWill}}", getWillLabel(caseData));
-        
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -269,7 +271,13 @@ public class ConfirmationResponseService {
         keyValue.put("{{tcResolutionLodgedWithApp}}", getTcResolutionFormLabel(ccdData));
         keyValue.put("{{authenticatedTranslation}}", getAuthenticatedTranslationLabel(ccdData));
         keyValue.put("{{dispenseWithNoticeSupportingDocs}}", getDispenseWithNoticeSupportDocsLabelAndText(ccdData));
-        return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+        MarkdownTemplate template;
+        if (noDocumentsRequiredBusinessRule.isApplicable(caseData)){
+            template = MarkdownTemplate.NEXT_STEPS_NO_DOCUMENTS_REQUIRED;
+        } else {
+            template = MarkdownTemplate.NEXT_STEPS;
+        }
+        return markdownSubstitutionService.generatePage(templatesDirectory, template, keyValue);
     }
 
     private String getIhtForm(CCDData ccdData) {
@@ -344,7 +352,7 @@ public class ConfirmationResponseService {
             .build();
         return markdownDecoratorService.getAuthenticatedTranslationLabel(caseData);
     }
-    
+
     private String getDispenseWithNoticeSupportDocsLabelAndText(CCDData ccdData) {
         CaseData caseData = CaseData.builder()
                 .dispenseWithNotice(ccdData.getDispenseWithNotice())
@@ -355,8 +363,8 @@ public class ConfirmationResponseService {
 
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
-    } 
-    
+    }
+
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
