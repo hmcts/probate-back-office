@@ -139,14 +139,15 @@ class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
+    void handleDocumentReceivedPersonalNotificationToggleOn() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
-
+        doReturn(true).when(featureToggleService)
+                .isFeatureToggleOn("probate-documents-received-notification", false);
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
