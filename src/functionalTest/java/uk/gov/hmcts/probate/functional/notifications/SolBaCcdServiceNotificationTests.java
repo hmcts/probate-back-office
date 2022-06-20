@@ -47,7 +47,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Before
     public void setUp() {
         initialiseConfig();
-        when(featureToggleServiceMock.isFeatureToggleOn("probate-documents-received-notification", Boolean.FALSE)).thenReturn(Boolean.TRUE);
+        when(featureToggleServiceMock.isFeatureToggleOn(
+            "probate-documents-received-notification", Boolean.FALSE)).thenReturn(Boolean.TRUE);
     }
 
     @Test
@@ -144,7 +145,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifyDigitalIntestacyApplicationReceivedNotificationSent() throws IOException {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json",
-                    APPLICATION_RECEIVED,"\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+                    APPLICATION_RECEIVED,"\"caseType\":\"gop\"",
+                "\"caseType\":\"intestacy\"");
         assertTrue(responseBody.asString().contains("DocumentLink"));
     }
 
