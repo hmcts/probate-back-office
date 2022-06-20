@@ -3,15 +3,15 @@ package uk.gov.hmcts.probate.service;
 import com.google.common.collect.ImmutableList;
 import org.assertj.core.api.Assertions;
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -58,7 +58,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -83,9 +83,9 @@ import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class NotificationServiceTest {
+class NotificationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -213,7 +213,7 @@ public class NotificationServiceTest {
     @Mock
     private RegistriesProperties registriesPropertiesMock;
 
-    @Before
+    @BeforeEach
     public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
@@ -613,7 +613,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendDocumentsReceivedEmailToPersonalApplicantFromBirmingham()
+    void sendDocumentsReceivedEmailToPersonalApplicantFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(DOCUMENTS_RECEIVED, personalCaseDataBirmingham);
@@ -628,7 +628,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendDocumentsReceivedEmailToSolicitorFromBirmingham()
+    void sendDocumentsReceivedEmailToSolicitorFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(DOCUMENTS_RECEIVED, solicitorCaseDataBirmingham);
@@ -643,7 +643,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantIssuedEmailToPersonalApplicantFromBirmingham()
+    void sendGrantIssuedEmailToPersonalApplicantFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_ISSUED, personalCaseDataBirmingham);
@@ -658,7 +658,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantIssuedEmailToSolicitorFromBirmingham()
+    void sendGrantIssuedEmailToSolicitorFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_ISSUED, solicitorCaseDataBirmingham);
@@ -673,7 +673,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantReissuedEmailToPersonalApplicantFromBirmingham()
+    void sendGrantReissuedEmailToPersonalApplicantFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_REISSUED, personalCaseDataBirmingham);
@@ -688,7 +688,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantReissuedEmailToSolicitorFromBirmingham()
+    void sendGrantReissuedEmailToSolicitorFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_REISSUED, solicitorCaseDataBirmingham);
@@ -703,7 +703,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToPersonalApplicantFromBirmingham()
+    void sendCaseStoppedEmailToPersonalApplicantFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataBirmingham);
@@ -719,7 +719,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToSolicitorFromBirmingham()
+    void sendCaseStoppedEmailToSolicitorFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataBirmingham);
@@ -735,7 +735,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToPersonalApplicantFromOxford()
+    void sendCaseStoppedEmailToPersonalApplicantFromOxford()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataOxford);
@@ -751,7 +751,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToSolicitorFromOxford()
+    void sendCaseStoppedEmailToSolicitorFromOxford()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataOxford);
@@ -767,7 +767,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToPersonalApplicantFromManchester()
+    void sendCaseStoppedEmailToPersonalApplicantFromManchester()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataManchester);
@@ -783,7 +783,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToSolicitorFromManchester()
+    void sendCaseStoppedEmailToSolicitorFromManchester()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, solicitorCaseDataManchester);
@@ -799,7 +799,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToPersonalApplicantFromCtsc()
+    void sendCaseStoppedEmailToPersonalApplicantFromCtsc()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataCtsc);
@@ -815,7 +815,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendCaseStoppedEmailToPersonalApplicantFromBristol()
+    void sendCaseStoppedEmailToPersonalApplicantFromBristol()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(CASE_STOPPED, personalCaseDataBristol);
@@ -831,7 +831,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantRaisedEmailToPersonalApplicantFromOxford()
+    void sendGrantRaisedEmailToPersonalApplicantFromOxford()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_RAISED, personalGrantRaisedOxford);
@@ -846,7 +846,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantRaisedEmailToSolicitorApplicantFromOxford()
+    void sendGrantRaisedEmailToSolicitorApplicantFromOxford()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_RAISED, solicitorGrantRaisedOxford);
@@ -861,7 +861,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantRaisedEmailToPersonalApplicantFromOxfordPaperForm()
+    void sendGrantRaisedEmailToPersonalApplicantFromOxfordPaperForm()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_RAISED, personalGrantRaisedOxfordPaper);
@@ -876,7 +876,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantRaisedEmailToSolicitorApplicantFromOxfordPaperForm()
+    void sendGrantRaisedEmailToSolicitorApplicantFromOxfordPaperForm()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_RAISED, solicitorGrantRaisedOxfordPaper);
@@ -891,7 +891,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantRaisedEmailToPersonalApplicantFromOxfordPaperFormWelsh()
+    void sendGrantRaisedEmailToPersonalApplicantFromOxfordPaperFormWelsh()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_RAISED, personalGrantRaisedOxfordPaperWelsh);
@@ -906,7 +906,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantRaisedEmailToSolicitorApplicantFromOxfordPaperFormWelsh()
+    void sendGrantRaisedEmailToSolicitorApplicantFromOxfordPaperFormWelsh()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendEmail(GRANT_RAISED, solicitorGrantRaisedOxfordPaperWelsh);
@@ -921,7 +921,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromOxford()
+    void sendGeneralCaveatEmailToPersonalApplicantFromOxford()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataOxford);
@@ -937,7 +937,7 @@ public class NotificationServiceTest {
 
 
     @Test
-    public void sendGeneralCaveatBilingualEmailToPersonalApplicantFromOxford()
+    void sendGeneralCaveatBilingualEmailToPersonalApplicantFromOxford()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBilingualOxford);
@@ -952,7 +952,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromBirmingham()
+    void sendGeneralCaveatEmailToPersonalApplicantFromBirmingham()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBirmingham);
@@ -967,7 +967,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromManchester()
+    void sendGeneralCaveatEmailToPersonalApplicantFromManchester()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataManchester);
@@ -982,7 +982,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromLeeds()
+    void sendGeneralCaveatEmailToPersonalApplicantFromLeeds()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataLeeds);
@@ -997,7 +997,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromLiverpool()
+    void sendGeneralCaveatEmailToPersonalApplicantFromLiverpool()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataLiverpool);
@@ -1012,7 +1012,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromBrighton()
+    void sendGeneralCaveatEmailToPersonalApplicantFromBrighton()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBrighton);
@@ -1027,7 +1027,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromBristol()
+    void sendGeneralCaveatEmailToPersonalApplicantFromBristol()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataBristol);
@@ -1042,7 +1042,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromLondon()
+    void sendGeneralCaveatEmailToPersonalApplicantFromLondon()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataLondon);
@@ -1057,7 +1057,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromCardiff()
+    void sendGeneralCaveatEmailToPersonalApplicantFromCardiff()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataCardiff);
@@ -1072,7 +1072,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromNewcastle()
+    void sendGeneralCaveatEmailToPersonalApplicantFromNewcastle()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataNewcastle);
@@ -1087,7 +1087,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatEmailToPersonalApplicantFromWinchester()
+    void sendGeneralCaveatEmailToPersonalApplicantFromWinchester()
         throws NotificationClientException, BadRequestException {
 
         notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, personalCaveatDataWinchester);
@@ -1102,7 +1102,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatRaisedEmail()
+    void sendGeneralCaveatRaisedEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1142,7 +1142,7 @@ public class NotificationServiceTest {
 
 
     @Test
-    public void sendGeneralCaveatRaisedBilingualEmail()
+    void sendGeneralCaveatRaisedBilingualEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1185,7 +1185,7 @@ public class NotificationServiceTest {
 
 
     @Test
-    public void sendGeneralCaveatRaisedCtscEmail()
+    void sendGeneralCaveatRaisedCtscEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1224,7 +1224,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatRaisedCtscBilingualEmail()
+    void sendGeneralCaveatRaisedCtscBilingualEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1266,7 +1266,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendSolsCaveatRaisedCtscEmail()
+    void sendSolsCaveatRaisedCtscEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1310,7 +1310,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatRaisedCtscEmailThrowsUnsupportedState()
+    void sendGeneralCaveatRaisedCtscEmailThrowsUnsupportedState()
         throws BadRequestException {
 
         Assertions.assertThatThrownBy(() -> {
@@ -1321,7 +1321,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailForCaveatStoppedOnCtsBilingual()
+    void shouldSendEmailForCaveatStoppedOnCtsBilingual()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1367,7 +1367,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailForCaveatStoppedOnCtsc()
+    void shouldSendEmailForCaveatStoppedOnCtsc()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1415,7 +1415,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailForCaveatStoppedOnSolsCtsc()
+    void shouldSendEmailForCaveatStoppedOnSolsCtsc()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1458,7 +1458,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendExelaEmail() throws NotificationClientException {
+    void sendExelaEmail() throws NotificationClientException {
         notificationService.sendExelaEmail(exelaCaseData.build());
 
         verify(notificationClient).sendEmail(
@@ -1471,7 +1471,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendExelaEmailScannedDocumentWithNoWillReference() throws NotificationClientException {
+    void sendExelaEmailScannedDocumentWithNoWillReference() throws NotificationClientException {
         notificationService.sendExelaEmail(exelaCaseDataNoWillReference.build());
 
         verify(notificationClient).sendEmail(
@@ -1484,7 +1484,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendExelaEmailScannedDocumentWithNoSubtype() throws NotificationClientException {
+    void sendExelaEmailScannedDocumentWithNoSubtype() throws NotificationClientException {
         notificationService.sendExelaEmail(exelaCaseDataNoSubtype.build());
 
         verify(notificationClient).sendEmail(
@@ -1497,7 +1497,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendSmeeAndFordEmail() throws NotificationClientException {
+    void sendSmeeAndFordEmail() throws NotificationClientException {
         Document doc = Document.builder().build();
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(doc);
 
@@ -1513,7 +1513,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
+    void testGenerateReissueGrantProducesEmailCorrectly() throws NotificationClientException {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1533,7 +1533,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void testInvalidEmailExceptionThrownWhenNoEmailPresentForPersonalApplication() {
+    void testInvalidEmailExceptionThrownWhenNoEmailPresentForPersonalApplication() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1556,7 +1556,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void testInvalidEmailExceptionThrownWhenNoEmailPresentForSolicitorApplication() {
+    void testInvalidEmailExceptionThrownWhenNoEmailPresentForSolicitorApplication() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1579,7 +1579,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailForRequestInformationPACtsc()
+    void shouldSendEmailForRequestInformationPACtsc()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1630,7 +1630,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailForRequestInformationSolsCtsc()
+    void shouldSendEmailForRequestInformationSolsCtsc()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1683,7 +1683,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailWithDocumentAttachedRedeclaration() throws IOException, NotificationClientException {
+    void shouldSendEmailWithDocumentAttachedRedeclaration() throws IOException, NotificationClientException {
         Map<String, Object> personalisation = new HashMap<>();
         CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
 
@@ -1729,7 +1729,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSendEmailWithDocumentAttachedCaseStoppedRequestInfo()
+    void shouldSendEmailWithDocumentAttachedCaseStoppedRequestInfo()
         throws IOException, NotificationClientException {
         Map<String, Object> personalisation = new HashMap<>();
         CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
@@ -1776,7 +1776,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGeneralCaveatExtendEmail()
+    void sendGeneralCaveatExtendEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1815,7 +1815,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantDelayedEmail()
+    void sendGrantDelayedEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1854,7 +1854,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantDelayedAwaitingDocumentationEmail()
+    void sendGrantDelayedAwaitingDocumentationEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1893,7 +1893,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void sendGrantDelayedAwaitingDocumentationSolicitorEmail()
+    void sendGrantDelayedAwaitingDocumentationSolicitorEmail()
         throws NotificationClientException, BadRequestException {
 
         HashMap<String, String> personalisation = new HashMap<>();
@@ -1934,7 +1934,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSetScheduledStartGrantDelayNotificationPeriod() {
+    void shouldSetScheduledStartGrantDelayNotificationPeriod() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1951,7 +1951,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldNotSetScheduledStartGrantDelayNotificationPeriodWithNoEvidenceHandled() {
+    void shouldNotSetScheduledStartGrantDelayNotificationPeriodWithNoEvidenceHandled() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1967,7 +1967,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldNotSetScheduledStartGrantDelayNotificationPeriodWithEvidenceHandled() {
+    void shouldNotSetScheduledStartGrantDelayNotificationPeriodWithEvidenceHandled() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -1984,7 +1984,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldNotSetScheduledStartGrantDelayNotificationPeriodWhenAlreadySet() {
+    void shouldNotSetScheduledStartGrantDelayNotificationPeriodWhenAlreadySet() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -2001,7 +2001,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSetScheduledStartGrantAwaitingDocsNotificationPeriod() {
+    void shouldSetScheduledStartGrantAwaitingDocsNotificationPeriod() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -2019,7 +2019,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldSetScheduledStartGrantAwaitingDocsNotificationPeriodForEmptyScannedDocs() {
+    void shouldSetScheduledStartGrantAwaitingDocsNotificationPeriodForEmptyScannedDocs() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -2038,7 +2038,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldNotSetScheduledStartGrantAwaitingDocsNotificationPeriodForCaseWithScannedDocs() {
+    void shouldNotSetScheduledStartGrantAwaitingDocsNotificationPeriodForCaseWithScannedDocs() {
         CollectionMember<ScannedDocument> collectionMember =
             new CollectionMember<>(null, ScannedDocument.builder().build());
         CaseDetails caseDetails =
@@ -2058,7 +2058,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldResetScheduledStartGrantAwaitingDocsNotificationPeriod() {
+    void shouldResetScheduledStartGrantAwaitingDocsNotificationPeriod() {
         CaseDetails caseDetails =
             new CaseDetails(CaseData.builder()
                 .caseType("gop")
@@ -2076,7 +2076,7 @@ public class NotificationServiceTest {
     }
 
     @Test
-    public void shouldDefaultRegistryLocationIfNotSet() {
+    void shouldDefaultRegistryLocationIfNotSet() {
 
         Registry registry = notificationService.getRegistry(null, LanguagePreference.ENGLISH);
         assertEquals("CTSC", registry.getName());

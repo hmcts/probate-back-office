@@ -1,18 +1,18 @@
 package uk.gov.hmcts.probate.changerule;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class SpouseOrCivilRuleTest {
+class SpouseOrCivilRuleTest {
 
     @InjectMocks
     private SpouseOrCivilRule underTest;
@@ -20,13 +20,13 @@ public class SpouseOrCivilRuleTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldNotNeedChange() {
+    void shouldNotNeedChange() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("marriedCivilPartnership");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
@@ -34,7 +34,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeChild() {
+    void shouldNotNeedChangeChild() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("marriedCivilPartnership");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("Child");
 
@@ -42,7 +42,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeChildAdopted() {
+    void shouldNotNeedChangeChildAdopted() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("marriedCivilPartnership");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("ChildAdopted");
 
@@ -50,7 +50,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeNeverMarried() {
+    void shouldNeedChangeNeverMarried() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("neverMarried");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
@@ -58,7 +58,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeNeverWidowed() {
+    void shouldNeedChangeNeverWidowed() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("widowed");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
@@ -66,7 +66,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeDivorcedCivilPartnership() {
+    void shouldNeedChangeDivorcedCivilPartnership() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("divorcedCivilPartnership");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
@@ -74,7 +74,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldNeedChangeJudicially() {
+    void shouldNeedChangeJudicially() {
         when(caseDataMock.getDeceasedMaritalStatus()).thenReturn("judicially");
         when(caseDataMock.getSolsApplicantRelationshipToDeceased()).thenReturn("SpouseOrCivil");
 
@@ -82,7 +82,7 @@ public class SpouseOrCivilRuleTest {
     }
 
     @Test
-    public void shouldGetBodyMessageKey() {
+    void shouldGetBodyMessageKey() {
         assertEquals("stopBodySpouseOrCivil", underTest.getConfirmationBodyMessageKey());
     }
 }

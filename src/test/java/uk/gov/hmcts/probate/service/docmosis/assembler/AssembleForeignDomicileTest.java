@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 
 import java.util.List;
 
-public class AssembleForeignDomicileTest extends AssembleTestBase {
+class AssembleForeignDomicileTest extends AssembleTestBase {
     private AssembleForeignDomicile assembleForeignDomicile = new AssembleForeignDomicile(assemblerBase);
 
     @Test
-    public void shouldPopulateAffidavitOfLaw() {
+    void shouldPopulateAffidavitOfLaw() {
 
         List<ParagraphDetail> response =
             assembleForeignDomicile.affidavitOfLaw(ParagraphCode.ForDomAffidavit, caseData);
@@ -18,7 +18,7 @@ public class AssembleForeignDomicileTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateInitialEnquiry() {
+    void shouldPopulateInitialEnquiry() {
         List<ParagraphDetail> response =
             assembleForeignDomicile.initialEnquiry(ParagraphCode.ForDomInitialEnq, caseData);
         assertAllForStaticField(response, "ForDomInitial", "FL-PRB-GNO-ENG-00134.docx",

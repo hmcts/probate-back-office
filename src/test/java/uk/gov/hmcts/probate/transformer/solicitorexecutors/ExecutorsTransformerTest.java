@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -22,9 +22,9 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,8 +61,8 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ExecutorsTransformerTest {
+@ExtendWith(SpringExtension.class)
+class ExecutorsTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -76,7 +76,7 @@ public class ExecutorsTransformerTest {
 
     @InjectMocks
     private ExecutorsTransformer solicitorExecutorTransformerMock;
-    
+
     private List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorApplying;
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorNotApplying;
     private List<CollectionMember<AdditionalExecutor>> solsAdditionalExecutorList;
@@ -85,7 +85,7 @@ public class ExecutorsTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(SOLICITOR_ID, ADDITIONAL_EXECUTOR_APPLYING));
@@ -110,7 +110,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetPrimaryApplicantDetailsWithSolicitorInfo() {
+    void shouldSetPrimaryApplicantDetailsWithSolicitorInfo() {
         List<CollectionMember<AdditionalExecutorApplying>> solAdditionalExecutorApplying;
         solAdditionalExecutorApplying = new ArrayList<>();
         solAdditionalExecutorApplying.add(new CollectionMember<>(SOLICITOR_ID, SOLICITOR_ADDITIONAL_EXECUTOR_APPLYING));
@@ -145,7 +145,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldRemoveSolicitorNotApplyingReasonWhenSolicitorApplying() {
+    void shouldRemoveSolicitorNotApplyingReasonWhenSolicitorApplying() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
@@ -167,7 +167,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldRemoveSolicitorNotApplyingReasonWhenSolicitorApplyingIsNull() {
+    void shouldRemoveSolicitorNotApplyingReasonWhenSolicitorApplyingIsNull() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(null)
@@ -189,7 +189,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldNotSetSolicitorAsPrimaryApplicantIfSolIsMainAppFieldSetToNo() {
+    void shouldNotSetSolicitorAsPrimaryApplicantIfSolIsMainAppFieldSetToNo() {
         responseCaseDataBuilder
                 .primaryApplicantForenames(PRIMARY_APPLICANT_FORENAME)
                 .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -215,7 +215,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldNotChangeResponseCaseData() {
+    void shouldNotChangeResponseCaseData() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -247,7 +247,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSwapSolicitorToNotApplyingList() {
+    void shouldSwapSolicitorToNotApplyingList() {
         caseDataBuilder
                 .additionalExecutorsApplying(additionalExecutorApplying)
                 .additionalExecutorsNotApplying(additionalExecutorNotApplying)
@@ -265,7 +265,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerExecutorListsAsEmpty() {
+    void shouldSetCaseworkerExecutorListsAsEmpty() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(null)
                 .otherPartnersApplyingAsExecutors(null)
@@ -284,7 +284,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerNotApplyingExecutorLists() {
+    void shouldSetCaseworkerNotApplyingExecutorLists() {
         ArrayList<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseList = new ArrayList<>();
         CollectionMember<AdditionalExecutorNotApplyingPowerReserved> dispenseItem =
                 new CollectionMember(EXEC_ID, AdditionalExecutorNotApplyingPowerReserved.builder()
@@ -358,7 +358,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerApplyingWithTrustCorpExecutorLists() {
+    void shouldSetCaseworkerApplyingWithTrustCorpExecutorLists() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .otherPartnersApplyingAsExecutors(null)
@@ -386,7 +386,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerApplyingWithPartnerExecutorLists() {
+    void shouldSetCaseworkerApplyingWithPartnerExecutorLists() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(null)
                 .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
@@ -414,7 +414,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerApplyingWithSolsAdditionalExecutorLists() {
+    void shouldSetCaseworkerApplyingWithSolsAdditionalExecutorLists() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(null)
                 .otherPartnersApplyingAsExecutors(null)
@@ -441,7 +441,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetCaseworkerNotApplyingWithSolicitorInfo_IsExec_NotApplying() {
+    void shouldSetCaseworkerNotApplyingWithSolicitorInfo_IsExec_NotApplying() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO);
@@ -458,10 +458,10 @@ public class ExecutorsTransformerTest {
         verify(executorListMapperServiceMock, times(1))
                 .addSolicitorToNotApplyingList(any(), any());
     }
-    
+
 
     @Test
-    public void shouldRemoveSolicitorInfoFromCaseworkerNotApplying_IsApplying() {
+    void shouldRemoveSolicitorInfoFromCaseworkerNotApplying_IsApplying() {
         caseDataBuilder
                 .solsSolicitorIsApplying(YES);
 
@@ -476,7 +476,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetPrimaryApplicantFields() {
+    void shouldSetPrimaryApplicantFields() {
         caseDataBuilder
                 .primaryApplicantForenames(null)
                 .solsSolicitorIsExec(YES)
@@ -506,7 +506,7 @@ public class ExecutorsTransformerTest {
 
 
     @Test
-    public void shouldAllowSetPrimaryApplicantFields_Forenames() {
+    void shouldAllowSetPrimaryApplicantFields_Forenames() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
@@ -527,7 +527,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldNotSetPrimaryApplicantFields_ApplicantExecsListEmpty() {
+    void shouldNotSetPrimaryApplicantFields_ApplicantExecsListEmpty() {
         caseDataBuilder
             .primaryApplicantForenames(EXEC_FIRST_NAME);
 
@@ -548,7 +548,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void mapExecutorToPrimaryApplicantFieldsNotApplyingTest() {
+    void mapExecutorToPrimaryApplicantFieldsNotApplyingTest() {
         caseDataBuilder
             .solsSolicitorIsExec(YES)
             .solsSolicitorIsApplying(NO)
@@ -576,7 +576,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetExecutorNamesList_SolicitorIsApplying() {
+    void shouldSetExecutorNamesList_SolicitorIsApplying() {
         List<CollectionMember<AdditionalExecutorTrustCorps>> tcExecutorList = new ArrayList<>();
         tcExecutorList.add(new CollectionMember(EXEC_ID,
                 AdditionalExecutorTrustCorps.builder()
@@ -618,7 +618,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetExecutorNamesList_SolicitorNotApplying() {
+    void shouldSetExecutorNamesList_SolicitorNotApplying() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -655,7 +655,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetExecutorNamesListToNone_SolicitorIsApplying() {
+    void shouldSetExecutorNamesListToNone_SolicitorIsApplying() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -672,7 +672,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetExecutorNamesListToNone_SolicitorNotApplying() {
+    void shouldSetExecutorNamesListToNone_SolicitorNotApplying() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
@@ -689,7 +689,7 @@ public class ExecutorsTransformerTest {
     }
 
     @Test
-    public void shouldSetSolicitorExecutorListsToNull() {
+    void shouldSetSolicitorExecutorListsToNull() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)

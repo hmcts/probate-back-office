@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -15,11 +15,11 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CreditAccountPaymentValidationRuleTest {
+class CreditAccountPaymentValidationRuleTest {
 
     @InjectMocks
     private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
@@ -37,9 +37,9 @@ public class CreditAccountPaymentValidationRuleTest {
     private static final String PBA_CODE = "PBACode";
     private static final String PBA_LABEL = "PBALabel";
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseDetails.getId()).thenReturn(CASE_ID);
@@ -49,7 +49,7 @@ public class CreditAccountPaymentValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnNoErrors() {
+    void shouldReturnNoErrors() {
         when(paymentResponse.getStatus()).thenReturn("Success");
         List<FieldErrorResponse> errors = creditAccountPaymentValidationRule.validate(PBA_CODE,
             CASE_ID.toString(), paymentResponse);
@@ -57,7 +57,7 @@ public class CreditAccountPaymentValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnErrors() {
+    void shouldReturnErrors() {
         when(paymentResponse.getStatus()).thenReturn("Failure");
         when(caseData.getSolsPBANumber()).thenReturn(DynamicList.builder().value(DynamicListItem.builder().code(
             "PBAError").build()).build());

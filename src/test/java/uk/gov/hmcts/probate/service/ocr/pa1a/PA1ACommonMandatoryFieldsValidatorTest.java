@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr.pa1a;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PA1ACommonMandatoryFieldsValidatorTest {
+class PA1ACommonMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
@@ -21,14 +21,14 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     @InjectMocks
     private PA1ACommonMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         warnings = new ArrayList<>();
     }
 
     @Test
-    public void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
+    void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "ihtFormCompletedOnline");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
@@ -38,7 +38,7 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
+    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
@@ -49,7 +49,7 @@ public class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
+    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");

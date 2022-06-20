@@ -1,16 +1,16 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorApplying;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class OCRFieldAdditionalExecutorsApplyingMapperTest {
+class OCRFieldAdditionalExecutorsApplyingMapperTest {
 
     private static final String EXECUTOR_APPLYING_1_NAME = "Conner O'Mailey";
     private static final String EXECUTOR_APPLYING_1_OTHER_NAMES = "Connie O";
@@ -35,7 +35,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     private ExceptionRecordOCRFields ocrFields2;
     private ExceptionRecordOCRFields ocrFields3;
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws Exception {
         ocrFields = ExceptionRecordOCRFields.builder()
             .executorsApplying0applyingExecutorName(EXECUTOR_APPLYING_1_NAME)
@@ -72,7 +72,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     }
 
     @Test
-    public void testAdditionalExecutorApplying() {
+    void testAdditionalExecutorApplying() {
         List<CollectionMember<ExecutorApplying>> response
             = ocrFieldAdditionalExecutorsApplyingMapper.toAdditionalCollectionMember(ocrFields);
         assertEquals(EXECUTOR_APPLYING_1_NAME, response.get(0).getValue().getApplyingExecutorName());
@@ -89,7 +89,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     }
 
     @Test
-    public void testTwoAdditionalExecutorApplying() {
+    void testTwoAdditionalExecutorApplying() {
         List<CollectionMember<ExecutorApplying>> response
             = ocrFieldAdditionalExecutorsApplyingMapper.toAdditionalCollectionMember(ocrFields2);
         assertEquals(EXECUTOR_APPLYING_1_NAME, response.get(0).getValue().getApplyingExecutorName());
@@ -116,7 +116,7 @@ public class OCRFieldAdditionalExecutorsApplyingMapperTest {
     }
 
     @Test
-    public void testNoAdditionalExecutorApplying() {
+    void testNoAdditionalExecutorApplying() {
         List<CollectionMember<ExecutorApplying>> response
             = ocrFieldAdditionalExecutorsApplyingMapper.toAdditionalCollectionMember(ocrFields3);
         assertEquals(0, response.size());

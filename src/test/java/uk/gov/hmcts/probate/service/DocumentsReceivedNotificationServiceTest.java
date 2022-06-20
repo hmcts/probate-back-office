@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -38,9 +38,9 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class DocumentsReceivedNotificationServiceTest {
+class DocumentsReceivedNotificationServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -86,7 +86,7 @@ public class DocumentsReceivedNotificationServiceTest {
     @Mock
     private FeatureToggleService featureToggleService;
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException, NotificationClientException {
         personalCaseDataBirmingham = new CaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -139,15 +139,14 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDocumentReceivedPersonalNotificationToggleOn() throws NotificationClientException {
+    void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
-        doReturn(true).when(featureToggleService)
-                .isFeatureToggleOn("probate-documents-received-notification", false);
+
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
@@ -155,7 +154,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDocumentReceivedPersonalNotificationDefaultOff() throws NotificationClientException {
+    void handleDocumentReceivedPersonalNotificationDefaultOff() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -171,7 +170,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
+    void handleDocumentReceivedSolicitorNotification() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -188,7 +187,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
+    void handleDisableDocumentReceivedPersonalNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirminghamFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
@@ -202,7 +201,7 @@ public class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    public void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
+    void handleDisableDocumentReceivedSolicitorNotificationFromBulkScan() throws NotificationClientException {
         callbackRequest = new CallbackRequest(solicitorCaseDataBirminghamFromBulkScan);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);

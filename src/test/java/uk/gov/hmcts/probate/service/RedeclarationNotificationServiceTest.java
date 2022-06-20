@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,13 +23,13 @@ import uk.gov.service.notify.NotificationClientException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 
-public class RedeclarationNotificationServiceTest {
+class RedeclarationNotificationServiceTest {
 
     @Mock
     private NotificationService notificationService;
@@ -67,9 +67,9 @@ public class RedeclarationNotificationServiceTest {
     private static final Document SENT_EMAIL_DOCUMENT =
             Document.builder().documentType(DocumentType.SENT_EMAIL).build();
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         documentListSOT = new ArrayList<>();
         documentListEmail = new ArrayList<>();
         executorsApplying = new ArrayList<>();
@@ -104,7 +104,7 @@ public class RedeclarationNotificationServiceTest {
     }
 
     @Test
-    public void handleRedeclarationNotificationShouldBeSuccessful() {
+    void handleRedeclarationNotificationShouldBeSuccessful() {
         CallbackResponse response = redeclarationNotificationService.handleRedeclarationNotification(callbackRequest);
 
         assertEquals(1, response.getData().getProbateSotDocumentsGenerated().size());

@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.ocr;
 
 import org.apache.commons.lang3.RandomStringUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.HashMap;
@@ -17,7 +17,7 @@ import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.core.Is.is;
 
-public class OcrEmailValidatorTest {
+class OcrEmailValidatorTest {
 
     private static final String PRIMARY_APPLICANT_EMAIL_ADDRESS = "primaryApplicantEmailAddress";
     private static final String CAVEATOR_EMAIL_ADDRESS = "caveatorEmailAddress";
@@ -45,14 +45,14 @@ public class OcrEmailValidatorTest {
 
     private OcrEmailValidator ocrEmailValidator;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         ocrEmailValidator = new OcrEmailValidator();
     }
 
 
     @Test
-    public void shouldCreateWarningForAnInvalidField() {
+    void shouldCreateWarningForAnInvalidField() {
 
         final OCRField field = OCRField
             .builder()
@@ -66,7 +66,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldCreateWarningForEachInvalidField() {
+    void shouldCreateWarningForEachInvalidField() {
         final List<OCRField> fields = emailFields
             .keySet()
             .stream()
@@ -86,7 +86,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldNotCreateWarningForValidField() {
+    void shouldNotCreateWarningForValidField() {
         final List<OCRField> fields = emailFields
             .keySet()
             .stream()
@@ -103,7 +103,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldCreateWarningForNullField() {
+    void shouldCreateWarningForNullField() {
 
         final OCRField field = OCRField
             .builder()
@@ -116,7 +116,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldCreateWarningForEmptyField() {
+    void shouldCreateWarningForEmptyField() {
 
         final OCRField field = OCRField
             .builder()
@@ -131,7 +131,7 @@ public class OcrEmailValidatorTest {
     }
 
     @Test
-    public void shouldNotCreateWarningNonEmailField() {
+    void shouldNotCreateWarningNonEmailField() {
         final OCRField field = OCRField
             .builder()
             .name("executorsNotApplying_0_notApplyingExecutorName")
