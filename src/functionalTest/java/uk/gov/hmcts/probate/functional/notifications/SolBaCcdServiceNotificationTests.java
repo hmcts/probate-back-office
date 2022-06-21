@@ -8,14 +8,11 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.io.IOException;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.mockito.Mockito.when;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
