@@ -500,22 +500,23 @@ class CaveatCallbackResponseTransformerTest {
 
     @Test
     void testBuildOrganisationPolicy() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
-        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        when(caveatDetailsMock.getData()).thenReturn(CaveatData.builder().build());
+        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyReturnNullForNoAuth() {
-        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), null));
+        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, null));
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
+        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
@@ -525,23 +526,23 @@ class CaveatCallbackResponseTransformerTest {
         organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
         organisationEntityResponse.setName(ORGANISATION_NAME);
 
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(organisationEntityResponse);
         OrganisationPolicy organisationPolicy = mock(OrganisationPolicy.class);
         when(organisationPolicy.getOrgPolicyCaseAssignedRole()).thenReturn("Org Policy Case Assigned Role");
         when(organisationPolicy.getOrgPolicyReference()).thenReturn("Org Policy Reference");
 
-        CaveatData caveatData = new CaveatData();
-        caveatData.setApplicantOrganisationPolicy(organisationPolicy);
+        CaveatData caveatData = CaveatData.builder().applicantOrganisationPolicy(organisationPolicy).build();
+        when(caveatDetailsMock.getData()).thenReturn(caveatData);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
-            .buildOrganisationPolicy(caveatData, "ABC123");
+            .buildOrganisationPolicy(caveatDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
         assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
     }

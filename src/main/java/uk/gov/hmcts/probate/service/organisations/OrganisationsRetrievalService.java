@@ -35,20 +35,23 @@ public class OrganisationsRetrievalService {
     @Value("${prd.organisations.api}")
     protected String orgApi;
 
-    public OrganisationEntityResponse getOrganisationEntity(String authToken) {
+    public OrganisationEntityResponse getOrganisationEntity(String caseId, String authToken) {
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         try {
+            log.info("SAC: get OrganisationEntityResponse for caseId {}", caseId);
             ResponseEntity<OrganisationEntityResponse> responseEntity = restTemplate.exchange(uri, GET,
                 request, OrganisationEntityResponse.class);
 
-            log.info("responseEntity" + responseEntity.toString());
+            log.info("SAC: found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
+                    responseEntity.toString());
             return Objects.requireNonNull(responseEntity.getBody());
         } catch (Exception e) {
-            log.error("Exception when looking up orgId for authToken={} for exception {}",
-                new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+            log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
+                caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
         }
+        log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
         return null;
     }
 
