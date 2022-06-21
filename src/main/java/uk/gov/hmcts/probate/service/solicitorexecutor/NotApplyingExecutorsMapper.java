@@ -1,16 +1,14 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 @Slf4j
 @Service
@@ -37,8 +35,8 @@ public class NotApplyingExecutorsMapper {
                 .collect(Collectors.toList()));
         }
 
-        boolean sotExecNotIncludedAready = 
-            executors.stream().filter(exec -> exec.getNotApplyingExecutorName().equals(caseData.getSolsSOTName()))
+        boolean sotExecNotIncludedAready =
+            executors.stream().filter(exec -> exec.hasName(caseData.getSolsSOTName()))
                 .collect(Collectors.toList()).isEmpty();
         if (sotExecNotIncludedAready && caseData.getSolsSOTName() != null
             && NO.equals(caseData.getSolsSolicitorIsApplying())
