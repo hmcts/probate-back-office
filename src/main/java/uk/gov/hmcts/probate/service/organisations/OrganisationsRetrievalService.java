@@ -40,17 +40,18 @@ public class OrganisationsRetrievalService {
         HttpEntity<HttpHeaders> request = buildRequest(authToken);
 
         try {
-            log.info("SAC: retrieving org for caseId {}", caseId);
+            log.info("SAC: get OrganisationEntityResponse for caseId {}", caseId);
             ResponseEntity<OrganisationEntityResponse> responseEntity = restTemplate.exchange(uri, GET,
                 request, OrganisationEntityResponse.class);
 
-            log.info("SAC: retrieved org for caseId {}, OrganisationEntityResponse {}", caseId,
+            log.info("SAC: found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
                     responseEntity.toString());
             return Objects.requireNonNull(responseEntity.getBody());
         } catch (Exception e) {
-            log.error("SAC: Exception when looking up orgId for case {} authToken={} for exception {}",
+            log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
                 caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
         }
+        log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
         return null;
     }
 
