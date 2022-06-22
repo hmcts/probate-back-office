@@ -53,7 +53,8 @@ class OrganisationsRetrievalServiceTest {
 
         organisationsRetrievalService.orgApi = "/test_api";
         organisationsRetrievalService.orgUri = "http://localhost:8080/test";
-        OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(AUTH_TOKEN);
+        OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(
+                "1234567890123456", AUTH_TOKEN);
         assertEquals(organisationEntityResponse, organisationEntity);
 
         when(authTokenGenerator.generate()).thenReturn("S2S_DUMMY");
@@ -68,7 +69,8 @@ class OrganisationsRetrievalServiceTest {
 
         organisationsRetrievalService.orgApi = "/test_api";
         organisationsRetrievalService.orgUri = "http://localhost:8080/test";
-        OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(AUTH_TOKEN);
+        OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(
+                "1234567890123456", AUTH_TOKEN);
         assertEquals(null, organisationEntity);
     }
 
@@ -79,7 +81,7 @@ class OrganisationsRetrievalServiceTest {
 
             organisationsRetrievalService.orgApi = "/test_api";
             organisationsRetrievalService.orgUri = "http://localhost:8080/test";
-            organisationsRetrievalService.getOrganisationEntity("something else");
+            organisationsRetrievalService.getOrganisationEntity("1234567890123456", "something else");
         });
     }
 }
