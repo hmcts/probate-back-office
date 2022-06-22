@@ -30,6 +30,11 @@ class ExceptedEstateDateOfDeathCheckerTest {
     }
 
     @Test
+    void shouldReturnFalseWhenNull() {
+        assertFalse(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((String) null));
+    }
+
+    @Test
     void shouldReturnTrue() {
         assertTrue(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH));
     }
@@ -39,6 +44,11 @@ class ExceptedEstateDateOfDeathCheckerTest {
         LocalDate preDate = LocalDate.parse(PRE_EE_DECEASED_DATE_OF_DEATH, DATE_TIME_FORMATTER);
         assertFalse(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(preDate));
 
+    }
+
+    @Test
+    public void localDateShouldReturnFalseWhenNull() {
+        assertFalse(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) null));
     }
 
     @Test

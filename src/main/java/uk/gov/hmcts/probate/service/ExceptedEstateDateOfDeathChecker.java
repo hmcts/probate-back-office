@@ -27,6 +27,9 @@ public class ExceptedEstateDateOfDeathChecker {
     }
 
     public boolean isOnOrAfterSwitchDate(LocalDate dateOfDeath) {
+        if (null == dateOfDeath) {
+            return false;
+        }
         return !dateOfDeath.isBefore(switchDate);
     }
 }
