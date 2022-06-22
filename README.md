@@ -93,6 +93,75 @@ To build the project execute the following command:
 ```bash
   ./gradlew build
 ```
+################################################################################################
+## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
+details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+##### Accessing databases
+
+Postgres is started on port 6432 (default) and can be accessed with user `postgres` password `postgres`
+
+The default postgres port can be overridden by setting the `RSE_LIB_DB_PORT` environment variable.
+
+##### Database names
+
+| Service | Database name |
+| ------- | ---- |
+| CCD definition store | definitionstore |
+| CCD data store | datastore |
+| CCD user profile | userprofile |
+| AM role assignment service | am |
+
+eg. to connect to ccd data store db ```psql postgresql://postgres:postgres@localhost:6432/datastore```
+
+#### Ports
+
+Services run on the following default ports:
+
+| Service | Port |
+| ------- | ---- |
+| CCD definition store | 4451 |
+| CCD data store | 4452 |
+| CCD user profile | 4453 |
+| CCD case document Access Management | 4455 |
+| AM role assignment service | 4096 |
+| AAC assign access to a case | 4454 |
+| XUI Manage cases | 4454 |
+| XUI Manage org | 4454 |
+| IDAM Simulator* | 5000 |
+| S2S Simulator* | 8489 |
+
+\* When running AuthMode.Local
+
+### Clean boot
+
+For a clean boot define the RSE_LIB_CLEAN_BOOT environment variable, which will force recreate all docker containers upon boot.
+
+### Live reload
+
+[Spring boot's devtools](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.devtools) can be used to fast-reload your application whilst leaving other CFT services running, significantly
+improving the edit-compile-test cycle.
+
+```groovy
+dependencies {
+  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+}
+
+./gradlew bootJar
+# run gradle with bootWithCCD to bring up the IDAM and CCD including cftlib Docker with elastic and database
+./gradle bootWithCCD 
+# run in debugger with 
+./gradlew bootWithCCD --debug-jvm
+
+NOTE that the bootWithCCD brings up a prcess that just sits there, to exit either Ctrl-C 
+     or press stop on the run tab in intellij.
+If there is a problem with debugging message about "JDWP Transport dt_socket failed to initialize"
+Debugger might be stuck running, need to go to cmd line to kill task if it's been left hanging:
+lsof -i tcp:5005
+This will show the PID then can kill that PID using 
+kill -9 PID_JUST_FOUND
+
+Also needs back office docker to bring up all services:
+./dev-cft-setup.sh
 
 ## Docker environment
 

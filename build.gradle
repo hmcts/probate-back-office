@@ -458,3 +458,13 @@ bootWithCCD {
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
 }
+
+bootJar {
+  getArchiveFileName().set(provider {
+    'back-office.jar'
+  })
+
+  manifest {
+    attributes('Implementation-Version': project.version.toString())
+  }
+}
