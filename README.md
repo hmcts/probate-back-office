@@ -163,6 +163,10 @@ kill -9 PID_JUST_FOUND
 Also needs back office docker to bring up all services:
 ./dev-cft-setup.sh
 
+Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
+########################################################################################################################
+
+## Older docker environment:
 ## Docker environment
 
 Because the probate back office relies on CCD callbacks it must be run inside the docker-compose environment, and must be built before bringing the environment up. You will need to recompile after any code changes.
