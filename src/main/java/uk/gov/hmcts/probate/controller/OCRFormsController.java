@@ -1,9 +1,11 @@
 package uk.gov.hmcts.probate.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,18 +33,20 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequiredArgsConstructor
 @RequestMapping(value = "/forms", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
 @RestController
-@Api(tags = "Manage bulk scanning data")
+@Tag(name = "Manage bulk scanning data")
 public class OCRFormsController {
 
     private final OCRPopulatedValueMapper ocrPopulatedValueMapper;
     private final OCRToCCDMandatoryField ocrToCCDMandatoryField;
     private final NonMandatoryFieldsValidator nonMandatoryFieldsValidator;
 
-    @ApiOperation(value = "Pre-validate OCR data", notes = "Will return validation errors as warnings. ")
+    @Operation(summary = "Pre-validate OCR data", description = "Will return validation errors as warnings. ")
     @ApiResponses({
-        @ApiResponse(code = 200, response = ValidationResponse.class, message = "Validation executed successfully"),
-        @ApiResponse(code = 400, message = "Request failed due to malformed syntax"),
-        @ApiResponse(code = 403, message = "S2S token is not authorized, missing or invalid")
+        @ApiResponse(responseCode = "200",
+                content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
+                description = "Validation executed successfully"),
+        @ApiResponse(responseCode = "400", description = "Request failed due to malformed syntax"),
+        @ApiResponse(responseCode = "403", description = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/{form-type}/validate-ocr", consumes = APPLICATION_JSON_VALUE)
     public ResponseEntity<ValidationResponse> validateExceptionRecord(@PathVariable("form-type") String formType,
