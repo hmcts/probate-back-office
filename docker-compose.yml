@@ -2,6 +2,104 @@
 version: '3'
 
 services:
+  ccd-user-profile-api:
+    image: "${CCD_USER_PROFILE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/user-profile-api:${CCD_USER_PROFILE_API_TAG:-latest}"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      USER_PROFILE_DB_HOST: shared-database
+      USER_PROFILE_DB_PORT: 5432
+      USER_PROFILE_DB_USERNAME: "${DB_USERNAME}"
+      USER_PROFILE_DB_PASSWORD: "${DB_PASSWORD}"
+      USER_PROFILE_DB_USE_SSL: "false"
+      USER_PROFILE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_definition,ccd_admin
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      REFORM_SERVICE_NAME: ccd-user-profile-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+    ports:
+      - 4453:4453
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+
+  ccd-definition-store-api:
+    image: "${CCD_DEFINITION_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/definition-store-api:${CCD_DEFINITION_STORE_API_TAG:-latest}"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      DEFINITION_STORE_DB_HOST: shared-database
+      DEFINITION_STORE_DB_PORT: 5432
+      DEFINITION_STORE_DB_USERNAME: "${DB_USERNAME}"
+      DEFINITION_STORE_DB_PASSWORD: "${DB_PASSWORD}"
+      DEFINITION_STORE_DB_USE_SSL: "false"
+      DEFINITION_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
+      DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,probate_backend
+      USER_PROFILE_HOST: http://ccd-user-profile-api:4453
+      IDAM_USER_URL: http://sidam-api:5000
+      IDAM_API_BASE_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      REFORM_SERVICE_NAME: ccd-definition-store-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      ELASTIC_SEARCH_ENABLED: "${ES_ENABLED_DOCKER}"
+      ELASTIC_SEARCH_HOST: "ccd-elasticsearch"
+      ELASTIC_SEARCH_FAIL_ON_IMPORT: "true"
+    ports:
+      - 4451:4451
+    depends_on:
+      - shared-database
+      - ccd-user-profile-api
+      - sidam-api
+      - service-auth-provider-api
+
+  ccd-data-store-api:
+    image: "${CCD_DATA_STORE_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/data-store-api:${CCD_DATA_STORE_API_TAG:-latest}"
+    environment:
+      # JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      # JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m -agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5007
+      DATA_STORE_DB_HOST: shared-database
+      DATA_STORE_DB_PORT: 5432
+      DATA_STORE_DB_USERNAME: "${DB_USERNAME}"
+      DATA_STORE_DB_PASSWORD: "${DB_PASSWORD}"
+      DATA_STORE_DB_USE_SSL: "false"
+      DATA_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
+      DATA_STORE_TOKEN_SECRET: iuasbcuasdcbasdgcasdgcuysachjsacyasdgjcgasdj
+      CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES: aac_manage_case_assignment,fpl_case_service,iac,finrem_case_orchestration,divorce_frontend,nfdiv_cos,civil_service,probate_backend
+      DATA_STORE_S2S_AUTHORISED_SERVICES: ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api,am_role_assignment_service,aac_manage_case_assignment,xui_mo_webapp
+      CCD_DM_DOMAIN: http://dm-store:8080
+      DEFINITION_STORE_HOST: http://ccd-definition-store-api:4451
+      USER_PROFILE_HOST: http://ccd-user-profile-api:4453
+      IDAM_API_BASE_URL: http://sidam-api:5000
+      IDAM_OIDC_URL: http://sidam-api:5000
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      IDAM_OAUTH2_DATA_STORE_CLIENT_SECRET: idam_data_store_client_secret
+      REFORM_SERVICE_NAME: ccd-data-store-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      ELASTIC_SEARCH_ENABLED: "${ES_ENABLED_DOCKER}"
+      ELASTIC_SEARCH_HOSTS: ccd-elasticsearch:9200
+      ELASTIC_SEARCH_DATA_NODES_HOSTS: "http://ccd-elasticsearch:9200"
+      DATA_STORE_DEFAULT_LOG_LEVEL: INFO
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
+      CCD_DEFAULTPRINTURL: https://return-case-doc-ccd.nonprod.platform.hmcts.net/jurisdictions/:jid/case-types/:ctid/cases/:cid
+      ENABLE_ATTRIBUTE_BASED_ACCESS_CONTROL: "${ENABLE_ATTRIBUTE_BASED_ACCESS_CONTROL:-true}"
+      ENABLE_PSEUDO_ROLE_ASSIGNMENTS_GENERATION: "${ENABLE_PSEUDO_ROLE_ASSIGNMENTS_GENERATION:-true}"
+      ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION: "${ENABLE_PSEUDO_ACCESS_PROFILES_GENERATION:-true}"
+      REFERENCE_DATA_API_URL: "${RD_LOCATION_REF_API_BASE_URL:-http://ccd-test-stubs-service:5555}"
+      ROLE_ASSIGNMENT_URL: "${ROLE_ASSIGNMENT_URL:-http://am-role-assignment-service:4096}"
+    ports:
+      - 4452:4452
+      - 5007:5007
+    depends_on:
+      - shared-database
+      - ccd-user-profile-api
+      - ccd-definition-store-api
+      - sidam-api
+      - service-auth-provider-api
+
   ccd-api-gateway:
     image: hmctspublic.azurecr.io/ccd/api-gateway-web:latest
     environment:
@@ -26,6 +124,11 @@ services:
       APPINSIGHTS_INSTRUMENTATIONKEY: 4
     ports:
       - 3453:3453
+    depends_on:
+      - ccd-user-profile-api
+      - ccd-definition-store-api
+      - ccd-data-store-api
+      - dm-store
 
   service-auth-provider-api:
     image: hmctspublic.azurecr.io/rpe/service-auth-provider:latest
@@ -61,6 +164,77 @@ services:
     ports:
       - 4502:8080
 
+  shared-db:
+    image: hmctsprivate.azurecr.io/idam/shared-db:latest
+    ports:
+      - 5051:5432
+
+  sidam-api:
+    image: "hmctspublic.azurecr.io/idam/api:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      TESTING_SUPPORT_ENABLED: "true"
+      IDAMHEALTHCHECK_AM_ENABLED: "false"
+      IDAMHEALTHCHECK_IDM_ENABLED: "false"
+      STRATEGIC_ADMIN_URL: http://localhost:8082
+      STRATEGIC_WEBPUBLIC_URL: http://localhost:3501
+      SPRING_PROFILES_ACTIVE: local
+      SPRING_DATASOURCE_URL: jdbc:postgresql://shared-db:5432/openidm?currentSchema=fridam
+      SPRING_DATASOURCE_USERNAME: openidm
+      SPRING_DATASOURCE_PASSWORD: openidm
+      SPRING_DATA_ELASTICSEARCH_PROPERTIES_PATH_HOME: /tmp/es
+      SECURITY_OAUTH2_CLIENT_CLIENTSECRET: password
+      SECURITY_OAUTH2_CLIENT_PRE_ESTABLISHED_REDIRECT_URI: http://localhost:3501/login
+      SECURITY_OAUTH2_CLIENT_REGISTERED_REDIRECT_URI: http://localhost:3501/login
+      IDAM_SPI_FORGEROCK_AM_ROOT: http://fr-am:8080/openam
+      IDAM_SPI_FORGEROCK_AM_TOPLEVELHOST: fr-am
+      IDAM_SPI_FORGEROCK_AM_USERNAME: amadmin
+      IDAM_SPI_FORGEROCK_AM_PASSWORD: Pa55word11
+      IDAM_SPI_FORGEROCK_AM_JWKSURIFOROAUTH2CLIENTS: http://fr-am:8080/openam/oauth2/hmcts/connect/jwk_uri
+      IDAM_SPI_FORGEROCK_IDM_ROOT: http://fr-idm:18080/openidm
+      IDAM_SPI_FORGEROCK_IDM_USERNAME: openidm-admin
+      IDAM_SPI_FORGEROCK_IDM_PASSWORD: openidm-admin
+      APPSETTING_NODE_PATH: es/
+    ports:
+      - 5000:5000
+    depends_on:
+      - fr-am
+      - fr-idm
+      - shared-db
+
+  fr-am:
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-am:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+    ports:
+      - 2889:8080
+      - 1389:1389
+    depends_on:
+      - shared-db
+
+  fr-idm:
+    image: "hmctsprivate.azurecr.io/idam/idam-fr-idm:latest"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+    ports:
+      - 18080:18080
+      - 9010:9010
+    depends_on:
+      - fr-am
+      - shared-db
+
+  shared-database:
+    image: postgres
+    volumes:
+      - ./compose/database:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_MULTIPLE_DATABASES: idam,ccd,ccd_user_profile,ccd_definition,ccd_data,evidence,ccd_definition_designer,fees_register,probate,probate_man,letter_tracking,payment,role_assignment
+      DB_USERNAME:
+      DB_PASSWORD:
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - 5050:5432
+
   dm-store:
     image: hmctspublic.azurecr.io/dm/store:latest
     environment:
@@ -76,6 +250,10 @@ services:
       - ENABLE_TTL=false
       - ENABLE_METADATA_MIGRATION=false
       - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+      - make-container-call
     ports:
       - 5006:8080
 
@@ -124,16 +302,16 @@ services:
       ENABLE_FEE_LOADER: "true"
     ports:
       - 4411:8080
-    #depends_on:
-      #- sidam-api
-     # - shared-database
+    depends_on:
+      - sidam-api
+      - shared-database
 
   payments-api:
     image: hmctspublic.azurecr.io/payment/api:latest
     environment:
       - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
       - auth.provider.service.client.baseUrl=http://service-auth-provider-api:8080
-      - auth.idam.client.baseUrl=http://localhost:5000
+      - auth.idam.client.baseUrl=http://sidam-api:5000
       - idam.s2s-auth.totp_secret=AAAAAAAAAAAAAAAB
       - idam.s2s-auth.microservice=payment_app
       - idam.s2s-auth.url=http://service-auth-provider-api:8080
@@ -202,18 +380,38 @@ services:
       - SPRING_PROFILES_ACTIVE=local,liberataMock
     ports:
       - 8383:8080
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+      - sidam-api
+
+  idam-web-admin:
+    image: "hmctspublic.azurecr.io/idam/web-admin:stable"
+    environment:
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
+      STRATEGIC_SERVICE_URL: http://sidam-api:5000
+    ports:
+      - 8082:8080
+    links:
+      - sidam-api
+    depends_on:
+      - sidam-api
 
   idam-web-public:
     image: "hmctspublic.azurecr.io/idam/web-public:stable"
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx256m
-      STRATEGIC_SERVICE_URL: http://localhost:5000
+      STRATEGIC_SERVICE_URL: http://sidam-api:5000
       IDAM_CONTINUE_URL_VALIDATOR_ENFORCE_TLS: "false"
       REFORM_SERVICE_NAME: sidam-api
       REFORM_TEAM: idam
       REFORM_ENVIRONMENT: local
     ports:
       - 3501:8080
+    links:
+      - sidam-api
+    depends_on:
+      - sidam-api
 
   ccd-elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:7.17.0
@@ -232,6 +430,20 @@ services:
       - esdata1:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+
+  ccd-logstash:
+    image: hmctspublic.azurecr.io/ccd/logstash:ccd-probate-logstash-latest
+    environment:
+      - JAVA_TOOL_OPTIONS=-Xms128m -Xmx400m
+      - XPACK_MONITORING_ENABLED=false
+      - DB_URL=jdbc:postgresql://shared-database:5432/ccd_data?stringtype=unspecified&ssl=false
+      - DB_USER=${DB_USERNAME}
+      - DB_PWD=${DB_PASSWORD}
+      - ES_DATA_NODES_URL=http://ccd-elasticsearch:9200
+      - LOG_LEVEL=warn
+    depends_on:
+      - ccd-elasticsearch
+      - shared-database
 
   probate-back-office:
     build:
@@ -261,11 +473,11 @@ services:
     ports:
       - 4104:4104
     depends_on:
-     # - sidam-api
-     # - shared-database
+      - sidam-api
+      - shared-database
       - service-auth-provider-api
       - dm-store
-#      - manage-case-assignment
+  #      - manage-case-assignment
 
   probate-frontend:
     image: hmctspublic.azurecr.io/probate/frontend:latest
@@ -301,17 +513,24 @@ services:
     ports:
       - 8888:8888
     depends_on:
+      - sidam-api
       - service-auth-provider-api
+      - probate-back-office
 
   probate-submit-service:
     image: hmctspublic.azurecr.io/probate/submit-service:latest
     environment:
       JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
-      AUTH_IDAM_CLIENT_BASEURL: http://localhost:5000
+      AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
       AUTH_PROVIDER_SERVICE_CLIENT_BASEURL: http://service-auth-provider-api:8080
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
     ports:
       - 8181:8181
+    depends_on:
+      - sidam-api
+      - shared-database
+      - ccd-data-store-api
+      - service-auth-provider-api
 
   probate-business-service:
     image: hmctspublic.azurecr.io/probate/business-service:latest
@@ -371,6 +590,205 @@ services:
       - SMTP_PASSWORD=password
     ports:
       - 8485:8485
+    depends_on:
+      - shared-database
+      - service-auth-provider-api
+    links:
+      - shared-database
+      - service-auth-provider-api
+
+  xui-manage-cases:
+    image: "${XUI_MANAGE_CASES_USE_LOCAL-hmctspublic.azurecr.io/}xui/webapp:${XUI_MANAGE_CASES_TAG:-latest}"
+    environment:
+      FEATURE_APP_INSIGHTS_ENABLED: "true"
+      FEATURE_SECURE_COOKIE_ENABLED: "false"
+      FEATURE_REDIS_ENABLED: "false"
+      JURISDICTIONS: PROBATE
+      MICROSERVICE: xui_webapp
+      PROTOCOL: http
+      XUI_ENV: local
+      SERVICES_DOCUMENTS_API: http://dm-store:8080
+      SERVICES_PAYMENTS_URL: http://payments-api:8080
+      SERVICES_EM_ANNO_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_COMPONENT_API: http://ccd-api-gateway:3453
+      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
+      SERVICES_IDAM_API_URL: http://sidam-api:5000
+      SERVICES_IDAM_CLIENT_ID: xui_webapp
+      SERVICES_IDAM_LOGIN_URL: http://localhost:3501
+      SERVICES_IDAM_INDEX_URL: /
+      SERVICES_IDAM_OAUTH_CALLBACK_URL: /oauth2/callback
+      SERVICES_ROLE_ASSIGNMENT_API: http://am-role-assignment-service:4096
+      SERVICES_S2S: http://service-auth-provider-api:8080
+      SERVICES_PRD_API: http://wiremock:8080
+      SYSTEM_USER_NAME: "dummy"
+      SYSTEM_USER_PASSWORD: "dummy"
+      REDISCLOUD_URL: http://dummyrediscloudurl
+      HEALTH_CCD_COMPONENT_API: http://ccd-api-gateway:3453/health
+      HEALTH_CCD_DATA_API: http://ccd-data-store-api:4452/health
+      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api:4455
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://manage-case-assignment:4454
+      APPINSIGHTS_INSTRUMENTATIONKEY: TESTVAR
+      IDAM_SECRET: xui_webapp_secret
+      S2S_SECRET: "AAAAAAAAAAAAAAAA"
+      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
+    ports:
+      - 3455:3000
+    depends_on:
+      - ccd-api-gateway
+      - ccd-data-store-api
+
+  #  manage-case-assignment:
+  #    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+  #    environment:
+  #      IDAM_OIDC_URL: http://sidam-api:5000
+  #      IDAM_API_URL: http://sidam-api:5000
+  #      IDAM_CLIENT_ID: aac_manage_case_assignment
+  #      IDAM_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
+  #      IDAM_CLIENT_REDIRECT_URL: http://localhost:3501/oauth2/callback
+  #      IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
+  #      IDAM_CAA_PASSWORD: "Password12"
+  #      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker@mailnesia.com"
+  #      IDAM_NOC_APPROVER_PASSWORD: "Password12"
+  #      IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
+  #      IDAM_SYSTEM_USER_PASSWORD: "Password12"
+  #      IDAM_URL: http://sidam-api:5000
+  #      S2S_URL: http://service-auth-provider-api:8080
+  #      MANAGE_CASE_S2S_AUTHORISED_SERVICES: ccd_gw,xui_webapp,ccd_data,fpl_case_service,probate_backend,xui_mo_webapp
+  #      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+  #      CCD_DATA_STORE_ALLOWED_SERVICE: xui_webapp
+  #      CCD_DEFINITION_STORE_ALLOWED_SERVICE: xui_webapp
+  #      CCD_DEFINITION_STORE_API_BASE_URL: http://ccd-definition-store-api:4451
+  #      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
+  #      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
+  #      MCA_CONDITIONAL_APIS_CASE_ASSIGNMENTS_ENABLED: "true"
+  #      PRD_HOST: http://wiremock:8080
+  #      NOTIFY_MCA_API_KEY: "notify-test-api-key"
+  #    #  JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006'
+  #    #  JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=y,address=*:5008"
+  #    ports:
+  #      - 4454:4454
+  #      - 5008:5008
+  #    depends_on:
+  #      - sidam-api
+  #      - shared-database
+  #      - ccd-data-store-api
+  #      - service-auth-provider-api
+  #
+  #  xui-manage-org:
+  #    image: hmctspublic.azurecr.io/xui/mo-webapp:latest
+  #    environment:
+  #      IDAM_API_SERVICE: http://sidam-api:5000
+  #      IDAM_WEB_SERVICE: http://localhost:3501
+  #      RD_PROFESSIONAL_API_SERVICE: http://wiremock:8080
+  #      S2S_SERVICE: http://service-auth-provider-api:8080
+  #      FEE_AND_PAY_API: http://fees-api:8080
+  #      SERVICES_CCD_DATA_STORE_API: http://ccd-data-store-api:4452
+  #      ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
+  #      SERVICES_MCA_PROXY_API: http://manage-case-assignment:4454
+  #      SERVICES_IDAM_ISS_URL: http://fr-am:8080/openam/oauth2/realms/root/realms/hmcts
+  #      APPINSIGHTS_INSTRUMENTATIONKEY: "AAAAAAAAAAAAAAAC"
+  #      IDAM_SECRET: "AAAAAAAAAAAAAAAA"
+  #      S2S_SECRET: "AAAAAAAAAAAAAAAA"
+  #      LAUNCH_DARKLY_CLIENT_ID: "${XUI_LD_ID}"
+  #      APPINSIGHTS_INSTRUMENTATIONKEY_MO: "AAAAAAAAAAAAAAAC"
+  #      MO_S2S_CLIENT_SECRET: "AAAAAAAAAAAAAAAA"
+  #      GOOGLE_ANALYTICS_KEY: "AAAAAAAAAAAAAAAC"
+  #      REDISCLOUD_URL: "AAAAAAAAAAAAAAAC"
+  #      NODE_CONFIG_ENV: local
+  #      IDAM_CLIENT: xui_mo_webapp
+  #      MICROSERVICE: xui_webapp
+  #      OAUTH_CALLBACK_URL: /oauth2/callback
+  #      LOGIN_ROLE_MATCHER:
+  #      PROTOCOL: "http"
+  #      SERVICES_TERMS_AND_CONDITIONS_API_SERVICE:
+  #      MANAGE_CASE_LINK:
+  #      MANAGE_ORG_LINK:
+  #      SESSION_SECRET:
+  #      CASE_TYPES: "Caveat,GrantOfRepresentation"
+  #      FEATURE_APP_INSIGHTS_ENABLED: "false"
+  #      FEATURE_PROXY_ENABLED: "false"
+  #      FEATURE_SECURE_COOKIE_ENABLED: "false"
+  #      FEATURE_TERMS_AND_CONDITIONS_ENABLED: "false"
+  #      FEATURE_HELMET_ENABLED: "false"
+  #      FEATURE_REDIS_ENABLED: "false"
+  #      FEATURE_OIDC_ENABLED: "false"
+  #      LOGGING: debug
+  #      PORT: 3001
+  #    links:
+  #      - manage-case-assignment
+  #      - idam-web-admin
+  #    ports:
+  #      - 4456:4456
+  #      - 3001:3001
+  #    depends_on:
+  #      - idam-web-admin
+
+  ccd-case-document-am-api:
+    image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
+    environment:
+      CASE_DOCUMENT_AM_API_S2S_SECRET: "AAAAAAAAAAAAAAAC"
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor
+      IDAM_API_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      IDAM_OIDC_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      S2S_URL: http://service-auth-provider-api:8080
+      DM_STORE_BASE_URL: http://dm-store:8080
+      CCD_DATA_STORE_API_BASE_URL: http://ccd-data-store-api:4452
+      REFORM_SERVICE_NAME: ccd-case-document-am-api
+      REFORM_TEAM: ccd
+      REFORM_ENVIRONMENT: local
+      APPINSIGHTS_INSTRUMENTATIONKEY: key
+      DOCUMENT_TTL: 3600000
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      # JAVA_TOOL_OPTIONS: '-XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005'
+    ports:
+      - 4455:4455
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - dm-store
+      - service-auth-provider-api
+
+  am-role-assignment-service:
+    image: hmctspublic.azurecr.io/am/role-assignment-service:latest
+    environment:
+      ROLE_ASSIGNMENT_DB_HOST: "shared-database"
+      ROLE_ASSIGNMENT_DB_NAME: role_assignment
+      ROLE_ASSIGNMENT_DB_PORT: 5432
+      ROLE_ASSIGNMENT_DB_USERNAME: "${DB_USERNAME}"
+      ROLE_ASSIGNMENT_DB_PASSWORD: "${DB_PASSWORD}"
+      ROLE_ASSIGNMENT_DB_OPTIONS:
+      AM_ROLE_ASSIGNMENT_SERVICE_SECRET: "AAAAAAAAAAAAAAAA"
+      LD_SDK_KEY: "${LD_SDK_AM_KEY}"
+      LAUNCH_DARKLY_ENV: "pr"
+      ROLE_ASSIGNMENT_IDAM_KEY:
+      ROLE_ASSIGNMENT_TOKEN_SECRET:
+      ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,xui_webapp,ccd_data,aac_manage_case_assignment
+      IDAM_USER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
+      IDAM_S2S_URL: http://service-auth-provider-api:8080
+      OPEN_ID_API_BASE_URI: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/o"
+      OIDC_ISSUER_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}/openam/oauth2/hmcts"
+      ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
+      ROLE_ASSIGNMENT_IDAM_CLIENT_SECRET: am_role_assignment_secret
+      ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: role.assignment.admin@gmail.com
+      ROLE_ASSIGNMENT_IDAM_ADMIN_PASSWORD: "Pa55word11"
+      ROLE_ASSIGNMENT_IDAM_ADMIN_SCOPE: profile openid roles search-user
+      CCD_DATA_STORE_URL: http://ccd-data-store-api:4452
+      AZURE_APPLICATIONINSIGHTS_INSTRUMENTATIONKEY:
+      REFORM_SERVICE_NAME: am-role-assignment-service
+      REFORM_TEAM: am
+      REFORM_ENVIRONMENT: local
+      BYPASS_ORG_DROOL_RULE: "true"
+      # Uncomment this line to enable JVM debugging and uncomment the port mapping below
+      #  JAVA_TOOL_OPTIONS: -XX:InitialRAMPercentage=30.0 -XX:MaxRAMPercentage=65.0 -XX:MinRAMPercentage=30.0 -XX:+UseConcMarkSweepGC -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+    ports:
+      - 4096:4096
+      # Uncomment this and the JAVA_TOOL_OPTIONS flag for JVM debugging
+      # - 5005:5005
+    depends_on:
+      - ccd-data-store-api
+      - shared-database
+      - service-auth-provider-api
 
 volumes:
   ccd-docker-azure-blob-data:
