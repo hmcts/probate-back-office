@@ -774,6 +774,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getId()).thenReturn(123456789012456L);
         when(feesResponse.getOverseasCopiesFeeResponse()).thenReturn(feeForNonUkCopies);
         when(feesResponse.getUkCopiesFeeResponse()).thenReturn(feeForUkCopies);
         when(feesResponse.getApplicationFeeResponse()).thenReturn(applicationFee);
@@ -3586,18 +3587,18 @@ class CallbackResponseTransformerTest {
 
     @Test
     void testBuildOrganisationPolicy() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
 
-        assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
+        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
@@ -3607,7 +3608,7 @@ class CallbackResponseTransformerTest {
         organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
         organisationEntityResponse.setName(ORGANISATION_NAME);
 
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(organisationEntityResponse);
         OrganisationPolicy organisationPolicy = mock(OrganisationPolicy.class);
         when(organisationPolicy.getOrgPolicyCaseAssignedRole()).thenReturn("Org Policy Case Assigned Role");
@@ -3615,15 +3616,16 @@ class CallbackResponseTransformerTest {
 
         CaseData caseData = CaseData.builder().applicantOrganisationPolicy(organisationPolicy)
             .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
-            .buildOrganisationPolicy(caseData, "ABC123");
+            .buildOrganisationPolicy(caseDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
         assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
     }

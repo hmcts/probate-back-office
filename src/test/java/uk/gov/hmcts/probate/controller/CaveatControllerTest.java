@@ -79,7 +79,8 @@ class CaveatControllerTest {
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
         organisationEntityResponse.setName("ORGANISATION_NAME");
-        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(
+                "1234567890123456", AUTH_TOKEN);
 
     }
 
