@@ -98,6 +98,8 @@ class ConfirmationResponseServiceTest {
     @Mock
     private TemplateResponse willBodyTemplateResponseMock;
     @Mock
+    private TemplateResponse caseAccessTemplateResponseMock;
+    @Mock
     private MarkdownSubstitutionService markdownSubstitutionServiceMock;
     @Mock
     private MarkdownDecoratorService markdownDecoratorService;
@@ -925,6 +927,20 @@ class ConfirmationResponseServiceTest {
         assertConfirmationValues(nextStepsValues);
         assertNull(nextStepsValues.get("{{deadExecutors}}"));
         assertIHT207(nextStepsValues);
+    }
+
+    @Test
+    void shouldGetCaseAccessConfirmation() {
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(caseAccessTemplateResponseMock);
+        when(caseAccessTemplateResponseMock.getTemplate()).thenReturn("caseAccessTemplate");
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest
+                .getCaseAccessErrorConfirmation("1234567890123456", "currentStatus", "steps");
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals("caseAccessTemplate", afterSubmitCallbackResponse.getConfirmationBody());
     }
 
     private void assertConfirmationValues(Map<String, String> nextStepsValues) {

@@ -7,6 +7,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ClientException;
@@ -14,9 +15,12 @@ import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -72,6 +76,40 @@ class OrganisationsRetrievalServiceTest {
         OrganisationEntityResponse organisationEntity = organisationsRetrievalService.getOrganisationEntity(
                 "1234567890123456", AUTH_TOKEN);
         assertEquals(null, organisationEntity);
+    }
+
+    @Test
+    void shouldGetAccountStatus() {
+        MockitoAnnotations.openMocks(this);
+
+        Map hm = new HashMap<>();
+        hm.put("idamStatus", "someStatus");
+        ResponseEntity<Map> responseEntity = ResponseEntity.of(Optional.of(hm));
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenReturn(responseEntity);
+
+        organisationsRetrievalService.accountApi = "/account_api";
+        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
+        String accountStatus = organisationsRetrievalService
+                .getUserAccountStatus("emailAddress", AUTH_TOKEN, "1234567890123456");
+        assertEquals("someStatus", accountStatus);
+    }
+
+    @Test
+    void shouldGetNullAccountStatus() {
+        MockitoAnnotations.openMocks(this);
+
+        Map hm = new HashMap<>();
+        hm.put("idamStatus", "status");
+        ResponseEntity<Map> responseEntity = ResponseEntity.of(Optional.of(hm));
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenThrow(RestClientException.class);
+
+        organisationsRetrievalService.accountApi = "/account_api";
+        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
+        String accountStatus = organisationsRetrievalService
+                .getUserAccountStatus("emailAddress", AUTH_TOKEN, "1234567890123456");
+        assertNull(accountStatus);
     }
 
     @Test

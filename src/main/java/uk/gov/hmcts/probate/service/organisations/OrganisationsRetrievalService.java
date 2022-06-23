@@ -58,7 +58,7 @@ public class OrganisationsRetrievalService {
         return null;
     }
 
-    public String getAccountStatus(String emailAddress, String authToken, String caseId) {
+    public String getUserAccountStatus(String emailAddress, String authToken, String caseId) {
         URI uri = buildAccountUri(emailAddress);
         HttpEntity<HttpHeaders> request = buildRequest(authToken, emailAddress);
 
@@ -91,7 +91,7 @@ public class OrganisationsRetrievalService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", s2s);
-        if (emailAddress != null){
+        if (emailAddress != null) {
             headers.add("UserEmail", emailAddress);
         }
         return new HttpEntity<>(headers);

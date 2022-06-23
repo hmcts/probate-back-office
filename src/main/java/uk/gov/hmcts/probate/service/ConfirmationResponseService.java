@@ -78,8 +78,9 @@ public class ConfirmationResponseService {
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public AfterSubmitCallbackResponse getCaseAccessErrorConfirmation(String title, String body) {
-        return getConfirmationResponse(getCaseAccessErrorMarkdown(title, body));
+    public AfterSubmitCallbackResponse getCaseAccessErrorConfirmation(String caseId, String currentStatus,
+                                                                      String stepsToResolve) {
+        return getConfirmationResponse(getCaseAccessErrorMarkdown(caseId, currentStatus, stepsToResolve));
     }
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
@@ -210,14 +211,6 @@ public class ConfirmationResponseService {
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
     }
 
-    private TemplateResponse getCaseAccessErrorMarkdown(String currentAccountStatus, String stepToTake) {
-        Map<String, String> keyValue = new HashMap<>();
-        keyValue.put("{{accountStatus}}", currentAccountStatus);
-        keyValue.put("{{stepToTake}}", stepToTake);
-        return markdownSubstitutionService
-                .generatePage(templatesDirectory, MarkdownTemplate.CASE_ASSIGNMENT_ERROR, keyValue);
-    }
-
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData, CaseData caseData) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", ccdData.getSolicitorReference());
@@ -282,6 +275,15 @@ public class ConfirmationResponseService {
         keyValue.put("{{authenticatedTranslation}}", getAuthenticatedTranslationLabel(ccdData));
         keyValue.put("{{dispenseWithNoticeSupportingDocs}}", getDispenseWithNoticeSupportDocsLabelAndText(ccdData));
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
+    }
+
+    private TemplateResponse getCaseAccessErrorMarkdown(String caseId, String currentAccountStatus, String stepsToResolve) {
+        Map<String, String> keyValue = new HashMap<>();
+        keyValue.put("{{accountStatus}}", currentAccountStatus);
+        keyValue.put("{{stepsToResolve}}", stepsToResolve);
+        keyValue.put("{{caseId}}", caseId);
+        return markdownSubstitutionService
+                .generatePage(templatesDirectory, MarkdownTemplate.CASE_ASSIGNMENT_ERROR, keyValue);
     }
 
     private String getIhtForm(CCDData ccdData) {
