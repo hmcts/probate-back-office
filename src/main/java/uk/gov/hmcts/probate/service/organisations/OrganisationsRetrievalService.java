@@ -17,6 +17,7 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
 import java.util.Base64;
+import java.util.Map;
 import java.util.Objects;
 
 import static org.springframework.http.HttpMethod.GET;
@@ -34,6 +35,8 @@ public class OrganisationsRetrievalService {
     protected String orgUri;
     @Value("${prd.organisations.api}")
     protected String orgApi;
+    @Value("${prd.organisations.account.api}")
+    protected String accountApi;
 
     public OrganisationEntityResponse getOrganisationEntity(String caseId, String authToken) {
         URI uri = buildUri();
@@ -42,14 +45,34 @@ public class OrganisationsRetrievalService {
         try {
             log.info("SAC: get OrganisationEntityResponse for caseId {}", caseId);
             ResponseEntity<OrganisationEntityResponse> responseEntity = restTemplate.exchange(uri, GET,
-                request, OrganisationEntityResponse.class);
+                    request, OrganisationEntityResponse.class);
 
             log.info("SAC: found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
                     responseEntity.toString());
             return Objects.requireNonNull(responseEntity.getBody());
         } catch (Exception e) {
             log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
-                caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+                    caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+        }
+        log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
+        return null;
+    }
+
+    public String getAccountStatus(String emailAddress, String authToken, String caseId) {
+        URI uri = buildAccountUri(emailAddress);
+        HttpEntity<HttpHeaders> request = buildRequest(authToken);
+
+        try {
+            log.info("SAC: get OrganisationEntityResponse for caseId {}", caseId);
+            ResponseEntity<Map> responseEntity = restTemplate.exchange(uri, GET,
+                    request, Map.class);
+
+            log.info("SAC: found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
+                    responseEntity.toString());
+            return Objects.requireNonNull(responseEntity.getBody().get("idamStatus").toString());
+        } catch (Exception e) {
+            log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
+                    caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
         }
         log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
         return null;
@@ -69,7 +92,12 @@ public class OrganisationsRetrievalService {
 
     private URI buildUri() {
         return fromHttpUrl(orgUri + orgApi)
-            .build().toUri();
+                .build().toUri();
+    }
+
+    private URI buildAccountUri(String userEmail) {
+        return fromHttpUrl(orgUri + accountApi + "?email=" + userEmail)
+                .build().toUri();
     }
 
 }

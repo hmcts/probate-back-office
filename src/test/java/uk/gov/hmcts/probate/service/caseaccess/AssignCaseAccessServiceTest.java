@@ -14,8 +14,11 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
@@ -41,6 +44,9 @@ class AssignCaseAccessServiceTest {
 
     @MockBean
     private IdamApi idamApi;
+
+    @MockBean
+    private UserAccessStatusErrorReporter userAccessStatusErrorReporter;
 
     @Test
     void testAssignCaseAccess() {
@@ -71,8 +77,12 @@ class AssignCaseAccessServiceTest {
         when(authTokenGenerator.generate()).thenReturn("Generate");
         doThrow(FeignException.class).when(assignCaseAccessClient)
                 .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
-        assignCaseAccessService.assignCaseAccess("ABC123", "42", "GrantOfRepersentation");
+        when(userAccessStatusErrorReporter.getAccessError(anyInt(), isNull(), anyString(), anyString(), anyString()))
+                .thenReturn("some error message");
+        String message = assignCaseAccessService.assignCaseAccess("ABC123", "42",
+                "GrantOfRepersentation");
 
+        assertEquals("some error message", message);
         verify(idamApi).getUserDetails(anyString());
         verify(authTokenGenerator).generate();
         verify(assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
