@@ -124,7 +124,8 @@ class NextStepsUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
             .thenReturn(creditAccountPaymentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET)).thenReturn(coversheetMock);
+        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET))
+                .thenReturn(coversheetMock);
         when(callbackResponseTransformerMock
             .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, paymentResponseMock, coversheetMock))
             .thenReturn(callbackResponseMock);
