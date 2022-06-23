@@ -80,7 +80,8 @@
             <br />
         </td>
     </tr>
-    {% if case_extras != null and case_extras.documentsNotRequired != "Yes" %}
+    {% if case_extras != null and case_extras.documentsNotRequired == "Yes" %}
+    {% else %}
     <tr>
         <td colspan="3" class="text-leftAligned">
             <h3 class="text-header">Documents to send to probate registry:</h3>
