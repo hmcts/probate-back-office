@@ -3,12 +3,10 @@ package uk.gov.hmcts.probate.service.dataextract;
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -22,6 +20,9 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.io.File;
+import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -30,11 +31,12 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@ExtendWith(SpringExtension.class)
 class SmeeAndFordDataExtractServiceTest {
 
     @InjectMocks
@@ -59,7 +61,7 @@ class SmeeAndFordDataExtractServiceTest {
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
-
+        smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = false;
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
             "test", LocalDateTime.now()));
@@ -126,19 +128,21 @@ class SmeeAndFordDataExtractServiceTest {
         });
     }
 
-    /*@Test(expected = ClientException.class)
+    @Test
     void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException()
             throws NotificationClientException, IOException {
-        File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
-        smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
-        when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
-        doNothing().when(blobUpload).uploadFile(any());
+        assertThrows(ClientException.class, () -> {
+            File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
+            smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
+            when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
+            doNothing().when(blobUpload).uploadFile(any());
 
-        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
-        verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
-        verify(zipFileService, times(1)).createTempZipFile(anyString());
-        verify(zipFileService, times(1)).generateZipFile(returnedCases, zipFile);
-        verify(blobUpload, times(1)).uploadFile(zipFile);
-    }*/
+            verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+            verify(zipFileService, times(1)).createTempZipFile(anyString());
+            verify(zipFileService, times(1)).generateZipFile(returnedCases, zipFile);
+            verify(blobUpload, times(1)).uploadFile(zipFile);
+        });
+    }
 }

@@ -309,9 +309,11 @@ class PDFManagementServiceTest {
     }
 
     private void setupResponseDocument(String fileName) {
-        uk.gov.hmcts.reform.ccd.document.am.model.Document.Link self = new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
+        uk.gov.hmcts.reform.ccd.document.am.model.Document.Link self =
+                new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
         self.href = SELF_URL;
-        uk.gov.hmcts.reform.ccd.document.am.model.Document.Link binary = new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
+        uk.gov.hmcts.reform.ccd.document.am.model.Document.Link binary =
+                new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
         binary.href = BINARY_URL;
         Links links = new Links();
         links.self = self;
