@@ -3,16 +3,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
-import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
-import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
-import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
-import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
-import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
-import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
-import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
-import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.*;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
@@ -98,7 +89,7 @@ public class TaskStateRenderer {
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
     private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
     private final NotarialWillBusinessRule notarialWillBusinessRule;
-
+    private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
                                   String willType, String solSOTNeedToUpdate,
@@ -184,6 +175,10 @@ public class TaskStateRenderer {
 
     private String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
         Map<String, String> keyValues = getKeyValues(details.getData());
+        if(noDocumentsRequiredBusinessRule.isApplicable(details.getData())){
+            return DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,"");
+        }
+
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)
