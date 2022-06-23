@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.AssignCaseAccessRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -24,7 +25,7 @@ public class AssignCaseAccessService {
     private final IdamApi idamApi;
 
 
-    public String assignCaseAccess(String authorisationToken, String caseId, String caseTypeId) {
+    public AfterSubmitCallbackResponse assignCaseAccess(String authorisationToken, String caseId, String caseTypeId) {
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authorisationToken);
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String userId = result.get("id").toString().toLowerCase();

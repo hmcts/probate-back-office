@@ -60,10 +60,10 @@ public class OrganisationsRetrievalService {
 
     public String getAccountStatus(String emailAddress, String authToken, String caseId) {
         URI uri = buildAccountUri(emailAddress);
-        HttpEntity<HttpHeaders> request = buildRequest(authToken);
+        HttpEntity<HttpHeaders> request = buildRequest(authToken, emailAddress);
 
         try {
-            log.info("SAC: get OrganisationEntityResponse for caseId {}", caseId);
+            log.info("SAC: get OrganisationEntityResponse for caseId {} with uri {}", caseId, uri.toString());
             ResponseEntity<Map> responseEntity = restTemplate.exchange(uri, GET,
                     request, Map.class);
 
@@ -72,13 +72,17 @@ public class OrganisationsRetrievalService {
             return Objects.requireNonNull(responseEntity.getBody().get("idamStatus").toString());
         } catch (Exception e) {
             log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
-                    caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+                    caseId, authToken, e.getMessage());
         }
         log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
         return null;
     }
 
     private HttpEntity<HttpHeaders> buildRequest(String authToken) {
+        return buildRequest(authToken, null);
+    }
+
+    private HttpEntity<HttpHeaders> buildRequest(String authToken, String emailAddress) {
         HttpHeaders headers = new HttpHeaders();
         if (!authToken.matches("^Bearer .+")) {
             throw new ClientException(HttpStatus.SC_FORBIDDEN, "Invalid user token");
@@ -87,6 +91,9 @@ public class OrganisationsRetrievalService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", s2s);
+        if (emailAddress != null){
+            headers.add("UserEmail", emailAddress);
+        }
         return new HttpEntity<>(headers);
     }
 

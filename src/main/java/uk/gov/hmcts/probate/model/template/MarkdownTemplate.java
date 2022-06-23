@@ -4,7 +4,8 @@ public enum MarkdownTemplate {
 
     NEXT_STEPS("nextSteps"),
     STOP_BODY("stopBody"),
-    CAVEAT_NEXT_STEPS("caveatNextSteps");
+    CAVEAT_NEXT_STEPS("caveatNextSteps"),
+    CASE_ASSIGNMENT_ERROR("caseAssignmentError");
 
     private final String filename;
 

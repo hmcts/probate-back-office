@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -77,12 +78,13 @@ class AssignCaseAccessServiceTest {
         when(authTokenGenerator.generate()).thenReturn("Generate");
         doThrow(FeignException.class).when(assignCaseAccessClient)
                 .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
+        AfterSubmitCallbackResponse response = AfterSubmitCallbackResponse.builder().build();
         when(userAccessStatusErrorReporter.getAccessError(anyInt(), isNull(), anyString(), anyString(), anyString()))
-                .thenReturn("some error message");
-        String message = assignCaseAccessService.assignCaseAccess("ABC123", "42",
+                .thenReturn(response);
+        AfterSubmitCallbackResponse message = assignCaseAccessService.assignCaseAccess("ABC123", "42",
                 "GrantOfRepersentation");
 
-        assertEquals("some error message", message);
+        assertEquals(response, message);
         verify(idamApi).getUserDetails(anyString());
         verify(authTokenGenerator).generate();
         verify(assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());

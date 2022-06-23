@@ -78,16 +78,20 @@ public class ConfirmationResponseService {
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    public AfterSubmitCallbackResponse getCaseAccessErrorConfirmation(String title, String body) {
+        return getConfirmationResponse(getCaseAccessErrorMarkdown(title, body));
+    }
+
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
+        return getConfirmationResponse(generateNextStepsBodyMarkdown(caveatData));
     }
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData, CaseData caseData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData, caseData));
+        return getConfirmationResponse(generateNextStepsBodyMarkdown(ccdData, caseData));
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
-        return getStopConfirmationUsingMarkdown(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
+        return getConfirmationResponse(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
@@ -182,7 +186,7 @@ public class ConfirmationResponseService {
         return Optional.empty();
     }
 
-    private AfterSubmitCallbackResponse getStopConfirmationUsingMarkdown(TemplateResponse templateResponse) {
+    private AfterSubmitCallbackResponse getConfirmationResponse(TemplateResponse templateResponse) {
         return AfterSubmitCallbackResponse.builder()
             .confirmationHeader(null)
             .confirmationBody(templateResponse.getTemplate())
@@ -204,6 +208,14 @@ public class ConfirmationResponseService {
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
+    }
+
+    private TemplateResponse getCaseAccessErrorMarkdown(String currentAccountStatus, String stepToTake) {
+        Map<String, String> keyValue = new HashMap<>();
+        keyValue.put("{{accountStatus}}", currentAccountStatus);
+        keyValue.put("{{stepToTake}}", stepToTake);
+        return markdownSubstitutionService
+                .generatePage(templatesDirectory, MarkdownTemplate.CASE_ASSIGNMENT_ERROR, keyValue);
     }
 
     private TemplateResponse generateNextStepsBodyMarkdown(CCDData ccdData, CaseData caseData) {
@@ -247,7 +259,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
         keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
         keyValue.put("{{originalWill}}", getWillLabel(caseData));
-        
+
         String additionalInfo = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
@@ -344,7 +356,7 @@ public class ConfirmationResponseService {
             .build();
         return markdownDecoratorService.getAuthenticatedTranslationLabel(caseData);
     }
-    
+
     private String getDispenseWithNoticeSupportDocsLabelAndText(CCDData ccdData) {
         CaseData caseData = CaseData.builder()
                 .dispenseWithNotice(ccdData.getDispenseWithNotice())
@@ -355,8 +367,8 @@ public class ConfirmationResponseService {
 
     boolean hasNoLegalStatmentBeenUploaded(CCDData ccdData) {
         return !ccdData.isHasUploadedLegalStatement();
-    } 
-    
+    }
+
     private String createAddressValueString(SolsAddress address) {
         StringBuilder solsSolicitorAddress = new StringBuilder();
         return solsSolicitorAddress.append(defaultString(address.getAddressLine1()))
