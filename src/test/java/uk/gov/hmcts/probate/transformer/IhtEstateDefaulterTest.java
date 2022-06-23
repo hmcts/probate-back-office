@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class IhtEstateDefaulterTest {
+class IhtEstateDefaulterTest {
     @InjectMocks
     private IhtEstateDefaulter ihtEstateDefaulter;
 
@@ -23,29 +23,29 @@ public class IhtEstateDefaulterTest {
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilderMock;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         ReflectionTestUtils.setField(ihtEstateDefaulter, "ihtEstateSwitchDate", "2022-01-01");
 
     }
 
     @Test
-    public void shouldSwitchPageFlowForDateOn2022Jan1() {
+    void shouldSwitchPageFlowForDateOn2022Jan1() {
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2022, 01, 01));
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).dateOfDeathAfterEstateSwitch("Yes");
     }
 
     @Test
-    public void shouldSwitchPageFlowForDateAfter2022Jan1() {
+    void shouldSwitchPageFlowForDateAfter2022Jan1() {
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2022, 06, 30));
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).dateOfDeathAfterEstateSwitch("Yes");
     }
-    
+
     @Test
-    public void shouldNotSwitchPageFlowForDateAfter2022Jan1() {
+    void shouldNotSwitchPageFlowForDateAfter2022Jan1() {
         when(caseDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2021, 12, 31));
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(caseDataMock, responseCaseDataBuilderMock);
         verify(responseCaseDataBuilderMock).dateOfDeathAfterEstateSwitch("No");

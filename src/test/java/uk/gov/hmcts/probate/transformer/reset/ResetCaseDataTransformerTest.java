@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.reset;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -17,7 +17,7 @@ import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_FIRST_NAME;
@@ -27,8 +27,8 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ResetCaseDataTransformerTest {
+@ExtendWith(SpringExtension.class)
+class ResetCaseDataTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -45,7 +45,7 @@ public class ResetCaseDataTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         trustCorpsExecutorList = new ArrayList<>();
@@ -64,7 +64,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTrustCorpsList() {
+    void shouldResetTrustCorpsList() {
         caseDataBuilder
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList);
@@ -83,7 +83,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetPartnerList() {
+    void shouldResetPartnerList() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .otherPartnersApplyingAsExecutors(partnerExecutorList);
@@ -102,7 +102,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTitleAndClearingExecutorLists() {
+    void shouldResetTitleAndClearingExecutorLists() {
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
                 .otherPartnersApplyingAsExecutors(partnerExecutorList);
@@ -118,7 +118,7 @@ public class ResetCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetPowerReservedExecutorLists() {
+    void shouldResetPowerReservedExecutorLists() {
         caseDataBuilder
                 .dispenseWithNotice(NO)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList);

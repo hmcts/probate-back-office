@@ -1,17 +1,18 @@
 package uk.gov.hmcts.probate.changerule;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class NoNotorialWillCopyRuleTest {
+class NoNotorialWillCopyRuleTest {
 
     @InjectMocks
     private NoNotorialWillCopyRule underTest;
@@ -19,13 +20,13 @@ public class NoNotorialWillCopyRuleTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldNeedChange() {
+    void shouldNeedChange() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("No");
 
@@ -33,7 +34,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithWillAccessOriginal() {
+    void shouldNotNeedChangeWithWillAccessOriginal() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("Yes");
 
@@ -41,7 +42,7 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithWillNoAccessOriginal() {
+    void shouldNotNeedChangeWithWillNoAccessOriginal() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("No");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("Yes");
 
@@ -49,15 +50,17 @@ public class NoNotorialWillCopyRuleTest {
     }
 
     @Test
-    public void shouldNotNeedChangeWithWillAccessOriginalNoNotirialCopy() {
+    void shouldNotNeedChangeWithWillAccessOriginalNoNotirialCopy() {
         when(caseDataMock.getWillAccessOriginal()).thenReturn("Yes");
         when(caseDataMock.getWillAccessNotarial()).thenReturn("No");
 
         assertFalse(underTest.isChangeNeeded(caseDataMock));
     }
 
-    @Test(expected = UnsupportedOperationException.class)
-    public void shouldGetBodyMessageKey() {
-        underTest.getConfirmationBodyMessageKey();
+    @Test
+    void shouldGetBodyMessageKey() {
+        assertThrows(UnsupportedOperationException.class, () -> {
+            underTest.getConfirmationBodyMessageKey();
+        });
     }
 }

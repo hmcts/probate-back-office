@@ -1,17 +1,17 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
-public class DocumentTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class DocumentTest {
     @Test
-    public void canDeserialiseDateAdded() throws IOException {
+    void canDeserialiseDateAdded() throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
@@ -19,6 +19,6 @@ public class DocumentTest {
         String json = objectMapper.writeValueAsString(document);
 
         Document documentFromJson = objectMapper.readValue(json, Document.class);
-        Assert.assertEquals(document.getDocumentDateAdded(), documentFromJson.getDocumentDateAdded());
+        assertEquals(document.getDocumentDateAdded(), documentFromJson.getDocumentDateAdded());
     }
 }

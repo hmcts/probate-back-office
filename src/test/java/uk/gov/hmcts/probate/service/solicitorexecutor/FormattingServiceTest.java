@@ -1,29 +1,26 @@
 package uk.gov.hmcts.probate.service.solicitorexecutor;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class FormattingServiceTest {
+class FormattingServiceTest {
     @Test
-    public void shouldCapitaliseONeillCorrectlyLowercaseM() {
+    void shouldCapitaliseONeillCorrectlyLowercaseM() {
         final String result = FormattingService.capitaliseEachWord("martin O'Neill");
 
         assertEquals("Martin O'Neill", result);
     }
 
     @Test
-    public void shouldCapitaliseONeillCorrectlyLowercaseO() {
+    void shouldCapitaliseONeillCorrectlyLowercaseO() {
         final String result = FormattingService.capitaliseEachWord("martin o'Neill");
 
         assertEquals("Martin O'Neill", result);
     }
 
     @Test
-    public void shouldCapitaliseONeillCorrectlyLowercaseNO() {
+    void shouldCapitaliseONeillCorrectlyLowercaseNO() {
         final String result = FormattingService.capitaliseEachWord("martin o'neill");
 
         assertEquals("Martin O'neill", result);

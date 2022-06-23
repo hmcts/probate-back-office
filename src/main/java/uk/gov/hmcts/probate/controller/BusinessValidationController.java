@@ -145,7 +145,7 @@ public class BusinessValidationController {
         @RequestHeader(value = "Authorization") String authToken,
         @RequestParam(value = "caseTypeId") String caseTypeId,
         @RequestBody CallbackRequest request) {
-        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken, caseTypeId);
+        assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }

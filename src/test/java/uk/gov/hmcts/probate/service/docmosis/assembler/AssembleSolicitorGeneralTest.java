@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -24,11 +24,11 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotP
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pRedec;
 
 
-public class AssembleSolicitorGeneralTest extends AssembleTestBase {
+class AssembleSolicitorGeneralTest extends AssembleTestBase {
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSolicitorGeneral assembleSolicitorGeneral = new AssembleSolicitorGeneral(assemblerBase);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(SotPa1pRedec, new String[] {"SotPa1pRedec", "FL-PRB-GNO-ENG-00110.docx",
             "PA1P: Part B - Full redec of application"});
@@ -62,7 +62,7 @@ public class AssembleSolicitorGeneralTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsGenPowerAttorney() {
+    void shouldPopulateSolsGenPowerAttorney() {
 
         List<ParagraphDetail> response = assembleSolicitorGeneral.solsGenPowerAttorney(SotPa1pRedec,
             CaseData.builder().build());
@@ -70,7 +70,7 @@ public class AssembleSolicitorGeneralTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsGenAUthorityPartners() {
+    void shouldPopulateSolsGenAUthorityPartners() {
 
         List<ParagraphDetail> response = assembleSolicitorGeneral.solsGeneralAuthorityPartners(SotPa1aRedec,
             CaseData.builder().build());
@@ -78,7 +78,7 @@ public class AssembleSolicitorGeneralTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSolsExtendedRenunciation() {
+    void shouldPopulateSolsExtendedRenunciation() {
 
         List<ParagraphDetail> response = assembleSolicitorGeneral.solsGenExtendedRenunciation(SotNotSigned,
             CaseData.builder().build());
@@ -87,7 +87,7 @@ public class AssembleSolicitorGeneralTest extends AssembleTestBase {
 
 
     @Test
-    public void shouldPopulateSolsGenVoidForUncertainity() {
+    void shouldPopulateSolsGenVoidForUncertainity() {
 
         List<ParagraphDetail> response = assembleSolicitorGeneral.solsGenVoidForUncertainity(SotPa1pQ2,
             CaseData.builder().build());

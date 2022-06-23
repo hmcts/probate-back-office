@@ -1,21 +1,21 @@
 package uk.gov.hmcts.probate.service.ocr;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class OCRPopulatedValueMapperTest {
+class OCRPopulatedValueMapperTest {
 
     private List<OCRField> ocrFields = new ArrayList<>();
     private OCRPopulatedValueMapper ocrPopulatedValueMapper = new OCRPopulatedValueMapper();
 
-    @Before
+    @BeforeEach
     public void setup() {
         OCRField field1 = OCRField.builder()
                 .name("deceasedForenames")
@@ -45,29 +45,29 @@ public class OCRPopulatedValueMapperTest {
     }
 
     @Test
-    public void testFieldsAreAddedSuccessfully() {
+    void testFieldsAreAddedSuccessfully() {
         assertTrue(ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).contains(ocrFields.get(0)));
     }
 
     @Test
-    public void testAllPopulatedFieldsAreAdded() {
+    void testAllPopulatedFieldsAreAdded() {
         assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
     @Test
-    public void testNullFieldValueIsNotAdded() {
+    void testNullFieldValueIsNotAdded() {
         ocrFields.add(OCRField.builder().name("test").description("test").build());
         assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
     @Test
-    public void testNullObjectsAreNotAdded() {
+    void testNullObjectsAreNotAdded() {
         ocrFields.add(OCRField.builder().build());
         assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
     @Test
-    public void testEmptyValueFieldsAreNotAdded() {
+    void testEmptyValueFieldsAreNotAdded() {
         ocrFields.add(OCRField.builder().name("test").value("").description("test").build());
         assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }

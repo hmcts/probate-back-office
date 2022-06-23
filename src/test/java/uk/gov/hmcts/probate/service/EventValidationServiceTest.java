@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,10 +23,10 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class EventValidationServiceTest {
+class EventValidationServiceTest {
 
     @InjectMocks
     private EventValidationService eventValidationService;
@@ -49,15 +49,15 @@ public class EventValidationServiceTest {
     private SimpleValidationRule validationRule;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         validationRule = new SimpleValidationRule();
     }
 
 
     @Test
-    public void shouldGatherValidationErrors() {
+    void shouldGatherValidationErrors() {
 
         List<FieldErrorResponse> fieldErrorResponses = eventValidationService
             .validate(ccdDataMock, Collections.singletonList(validationRule));
@@ -67,7 +67,7 @@ public class EventValidationServiceTest {
     }
 
     @Test
-    public void shouldGatherPaymentValidationErrors() {
+    void shouldGatherPaymentValidationErrors() {
 
         List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
             FieldErrorResponse.builder().build());
@@ -86,7 +86,7 @@ public class EventValidationServiceTest {
     }
 
     @Test
-    public void shouldGatherCaveatPaymentValidationErrors() {
+    void shouldGatherCaveatPaymentValidationErrors() {
 
         List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
             FieldErrorResponse.builder().build());

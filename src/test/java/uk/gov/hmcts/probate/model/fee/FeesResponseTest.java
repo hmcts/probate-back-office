@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.model.fee;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FeesResponseTest {
+class FeesResponseTest {
 
     @Test
-    public void shouldGetTotalAmount() {
+    void shouldGetTotalAmount() {
         FeesResponse feesResponse = FeesResponse.builder()
             .applicationFeeResponse(FeeResponse.builder().feeAmount(BigDecimal.valueOf(215)).code("appCode")
                 .description("appDesc").build())
