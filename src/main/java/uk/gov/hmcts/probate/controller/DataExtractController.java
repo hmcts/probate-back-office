@@ -99,7 +99,7 @@ public class DataExtractController {
         });
         log.info("Perform Smee And Ford data extract from date finished");
 
-        return ResponseEntity.accepted().body("Smee And Ford data extract finished");
+        return ResponseEntity.accepted().body(null);
     }
 
 }
