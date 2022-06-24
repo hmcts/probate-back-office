@@ -116,4 +116,23 @@ class UserAccessStatusErrorReporterTest {
 
         assertNull(actualResponse);
     }
+
+    @Test
+    void shouldReturnNullErrorFor400() {
+        HashMap hm = new HashMap();
+        hm.put("id", "someUserId");
+        hm.put("email", "someUserEmail");
+        when(userResponseMock.getBody()).thenReturn(hm);
+        when(idamApi.getUserDetails("authorisationToken")).thenReturn(userResponseMock);
+        when(organisationsRetrievalService.getUserAccountStatus("someUserEmail", "authorisationToken",
+                "1234567890123456")).thenReturn("OTHER");
+
+        when(confirmationResponseService
+                .getCaseAccessErrorConfirmation("1234567890123456", "OTHER", MESSAGE_SUSPENDED))
+                .thenReturn(afterSubmitCallbackResponseMock);
+        AfterSubmitCallbackResponse actualResponse = userAccessStatusErrorReporter
+                .getAccessError(400, "some other error", "authorisationToken", "1234567890123456", "caseType");
+
+        assertNull(actualResponse);
+    }
 }
