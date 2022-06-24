@@ -47,6 +47,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @ExtendWith(SpringExtension.class)
@@ -91,6 +92,20 @@ class NotificationControllerUnitTest {
     @Test
     void shouldSendApplicationReceived() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
+        ResponseEntity<ProbateDocument> stringResponseEntity =
+            notificationController.sendApplicationReceivedNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSendApplicationReceivedNoDocsRequired() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED_NO_DOCS);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+            .paperForm("No")
+            .primaryApplicantNotRequiredToSendDocuments("Yes")
+            .primaryApplicantEmailAddress("1@1.com")
+            .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<ProbateDocument> stringResponseEntity =
             notificationController.sendApplicationReceivedNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
