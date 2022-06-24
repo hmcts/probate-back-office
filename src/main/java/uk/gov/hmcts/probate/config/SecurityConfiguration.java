@@ -69,7 +69,6 @@ public class SecurityConfiguration {
                 .requestMatchers()
                 .antMatchers("/swagger-ui.html")
                 .antMatchers("/swagger-resources/**")
-                .antMatchers("/webjars/springfox-swagger-ui/**")
                 .antMatchers("/v2/api-docs")
                 .antMatchers("/health", "/health/liveness")
                 .antMatchers("/info")
@@ -104,7 +103,6 @@ public class SecurityConfiguration {
         public void configure(WebSecurity web) {
             web.ignoring().antMatchers("/swagger-ui.html",
                 "/swagger-resources/**",
-                "/webjars/springfox-swagger-ui/**",
                 "/v2/api-docs",
                 "/health",
                 "/health/liveness",
