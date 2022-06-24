@@ -113,6 +113,22 @@ class OrganisationsRetrievalServiceTest {
     }
 
     @Test
+    void shouldGetNullOrgForAccountStatus() {
+        MockitoAnnotations.openMocks(this);
+
+        Map hm = new HashMap<>();
+        hm.put("idamStatus", "status");
+        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
+                any(HttpEntity.class), any(Class.class))).thenReturn(null);
+
+        organisationsRetrievalService.accountApi = "/account_api";
+        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
+        String accountStatus = organisationsRetrievalService
+                .getUserAccountStatus("emailAddress", AUTH_TOKEN, "1234567890123456");
+        assertNull(accountStatus);
+    }
+
+    @Test
     void testOrganisationEntityExceptionWithNoBearer() {
         assertThrows(ClientException.class, () -> {
             MockitoAnnotations.openMocks(this);

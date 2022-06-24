@@ -32,9 +32,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -130,6 +132,8 @@ class BusinessValidationControllerTest {
     private static final String SOLS_DEFAULT_IHT_ESTATE_URL = "/case/default-iht-estate";
     private static final String SOLS_CREATE_VALIDATE_URL = "/case/sols-create-validate";
     private static final String SOLS_VALIDATE_IHT_ESTATE_URL = "/case/validate-iht-estate";
+    private static final String SOLS_CREATE = "/case/sols-created";
+    private static final String SOLS_ACCESS = "/case/sols-access";
     private static final String SOLS_VALIDATE_URL = "/case/sols-validate";
     private static final String SOLS_VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String SOLS_VALIDATE_EXEC_URL = "/case/sols-validate-executors";
@@ -190,6 +194,9 @@ class BusinessValidationControllerTest {
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
+
+    @MockBean
+    private AssignCaseAccessService assignCaseAccessService;
 
     @BeforeEach
     public void setup() {
@@ -1191,12 +1198,32 @@ class BusinessValidationControllerTest {
     void solsCaseCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
         String caseDetails = testUtils.getStringFromFile("caseDetailWithOrgPolicy.json");
 
-        mockMvc.perform(post("/case/sols-created")
+        mockMvc.perform(post(SOLS_CREATE)
                 .header("Authorization", AUTH_TOKEN)
                 .content(caseDetails)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(CoreMatchers.containsString("data")));
+    }
+
+    @Test
+    void solsCaseAccess_ShouldReturnOkResponseCode() throws Exception {
+        String caseDetails = testUtils.getStringFromFile("caseDetailWithOrgPolicy.json");
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse =
+                AfterSubmitCallbackResponse.builder()
+                        .confirmationBody("some body")
+                        .confirmationHeader("some header")
+                        .build();
+        when(assignCaseAccessService.assignCaseAccess(any(), any(), any())).thenReturn(afterSubmitCallbackResponse);
+
+        mockMvc.perform(post(SOLS_ACCESS)
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caseDetails)
+                        .param("caseTypeId", "GrantOfReporesentation")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("some body")))
+                .andExpect(content().string(CoreMatchers.containsString("some header")));
     }
 }
 

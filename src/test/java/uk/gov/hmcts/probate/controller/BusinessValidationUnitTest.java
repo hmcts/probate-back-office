@@ -208,11 +208,13 @@ class BusinessValidationUnitTest {
     void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
+        when(assignCaseAccessService.assignCaseAccess(any(), any(), any())).thenReturn(afterSubmitCallbackResponseMock);
 
         ResponseEntity<AfterSubmitCallbackResponse> response = underTest.solicitorAccess("auth",
                 "GrantOfRepresentation", callbackRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody(), is(afterSubmitCallbackResponseMock));
     }
 
     @Test

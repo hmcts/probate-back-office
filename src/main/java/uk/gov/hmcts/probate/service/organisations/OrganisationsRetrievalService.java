@@ -67,9 +67,10 @@ public class OrganisationsRetrievalService {
             ResponseEntity<Map> responseEntity = restTemplate.exchange(uri, GET,
                     request, Map.class);
 
+            Objects.requireNonNull(responseEntity.getBody());
             log.info("SAC: found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
                     responseEntity.toString());
-            return Objects.requireNonNull(responseEntity.getBody().get("idamStatus").toString());
+            return responseEntity.getBody().get("idamStatus").toString();
         } catch (Exception e) {
             log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
                     caseId, authToken, e.getMessage());
