@@ -42,9 +42,8 @@ public class UserAccessStatusErrorReporter {
         String accountStatus = organisationsRetrievalService.getUserAccountStatus(userEmail, authorisationToken,
                 caseId);
         if (status == 400 && message.contains(SAC_ERROR_USER_ORG)) {
-            AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
+            return confirmationResponseService
                     .getCaseAccessErrorConfirmation(caseId, accountStatus, getErrorSteps(accountStatus));
-            return afterSubmitCallbackResponse;
         }
 
         return null;
@@ -58,14 +57,5 @@ public class UserAccessStatusErrorReporter {
         }
 
         return null;
-    }
-
-    private AssignCaseAccessRequest buildAssignCaseAccessRequest(String caseId, String userId, String caseTypeId) {
-        return AssignCaseAccessRequest
-                .builder()
-                .caseId(caseId)
-                .assigneeId(userId)
-                .caseTypeId(caseTypeId)
-                .build();
     }
 }
