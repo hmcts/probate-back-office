@@ -31,11 +31,11 @@ public class OrganisationsRetrievalService {
 
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
-    @Value("${prd.organisations.url}")
+    @Value("${prd.url}")
     protected String orgUri;
     @Value("${prd.organisations.api}")
     protected String orgApi;
-    @Value("${prd.organisations.account.api}")
+    @Value("${prd.organisations.account}")
     protected String accountApi;
 
     public OrganisationEntityResponse getOrganisationEntity(String caseId, String authToken) {

@@ -50,8 +50,8 @@ class PBARetrievalServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        pbaRetrievalService.orgUri = "http://pbaApi";
         pbaRetrievalService.pbaApi = "/pbaUri";
-        pbaRetrievalService.pbaUri = "http://pbaApi";
     }
 
     @Test

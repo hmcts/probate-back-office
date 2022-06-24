@@ -57,17 +57,13 @@ payment:
     siteId: ABA6
   service: PROBATE
 
-pba:
-  retrieval:
-    url: ${PRD_API_URL:http://localhost:8991}
-    health.url: ${pba.retrieval.url}/health
-    api: /refdata/external/v1/organisations/pbas
-
 prd:
+  url: ${PRD_API_URL:http://localhost:8991}
+  health: /health
   organisations:
-    url: ${PRD_API_URL:http://localhost:8991}
     api: /refdata/external/v1/organisations
-    account.api: /refdata/external/v1/organisations/users/accountId
+    pba: ${prd.organisations.api}/pbas
+    account: ${prd.organisations.api}/users/accountId
 
 docmosis:
   service:
