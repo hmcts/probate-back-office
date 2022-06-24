@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -81,6 +82,9 @@ class DocumentsReceivedNotificationServiceTest {
 
     @Mock
     private List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
+
+    @Mock
+    private FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setup() throws IOException, NotificationClientException {
@@ -135,18 +139,35 @@ class DocumentsReceivedNotificationServiceTest {
     }
 
     @Test
-    void handleDocumentReceivedPersonalNotification() throws NotificationClientException {
+    void handleDocumentReceivedPersonalNotificationToggleOn() throws NotificationClientException {
         callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
         doReturn(callbackResponse).when(eventValidationService)
             .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
-
+        doReturn(true).when(featureToggleService)
+                .isFeatureToggleOn("probate-documents-received-notification", false);
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+    }
+
+    @Test
+    void handleDocumentReceivedPersonalNotificationDefaultOff() throws NotificationClientException {
+        callbackRequest = new CallbackRequest(personalCaseDataBirmingham);
+        doReturn(callbackResponse).when(eventValidationService)
+            .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
+        doReturn(callbackResponseWithDataNoDocuments).when(callbackResponseTransformer)
+            .addDocuments(any(), any(), any(), any());
+        doReturn(false).when(featureToggleService)
+            .isFeatureToggleOn("probate-documents-received-notification", false);
+
+        CallbackResponse callbackResponse =
+            documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
+        assertTrue(callbackResponse.getData().getProbateNotificationsGenerated().isEmpty());
     }
 
     @Test
@@ -157,6 +178,8 @@ class DocumentsReceivedNotificationServiceTest {
         doReturn(emailDocument).when(notificationService).sendEmail(eq(DOCUMENTS_RECEIVED), any());
         doReturn(callbackResponseWithData).when(callbackResponseTransformer)
             .addDocuments(any(), eq(expectedOneDocument), any(), any());
+        doReturn(true).when(featureToggleService)
+            .isFeatureToggleOn("probate-documents-received-notification", false);
 
         CallbackResponse callbackResponse =
             documentsReceivedNotificationService.handleDocumentReceivedNotification(callbackRequest);
