@@ -199,7 +199,7 @@ public class ZipFileService {
             errorDescription = "Exception adding file from case id: " + returnedCaseDetails.getId().toString()
                     + " document id: " + documentId;
             log.info(errorDescription);
-            log.info(e.getMessage());
+            log.error("Error while adding fie ", e);
         } finally {
             ZippedDocumentFile zippedDocumentFile = ZippedDocumentFile.builder()
                     .byteArrayResource(byteArrayResource)
