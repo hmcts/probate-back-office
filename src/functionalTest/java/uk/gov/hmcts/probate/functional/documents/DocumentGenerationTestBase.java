@@ -26,6 +26,8 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
             .body(utils.getJsonFromFile(jsonFileName))
             .when().post(path).andReturn();
 
+        jsonResponse.then().assertThat().statusCode(200);
+
         final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
         final String documentUrl =
