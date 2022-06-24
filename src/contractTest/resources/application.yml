@@ -123,7 +123,7 @@ payment:
   service: PROBATE
 
 prd:
-  url: ${PRD_API_URL:http://localhost:8991}
+  url: ${PRD_API_URL:http://localhost:8887}
   health: /health
   organisations:
     api: /refdata/external/v1/organisations
