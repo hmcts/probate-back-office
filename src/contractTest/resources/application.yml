@@ -132,6 +132,7 @@ prd:
   organisations:
     url: ${PRD_API_URL:http://localhost:8991}
     api: /refdata/external/v1/organisations
+    account.api: /refdata/external/v1/organisations/users/accountId
 
 markdown.templatesDirectory: templates/markdown/
 
