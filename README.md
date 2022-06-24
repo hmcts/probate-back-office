@@ -151,9 +151,13 @@ dependencies {
 ./gradle bootWithCCD 
 # run in debugger with 
 ./gradlew bootWithCCD --debug-jvm
+or just click debug in intellij on probate-back-office [bootWithCCD] run/debug configuration
+
 
 NOTE that the bootWithCCD brings up a prcess that just sits there, to exit either Ctrl-C 
      or press stop on the run tab in intellij.
+
+NOTE I have sometimes had issues trying to get debugger up, my solution is to stop and terminate and try again.
 If there is a problem with debugging message about "JDWP Transport dt_socket failed to initialize"
 Debugger might be stuck running, need to go to cmd line to kill task if it's been left hanging:
 lsof -i tcp:5005
@@ -161,7 +165,7 @@ This will show the PID then can kill that PID using
 kill -9 PID_JUST_FOUND
 
 Also needs back office docker to bring up all services:
-./dev-cft-setup.sh
+./bin/dev-cft-setup.sh
 
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
 ########################################################################################################################
