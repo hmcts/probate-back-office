@@ -277,7 +277,8 @@ public class ConfirmationResponseService {
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
-    private TemplateResponse getCaseAccessErrorMarkdown(String caseId, String currentAccountStatus, String stepsToResolve) {
+    private TemplateResponse getCaseAccessErrorMarkdown(String caseId, String currentAccountStatus,
+                                                        String stepsToResolve) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{accountStatus}}", currentAccountStatus);
         keyValue.put("{{stepsToResolve}}", stepsToResolve);
