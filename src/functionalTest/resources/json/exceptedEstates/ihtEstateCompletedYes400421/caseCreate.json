@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1528365719155053,
+    "id": 1528365719153338,
     "jurisdiction": "PROBATE",
     "state": "CaseCreated",
     "case_type_id": "GrantOfRepresentation",
@@ -82,23 +82,6 @@
       },
       "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
-      "solsPBANumber": {
-        "value": {
-          "code": "PBA0082126",
-          "label": "PBA0082126"
-        },
-        "list_items": [
-          {
-            "code": "PBA0082126",
-            "label": "PBA0082126"
-          },
-          {
-            "code": "PBA0083372",
-            "label": "PBA0083372"
-          }
-        ]
-      },
-      "solsPBAPaymentReference": "appref-PAY15",
       "solsAdditionalExecutorList": [
         {
           "id": "solicitor",
