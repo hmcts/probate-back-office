@@ -6,9 +6,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AssembleTestBase {
+class AssembleTestBase {
     protected AssemblerBase assemblerBase = new AssemblerBase();
     protected CaseData caseData = CaseData.builder().build();
 

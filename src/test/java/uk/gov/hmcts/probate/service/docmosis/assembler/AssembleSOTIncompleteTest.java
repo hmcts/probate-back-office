@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -23,11 +23,11 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotP
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pQ7;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.SotPa1pRedec;
 
-public class AssembleSOTIncompleteTest extends AssembleTestBase {
+class AssembleSOTIncompleteTest extends AssembleTestBase {
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
     private AssembleSOTIncomplete assembleSOTIncomplete = new AssembleSOTIncomplete(assemblerBase);
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(SotPa1pRedec, new String[] {"SotPa1pRedec", "FL-PRB-GNO-ENG-00110.docx",
             "PA1P: Part B - Full redec of application"});
@@ -61,7 +61,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1pRedec() {
+    void shouldPopulateSotPa1pRedec() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pRedec(SotPa1pRedec,
             CaseData.builder().build());
@@ -69,7 +69,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1aRedec() {
+    void shouldPopulateSotPa1aRedec() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aRedec(SotPa1aRedec,
             CaseData.builder().build());
@@ -77,7 +77,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotNotSigned() {
+    void shouldPopulateSotNotSigned() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotNotSigned(SotNotSigned,
             CaseData.builder().build());
@@ -86,7 +86,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
 
 
     @Test
-    public void shouldPopulateSotPa1pQ2() {
+    void shouldPopulateSotPa1pQ2() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ2(SotPa1pQ2,
             CaseData.builder().build());
@@ -95,7 +95,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
 
 
     @Test
-    public void shouldPopulateSotPa1pQ3() {
+    void shouldPopulateSotPa1pQ3() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ3(SotPa1pQ3,
             CaseData.builder().build());
@@ -103,7 +103,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1pQ4() {
+    void shouldPopulateSotPa1pQ4() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ4(SotPa1pQ4,
             CaseData.builder().build());
@@ -111,7 +111,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1pQ5() {
+    void shouldPopulateSotPa1pQ5() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ5(SotPa1pQ5,
             CaseData.builder().build());
@@ -119,7 +119,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1pQ6() {
+    void shouldPopulateSotPa1pQ6() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ6(SotPa1pQ6,
             CaseData.builder().build());
@@ -127,7 +127,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1pQ7() {
+    void shouldPopulateSotPa1pQ7() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1pQ7(SotPa1pQ7,
             CaseData.builder().build());
@@ -135,7 +135,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1aQ2() {
+    void shouldPopulateSotPa1aQ2() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ2(SotPa1aQ2,
             CaseData.builder().build());
@@ -143,7 +143,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1aQ3() {
+    void shouldPopulateSotPa1aQ3() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ3(SotPa1aQ3,
             CaseData.builder().build());
@@ -151,7 +151,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1aQ4() {
+    void shouldPopulateSotPa1aQ4() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ4(SotPa1pQ4,
             CaseData.builder().build());
@@ -159,7 +159,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1aQ5() {
+    void shouldPopulateSotPa1aQ5() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ5(SotPa1aQ5,
             CaseData.builder().build());
@@ -167,7 +167,7 @@ public class AssembleSOTIncompleteTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateSotPa1aQ6() {
+    void shouldPopulateSotPa1aQ6() {
 
         List<ParagraphDetail> response = assembleSOTIncomplete.sotPa1aQ6(SotPa1aQ6,
             CaseData.builder().build());

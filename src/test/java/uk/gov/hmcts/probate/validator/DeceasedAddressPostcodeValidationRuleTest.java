@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,14 +13,14 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 
-public class DeceasedAddressPostcodeValidationRuleTest {
+class DeceasedAddressPostcodeValidationRuleTest {
 
     @InjectMocks
     private DeceasedAddressPostcodeValidationRule deceasedAddressPostcodeValidationRule;
@@ -38,9 +37,9 @@ public class DeceasedAddressPostcodeValidationRuleTest {
 
     private FieldErrorResponse executorPostcodeIsNullError;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         executorPostcodeIsNullError = FieldErrorResponse.builder().message("deceasedPostcodeIsNull").build();
 
@@ -51,7 +50,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
+    void shouldReturnAddressAndPostcodeErrorMessagesWhenNoAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
@@ -61,7 +60,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenNoPostcodeProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getAddressLine1()).thenReturn("line1");
 
@@ -72,7 +71,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
+    void shouldReturnAddressAndPostCodeErrorMessageWhenNullAddressProvided() {
         when(deceasedMock.getAddress()).thenReturn(null);
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
@@ -81,7 +80,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenNullPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenNullPostcodeProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getAddressLine1()).thenReturn("line1");
         when(addressMock.getPostCode()).thenReturn(null);
@@ -93,7 +92,7 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldReturnPostcodeErrorMessageWhenEmptyPostcodeProvided() {
+    void shouldReturnPostcodeErrorMessageWhenEmptyPostcodeProvided() {
         when(deceasedMock.getAddress()).thenReturn(addressMock);
         when(addressMock.getAddressLine1()).thenReturn("line1");
         when(addressMock.getPostCode()).thenReturn("");
@@ -105,13 +104,13 @@ public class DeceasedAddressPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
+    void shouldNotReturnErrorMessagesWhenAddressAndPostcodeProvided() {
         when(deceasedMock.getAddress())
             .thenReturn(SolsAddress.builder().addressLine1("1 White St").postCode("SW1 1AZ").build());
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
-        Assert.assertTrue(errors.isEmpty());
+        assertTrue(errors.isEmpty());
     }
 
 }

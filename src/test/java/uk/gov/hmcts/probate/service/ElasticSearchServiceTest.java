@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -20,13 +20,14 @@ import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory
 import java.net.URI;
 import java.util.Collections;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ElasticSearchServiceTest {
+class ElasticSearchServiceTest {
 
     @InjectMocks
     private ElasticSearchService elasticSearchService;
@@ -46,9 +47,9 @@ public class ElasticSearchServiceTest {
     @Mock
     private AppInsights appInsights;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
         when(ccdDataStoreAPIConfiguration.getCaseMatchingPath()).thenReturn("/path");
@@ -58,7 +59,7 @@ public class ElasticSearchServiceTest {
     }
 
     @Test
-    public void runQuery() {
+    void runQuery() {
         MatchedCases matchedCases = elasticSearchService.runQuery(CaseType.LEGACY, "{}");
 
         assertEquals(1, matchedCases.getCases().size());
@@ -66,11 +67,13 @@ public class ElasticSearchServiceTest {
         verify(restTemplate).postForObject(any(), any(), eq(MatchedCases.class));
     }
 
-    @Test(expected = CaseMatchingException.class)
-    public void shouldThrowExceptionRunningQuery() {
-        when(restTemplate.postForObject(any(URI.class), any(), eq(MatchedCases.class)))
-                .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
+    @Test
+    void shouldThrowExceptionRunningQuery() {
+        assertThrows(CaseMatchingException.class, () -> {
+            when(restTemplate.postForObject(any(URI.class), any(), eq(MatchedCases.class)))
+                    .thenThrow(new HttpClientErrorException(HttpStatus.BAD_REQUEST));
 
-        MatchedCases matchedCases = elasticSearchService.runQuery(CaseType.LEGACY, "{}");
+            MatchedCases matchedCases = elasticSearchService.runQuery(CaseType.LEGACY, "{}");
+        });
     }
 }

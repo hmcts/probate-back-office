@@ -1,26 +1,26 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAccessor;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class FileExtractDateFormatterTest {
+class FileExtractDateFormatterTest {
 
     private final FileExtractDateFormatter fileExtractDateFormatter = new FileExtractDateFormatter();
 
     @Test
-    public void shouldFormatDataDate() {
+    void shouldFormatDataDate() {
         LocalDate date = LocalDate.of(1999, 12, 31);
         assertEquals("31-DEC-1999", fileExtractDateFormatter.formatDataDate(date));
     }
 
     @Test
-    public void shouldFormatIronMountainFileDate() {
+    void shouldFormatIronMountainFileDate() {
         LocalDate date = LocalDate.now();
         String fileDate = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(date);
         String expected = DateTimeFormatter.ofPattern("yyyyMMdd").format(date);
@@ -28,7 +28,7 @@ public class FileExtractDateFormatterTest {
     }
 
     @Test
-    public void shouldFormatHmrcFileDate() {
+    void shouldFormatHmrcFileDate() {
         TemporalAccessor fileDate = (DateTimeFormatter.ofPattern("yyyy-MM-dd").parse("2020-12-31"));
         TemporalAccessor nowDateTime = (DateTimeFormatter.ofPattern("yyyyMMdd-HHmmss").parse("20201231-123456"));
         String fileDateString = DateTimeFormatter.ofPattern("yyyy-MM-dd").format(fileDate);

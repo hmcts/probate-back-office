@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -13,7 +13,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 
-public class SolicitorLegalStatementNextStepsTransformerTest {
+class SolicitorLegalStatementNextStepsTransformerTest {
 
     @InjectMocks
     SolicitorLegalStatementNextStepsTransformer solicitorLegalStatementNextStepsTransformer;
@@ -25,15 +25,15 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
 
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         responseCaseDataBuilder = ResponseCaseData.builder();
     }
 
     @Test
-    public void shouldTransformLegalStatmentAmendStatesForProbate() {
+    void shouldTransformLegalStatmentAmendStatesForProbate() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("WillLeft");
         solicitorLegalStatementNextStepsTransformer
@@ -49,7 +49,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     }
 
     @Test
-    public void shouldTransformLegalStatmentAmendStatesForIntestacy() {
+    void shouldTransformLegalStatmentAmendStatesForIntestacy() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("NoWill");
         solicitorLegalStatementNextStepsTransformer
@@ -65,7 +65,7 @@ public class SolicitorLegalStatementNextStepsTransformerTest {
     }
 
     @Test
-    public void shouldTransformLegalStatmentAmendStatesForAdmon() {
+    void shouldTransformLegalStatmentAmendStatesForAdmon() {
         when(caseDetails.getData()).thenReturn(caseData);
         when(caseData.getSolsWillType()).thenReturn("WillLeftAnnexed");
         solicitorLegalStatementNextStepsTransformer

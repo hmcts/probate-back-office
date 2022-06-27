@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.InjectMocks;
@@ -26,12 +26,13 @@ import java.util.List;
 import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class ReprintServiceTest {
+class ReprintServiceTest {
 
     @InjectMocks
     ReprintService reprintService;
@@ -54,15 +55,15 @@ public class ReprintServiceTest {
     private ArgumentCaptor<Document> selectedDocumentCaptor;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
         when(caseDetails.getData()).thenReturn(caseData);
     }
 
     @Test
-    public void shouldReprintSelectedGrantDocument() {
+    void shouldReprintSelectedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("GrantFileName")
@@ -88,7 +89,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedGrantDocumentNoLetterId() {
+    void shouldReprintSelectedGrantDocumentNoLetterId() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("GrantFileName")
@@ -114,7 +115,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedReissuedGrantDocument() {
+    void shouldReprintSelectedReissuedGrantDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("ReissuedGrantFileName")
@@ -140,7 +141,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedSOTDocument() {
+    void shouldReprintSelectedSOTDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("SOTFileName")
@@ -166,7 +167,7 @@ public class ReprintServiceTest {
     }
 
     @Test
-    public void shouldReprintSelectedWillDocument() {
+    void shouldReprintSelectedWillDocument() {
         DynamicList reprintDoc = DynamicList.builder()
             .value(DynamicListItem.builder()
                 .code("WillFileName")
@@ -191,94 +192,106 @@ public class ReprintServiceTest {
         assertThat(selectedDocumentCaptor.getValue().getDocumentFileName(), is("WillFileName"));
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldThowExceptionForNoSelection() {
-        DynamicList doc = DynamicList.builder()
-            .build();
-        when(caseData.getReprintDocument()).thenReturn(doc);
+    @Test
+    void shouldThowExceptionForNoSelection() {
+        assertThrows(BadRequestException.class, () -> {
+            DynamicList doc = DynamicList.builder()
+                    .build();
+            when(caseData.getReprintDocument()).thenReturn(doc);
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest);
+        });
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldThowExceptionForNoLabelSelection() {
-        DynamicList doc = DynamicList.builder()
-            .value(DynamicListItem.builder()
-                .code("GrantFileName")
-                .build())
-            .build();
-        when(caseData.getReprintDocument()).thenReturn(doc);
+    @Test
+    void shouldThowExceptionForNoLabelSelection() {
+        assertThrows(BadRequestException.class, () -> {
+            DynamicList doc = DynamicList.builder()
+                    .value(DynamicListItem.builder()
+                            .code("GrantFileName")
+                            .build())
+                    .build();
+            when(caseData.getReprintDocument()).thenReturn(doc);
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest);
+        });
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldThowExceptionForNoCodeSelection() {
-        DynamicList doc = DynamicList.builder()
-            .value(DynamicListItem.builder()
-                .label("Grant")
-                .build())
-            .build();
-        when(caseData.getReprintDocument()).thenReturn(doc);
+    @Test
+    void shouldThowExceptionForNoCodeSelection() {
+        assertThrows(BadRequestException.class, () -> {
+            DynamicList doc = DynamicList.builder()
+                    .value(DynamicListItem.builder()
+                            .label("Grant")
+                            .build())
+                    .build();
+            when(caseData.getReprintDocument()).thenReturn(doc);
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest);
+        });
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldThrowExceptionForUnknownDocType() {
-        DynamicList reprintDoc = DynamicList.builder()
-            .value(DynamicListItem.builder()
-                .code("OtherFileName")
-                .label("Other")
-                .build())
-            .build();
-        when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+    @Test
+    void shouldThrowExceptionForUnknownDocType() {
+        assertThrows(BadRequestException.class, () -> {
+            DynamicList reprintDoc = DynamicList.builder()
+                    .value(DynamicListItem.builder()
+                            .code("OtherFileName")
+                            .label("Other")
+                            .build())
+                    .build();
+            when(caseData.getReprintDocument()).thenReturn(reprintDoc);
 
-        Document coversheet = Document.builder().build();
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
-            .thenReturn(coversheet);
+            Document coversheet = Document.builder().build();
+            when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                    .thenReturn(coversheet);
 
-        setupGeneratedDocs();
+            setupGeneratedDocs();
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest);
+        });
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldNotReprintSelectedGrantDocumentWhenFileNamesDontMatch() {
-        DynamicList reprintDoc = DynamicList.builder()
-            .value(DynamicListItem.builder()
-                .code("GrantFileNameXXX")
-                .label("Grant")
-                .build())
-            .build();
-        when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+    @Test
+    void shouldNotReprintSelectedGrantDocumentWhenFileNamesDontMatch() {
+        assertThrows(BadRequestException.class, () -> {
+            DynamicList reprintDoc = DynamicList.builder()
+                    .value(DynamicListItem.builder()
+                            .code("GrantFileNameXXX")
+                            .label("Grant")
+                            .build())
+                    .build();
+            when(caseData.getReprintDocument()).thenReturn(reprintDoc);
 
-        Document coversheet = Document.builder().build();
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
-            .thenReturn(coversheet);
+            Document coversheet = Document.builder().build();
+            when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                    .thenReturn(coversheet);
 
-        setupGeneratedDocs();
+            setupGeneratedDocs();
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest);
+        });
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldNotReprintSelectedWillDocumentForFileNameMismatch() {
-        DynamicList reprintDoc = DynamicList.builder()
-            .value(DynamicListItem.builder()
-                .code("WillFileNameXXX")
-                .label("Will")
-                .build())
-            .build();
-        when(caseData.getReprintDocument()).thenReturn(reprintDoc);
+    @Test
+    void shouldNotReprintSelectedWillDocumentForFileNameMismatch() {
+        assertThrows(BadRequestException.class, () -> {
+            DynamicList reprintDoc = DynamicList.builder()
+                    .value(DynamicListItem.builder()
+                            .code("WillFileNameXXX")
+                            .label("Will")
+                            .build())
+                    .build();
+            when(caseData.getReprintDocument()).thenReturn(reprintDoc);
 
-        Document coversheet = Document.builder().build();
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
-            .thenReturn(coversheet);
+            Document coversheet = Document.builder().build();
+            when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
+                    .thenReturn(coversheet);
 
-        setupScannedDocs();
+            setupScannedDocs();
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest);
+        });
     }
 
     private void setupSOTDoc() {

@@ -3,16 +3,16 @@ package uk.gov.hmcts.probate.service;
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
 import com.github.hmcts.lifeevents.client.service.DeathService;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -24,16 +24,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = LifeEventService.class)
-public class LifeEventServiceTest {
+class LifeEventServiceTest {
 
     final Long caseId = 1234L;
     final String firstName = "Wibble";
@@ -56,7 +56,7 @@ public class LifeEventServiceTest {
     LocalDate localDate;
     V1Death v1Death;
 
-    @Before
+    @BeforeEach
     public void setup() {
         localDate = LocalDate.of(1900, 1, 1);
 
@@ -79,7 +79,7 @@ public class LifeEventServiceTest {
     }
 
     @Test
-    public void shouldPropagateExceptionWhenSearchingByNameAndDate() {
+    void shouldPropagateExceptionWhenSearchingByNameAndDate() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
             "Test exception"));
         Exception exception = assertThrows(RuntimeException.class, () -> {
@@ -90,7 +90,7 @@ public class LifeEventServiceTest {
     }
 
     @Test
-    public void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
+    void shouldThowBusinessValidationExceptionWhenNoDeathRecordsFound() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenReturn(emptyList());
         Exception exception = assertThrows(BusinessValidationException.class, () -> {
             lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
@@ -101,7 +101,7 @@ public class LifeEventServiceTest {
 
 
     @Test
-    public void shouldSearchByNameAndDate() {
+    void shouldSearchByNameAndDate() {
         lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
         verify(deathService).searchForDeathRecordsByNamesAndDate(eq(firstName), eq(lastName), eq(localDate));
         verify(deathRecordCCDService).mapDeathRecords(eq(deathRecords));

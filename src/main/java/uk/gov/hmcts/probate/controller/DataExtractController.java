@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +23,7 @@ import java.util.concurrent.Executors;
 @RequiredArgsConstructor
 @RequestMapping("/data-extract")
 @RestController
-@Api(tags = "Initiate data extract for HMRC, IronMountain and Exela")
+@Tag(name = "Initiate data extract for HMRC, IronMountain and Exela")
 public class DataExtractController {
 
     private final HmrcDataExtractService hmrcDataExtractService;
@@ -32,7 +32,8 @@ public class DataExtractController {
     private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     private final DataExtractDateValidator dataExtractDateValidator;
 
-    @ApiOperation(value = "Initiate HMRC data extract within 2 dates", notes = "Dates MUST be in format 'yyyy-MM-dd'")
+    @Operation(summary = "Initiate HMRC data extract within 2 dates",
+            description = "Dates MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/hmrc")
     public ResponseEntity initiateHmrcExtractFromDate(@RequestParam(value = "fromDate") String fromDate,
                                                       @RequestParam(value = "toDate") String toDate) {
@@ -49,9 +50,10 @@ public class DataExtractController {
         return ResponseEntity.accepted().body("Perform HMRC data extract finished");
     }
 
-    @ApiOperation(value = "Initiate IronMountain data extract with date", notes = "Date MUST be in format 'yyyy-MM-dd'")
+    @Operation(summary = "Initiate IronMountain data extract with date",
+            description = "Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/iron-mountain")
-    public ResponseEntity initiateIronMountainExtract(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity initiateIronMountainExtract(@Parameter(name = "Date to find cases against", required = true)
                                                       @RequestParam("date") String date) {
         dataExtractDateValidator.dateValidator(date);
 
@@ -65,9 +67,9 @@ public class DataExtractController {
         return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
 
-    @ApiOperation(value = "Initiate Exela data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
+    @Operation(summary = "Initiate Exela data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/exela")
-    public ResponseEntity initiateExelaExtractDateRange(@ApiParam(value = "Date to find cases against", required = true)
+    public ResponseEntity initiateExelaExtractDateRange(@Parameter(name = "Date to find cases against", required = true)
                                                @RequestParam("fromDate") String fromDate,
                                                 @RequestParam("toDate") String toDate) {
 
@@ -83,10 +85,10 @@ public class DataExtractController {
         return ResponseEntity.accepted().body("Exela data extract finished");
     }
 
-    @ApiOperation(value = "Initiate Smee And Ford data extract", notes = " Date MUST be in format 'yyyy-MM-dd'")
+    @Operation(summary = "Initiate Smee And Ford data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/smee-and-ford")
     public ResponseEntity initiateSmeeAndFordExtract(
-                @ApiParam(value = "Date to find cases against", required = true)
+                @Parameter(name = "Date to find cases against", required = true)
                 @RequestParam(value = "fromDate") String fromDate,
                 @RequestParam(value = "toDate") String toDate) {
 
@@ -99,7 +101,7 @@ public class DataExtractController {
         });
         log.info("Perform Smee And Ford data extract from date finished");
 
-        return ResponseEntity.accepted().body("Smee And Ford data extract finished");
+        return ResponseEntity.accepted().body(null);
     }
 
 }

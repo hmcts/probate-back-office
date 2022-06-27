@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.htmlrendering;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class SubheadingRendererTest {
+class SubheadingRendererTest {
 
     @Test
-    public void shouldRenderSubheadingCorrectly() {
+    void shouldRenderSubheadingCorrectly() {
         String expectedValue = "<h3 class=\"govuk-heading-m\">This is a heading</h3>";
         String result = SubheadingRenderer.render("This is a heading");
         assertEquals(expectedValue, result);

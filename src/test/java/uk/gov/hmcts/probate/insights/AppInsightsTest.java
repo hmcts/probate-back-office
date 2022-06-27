@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.insights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
 import com.microsoft.applicationinsights.telemetry.TelemetryContext;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.Assert;
@@ -13,16 +13,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
 
-public class AppInsightsTest {
+class AppInsightsTest {
     private AppInsights classUnderTest;
     private String instrumentKey = "key";
 
     @Mock
     private TelemetryClient telemetryClient;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         TelemetryContext telemetryContext = new TelemetryContext();
         telemetryContext.setInstrumentationKey("some-key");
         doReturn(telemetryContext).when(telemetryClient).getContext();
@@ -30,12 +30,12 @@ public class AppInsightsTest {
     }
 
     @Test
-    public void trackRequest() {
+    void trackRequest() {
         classUnderTest.trackEvent(REQUEST_SENT.toString(), classUnderTest.trackingMap("uri", "http://testurl.com"));
     }
 
     @Test
-    public void testTelemetry() {
+    void testTelemetry() {
         TelemetryContext telemetryContext = new TelemetryContext();
         telemetryContext.setInstrumentationKey("key");
 

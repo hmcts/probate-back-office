@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.transformer;
 
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,10 +14,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-public class CaveatDataTransformerTest {
+class CaveatDataTransformerTest {
 
     @Mock
     private CaveatCallbackRequest callbackRequestMock;
@@ -42,15 +42,15 @@ public class CaveatDataTransformerTest {
     private static final String SOL_PAY_REF = "solsPayRef";
     private static final String SOL_PAY_FEE_ACCT_NUMBER = "solsFeeAccountNumber";
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caveatDeatilsMock);
         when(caveatDeatilsMock.getData()).thenReturn(caveatDataMock);
     }
 
     @Test
-    public void shouldTransformCaveats() {
+    void shouldTransformCaveats() {
         when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
         when(caveatDataMock.getCaveatorEmailAddress()).thenReturn(CAVEATOR_EMAIL);
 
@@ -61,7 +61,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaveatsWithNoEmail() {
+    void shouldTransformCaveatsWithNoEmail() {
         when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
 
         CaveatData caveatData = underTest.transformCaveats(callbackRequestMock);
@@ -71,7 +71,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformSolsCaveats() {
+    void shouldTransformSolsCaveats() {
         when(caveatDataMock.getExpiryDate()).thenReturn(EXPIRY_DATE);
         when(caveatDataMock.getCaveatorEmailAddress()).thenReturn(CAVEATOR_EMAIL);
         when(caveatDataMock.getRegistryLocation()).thenReturn(REGISTRY_LOCATION);
@@ -97,7 +97,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformSolsCaveatsWithNullValues() {
+    void shouldTransformSolsCaveatsWithNullValues() {
         when(caveatDeatilsMock.getLastModified()).thenReturn(LAST_MODIFIED_STR);
 
         CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
@@ -111,7 +111,7 @@ public class CaveatDataTransformerTest {
     }
 
     @Test
-    public void shouldTransformSolsCaveatsWithAllNullValues() {
+    void shouldTransformSolsCaveatsWithAllNullValues() {
         CaveatData caveatData = underTest.transformSolsCaveats(callbackRequestMock);
 
         assertEquals("", caveatData.getCaveatorEmailAddress());

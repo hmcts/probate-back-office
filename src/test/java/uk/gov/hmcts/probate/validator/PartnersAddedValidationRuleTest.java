@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.validator;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -20,7 +20,7 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINC
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 
-public class PartnersAddedValidationRuleTest {
+class PartnersAddedValidationRuleTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
@@ -41,9 +41,9 @@ public class PartnersAddedValidationRuleTest {
     private CaseData caseDataNoErrorTrustCorp;
     private CaseData caseDataNoErrorTwoTrustCorp;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         caseDataYesYes = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
@@ -127,7 +127,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerYesYes() {
+    void shouldThrowNeedAtLeastOneMorePartnerYesYes() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataYesYes, LAST_MODIFIED, CASE_ID);
 
@@ -141,7 +141,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerYesYesTrustCorp() {
+    void shouldThrowNeedAtLeastOneMorePartnerYesYesTrustCorp() {
         final CaseDetails caseDetailsTc =
                 new CaseDetails(caseDataYesYesTrustCorp, LAST_MODIFIED, CASE_ID);
 
@@ -154,7 +154,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerYesNo() {
+    void shouldThrowNeedAtLeastOneMorePartnerYesNo() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataYesNo, LAST_MODIFIED, CASE_ID);
 
@@ -167,7 +167,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerYesNoTrustCorp() {
+    void shouldThrowNeedAtLeastOneMorePartnerYesNoTrustCorp() {
         final CaseDetails caseDetailsTc =
                 new CaseDetails(caseDataYesNoTrustCorp, LAST_MODIFIED, CASE_ID);
 
@@ -180,7 +180,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerNoNo() {
+    void shouldThrowNeedAtLeastOneMorePartnerNoNo() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoNo, LAST_MODIFIED, CASE_ID);
 
@@ -193,7 +193,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerNoNoTrustCorp() {
+    void shouldThrowNeedAtLeastOneMorePartnerNoNoTrustCorp() {
         final CaseDetails caseDetailsTc =
                 new CaseDetails(caseDataNoNoTrustCorp, LAST_MODIFIED, CASE_ID);
 
@@ -206,7 +206,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerNoError() {
+    void shouldThrowNeedAtLeastOneMorePartnerNoError() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoError, LAST_MODIFIED, CASE_ID);
 
@@ -214,7 +214,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerNoErrorTrustCorp() {
+    void shouldThrowNeedAtLeastOneMorePartnerNoErrorTrustCorp() {
         final CaseDetails caseDetailsTc =
                 new CaseDetails(caseDataNoErrorTrustCorp, LAST_MODIFIED, CASE_ID);
 
@@ -222,7 +222,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerNoErrorTwo() {
+    void shouldThrowNeedAtLeastOneMorePartnerNoErrorTwo() {
         final CaseDetails caseDetails =
             new CaseDetails(caseDataNoErrorTwo, LAST_MODIFIED, CASE_ID);
 
@@ -230,7 +230,7 @@ public class PartnersAddedValidationRuleTest {
     }
 
     @Test
-    public void shouldThrowNeedAtLeastOneMorePartnerNoErrorTwoTrustCorp() {
+    void shouldThrowNeedAtLeastOneMorePartnerNoErrorTwoTrustCorp() {
         final CaseDetails caseDetailsTc =
                 new CaseDetails(caseDataNoErrorTwoTrustCorp, LAST_MODIFIED, CASE_ID);
 
