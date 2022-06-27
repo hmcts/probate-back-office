@@ -71,8 +71,6 @@ public class DocumentManagementServiceImplTest {
         when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
         when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());
         when(documentUploadRequestMock.getJurisdictionId()).thenReturn("PROBATE");
-        when(securityUtils.getCaseworkerToken()).thenReturn("Bearer AUTH");
-        when(securityUtils.generateServiceToken()).thenReturn("S2S");
         when(documentManagementRequestBuilder.perpareDocumentUploadRequest(evidenceManagementFileUpload, DIGITAL_GRANT))
             .thenReturn(documentUploadRequestMock);
         when(caseDocumentClient.uploadDocuments("Bearer AUTH", "S2S", "GrantOfRepresentation", "PROBATE",
