@@ -311,7 +311,7 @@ class PDFManagementServiceTest {
             when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
                 .thenReturn(uploadResponseMock);
 
-                underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
+            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
     }
 
@@ -324,12 +324,11 @@ class PDFManagementServiceTest {
     void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
-
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
-        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-            .thenReturn(uploadResponseMock);
+            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+                .thenReturn(evidenceManagementFileUpload);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+            when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+                .thenReturn(uploadResponseMock);
 
             underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
@@ -340,11 +339,11 @@ class PDFManagementServiceTest {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 
-        when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-            .thenReturn(evidenceManagementFileUpload);
-        when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
-        when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-            .thenReturn(uploadResponseMock);
+            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
+                .thenReturn(evidenceManagementFileUpload);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+            when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
+                .thenReturn(uploadResponseMock);
 
             underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
