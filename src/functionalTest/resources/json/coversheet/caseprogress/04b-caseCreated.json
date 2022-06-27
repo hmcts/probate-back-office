@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1528365719153338,
+    "id": 1528365719153343,
     "jurisdiction": "PROBATE",
     "state": "CaseCreated",
     "case_type_id": "GrantOfRepresentation",
@@ -39,7 +39,7 @@
       "paperForm": "no",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
-      "willHasCodicils": "No",
+      "willHasCodicils": "Yes",
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
@@ -54,7 +54,7 @@
       "solsSolicitorIsExec": "Yes",
       "solsSolicitorIsMainApplicant": "No",
       "solsSolicitorIsApplying": "No",
-      "solsSolicitorNotApplyingReason": "Renunciation",
+      "solsSolicitorNotApplyingReason": "DiedBefore",
       "willDispose": "Yes",
       "englishWill": "Yes",
       "appointExec": "Yes",
@@ -84,18 +84,24 @@
       },
       "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
-      "solsAdditionalExecutorList": [
-        {
-          "id": "solicitor",
-          "value": {
-            "additionalExecForenames": "Solicitor_fn",
-            "additionalExecLastname": "Solicitor_ln",
-            "additionalExecNameOnWill": "No",
-            "additionalApplying": "No",
-            "additionalExecReasonNotApplying": "Renunciation"
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
           }
-        }
-      ],
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY5",
+      "solsAdditionalExecutorList": [],
       "solsSolicitorAddress": {
         "AddressLine1": "SolAddLn1",
         "AddressLine2": "SolAddLn2",
@@ -105,15 +111,6 @@
         "PostCode": "KT10 0LA",
         "Country": "SolAddCo"
       },
-      "executorsNotApplying": [
-        {
-          "id": "solicitor",
-          "value": {
-            "notApplyingExecutorName": "exec2 Renounced",
-            "notApplyingExecutorReason": "Renunciation"
-          }
-        }
-      ],
       "executorsApplyingForLegalStatement": [
         {
           "id": null,
@@ -131,22 +128,6 @@
               "country": "United Kingdom",
               "postCode": "EC3A 2AD"
             }
-          }
-        }
-      ],
-      "executorsNotApplyingLegalStatement": [
-        {
-          "id": "solicitor",
-          "value": {
-            "notApplyingExecutorName": "Solicitor_fn Solicitor_ln",
-            "notApplyingExecutorReason": "Renunciation"
-          }
-        },
-        {
-          "id": "solicitor",
-          "value": {
-            "notApplyingExecutorName": "exec2 Renounced",
-            "notApplyingExecutorReason": "Renunciation"
           }
         }
       ],
@@ -352,7 +333,7 @@
         "AddressLine3": ""
       },
       "deceasedAnyOtherNames": "No",
-      "willHasCodicils": "No",
+      "willHasCodicils": "Yes",
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
