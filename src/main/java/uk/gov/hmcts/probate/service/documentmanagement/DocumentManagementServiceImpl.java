@@ -94,9 +94,8 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     @Override
     public byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException {
-        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String auth = securityDTO.getAuthorisation();
-        String s2s = securityDTO.getServiceAuthorisation();
+        String auth = securityUtils.getCaseworkerToken();
+        String s2s = securityUtils.generateServiceToken();
 
         ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
                 binaryUrl);
