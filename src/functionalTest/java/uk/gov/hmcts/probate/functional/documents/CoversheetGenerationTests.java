@@ -104,7 +104,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
         String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
-        String payload = dir + "caseCreate.json";
+        String payload = dir + "caseCreate2.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
@@ -130,7 +130,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesNo() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
-        String payload = dir + "caseCreate.json";
+        String payload = dir + "caseCreate2.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
@@ -156,7 +156,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
         String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
-        String payload = dir + "caseCreate.json";
+        String payload = dir + "caseCreate2.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
@@ -182,7 +182,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
         //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
         String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
-        String payload = dir + "caseCreate.json";
+        String payload = dir + "caseCreate2.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
