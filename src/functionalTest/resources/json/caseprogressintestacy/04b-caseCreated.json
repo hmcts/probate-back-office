@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1528365719153338,
+    "id": 1528365719153344,
     "jurisdiction": "PROBATE",
     "state": "CaseCreated",
     "case_type_id": "GrantOfRepresentation",
@@ -98,7 +98,7 @@
           }
         ]
       },
-      "solsPBAPaymentReference": "appref-PAY2",
+      "solsPBAPaymentReference": "appref-PAY11",
       "solsAdditionalExecutorList": [
         {
           "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
