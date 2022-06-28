@@ -14,7 +14,7 @@ postgresql:
   primary:
     persistence:
       enabled: false
-      initdb:
+    initdb:
       scripts:
          create.sql: |
            CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
