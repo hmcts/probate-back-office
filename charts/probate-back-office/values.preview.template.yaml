@@ -13,7 +13,7 @@ postgresql:
     password: hmcts
   primary:
     persistence:
-      enabled: false
+      enabled: true
       initdb:
       scripts:
          create.sql: |
