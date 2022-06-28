@@ -518,7 +518,7 @@ iht-estate:
   switch-date: ${EXCEPTED_ESTATE_DATE_OF_DEATH:2022-01-01}
 
 blobstorage:
-  connection: DefaultEndpointsProtocol=https;AccountName=fileshareprobatedemo;AccountKey=FKv/FdfUrdVYuv0kQINci6mTmLTXlAlskhMo7aY3yfRkX/7+M5trs5+duJnC0oK3wh0olXJU/g/z+AStOYmtFA==;EndpointSuffix=core.windows.net
+  connection: ${BLOB_STORAGE_CONNECTION_STRING:dummy}
 
 feature:
   blobstorage:
