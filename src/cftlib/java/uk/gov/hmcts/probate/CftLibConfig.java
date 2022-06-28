@@ -30,10 +30,10 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-caa"
         );
         lib.importDefinition(new File("jsontoXLS/CCD_Probate_Backoffice.xlsx"));
-      //  lib.importDefinition(new File("jsontoXLS/CCD_Probate_Caveat.xlsx"));
-      //  lib.importDefinition(new File("jsontoXLS/CCD_Probate_Legacy_Cases.xlsx"));
-      //  lib.importDefinition(new File("jsontoXLS/CCD_Probate_Legacy_Search.xlsx"));
-       // lib.importDefinition(new File("jsontoXLS/CCD_Probate_Will_Lodgement.xlsx"));
-      //  lib.importDefinition(new File("jsontoXLS/CCD_Probate_Standing_Search.xlsx"));
+        lib.importDefinition(new File("jsontoXLS/CCD_Probate_Caveat.xlsx"));
+        lib.importDefinition(new File("jsontoXLS/CCD_Probate_Legacy_Cases.xlsx"));
+        lib.importDefinition(new File("jsontoXLS/CCD_Probate_Legacy_Search.xlsx"));
+        lib.importDefinition(new File("jsontoXLS/CCD_Probate_Will_Lodgement.xlsx"));
+        lib.importDefinition(new File("jsontoXLS/CCD_Probate_Standing_Search.xlsx"));
     }
 }
