@@ -10,7 +10,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
-import java.util.logging.Logger;
 
 import static java.util.Objects.nonNull;
 
@@ -22,13 +21,12 @@ public class BlobUpload {
     @Value("${storage.connection}")
     public String storageConnectionString;
 
-    private static final Logger LOGGER = Logger.getLogger(BlobUpload.class.getName());
-
     //Create a unique name for the container
     String containerName = "smee-and-ford-document-feed";
 
     public void uploadFile(File blobFile) {
 
+        log.info("Blob connection : " + storageConnectionString);
         // Create a BlobServiceClient object which will be used to create a container client
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
             .connectionString(storageConnectionString).buildClient();
@@ -36,7 +34,7 @@ public class BlobUpload {
         // Get a reference to a blob
         BlobClient blobClient = getContainerClient(blobServiceClient, containerName).getBlobClient(blobFile.getName());
 
-        LOGGER.info("Uploading to Blob storage as blob:" + blobClient.getBlobUrl());
+        log.info("Uploading to Blob storage as blob:" + blobClient.getBlobUrl());
 
         // Upload the blob
         blobClient.uploadFromFile(blobFile.getPath());
