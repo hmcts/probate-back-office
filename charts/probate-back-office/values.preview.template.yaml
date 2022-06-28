@@ -2,7 +2,7 @@ tags:
   probate-ccd-stack: false
 
 postgresql:
-  enabled: true
+  enabled: false
   image:
     tag: '11.3.0'
   resources:
@@ -13,7 +13,7 @@ postgresql:
     password: hmcts
   primary:
     persistence:
-      enabled: true
+      enabled: false
       initdb:
       scripts:
          create.sql: |
