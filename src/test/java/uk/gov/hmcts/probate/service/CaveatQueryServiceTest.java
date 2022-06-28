@@ -1,9 +1,8 @@
 package uk.gov.hmcts.probate.service;
 
 import com.google.common.collect.ImmutableList;
-import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -19,17 +18,19 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ReturnedCaveats;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CaveatQueryServiceTest {
+class CaveatQueryServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
@@ -46,7 +47,7 @@ public class CaveatQueryServiceTest {
     private CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
 
     @Mock
-    private IdamAuthenticateUserService idamAuthenticateUserService;
+    private SecurityUtils securityUtils;
 
     @Mock
     private ServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -57,12 +58,12 @@ public class CaveatQueryServiceTest {
     @InjectMocks
     private CaveatQueryService caveatQueryService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         when(serviceAuthTokenGenerator.generate()).thenReturn("Bearer 321");
-        when(idamAuthenticateUserService.getIdamOauth2Token()).thenReturn("Bearer 123");
+        when(securityUtils.getCaseworkerToken()).thenReturn("Bearer 123");
         when(headers.getAuthorizationHeaders()).thenReturn(new HttpHeaders());
 
         when(ccdDataStoreAPIConfiguration.getHost()).thenReturn("http://localhost");
@@ -80,36 +81,40 @@ public class CaveatQueryServiceTest {
     }
 
     @Test
-    public void findCaveatWithCaveatIDMatch() {
+    void findCaveatWithCaveatIDMatch() {
         CaveatData caveatData = caveatQueryService.findCaveatById(CaseType.CAVEAT,
                 "1234567812345678");
         assertEquals("Smith", caveatData.getDeceasedSurname());
     }
 
-    @Test(expected = BusinessValidationException.class)
-    public void shouldNotFindCaveatWithCaveatIDMatch() {
-        List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
-                .build();
-        ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
+    @Test
+    void shouldNotFindCaveatWithCaveatIDMatch() {
+        assertThrows(BusinessValidationException.class, () -> {
+            List<ReturnedCaveatDetails> caveatList = new ImmutableList.Builder<ReturnedCaveatDetails>()
+                    .build();
+            ReturnedCaveats returnedCaveats = new ReturnedCaveats(caveatList);
 
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
+            when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCaveats);
 
-        caveatQueryService.findCaveatById(CaseType.CAVEAT,
-                "1234567812345678");
-        verify(businessValidationMessageRetrieverMock).getMessage(any(), any(), any());
+            caveatQueryService.findCaveatById(CaseType.CAVEAT,
+                    "1234567812345678");
+            verify(businessValidationMessageRetrieverMock).getMessage(any(), any(), any());
+        });
     }
 
     @Test
-    public void testHttpExceptionCaughtWithBadPost() {
+    void testHttpExceptionCaughtWithBadPost() {
         when(restTemplate.postForObject(any(), any(), any())).thenThrow(HttpClientErrorException.class);
 
-        Assertions.assertThatThrownBy(() -> caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"))
-                .isInstanceOf(CaseMatchingException.class);
+        assertThrows(CaseMatchingException.class, () ->
+                caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678"));
     }
 
-    @Test(expected = ClientDataException.class)
-    public void testExceptionWithNullFromRestTemplatePost() {
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
-        caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");
+    @Test
+    void testExceptionWithNullFromRestTemplatePost() {
+        assertThrows(ClientDataException.class, () -> {
+            when(restTemplate.postForObject(any(), any(), any())).thenReturn(null);
+            caveatQueryService.findCaveatById(CaseType.CAVEAT, "1234567812345678");
+        });
     }
 }

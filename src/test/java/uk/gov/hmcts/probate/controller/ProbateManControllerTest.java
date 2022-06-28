@@ -2,15 +2,15 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -44,10 +44,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ProbateManControllerTest {
+class ProbateManControllerTest {
 
     private static final String ID = "1234567";
 
@@ -83,13 +83,13 @@ public class ProbateManControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
     }
 
     @Test
-    public void shouldGetGrantApplication() throws Exception {
+    void shouldGetGrantApplication() throws Exception {
         ProbateManModel grantApplication = GrantApplicationCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.GRANT_APPLICATION))
             .thenReturn(grantApplication);
@@ -103,7 +103,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetWillLodgement() throws Exception {
+    void shouldGetWillLodgement() throws Exception {
         ProbateManModel willLodgement = WillLodgementCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.WILL_LODGEMENT))
             .thenReturn(willLodgement);
@@ -116,7 +116,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetCaveat() throws Exception {
+    void shouldGetCaveat() throws Exception {
         ProbateManModel caveat = CaveatCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.CAVEAT))
             .thenReturn(caveat);
@@ -130,7 +130,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldGetStandingSearch() throws Exception {
+    void shouldGetStandingSearch() throws Exception {
         ProbateManModel standingSearch = StandingSearchCreator.create();
         when(probateManService.getProbateManModel(1234567L, ProbateManType.STANDING_SEARCH))
             .thenReturn(standingSearch);
@@ -144,7 +144,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldPostLegacySearch() throws Exception {
+    void shouldPostLegacySearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);
@@ -164,7 +164,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldPostDoImport() throws Exception {
+    void shouldPostDoImport() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);
@@ -185,7 +185,7 @@ public class ProbateManControllerTest {
     }
 
     @Test
-    public void shouldResetSearch() throws Exception {
+    void shouldResetSearch() throws Exception {
         CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, null);

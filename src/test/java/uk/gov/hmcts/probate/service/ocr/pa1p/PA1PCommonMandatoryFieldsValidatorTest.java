@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr.pa1p;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PA1PCommonMandatoryFieldsValidatorTest {
+class PA1PCommonMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
@@ -21,14 +21,14 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     @InjectMocks
     private PA1PCommonMandatoryFieldsValidator pa1PCommonMandatoryFieldsValidator;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         warnings = new ArrayList<>();
     }
 
     @Test
-    public void testNoPrimaryApplicantHasAlasKeyReturnSuccessfullyForPA1A() {
+    void testNoPrimaryApplicantHasAlasKeyReturnSuccessfullyForPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "primaryApplicantHasAlias");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
@@ -38,7 +38,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
+    void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -51,7 +51,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
+    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -63,7 +63,7 @@ public class PA1PCommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
+    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 

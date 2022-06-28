@@ -1,21 +1,21 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AssembleWillTest {
+class AssembleWillTest {
 
     private AssemblerBase assemblerBase = new AssemblerBase();
 
     private AssembleWill assembleWill = new AssembleWill(assemblerBase);
 
     @Test
-    public void shouldGetWillSeparatePages() {
+    void shouldGetWillSeparatePages() {
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
 
@@ -30,7 +30,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillPlights() {
+    void shouldGetWillPlights() {
         CaseData caseData = CaseData.builder().build();
         List<ParagraphDetail> response = assembleWill.willPlight(ParagraphCode.WillPlight, caseData);
         assertEquals(null, response.get(0).getDynamicList());
@@ -43,7 +43,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillAnyOther() {
+    void shouldGetWillAnyOther() {
         CaseData caseData = CaseData.builder().build();
         List<ParagraphDetail> response = assembleWill.willAnyOther(ParagraphCode.WillAnyOther, caseData);
         assertEquals("WillAnyOther", response.get(0).getCode());
@@ -56,7 +56,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillStaple() {
+    void shouldGetWillStaple() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -72,7 +72,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillRevoked() {
+    void shouldGetWillRevoked() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -88,7 +88,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillLost() {
+    void shouldGetWillLost() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -104,7 +104,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillList() {
+    void shouldGetWillList() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -120,7 +120,7 @@ public class AssembleWillTest {
     }
 
     @Test
-    public void shouldGetWillFiat() {
+    void shouldGetWillFiat() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();

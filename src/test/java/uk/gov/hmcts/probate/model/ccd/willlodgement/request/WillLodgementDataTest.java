@@ -1,14 +1,14 @@
 package uk.gov.hmcts.probate.model.ccd.willlodgement.request;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class WillLodgementDataTest {
+class WillLodgementDataTest {
 
     private static final String WL_DECEASED_FORENAMES = "Forenames";
     private static final String WL_DECEASED_SURNAME = "Surname";
@@ -19,7 +19,7 @@ public class WillLodgementDataTest {
     @InjectMocks
     private WillLodgementData underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         underTest = WillLodgementData.builder()
@@ -31,7 +31,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnDeceasedFullNameForWillLodgement() {
+    void shouldReturnDeceasedFullNameForWillLodgement() {
         final WillLodgementData willLodgementData = WillLodgementData.builder()
                 .deceasedForenames(WL_DECEASED_FORENAMES)
                 .deceasedSurname(WL_DECEASED_SURNAME)
@@ -41,7 +41,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnCaveatorFullNameForWillLodgement() {
+    void shouldReturnCaveatorFullNameForWillLodgement() {
         final WillLodgementData willLodgementData = WillLodgementData.builder()
                 .executorForenames(WL_EXECUTOR_FORENAMES)
                 .executorSurname(WL_EXECUTOR_SURNAME)
@@ -51,7 +51,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnNullFromInputData() {
+    void shouldReturnNullFromInputData() {
         final WillLodgementData caseData = WillLodgementData.builder()
                 .willDate(null)
                 .build();
@@ -60,7 +60,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithST() {
+    void shouldReturnDODFormattedWithST() {
         final WillLodgementData caseData = WillLodgementData.builder()
                 .willDate(LOCAL_DATE)
                 .build();
@@ -69,7 +69,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithND() {
+    void shouldReturnDODFormattedWithND() {
         final WillLodgementData caseData = WillLodgementData.builder()
                 .willDate(LocalDate.of(2000,01,02))
                 .build();
@@ -78,7 +78,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithRD() {
+    void shouldReturnDODFormattedWithRD() {
         final WillLodgementData caseData = WillLodgementData.builder()
                 .willDate(LocalDate.of(2000,01,03))
                 .build();
@@ -87,7 +87,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldReturnDODFormattedWithTH() {
+    void shouldReturnDODFormattedWithTH() {
         final WillLodgementData caseData = WillLodgementData.builder()
                 .willDate(LocalDate.of(2000,01,04))
                 .build();
@@ -96,7 +96,7 @@ public class WillLodgementDataTest {
     }
 
     @Test
-    public void shouldThrowParseException() {
+    void shouldThrowParseException() {
         final WillLodgementData caseData = WillLodgementData.builder()
                 .willDate(LocalDate.of(300000,01,04))
                 .build();

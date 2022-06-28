@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.ProbateManType;
 import uk.gov.hmcts.probate.model.probateman.StandingSearch;
@@ -20,9 +20,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class StandingSearchMapperTest {
+class StandingSearchMapperTest {
 
     @Value("${ccd.gateway.host}")
     private String printServiceHost;
@@ -51,7 +51,7 @@ public class StandingSearchMapperTest {
     AppInsights appInsights;
 
     @Test
-    public void shouldMapToCcdData() {
+    void shouldMapToCcdData() {
         StandingSearch standingSearch = new StandingSearch();
         standingSearch.setDeceasedForenames(DECEASED_FORENAMES);
         standingSearch.setDeceasedSurname(DECEASED_SURNAME);
@@ -89,7 +89,7 @@ public class StandingSearchMapperTest {
 
         StandingSearchData standingSearchData = standingSearchMapper.toCcdData(standingSearch);
 
-        Assertions.assertThat(standingSearchData).isEqualToComparingFieldByFieldRecursively(expectedStandingSearchData);
+        Assertions.assertThat(standingSearchData).usingRecursiveComparison().isEqualTo(expectedStandingSearchData);
     }
 
     private List<CollectionMember<FullAliasName>> buildFullAliasNames() {

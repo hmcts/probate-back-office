@@ -1,17 +1,17 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 
-public class EscalatedTaskListRendererTest {
+class EscalatedTaskListRendererTest {
 
     public static final Long ID = 1L;
     public static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -21,7 +21,7 @@ public class EscalatedTaskListRendererTest {
     private CaseDataBuilder caseDataBuilder;
 
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         caseDataBuilder = CaseData.builder()
@@ -30,7 +30,7 @@ public class EscalatedTaskListRendererTest {
     }
 
     @Test
-    public void shouldRenderStoppedCaseProgressHtmlCorrectly() {
+    void shouldRenderStoppedCaseProgressHtmlCorrectly() {
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState(REGISTRAR_ESCALATION.getId());
         final String expectedHtml = "<div class=\"width-50\">\n\n"
@@ -50,7 +50,7 @@ public class EscalatedTaskListRendererTest {
             + "<p class=\"govuk-body-s\">You will need the case reference or the deceased's full name when you call."
             + "</p><br/>"
             + "<p class=\"govuk-body-s\">Telephone: 0300 303 0648</p><p class=\"govuk-body-s\">"
-            + "Monday to Friday 8am to 6pm, Saturday 8am to 2pm (except public holidays)</p><br/>"
+            + "Monday to Friday, 8am to 6pm. Closed on Saturdays, Sundays and bank holidays</p><br/>"
             + "<p class=\"govuk-body-s\">Welsh language: 0300 303 0654</p><p class=\"govuk-body-s\">"
             + "Monday to Friday, 8am to 5pm (except public holidays)</p><br/>\n\n"
             + "<a href=\"https://www.gov.uk/call-charges\" target=\"_blank\" "

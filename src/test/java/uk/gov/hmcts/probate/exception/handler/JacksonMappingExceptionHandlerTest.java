@@ -1,9 +1,8 @@
 package uk.gov.hmcts.probate.exception.handler;
 
 import com.fasterxml.jackson.databind.JsonMappingException;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
@@ -12,10 +11,12 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 
 import java.util.Arrays;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class JacksonMappingExceptionHandlerTest {
+class JacksonMappingExceptionHandlerTest {
 
     @InjectMocks
     private JacksonMappingExceptionHandler jacksonMappingExceptionHandler;
@@ -23,13 +24,13 @@ public class JacksonMappingExceptionHandlerTest {
     @Mock
     private JsonMappingException jsonMappingException;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldHandleMessageNotReadableException() {
+    void shouldHandleMessageNotReadableException() {
         JsonMappingException.Reference reference1 = Mockito.mock(JsonMappingException.Reference.class);
         when(reference1.getFieldName()).thenReturn("field1");
 
@@ -41,8 +42,8 @@ public class JacksonMappingExceptionHandlerTest {
         ResponseEntity responseEntity = jacksonMappingExceptionHandler
             .handleMessageNotReadableException(jsonMappingException);
 
-        Assert.assertNotNull(responseEntity);
-        Assert.assertEquals("JsonParseError", ((FieldErrorResponse) responseEntity.getBody()).getCode());
-        Assert.assertEquals("field1.field2", ((FieldErrorResponse) responseEntity.getBody()).getField());
+        assertNotNull(responseEntity);
+        assertEquals("JsonParseError", ((FieldErrorResponse) responseEntity.getBody()).getCode());
+        assertEquals("field1.field2", ((FieldErrorResponse) responseEntity.getBody()).getField());
     }
 }

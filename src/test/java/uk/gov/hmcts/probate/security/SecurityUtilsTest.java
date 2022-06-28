@@ -1,26 +1,29 @@
 package uk.gov.hmcts.probate.security;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.security.authentication.TestingAuthenticationToken;
 import org.springframework.security.test.context.TestSecurityContextHolder;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
-import uk.gov.hmcts.probate.model.AuthenticateUserResponse;
-import uk.gov.hmcts.probate.model.TokenExchangeResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
+import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.hamcrest.core.StringContains.containsString;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atMostOnce;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SecurityUtilsTest {
+@ExtendWith(SpringExtension.class)
+class SecurityUtilsTest {
 
     public static final String CODE = "CODE_VAL";
     private static final String SERVICE_TOKEN = "XXXXXX12345";
@@ -30,18 +33,17 @@ public class SecurityUtilsTest {
     private static final String AUTH_CLIENT_SECRET = "authClientSecret";
     private static final String AUTH_CLIENT_ID = "authClientId";
     private static final String REDIRECT = "http://redirect";
-    @Mock
-    private AuthTokenGenerator authTokenGenerator;
+    private static final String BEARER = "Bearer ";
 
     @Mock
-    private IdamApi idamClient;
+    private IdamApi idamApi;
 
     @InjectMocks
     private SecurityUtils securityUtils;
 
 
     @Test
-    public void shouldGetAuthorisation() {
+    void shouldGetAuthorisation() {
         TestSecurityContextHolder.getContext().setAuthentication(
             new TestingAuthenticationToken("user", USER_TOKEN, "ROLE_USER"));
 
@@ -51,27 +53,51 @@ public class SecurityUtilsTest {
     }
 
     @Test
-    public void shouldSecurityContextUserAsCaseworker() {
+    void shouldSecurityContextUserAsCaseworker() {
         ReflectionTestUtils.setField(securityUtils, "authRedirectUrl", REDIRECT);
         ReflectionTestUtils.setField(securityUtils, "authClientId", AUTH_CLIENT_ID);
         ReflectionTestUtils.setField(securityUtils, "authClientSecret", AUTH_CLIENT_SECRET);
         ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", CASEWORKER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", CASEWORKER_PASSWORD);
 
-        AuthenticateUserResponse authenticateUserResponse = AuthenticateUserResponse.builder().code(CODE).build();
-        when(idamClient.authenticateUser(anyString(), eq("code"), eq(AUTH_CLIENT_ID), eq(REDIRECT)))
-            .thenReturn(authenticateUserResponse);
-
-        TokenExchangeResponse tokenExchangeResponse = TokenExchangeResponse.builder()
-            .accessToken(USER_TOKEN)
-            .build();
-
-        when(idamClient.exchangeCode(eq(CODE), eq("authorization_code"), eq(REDIRECT), eq(AUTH_CLIENT_ID),
-            eq(AUTH_CLIENT_SECRET)))
-            .thenReturn(tokenExchangeResponse);
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+            .thenReturn(tokenResponse);
 
         securityUtils.setSecurityContextUserAsCaseworker();
 
-        assertThat(securityUtils.getAuthorisation(), equalTo(USER_TOKEN));
+        assertThat(securityUtils.getAuthorisation(), equalTo(BEARER + USER_TOKEN));
+    }
+
+    @Test
+    void shouldGetUserEmail() {
+        UserInfo userInfo = UserInfo.builder().sub("solicitor@probate-test.com").build();
+        when(idamApi.retrieveUserInfo("AuthToken")).thenReturn(userInfo);
+        String email = securityUtils.getEmail("AuthToken");
+
+        assertEquals("solicitor@probate-test.com", email);
+    }
+
+    @Test
+    void shouldReturnCacheToken() {
+        ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", CASEWORKER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", CASEWORKER_PASSWORD);
+
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(tokenResponse);
+
+        // first time
+        String idamToken = securityUtils.getCaseworkerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+
+        // second time
+        idamToken = securityUtils.getCaseworkerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+
+        verify(idamApi, atMostOnce()).generateOpenIdToken(any(TokenRequest.class));
+
     }
 }

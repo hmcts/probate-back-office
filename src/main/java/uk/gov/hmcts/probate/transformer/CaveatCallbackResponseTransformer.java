@@ -172,17 +172,19 @@ public class CaveatCallbackResponseTransformer {
             .paperForm(NO)
             .registryLocation(CTSC);
         OrganisationPolicy organisationPolicy =
-            buildOrganisationPolicy(callbackRequest.getCaseDetails().getData(), authToken);
+            buildOrganisationPolicy(callbackRequest.getCaseDetails(), authToken);
         if (null != organisationPolicy) {
             responseCaveatDataBuilder.applicantOrganisationPolicy(organisationPolicy);
         }
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
-    public OrganisationPolicy buildOrganisationPolicy(CaveatData caveatData, String authToken) {
+    public OrganisationPolicy buildOrganisationPolicy(CaveatDetails caveatDetails, String authToken) {
+        CaveatData caveatData = caveatDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
         if (null != authToken) {
-            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
+                    caveatDetails.getId().toString(), authToken);
         }
         if (null != organisationEntityResponse && null != caveatData.getApplicantOrganisationPolicy()) {
             return OrganisationPolicy.builder()

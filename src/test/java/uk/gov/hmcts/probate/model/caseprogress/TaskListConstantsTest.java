@@ -1,14 +1,14 @@
 package uk.gov.hmcts.probate.model.caseprogress;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.StateConstants;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.caseprogress.TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS;
 
-public class TaskListConstantsTest {
+class TaskListConstantsTest {
     @Test
-    public void testConstantsMapCorrectly() {
+    void testConstantsMapCorrectly() {
         assertEquals(TL_STATE_ADD_SOLICITOR_DETAILS, TaskListState.mapCaseState(null));
         assertEquals(TL_STATE_ADD_SOLICITOR_DETAILS,
                 TaskListState.mapCaseState(StateConstants.STATE_SOL_APP_CREATED_SOLICITOR_DTLS));

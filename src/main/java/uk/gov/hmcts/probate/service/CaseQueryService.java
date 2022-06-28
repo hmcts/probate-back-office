@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -21,6 +22,7 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCases;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -72,7 +74,7 @@ public class CaseQueryService {
     private final HttpHeadersFactory headers;
     private final CCDDataStoreAPIConfiguration ccdDataStoreAPIConfiguration;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
-    private final IdamAuthenticateUserService idamAuthenticateUserService;
+    private final SecurityUtils securityUtils;
     private final FileSystemResourceService fileSystemResourceService;
     @Value("${data-extract.pagination.size}")
     protected int dataExtractPaginationSize;
@@ -195,8 +197,12 @@ public class CaseQueryService {
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
             pagedResults = cases.getCases();
-            log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
-                    pagedResults.get(pagedResults.size() - 1).getId());
+            if (!CollectionUtils.isEmpty(pagedResults)) {
+                log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
+                        pagedResults.get(pagedResults.size() - 1).getId());
+            } else {
+                log.info("index: {}, first|last case ref: {}|{}", index, "Not found", "Not found");
+            }
             allResults.addAll(pagedResults);
             index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;
@@ -223,8 +229,8 @@ public class CaseQueryService {
             tokenHeaders = new HttpHeaders();
             tokenHeaders.setContentType(MediaType.APPLICATION_JSON);
             tokenHeaders.add(SERVICE_AUTH, "Bearer " + serviceAuthTokenGenerator.generate());
-            tokenHeaders.add(AUTHORIZATION, idamAuthenticateUserService.getIdamOauth2Token());
-            log.info("DONE idamAuthenticateUserService.getIdamOauth2Token()");
+            tokenHeaders.add(AUTHORIZATION, securityUtils.getCaseworkerToken());
+            log.info("DONE securityUtils.getCaseworkerToken()");
         } finally {
             entity = new HttpEntity<>(jsonQuery, tokenHeaders);
         }

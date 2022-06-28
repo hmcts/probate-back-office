@@ -239,17 +239,14 @@ docker-compose stop probate-back-office
 docker-compose up -d --build probate-back-office
 ```
 
-#### share case - manage-case setup
+##This is now the default setup
+
+#### share case - manage-case setup 
 ```
 before --create make sure you have this env var setup
 LD_SDK_AM_KEY (see Sanjay for the value)
 npx @hmcts/probate-dev-env --create
-uncomment 2 docker images from the local docker-compose.yml: manage-case-assignment, xui-manage-org
-and uncomment manage-case-assignment dependency on probate-back-office docker image
 npx @hmcts/probate-dev-env
-
-after this setup from dev-env, do, from this probate-back-office branch, do
-./bin/share-a-case-setup.sh
 
 upload new xls from local
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
@@ -269,9 +266,11 @@ you should be able to share that case with the other PP user
 if you are running low on memory you can stop probate-frontend, business-service, submit-service, orchestrtor etc
 ```
 
-#### share case - manage-org setup
+#### share case - manage-org additional setup
 ```
 complete above
+uncomment docker image from the local docker-compose.yml: xui-manage-org
+docker-compose up -d xui-manage-org
 create a case to share
 unshare that case from everyone
 go to
@@ -687,6 +686,11 @@ Here are some other functionalities it provides:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
+
+# PR XUI testing
+A sample xui url for BO testing on the deployed env is:
+
+https://xui-probate-back-office-pr-1809.service.core-compute-preview.internal
 
 # e2e Testing
 To run Probate Practitioner tests on ExUI locally do the following:

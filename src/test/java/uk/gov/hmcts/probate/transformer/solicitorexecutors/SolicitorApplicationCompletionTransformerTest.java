@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.solicitorexecutors;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
@@ -21,7 +21,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
@@ -39,8 +39,8 @@ import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_ADDITIONAL_APP
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLS_EXEC_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
-@RunWith(MockitoJUnitRunner.class)
-public class SolicitorApplicationCompletionTransformerTest {
+@ExtendWith(SpringExtension.class)
+class SolicitorApplicationCompletionTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -63,7 +63,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         additionalExecutorApplying = new ArrayList<>();
         additionalExecutorApplying.add(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
@@ -92,7 +92,7 @@ public class SolicitorApplicationCompletionTransformerTest {
 
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
 
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
@@ -114,7 +114,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
+    void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
         caseDataBuilder
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
@@ -141,7 +141,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
         caseDataBuilder
             .primaryApplicantForenames(EXEC_FIRST_NAME)
             .primaryApplicantSurname(EXEC_SURNAME)
@@ -161,7 +161,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
         caseDataBuilder
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
@@ -180,7 +180,7 @@ public class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    public void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
+    void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
         caseDataBuilder
             .primaryApplicantIsApplying(NO)
             .solsSolicitorIsApplying(NO)

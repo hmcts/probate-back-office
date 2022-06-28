@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
@@ -16,7 +16,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 
-public class RegistryDetailsServiceTest {
+class RegistryDetailsServiceTest {
 
     private static final String REGISTRY_LOCATION = "bristol";
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -31,9 +31,9 @@ public class RegistryDetailsServiceTest {
     @InjectMocks
     private final RegistryDetailsService registryDetailsService = new RegistryDetailsService(registriesProperties);
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         registry = new Registry();
         registry.setPhone("01010101010101");
@@ -54,7 +54,7 @@ public class RegistryDetailsServiceTest {
     }
 
     @Test
-    public void testCaseDetailsHaveRegistryMappedCorrectly() {
+    void testCaseDetailsHaveRegistryMappedCorrectly() {
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryTelephone(),
             is(registry.getPhone()));
         assertThat(registryDetailsService.getRegistryDetails(caseDetails).getRegistryAddressLine1(),

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.payments.pba;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.model.payments.pba.PBAOrganisationResponse;
-import uk.gov.hmcts.probate.service.IdamAuthenticateUserService;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.net.URI;
@@ -22,17 +22,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class PBARetrievalServiceTest {
+class PBARetrievalServiceTest {
 
     @InjectMocks
     private PBARetrievalService pbaRetrievalService;
 
     @Mock
-    private IdamAuthenticateUserService idamAuthenticateUserService;
+    private SecurityUtils securityUtils;
     @Mock(name = "restTemplate")
     private RestTemplate restTemplate;
     @Mock
@@ -46,16 +47,16 @@ public class PBARetrievalServiceTest {
     @Mock
     private OrganisationEntityResponse organisationEntityResponse;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         pbaRetrievalService.pbaApi = "/pbaUri";
         pbaRetrievalService.pbaUri = "http://pbaApi";
     }
 
     @Test
-    public void shouldReturnPBAs() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+    void shouldReturnPBAs() {
+        when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -72,8 +73,8 @@ public class PBARetrievalServiceTest {
     }
 
     @Test
-    public void shouldReturnNoPBAsForLookupForbidden() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+    void shouldReturnNoPBAsForLookupForbidden() {
+        when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
         ResponseEntity<PBAOrganisationResponse> pbaOrganisationResponseResponseEntity =
             ResponseEntity.of(Optional.of(pbaOrganisationResponse));
@@ -85,17 +86,21 @@ public class PBARetrievalServiceTest {
         assertEquals(0, returnedPBAs.size());
     }
 
-    @Test(expected = NullPointerException.class)
-    public void shouldErrorOnGetIdamUserDetails() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn(null);
+    @Test
+    void shouldErrorOnGetIdamUserDetails() {
+        assertThrows(NullPointerException.class, () -> {
+            when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn(null);
 
-        pbaRetrievalService.getPBAs(AUTH_TOKEN);
+            pbaRetrievalService.getPBAs(AUTH_TOKEN);
+        });
     }
 
-    @Test(expected = ClientException.class)
-    public void shouldFailOnAuthTokenMatch() {
-        when(idamAuthenticateUserService.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
+    @Test
+    void shouldFailOnAuthTokenMatch() {
+        assertThrows(ClientException.class, () -> {
+            when(securityUtils.getEmail(AUTH_TOKEN)).thenReturn("solicitor@probate-test.com");
 
-        pbaRetrievalService.getPBAs("ForbiddenToken");
+            pbaRetrievalService.getPBAs("ForbiddenToken");
+        });
     }
 }

@@ -1,25 +1,27 @@
 package uk.gov.hmcts.probate.service.ocr;
 
+import org.apache.commons.collections.keyvalue.DefaultKeyValue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.probate.model.ocr.OCRField;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import org.apache.commons.collections.keyvalue.DefaultKeyValue;
-import org.junit.Before;
-import org.junit.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_GROSS_VALUE;
 import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_NET_VALUE;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
 
-public class MandatoryFieldsValidatorUtilsTest {
-    
+class MandatoryFieldsValidatorUtilsTest {
+
     private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
     private List<String> warnings;
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private List<OCRField> ocrFields;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mandatoryFieldsValidatorUtils = new MandatoryFieldsValidatorUtils();
         warnings = new ArrayList<>();
@@ -27,7 +29,7 @@ public class MandatoryFieldsValidatorUtilsTest {
     }
 
     @Test
-    public void shouldAddWarningIfEmpty() {
+    void shouldAddWarningIfEmpty() {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         DefaultKeyValue keyValue = new DefaultKeyValue("testKey", null);
         mandatoryFieldsValidatorUtils.addWarningIfEmpty(ocrFieldValues, warnings, keyValue);
@@ -36,15 +38,15 @@ public class MandatoryFieldsValidatorUtilsTest {
     }
 
     @Test
-    public void shouldAddWarningsForConditionalFields() {
+    void shouldAddWarningsForConditionalFields() {
         HashMap ocrFieldValues = new HashMap();
         mandatoryFieldsValidatorUtils
             .addWarningsForConditionalFields(ocrFieldValues, warnings, IHT_GROSS_VALUE, IHT_NET_VALUE);
         assertEquals(2, warnings.size());
     }
-    
+
     @Test
-    public void shouldAddWarning() {
+    void shouldAddWarning() {
         String warning = "Test";
         mandatoryFieldsValidatorUtils.addWarning("Test", warnings);
         assertEquals(1, warnings.size());
@@ -52,7 +54,7 @@ public class MandatoryFieldsValidatorUtilsTest {
     }
 
     @Test
-    public void shouldReturnTrueIfVersion2() {
+    void shouldReturnTrueIfVersion2() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField formVersion = OCRField.builder()
             .name("formVersion")
