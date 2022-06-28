@@ -284,5 +284,5 @@ java:
         - name: levDeathUrl
           alias: lev.death.url
         - name: blob-storage-connection-string
-          alias: BLOB_STORAGE_CONNECTION_STRING
+          alias: storage.connection
 
