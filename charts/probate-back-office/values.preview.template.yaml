@@ -12,7 +12,8 @@ postgresql:
     username: hmcts
     password: hmcts
   primary:
-    persistence.enabled: false
+    persistence:
+      enabled: false
     initdb:
       scripts:
          create.sql: |
