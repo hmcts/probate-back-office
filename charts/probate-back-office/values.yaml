@@ -109,4 +109,4 @@ java:
         - name: schedulerCaseWorkerUser
           alias: SCHEDULER_CASEWORKER_PASSWORD
         - name: blob-storage-connection-string
-          alias: storage.connection
+          alias: BLOB_STORAGE_CONNECTION_STRING

@@ -517,8 +517,8 @@ welsh:
 iht-estate:
   switch-date: ${EXCEPTED_ESTATE_DATE_OF_DEATH:2022-01-01}
 
-storage:
-  connection: ${BLOB_STORAGE_CONNECTION_STRING:}
+blobstorage:
+  connection: ${BLOB_STORAGE_CONNECTION_STRING:dummy}
 
 feature:
   blobstorage:

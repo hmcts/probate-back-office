@@ -6,20 +6,18 @@ import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.File;
 
 import static java.util.Objects.nonNull;
 
+@Service
 @Slf4j
-@Component
-@Configuration
 public class BlobUpload {
 
-    @Value("${storage.connection}")
-    public String storageConnectionString;
+    @Value(value = "${blobstorage.connection}")
+    private String storageConnectionString;
 
     //Create a unique name for the container
     String containerName = "smee-and-ford-document-feed";
