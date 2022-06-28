@@ -76,6 +76,23 @@ public class CaveatData {
     private final String caveatRaisedEmailNotification = getDefaultValueForEmailNotifications();
     @NotNull(groups = {CaveatCreatedGroup.class}, message = "{caveatorAddressIsNull}")
     private ProbateAddress caveatorAddress;
+
+    @Getter
+    private String caveatorPhoneNumber;
+    @Getter
+    private String probateFee;
+    @Getter
+    private String probateFeeNotIncludedReason;
+    @Getter
+    private String helpWithFeesReference;
+    @Getter
+    private String probateFeeNotIncludedExplanation;
+    @Getter
+    private String probateFeeAccountNumber;
+    @Getter
+    private String probateFeeAccountReference;
+    @Getter
+    private String bilingualCorrepondenceRequested;
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
     private String solsSolicitorFirmName;
 

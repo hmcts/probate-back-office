@@ -288,6 +288,14 @@ public class ExceptionRecordRequest {
             .iht207Completed(get(ocrFields, "iht207completed"))
             .formVersion(get(ocrFields, "formVersion"))
             .iht205completedOnline(get(ocrFields, "iht205completedOnline"))
+            .caveatorPhoneNumber(get(ocrFields, "caveatorPhoneNumber"))
+            .probateFee(get(ocrFields,"probateFee"))
+            .probateFeeNotIncludedReason(get(ocrFields, "probateFeeNotIncludedReason"))
+            .helpWithFeesReference(get(ocrFields, "helpWithFeesReference"))
+            .probateFeeNotIncludedExplanation(get(ocrFields, "probateFeeNotIncludedExplanation"))
+            .probateFeeAccountNumber(get(ocrFields, "probateFeeAccountNumber"))
+            .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
+            .bilingualCorrepondenceRequested(get(ocrFields, "bilingualCorrepondenceRequested"))
             .build();
     }
 }

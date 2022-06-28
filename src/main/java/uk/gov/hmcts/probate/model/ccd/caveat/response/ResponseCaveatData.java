@@ -51,6 +51,14 @@ public class ResponseCaveatData {
     private final String caveatorSurname;
     private final String caveatorEmailAddress;
     private final ProbateAddress caveatorAddress;
+    private final String caveatorPhoneNumber;
+    private final String probateFee;
+    private final String probateFeeNotIncludedReason;
+    private final String helpWithFeesReference;
+    private final String probateFeeNotIncludedExplanation;
+    private final String probateFeeAccountNumber;
+    private final String probateFeeAccountReference;
+    private final String bilingualCorrepondenceRequested;
 
     private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String applicationSubmittedDate;

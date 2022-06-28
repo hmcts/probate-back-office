@@ -248,7 +248,8 @@ NB. If you download the binary version it is called 'jq-osx-amd64' and the scrip
 
 ```bash
   az login
-  az acr login --name hmctspublic --subscription DCD-CNP-Prod
+  az acr login --name hmctsp
+  ublic --subscription DCD-CNP-Prod
   az acr login --name hmctsprivate --subscription DCD-CNP-Prod
 ```
 

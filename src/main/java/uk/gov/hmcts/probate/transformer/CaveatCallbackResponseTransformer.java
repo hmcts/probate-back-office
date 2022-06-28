@@ -290,7 +290,16 @@ public class CaveatCallbackResponseTransformer {
             .pcqId(caveatData.getPcqId())
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
             .payments(caveatData.getPayments())
-            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy());
+            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy())
+            .caveatorPhoneNumber(caveatData.getCaveatorPhoneNumber())
+            .probateFee(caveatData.getProbateFee())
+            .probateFeeNotIncludedReason(caveatData.getProbateFeeNotIncludedReason())
+            .helpWithFeesReference(caveatData.getHelpWithFeesReference())
+            .probateFeeNotIncludedExplanation(caveatData.getProbateFeeNotIncludedExplanation())
+            .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
+            .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
+            .bilingualCorrepondenceRequested(caveatData.getBilingualCorrepondenceRequested());
+
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
