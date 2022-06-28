@@ -12,8 +12,9 @@ postgresql:
     username: hmcts
     password: hmcts
   primary:
-    persistence.enabled: false
-    initdb:
+    persistence:
+      enabled: false
+      initdb:
       scripts:
          create.sql: |
            CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
