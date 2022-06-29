@@ -19,8 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -77,7 +77,7 @@ class RaiseGrantOfRepresentationNotificationServiceTest {
     @MockBean
     private ServiceAuthTokenGenerator tokenGenerator;
     @MockBean
-    private DocumentStoreClient documentStoreClient;
+    private DocumentManagementService documentManagementService;
     @SpyBean
     private NotificationClient notificationClient;
     private CallbackRequest callbackRequest;
@@ -86,7 +86,7 @@ class RaiseGrantOfRepresentationNotificationServiceTest {
     public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
-        when(documentStoreClient.retrieveDocument(any(), any())).thenReturn(DOC_BYTES);
+        when(documentManagementService.getDocument(any())).thenReturn(DOC_BYTES);
         when(tokenGenerator.generate()).thenReturn("123");
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
