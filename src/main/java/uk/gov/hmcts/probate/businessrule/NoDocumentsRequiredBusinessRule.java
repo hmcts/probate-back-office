@@ -1,15 +1,21 @@
 package uk.gov.hmcts.probate.businessrule;
 
 import static java.util.Arrays.asList;
-import java.util.List;
+
+import java.util.*;
+import java.util.stream.Stream;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
+
+import static uk.gov.hmcts.probate.model.DocumentType.UPLOADED_LEGAL_STATEMENT;
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.DIVORCED_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.JUDICIALLY_SEPARATED_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.MARRIED_VALUE;
@@ -44,7 +50,7 @@ public class NoDocumentsRequiredBusinessRule implements BusinessRule {
         boolean dodIsAfter2022 = exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath());
         boolean exceptedEstate = dodIsAfter2022 && ihtFormEstateValuesNotCompleted;
 
-        boolean applicantIsSpouseorCivilPartnerOfDeceased = SPOUSE_OR_CIVIL.equals(caseData.getSolsApplicantRelationshipToDeceased());
+        boolean applicantIsSpouseOrCivilPartnerOfDeceased = SPOUSE_OR_CIVIL.equals(caseData.getSolsApplicantRelationshipToDeceased());
         boolean deceasedIsMarriedOrCivilPartner = MARRIED_VALUE.equals(caseData.getDeceasedMaritalStatus());
 
         boolean applicantIsChildOrAdoptedChildOfDeceased = childOrAdoptedChildList.contains(caseData.getSolsApplicantRelationshipToDeceased());
@@ -52,11 +58,16 @@ public class NoDocumentsRequiredBusinessRule implements BusinessRule {
         boolean deceasedNotMarried = notMarriedList.contains(caseData.getDeceasedMaritalStatus());
 
         final List<CollectionMember<UploadDocument>> boDocumentsUploaded = caseData.getBoDocumentsUploaded();
-        boolean legalStatementHasBeenUploaded = null != boDocumentsUploaded && !boDocumentsUploaded.isEmpty();
+        boolean legalStatementHasBeenUploaded =  Stream.ofNullable(boDocumentsUploaded)
+                .flatMap(Collection::stream)
+                .map(CollectionMember::getValue)
+                .map(UploadDocument::getDocumentType)
+                .anyMatch(UPLOADED_LEGAL_STATEMENT::equals);
+
 
         return isIntestacyApplication
             && (iht400421 || exceptedEstate)
-            && ((applicantIsSpouseorCivilPartnerOfDeceased && deceasedIsMarriedOrCivilPartner)
+            && ((applicantIsSpouseOrCivilPartnerOfDeceased && deceasedIsMarriedOrCivilPartner)
                 || (applicantIsChildOrAdoptedChildOfDeceased && deceasedHadNoOtherIssue && deceasedNotMarried))
             && legalStatementHasBeenUploaded;
     }
