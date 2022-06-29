@@ -57,13 +57,7 @@ public class NoDocumentsRequiredBusinessRule implements BusinessRule {
         boolean deceasedHadNoOtherIssue = NO.equals(caseData.getSolsApplicantSiblings());
         boolean deceasedNotMarried = notMarriedList.contains(caseData.getDeceasedMaritalStatus());
 
-        final List<CollectionMember<UploadDocument>> boDocumentsUploaded = caseData.getBoDocumentsUploaded();
-        boolean legalStatementHasBeenUploaded =  Stream.ofNullable(boDocumentsUploaded)
-                .flatMap(Collection::stream)
-                .map(CollectionMember::getValue)
-                .map(UploadDocument::getDocumentType)
-                .anyMatch(UPLOADED_LEGAL_STATEMENT::equals);
-
+        boolean legalStatementHasBeenUploaded = null != caseData.getSolsLegalStatementUpload();
 
         return isIntestacyApplication
             && (iht400421 || exceptedEstate)

@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.businessrule;
 
 import java.time.LocalDate;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,8 +13,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.DIVORCED_VALUE;
@@ -41,14 +39,13 @@ class NoDocumentsRequiredBusinessRuleTest {
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @Mock
-    private List<CollectionMember<UploadDocument>> boDocumentsUploaded;
+    DocumentLink mockDocumentLink;
 
     @BeforeEach
     public void setup() {
         openMocks(this);
         when(mockCaseData.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
-        when(mockCaseData.getBoDocumentsUploaded()).thenReturn(boDocumentsUploaded);
-        when(boDocumentsUploaded.isEmpty()).thenReturn(false);
+        when(mockCaseData.getSolsLegalStatementUpload()).thenReturn(mockDocumentLink);
     }
 
     @Test
@@ -64,7 +61,7 @@ class NoDocumentsRequiredBusinessRuleTest {
         when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
-        when(boDocumentsUploaded.isEmpty()).thenReturn(true);
+        when(mockCaseData.getSolsLegalStatementUpload()).thenReturn(null);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
@@ -227,7 +224,7 @@ class NoDocumentsRequiredBusinessRuleTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
-        when(boDocumentsUploaded.isEmpty()).thenReturn(true);
+        when(mockCaseData.getSolsLegalStatementUpload()).thenReturn(null);
         assertFalse(underTest.isApplicable(mockCaseData));
     }
 
