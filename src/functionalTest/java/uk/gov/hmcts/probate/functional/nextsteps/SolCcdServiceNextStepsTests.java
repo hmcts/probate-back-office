@@ -219,7 +219,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(jsonBody)
             .post("/nextsteps/confirmation");
 
