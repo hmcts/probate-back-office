@@ -14,15 +14,15 @@ public class ExceptedEstateDateOfDeathChecker {
 
     @Value("${iht-estate.switch-date:2022-01-01}")
     private void setLocalDate(String localDateStr) {
-         switchDate = LocalDate.parse(localDateStr);
+        switchDate = LocalDate.parse(localDateStr);
     }
 
     public boolean isOnOrAfterSwitchDate(String dateOfDeath) {
         if (null == dateOfDeath) {
             return false;
         }
-        DateTimeFormatter OCR_DATA_DATE_FORMATTER = DateTimeFormatter.ofPattern("ddMMyyyy");
-        LocalDate dod = LocalDate.parse(dateOfDeath, OCR_DATA_DATE_FORMATTER);
+        DateTimeFormatter ocrDataDateFormatter = DateTimeFormatter.ofPattern("ddMMyyyy");
+        LocalDate dod = LocalDate.parse(dateOfDeath, ocrDataDateFormatter);
         return !dod.isBefore(switchDate);
     }
 

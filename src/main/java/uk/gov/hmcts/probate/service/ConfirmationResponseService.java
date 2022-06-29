@@ -272,7 +272,7 @@ public class ConfirmationResponseService {
         keyValue.put("{{authenticatedTranslation}}", getAuthenticatedTranslationLabel(ccdData));
         keyValue.put("{{dispenseWithNoticeSupportingDocs}}", getDispenseWithNoticeSupportDocsLabelAndText(ccdData));
         MarkdownTemplate template;
-        if (noDocumentsRequiredBusinessRule.isApplicable(caseData)){
+        if (noDocumentsRequiredBusinessRule.isApplicable(caseData)) {
             template = MarkdownTemplate.NEXT_STEPS_NO_DOCUMENTS_REQUIRED;
         } else {
             template = MarkdownTemplate.NEXT_STEPS;

@@ -98,7 +98,8 @@ class SolicitorCoversheetPDFDecoratorTest {
     void shouldProvideNoDocumentsRequiredDecoration() {
         when(noDocumentsRequiredBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"documentsNotRequired\": \"Yes\"}";
-        final NoDocumentsRequiredCaseExtra noDocumentsRequiredCaseExtra = NoDocumentsRequiredCaseExtra.builder().documentsNotRequired("Yes").build();
+        final NoDocumentsRequiredCaseExtra noDocumentsRequiredCaseExtra = NoDocumentsRequiredCaseExtra.builder()
+                .documentsNotRequired("Yes").build();
         when(caseExtraDecorator.decorate(any(NoDocumentsRequiredCaseExtra.class)))
             .thenReturn(extra);
         when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
