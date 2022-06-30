@@ -262,7 +262,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyRequestReturnsError() {
-        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithCaseworkerUser())
             .config(config)
             .contentType(ContentType.JSON)
             .body("")
@@ -643,7 +643,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
     }
-
+    
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() throws IOException {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
