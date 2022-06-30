@@ -1012,8 +1012,11 @@ class TaskStateRendererTest {
 
     @Test
     void shouldRenderEmptySendDocsDetailsWhenNoDocumentsRequired() {
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/intestacy/SendDocsDetailsWhenNoDocumentsRequired");
         when(noDocumentsRequiredBusinessRule.isApplicable(any())).thenReturn(true);
         String result = taskStateRenderer.renderSendDocsDetails(TaskState.IN_PROGRESS, "", mock(CaseDetails.class));
-        assertEquals(SEND_DOCS_DETAILS_TITLE, result);
+        assertEquals(expectedHtml, result);
     }
 }
