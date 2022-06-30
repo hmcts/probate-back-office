@@ -56,4 +56,8 @@
         <cve>CVE-2022-22970</cve>
         <cve>CVE-2022-22971</cve>
     </suppress>
+    <suppress>
+        <filePath regex="true">.*\\catalina\\lib\\.*\.jar</filePath>
+        <cve>CVE-2022-34305</cve>
+    </suppress>
 </suppressions>
