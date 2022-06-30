@@ -78,7 +78,7 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
-    private static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
+    static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
@@ -184,12 +184,11 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
-    private String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
-        Map<String, String> keyValues = getKeyValues(details.getData());
+     String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
         if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
             return DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,"");
         }
-
+         Map<String, String> keyValues = getKeyValues(details.getData());
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)

@@ -31,6 +31,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNot
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -42,6 +43,7 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.service.tasklist.TaskStateRenderer.SEND_DOCS_DETAILS_TITLE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
@@ -1007,5 +1009,12 @@ class TaskStateRendererTest {
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
         assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    void shouldRenderEmptySendDocsDetailsWhenNoDocumentsRequired() {
+        when(noDocumentsRequiredBusinessRule.isApplicable(any())).thenReturn(true);
+        String result = taskStateRenderer.renderSendDocsDetails(TaskState.IN_PROGRESS, "", mock(CaseDetails.class));
+        assertEquals(SEND_DOCS_DETAILS_TITLE, result);
     }
 }
