@@ -171,9 +171,12 @@ public class ZipFileService {
                 .collect(Collectors.toList());
 
         log.info("{} re-issue grant docs for case {}", collect.size(), caseDetails.getId());
+        int reIssueGrantDocIndex = 1;
         for (CollectionMember<Document> doc : collect) {
             String url = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
-            addZippedDocument(filesToZip, caseDetails, url, doc.getValue().getDocumentType().getTemplateName(), PDF);
+            addZippedDocument(filesToZip, caseDetails, url,
+                    doc.getValue().getDocumentType().getTemplateName() + "_" + reIssueGrantDocIndex, PDF);
+            reIssueGrantDocIndex++;
         }
 
         return filesToZip;
