@@ -42,7 +42,6 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.service.tasklist.TaskStateRenderer.SEND_DOCS_DETAILS_TITLE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
