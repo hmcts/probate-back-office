@@ -136,7 +136,7 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
-            callbackRequest.getCaseDetails().getData(), authToken));
+            callbackRequest.getCaseDetails(), authToken));
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1091,10 +1091,12 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    public OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
+    public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
+        CaseData caseData = caseDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
         if (null != authToken) {
-            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
+                    caseDetails.getId().toString(), authToken);
         }
         if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
             return OrganisationPolicy.builder()
