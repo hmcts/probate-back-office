@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.functional.checkyouranswers;
 
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
 import org.junit.Test;
@@ -126,7 +125,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(utils.getJsonFromFile("incorrectInput.checkYourAnswersPayload.json"))
             .when().post(VALIDATE_URL).then().statusCode(400);
     }
@@ -245,7 +244,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         throws IOException {
         final Response response = given()
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(utils.getJsonFromFile(fileName))
             .when().post(url);
         assertEquals(200, response.getStatusCode());
@@ -258,7 +257,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders())
+            .headers(utils.getHeadersWithSolicitorUser())
             .body(replaceStringInCheckYourAnswersPayload(oldString, replacingString))
             .when().post(postURL).then().statusCode(400)
             .and().body("fieldErrors[0].field", equalToIgnoringCase(errorMsg))
@@ -274,19 +273,13 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     private void downloadPdfAndVerifyString(String documentId, String validationString) {
-        IntegrationTestBase.setEvidenceManagementUrlAsBaseUri();
         try {
-            final ValidatableResponse response2 = given()
-                .config(config)
-                .relaxedHTTPSValidation()
-                .headers(utils.getHeadersWithUserId())
-                .when().get("/documents/" + documentId + "/binary")
-                .then().assertThat().statusCode(200);
+            final Response response = utils.getDocumentResponseFromId(documentId, utils.getHeadersWithUserId());
 
-            final String textContent = removeCrLfs(textContentOf(response2.extract().body().asByteArray()));
+            final String textContent = removeCrLfs(textContentOf(response.getBody().asByteArray()));
             validationString = removeCrLfs(validationString);
             assertTrue(textContent.contains(validationString));
-            assertEquals(response2.extract().contentType(), "application/pdf");
+            assertEquals(response.contentType(), "application/pdf");
         } catch (IOException e) {
             e.printStackTrace();
         }
