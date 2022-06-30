@@ -61,7 +61,7 @@
         <cve>CVE-2022-34305</cve>
     </suppress>
     <suppress>
-        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed-websocket@.*$</packageUrl>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-websocket@.*$</packageUrl>
         <cve>CVE-2022-34305</cve>
     </suppress>
 </suppressions>
