@@ -14,7 +14,6 @@ import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class CoversheetGenerationTests extends DocumentGenerationTestBase {
 
-    public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     public static final String NEXTSTEPS_VALIDATE_URL = "/nextsteps/validate";
 
     @Test
@@ -87,20 +86,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
-        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
-        String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
-    }
-
-    @Test
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
         String dir = "/coversheet/exceptedEstates/ihtEstateBeforeSwitchDate/";
@@ -110,20 +95,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-    }
-
-    @Test
-    public void verifyGenerateSolsGopExpectedEstatesNo() throws IOException {
-        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
-        String dir = "/exceptedEstates/ihtEstateCompletedNo/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
@@ -139,20 +110,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
-        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
-        String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
-    }
-
-    @Test
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
         String dir = "/coversheet/exceptedEstates/ihtEstateCompletedYes207/";
@@ -162,20 +119,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-    }
-
-    @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
-        //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
-        String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test

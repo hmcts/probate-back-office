@@ -310,8 +310,6 @@ dependencies {
   testImplementation 'org.awaitility:awaitility:4.1.0'
   testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
-  //TODO Remove when JUNIT5 PR merged
-  testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
