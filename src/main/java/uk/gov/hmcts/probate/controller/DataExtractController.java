@@ -5,11 +5,13 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.service.DormantCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
@@ -30,6 +32,7 @@ public class DataExtractController {
     private final IronMountainDataExtractService ironMountainDataExtractService;
     private final ExelaDataExtractService exelaDataExtractService;
     private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
+    private final DormantCaseService dormantCaseService;
     private final DataExtractDateValidator dataExtractDateValidator;
 
     @Operation(summary = "Initiate HMRC data extract within 2 dates",
@@ -100,6 +103,20 @@ public class DataExtractController {
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(fromDate, toDate);
         });
         log.info("Perform Smee And Ford data extract from date finished");
+
+        return ResponseEntity.accepted().body(null);
+    }
+
+    @Operation(summary = "Initiate Dormancy", description = " Date MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/make-dormant", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity makeCasesDormant(
+            @Parameter(name = "Date to find cases against", required = true)
+            @RequestParam(value = "fromDate") String fromDate,
+            @RequestParam(value = "toDate") String toDate) {
+
+        dataExtractDateValidator.dateValidator(fromDate, toDate);
+
+        dormantCaseService.makeCasesDormant(fromDate, toDate);
 
         return ResponseEntity.accepted().body(null);
     }
