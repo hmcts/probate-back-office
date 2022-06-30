@@ -57,7 +57,10 @@
         <cve>CVE-2022-22971</cve>
     </suppress>
     <suppress>
-        <filePath regex="true">.*\\catalina\\lib\\.*\.jar</filePath>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@.*$</packageUrl>
+        <cve>CVE-2022-34305</cve>
+    </suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed-websocket@.*$</packageUrl>
         <cve>CVE-2022-34305</cve>
     </suppress>
 </suppressions>
