@@ -676,8 +676,10 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_CAVEATOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getCaveatorPhoneNumber());
         assertEquals(CAV_PROBATE_FEE, caveatCallbackResponse.getCaveatData().getProbateFee());
         assertEquals(CAV_HELP_WITH_FEES_REFERENCE, caveatCallbackResponse.getCaveatData().getHelpWithFeesReference());
-        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON, caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason());
-        assertEquals(CAV_NOT_INCLUDED_EXPLANATION, caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation());
+        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON,
+            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason());
+        assertEquals(CAV_NOT_INCLUDED_EXPLANATION,
+            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation());
         assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatCallbackResponse.getCaveatData().getProbateFeeAccountNumber());
         assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatCallbackResponse.getCaveatData().getProbateFeeAccountReference());
     }
