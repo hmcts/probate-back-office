@@ -18,6 +18,12 @@ public class CaseStoppedService {
 
     public void caseStopped(CaseDetails caseDetails) {
         caseDetails.getData().setGrantStoppedDate(LocalDate.now());
+        log.info("state=" + caseDetails.getState());
+    }
+
+    public void reactivateCase(CaseDetails caseDetails) {
+        caseDetails.getData().setEvidenceHandled(Constants.NO);
+        log.info("setEvidenceHandled=NO");
     }
 
     public void caseResolved(CaseDetails caseDetails) {
