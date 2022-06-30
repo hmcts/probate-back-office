@@ -184,11 +184,11 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
-     String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
+    String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
         if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
             return DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,"");
         }
-         Map<String, String> keyValues = getKeyValues(details.getData());
+        Map<String, String> keyValues = getKeyValues(details.getData());
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)
