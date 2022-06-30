@@ -82,7 +82,7 @@ public class CaveatCallbackResponseTransformer {
                     .status(paymentResponse.getStatus())
                     .method(PBA_PAYMENT_METHOD)
                     .build();
-                paymentsList.add(new CollectionMember<Payment>(payment));
+                paymentsList.add(new CollectionMember<>(payment));
             }
 
             responseCaveatDataBuilder
@@ -298,7 +298,7 @@ public class CaveatCallbackResponseTransformer {
             .probateFeeNotIncludedExplanation(caveatData.getProbateFeeNotIncludedExplanation())
             .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
             .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
-            .bilingualCorrepondenceRequested(caveatData.getBilingualCorrepondenceRequested());
+            .languagePreferenceWelsh(caveatData.getLanguagePreferenceWelsh());
 
     }
 

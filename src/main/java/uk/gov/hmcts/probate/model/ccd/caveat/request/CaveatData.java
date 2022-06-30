@@ -91,8 +91,7 @@ public class CaveatData {
     private String probateFeeAccountNumber;
     @Getter
     private String probateFeeAccountReference;
-    @Getter
-    private String bilingualCorrepondenceRequested;
+
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
     private String solsSolicitorFirmName;
 

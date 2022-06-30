@@ -295,7 +295,7 @@ public class ExceptionRecordRequest {
             .probateFeeNotIncludedExplanation(get(ocrFields, "probateFeeNotIncludedExplanation"))
             .probateFeeAccountNumber(get(ocrFields, "probateFeeAccountNumber"))
             .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
-            .bilingualCorrepondenceRequested(get(ocrFields, "bilingualCorrepondenceRequested"))
+            .bilingualCorrespondenceRequested(get(ocrFields, "bilingualCorrespondenceRequested"))
             .build();
     }
 }

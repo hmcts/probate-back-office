@@ -42,7 +42,7 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "solsSolicitorAppReference", source = "solsSolicitorAppReference")
     @Mapping(target = "solsFeeAccountNumber", source = "solsFeeAccountNumber")
     @Mapping(target = "solsPaymentMethods", ignore = true)
-    @Mapping(target = "languagePreferenceWelsh", source = "ocrFields.bilingualCorrepondenceRequested", qualifiedBy = {
+    @Mapping(target = "languagePreferenceWelsh", source = "ocrFields.bilingualCorrespondenceRequested", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "solsSolicitorPhoneNumber", source = "solsSolicitorPhoneNumber")
     @Mapping(target = "caveatorPhoneNumber", source = "caveatorPhoneNumber")
