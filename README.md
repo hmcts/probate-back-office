@@ -166,6 +166,7 @@ kill -9 PID_JUST_FOUND
 
 Also needs back office docker to bring up all services:
 ./bin/dev-cft-setup.sh
+./bin/dev-cft-start.sh
 
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
 ## END: NEW ############################################################################################################
@@ -325,8 +326,7 @@ NB. If you download the binary version it is called 'jq-osx-amd64' and the scrip
 
 ```bash
   az login
-  az acr login --name hmctsp
-  ublic --subscription DCD-CNP-Prod
+  az acr login --name hmctspublic --subscription DCD-CNP-Prod
   az acr login --name hmctsprivate --subscription DCD-CNP-Prod
 ```
 
