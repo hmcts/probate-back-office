@@ -78,9 +78,8 @@ public class ConfirmationResponseService {
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
-    public AfterSubmitCallbackResponse getCaseAccessErrorConfirmation(String caseId, String currentStatus,
-                                                                      String stepsToResolve) {
-        return getConfirmationResponse(getCaseAccessErrorMarkdown(caseId, currentStatus, stepsToResolve));
+    public AfterSubmitCallbackResponse getCaseAccessErrorConfirmation(String caseId) {
+        return getConfirmationResponse(getCaseAccessErrorMarkdown(caseId));
     }
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
@@ -277,11 +276,8 @@ public class ConfirmationResponseService {
         return markdownSubstitutionService.generatePage(templatesDirectory, MarkdownTemplate.NEXT_STEPS, keyValue);
     }
 
-    private TemplateResponse getCaseAccessErrorMarkdown(String caseId, String currentAccountStatus,
-                                                        String stepsToResolve) {
+    private TemplateResponse getCaseAccessErrorMarkdown(String caseId) {
         Map<String, String> keyValue = new HashMap<>();
-        keyValue.put("{{accountStatus}}", currentAccountStatus);
-        keyValue.put("{{stepsToResolve}}", stepsToResolve);
         keyValue.put("{{caseId}}", caseId);
         return markdownSubstitutionService
                 .generatePage(templatesDirectory, MarkdownTemplate.CASE_ASSIGNMENT_ERROR, keyValue);

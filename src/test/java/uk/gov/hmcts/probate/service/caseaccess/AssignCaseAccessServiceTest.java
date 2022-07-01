@@ -15,11 +15,9 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.mockito.ArgumentMatchers.anyInt;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
@@ -79,7 +77,7 @@ class AssignCaseAccessServiceTest {
         doThrow(FeignException.class).when(assignCaseAccessClient)
                 .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
         AfterSubmitCallbackResponse response = AfterSubmitCallbackResponse.builder().build();
-        when(userAccessStatusErrorReporter.getAccessError(anyInt(), isNull(), anyString(), anyString(), anyString()))
+        when(userAccessStatusErrorReporter.getAccessError(anyString(), anyString(), anyString()))
                 .thenReturn(response);
         AfterSubmitCallbackResponse message = assignCaseAccessService.assignCaseAccess("ABC123", "42",
                 "GrantOfRepersentation");

@@ -937,7 +937,7 @@ class ConfirmationResponseServiceTest {
         when(caseAccessTemplateResponseMock.getTemplate()).thenReturn("caseAccessTemplate");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest
-                .getCaseAccessErrorConfirmation("1234567890123456", "currentStatus", "steps");
+                .getCaseAccessErrorConfirmation("1234567890123456");
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals("caseAccessTemplate", afterSubmitCallbackResponse.getConfirmationBody());

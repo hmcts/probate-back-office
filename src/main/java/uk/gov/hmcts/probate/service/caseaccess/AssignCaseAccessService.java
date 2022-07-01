@@ -47,8 +47,7 @@ public class AssignCaseAccessService {
         } catch (FeignException feignException) {
             log.info("SAC: assignCaseAccess errored for CaseId {} of type {} to user {}, with exeption {}",
                     caseId, caseTypeId, userId, feignException.getMessage());
-            return userAccessStatusErrorReporter.getAccessError(feignException.status(), feignException.getMessage(),
-                    authorisationToken, caseId, caseTypeId);
+            return userAccessStatusErrorReporter.getAccessError(authorisationToken, caseId, caseTypeId);
         }
 
         return null;
