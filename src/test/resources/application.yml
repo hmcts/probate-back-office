@@ -427,3 +427,11 @@ azure:
 aca:
   api:
     url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}
+
+case_document_am:
+  url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
+
+document_management:
+  fileupload:
+    extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
+    mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"

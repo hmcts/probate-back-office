@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -51,7 +51,7 @@ public class BulkPrintService {
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String CASE_ID = "case id ";
     private final SendLetterApi sendLetterApi;
-    private final DocumentStoreClient documentStoreClient;
+    private final DocumentManagementService documentManagementService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
     private final EventValidationService eventValidationService;
     private final List<BulkPrintValidationRule> bulkPrintValidationRules;
@@ -76,7 +76,7 @@ public class BulkPrintService {
             additionalData = Collections.unmodifiableMap(additionalData);
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs =
-                arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet, authHeaderValue);
+                arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet);
 
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                 new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
@@ -136,8 +136,6 @@ public class BulkPrintService {
                                                Document coverSheet, boolean forReprint) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = serviceAuthTokenGenerator.generate();
-
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
 
@@ -145,13 +143,14 @@ public class BulkPrintService {
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs;
             if (forReprint) {
-                pdfs = arrangePdfDocumentsForReprint(callbackRequest, grantDocument, coverSheet, authHeaderValue);
+                pdfs = arrangePdfDocumentsForReprint(callbackRequest, grantDocument, coverSheet);
             } else {
-                pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet, authHeaderValue);
+                pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet);
             }
             log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: "
                 + pdfs.size());
 
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                 new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
@@ -171,22 +170,20 @@ public class BulkPrintService {
     }
 
     private String getPdfAsBase64EncodedString(Document document,
-                                               String authHeaderValue,
                                                CallbackRequest callbackRequest) throws IOException {
 
         String response =
-            Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
+            Base64.getEncoder().encodeToString(documentManagementService.getDocument(document));
         log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString()
             + "dm store" + document.getDocumentFileName());
         return response;
     }
 
     private String getPdfAsBase64EncodedString(Document document,
-                                               String authHeaderValue,
                                                CaveatCallbackRequest caveatCallbackRequest) throws IOException {
 
         String response =
-            Base64.getEncoder().encodeToString(documentStoreClient.retrieveDocument(document, authHeaderValue));
+            Base64.getEncoder().encodeToString(documentManagementService.getDocument(document));
         log.info(CASE_ID + caveatCallbackRequest.getCaseDetails().getId().toString()
             + "dm store" + document.getDocumentFileName());
         return response;
@@ -195,12 +192,11 @@ public class BulkPrintService {
     private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForBulkPrinting(
         CallbackRequest callbackRequest,
         Document grantDocument,
-        Document coverSheetDocument,
-        String authHeaderValue) throws IOException {
+        Document coverSheetDocument) throws IOException {
         Long extraCopies = 1L;
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
-        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
-        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
+        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, callbackRequest);
+        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, callbackRequest);
 
         if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
@@ -232,13 +228,12 @@ public class BulkPrintService {
     private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForBulkPrinting(
         CaveatCallbackRequest caveatCallbackRequest,
         Document grantDocument,
-        Document coverSheetDocument,
-        String authHeaderValue) throws IOException {
+        Document coverSheetDocument) throws IOException {
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
         String encodedCoverSheet =
-            getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, caveatCallbackRequest);
+            getPdfAsBase64EncodedString(coverSheetDocument, caveatCallbackRequest);
         String encodedGrantDocument =
-            getPdfAsBase64EncodedString(grantDocument, authHeaderValue, caveatCallbackRequest);
+            getPdfAsBase64EncodedString(grantDocument, caveatCallbackRequest);
 
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument =
             new uk.gov.hmcts.reform.sendletter.api.model.v3.Document(encodedCoverSheet, 1);
@@ -254,12 +249,11 @@ public class BulkPrintService {
     private List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> arrangePdfDocumentsForReprint(
         CallbackRequest callbackRequest,
         Document grantDocument,
-        Document coverSheetDocument,
-        String authHeaderValue) throws IOException {
+        Document coverSheetDocument) throws IOException {
         Long extraCopies = Long.parseLong(callbackRequest.getCaseDetails().getData().getReprintNumberOfCopies());
         List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> documents = new LinkedList<>();
-        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, authHeaderValue, callbackRequest);
-        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, authHeaderValue, callbackRequest);
+        String encodedCoverSheet = getPdfAsBase64EncodedString(coverSheetDocument, callbackRequest);
+        String encodedGrantDocument = getPdfAsBase64EncodedString(grantDocument, callbackRequest);
 
         //Layer documents as cover letter first, grant, and extra copies of grant to PA.
         uk.gov.hmcts.reform.sendletter.api.model.v3.Document coversheetDocument =

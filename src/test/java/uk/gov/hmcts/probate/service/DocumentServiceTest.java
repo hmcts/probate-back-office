@@ -14,7 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +32,7 @@ class DocumentServiceTest {
     private DocumentService documentService;
 
     @Mock
-    private UploadService uploadService;
+    private DocumentManagementService documentManagementService;
 
     @Mock
     private CallbackRequest callbackRequest;
@@ -61,17 +61,17 @@ class DocumentServiceTest {
     }
 
     @Test
-    void shouldExpiryDocument() throws JsonProcessingException {
-        doNothing().when(uploadService).expire(document);
+    public void shouldExpiryDocument() throws JsonProcessingException {
+        doNothing().when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
 
-        verify(uploadService).expire(document);
+        verify(documentManagementService).delete(document);
     }
 
     @Test
-    void shouldProduceWaringLog() throws JsonProcessingException {
-        doThrow(JsonProcessingException.class).when(uploadService).expire(document);
+    public void shouldProduceWaringLog() throws JsonProcessingException {
+        doThrow(JsonProcessingException.class).when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
 
