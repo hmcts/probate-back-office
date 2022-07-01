@@ -121,4 +121,18 @@ public class DataExtractController {
         return ResponseEntity.accepted().body(null);
     }
 
+    @Operation(summary = "Reactivate Dormanct cases", description = " Date MUST be in format 'yyyy-MM-dd'")
+    @PostMapping(path = "/reactivate-dormant", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity reactivateDormantCases(
+            @Parameter(name = "Date to find cases against", required = true)
+            @RequestParam(value = "fromDate") String fromDate,
+            @RequestParam(value = "toDate") String toDate) {
+
+        dataExtractDateValidator.dateValidator(fromDate, toDate);
+
+        dormantCaseService.reactivateDormantCases(fromDate, toDate);
+
+        return ResponseEntity.accepted().body(null);
+    }
+
 }

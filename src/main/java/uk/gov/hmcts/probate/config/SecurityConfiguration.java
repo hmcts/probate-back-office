@@ -40,6 +40,7 @@ public class SecurityConfiguration {
                 .antMatchers("/notify/grant-delayed-scheduled")
                 .antMatchers("/notify/grant-awaiting-documents-scheduled")
                 .antMatchers("/data-extract/make-dormant")
+                .antMatchers("/data-extract/reactivate-dormant")
                 .and()
                 .addFilter(authCheckerServiceAndUserFilter)
                 .csrf().disable()

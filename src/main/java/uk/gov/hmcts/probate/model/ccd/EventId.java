@@ -20,7 +20,8 @@ public enum EventId {
     GRANT_RESOLVED("grantResolved"),
     DEATH_RECORD_VERIFIED("deathRecordVerified"),
     DEATH_RECORD_VERIFICATION_FAILED("deathRecordVerificationFailed"),
-    MAKE_CASE_DORMANT("makeCaseDormant");
+    MAKE_CASE_DORMANT("makeCaseDormant"),
+    REACTIVATE_DORMANT_CASE("reactivateDormantCase");
     @Getter
     private final String name;
 
