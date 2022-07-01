@@ -12,7 +12,8 @@ postgresql:
     username: hmcts
     password: hmcts
   primary:
-    persistence.enabled: false
+    persistence:
+      enabled: false
     initdb:
       scripts:
          create.sql: |
@@ -227,6 +228,7 @@ java:
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
+    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
   keyVaults:
     probate:
