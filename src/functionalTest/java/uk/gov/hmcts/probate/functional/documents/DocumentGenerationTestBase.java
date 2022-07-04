@@ -26,6 +26,8 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
             .body(utils.getJsonFromFile(jsonFileName))
             .when().post(path).andReturn();
 
+        jsonResponse.then().assertThat().statusCode(200);
+
         final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
         final String documentUrl =
@@ -42,6 +44,8 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
             .headers(utils.getHeadersWithUserId())
             .body(utils.getJsonFromFile(jsonFileName))
             .when().post(path).andReturn();
+
+        jsonResponse.then().assertThat().statusCode(200);
 
         return JsonPath.from(jsonResponse.getBody().asString());
     }
