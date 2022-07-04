@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1528365719158888,
+    "id": 1528365719158889,
     "jurisdiction": "PROBATE",
     "state": "CaseCreated",
     "case_type_id": "GrantOfRepresentation",
@@ -98,7 +98,6 @@
         "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
       },
       "extraCopiesOfGrant": null,
-      "solsPaymentMethods": "fee account",
       "trustCorpAddress": {
         "County": "county",
         "Country": "country",
