@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -1305,25 +1306,37 @@ public class CallbackResponseTransformer {
         if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())) {
             builder.caseHandedOffToLegacySite(ANSWER_NO);
 
-            if (TITLE_AND_CLEARING_TRUST_CORP_SDJ.equals(caseData.getTitleAndClearingType())
-                    || TITLE_AND_CLEARING_TRUST_CORP.equals(caseData.getTitleAndClearingType())) {
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (TITLE_AND_CLEARING_TRUST_CORP_SDJ.equals(caseData.getTitleAndClearingType())
+                    || TITLE_AND_CLEARING_TRUST_CORP.equals(caseData.getTitleAndClearingType()))) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
 
-            if (ANSWER_NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && ANSWER_NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
 
-            if (ANSWER_NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType()))
+                    && ANSWER_NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
                     && ANSWER_YES.equalsIgnoreCase(caseData.getWillAccessNotarial())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
 
-            if ("ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())) {
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
 
-            if ("ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())
+            if (PERSONAL.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())
                     && ANSWER_YES.equalsIgnoreCase(caseData.getSolsAdoptedEnglandOrWales())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
