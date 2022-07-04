@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.23
+version: 1.0.24
 
 maintainers:
   - name: HMCTS Probate Team
@@ -10,19 +10,19 @@ maintainers:
 dependencies:
   - name: java
     version:  3.7.4
-    repository: '@hmctspublic'
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: ccd
     version: 6.0.0
-    repository: '@hmctspublic'
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     tags:
       - probate-ccd-stack
   - name: xui-webapp
     version: ~0.2.13
-    repository: '@hmctspublic'
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: xui-webapp.enabled
   - name: idam-pr
     version: 2.2.7
-    repository: '@hmctspublic'
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
 
   - name: postgresql
@@ -35,4 +35,4 @@ dependencies:
 #    repository: "https://charts.bitnami.com/bitnami"
 #  - name: logstash
 #    version: ~2.4.1
-#    repository: '@hmctspublic'
+#    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'

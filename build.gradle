@@ -22,6 +22,7 @@ plugins {
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
+  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
 }
 
 apply plugin: 'project-report'
@@ -174,7 +175,8 @@ def versions = [
         probatePactCommonsVersion       : '1.0.2',
         springCloud                     : '3.1.1',
         junit_jupiter                   : '5.8.0-M1',
-        elasticSearchVersion            : '7.15.0'
+        elasticSearchVersion            : '7.15.0',
+        documentClient                  : '1.7.3'
 ]
 
 jacocoTestReport {
@@ -192,7 +194,6 @@ repositories {
   jcenter()
   maven { url "https://repo.maven.apache.org/maven2" }
   maven { url "https://jitpack.io" }
-
 }
 
 
@@ -242,6 +243,7 @@ dependencies {
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
+  implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
 
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
@@ -362,6 +364,9 @@ dependencies {
   testImplementation group: 'org.junit.vintage', name: 'junit-vintage-engine', version: '5.7.2'
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
+
+  // Provides fast-reload of the probate service upon edit & compile during local development
+  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.withType(JavaCompile) {
@@ -433,5 +438,40 @@ pact {
     pactDirectory = 'pacts'
     tags = [System.getenv("PACT_BRANCH_NAME") ?:'Dev']
     version = project.pacticipantVersion
+  }
+}
+
+// Build the back office excel file.
+task buildBackOfficeXlsx(type: Exec) {
+  environment 'CCD_DEF_CASE_SERVICE_BASE_URL', 'localhost:4104'
+
+  def input = project.file('ccdImports/configFiles/CCD_Probate_Backoffice')
+  commandLine project.file("ccdImports/conversionScripts/convertJsonToXLS.sh")
+  args input
+  // Register the inputs and outputs so Gradle can skip if up-to-date.
+  inputs.dir input
+  outputs.file project.file('jsonToXLS/CCD_Probate_Backoffice.xlsx')
+}
+
+bootWithCCD {
+  dependsOn buildBackOfficeXlsx
+  authMode = uk.gov.hmcts.rse.AuthMode.Local
+  // Request the cftlib create the probate_man database
+  environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
+
+  environment 'IDAM_S2S_URL', 'http://localhost:8489'
+  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
+  environment 'PROBATE_POSTGRESQL_PORT', '6432'
+  environment 'PROBATE_POSTGRESQL_USER', 'postgres'
+  environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
+}
+
+bootJar {
+  getArchiveFileName().set(provider {
+    'back-office.jar'
+  })
+
+  manifest {
+    attributes('Implementation-Version': project.version.toString())
   }
 }
