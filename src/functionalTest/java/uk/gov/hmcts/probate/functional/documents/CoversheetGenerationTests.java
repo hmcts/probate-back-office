@@ -84,19 +84,7 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(expectedText));
 
     }
-
-    @Test
-    public void verifyCoverSheetGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
-        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
-        String dir = "/coversheet/exceptedEstates/ihtEstateBeforeSwitchDate/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
-    }
-
+    
     @Test
     public void verifyCoverSheetGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
@@ -107,18 +95,6 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-    }
-
-    @Test
-    public void verifyCoverSheetGenerateSolsGopExpectedEstatesNo() throws IOException {
-        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
-        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedNo/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
@@ -140,33 +116,9 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
-    }
-
-    @Test
-    public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
-        //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
-        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedYes207/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
-
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-    }
-
-    @Test
-    public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
-        //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
-        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedYes400421/";
-        String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
