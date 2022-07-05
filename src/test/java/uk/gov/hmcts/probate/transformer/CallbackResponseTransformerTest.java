@@ -99,7 +99,10 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -3632,7 +3635,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void setNoIfCaseHandedOffToLegacySiteIsNull() {
+    void setNoIfCaseHandedOffFlagIsNull() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
 
@@ -3645,7 +3648,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void setNoIfCaseHandedOffToLegacySiteIsBlank() {
+    void setNoIfCaseHandedOffFlagIsBlank() {
         caseDataBuilder.caseHandedOffToLegacySite("");
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
 
@@ -3658,7 +3661,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenApplicationTypeIsSolicitorAndTitleClearingTypeIsTrustCorpSdj() {
+    void caseHandedOffFlagShouldSetToYesWhenApplicationTypeIsSolicitorAndTitleClearingTypeIsTrustCorpSdj() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3672,7 +3675,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenApplicationTypeIsSolicitorAndTitleClearingTypeIsTrustCorp() {
+    void caseHandedOffFlagShouldSetToYesWhenApplicationTypeIsSolicitorAndTitleClearingTypeIsTrustCorp() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3686,7 +3689,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsSolicitorCaseTypeGopAndDeceasedDomicileInEngWalesIsNo() {
+    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeGopAndDeceasedDomicileInEngWalesIsNo() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3702,7 +3705,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsSolicitorCaseTypeAdmonWillAndDeceasedDomicileInEngWalesIsNo() {
+    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeAdmonWillAndDeceasedDomicileInEngWalesIsNo() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3718,7 +3721,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsSolicitorCaseTypeIntestacyAndDeceasedDomicileInEngWalesIsNo() {
+    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeIntestacyAndDeceasedDomicileInEngWalesIsNo() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3734,7 +3737,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsSolicitorCaseTypeGopAndWillAccessNoAndWillNotarialIsYes() {
+    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeGopAndWillAccessNoAndWillNotarialIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3751,7 +3754,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsSolicitorCaseTypeAdmonWillAndWillAccessNoAndWillNotarialIsYes() {
+    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeAdmonWillAndWillAccessNoAndWillNotarialIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3768,7 +3771,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsSolicitorCaseTypeIntestacyAndSolsApplicantRelationshipToDeceasedIsChildAdopted() {
+    void caseHandedOffFlagSetToYesWhenAppTypeIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(SOLICITOR);
@@ -3784,7 +3787,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void caseHandedOffToLegacySiteShouldSetToYesWhenAppTypeIsPersonalCaseTypeIntestacyAndSolsApplicantRelationshipToDeceasedIsChildAdoptedAndSolsAdoptedEnglandOrWalesIsYes() {
+    void caseHandedOffFlagSetToYesWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null);
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(PERSONAL);
