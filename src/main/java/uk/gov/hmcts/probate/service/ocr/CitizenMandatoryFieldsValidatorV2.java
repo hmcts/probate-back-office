@@ -86,7 +86,7 @@ public class CitizenMandatoryFieldsValidatorV2 {
                 BigDecimal nqv = new BigDecimal(numericalMonetaryValue).multiply(BigDecimal.valueOf(100));
                 return ihtEstateValidationRule.isNqvBetweenValues(nqv);
             }
-            }
+        }
         return false;
     }
 
