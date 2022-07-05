@@ -1,17 +1,12 @@
 package uk.gov.hmcts.probate.transformer.assembly;
 
-import java.util.Arrays;
-import java.util.List;
-import static org.hamcrest.Matchers.equalTo;
-import static org.junit.Assert.assertThat;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentMatchers;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import static org.mockito.Mockito.when;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -34,9 +29,16 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWill;
 import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWitness;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
+import java.util.Arrays;
+import java.util.List;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AssembleLetterTransformerTest {
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.Mockito.when;
+
+
+@ExtendWith(MockitoExtension.class)
+class AssembleLetterTransformerTest {
     @Mock
     AssembleIncapacity assembleIncapacity;
     @Mock
@@ -74,7 +76,7 @@ public class AssembleLetterTransformerTest {
 
     private AssembleLetterTransformer assembleLetterTransformer;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         assembleLetterTransformer = new AssembleLetterTransformer(assembleCaseworker,
             assembleFreeText, assembleEntitlement, assembleIHT, assembleMissingInformation, assembleForeignDomicile,
@@ -86,7 +88,7 @@ public class AssembleLetterTransformerTest {
     }
 
     @Test
-    public void shouldSetupNoParagraphsFromMocks() {
+    void shouldSetupNoParagraphsFromMocks() {
         Categories categories = Categories.builder().build();
         when(caseDataMock.getCategories()).thenReturn(categories);
         ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder = ResponseCaseData.builder();
@@ -99,7 +101,7 @@ public class AssembleLetterTransformerTest {
     }
 
     @Test
-    public void shouldSetupDefaultParagraphsFromMocks() {
+    void shouldSetupDefaultParagraphsFromMocks() {
         Categories categories = Categories.builder().build();
         when(caseDataMock.getCategories()).thenReturn(categories);
 
@@ -122,7 +124,7 @@ public class AssembleLetterTransformerTest {
     }
 
     @Test
-    public void shouldSetupAllParagraphsFromMocks() {
+    void shouldSetupAllParagraphsFromMocks() {
         Categories categories = Mockito.mock(Categories.class);
 
         List<String> forDom = Arrays.asList("ForDomAffidavit");

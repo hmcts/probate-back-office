@@ -6,12 +6,12 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.mitchellbosecke.pebble.PebbleEngine;
 import com.mitchellbosecke.pebble.loader.StringLoader;
 import com.mitchellbosecke.pebble.template.PebbleTemplate;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.JsonTest;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalNumberSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -26,9 +26,9 @@ import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.Map;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @JsonTest
-public class PdfServiceHtmlTemplateTest {
+class PdfServiceHtmlTemplateTest {
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
@@ -80,7 +80,7 @@ public class PdfServiceHtmlTemplateTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         pebble = new PebbleEngine.Builder()
                 .strictVariables(true)
@@ -134,7 +134,7 @@ public class PdfServiceHtmlTemplateTest {
     }
 
     @Test
-    public void shouldGenerateCorrectHtml() throws Exception {
+    void shouldGenerateCorrectHtml() throws Exception {
         Map<String, Object> valuesMap = objectMapper.readValue(jsonData, MapType.REFERENCE);
         valuesMap.put("case_extras", null);
         String templateString = new String(Files.readAllBytes(Paths.get(getClass()

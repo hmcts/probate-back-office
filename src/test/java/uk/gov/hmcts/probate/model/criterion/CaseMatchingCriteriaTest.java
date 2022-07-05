@@ -1,8 +1,7 @@
 package uk.gov.hmcts.probate.model.criterion;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -14,11 +13,12 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetai
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class CaseMatchingCriteriaTest {
+class CaseMatchingCriteriaTest {
 
     @Mock
     private CaseData caseData;
@@ -44,9 +44,9 @@ public class CaseMatchingCriteriaTest {
     @Mock
     private WillLodgementDetails willLodgementDetails;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         when(caseDetails.getData()).thenReturn(caseData);
         when(caveatDetails.getData()).thenReturn(caveatData);
         when(standingSearchDetails.getData()).thenReturn(standingSearchData);
@@ -54,35 +54,35 @@ public class CaseMatchingCriteriaTest {
     }
 
     @Test
-    public void shouldCreateCriteriaOfCaseDetails() {
+    void shouldCreateCriteriaOfCaseDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caseDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(caseDetails, times(1)).getData();
     }
 
     @Test
-    public void shouldCreateCriteriaOfCaveatDetails() {
+    void shouldCreateCriteriaOfCaveatDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(caveatDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(caveatDetails, times(1)).getData();
     }
 
     @Test
-    public void shouldCreateCriteriaOfStandingSearchDetails() {
+    void shouldCreateCriteriaOfStandingSearchDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(standingSearchDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(standingSearchDetails, times(1)).getData();
     }
 
 
     @Test
-    public void shouldCreateCriteriaOfWillLodgementDetails() {
+    void shouldCreateCriteriaOfWillLodgementDetails() {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(willLodgementDetails);
 
-        Assert.assertNotNull(caseMatchingCriteria);
+        assertNotNull(caseMatchingCriteria);
         verify(willLodgementDetails, times(1)).getData();
     }
 }

@@ -7,5 +7,5 @@ import org.springframework.context.annotation.FilterType;
 @TestConfiguration
 @ComponentScan(value = "uk.gov.hmcts.probate",
         excludeFilters = {@ComponentScan.Filter(type = FilterType.ANNOTATION, value = TestConfiguration.class)})
-public class ControllerConfiguration {
+class ControllerConfiguration {
 }

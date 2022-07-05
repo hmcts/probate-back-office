@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.reform.probate.model.ScannedDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -8,11 +8,11 @@ import uk.gov.hmcts.reform.probate.model.cases.DocumentLink;
 
 import static java.time.LocalDateTime.now;
 import static org.hamcrest.CoreMatchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
-public class ScannedDocumentMapperTest {
+class ScannedDocumentMapperTest {
 
     private static final String DOC_NAME_PREFIX1 = "Test1";
     private ScannedDocumentMapper scannedDocumentMapper = new ScannedDocumentMapper();
@@ -34,7 +34,7 @@ public class ScannedDocumentMapperTest {
     }
 
     @Test
-    public void testScannedDocument() {
+    void testScannedDocument() {
         InputScannedDoc inputDoc = getSampleInputDocument(DOC_NAME_PREFIX1);
         CollectionMember<ScannedDocument> scannedDocumentCollectionMember
             = scannedDocumentMapper.toCaseDoc(inputDoc, null);
@@ -50,14 +50,14 @@ public class ScannedDocumentMapperTest {
     }
 
     @Test
-    public void testNoScannedDocument() {
+    void testNoScannedDocument() {
         CollectionMember<ScannedDocument> scannedDocumentCollectionMember
             = scannedDocumentMapper.toCaseDoc(null, null);
         assertNull(scannedDocumentCollectionMember);
     }
 
     @Test
-    public void shouldUPdateCaseDoc() {
+    void shouldUPdateCaseDoc() {
         InputScannedDoc inputDoc = getSampleInputDocument(DOC_NAME_PREFIX1);
         uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
             collectionMember
@@ -67,7 +67,7 @@ public class ScannedDocumentMapperTest {
     }
 
     @Test
-    public void shouldNoUpdateCaseDocForNullExceptionDoc() {
+    void shouldNoUpdateCaseDocForNullExceptionDoc() {
         uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
             collectionMember
             = scannedDocumentMapper.updateCaseDoc(null, "Ref1");

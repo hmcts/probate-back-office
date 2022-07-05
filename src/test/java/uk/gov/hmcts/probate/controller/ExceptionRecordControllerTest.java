@@ -1,16 +1,16 @@
 package uk.gov.hmcts.probate.controller;
 
 import org.json.JSONObject;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -34,10 +34,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ExceptionRecordControllerTest {
+class ExceptionRecordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -71,7 +71,7 @@ public class ExceptionRecordControllerTest {
     private List<OCRField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() throws IOException {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         exceptionRecordPayloadCitizenPA8A =
@@ -101,7 +101,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
+    void testWarningsPopulateListAndReturnOkWithWarningsResponseState() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA8A)
@@ -112,7 +112,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8A() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -125,7 +125,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8A() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadSolicitorPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -138,7 +138,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1P() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1P() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -152,7 +152,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1P() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1P() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenMultipleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -166,7 +166,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1P()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1P()
             throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadSolicitorMultipleExecutorPA1P)
@@ -181,7 +181,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1A() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadSolicitorPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -195,7 +195,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1P() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1P() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadSolicitorSingleExecutorPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -209,7 +209,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -223,7 +223,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testMissingFormType() throws Exception {
+    void testMissingFormType() throws Exception {
         JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadCitizenPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
         mockMvc.perform(post("/transform-scanned-data")
@@ -235,7 +235,7 @@ public class ExceptionRecordControllerTest {
 
 
     @Test
-    public void testWarningsPopulateListAndReturnOkWithWarningsResponseStatePreviousEndPoint() throws Exception {
+    void testWarningsPopulateListAndReturnOkWithWarningsResponseStatePreviousEndPoint() throws Exception {
         when(ocrToCCDMandatoryField.ocrToCCDMandatoryFields(any(), any())).thenReturn(warnings);
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenPA8A)
@@ -246,7 +246,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8APreviousEndPoint() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenPA8APreviousEndPoint() throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -259,7 +259,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8APreviousEndPoint()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA8APreviousEndPoint()
             throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorPA8A)
@@ -273,7 +273,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1PPreviousEndPoint()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenSingleExecutorPA1PPreviousEndPoint()
             throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenSingleExecutorPA1P)
@@ -288,7 +288,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1PPreviousEndPoint()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForCitizenMultipleExecutorPA1PPreviousEndPoint()
             throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenMultipleExecutorPA1P)
@@ -303,7 +303,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1PPreviousEndPoint()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorMultipleExecutorPA1PPreviousEndPoint()
             throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorMultipleExecutorPA1P)
@@ -318,7 +318,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1APreviousEndPoint()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorPA1APreviousEndPoint()
             throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorPA1A)
@@ -333,7 +333,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1PPreviousEndPoint()
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorPA1PPreviousEndPoint()
             throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadSolicitorSingleExecutorPA1P)
@@ -348,7 +348,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1APreviousEndPoint() throws Exception {
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1APreviousEndPoint() throws Exception {
         mockMvc.perform(post("/transform-exception-record")
                 .content(exceptionRecordPayloadCitizenPA1A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -362,7 +362,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testMissingFormTypePreviousEndPoint() throws Exception {
+    void testMissingFormTypePreviousEndPoint() throws Exception {
         JSONObject modifiedExceptionRecordPayload  = new JSONObject(exceptionRecordPayloadCitizenPA8A);
         modifiedExceptionRecordPayload.remove("form_type");
         mockMvc.perform(post("/transform-exception-record")
@@ -373,7 +373,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testExceptionRecordErrorHandlerCitizenPA8A() throws Exception {
+    void testExceptionRecordErrorHandlerCitizenPA8A() throws Exception {
         String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
         String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
         mockMvc.perform(post("/transform-scanned-data")
@@ -387,7 +387,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testExceptionRecordErrorHandlerSolicitorPA8A() throws Exception {
+    void testExceptionRecordErrorHandlerSolicitorPA8A() throws Exception {
         String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
         String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
         mockMvc.perform(post("/transform-scanned-data")
@@ -401,7 +401,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testExceptionRecordErrorHandlerPA1P() throws Exception {
+    void testExceptionRecordErrorHandlerPA1P() throws Exception {
         String deceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022019\"";
         String badDeceasedDateOfDeath = "\"name\": \"deceasedDateOfDeath\", \"value\": \"02022\"";
         mockMvc.perform(post("/transform-scanned-data")
@@ -416,7 +416,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testErrorReturnedForIncorrectClassification() throws Exception {
+    void testErrorReturnedForIncorrectClassification() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA8A.replace("NEW_APPLICATION", "SUPPLEMENTARY_EVIDENCE"))
                 .contentType(MediaType.APPLICATION_JSON))
@@ -426,7 +426,7 @@ public class ExceptionRecordControllerTest {
                         + "This Exception Record can not be created as a case: 1001\"]")));
     }
 
-    @Ignore
+    @Disabled
     public void testErrorReturnedForUnimplementedFormType() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA8A.replace("PA8A", "PPPP"))
@@ -438,7 +438,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testInvalidExceptionRecordGoPTransformJsonResponse() throws Exception {
+    void testInvalidExceptionRecordGoPTransformJsonResponse() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordInvalidJsonPayloadPA1P)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -446,7 +446,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testInvalidExceptionRecordCaveatTransformJsonResponse() throws Exception {
+    void testInvalidExceptionRecordCaveatTransformJsonResponse() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordInvalidJsonPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -454,7 +454,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void testInvalidExceptionRecordCaveatUpdateJsonResponse() throws Exception {
+    void testInvalidExceptionRecordCaveatUpdateJsonResponse() throws Exception {
         mockMvc.perform(post("/update-case")
                 .content(exceptionRecordInvalidJsonPayloadPA8A)
                 .contentType(MediaType.APPLICATION_JSON))
@@ -462,7 +462,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void shouldNotUpdateCaseForCaveatAlreadyExpired() throws Exception {
+    void shouldNotUpdateCaseForCaveatAlreadyExpired() throws Exception {
 
         mockMvc.perform(post("/update-case")
             .content(updateCasePayload)
@@ -473,7 +473,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void shouldNotUpdateCaseForIncorrectJourneyClassification() throws Exception {
+    void shouldNotUpdateCaseForIncorrectJourneyClassification() throws Exception {
 
         mockMvc.perform(post("/update-case")
             .content(updateCasePayload
@@ -486,7 +486,7 @@ public class ExceptionRecordControllerTest {
     }
 
     @Test
-    public void shouldNotUpdateCaseForIncorrectFormType() throws Exception {
+    void shouldNotUpdateCaseForIncorrectFormType() throws Exception {
 
         mockMvc.perform(post("/update-case")
             .content(updateCasePayload.replace("\"form_type\": \"PA8A\"", "\"form_type\": \"PA1A\""))

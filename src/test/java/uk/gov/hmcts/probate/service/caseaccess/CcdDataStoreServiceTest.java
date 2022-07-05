@@ -1,28 +1,28 @@
 package uk.gov.hmcts.probate.service.caseaccess;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
-import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-
 @ContextConfiguration(classes = {CcdDataStoreService.class})
-@RunWith(SpringRunner.class)
-public class CcdDataStoreServiceTest {
+@ExtendWith(SpringExtension.class)
+class CcdDataStoreServiceTest {
     @MockBean
     private AuthTokenGenerator authTokenGenerator;
 
@@ -36,7 +36,7 @@ public class CcdDataStoreServiceTest {
     private IdamApi idamApi;
 
     @Test
-    public void testRemoveCreatorRole() {
+    void testRemoveCreatorRole() {
         HashMap<String, Object> stringObjectMap = new HashMap<>();
         stringObjectMap.put("id", "Value");
         ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);

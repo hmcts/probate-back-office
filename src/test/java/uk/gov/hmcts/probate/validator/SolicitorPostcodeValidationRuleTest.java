@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -12,12 +12,12 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class SolicitorPostcodeValidationRuleTest {
+class SolicitorPostcodeValidationRuleTest {
     @InjectMocks
     private SolicitorPostcodeValidationRule underTest;
 
@@ -26,13 +26,13 @@ public class SolicitorPostcodeValidationRuleTest {
     @Mock
     private CCDData ccdDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldErrorIfSolicitorPostCodeMissing() {
+    void shouldErrorIfSolicitorPostCodeMissing() {
         SolsAddress solAddress = SolsAddress.builder().build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);
@@ -48,7 +48,7 @@ public class SolicitorPostcodeValidationRuleTest {
     }
 
     @Test
-    public void shouldNotErrorIfSolicitorHasPostCode() {
+    void shouldNotErrorIfSolicitorHasPostCode() {
         SolsAddress solAddress = SolsAddress.builder().postCode("SOME PC").build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);

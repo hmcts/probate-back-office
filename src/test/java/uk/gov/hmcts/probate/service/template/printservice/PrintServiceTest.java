@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.template.printservice;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -14,11 +14,11 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class PrintServiceTest {
+class PrintServiceTest {
 
     @InjectMocks
     private PrintService underTest;
@@ -35,9 +35,9 @@ public class PrintServiceTest {
     @Mock
     AppInsights appInsights;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "someTemplateDirectory/");
         ReflectionTestUtils.setField(underTest, "printServiceHost", "somePrintServiceHost");
         ReflectionTestUtils.setField(underTest, "printServicePath", "somePrintServicePath/%s/probate/");
@@ -48,7 +48,7 @@ public class PrintServiceTest {
     }
 
     @Test
-    public void shouldReturnAllSolicitorDocuments() {
+    void shouldReturnAllSolicitorDocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.SOLICITOR);
@@ -61,7 +61,7 @@ public class PrintServiceTest {
     }
 
     @Test
-    public void shouldReturnAllPADocuments() {
+    void shouldReturnAllPADocuments() {
         when(caseDetailsMock.getId()).thenReturn(1000L);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
@@ -74,13 +74,13 @@ public class PrintServiceTest {
     }
 
     @Test
-    public void shouldGetSolicitorTemplateForCaseDetails() {
+    void shouldGetSolicitorTemplateForCaseDetails() {
         String template = underTest.getSolicitorCaseDetailsTemplateForPrintService();
         assertEquals("some Solicitor template", template);
     }
 
     @Test
-    public void shouldGetPATemplateForCaseDetails() {
+    void shouldGetPATemplateForCaseDetails() {
         String template = underTest.getPACaseDetailsTemplateForPrintService();
         assertEquals("some Personal template", template);
     }

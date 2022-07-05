@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr.pa1a;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
@@ -11,24 +11,24 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class PA1ASolicitorMandatoryFieldsValidatorTest {
+class PA1ASolicitorMandatoryFieldsValidatorTest {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
 
     @InjectMocks
     private PA1ASolicitorMandatoryFieldsValidator pa1ASolicitorMandatoryFieldsValidator;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         warnings = new ArrayList<>();
     }
 
 
     @Test
-    public void testSolicitorAllMandatoryFieldsPresentPA1A() {
+    void testSolicitorAllMandatoryFieldsPresentPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -37,7 +37,7 @@ public class PA1ASolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testSolicitorMissingMandatoryFieldsPA1A() {
+    void testSolicitorMissingMandatoryFieldsPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("solsSolicitorIsApplying", "True");
@@ -54,7 +54,7 @@ public class PA1ASolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
-    public void testSolicitorMissingPaymentMethodFieldsPA1P() {
+    void testSolicitorMissingPaymentMethodFieldsPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("paperPaymentMethod", "PBA");

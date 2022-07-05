@@ -1,7 +1,10 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -13,12 +16,13 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Inca
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapMedical;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.IncapOneExec;
 
-public class AssembleIncapacityTest extends AssembleTestBase {
+@ExtendWith(SpringExtension.class)
+class AssembleIncapacityTest extends AssembleTestBase {
     private AssembleIncapacity assembleIncapacity =
         new AssembleIncapacity(assemblerBase);
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(IncapGen, new String[]{"IncapGen", "FL-PRB-GNO-ENG-00101.docx", "General"});
         code2Expected.put(IncapOneExec, new String[]{"IncapOneExec", "FL-PRB-GNO-ENG-00102.docx", "One executor"});
@@ -29,7 +33,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapGen() {
+    void shouldPopulateIncapGen() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityGeneral(IncapGen,
             CaseData.builder().build());
@@ -37,7 +41,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapOneExec() {
+    void shouldPopulateIncapOneExec() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityOneExecutor(IncapOneExec,
             CaseData.builder().build());
@@ -45,7 +49,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapInstitutedExec() {
+    void shouldPopulateIncapInstitutedExec() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityInstitutedExecutor(IncapInstitutedExec,
             CaseData.builder().build());
@@ -53,7 +57,7 @@ public class AssembleIncapacityTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIncapMedical() {
+    void shouldPopulateIncapMedical() {
 
         List<ParagraphDetail> response = assembleIncapacity.incapacityMedicalEvidence(IncapMedical,
             CaseData.builder().build());
