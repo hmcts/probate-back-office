@@ -1329,13 +1329,13 @@ public class CallbackResponseTransformer {
             }
 
             if (SOLICITOR.equals(caseData.getApplicationType())
-                    && (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
                     && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
 
             if (PERSONAL.equals(caseData.getApplicationType())
-                    && (DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
                     && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())
                     && ANSWER_YES.equalsIgnoreCase(caseData.getSolsAdoptedEnglandOrWales())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
