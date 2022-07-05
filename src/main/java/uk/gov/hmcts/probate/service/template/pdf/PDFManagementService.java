@@ -2,8 +2,6 @@ package uk.gov.hmcts.probate.service.template.pdf;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.IanaLinkRelations;
-import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
@@ -15,10 +13,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
-import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
-import uk.gov.hmcts.probate.service.evidencemanagement.upload.UploadService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
+import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
@@ -29,7 +27,6 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.util.Base64;
 import java.util.Map;
-import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 
@@ -39,20 +36,21 @@ public class PDFManagementService {
 
     static final String SIGNATURE_DECRYPTION_IV = "P3oba73En3yp7ion";
     private final PDFGeneratorService pdfGeneratorService;
-    private final UploadService uploadService;
+    private final DocumentManagementService documentManagementService;
     private final HttpServletRequest httpServletRequest;
     private final PDFServiceConfiguration pdfServiceConfiguration;
     private final FileSystemResourceService fileSystemResourceService;
     private final PDFDecoratorService pdfDecoratorService;
 
     @Autowired
-    public PDFManagementService(PDFGeneratorService pdfGeneratorService, UploadService uploadService,
+    public PDFManagementService(PDFGeneratorService pdfGeneratorService,
                                 HttpServletRequest httpServletRequest,
+                                DocumentManagementService documentManagementService,
                                 PDFServiceConfiguration pdfServiceConfiguration,
                                 FileSystemResourceService fileSystemResourceService,
                                 PDFDecoratorService pdfDecoratorService) {
         this.pdfGeneratorService = pdfGeneratorService;
-        this.uploadService = uploadService;
+        this.documentManagementService = documentManagementService;
         this.httpServletRequest = httpServletRequest;
         this.pdfServiceConfiguration = pdfServiceConfiguration;
         this.fileSystemResourceService = fileSystemResourceService;
@@ -119,18 +117,29 @@ public class PDFManagementService {
     private Document uploadDocument(DocumentType documentType, EvidenceManagementFileUpload fileUpload) {
         try {
             log.info("Uploading pdf for template {}", documentType.getTemplateName());
-            EvidenceManagementFile store = uploadService.store(fileUpload);
-            Optional<Link> binaryOptionalLink = store.getLink("binary");
-            Optional<Link> selfOptionalLink = store.getLink(IanaLinkRelations.SELF);
-            if (!binaryOptionalLink.isPresent()) {
-                throw new IOException("binary link is not present");
+            UploadResponse uploadResponse = documentManagementService.upload(fileUpload, documentType);
+            if (uploadResponse == null) {
+                throw new IOException("uploadResponse is null");
             }
-            if (!selfOptionalLink.isPresent()) {
-                throw new IOException("self link is not present");
+            if (uploadResponse.getDocuments() == null) {
+                throw new IOException("Documents are null");
+            }
+            if (uploadResponse.getDocuments().isEmpty()) {
+                throw new IOException("Documents are empty");
+            }
+            uk.gov.hmcts.reform.ccd.document.am.model.Document document = uploadResponse.getDocuments().get(0);
+            if (document.links == null) {
+                throw new IOException("No Document links");
+            }
+            if (document.links.binary == null) {
+                throw new IOException("No Document binary link");
+            }
+            if (document.links.self == null) {
+                throw new IOException("No Document self link");
             }
             DocumentLink documentLink = DocumentLink.builder()
-                .documentBinaryUrl(((Link) binaryOptionalLink.get()).getHref())
-                .documentUrl(((Link) selfOptionalLink.get()).getHref())
+                .documentBinaryUrl(document.links.binary.href)
+                .documentUrl(document.links.self.href)
                 .documentFilename(documentType.getTemplateName() + ".pdf")
                 .build();
 

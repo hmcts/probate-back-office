@@ -24,7 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
@@ -67,7 +67,7 @@ class BulkPrintServiceTest {
     private ServiceAuthTokenGenerator authTokenGeneratorMock;
 
     @Mock
-    private DocumentStoreClient documentStoreClientMock;
+    private DocumentManagementService documentManagementServiceMock;
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
@@ -80,7 +80,7 @@ class BulkPrintServiceTest {
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
         when(authTokenGeneratorMock.generate()).thenReturn("authToken");
-        when(documentStoreClientMock.retrieveDocument(any(Document.class), anyString())).thenReturn(new byte[256]);
+        when(documentManagementServiceMock.getDocument(any(Document.class))).thenReturn(new byte[256]);
     }
 
     @Test
@@ -282,11 +282,11 @@ class BulkPrintServiceTest {
                 .build();
 
         doThrow(new IOException("Error retrieving document from store with url"))
-                .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+                .when(documentManagementServiceMock).getDocument(any(Document.class));
 
         bulkPrintService.sendToBulkPrintForGrant(callbackRequest, document, coverSheet);
 
-        verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+        verify(documentManagementServiceMock).getDocument(any(Document.class));
     }
 
     @Test
@@ -323,11 +323,11 @@ class BulkPrintServiceTest {
             .build();
 
         doThrow(new IOException("Error retrieving document from store with url"))
-            .when(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+            .when(documentManagementServiceMock).getDocument(any(Document.class));
 
         bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
 
-        verify(documentStoreClientMock).retrieveDocument(any(Document.class), anyString());
+        verify(documentManagementServiceMock).getDocument(any(Document.class));
     }
 
     @Test
