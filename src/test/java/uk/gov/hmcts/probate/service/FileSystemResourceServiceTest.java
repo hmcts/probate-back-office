@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
@@ -10,43 +10,43 @@ import org.springframework.core.io.FileSystemResource;
 import java.io.File;
 import java.util.Optional;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class FileSystemResourceServiceTest {
+class FileSystemResourceServiceTest {
 
     @InjectMocks
     private FileSystemResourceService underTest;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void getFileSystemResourceSuccess() {
+    void getFileSystemResourceSuccess() {
         Optional<FileSystemResource> resource = underTest.getFileSystemResource("success.json");
         assertTrue(resource.isPresent());
     }
 
     @Test
-    public void getFileSystemResourceAsStringSuccess() {
+    void getFileSystemResourceAsStringSuccess() {
         String resource = underTest.getFileFromResourceAsString("success.json");
         assertNotNull(resource);
     }
 
     @Test
-    public void getFileSystemResourceFileNotFound() {
+    void getFileSystemResourceFileNotFound() {
         Optional<FileSystemResource> resource = underTest.getFileSystemResource("file_not_found.json");
         assertTrue(!resource.isPresent());
     }
 
     @Test
-    public void shouldReturnNullWhenGettingFileFromResourceStringAndFileIsNotPresent() {
+    void shouldReturnNullWhenGettingFileFromResourceStringAndFileIsNotPresent() {
         FileSystemResourceService fileSystemResourceServiceSpy = Mockito.spy(new FileSystemResourceService());
         when(fileSystemResourceServiceSpy.getFileSystemResource(anyString())).thenReturn(Optional.empty());
 
@@ -56,7 +56,7 @@ public class FileSystemResourceServiceTest {
     }
 
     @Test
-    public void shouldReturnNullFromResourceStringAndIOExceptionIsThrown() {
+    void shouldReturnNullFromResourceStringAndIOExceptionIsThrown() {
         FileSystemResourceService fileSystemResourceServiceSpy = Mockito.spy(new FileSystemResourceService());
         File mockFile = Mockito.mock(File.class);
         FileSystemResource fileSystemResource = mock(FileSystemResource.class);

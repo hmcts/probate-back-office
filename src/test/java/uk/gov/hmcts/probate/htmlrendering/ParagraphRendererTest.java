@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.htmlrendering;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ParagraphRendererTest {
+class ParagraphRendererTest {
 
     @Test
-    public void shouldRenderParagraphCorrectly() {
+    void shouldRenderParagraphCorrectly() {
         String expectedValue = "<p class=\"govuk-body-s\">This is a paragraph.</p>";
         String result = ParagraphRenderer.renderByReplace("<p>This is a paragraph.</p>");
         assertEquals(expectedValue, result);

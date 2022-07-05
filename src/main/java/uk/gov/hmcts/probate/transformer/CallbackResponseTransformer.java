@@ -134,10 +134,10 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
-            callbackRequest.getCaseDetails().getData(), authToken));
+            callbackRequest.getCaseDetails(), authToken));
         return transformResponse(responseCaseDataBuilder.build());
     }
-    
+
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         return transformResponse(responseCaseDataBuilder.build());
@@ -146,7 +146,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             true);
-        ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(), 
+        ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -748,7 +748,7 @@ public class CallbackResponseTransformer {
         }
         return executorNames;
     }
-    
+
     public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
@@ -858,7 +858,7 @@ public class CallbackResponseTransformer {
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
             .solsLegalStatementUpload(caseData.getSolsLegalStatementUpload())
-            
+
             .ihtGrossValue(caseData.getIhtGrossValue())
             .ihtNetValue(caseData.getIhtNetValue())
             .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
@@ -1089,10 +1089,12 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    public OrganisationPolicy buildOrganisationPolicy(CaseData caseData, String authToken) {
+    public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
+        CaseData caseData = caseDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
         if (null != authToken) {
-            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(authToken);
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
+                    caseDetails.getId().toString(), authToken);
         }
         if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
             return OrganisationPolicy.builder()

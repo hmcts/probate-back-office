@@ -3,16 +3,16 @@ package uk.gov.hmcts.probate.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.hamcrest.CoreMatchers;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -62,14 +62,14 @@ import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class BusinessValidationControllerTest {
+class BusinessValidationControllerTest {
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
-    private static final Long ID = 1L;
+    private static final Long ID = 1234567890123456L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
@@ -191,7 +191,7 @@ public class BusinessValidationControllerTest {
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
-    @Before
+    @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
 
@@ -250,12 +250,13 @@ public class BusinessValidationControllerTest {
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
         organisationEntityResponse.setName("ORGANISATION_NAME");
-        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(ID.toString(),
+                AUTH_TOKEN);
 
     }
 
     @Test
-    public void shouldSetupIHTEstate() throws Exception {
+    void shouldSetupIHTEstate() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -265,7 +266,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateIHTEstate() throws Exception {
+    void shouldValidateIHTEstate() throws Exception {
         LocalDateTime dod = LocalDateTime.parse("2021-07-01T00:00:00.000");
         caseDataBuilder.deceasedDateOfDeath(dod.toLocalDate());
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -277,27 +278,27 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithDodIsNullError() throws Exception {
+    void shouldValidateWithDodIsNullError() throws Exception {
         validateDodIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
-    public void shouldValidateDobIsNullError() throws Exception {
+    void shouldValidateDobIsNullError() throws Exception {
         validateDobIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
-    public void shouldValidateWithForenameIsNullError() throws Exception {
+    void shouldValidateWithForenameIsNullError() throws Exception {
         validateForenameIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
-    public void shouldValidateWithSurnameIsNullError() throws Exception {
+    void shouldValidateWithSurnameIsNullError() throws Exception {
         validateSurnameIsNullError(SOLS_VALIDATE_URL);
     }
 
     @Test
-    public void shouldValidateWithPrimaryApplicantAddressIsNullErrorIntestacy() throws Exception {
+    void shouldValidateWithPrimaryApplicantAddressIsNullErrorIntestacy() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -308,7 +309,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithPrimaryApplicantAddressIsNullErrorAdmonWill() throws Exception {
+    void shouldValidateWithPrimaryApplicantAddressIsNullErrorAdmonWill() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
@@ -320,7 +321,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithSolicitorIHTFormIsNullWithNoError() throws Exception {
+    void shouldValidateWithSolicitorIHTFormIsNullWithNoError() throws Exception {
         caseDataBuilder.ihtFormId(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -332,7 +333,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithCorrectNumberOfExecutors() throws Exception {
+    void shouldValidateWithCorrectNumberOfExecutors() throws Exception {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
                 new AdditionalExecutorTrustCorps(
                         "Executor forename",
@@ -356,7 +357,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithCorrectWillAndCodicilDates() throws Exception {
+    void shouldValidateWithCorrectWillAndCodicilDates() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
@@ -377,7 +378,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithInvalidWillDate() throws Exception {
+    void shouldNotValidateWithInvalidWillDate() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
@@ -402,7 +403,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithInvalidCodicilDate() throws Exception {
+    void shouldNotValidateWithInvalidCodicilDate() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now()).build()));
@@ -423,7 +424,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithInvalidWillAndCodicilDates() throws Exception {
+    void shouldNotValidateWithInvalidWillAndCodicilDates() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now()).build()));
@@ -450,7 +451,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithWillDateAfterDateOfDeath() throws Exception {
+    void shouldNotValidateWithWillDateAfterDateOfDeath() throws Exception {
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
         caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(2));
 
@@ -467,7 +468,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithWillDateOnDateOfDeath() throws Exception {
+    void shouldNotValidateWithWillDateOnDateOfDeath() throws Exception {
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
         caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(1));
 
@@ -484,7 +485,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithCodicilDateBeforeWillDate() throws Exception {
+    void shouldNotValidateWithCodicilDateBeforeWillDate() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(2)).build()));
@@ -505,7 +506,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotValidateWithCodicilDateOnWillDate() throws Exception {
+    void shouldNotValidateWithCodicilDateOnWillDate() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
@@ -526,7 +527,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
+    void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -545,7 +546,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSuccesfullyGenerateTrustCorpsProbateDeclaration() throws Exception {
+    void shouldSuccesfullyGenerateTrustCorpsProbateDeclaration() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -564,7 +565,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
+    void shouldSuccesfullyGenerateIntestacyDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -591,7 +592,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSuccesfullyGenerateAdmonWillDeclaration() throws Exception {
+    void shouldSuccesfullyGenerateAdmonWillDeclaration() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
@@ -619,7 +620,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldGenerateSolCoverSheet_Gop() throws Exception {
+    void shouldGenerateSolCoverSheet_Gop() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -638,7 +639,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldGenerateSolCoverSheet_AdmonWill() throws Exception {
+    void shouldGenerateSolCoverSheet_AdmonWill() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
         caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
         caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
@@ -666,7 +667,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldGenerateSolCoverSheet_Intestacy() throws Exception {
+    void shouldGenerateSolCoverSheet_Intestacy() throws Exception {
         caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
@@ -693,7 +694,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithSolIsExecutorIsNullError() throws Exception {
+    void shouldValidateWithSolIsExecutorIsNullError() throws Exception {
         caseDataBuilder.solsSolicitorIsExec(null);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -712,22 +713,22 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithDodIsNullErrorForCaseDetails() throws Exception {
+    void shouldValidateWithDodIsNullErrorForCaseDetails() throws Exception {
         validateDodIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
     }
 
     @Test
-    public void shouldValidateDobIsNullErrorForCaseDetails() throws Exception {
+    void shouldValidateDobIsNullErrorForCaseDetails() throws Exception {
         validateDobIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
     }
 
     @Test
-    public void shouldValidateWithDeceasedForenameIsNullErrorForCaseDetails() throws Exception {
+    void shouldValidateWithDeceasedForenameIsNullErrorForCaseDetails() throws Exception {
         validateForenameIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
     }
 
     @Test
-    public void shouldValidateWithDeceasedSurnameIsNullErrorForCaseDetails() throws Exception {
+    void shouldValidateWithDeceasedSurnameIsNullErrorForCaseDetails() throws Exception {
         validateSurnameIsNullError(CASE_VALIDATE_CASE_DETAILS_URL);
     }
 
@@ -818,7 +819,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnAliasNameTransformed() throws Exception {
+    void shouldReturnAliasNameTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
         mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -827,7 +828,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnAdditionalExecutorsTransformed() throws Exception {
+    void shouldReturnAdditionalExecutorsTransformed() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_PRINTED).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -836,7 +837,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
+    void shouldReturnCheckListValidateSuccessfulQAState() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -846,7 +847,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
+    void shouldReturnCheckListValidateUnSuccessfulQ1IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -858,7 +859,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
+    void shouldReturnCheckListValidateUnSuccessfulQ2IsNo() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadChecklist.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -870,7 +871,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnCheckListValidateSuccessful() throws Exception {
+    void shouldReturnCheckListValidateSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutorsReadyToIssue.json");
 
         mockMvc.perform(post(CASE_CHCEKLIST_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -879,7 +880,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnSolicitorPaperFormSuccess() throws Exception {
+    void shouldReturnSolicitorPaperFormSuccess() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
         Document emailDocument = Document.builder().documentType(DocumentType.EMAIL)
             .documentLink(DocumentLink.builder().documentFilename("email.pdf").build())
@@ -895,7 +896,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPersonalPaperFormSuccess() throws Exception {
+    void shouldReturnPersonalPaperFormSuccess() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadAliasNames.json");
 
         solicitorPayload =  solicitorPayload.replaceFirst("\"applicationType\": \"Solicitor\"",
@@ -915,7 +916,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperFormWithoutEmail() throws Exception {
+    void shouldReturnPaperFormWithoutEmail() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
@@ -926,7 +927,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnPaperFormWithEmail() throws Exception {
+    void shouldReturnPaperFormWithEmail() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("paperFormWithPrimaryApplicantEmail.json");
 
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
@@ -945,7 +946,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSubmitTrustCorpsSolicitorGoPCaseForCaseworker() throws Exception {
+    void shouldSubmitTrustCorpsSolicitorGoPCaseForCaseworker() throws Exception {
         String caseCreatorJson = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
 
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
@@ -956,7 +957,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {
+    void shouldReturnScannedDocumentsAndStartAwaitingDocumentationPeriod() throws Exception {
         String scannedDocumentsJson = testUtils.getStringFromFile("scannedDocuments.json");
 
         mockMvc.perform(post(CASE_PRINTED).content(scannedDocumentsJson).contentType(MediaType.APPLICATION_JSON))
@@ -969,7 +970,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldStopCase() throws Exception {
+    void shouldStopCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -980,7 +981,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
+    void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseCreated.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -992,7 +993,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSetStateToCasePrintedAfterResolveStateChoice() throws Exception {
+    void shouldSetStateToCasePrintedAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopCasePrinted.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -1004,7 +1005,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
+    void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
         String solicitorPayload =
                 testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
 
@@ -1017,7 +1018,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
+    void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForExamining.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -1029,7 +1030,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
+    void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
         String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
 
         mockMvc.perform(post(REDEC_COMPLETE).content(payload).contentType(MediaType.APPLICATION_JSON))
@@ -1039,7 +1040,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithPaperCase() throws Exception {
+    void shouldValidateWithPaperCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
@@ -1053,7 +1054,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateIhtNetGreaterThanGrossProbateValue() throws Exception {
+    void shouldValidateIhtNetGreaterThanGrossProbateValue() throws Exception {
 
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
@@ -1074,7 +1075,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateIhtNetGreaterThanGrossIhtValue() throws Exception {
+    void shouldValidateIhtNetGreaterThanGrossIhtValue() throws Exception {
 
         String caseCreatorJson = testUtils.getStringFromFile("paperForm.json");
 
@@ -1096,7 +1097,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldValidateWithDigitalCase() throws Exception {
+    void shouldValidateWithDigitalCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("digitalCase.json");
 
         mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -1105,7 +1106,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldDefaultLegalStatementAmendOptionsForProbateCase() throws Exception {
+    void shouldDefaultLegalStatementAmendOptionsForProbateCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeProbate.json");
 
         mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
@@ -1129,7 +1130,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldDefaultLegalStatementAmendOptionsForIntestacyCase() throws Exception {
+    void shouldDefaultLegalStatementAmendOptionsForIntestacyCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeIntestacy.json");
 
         mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
@@ -1153,7 +1154,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldDefaultLegalStatementAmendOptionsForAdmonCase() throws Exception {
+    void shouldDefaultLegalStatementAmendOptionsForAdmonCase() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorWillTypeAdmon.json");
 
         mockMvc.perform(post(DEFAULT_SOLS_NEXT_STEPS)
@@ -1177,7 +1178,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void shouldNotErrorOnSolCreateValidate() throws Exception {
+    void shouldNotErrorOnSolCreateValidate() throws Exception {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -1187,7 +1188,7 @@ public class BusinessValidationControllerTest {
     }
 
     @Test
-    public void solsCaseCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+    void solsCaseCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
         String caseDetails = testUtils.getStringFromFile("caseDetailWithOrgPolicy.json");
 
         mockMvc.perform(post("/case/sols-created")

@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.evidencemanagement;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.Links;
 
@@ -8,12 +8,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class EvidenceManagementFileTest {
+class EvidenceManagementFileTest {
 
     @Test
-    public void shouldSetLinks() {
+    void shouldSetLinks() {
         EvidenceManagementFile evidenceManagementFile = new EvidenceManagementFile();
         evidenceManagementFile.setDocumentType("TEST_DOCUMENT_TYPE");
         evidenceManagementFile.setSize(200L);

@@ -1,17 +1,17 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.List;
 
-public class AssembleIHTTest extends AssembleTestBase {
+class AssembleIHTTest extends AssembleTestBase {
 
     private AssembleIHT assembleIHT = new AssembleIHT(assemblerBase);
 
     @Test
-    public void testIht205Missing() {
+    void testIht205Missing() {
 
         List<ParagraphDetail> response =
             assembleIHT.iht205Missing(ParagraphCode.IHT205Miss, CaseData.builder().build());
@@ -20,7 +20,7 @@ public class AssembleIHTTest extends AssembleTestBase {
     }
 
     @Test
-    public void testIhtAwait421() {
+    void testIhtAwait421() {
 
         List<ParagraphDetail> response = assembleIHT.ihtAwait421(ParagraphCode.IHT421Await, CaseData.builder().build());
         assertAllForStaticField(response, "IHT421Await", "FL-PRB-GNO-ENG-00125.docx",
@@ -28,7 +28,7 @@ public class AssembleIHTTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIHTNoAssets() {
+    void shouldPopulateIHTNoAssets() {
 
         List<ParagraphDetail> response = assembleIHT.ihtNoAssets(ParagraphCode.IHT205NoAssets, caseData);
         assertAllForStaticField(response, "IHT205NoAssets", "FL-PRB-GNO-ENG-00144.docx",
@@ -36,7 +36,7 @@ public class AssembleIHTTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIHTGrossEstate() {
+    void shouldPopulateIHTGrossEstate() {
 
         List<ParagraphDetail> response = assembleIHT.ihtGrossEstate(ParagraphCode.IHT205GrossEstateOver, caseData);
         assertAllForStaticField(response, "IHT205GrossEstateOver", "FL-PRB-GNO-ENG-00145.docx",
@@ -44,7 +44,7 @@ public class AssembleIHTTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIHT217Miss() {
+    void shouldPopulateIHT217Miss() {
 
         List<ParagraphDetail> response = assembleIHT.iht217Missing(ParagraphCode.IHT217Miss, caseData);
         assertAllForStaticField(response, "IHT217Miss", "FL-PRB-GNO-ENG-00146.docx",
@@ -52,7 +52,7 @@ public class AssembleIHTTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateIHT400() {
+    void shouldPopulateIHT400() {
 
         List<ParagraphDetail> response = assembleIHT.iht400(ParagraphCode.IHTIHT400, caseData);
         assertAllForStaticField(response, "IHT400", "FL-PRB-GNO-ENG-00147.docx",

@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -25,13 +25,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.Constants.STANDING_SEARCH_LIFESPAN;
 
-@RunWith(MockitoJUnitRunner.class)
-public class StandingSearchCallbackResponseTransformerTest {
+@ExtendWith(SpringExtension.class)
+class StandingSearchCallbackResponseTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -73,7 +73,7 @@ public class StandingSearchCallbackResponseTransformerTest {
 
     private StandingSearchData.StandingSearchDataBuilder standingSearchDataBuilder;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         standingSearchDataBuilder = StandingSearchData.builder()
@@ -100,7 +100,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformStandingSearchCallbackRequestToStandingSearchCallbackResponse() {
+    void shouldTransformStandingSearchCallbackRequestToStandingSearchCallbackResponse() {
         StandingSearchCallbackResponse standingSearchCallbackResponse =
             underTest.transform(standingSearchCallbackRequestMock);
 
@@ -108,7 +108,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForStandingSearchWithDeceasedAliasNames() {
+    void shouldTransformCaseForStandingSearchWithDeceasedAliasNames() {
         List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
         ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(SS_DECEASED_FULL_ALIAS_NAME).build();
@@ -128,7 +128,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetStandingSearchUploadedDocuments() {
+    void shouldGetStandingSearchUploadedDocuments() {
         List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
         documents.add(createUploadDocuments("0"));
         standingSearchDataBuilder.documentsUploaded(documents);
@@ -144,7 +144,7 @@ public class StandingSearchCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
+    void shouldConvertRequestToDataBeanWithStandingSearchExpiryDateChange() {
         StandingSearchCallbackResponse standingSearchCallbackResponse =
             underTest.standingSearchCreated(standingSearchCallbackRequestMock);
 
