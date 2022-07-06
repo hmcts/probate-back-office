@@ -67,7 +67,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
-import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 
 class BusinessValidationUnitTest {
@@ -91,8 +90,6 @@ class BusinessValidationUnitTest {
     private CaseData caseDataMock;
     @Mock
     private Document documentMock;
-    @Mock
-    private Document solsCoversheetMock;
     @Mock
     private BindingResult bindingResultMock;
     @Mock
@@ -257,9 +254,7 @@ class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS))
             .thenReturn(documentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
-            .thenReturn(solsCoversheetMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock,
             "gop"))
             .thenReturn(callbackResponseMock);
 
@@ -301,9 +296,7 @@ class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY))
             .thenReturn(documentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
-            .thenReturn(solsCoversheetMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock,
             "intestacy"))
             .thenReturn(callbackResponseMock);
 
@@ -345,9 +338,7 @@ class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON))
             .thenReturn(documentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
-            .thenReturn(solsCoversheetMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock,
             "admonWill"))
             .thenReturn(callbackResponseMock);
 
