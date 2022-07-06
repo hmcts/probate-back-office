@@ -39,8 +39,6 @@ public class SecurityConfiguration {
                 .requestMatchers()
                 .antMatchers("/notify/grant-delayed-scheduled")
                 .antMatchers("/notify/grant-awaiting-documents-scheduled")
-                .antMatchers("/data-extract/make-dormant")
-                .antMatchers("/data-extract/reactivate-dormant")
                 .and()
                 .addFilter(authCheckerServiceAndUserFilter)
                 .csrf().disable()
@@ -76,10 +74,7 @@ public class SecurityConfiguration {
                 .antMatchers("/case/**")
                 .antMatchers("/case-matching/**")
                 .antMatchers("/caveat/**")
-                .antMatchers("/data-extract/smee-and-ford")
-                .antMatchers("/data-extract/exela")
-                .antMatchers("/data-extract/iron-mountain")
-                .antMatchers("/data-extract/hmrc")
+                .antMatchers("/data-extract/**")
                 .antMatchers("/document/**")
                 .antMatchers("/transform-scanned-data")
                 .antMatchers("/transform-exception-record")
@@ -109,6 +104,7 @@ public class SecurityConfiguration {
                 "/health",
                 "/health/liveness",
                 "/info",
+                "/data-extract/**",
                 "/");
         }
     }
