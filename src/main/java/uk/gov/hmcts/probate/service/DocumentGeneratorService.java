@@ -32,6 +32,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE_DRAF
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
+import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_DRAFT;
@@ -210,11 +211,7 @@ public class DocumentGeneratorService {
                 documentType = LEGAL_STATEMENT_ADMON;
                 break;
             case INTESTACY:
-<<<<<<< HEAD
                 documentType = LEGAL_STATEMENT_INTESTACY;
-=======
-                documentType = LEGAL_STATEMENT_ADMON;
->>>>>>> 98ce00a80 (DTSPB-2701 pre merge latest)
                 break;
             case GRANT_OF_PROBATE:
             default:
