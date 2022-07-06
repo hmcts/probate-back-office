@@ -40,5 +40,6 @@ Print a copy of this page for your records.
 
 What happens next
 =================
+We will now review your application and issue your grant within 8 weeks.
 
 We'll email you if we need you to provide any more information.
