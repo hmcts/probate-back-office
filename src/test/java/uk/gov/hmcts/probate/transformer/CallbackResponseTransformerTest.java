@@ -468,6 +468,8 @@ class CallbackResponseTransformerTest {
     private OrganisationsRetrievalService organisationsRetrievalService;
     @Mock
     private PaymentResponse paymentResponseMock;
+    @Mock
+    Document coversheetMock;
 
     @Mock
     private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
@@ -873,7 +875,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock);
+                paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -894,7 +896,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock);
+                paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -918,7 +920,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -945,7 +947,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock);
+                feesResponse, paymentResponseMock, coversheetMock);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
@@ -959,7 +961,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         paymentResponseMock = null;
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -981,7 +983,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -993,7 +995,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -1005,7 +1007,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock);
+                paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1018,6 +1020,23 @@ class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
+    }
+
+    @Test
+    void shouldAddCoversheet() {
+        when(coversheetMock.getDocumentLink()).thenReturn(documentLinkMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
+                feesResponse, paymentResponseMock, coversheetMock);
+
+        assertEquals(documentLinkMock, callbackResponse.getData().getSolsCoversheetDocument());
+    }
+
+    @Test
+    void shouldBeNullSafe() {
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
+                feesResponse, paymentResponseMock, null);
+
+        assertEquals(null, callbackResponse.getData().getSolsCoversheetDocument());
     }
 
     @Test
