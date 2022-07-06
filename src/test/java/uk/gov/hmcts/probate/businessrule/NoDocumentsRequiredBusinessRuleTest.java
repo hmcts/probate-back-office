@@ -49,13 +49,21 @@ class NoDocumentsRequiredBusinessRuleTest {
     }
 
     @Test
-    void shouldBeApplicableWhenSpouseApplyingAndIHT400421() {
+    void shouldBeApplicableWhenSpouseApplyingAndIHT400421PreEE() {
         when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
         assertTrue(underTest.isApplicable(mockCaseData));
     }
-
+    
+    @Test
+    void shouldBeApplicableWhenSpouseApplyingAndIHT400421PostEE() {
+        when(mockCaseData.getIhtFormEstate()).thenReturn(IHT400421);
+        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(SPOUSE_OR_CIVIL);
+        when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(MARRIED_VALUE);
+        assertTrue(underTest.isApplicable(mockCaseData));
+    }
+    
     @Test
     void shouldNotBeApplicableWhenSpouseApplyingAndIHT400421NoDocumentsUploaded() {
         when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);

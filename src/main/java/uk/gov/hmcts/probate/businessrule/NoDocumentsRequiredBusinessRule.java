@@ -39,7 +39,7 @@ public class NoDocumentsRequiredBusinessRule implements BusinessRule {
 
         boolean isIntestacyApplication = GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType());
 
-        boolean iht400421 = IHT400421.equals(caseData.getIhtFormId());
+        boolean iht400421 = IHT400421.equals(caseData.getIhtFormId()) || IHT400421.equals(caseData.getIhtFormEstate());
 
         boolean ihtFormEstateValuesNotCompleted = NO.equals(caseData.getIhtFormEstateValuesCompleted());
 
