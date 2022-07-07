@@ -3,6 +3,7 @@
   "from": :from,
   "query": {
     "bool": {
+      "must_not": { "match": { "state": "Dormant" }},
       "filter": [
         {
           "range": {
