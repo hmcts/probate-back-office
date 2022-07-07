@@ -72,16 +72,20 @@ public class ZipFileService {
         log.info("generateZipFile for {} cases", cases.size());
         List<ZippedDocumentFile> filesToZip = new ArrayList<>();
 
-        for (ReturnedCaseDetails returnedCaseDetails : cases) {
-            filesToZip.addAll(getWillDocuments(returnedCaseDetails));
-            filesToZip.addAll(getGrantDocuments(returnedCaseDetails));
-            filesToZip.addAll(getReIssueGrantDocuments(returnedCaseDetails));
-        }
-        filesToZip.add(getSmeeAndFordCaseData(cases));
         try {
+            for (ReturnedCaseDetails returnedCaseDetails : cases) {
+                filesToZip.addAll(getWillDocuments(returnedCaseDetails));
+                filesToZip.addAll(getGrantDocuments(returnedCaseDetails));
+                filesToZip.addAll(getReIssueGrantDocuments(returnedCaseDetails));
+            }
+            filesToZip.add(getSmeeAndFordCaseData(cases));
+
             zipMultipleDocs(filesToZip, tempFile);
         } catch (IOException e) {
-            log.info("Exception occurred while generating zip file: {}", e);
+            log.error("Exception occurred while generating zip file ", e);
+            throw new ZipFileException(e.getMessage());
+        } catch (Exception e) {
+            log.error("Exception occurred while generating zip file ", e);
             throw new ZipFileException(e.getMessage());
         }
     }
