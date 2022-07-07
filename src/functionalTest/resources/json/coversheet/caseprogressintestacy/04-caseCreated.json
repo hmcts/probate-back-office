@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 1528365719158889,
+    "id": 1528365719153340,
     "jurisdiction": "PROBATE",
     "state": "CaseCreated",
     "case_type_id": "GrantOfRepresentation",
@@ -24,6 +24,63 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "otherExecutorExists": "No",
+      "outsideUKGrantCopies": null,
+      "applicationType": "Solicitor",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "caseType": "intestacy",
+      "paperForm": "no",
+      "deceasedAnyOtherNames": "No",
+      "solsFeeAccountNumber": "1234",
+      "willHasCodicils": "No",
+      "deceasedDateOfBirth": "1900-01-01",
+      "willAccessOriginal": "Yes",
+      "willExists": "No",
+      "solsWillType": "NoWill",
+      "solsApplicantRelationshipToDeceased": "null",
+      "solsSpouseOrCivilRenouncing": null,
+      "solsAdoptedEnglandOrWales": null,
+      "solsMinorityInterest": "null",
+      "deceasedMaritalStatus": "null",
+      "solsApplicantSiblings": null,
+      "solsSOTForenames": "Solicitor_fn",
+      "solsSOTSurname": "Solicitor_ln",
+      "solsSolicitorIsExec": "No",
+      "solsSolicitorIsMainApplicant": null,
+      "solsSolicitorIsApplying": null,
+      "solsSolicitorNotApplyingReason": null,
+      "solsSolicitorFirmName": "Solicitor Firm Name",
+      "deceasedDateOfDeath": "2000-01-01",
+      "solsSOTNeedToUpdate": "No",
+      "primaryApplicantEmailAddress": "personal@hmcts-test.com",
+      "primaryApplicantForenames": "Executor name 1",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "",
+        "PostCode": "2",
+        "PostTown": "",
+        "AddressLine1": "1",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "solsSolicitorEmail": "testsolicitor@probate-test.com",
+      "deceasedDomicileInEngWales": "Yes",
+      "ihtNetValue": "800000",
+      "deceasedSurname": "Deceased Last Name",
+      "solsLegalStatementDocument": {
+        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
+        "document_filename": "legal_statement.pdf",
+        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
+      },
+      "extraCopiesOfGrant": null,
       "solsPaymentMethods": "fee account",
       "solsPBANumber": {
         "value": {
@@ -41,72 +98,7 @@
           }
         ]
       },
-      "solsPBAPaymentReference": "appref-PAY2",
-      "otherExecutorExists": "No",
-      "outsideUKGrantCopies": null,
-      "applicationType": "Solicitor",
-      "deceasedAddress": {
-        "County": "",
-        "Country": "",
-        "PostCode": "2",
-        "PostTown": "",
-        "AddressLine1": "1",
-        "AddressLine2": "",
-        "AddressLine3": ""
-      },
-      "titleAndClearingType": "TCTPartAllRenouncing",
-      "anyOtherApplyingPartnersTrustCorp": "Yes",
-      "paperForm": "no",
-      "deceasedAnyOtherNames": "No",
-      "solsFeeAccountNumber": "1234",
-      "willHasCodicils": "No",
-      "deceasedDateOfBirth": "1900-01-01",
-      "willAccessOriginal": "Yes",
-      "willExists": "Yes",
-      "solsWillType": "WillLeft",
-      "solsApplicantRelationshipToDeceased": null,
-      "solsSpouseOrCivilRenouncing": null,
-      "solsAdoptedEnglandOrWales": null,
-      "solsMinorityInterest": null,
-      "solsApplicantSiblings": null,
-      "solsSOTForenames": "Solicitor_fn",
-      "solsSOTSurname": "Solicitor_ln",
-      "solsSolicitorIsExec": "Yes",
-      "solsSolicitorIsApplying": "No",
-      "solsSolicitorNotApplyingReason": "Renunciation",
-      "solsSolicitorFirmName": "Solicitor Firm Name",
-      "deceasedDateOfDeath": "2000-01-01",
-      "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "primary@probate-test.com",
-      "primaryApplicantForenames": "Executor name 1",
-      "primaryApplicantAddress": {
-        "County": "",
-        "Country": "",
-        "PostCode": "2",
-        "PostTown": "",
-        "AddressLine1": "1",
-        "AddressLine2": "",
-        "AddressLine3": ""
-      },
-      "solsSolicitorEmail": "solicitor@probate-test.com",
-      "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "800000",
-      "deceasedSurname": "Deceased Last Name",
-      "solsLegalStatementDocument": {
-        "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
-        "document_filename": "legal_statement.pdf",
-        "document_binary_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710/binary"
-      },
-      "extraCopiesOfGrant": null,
-      "trustCorpAddress": {
-        "County": "county",
-        "Country": "country",
-        "PostCode": "postcode",
-        "PostTown": "posttown",
-        "AddressLine1": "addressline 1",
-        "AddressLine2": "addressline 2",
-        "AddressLine3": "addressline 3"
-      },
+      "solsPBAPaymentReference": "appref-PAY10",
       "solsAdditionalExecutorList": [
         {
           "id": "da3159f2-51d4-4be7-a24d-06f354bf5e9f",
@@ -121,58 +113,39 @@
               "AddressLine2": "addressline 2",
               "AddressLine3": "addressline 3"
             },
-            "additionalExecLastname": "exln2",
-            "additionalExecForenames": "exfn2",
+            "additionalExecLastname": "exln1",
+            "additionalExecForenames": "exfn1",
             "additionalExecNameOnWill": "Yes",
-            "additionalExecAliasNameOnWill": "Alias name exfn2"
+            "additionalExecAliasNameOnWill": "Alias name exfn1"
           }
         },
         {
           "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
           "value": {
             "additionalApplying": "No",
-            "additionalExecAddress": {
-              "County": "county",
-              "Country": "country",
-              "PostCode": "postcode",
-              "PostTown": "posttown",
-              "AddressLine1": "addressline 1",
-              "AddressLine2": "addressline 2",
-              "AddressLine3": "addressline 3"
-            },
-            "additionalExecLastname": "exln",
-            "additionalExecForenames": "exfn",
+            "additionalExecLastname": "exln2",
+            "additionalExecForenames": "exfn2",
             "additionalExecNameOnWill": "Yes",
             "additionalExecAliasNameOnWill": "alias name",
             "additionalExecReasonNotApplying": "DiedBefore"
           }
-        }
-      ],
-      "additionalExecutorsTrustCorpList": [
+        },
         {
-          "id": "7a85b7dd-fff6-499a-a8db-4ffbabd4e0ba",
+          "id": "98b20012-e829-41ec-afd5-82311bdb7bdd",
           "value": {
-            "additionalExecForenames": "exfn1",
-            "additionalExecLastname": "exln1",
-            "additionalExecutorTrustCorpPosition": "Solicitor"
-          }
-        }
-      ],
-      "theFollowingPropertyIsInvalid": "asThisIsTrustCorpsTitleAndClearing",
-      "otherPartnersApplyingAsExecutors": [
-        {
-          "id": "4322cd66-3704-498e-bb30-5ae3bccadf35",
-          "value": {
-            "additionalExecForenames": "exfn3",
-            "additionalExecLastname": "exln3",
+            "additionalApplying": "Yes",
+            "additionalExecLastname": "ex3ln",
+            "additionalExecForenames": "ex3fn",
+            "additionalExecNameOnWill": "No",
+            "additionalExecReasonNotApplying": "DiedBefore",
             "additionalExecAddress": {
-              "County": "county",
-              "Country": "country",
+              "County": null,
+              "Country": null,
               "PostCode": "postcode",
-              "PostTown": "posttown",
+              "PostTown": null,
               "AddressLine1": "addressline 1",
-              "AddressLine2": "addressline 2",
-              "AddressLine3": "addressline 3"
+              "AddressLine2": null,
+              "AddressLine3": null
             }
           }
         }
