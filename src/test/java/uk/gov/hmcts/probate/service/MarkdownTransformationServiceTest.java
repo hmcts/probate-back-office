@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.service;
 
 import org.commonmark.parser.Parser;
 import org.commonmark.renderer.html.HtmlRenderer;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -11,7 +11,7 @@ import org.mockito.MockitoAnnotations;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.verify;
 
-public class MarkdownTransformationServiceTest {
+class MarkdownTransformationServiceTest {
 
     @InjectMocks
     private MarkdownTransformationService markdownTransformationService;
@@ -22,13 +22,13 @@ public class MarkdownTransformationServiceTest {
     @Mock
     private HtmlRenderer renderer;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void toHtml() {
+    void toHtml() {
         String html = markdownTransformationService.toHtml("test");
 
         verify(parser).parse("test");

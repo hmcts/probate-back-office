@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service.template.markdown;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
@@ -22,13 +22,13 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.service.template.markdown.MarkdownDecoratorService.BULLET;
 
-public class MarkdownDecoratorServiceTest {
+class MarkdownDecoratorServiceTest {
 
     @InjectMocks
     private MarkdownDecoratorService markdownDecoratorService;
@@ -63,13 +63,13 @@ public class MarkdownDecoratorServiceTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void  setup() {
-        initMocks(this);
+        openMocks(this);
     }
 
     @Test
-    public void shouldGetPA14FormLabel() {
+    void shouldGetPA14FormLabel() {
         when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         List<AdditionalExecutorNotApplying> allIncapable = new ArrayList<>();
         allIncapable.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name1").build());
@@ -84,7 +84,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotGetPA14FormLabel() {
+    void shouldNotGetPA14FormLabel() {
         when(pa14FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA14FormLabel(caseDataMock);
@@ -92,7 +92,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetPA15FormLabel() {
+    void shouldGetPA15FormLabel() {
         when(pa15FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         List<AdditionalExecutorNotApplying> allRenounced = new ArrayList<>();
         allRenounced.add(AdditionalExecutorNotApplying.builder().notApplyingExecutorName("name1").build());
@@ -107,7 +107,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotGetPA15FormLabel() {
+    void shouldNotGetPA15FormLabel() {
         when(pa15FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA15FormLabel(caseDataMock);
@@ -115,7 +115,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetPA16FormLabel() {
+    void shouldGetPA16FormLabel() {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         when(sendDocumentsRenderer.getPA16FormText()).thenReturn("formattedLink");
 
@@ -124,7 +124,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotGetPA16FormLabel() {
+    void shouldNotGetPA16FormLabel() {
         when(pa16FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA16FormLabel(caseDataMock);
@@ -133,7 +133,7 @@ public class MarkdownDecoratorServiceTest {
 
 
     @Test
-    public void shouldGetPA17FormLabel() {
+    void shouldGetPA17FormLabel() {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         when(sendDocumentsRenderer.getPA17FormText()).thenReturn("formattedLink");
 
@@ -142,7 +142,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotGetPA17FormLabel() {
+    void shouldNotGetPA17FormLabel() {
         when(pa17FormBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getPA17FormLabel(caseDataMock);
@@ -150,7 +150,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetAuthenticatedTranslationFormLabel() {
+    void shouldGetAuthenticatedTranslationFormLabel() {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
 
         String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
@@ -159,7 +159,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotGetAuthenticatedTranslationFormLabel() {
+    void shouldNotGetAuthenticatedTranslationFormLabel() {
         when(authenticatedTranslationBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getAuthenticatedTranslationLabel(caseDataMock);
@@ -167,7 +167,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetDispenseWithNoticeSupportDocsLabel() {
+    void shouldGetDispenseWithNoticeSupportDocsLabel() {
         when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(true);
 
         String supportDocsText =
@@ -181,7 +181,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldNotGetDispenseWithNoticeSupportDocsLabel() {
+    void shouldNotGetDispenseWithNoticeSupportDocsLabel() {
         when(dispenseNoticeSupportDocsRule.isApplicable(caseDataMock)).thenReturn(false);
 
         String md = markdownDecoratorService.getDispenseWithNoticeSupportDocsLabelAndList(caseDataMock);
@@ -189,7 +189,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetNotarialWillLabel() {
+    void shouldGetNotarialWillLabel() {
         when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
         String willLabel = markdownDecoratorService.getWillLabel(caseDataMock);
         String notarialWill = "the notarial or court sealed copy of the will";
@@ -201,7 +201,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetOriginalWillLabelNoCodicils() {
+    void shouldGetOriginalWillLabelNoCodicils() {
         when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         when(caseDataMock.getWillHasCodicils()).thenReturn(NO);
         assertEquals(BULLET + "the original will",
@@ -209,7 +209,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetOriginalWillLabelWithCodicils() {
+    void shouldGetOriginalWillLabelWithCodicils() {
         when(notarialWillBusinessRule.isApplicable(caseDataMock)).thenReturn(false);
         when(caseDataMock.getWillHasCodicils()).thenReturn(YES);
         assertEquals(BULLET + "the original will and any codicils",
@@ -217,7 +217,7 @@ public class MarkdownDecoratorServiceTest {
     }
 
     @Test
-    public void shouldGetEmptyWillLabelAsIntestacy() {
+    void shouldGetEmptyWillLabelAsIntestacy() {
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
         assertTrue(markdownDecoratorService.getWillLabel(caseDataMock).isEmpty());
     }

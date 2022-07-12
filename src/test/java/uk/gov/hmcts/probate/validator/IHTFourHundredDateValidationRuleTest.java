@@ -1,12 +1,10 @@
 package uk.gov.hmcts.probate.validator;
 
 import org.assertj.core.api.Assertions;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -14,12 +12,11 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-@RunWith(MockitoJUnitRunner.class)
-public class IHTFourHundredDateValidationRuleTest {
+class IHTFourHundredDateValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2020", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -34,9 +31,9 @@ public class IHTFourHundredDateValidationRuleTest {
     private CaseData caseDataWithInvalidDateInFuture;
     private IHTFourHundredDateValidationRule underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         underTest = new IHTFourHundredDateValidationRule(businessValidationMessageRetriever);
         caseDataWithValidDate = CaseData.builder().solsIHT400Date(validDate).build();
         caseDataWithInvalidDate20DaysBeforeToday = CaseData.builder()
@@ -46,13 +43,13 @@ public class IHTFourHundredDateValidationRuleTest {
     }
 
     @Test
-    public void testValidateWithSuccess() {
+    void testValidateWithSuccess() {
         CaseDetails caseDetails = new CaseDetails(caseDataWithValidDate, LAST_MODIFIED, CASE_ID);
         underTest.validate(caseDetails);
     }
 
     @Test
-    public void testValidateFailureWithDate20DaysBeforeToday() {
+    void testValidateFailureWithDate20DaysBeforeToday() {
         when(businessValidationMessageRetriever.getMessage(any(), any(), any())).thenReturn("message1", "message2",
             "message3");
 
@@ -69,7 +66,7 @@ public class IHTFourHundredDateValidationRuleTest {
     }
 
     @Test
-    public void testValidateFailureWithDateInFuture() {
+    void testValidateFailureWithDateInFuture() {
         CaseDetails caseDetails = new CaseDetails(caseDataWithInvalidDateInFuture, LAST_MODIFIED, CASE_ID);
         Assertions.assertThatThrownBy(() -> {
             underTest.validate(caseDetails);

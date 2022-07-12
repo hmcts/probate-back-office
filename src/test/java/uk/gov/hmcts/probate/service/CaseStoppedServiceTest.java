@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service;
 
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -13,10 +13,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class CaseStoppedServiceTest {
+@ExtendWith(MockitoExtension.class)
+class CaseStoppedServiceTest {
 
     @InjectMocks
     private CaseStoppedService caseStoppedService;
@@ -26,7 +26,7 @@ public class CaseStoppedServiceTest {
 
     private CaseDetails caseDetails;
 
-    @Before
+    @BeforeEach
     public void setUpTest() {
         caseDetails = new CaseDetails(CaseData.builder()
             .caseType("gop")
@@ -36,7 +36,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldIncrementGrantDelayedNotificationDateByStoppedPeriodWhenCaseResolved() {
+    void shouldIncrementGrantDelayedNotificationDateByStoppedPeriodWhenCaseResolved() {
 
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
         caseDetails.getData().setGrantAwaitingDocumentationNotificationDate(LocalDate.now().plusWeeks(3));
@@ -50,7 +50,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantDelayedNotificationDateWhenNoticationSent() {
+    void shouldNotIncrementGrantDelayedNotificationDateWhenNoticationSent() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.YES);
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
@@ -61,7 +61,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantDelayedNotificationDateWhenGrantNotificationDateIsNull() {
+    void shouldNotIncrementGrantDelayedNotificationDateWhenGrantNotificationDateIsNull() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
         caseDetails.getData().setGrantDelayedNotificationDate(null);
@@ -73,7 +73,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantDelayedNotificationDateWhenGrantStoppedDateIsNull() {
+    void shouldNotIncrementGrantDelayedNotificationDateWhenGrantStoppedDateIsNull() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));
@@ -85,7 +85,7 @@ public class CaseStoppedServiceTest {
     }
 
     @Test
-    public void shouldNotIncrementGrantAwaitingDocsNotificationDateWhenNoDocDateIsSet() {
+    void shouldNotIncrementGrantAwaitingDocsNotificationDateWhenNoDocDateIsSet() {
 
         caseDetails.getData().setGrantDelayedNotificationSent(Constants.NO);
         caseDetails.getData().setGrantDelayedNotificationDate(LocalDate.now().plusWeeks(6));

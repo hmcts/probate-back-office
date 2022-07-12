@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.transformer.reset;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -18,8 +18,9 @@ import uk.gov.hmcts.probate.service.TitleAndClearingTypeService;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertNull;
+import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
 import static uk.gov.hmcts.probate.util.CommonVariables.DIRECTOR;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_LEAVE;
@@ -30,15 +31,14 @@ import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_ID;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_SURNAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_TRUST_CORP_POS;
 import static uk.gov.hmcts.probate.util.CommonVariables.LODGEMENT_ADDRESS;
-import static uk.gov.hmcts.probate.util.CommonVariables.DATE;
 import static uk.gov.hmcts.probate.util.CommonVariables.NO;
 import static uk.gov.hmcts.probate.util.CommonVariables.PARTNER_EXEC;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_ADDRESS;
 import static uk.gov.hmcts.probate.util.CommonVariables.SOLICITOR_FIRM_NAME;
 import static uk.gov.hmcts.probate.util.CommonVariables.TRUST_CORP_NAME;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ResetResponseCaseDataTransformerTest {
+@ExtendWith(SpringExtension.class)
+class ResetResponseCaseDataTransformerTest {
 
     private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
@@ -59,7 +59,7 @@ public class ResetResponseCaseDataTransformerTest {
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
     private List<String> sharesInCompanyProfits;
 
-    @Before
+    @BeforeEach
     public void setUp() {
 
         trustCorpsExecutorList = new ArrayList<>();
@@ -101,7 +101,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTitleAndClearingPartnerOptions() {
+    void shouldResetTitleAndClearingPartnerOptions() {
 
         caseDataBuilder
                 .otherPartnersApplyingAsExecutors(partnerExecutorList)
@@ -130,7 +130,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetTitleAndClearingTrustCorpOptions() {
+    void shouldResetTitleAndClearingTrustCorpOptions() {
 
         caseDataBuilder
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
@@ -157,7 +157,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetSuccessorFirmName() {
+    void shouldResetSuccessorFirmName() {
 
         caseDataBuilder
                 .nameOfSucceededFirm(SOLICITOR_FIRM_NAME);
@@ -178,7 +178,7 @@ public class ResetResponseCaseDataTransformerTest {
     }
 
     @Test
-    public void shouldResetDispenseWithNoticeOptions() {
+    void shouldResetDispenseWithNoticeOptions() {
 
         caseDataBuilder
                 .dispenseWithNotice(NO)

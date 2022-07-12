@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -42,10 +42,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
@@ -55,8 +55,8 @@ import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @ContextConfiguration(classes = {CaveatCallbackResponseTransformer.class})
-@RunWith(MockitoJUnitRunner.class)
-public class CaveatCallbackResponseTransformerTest {
+@ExtendWith(MockitoExtension.class)
+class CaveatCallbackResponseTransformerTest {
 
     public static final String ORGANISATION_NAME = "OrganisationName";
     public static final String ORG_ID = "OrgID";
@@ -155,7 +155,7 @@ public class CaveatCallbackResponseTransformerTest {
 
     private uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData bulkScanCaveatData;
 
-    @Before
+    @BeforeEach
     public void setup() {
         caveatDataBuilder = CaveatData.builder()
             .deceasedForenames(CAV_DECEASED_FORENAMES)
@@ -206,26 +206,32 @@ public class CaveatCallbackResponseTransformerTest {
             .bulkScanCaseReference(BULK_SCAN_REFERENCE)
             .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
+    }
 
+    private void setupMocks() {
         when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+
     }
 
     @Test
-    public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
+    void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponse() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.transformForSolicitor(caveatCallbackRequestMock);
         assertCommonSolsCaveats(caveatCallbackResponse);
     }
 
     @Test
-    public void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponseWithAuth() {
+    void shouldTransformSolsCaveatCallbackRequestToCaveatCallbackResponseWithAuth() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformForSolicitor(caveatCallbackRequestMock, "FAKE_TOKEN");
         assertCommonSolsCaveats(caveatCallbackResponse);
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithPayment() {
+    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithPayment() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -249,7 +255,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithMultiplePayments() {
+    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithMultiplePayments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -283,7 +290,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
+    void shouldConvertRequestToDataBeanWithCaveatEntryDateChange() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -301,7 +309,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatExpiryDateChange() {
+    void shouldConvertRequestToDataBeanWithCaveatExpiryDateChange() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -320,7 +329,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithBulkPrintId() {
+    void shouldConvertRequestToDataBeanWithBulkPrintId() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -338,7 +348,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatMessageContentChange() {
+    void shouldConvertRequestToDataBeanWithCaveatMessageContentChange() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.generalMessage(caveatCallbackRequestMock, document);
 
         assertCommon(caveatCallbackResponse);
@@ -347,7 +358,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefaultValuesCaveatRaisedEmailNotification() {
+    void shouldDefaultValuesCaveatRaisedEmailNotification() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
 
         assertCommon(caveatCallbackResponse);
@@ -356,7 +368,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefaultValuesCaveatRaisedEmailNotificationWhenNoEmail() {
+    void shouldDefaultValuesCaveatRaisedEmailNotificationWhenNoEmail() {
+        setupMocks();
         CaveatData caseData = caveatDataBuilder.caveatorEmailAddress(null)
             .build();
         when(caveatDetailsMock.getData()).thenReturn(caseData);
@@ -367,7 +380,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldDefaultValuesBulkPrintlNotification() {
+    void shouldDefaultValuesBulkPrintlNotification() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse = underTest.defaultCaveatValues(caveatCallbackRequestMock);
 
         assertCommon(caveatCallbackResponse);
@@ -376,13 +390,14 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void bulkScanCaveatTransform() {
+    void bulkScanCaveatTransform() {
         CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
         assertBulkScanCaseCreationDetails(caveatDetails);
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatExpiry() {
+    void shouldConvertRequestToDataBeanWithCaveatExpiry() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -402,7 +417,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoDocuments() {
+    void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatExtendExpiry(caveatCallbackRequestMock, documents, null);
@@ -413,7 +429,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoCaveatExtendDocuments() {
+    void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoCaveatExtendDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -430,7 +447,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatWithdrawn() {
+    void shouldConvertRequestToDataBeanWithCaveatWithdrawn() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -450,7 +468,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatWithdrawnWithNoDocuments() {
+    void shouldConvertRequestToDataBeanWithCaveatWithdrawnWithNoDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         CaveatCallbackResponse caveatCallbackResponse = underTest.withdrawn(caveatCallbackRequestMock, documents, null);
 
@@ -461,7 +480,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldConvertRequestToDataBeanWithCaveatWithdrawnNoCaveatWithdrawnDocuments() {
+    void shouldConvertRequestToDataBeanWithCaveatWithdrawnNoCaveatWithdrawnDocuments() {
+        setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
             .documentLink(documentLinkMock)
@@ -479,55 +499,57 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void testBuildOrganisationPolicy() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+    void testBuildOrganisationPolicy() {
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
-        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        when(caveatDetailsMock.getData()).thenReturn(CaveatData.builder().build());
+        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
-    public void testBuildOrganisationPolicyReturnNullForNoAuth() {
-        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), null));
+    void testBuildOrganisationPolicyReturnNullForNoAuth() {
+        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, null));
     }
 
     @Test
-    public void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(new CaveatData(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+    void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
+        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
-    public void testBuildOrganisationPolicyValues() {
+    void testBuildOrganisationPolicyValues() {
 
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
         organisationEntityResponse.setName(ORGANISATION_NAME);
 
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(organisationEntityResponse);
         OrganisationPolicy organisationPolicy = mock(OrganisationPolicy.class);
         when(organisationPolicy.getOrgPolicyCaseAssignedRole()).thenReturn("Org Policy Case Assigned Role");
         when(organisationPolicy.getOrgPolicyReference()).thenReturn("Org Policy Reference");
 
-        CaveatData caveatData = new CaveatData();
-        caveatData.setApplicantOrganisationPolicy(organisationPolicy);
+        CaveatData caveatData = CaveatData.builder().applicantOrganisationPolicy(organisationPolicy).build();
+        when(caveatDetailsMock.getData()).thenReturn(caveatData);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
-            .buildOrganisationPolicy(caveatData, "ABC123");
+            .buildOrganisationPolicy(caveatDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
         assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
     }
 
     @Test
-    public void shouldCovertSolsPBANumbers() {
+    void shouldCovertSolsPBANumbers() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
 
@@ -536,7 +558,8 @@ public class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldExtendCaveatExpiry() {
+    void shouldExtendCaveatExpiry() {
+        setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.transformResponseWithExtendedExpiry(caveatCallbackRequestMock);
 

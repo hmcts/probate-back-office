@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -19,8 +19,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -44,9 +44,9 @@ import static uk.gov.hmcts.probate.model.DocumentType.GRANT_COVERSHEET;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class RaiseGrantOfRepresentationNotificationServiceTest {
+class RaiseGrantOfRepresentationNotificationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -77,16 +77,16 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
     @MockBean
     private ServiceAuthTokenGenerator tokenGenerator;
     @MockBean
-    private DocumentStoreClient documentStoreClient;
+    private DocumentManagementService documentManagementService;
     @SpyBean
     private NotificationClient notificationClient;
     private CallbackRequest callbackRequest;
 
-    @Before
+    @BeforeEach
     public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
-        when(documentStoreClient.retrieveDocument(any(), any())).thenReturn(DOC_BYTES);
+        when(documentManagementService.getDocument(any())).thenReturn(DOC_BYTES);
         when(tokenGenerator.generate()).thenReturn("123");
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
@@ -96,9 +96,9 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
             .thenReturn(letterResponse);
     }
 
-    @Ignore
+    @Disabled
     @Test
-    public void shouldHandleGrantReceivedNotificationPersonalWithEmail()
+    void shouldHandleGrantReceivedNotificationPersonalWithEmail()
         throws NotificationClientException, BadRequestException {
 
         CaseDetails caseDetails =
@@ -124,9 +124,9 @@ public class RaiseGrantOfRepresentationNotificationServiceTest {
             response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentType());
     }
 
-    @Ignore
+    @Disabled
     @Test
-    public void shouldHandleGrantReceivedNotificationPersonalWithoutEmail()
+    void shouldHandleGrantReceivedNotificationPersonalWithoutEmail()
         throws NotificationClientException, BadRequestException {
 
         CaseDetails caseDetails =

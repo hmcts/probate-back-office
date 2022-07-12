@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -196,8 +197,12 @@ public class CaseQueryService {
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
             pagedResults = cases.getCases();
-            log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
-                    pagedResults.get(pagedResults.size() - 1).getId());
+            if (!CollectionUtils.isEmpty(pagedResults)) {
+                log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
+                        pagedResults.get(pagedResults.size() - 1).getId());
+            } else {
+                log.info("index: {}, first|last case ref: {}|{}", index, "Not found", "Not found");
+            }
             allResults.addAll(pagedResults);
             index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;

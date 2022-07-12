@@ -1,21 +1,21 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TemplateTest {
+class TemplateTest {
 
     @Test
-    public void shouldGetHashCode() {
+    void shouldGetHashCode() {
         Template template1 = Template.builder().value("AAA").build();
 
         assertEquals(65072, template1.hashCode());
     }
 
     @Test
-    public void shouldEqualWhenValuesEqual() {
+    void shouldEqualWhenValuesEqual() {
         Template template1 = Template.builder().value("AAA").build();
         Template template2 = Template.builder().value("AAA").build();
 
@@ -23,7 +23,7 @@ public class TemplateTest {
     }
 
     @Test
-    public void shouldNotEqualWhenValuesDoNotEqual() {
+    void shouldNotEqualWhenValuesDoNotEqual() {
         Template template1 = Template.builder().value("AAA").build();
         Template template2 = Template.builder().value("AAAA").build();
 
@@ -31,7 +31,7 @@ public class TemplateTest {
     }
 
     @Test
-    public void shouldNotEqualNull() {
+    void shouldNotEqualNull() {
         Template template1 = Template.builder().build();
         Template template2 = null;
 
@@ -39,7 +39,7 @@ public class TemplateTest {
     }
 
     @Test
-    public void shouldNotEqualForAnotherClass() {
+    void shouldNotEqualForAnotherClass() {
         Template template1 = Template.builder().build();
         CaseData template2 = CaseData.builder().build();
 

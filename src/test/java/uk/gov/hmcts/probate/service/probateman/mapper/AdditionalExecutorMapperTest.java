@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service.probateman.mapper;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.probateman.GrantApplication;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
@@ -17,9 +17,9 @@ import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class AdditionalExecutorMapperTest {
+class AdditionalExecutorMapperTest {
 
     private static final String GRANTEE1_FORENAMES = "GR1FN1 GR1FN2";
     private static final String GRANTEE1_SURNAME = "GR1SN";
@@ -39,7 +39,7 @@ public class AdditionalExecutorMapperTest {
     private AdditionalExecutorMapper additionalExecutorMapper;
 
     @Test
-    public void shouldMapToExecutorApplyingList() {
+    void shouldMapToExecutorApplyingList() {
 
         GrantApplication grantApplication = new GrantApplication();
         grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);
@@ -61,18 +61,18 @@ public class AdditionalExecutorMapperTest {
             additionalExecutorMapper.toAdditionalCollectionMember(grantApplication);
 
         assertThat(additionalCollection.get(0))
-            .isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(0));
+                .usingRecursiveComparison().isEqualTo(expectedApplyingExecutors.get(0));
         assertThat(additionalCollection.get(1))
-            .isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(1));
+            .usingRecursiveComparison().isEqualTo(expectedApplyingExecutors.get(1));
         assertThat(additionalCollection.get(2))
-            .isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(2));
+            .usingRecursiveComparison().isEqualTo(expectedApplyingExecutors.get(2));
         assertThat(additionalCollection.get(3))
-            .isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(3));
+            .usingRecursiveComparison().isEqualTo(expectedApplyingExecutors.get(3));
 
     }
 
     @Test
-    public void shouldMapToLimitedExecutorApplyingList() {
+    void shouldMapToLimitedExecutorApplyingList() {
 
         GrantApplication grantApplication = new GrantApplication();
         grantApplication.setGrantee1Forenames(GRANTEE1_FORENAMES);
@@ -89,9 +89,9 @@ public class AdditionalExecutorMapperTest {
 
         assertThat(additionalCollection.size()).isEqualTo(2);
         assertThat(additionalCollection.get(0))
-            .isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(0));
+            .usingRecursiveComparison().isEqualTo(expectedApplyingExecutors.get(0));
         assertThat(additionalCollection.get(1))
-            .isEqualToComparingFieldByFieldRecursively(expectedApplyingExecutors.get(2));
+            .usingRecursiveComparison().isEqualTo(expectedApplyingExecutors.get(2));
 
     }
 

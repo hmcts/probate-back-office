@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import com.github.hmcts.lifeevents.client.model.Deceased;
 import com.github.hmcts.lifeevents.client.model.V1Death;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 
@@ -13,25 +13,25 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class DeathRecordServiceTest {
+class DeathRecordServiceTest {
 
     DeathRecordService deathRecordService = new DeathRecordService();
 
     @Test
-    public void mapDeathRecordsShouldHandleEmptyList() {
+    void mapDeathRecordsShouldHandleEmptyList() {
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService
                 .mapDeathRecords(Collections.emptyList());
         assert (collectionMembers.isEmpty());
     }
 
     @Test
-    public void mapDeathRecordsShouldHandleNull() {
+    void mapDeathRecordsShouldHandleNull() {
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService.mapDeathRecords(null);
         assert (collectionMembers.isEmpty());
     }
 
     @Test
-    public void mapDeathRecordsShouldHandleListWithNullElement() {
+    void mapDeathRecordsShouldHandleListWithNullElement() {
         ArrayList list = new ArrayList();
         list.add(null);
         final List<CollectionMember<DeathRecord>> collectionMembers = deathRecordService.mapDeathRecords(list);
@@ -39,7 +39,7 @@ public class DeathRecordServiceTest {
     }
 
     @Test
-    public void shouldMapDeathRecord() {
+    void shouldMapDeathRecord() {
         Deceased deceased = new Deceased();
         deceased.setForenames("Firstname");
         deceased.setSurname("LastName");
@@ -63,7 +63,7 @@ public class DeathRecordServiceTest {
     }
 
     @Test
-    public void shouldHandleDeceasedNull() {
+    void shouldHandleDeceasedNull() {
         V1Death v1Death = new V1Death();
         final List<CollectionMember<DeathRecord>> deathRecordCollectionMembers = deathRecordService
                 .mapDeathRecords(asList(v1Death));
@@ -74,7 +74,7 @@ public class DeathRecordServiceTest {
     }
 
     @Test
-    public void shouldHandleNullNames() {
+    void shouldHandleNullNames() {
 
         Deceased deceased = new Deceased();
         V1Death v1Death = new V1Death();

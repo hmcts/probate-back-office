@@ -1,13 +1,13 @@
 package uk.gov.hmcts.probate.transformer;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -29,12 +29,12 @@ import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 
-@RunWith(MockitoJUnitRunner.class)
-public class WillLodgementCallbackResponseTransformerTest {
+@ExtendWith(SpringExtension.class)
+class WillLodgementCallbackResponseTransformerTest {
 
     private static final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
@@ -91,7 +91,7 @@ public class WillLodgementCallbackResponseTransformerTest {
 
     private WillLodgementData.WillLodgementDataBuilder willLodgementDataBuilder;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         willLodgementDataBuilder = WillLodgementData.builder()
@@ -125,7 +125,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformWillLodgementCallbackRequestToWillLodgementCallbackResponse() {
+    void shouldTransformWillLodgementCallbackRequestToWillLodgementCallbackResponse() {
         WillLodgementCallbackResponse willLodgementCallbackResponse =
             underTest.transform(willLodgementCallbackRequestMock);
 
@@ -133,7 +133,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldTransformCaseForWillLodgementWithDeceasedAliasNames() {
+    void shouldTransformCaseForWillLodgementWithDeceasedAliasNames() {
         List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList = new ArrayList<>();
 
         ProbateFullAliasName an11 = ProbateFullAliasName.builder().fullAliasName(WL_DECEASED_FULL_ALIAS_NAME).build();
@@ -153,7 +153,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetWillLodgementUploadedDocuments() {
+    void shouldGetWillLodgementUploadedDocuments() {
         List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
         documents.add(createUploadDocuments("0"));
         willLodgementDataBuilder.documentsUploaded(documents);
@@ -169,7 +169,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldAddMatches() {
+    void shouldAddMatches() {
         List<CaseMatch> matches = new ArrayList<>();
         matches.add(CaseMatch.builder().fullName("Name One").build());
         matches.add(CaseMatch.builder().fullName("Name Two").build());
@@ -255,7 +255,7 @@ public class WillLodgementCallbackResponseTransformerTest {
     }
 
     @Test
-    public void shouldGetWillLodgementGeneratedDocuments() {
+    void shouldGetWillLodgementGeneratedDocuments() {
         Document document = Document.builder()
             .documentLink(documentLinkMock)
             .documentType(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT)

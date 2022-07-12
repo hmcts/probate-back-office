@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.service.dataextract;
 
 import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -22,13 +22,14 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-public class SmeeAndFordDataExtractServiceTest {
+class SmeeAndFordDataExtractServiceTest {
 
     @InjectMocks
     private SmeeAndFordDataExtractService smeeAndFordDataExtractService;
@@ -43,9 +44,9 @@ public class SmeeAndFordDataExtractServiceTest {
     private CaseData caseData1;
     private CaseData caseData2;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(new ScannedDocument("1",
             "test", "other", "will", LocalDateTime.now(), DocumentLink.builder().build(),
@@ -77,21 +78,21 @@ public class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    public void shouldExtractForDate() throws NotificationClientException {
+    void shouldExtractForDate() throws NotificationClientException {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-30");
 
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
     @Test
-    public void shouldExtractForDateRange() throws NotificationClientException {
+    void shouldExtractForDateRange() throws NotificationClientException {
         smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
         verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
     }
 
     @Test
-    public void shouldExtractForDateForNoCasesFound() throws NotificationClientException {
+    void shouldExtractForDateForNoCasesFound() throws NotificationClientException {
         List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>()
             .build();
 
@@ -103,11 +104,13 @@ public class SmeeAndFordDataExtractServiceTest {
         verify(notificationService, times(0)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-30"));
     }
 
-    @Test(expected = ClientException.class)
-    public void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
-        when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
-            .thenThrow(NotificationClientException.class);
+    @Test
+    void shouldThrowClientExceptionForDateRange() throws NotificationClientException {
+        assertThrows(ClientException.class, () -> {
+            when(notificationService.sendSmeeAndFordEmail(any(), any(), any()))
+                    .thenThrow(NotificationClientException.class);
 
-        smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+            smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
+        });
     }
 }

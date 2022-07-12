@@ -79,6 +79,9 @@ public class FunctionalTestUtils {
     @Value("${user.auth.provider.oauth2.url}")
     private String authProviderUrl;
 
+    @Value("${case_document_am.url}")
+    private String caseDocumentManagermentUrl;
+
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
@@ -134,7 +137,8 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        final String genAuthorizationToken = serviceAuthTokenGenerator.generateClientToken(userName, password);
+        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator
+            .generateClientToken(userName, password);
         final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(
@@ -149,44 +153,48 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
+        String auth = "Bearer " + serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword);
+        System.out.println("serviceToken:" + serviceToken);
+        System.out.println("auth:" + auth);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization",
-                "Bearer "
-                    + serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword)),
+            new Header("Authorization", auth),
             new Header("user-id", userId));
     }
 
-    public String downloadPdfAndParseToString(String documentUrl) {
-        final Response document = RestAssured.given()
+    public Response getDocumentResponseFromId(String documentId, Headers headers) {
+        Response jsonResponse = RestAssured.given()
+            .baseUri(caseDocumentManagermentUrl)
             .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId())
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+            .headers(headers)
+            .when().get("/cases/documents/" + documentId + "/binary").andReturn();
+        jsonResponse.then().assertThat().statusCode(200);
+        return  jsonResponse;
+    }
 
-        return parsePDFToString(document.getBody().asInputStream());
+    public String downloadPdfAndParseToString(String documentUrl) {
+        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithCaseworkerUser());
+
+        return parsePDFToString(jsonResponse.getBody().asInputStream());
+
+    }
+
+    private Response getDocumentResponse(String documentUrl, Headers headers) {
+        log.info("caseDocumentManagermentUrl:" + caseDocumentManagermentUrl);
+        String docUrl = documentUrl.replaceAll("/binary", "");
+        final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
+        return getDocumentResponseFromId(documentId, headers);
     }
 
     public String downloadPdfAndParseToStringForScheduler(String documentUrl) {
-        final String cwUserId = getSchedulerCaseworkerUserId();
-        final Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(getHeadersWithUserId(serviceToken, cwUserId))
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
+        Response jsonResponse = getDocumentResponse(documentUrl, getHeadersWithUserId(serviceToken,
+            getSchedulerCaseworkerUserId()));
 
-        return parsePDFToString(document.getBody().asInputStream());
+        return parsePDFToString(jsonResponse.getBody().asInputStream());
     }
 
-    public String downloadPdfAndParseToStringForHeaders(String documentUrl, Headers headers) {
-        final Response document = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(headers)
-            .when().get(documentUrl.replace("http://dm-store:8080", dmStoreUrl)).andReturn();
-
-        return parsePDFToString(document.getBody().asInputStream());
-    }
-
-    public String parsePDFToString(InputStream inputStream) {
+    private String parsePDFToString(InputStream inputStream) {
 
         PDFParser parser;
         PDDocument pdDoc = null;
@@ -227,9 +235,9 @@ public class FunctionalTestUtils {
     }
 
     public String getUserId(String email, String password) {
-        final String caseworkerToken = serviceAuthTokenGenerator.generateClientToken(email, password);
+        final String caseworkerToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(email, password);
         final Headers headers = Headers.headers(
-            new Header("Authorization", "Bearer " + caseworkerToken));
+            new Header("Authorization", caseworkerToken));
 
         final String userInfoUrl = authProviderUrl + "/details";
         final Response userResponse = RestAssured.given()
@@ -242,38 +250,42 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithCaseworkerUser() {
-        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
+        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
             caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken));
+            new Header("Authorization", authorizationToken));
     }
 
     public Headers getHeadersWithSolicitorUser() {
-        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(solicitorEmail, solicitorPassword);
+        String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(solicitorEmail,
+            solicitorPassword);
+        System.out.println("serviceToken:" + serviceToken);
+        System.out.println("auth:" + authorizationToken);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken));
+            new Header("Authorization", authorizationToken));
     }
 
     public Headers getHeadersWithSolicitor2User() {
-        String authorizationToken = serviceAuthTokenGenerator.generateClientToken(solicitor2Email, solicitor2Password);
+        String authorizationToken = "Bearer " + serviceAuthTokenGenerator
+            .generateClientToken(solicitor2Email, solicitor2Password);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken));
+            new Header("Authorization", authorizationToken));
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
-        final String authorizationToken = serviceAuthTokenGenerator.generateClientToken(schedulerEmail,
+        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(schedulerEmail,
             schedulerPassword);
         final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", "Bearer " + authorizationToken),
+            new Header("Authorization", authorizationToken),
             new Header("user-id", id));
     }
 
@@ -393,4 +405,5 @@ public class FunctionalTestUtils {
                 return day + "th " + formattedDate.substring(3);
         }
     }
+
 }

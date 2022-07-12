@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,13 +23,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 
-public class InformationRequestServiceTest {
+class InformationRequestServiceTest {
 
     private static final SolsAddress ADDRESS =
         SolsAddress.builder().addressLine1("Address line 1").postCode("AB1 2CD").build();
@@ -63,9 +63,9 @@ public class InformationRequestServiceTest {
     private List<Document> letterIdDocs;
     private List<CollectionMember<BulkPrint>> bulkPrintIds;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         letterIdDocs = new ArrayList<>();
         documentList = new ArrayList<>();
         executorsApplying = new ArrayList<>();
@@ -110,7 +110,7 @@ public class InformationRequestServiceTest {
     }
 
     @Test
-    public void testEmailRequestReturnsSentEmailDocumentSuccessfully() {
+    void testEmailRequestReturnsSentEmailDocumentSuccessfully() {
         CollectionMember<Document> documentCollectionMember =
             new CollectionMember<>(Document.builder().documentType(DocumentType.SENT_EMAIL).build());
         documentList = new ArrayList<>();

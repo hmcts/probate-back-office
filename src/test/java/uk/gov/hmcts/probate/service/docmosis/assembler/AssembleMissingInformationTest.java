@@ -1,21 +1,21 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class AssembleMissingInformationTest {
+class AssembleMissingInformationTest {
 
     private AssemblerBase assemblerBase = new AssemblerBase();
 
     private AssembleMissingInformation assembleMissingInformation = new AssembleMissingInformation(assemblerBase);
 
     @Test
-    public void testMissingInfoWill() {
+    void testMissingInfoWill() {
 
         CaseData caseData = CaseData.builder().build();
 
@@ -31,7 +31,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoDeathCert() {
+    void testMissingInfoDeathCert() {
 
         CaseData caseData = CaseData.builder().build();
         List<ParagraphDetail> response =
@@ -46,7 +46,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoChangeOfApplicant() {
+    void testMissingInfoChangeOfApplicant() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -63,7 +63,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoDateOfRequest() {
+    void testMissingInfoDateOfRequest() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -80,7 +80,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoAlias() {
+    void testMissingInfoAlias() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -97,7 +97,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoRenunWill() {
+    void testMissingInfoRenunWill() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -114,7 +114,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoGrantReq() {
+    void testMissingInfoGrantReq() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();
@@ -131,7 +131,7 @@ public class AssembleMissingInformationTest {
     }
 
     @Test
-    public void testMissingInfoDeceased() {
+    void testMissingInfoDeceased() {
 
         CaseData caseData =
             CaseData.builder().primaryApplicantForenames("primary fn").primaryApplicantSurname("primary sn").build();

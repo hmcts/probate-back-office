@@ -1,13 +1,11 @@
 package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -61,6 +59,7 @@ import java.util.stream.Collectors;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -68,11 +67,9 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
-import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 
-@RunWith(MockitoJUnitRunner.class)
-public class BusinessValidationUnitTest {
+class BusinessValidationUnitTest {
 
     private static Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
     @Mock
@@ -93,8 +90,6 @@ public class BusinessValidationUnitTest {
     private CaseData caseDataMock;
     @Mock
     private Document documentMock;
-    @Mock
-    private Document solsCoversheetMock;
     @Mock
     private BindingResult bindingResultMock;
     @Mock
@@ -152,9 +147,9 @@ public class BusinessValidationUnitTest {
 
     private BusinessValidationController underTest;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
         CaseDataTransformer cdt = new CaseDataTransformer(solCompletionTransformer, resetCdTransformer,
             legalStatementExecutorTransformer);
@@ -186,7 +181,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoErrors() {
+    void shouldValidateWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
@@ -207,7 +202,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldVerifySolsAccessWithNoErrors() {
+    void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
 
@@ -218,7 +213,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldVerifySolsCreatedWithNoErrors() {
+    void shouldVerifySolsCreatedWithNoErrors() {
         when(callbackResponseTransformerMock.createSolsCase(callbackRequestMock, "auth"))
                 .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response = underTest.createSolsCaseWithOrganisation("auth",
@@ -230,7 +225,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateWithNoErrorsWithStateChange() {
+    void shouldValidateWithNoErrorsWithStateChange() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -250,7 +245,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateProbateWithNoErrors() {
+    void shouldValidateProbateWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -259,9 +254,7 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForProbateUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE_TRUST_CORPS))
             .thenReturn(documentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
-            .thenReturn(solsCoversheetMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock,
             "gop"))
             .thenReturn(callbackResponseMock);
 
@@ -274,7 +267,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateProbateWithNoErrorsWithStateChange() {
+    void shouldValidateProbateWithNoErrorsWithStateChange() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -294,7 +287,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateIntestacyWithNoErrors() {
+    void shouldValidateIntestacyWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -303,9 +296,7 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForIntestacyUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_INTESTACY))
             .thenReturn(documentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
-            .thenReturn(solsCoversheetMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock,
             "intestacy"))
             .thenReturn(callbackResponseMock);
 
@@ -318,7 +309,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateIntestacyWithNoErrorsWithStateChange() {
+    void shouldValidateIntestacyWithNoErrorsWithStateChange() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -338,7 +329,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateAdmonWithNoErrors() {
+    void shouldValidateAdmonWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -347,9 +338,7 @@ public class BusinessValidationUnitTest {
         when(stateChangeServiceMock.getChangedStateForAdmonUpdate(caseDataMock)).thenReturn(Optional.empty());
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_ADMON))
             .thenReturn(documentMock);
-        when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, SOLICITOR_COVERSHEET))
-            .thenReturn(solsCoversheetMock);
-        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock, solsCoversheetMock,
+        when(callbackResponseTransformerMock.transform(callbackRequestMock, documentMock,
             "admonWill"))
             .thenReturn(callbackResponseMock);
 
@@ -362,7 +351,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateAdmonWithNoErrorsWithStateChange() {
+    void shouldValidateAdmonWithNoErrorsWithStateChange() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -381,21 +370,23 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldValidateWithFieldErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+    @Test
+    void shouldValidateWithFieldErrors() {
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+            when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+            when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+            ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
+                    bindingResultMock, httpServletRequest);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+            assertThat(response.getStatusCode(), is(HttpStatus.OK));
+            assertThat(response.getBody().getErrors().isEmpty(), is(false));
+        });
     }
 
     @Test
-    public void shouldValidateWithBusinessErrors() {
+    void shouldValidateWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
@@ -412,7 +403,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateAmendCaseWithNoErrors() {
+    void shouldValidateAmendCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
@@ -431,21 +422,23 @@ public class BusinessValidationUnitTest {
     }
 
 
-    @Test(expected = BadRequestException.class)
-    public void shouldValidateAmendCaseWithFieldErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+    @Test
+    void shouldValidateAmendCaseWithFieldErrors() {
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+            when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+            when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
-            bindingResultMock, httpServletRequest);
+            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+            assertThat(response.getStatusCode(), is(HttpStatus.OK));
+            assertThat(response.getBody().getErrors().isEmpty(), is(false));
+        });
     }
 
     @Test
-    public void shouldValidateAmendCaseWithBusinessErrors() {
+    void shouldValidateAmendCaseWithBusinessErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
@@ -461,19 +454,21 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldErrorForConfirmation() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+    @Test
+    void shouldErrorForConfirmation() {
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+            when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopWithConfirmation(callbackRequestMock,
-            bindingResultMock);
+            ResponseEntity<AfterSubmitCallbackResponse> response = underTest.stopWithConfirmation(callbackRequestMock,
+                bindingResultMock);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+            assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        });
     }
 
     @Test
-    public void shouldPassConfirmation() {
+    void shouldPassConfirmation() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(confirmationResponseServiceMock.getStopConfirmation(Mockito.any(CallbackRequest.class)))
             .thenReturn(afterSubmitCallbackResponseMock);
@@ -484,21 +479,23 @@ public class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldTransformCaseWithFieldErrors() {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+    @Test
+    void shouldTransformCaseWithFieldErrors() {
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+            when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+            when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
-            bindingResultMock);
+            ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
+                    bindingResultMock);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+            assertThat(response.getStatusCode(), is(HttpStatus.OK));
+            assertThat(response.getBody().getErrors().isEmpty(), is(false));
+        });
     }
 
     @Test
-    public void shouldTransformCaseWithNoErrors() {
+    void shouldTransformCaseWithNoErrors() {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
             .thenReturn(callbackResponseMock);
@@ -509,21 +506,23 @@ public class BusinessValidationUnitTest {
         assertThat(response.getBody().getErrors().isEmpty(), is(true));
     }
 
-    @Test(expected = BadRequestException.class)
-    public void shouldPaperFormWithFieldErrors() throws NotificationClientException {
-        when(bindingResultMock.hasErrors()).thenReturn(true);
-        when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+    @Test
+    void shouldPaperFormWithFieldErrors() throws NotificationClientException {
+        assertThrows(BadRequestException.class, () -> {
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+            when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
+            when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
-            bindingResultMock);
+            ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+                    bindingResultMock);
 
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+            assertThat(response.getStatusCode(), is(HttpStatus.OK));
+            assertThat(response.getBody().getErrors().isEmpty(), is(false));
+        });
     }
 
     @Test
-    public void shouldSubmitForPersonalWithEmail() throws NotificationClientException {
+    void shouldSubmitForPersonalWithEmail() throws NotificationClientException {
         String paperFormValue = "Any";
         ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -546,7 +545,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldSubmitForPersonalWithoutEmail() throws NotificationClientException {
+    void shouldSubmitForPersonalWithoutEmail() throws NotificationClientException {
         String paperFormValue = "Any";
         ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -569,7 +568,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldSubmitPaperFormNoForPersonal() throws NotificationClientException {
+    void shouldSubmitPaperFormNoForPersonal() throws NotificationClientException {
         String paperFormValue = "No";
         ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -592,7 +591,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldSubmitForSolicitorWithoutEmail() throws NotificationClientException {
+    void shouldSubmitForSolicitorWithoutEmail() throws NotificationClientException {
         String paperFormValue = "YesNo";
         ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -614,7 +613,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldSubmitForSolicitorWithEmail() throws NotificationClientException {
+    void shouldSubmitForSolicitorWithEmail() throws NotificationClientException {
         String paperFormValue = "YesNo";
         ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -635,7 +634,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldSubmitForSolicitorPaperFormNoWithEmail() throws NotificationClientException {
+    void shouldSubmitForSolicitorPaperFormNoWithEmail() throws NotificationClientException {
         String paperFormValue = "No";
         ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -656,27 +655,27 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateIHT400Date() {
+    void shouldValidateIHT400Date() {
         ResponseEntity<CallbackResponse> response = underTest.solsValidateIHT400Date(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(callbackResponseTransformerMock).transform(any());
     }
 
     @Test
-    public void shouldDefaultIHT400421PageFlow() {
+    void shouldDefaultIHT400421PageFlow() {
         ResponseEntity<CallbackResponse> response = underTest.defaultIht400DatePage(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(callbackResponseTransformerMock).defaultIht400421DatePageFlow(any());
     }
 
     @Test
-    public void shouldSetGrantStoppedDateAfterCaseFailQa() {
+    void shouldSetGrantStoppedDateAfterCaseFailQa() {
         ResponseEntity<CallbackResponse> response = underTest.caseFailQa(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
-    public void shouldDefaultPBAs() {
+    void shouldDefaultPBAs() {
         ResponseEntity<CallbackResponse> response =
             underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
@@ -685,7 +684,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldDefaultIHT() {
+    void shouldDefaultIHT() {
         ResponseEntity<CallbackResponse> response =
             underTest.defaultIhtEstateFromDateOfDeath(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
@@ -694,7 +693,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateIHTEstateData() {
+    void shouldValidateIHTEstateData() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         ResponseEntity<CallbackResponse> response =
             underTest.validateIhtEstateData(callbackRequestMock);
@@ -704,7 +703,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateSolPostCode() {
+    void shouldValidateSolPostCode() {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock).transform(callbackRequestMock);
@@ -712,7 +711,7 @@ public class BusinessValidationUnitTest {
     }
 
     @Test
-    public void shouldValidateMissingSolPostCode() {
+    void shouldValidateMissingSolPostCode() {
         List<String> errors = new ArrayList<>();
         errors.add("some error");
         when(callbackResponseMock.getErrors()).thenReturn(errors);
