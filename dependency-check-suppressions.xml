@@ -10,31 +10,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: spring-cloud-starter-oauth2-2.2.5.RELEASE.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-oauth2@.*$</packageUrl>
-        <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
-        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
-        <vulnerabilityName>CVE-2022-22969</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-cloud-security-2.2.5.RELEASE.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-security@.*$</packageUrl>
-        <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
-        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: spring-cloud-starter-security-2.2.5.RELEASE.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-security@.*$</packageUrl>
-        <vulnerabilityName>CVE-2018-1258</vulnerabilityName>
-        <vulnerabilityName>CVE-2021-22112</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: spring-core-5.3.19.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
