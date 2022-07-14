@@ -61,7 +61,8 @@ public class AssignCaseServiceConsumerTest {
     }
 
     @Pact(provider = "acc_manageCaseAssignment", consumer = "probate_backOffice")
-    public RequestResponsePact generatePactFragmentForAssign(PactDslWithProvider builder) throws JSONException, IOException {
+    public RequestResponsePact generatePactFragmentForAssign(PactDslWithProvider builder)
+            throws JSONException, IOException {
         // @formatter:off
         return builder
                 .given("Assign a user to a case")
@@ -81,7 +82,8 @@ public class AssignCaseServiceConsumerTest {
     @PactTestFor(pactMethod = "generatePactFragmentForAssign")
     public void verifyAssignAccessToCase() {
 
-        assignCaseAccessClient.assignCaseAccess(AUTHORIZATION_TOKEN, SERVICE_AUTH_TOKEN, Boolean.TRUE, buildAssignCaseAccessRequest());
+        assignCaseAccessClient.assignCaseAccess(AUTHORIZATION_TOKEN, SERVICE_AUTH_TOKEN, Boolean.TRUE,
+                buildAssignCaseAccessRequest());
 
     }
 
@@ -98,11 +100,5 @@ public class AssignCaseServiceConsumerTest {
 
     private AssignCaseAccessRequest buildAssignCaseAccessRequest() {
         return new AssignCaseAccessRequest(Long.toString(CASE_ID),USER_ID,"PROBATE");
-        /*return AssignCaseAccessRequest
-                .builder()
-                .caseId(Long.toString(CASE_ID))
-                .assigneeId(USER_ID)
-                .caseTypeId("PROBATE")
-                .build();*/
     }
 }

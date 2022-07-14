@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.service.IdamApi;
 import java.io.IOException;
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 import static org.junit.Assert.assertEquals;
+
 @ExtendWith(PactConsumerTestExt.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @PactTestFor(providerName = "idamApi_users", port = "8861")
@@ -32,16 +33,19 @@ import static org.junit.Assert.assertEquals;
 @TestPropertySource(locations = {"/application.properties"})
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
 public class SidamAuthenticateUserConsumerTest {
+
     @Autowired
     private IdamApi idamApi;
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String RESPONSE_TYPE = "code";
     private static final String CLIENT_ID = "auth.provider.client.id";
     private static final String REDIRECT_URL = "auth.provider.client.redirect";
+
     @After
     public void teardown() {
         Executor.closeIdleConnections();
     }
+
     @Pact(provider = "idamApi_users", consumer = "probate_backOffice")
     public RequestResponsePact generatePactFragmentGetOAuth2Token(PactDslWithProvider builder) throws JSONException,
             IOException {
@@ -67,6 +71,7 @@ public class SidamAuthenticateUserConsumerTest {
                 REDIRECT_URL);
         assertEquals("User is not Authorised", "123432", authenticateUserResponse.getCode());
     }
+
     private DslPart buildIdamAuthenticateResponseDsl() {
         return newJsonBody((o) -> {
             o.stringType("code",
