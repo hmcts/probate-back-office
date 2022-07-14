@@ -20,7 +20,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.function.Function;
 
 @SpringBootApplication(exclude = {CoreCaseDataClientAutoConfiguration.class})
@@ -52,11 +51,6 @@ public class BusinessRulesValidationApplication implements CommandLineRunner {
         if (System.getenv("TASK_NAME") != null) {
             taskRunner.run(System.getenv("TASK_NAME"));
         }
-    }
-
-    @PostConstruct
-    public void init() {
-        TimeZone.setDefault(TimeZone.getTimeZone("Europe/London"));
     }
 
     @Bean
