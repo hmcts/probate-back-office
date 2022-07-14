@@ -12,7 +12,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(SpringExtension.class)
-public class ScheduledTaskRunnerTest {
+class ScheduledTaskRunnerTest {
 
     @Mock
     private ApplicationContext context;
@@ -24,7 +24,7 @@ public class ScheduledTaskRunnerTest {
     private ScheduledTaskRunner taskRunner;
 
     @Test
-    public void shouldFindTheBean() {
+    void shouldFindTheBean() {
         when(context.getBean("lowerCaseBean")).thenReturn(task);
 
         taskRunner.run("LowerCaseBean");
@@ -33,7 +33,7 @@ public class ScheduledTaskRunnerTest {
     }
 
     @Test
-    public void shouldNotFindTheBean() {
+    void shouldNotFindTheBean() {
         when(context.getBean("missingBean")).thenThrow();
 
         taskRunner.run("missingBean");

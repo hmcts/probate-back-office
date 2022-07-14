@@ -52,7 +52,7 @@ sonarqube {
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
     property "sonar.cpd.exclusions", "**/test/**," + "**/CallbackResponseTransformer.java," + "**/ResponseCaseData.java," + "**/CaseData.java," +
-            "**uk/gov/hmcts/probate/BusinessRulesValidationApplication.java"
+            "**/BusinessRulesValidationApplication.java"
   }
 }
 
