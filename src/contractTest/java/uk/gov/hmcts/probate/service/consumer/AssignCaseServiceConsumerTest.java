@@ -97,12 +97,12 @@ public class AssignCaseServiceConsumerTest {
     }
 
     private AssignCaseAccessRequest buildAssignCaseAccessRequest() {
-        //return new AssignCaseAccessRequest(Long.toString(CASE_ID),USER_ID,"PROBATE");
-        return AssignCaseAccessRequest
+        return new AssignCaseAccessRequest(Long.toString(CASE_ID),USER_ID,"PROBATE");
+        /*return AssignCaseAccessRequest
                 .builder()
                 .caseId(Long.toString(CASE_ID))
                 .assigneeId(USER_ID)
                 .caseTypeId("PROBATE")
-                .build();
+                .build();*/
     }
 }
