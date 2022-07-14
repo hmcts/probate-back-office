@@ -30,6 +30,8 @@ import java.util.function.Function;
 @EnableScheduling
 public class BusinessRulesValidationApplication implements CommandLineRunner {
 
+    public static final String TASK_NAME = "TASK_NAME";
+
     @Value("#{'${authorised.services}'.split(',\\s*')}")
     private List<String> authorisedServices;
 
@@ -43,15 +45,15 @@ public class BusinessRulesValidationApplication implements CommandLineRunner {
         final var application = new SpringApplication(BusinessRulesValidationApplication.class);
         final var instance = application.run(args);
 
-        if (System.getenv("TASK_NAME") != null) {
+        if (System.getenv(TASK_NAME) != null) {
             instance.close();
         }
     }
 
     @Override
     public void run(String... args) {
-        if (System.getenv("TASK_NAME") != null) {
-            taskRunner.run(System.getenv("TASK_NAME"));
+        if (System.getenv(TASK_NAME) != null) {
+            taskRunner.run(System.getenv(TASK_NAME));
         }
     }
 

@@ -25,7 +25,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(SpringExtension.class)
-public class SmeeAndFordExtractTaskTest {
+class SmeeAndFordExtractTaskTest {
 
     @Mock
     private DataExtractDateValidator dataExtractDateValidator;
@@ -39,7 +39,7 @@ public class SmeeAndFordExtractTaskTest {
     private static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @Test
-    public void shouldInitiateSmeeAndFordExtractDateRange() {
+    void shouldInitiateSmeeAndFordExtractDateRange() {
 
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform Smee And Ford data extract finished");
@@ -52,7 +52,7 @@ public class SmeeAndFordExtractTaskTest {
     }
 
     @Test
-    public void shouldThrowClientExceptionWithBadRequestForSmeeAndFordExtractWithIncorrectDateFormat() {
+    void shouldThrowClientExceptionWithBadRequestForSmeeAndFordExtractWithIncorrectDateFormat() {
         String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
                 .dateValidator(date, date);
