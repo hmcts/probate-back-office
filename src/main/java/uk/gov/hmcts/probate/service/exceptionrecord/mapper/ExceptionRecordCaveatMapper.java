@@ -58,6 +58,14 @@ public interface ExceptionRecordCaveatMapper {
     CaveatData toCcdData(ExceptionRecordOCRFields ocrFields);
 
     @AfterMapping
+    default void setLanguagePreferenceWelsh(
+            @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrFields) {
+        if (null == ocrFields.getBilingualCorrespondenceRequested()) {
+            caseData.setLanguagePreferenceWelsh(Boolean.FALSE);
+        }
+    }
+    
+    @AfterMapping
     default void setSolsPaymentMethod(
         @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
         if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
