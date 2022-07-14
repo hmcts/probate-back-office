@@ -10,6 +10,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 import uk.gov.hmcts.probate.service.task.ScheduledTaskRunner;
@@ -26,6 +27,7 @@ import java.util.function.Function;
 @EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.idam","uk.gov.hmcts.reform.ccd",
         "uk.gov.hmcts.reform.sendletter",
     "uk.gov.hmcts.probate.service"})
+@EnableScheduling
 public class BusinessRulesValidationApplication implements CommandLineRunner {
 
     @Value("#{'${authorised.services}'.split(',\\s*')}")
@@ -35,7 +37,7 @@ public class BusinessRulesValidationApplication implements CommandLineRunner {
     private ObjectMapper objectMapper;
 
     @Autowired
-    ScheduledTaskRunner taskRunner;
+    private ScheduledTaskRunner taskRunner;
 
     public static void main(final String[] args) {
         final var application = new SpringApplication(BusinessRulesValidationApplication.class);
