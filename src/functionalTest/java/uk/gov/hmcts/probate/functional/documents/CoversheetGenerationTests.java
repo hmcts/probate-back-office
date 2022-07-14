@@ -13,165 +13,139 @@ import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class CoversheetGenerationTests extends DocumentGenerationTestBase {
-    
-    public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
-    public static final String VALIDATE_INTESTACY_URL = "/case/sols-validate-intestacy";
-    public static final String VALIDATE_ADMON_URL = "/case/sols-validate-admon";
+
+    public static final String NEXTSTEPS_VALIDATE_URL = "/nextsteps/validate";
 
     @Test
     public void verifyGenerateSolsCoverSheetGopRenouncingExecutors() throws IOException {
-        String payload = "/caseprogress/04a-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogress/04a-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogress/expectedDocumentText/04a-caseCreatedRenouncingExecutors");
+            .getJsonFromFile("/coversheet/caseprogress/expectedDocumentText/04a-caseCreatedRenouncingExecutors");
         assertTrue(response.contains(expectedText));
 
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetGopWillHasCodicils() throws IOException {
-        String payload = "/caseprogress/04b-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogress/04b-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillHasCodicils");
+            .getJsonFromFile("/coversheet/caseprogress/expectedDocumentText/04b-caseCreatedWillHasCodicils");
         assertTrue(response.contains(expectedText));
 
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetGopIht217() throws IOException {
-        String payload = "/caseprogress/04c-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogress/04c-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogress/expectedDocumentText/04c-caseCreatedIHT217");
+            .getJsonFromFile("/coversheet/caseprogress/expectedDocumentText/04c-caseCreatedIHT217");
         assertTrue(response.contains(expectedText));
 
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetGopPA17Form() throws IOException {
-        String payload = "/caseprogress/04d-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogress/04d-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
+            .getJsonFromFile("/coversheet/caseprogress/expectedDocumentText/04d-caseCreatedPA17");
         assertTrue(response.contains(expectedText));
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetIntestacy() throws IOException {
-        String payload = "/caseprogressintestacy/04-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogressintestacy/04-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogressintestacy/expectedDocumentText/04-caseCreated");
+            .getJsonFromFile("/coversheet/caseprogressintestacy/expectedDocumentText/04-caseCreated");
         assertTrue(response.contains(expectedText));
 
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetIntestacyPA16Form() throws IOException {
-        String payload = "/caseprogressintestacy/04b-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_INTESTACY_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogressintestacy/04b-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogressintestacy/expectedDocumentText/04b-caseCreated");
+            .getJsonFromFile("/coversheet/caseprogressintestacy/expectedDocumentText/04b-caseCreated");
         assertTrue(response.contains(expectedText));
 
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetAdmonWill() throws IOException {
-        String payload = "/caseprogressadmonwill/04-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_ADMON_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogressadmonwill/04-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogressadmonwill/expectedDocumentText/04-caseCreated");
+            .getJsonFromFile("/coversheet/caseprogressadmonwill/expectedDocumentText/04-caseCreated");
         assertTrue(response.contains(expectedText));
 
     }
-
+    
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
+    public void verifyCoverSheetGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
-        String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
+        String dir = "/coversheet/exceptedEstates/ihtEstateBeforeSwitchDate/";
         String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesNo() throws IOException {
+    public void verifyCoverSheetGenerateSolsGopExpectedEstatesNo() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
-        String dir = "/exceptedEstates/ihtEstateCompletedNo/";
+        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedNo/";
         String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
+    public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
-        String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
+        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedYes207/";
         String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
+    public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
         //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
-        String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
+        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedYes400421/";
         String payload = dir + "caseCreate.json";
-        JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
-        String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
+        JsonPath jsonPath = postAndGetJsonPathResponse(payload, NEXTSTEPS_VALIDATE_URL);
 
         String coversheetText = getDocumentText(jsonPath, "solsCoversheetDocument");
         String coversheetExpectedText = utils.getJsonFromFile(dir + "expectedCoversheet.txt");
         assertEquals(coversheetExpectedText, coversheetText);
-
-        String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
-        String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetGopTcResolutionLodgedWithinApplication() throws IOException {
-        String payload = "/caseprogress/04e-caseCreated.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogress/04e-caseCreated.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         assertTrue(response.contains(TC_RESOLUTION_LODGED_WITH_APP));
     }
 
     @Test
     public void verifyGenerateSolsCoverSheetGopNotarialWill() throws IOException {
-        String payload = "/caseprogress/04-caseCreated-notarial.json";
-        String response = getDocumentTextAtPath(payload, VALIDATE_PROBATE_URL, "solsCoversheetDocument");
+        String payload = "/coversheet/caseprogress/04-caseCreated-notarial.json";
+        String response = getDocumentTextAtPath(payload, NEXTSTEPS_VALIDATE_URL, "solsCoversheetDocument");
         String expectedText = utils
-            .getJsonFromFile("/caseprogress/expectedDocumentText/04b-caseCreatedWillNotarial");
+            .getJsonFromFile("/coversheet/caseprogress/expectedDocumentText/04b-caseCreatedWillNotarial");
         assertTrue(response.contains(expectedText));
     }
 }

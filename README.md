@@ -111,8 +111,6 @@ The default postgres port can be overridden by setting the `RSE_LIB_DB_PORT` env
 | CCD user profile | userprofile |
 | AM role assignment service | am |
 
-eg. to connect to ccd data store db ```psql postgresql://postgres:postgres@localhost:6432/datastore```
-
 #### Ports
 
 Services run on the following default ports:
