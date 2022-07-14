@@ -441,6 +441,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "probateFeeAccountNumber", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "probateFeeAccountReference", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "bilingualCorrespondenceRequested", "UserRole": "citizen", "CRUD": "CRU"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "expiryDate", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "messageContent", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "documentsUploaded", "UserRole": "citizen", "CRUD": "CRU"},
