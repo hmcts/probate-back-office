@@ -98,7 +98,7 @@ public class AssignCaseServiceConsumerTest {
         return AssignCaseAccessRequest
                 .builder()
                 .caseId(Long.toString(CASE_ID))
-                .assigneeId(USER_ID)
+                .assigneeId("0a5874a4-3f38-4bbd-ba4c")
                 .caseTypeId("PROBATE")
                 .build();
     }
