@@ -50,6 +50,6 @@
     { "name": "probateFeeNotIncludedExplanation", "value": "Some reason"},
     { "name": "probateFeeAccountNumber", "value": "accountentry"},
     { "name": "probateFeeAccountReference", "value": "accountreference"},
-    { "name": "bilingualCorrespondenceRequested", "value": "No"}
+    { "name": "bilingualCorrespondenceRequested", "value": "false"}
   ]
 }
