@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.6.7'
+    springBootVersion = '2.6.9'
   }
   repositories {
     jcenter()
@@ -14,8 +14,8 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.6.7'
-  id 'uk.gov.hmcts.java' version '0.12.2'
+  id 'org.springframework.boot' version '2.6.9'
+  id 'uk.gov.hmcts.java' version '0.12.27'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
@@ -156,8 +156,8 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.6.7',
-        springBootStarterHateoas        : '2.6.7',
+        springBootVersion               : '2.6.9',
+        springBootStarterHateoas        : '2.6.9',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.13.2',
@@ -221,7 +221,7 @@ configurations.all {
   resolutionStrategy {
     eachDependency { DependencyResolveDetails details ->
       if (details.requested.group in ['org.apache.tomcat.embed']) {
-        details.useVersion '9.0.63'
+        details.useVersion '10.0.22'
       }
       if (details.requested.group in ['org.hibernate']) {
         details.useVersion '5.6.5.Final'
