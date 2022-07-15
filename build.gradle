@@ -365,6 +365,8 @@ dependencies {
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 
+  contractTestAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
+
   // Provides fast-reload of the probate service upon edit & compile during local development
   cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 }

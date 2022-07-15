@@ -20,12 +20,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-
-
 import java.io.IOException;
-
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
-
 
 @ExtendWith(PactConsumerTestExt.class)
 @ExtendWith(SpringExtension.class)
@@ -99,6 +95,11 @@ public class AssignCaseServiceConsumerTest {
     }
 
     private AssignCaseAccessRequest buildAssignCaseAccessRequest() {
-        return new AssignCaseAccessRequest(Long.toString(CASE_ID),USER_ID,"PROBATE");
+        return AssignCaseAccessRequest
+                .builder()
+                .caseId(Long.toString(CASE_ID))
+                .assigneeId(USER_ID)
+                .caseTypeId("PROBATE")
+                .build();
     }
 }

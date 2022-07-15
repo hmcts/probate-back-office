@@ -18,9 +18,4 @@ public class AssignCaseAccessRequest {
     @JsonProperty("case_type_id")
     private String caseTypeId;
 
-    public AssignCaseAccessRequest(String caseId,String assigneeId,String caseTypeId) {
-        this.caseId = caseId;
-        this.assigneeId = assigneeId;
-        this.caseTypeId = caseTypeId;
-    }
 }
