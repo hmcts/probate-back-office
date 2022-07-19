@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -69,6 +70,8 @@ class TaskStateRendererTest {
     private SendDocumentsRenderer sendDocumentsRenderer;
     @Mock
     private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    @Mock
+    private NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
 
 
     private CaseDetails caseDetails;
@@ -1003,6 +1006,16 @@ class TaskStateRendererTest {
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    void shouldRenderEmptySendDocsDetailsWhenNoDocumentsRequired() {
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/intestacy/SendDocsDetailsWhenNoDocumentsRequired");
+        when(noDocumentsRequiredBusinessRule.isApplicable(any())).thenReturn(true);
+        String result = taskStateRenderer.renderSendDocsDetails(TaskState.IN_PROGRESS, "", mock(CaseDetails.class));
         assertEquals(expectedHtml, result);
     }
 }
