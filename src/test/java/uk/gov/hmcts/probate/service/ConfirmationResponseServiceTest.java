@@ -8,6 +8,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.changerule.ApplicantSiblingsRule;
 import uk.gov.hmcts.probate.changerule.DiedOrNotApplyingRule;
 import uk.gov.hmcts.probate.changerule.EntitledMinorityRule;
@@ -90,6 +91,8 @@ class ConfirmationResponseServiceTest {
     @Mock
     private IhtEstate207BusinessRule ihtEstate207BusinessRuleMock;
     @Mock
+    private NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
+    @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private CaseDetails caseDetailsMock;
@@ -127,7 +130,7 @@ class ConfirmationResponseServiceTest {
             applicantSiblingsRuleMock, diedOrNotApplyingRuleMock, entitledMinorityRuleMock,
             executorsRuleMock, immovableEstateRule, lifeInterestRuleMock, minorityInterestRuleMock,
             renouncingRuleMock, residuaryRuleMock, solsExecutorRuleMock, spouseOrCivilRuleMock,
-            ihtEstate207BusinessRuleMock);
+            ihtEstate207BusinessRuleMock, noDocumentsRequiredBusinessRule);
         ReflectionTestUtils.setField(underTest, "templatesDirectory", "templates/markdown/");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
