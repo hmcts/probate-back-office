@@ -1074,6 +1074,7 @@ public class CallbackResponseTransformer {
 
         builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
+        updateCaseHandedOffToLegacySiteFlag(caseData, builder);
 
         return builder;
     }
@@ -1281,8 +1282,6 @@ public class CallbackResponseTransformer {
                     .appointExec(null)
                     .appointExecNo(null);
         }
-
-        updateCaseHandedOffToLegacySiteFlag(caseData, builder);
 
         return builder;
     }
