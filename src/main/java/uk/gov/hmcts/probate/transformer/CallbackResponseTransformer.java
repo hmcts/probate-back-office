@@ -1288,7 +1288,9 @@ public class CallbackResponseTransformer {
 
     private void updateCaseHandedOffToLegacySiteFlag(CaseData caseData,
                                                      ResponseCaseDataBuilder<?, ?> builder) {
-        if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())) {
+        if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
+                || ANSWER_NO.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite())) {
+
             builder.caseHandedOffToLegacySite(ANSWER_NO);
 
             if (SOLICITOR.equals(caseData.getApplicationType())
