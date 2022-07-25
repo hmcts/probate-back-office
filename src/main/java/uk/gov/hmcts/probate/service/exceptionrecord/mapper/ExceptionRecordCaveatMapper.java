@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToApplicat
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToCaveatorAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDeceasedAddress;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultLocalDate;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToProbateFee;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToProbateFeeNotIncludedReason;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
 import uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
@@ -25,6 +27,8 @@ import java.util.List;
     uses = {ApplicationTypeMapper.class,
         OCRFieldAddressMapper.class,
         OCRFieldDefaultLocalDateFieldMapper.class,
+        OCRFieldProbateFeeMapper.class, 
+        OCRFieldProbateFeeNotIncludedReasonMapper.class,
         OCRFieldYesOrNoMapper.class},
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordCaveatMapper {
@@ -46,8 +50,8 @@ public interface ExceptionRecordCaveatMapper {
         ToYesOrNo.class})
     @Mapping(target = "solsSolicitorPhoneNumber", source = "solsSolicitorPhoneNumber")
     @Mapping(target = "caveatorPhoneNumber", source = "caveatorPhoneNumber")
-    @Mapping(target = "probateFee", source = "probateFee")
-    @Mapping(target = "probateFeeNotIncludedReason", source = "probateFeeNotIncludedReason")
+    @Mapping(target = "probateFee", source = "probateFee", qualifiedBy = {ToProbateFee.class})
+    @Mapping(target = "probateFeeNotIncludedReason", source = "probateFeeNotIncludedReason", qualifiedBy = {ToProbateFeeNotIncludedReason.class})
     @Mapping(target = "helpWithFeesReference", source = "helpWithFeesReference")
     @Mapping(target = "probateFeeNotIncludedExplanation", source = "probateFeeNotIncludedExplanation")
     @Mapping(target = "probateFeeAccountNumber", source = "probateFeeAccountNumber")
