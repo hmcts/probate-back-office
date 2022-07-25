@@ -32,7 +32,13 @@ class ExceptionRecordCavestMapperAfterMappingTest {
 
     @Autowired
     private ApplicationTypeMapper applicationTypeMapper;
-
+    
+    @Autowired
+    private OCRFieldProbateFeeMapper ocrFieldProbateFeeMapper;
+    
+    @Autowired
+    private OCRFieldProbateFeeNotIncludedReasonMapper ocrFieldProbateFeeNotIncludedReasonMapper;
+    
     private static CaveatData caseData;
 
     @Configuration
@@ -57,7 +63,17 @@ class ExceptionRecordCavestMapperAfterMappingTest {
         public ApplicationTypeMapper applicationTypeMapper() {
             return new ApplicationTypeMapper();
         }
+        
+        @Bean
+        public OCRFieldProbateFeeMapper ocrFieldProbateFeeMapper() {
+            return new OCRFieldProbateFeeMapper();
+        }
 
+        @Bean
+        public OCRFieldProbateFeeNotIncludedReasonMapper ocrFieldProbateFeeNotIncludedReasonMapper() {
+            return new OCRFieldProbateFeeNotIncludedReasonMapper();
+        }
+        
         @Bean
         public ExceptionRecordCaveatMapper mainMapper() {
             return Mappers.getMapper(ExceptionRecordCaveatMapper.class);
