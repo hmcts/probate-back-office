@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -19,6 +20,7 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.NoDocumentsRequiredCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
@@ -31,6 +33,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -40,6 +43,8 @@ class SolicitorCoversheetPDFDecoratorTest {
     @InjectMocks
     private SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
 
+    @Mock
+    private NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
     @Mock
     private PA14FormBusinessRule pa14FormBusinessRuleMock;
     @Mock
@@ -87,6 +92,24 @@ class SolicitorCoversheetPDFDecoratorTest {
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
         assertEquals(caseJson, json);
+    }
+
+    @Test
+    void shouldProvideNoDocumentsRequiredDecoration() {
+        when(noDocumentsRequiredBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"documentsNotRequired\": \"Yes\"}";
+        final NoDocumentsRequiredCaseExtra noDocumentsRequiredCaseExtra = NoDocumentsRequiredCaseExtra.builder()
+                .documentsNotRequired("Yes").build();
+        when(caseExtraDecorator.decorate(any(NoDocumentsRequiredCaseExtra.class)))
+            .thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+        verify(noDocumentsRequiredBusinessRule).isApplicable(caseDataMock);
+        verify(caseExtraDecorator).decorate(eq(noDocumentsRequiredCaseExtra));
+        verify(caseExtraDecorator).combineDecorations(any(),eq(extra));
     }
 
     @Test
