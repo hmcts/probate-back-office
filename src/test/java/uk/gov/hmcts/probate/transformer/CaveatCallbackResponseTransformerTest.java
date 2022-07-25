@@ -35,6 +35,8 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -220,9 +222,9 @@ class CaveatCallbackResponseTransformerTest {
             .bulkScanCaseReference(BULK_SCAN_REFERENCE)
             .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .caveatorPhoneNumber(CAV_CAVEATOR_PHONENUMBER)
-            .probateFee(CAV_PROBATE_FEE)
+            .probateFee(ProbateFee.PROBATE_FEE_NOT_INCLUDED)
             .helpWithFeesReference(CAV_HELP_WITH_FEES_REFERENCE)
-            .probateFeeNotIncludedReason(CAV_PROBATE_FEE_NOT_INCLUDED_REASON)
+            .probateFeeNotIncludedReason(ProbateFeeNotIncludedReason.HELP_WITH_FEES_APPLIED)
             .probateFeeNotIncludedExplanation(CAV_NOT_INCLUDED_EXPLANATION)
             .probateFeeAccountNumber(CAV_FEE_ACCOUNT_NUMBER)
             .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE)
@@ -616,9 +618,9 @@ class CaveatCallbackResponseTransformerTest {
         assertFalse(caveatData.getSendToBulkPrintRequested());
 
         assertEquals(CAV_CAVEATOR_PHONENUMBER, caveatData.getCaveatorPhoneNumber());
-        assertEquals(CAV_PROBATE_FEE, caveatData.getProbateFee());
+        assertEquals(CAV_PROBATE_FEE, caveatData.getProbateFee().getDescription());
         assertEquals(CAV_HELP_WITH_FEES_REFERENCE, caveatData.getHelpWithFeesReference());
-        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON, caveatData.getProbateFeeNotIncludedReason());
+        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON, caveatData.getProbateFeeNotIncludedReason().getDescription());
         assertEquals(CAV_NOT_INCLUDED_EXPLANATION, caveatData.getProbateFeeNotIncludedExplanation());
         assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatData.getProbateFeeAccountNumber());
         assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatData.getProbateFeeAccountReference());
