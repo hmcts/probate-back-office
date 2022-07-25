@@ -1072,9 +1072,9 @@ public class CallbackResponseTransformer {
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
-        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
-
         updateCaseHandedOffToLegacySiteFlag(caseData, builder);
+
+        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
         return builder;
     }
@@ -1288,8 +1288,9 @@ public class CallbackResponseTransformer {
 
     private void updateCaseHandedOffToLegacySiteFlag(CaseData caseData,
                                                      ResponseCaseDataBuilder<?, ?> builder) {
+
         if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
-                || ANSWER_NO.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite())) {
+            || ANSWER_NO.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite())) {
 
             builder.caseHandedOffToLegacySite(ANSWER_NO);
 
