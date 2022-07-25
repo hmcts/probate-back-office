@@ -51,7 +51,8 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "solsSolicitorPhoneNumber", source = "solsSolicitorPhoneNumber")
     @Mapping(target = "caveatorPhoneNumber", source = "caveatorPhoneNumber")
     @Mapping(target = "probateFee", source = "probateFee", qualifiedBy = {ToProbateFee.class})
-    @Mapping(target = "probateFeeNotIncludedReason", source = "probateFeeNotIncludedReason", qualifiedBy = {ToProbateFeeNotIncludedReason.class})
+    @Mapping(target = "probateFeeNotIncludedReason", source = "probateFeeNotIncludedReason", 
+            qualifiedBy = {ToProbateFeeNotIncludedReason.class})
     @Mapping(target = "helpWithFeesReference", source = "helpWithFeesReference")
     @Mapping(target = "probateFeeNotIncludedExplanation", source = "probateFeeNotIncludedExplanation")
     @Mapping(target = "probateFeeAccountNumber", source = "probateFeeAccountNumber")

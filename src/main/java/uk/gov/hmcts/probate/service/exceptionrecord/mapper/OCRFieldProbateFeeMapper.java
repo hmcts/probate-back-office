@@ -31,8 +31,8 @@ public class OCRFieldProbateFeeMapper {
                 case PROBATE_FEE_ACCOUNT_VALUE:
                     return ProbateFee.PROBATE_FEE_ACCOUNT;
                 default:
-                    String errorMessage = "probateFee 'probateFeeNotIncluded', 'probateFeeChequeOrPostalOrder', 'probateFeeInPerson', "
-                        + " or 'probateFeeAccount' expected but got '" + probateFeeValue + "'";
+                    String errorMessage = "probateFee 'probateFeeNotIncluded', 'probateFeeChequeOrPostalOrder', "
+                        + "'probateFeeInPerson',  or 'probateFeeAccount' expected but got '" + probateFeeValue + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }
