@@ -213,24 +213,30 @@ public class DocumentGeneratorService {
         }
     }
 
-    private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
-        Document statementOfTruth;
+    private DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
+        DocumentType documentType;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
             case ADMON_WILL:
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_ADMON);
+                documentType = LEGAL_STATEMENT_ADMON;
                 break;
             case INTESTACY:
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_INTESTACY);
+                documentType = LEGAL_STATEMENT_INTESTACY;
                 break;
             case GRANT_OF_PROBATE:
             default:
                 String schemaVersion = callbackRequest.getCaseDetails().getData().getSchemaVersion();
                 // Set document version to newer trust corp legal statement for cases with 2.0.0 schema version
-                DocumentType legalStatementVersion = schemaVersion != null && schemaVersion.equals("2.0.0")
-                        ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, legalStatementVersion);
+                documentType = schemaVersion != null && schemaVersion.equals("2.0.0")
+                    ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
                 break;
         }
+        return documentType;
+    }
+
+    private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
+        Document statementOfTruth;
+        DocumentType documentType = getSolicitorSoTDocType(callbackRequest);
+        statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, documentType);
         return statementOfTruth;
     }
 
