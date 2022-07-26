@@ -6,14 +6,14 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToProbateFee;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee;
 
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee.Constants.PROBATE_FEE_ACCOUNT_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee.Constants.PROBATE_FEE_CHEQUE_OR_POSTAL_ORDER_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee.Constants.PROBATE_FEE_IN_PERSON_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee.Constants.PROBATE_FEE_NOT_INCLUDED_VALUE;
+
 @Slf4j
 @Component
 public class OCRFieldProbateFeeMapper {
-
-    private static final String PROBATE_FEE_NOT_INCLUDED_VALUE = "probateFeeNotIncluded";
-    private static final String PROBATE_FEE_CHEQUE_OR_POSTAL_ORDER_VALUE = "probateFeeChequeOrPostalOrder";
-    private static final String PROBATE_FEE_IN_PERSON_VALUE = "probateFeeInPerson";
-    private static final String PROBATE_FEE_ACCOUNT_VALUE = "probateFeeAccount";
 
     @SuppressWarnings("squid:S1168")
     @ToProbateFee
@@ -31,8 +31,7 @@ public class OCRFieldProbateFeeMapper {
                 case PROBATE_FEE_ACCOUNT_VALUE:
                     return ProbateFee.PROBATE_FEE_ACCOUNT;
                 default:
-                    String errorMessage = "probateFee 'probateFeeNotIncluded', 'probateFeeChequeOrPostalOrder', "
-                        + "'probateFeeInPerson',  or 'probateFeeAccount' expected but got '" + probateFeeValue + "'";
+                    String errorMessage = "Unexpected probateFee value: " + probateFeeValue;
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }

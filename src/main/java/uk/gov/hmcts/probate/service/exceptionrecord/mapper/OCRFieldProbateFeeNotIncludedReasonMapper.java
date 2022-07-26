@@ -6,13 +6,13 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToProbateFeeNotIncludedReason;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason;
 
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason.Constants.HELP_WITH_FEES_APPLIED_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason.Constants.HELP_WITH_FEES_APPLYING_VALUE;
+import static uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason.Constants.OTHER_VALUE;
+
 @Slf4j
 @Component
 public class OCRFieldProbateFeeNotIncludedReasonMapper {
-
-    private static final String HELP_WITH_FEES_APPLIED_VALUE = "helpWithFeesApplied";
-    private static final String HELP_WITH_FEES_APPLYING_VALUE = "helpWithFeesApplying";
-    private static final String OTHER_VALUE = "other";
 
     @SuppressWarnings("squid:S1168")
     @ToProbateFeeNotIncludedReason
@@ -29,12 +29,11 @@ public class OCRFieldProbateFeeNotIncludedReasonMapper {
                 case OTHER_VALUE:
                     return ProbateFeeNotIncludedReason.OTHER;
                 default:
-                    String errorMessage = "helpWithFeesApplied 'helpWithFeesApplying'"
-                        + " or 'other' expected but got '" + probateFeeNotIncludedReasonValue + "'";
+                    String errorMessage = "Unexpected probateFeeNotIncludedReasonValue value: " 
+                        + probateFeeNotIncludedReasonValue;
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }
         }
     }
-
 }
