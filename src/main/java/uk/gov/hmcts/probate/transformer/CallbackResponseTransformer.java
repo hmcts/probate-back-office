@@ -1324,8 +1324,8 @@ public class CallbackResponseTransformer {
 
             if (PERSONAL.equals(caseData.getApplicationType())
                     && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
-                    && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())
-                    && ANSWER_YES.equalsIgnoreCase(caseData.getSolsAdoptedEnglandOrWales())) {
+                    && "adoptedChild".equals(caseData.getPrimaryApplicantRelationshipToDeceased())
+                    && ANSWER_YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
                 builder.caseHandedOffToLegacySite(ANSWER_YES);
             }
         }

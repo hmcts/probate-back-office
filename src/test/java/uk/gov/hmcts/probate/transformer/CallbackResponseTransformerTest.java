@@ -3811,8 +3811,8 @@ class CallbackResponseTransformerTest {
         caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
         caseDataBuilder.applicationType(PERSONAL);
         caseDataBuilder.caseType(DocumentCaseType.INTESTACY.getCaseType());
-        caseDataBuilder.solsApplicantRelationshipToDeceased("ChildAdopted");
-        caseDataBuilder.solsAdoptedEnglandOrWales(YES);
+        caseDataBuilder.primaryApplicantRelationshipToDeceased("adoptedChild");
+        caseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
