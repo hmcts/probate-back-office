@@ -29,7 +29,7 @@ public class OCRFieldProbateFeeNotIncludedReasonMapper {
                 case OTHER_VALUE:
                     return ProbateFeeNotIncludedReason.OTHER;
                 default:
-                    String errorMessage = "Unexpected probateFeeNotIncludedReasonValue value: " 
+                    String errorMessage = "Unexpected probateFeeNotIncludedReason value: " 
                         + probateFeeNotIncludedReasonValue;
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
