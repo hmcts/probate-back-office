@@ -50,6 +50,7 @@ import java.util.Map;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 
@@ -90,7 +91,12 @@ public class NotificationController {
             CallbackResponse response =
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+                Document sentEmailAsDocument;
+                if (YES.equals(caseData.getPrimaryApplicantNotRequiredToSendDocuments())) {
+                    sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetails);
+                } else {
+                    sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+                }
                 return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
             }
         }
