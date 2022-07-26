@@ -137,6 +137,7 @@ notifications:
       english:
         personal:
           applicationReceived: "pa-application-received"
+          applicationReceivedNoDocs: "pa-application-received-no-docs"
           applicationReceivedPaperFormCaseworker: "pa-application-received-cw"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
@@ -178,6 +179,7 @@ notifications:
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
+          applicationReceivedNoDocs: "pa-application-received-no-docs-welsh"
           applicationReceivedPaperFormCaseworker: "pa-application-received-cw-welsh"
           documentReceived: "pa-document-received-welsh"
           caseStopped: "pa-case-stopped-welsh"
@@ -430,3 +432,11 @@ azure:
 aca:
   api:
     url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}
+
+case_document_am:
+  url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
+
+document_management:
+  fileupload:
+    extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
+    mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"

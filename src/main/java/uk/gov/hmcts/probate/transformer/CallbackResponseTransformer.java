@@ -434,7 +434,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          PaymentResponse paymentResponse) {
+                                                          PaymentResponse paymentResponse, Document coversheet) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -476,6 +476,7 @@ public class CallbackResponseTransformer {
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
             .payments(paymentsList)
+            .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
             .build();
 
         return transformResponse(responseCaseData);
@@ -539,21 +540,6 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
             responseCaseDataBuilder.caseType(caseType);
         }
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
-    public CallbackResponse transform(CallbackRequest callbackRequest, Document document, Document coversheet,
-                                      String caseType) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.solsSOTNeedToUpdate(null);
-
-        if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
-            responseCaseDataBuilder.solsLegalStatementDocument(document.getDocumentLink());
-            responseCaseDataBuilder.caseType(caseType);
-        }
-
-        responseCaseDataBuilder.solsCoversheetDocument(coversheet.getDocumentLink());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -853,6 +839,7 @@ public class CallbackResponseTransformer {
             .deceasedAddress(caseData.getDeceasedAddress())
             .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
+            .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
             .caseMatches(caseData.getCaseMatches())
 

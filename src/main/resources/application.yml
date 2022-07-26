@@ -236,6 +236,7 @@ notifications:
       english:
         personal:
           applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          applicationReceivedNoDocs: "985d2249-1431-44ec-bc8f-47157f3d1ac6"
           applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
@@ -283,6 +284,7 @@ notifications:
       welsh:
         personal:
           applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
+          applicationReceivedNoDocs: "97a3acbd-def9-43c7-85be-4d23f0b3a8a8"
           applicationReceivedPaperFormCaseworker: "92efedd8-feb9-4e50-896c-cddc930a9524"
           documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
@@ -527,3 +529,11 @@ ld:
 aca:
   api:
     url: ${ACA_SERVICE_API_BASEURL:http://localhost:4454}
+
+case_document_am:
+  url: ${CASE_DOCUMENT_AM_URL:http://localhost:4455}
+
+document_management:
+  fileupload:
+    extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
+    mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
