@@ -29,6 +29,8 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
+    private static final String PERSONALISATION_SOLICITOR_SOT_FORENAMES = "solicitor_sot_forenames";
+    private static final String PERSONALISATION_SOLICITOR_SOT_SURNAME = "solicitor_sot_surname";
     private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
@@ -74,6 +76,8 @@ public class GrantOfRepresentationPersonalisationService {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, caseData.getPrimaryApplicantFullName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, caseData.getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, caseData.getSolsSOTName());
+        personalisation.put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, caseData.getSolsSOTForenames());
+        personalisation.put(PERSONALISATION_SOLICITOR_SOT_SURNAME, caseData.getSolsSOTSurname());
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, caseData.getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, registry.getName());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, registry.getPhone());
