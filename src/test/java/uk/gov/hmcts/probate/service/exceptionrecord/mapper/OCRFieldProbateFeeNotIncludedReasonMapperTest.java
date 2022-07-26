@@ -47,7 +47,8 @@ class OCRFieldProbateFeeNotIncludedReasonMapperTest {
     @Test
     void shouldThrowOCRMappingException() {
         final var unexpectedInput = "Wibble";
-        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> ocrFieldProbateFeeNotIncludedReasonMapper.toProbateFeeNotIncludedReason(unexpectedInput));
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () 
+            -> ocrFieldProbateFeeNotIncludedReasonMapper.toProbateFeeNotIncludedReason(unexpectedInput));
         assertEquals("Unexpected probateFeeNotIncludedReason value: " + unexpectedInput, expectedEx.getMessage());
     }
 }

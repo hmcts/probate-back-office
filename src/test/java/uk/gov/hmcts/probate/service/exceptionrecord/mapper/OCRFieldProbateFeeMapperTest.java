@@ -52,7 +52,8 @@ class OCRFieldProbateFeeMapperTest {
     @Test
     void shouldThrowOCRMappingException() {
         final var unexpectedInput = "Wibble";
-        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> ocrFieldProbateFeeMapper.toProbateFee(unexpectedInput));
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () 
+            -> ocrFieldProbateFeeMapper.toProbateFee(unexpectedInput));
         assertEquals("Unexpected probateFee value: " + unexpectedInput, expectedEx.getMessage());    
     }
 }
