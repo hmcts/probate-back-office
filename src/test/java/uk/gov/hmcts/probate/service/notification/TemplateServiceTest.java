@@ -17,6 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
@@ -61,6 +62,18 @@ class TemplateServiceTest {
         String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.WELSH);
         assertEquals("pa-application-received-welsh", responseWelsh);
+    }
+
+    @Test
+    void getApplicationReceivedPANoDocsRequired() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED_NO_DOCS, PERSONAL, CTSC,
+            LanguagePreference.ENGLISH);
+        assertEquals("pa-application-received-no-docs", response);
+
+        String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED_NO_DOCS, PERSONAL, CTSC,
+            LanguagePreference.WELSH);
+        assertEquals("pa-application-received-no-docs-welsh", responseWelsh);
     }
 
 
