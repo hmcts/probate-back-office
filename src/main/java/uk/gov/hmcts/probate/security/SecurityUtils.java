@@ -61,22 +61,6 @@ public class SecurityUtils {
             .build();
     }
 
-    public SecurityDTO getUserAndServiceSecurityDTO() {
-        return SecurityDTO.builder()
-            .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-            .userId(getUserId())
-            .serviceAuthorisation(generateServiceToken())
-            .build();
-    }
-
-    public SecurityDTO getUserByAuthTokenAndServiceSecurityDTO() {
-        return SecurityDTO.builder()
-                .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
-                .serviceAuthorisation(generateServiceToken())
-                .userId(getUserId(httpServletRequest.getHeader(AUTHORIZATION)))
-                .build();
-    }
-
     public String getUserId(String authToken) {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         String result = Objects.requireNonNull(userInfo.getUid());
