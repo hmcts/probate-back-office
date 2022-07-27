@@ -236,6 +236,7 @@ notifications:
       english:
         personal:
           applicationReceived: "ff626f3a-9ff2-4cfd-a8fe-d4cc02c3186a"
+          applicationReceivedNoDocs: "985d2249-1431-44ec-bc8f-47157f3d1ac6"
           applicationReceivedPaperFormCaseworker: "4b214dc1-cb71-49f0-b11f-830236dc47c3"
           documentReceived: "9e950599-4f07-4b07-9015-2938e030c25c"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
@@ -283,6 +284,7 @@ notifications:
       welsh:
         personal:
           applicationReceived: "7824b428-0e12-4b3e-ad13-6dc31991b928"
+          applicationReceivedNoDocs: "97a3acbd-def9-43c7-85be-4d23f0b3a8a8"
           applicationReceivedPaperFormCaseworker: "cef0d208-b15f-40fe-bb08-c86284dac627"
           documentReceived: "f9beb3a9-9bd2-469e-b584-d6c2f805aed7"
           caseStopped: "80b576b4-1a33-4920-837a-f2904784c9e2"
