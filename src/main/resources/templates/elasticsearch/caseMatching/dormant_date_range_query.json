@@ -1,0 +1,33 @@
+{
+  "size": :size,
+  "from": :from,
+  "query": {
+    "bool": {
+      "must_not": { "match": { "state": "Dormant" }},
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "lte": ":fromDate"
+            }
+          }
+        },
+        {
+          "bool":{
+            "should":[
+              { "match" : { "state": "BOCaseMatchingIssueGrant"} },
+              { "match" : { "state": "BOCaseStopped"} }
+            ]
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}

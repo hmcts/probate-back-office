@@ -1,0 +1,29 @@
+{
+  "size": :size,
+  "from": :from,
+  "query": {
+    "bool": {
+      "filter": [
+        {
+          "range": {
+            "last_modified": {
+              "lte": ":fromDate"
+            }
+          }
+        },
+        {
+          "match": {
+            "state": "Dormant"
+          }
+        }
+      ]
+    }
+  },
+  "sort": [
+    {
+      "id": {
+        "order": "asc"
+      }
+    }
+  ]
+}
