@@ -849,6 +849,7 @@ public class CallbackResponseTransformer {
             .deceasedAddress(caseData.getDeceasedAddress())
             .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
+            .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
             .caseMatches(caseData.getCaseMatches())
 

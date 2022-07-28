@@ -164,6 +164,7 @@ kill -9 PID_JUST_FOUND
 
 Also needs back office docker to bring up all services:
 ./bin/dev-cft-setup.sh
+./bin/dev-cft-start.sh
 
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
 ## END: NEW ############################################################################################################
