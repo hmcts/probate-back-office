@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
@@ -29,6 +30,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -144,6 +146,10 @@ class BusinessValidationUnitTest {
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     @Mock
     private AssignCaseAccessService assignCaseAccessService;
+    @Mock
+    private CcdClientApi ccdClientApi;
+    @Mock
+    private SecurityUtils securityUtils;
 
     private BusinessValidationController underTest;
 
@@ -175,7 +181,9 @@ class BusinessValidationUnitTest {
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
             solicitorPostcodeValidationRule,
-            assignCaseAccessService);
+            assignCaseAccessService,
+            ccdClientApi,
+            securityUtils);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
