@@ -137,8 +137,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testMissingCaveatorEmailAddressPA8AReturnsWarning() throws IOException {
         jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA8.json");
-        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 2, 0);
-        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);
+        validateOCRDataPostSuccess(PA8A, jsonRequest, WARNINGS, SOLICITOR_FLAG, 1, 0);
     }
 
     @Test
