@@ -146,10 +146,6 @@ class BusinessValidationUnitTest {
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     @Mock
     private AssignCaseAccessService assignCaseAccessService;
-    @Mock
-    private CcdClientApi ccdClientApi;
-    @Mock
-    private SecurityUtils securityUtils;
 
     private BusinessValidationController underTest;
 
