@@ -2696,6 +2696,16 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldResetEvidenceHandledNoIfReactivateCaseManuallyTriggered() {
+        caseDataBuilder.evidenceHandled(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackresponse = underTest.transformCaseForReactivateCase(callbackRequestMock);
+        assertEquals(callbackresponse.getData().getEvidenceHandled(), NO);
+    }
+
+    @Test
     void shouldAddBPInformationForGrantReprint() {
         Document document = Document.builder()
             .documentType(DIGITAL_GRANT)

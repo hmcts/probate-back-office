@@ -181,9 +181,7 @@ class BusinessValidationUnitTest {
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
             solicitorPostcodeValidationRule,
-            assignCaseAccessService,
-            ccdClientApi,
-            securityUtils);
+            assignCaseAccessService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
