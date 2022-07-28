@@ -271,27 +271,18 @@ public class OCRFieldTestUtils {
             .value("MJ Solicitors")
             .description("Solicitor Firm Name").build();
         OCRField field3 = OCRField.builder()
-            .name("solsSolicitorAppReference")
-            .value("SOLS123456")
-            .description("Solicitor App Reference").build();
-        OCRField field4 = OCRField.builder()
             .name("solsSolicitorAddressLine1")
             .value("22 Palmer Street")
             .description("Solicitor address building and street").build();
-        OCRField field5 = OCRField.builder()
+        OCRField field4 = OCRField.builder()
             .name("solsSolicitorAddressPostCode")
             .value("NW1 5LA")
             .description("Solicitor address postcode").build();
-        OCRField field6 = OCRField.builder()
-            .name("solsSolicitorEmail")
-            .value("solicitor@probate-test.com")
-            .description("Solicitor Email Address").build();
+
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
         ocrFields.add(field4);
-        ocrFields.add(field5);
-        ocrFields.add(field6);
 
         return ocrFields;
     }

@@ -8,10 +8,8 @@ public enum CaveatSolicitorMandatoryFields {
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     SOLICITOR_ADDRESS_LINE1("solsSolicitorAddressLine1", "Solictor address line 1"),
     SOLICITOR_ADDRESS_POSTCODE("solsSolicitorAddressPostCode", "Solictor address postcode"),
-    SOLICITOR_FIRM_NAME("solsSolicitorFirmName", "Solicitors Firm name"),
-    SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
-    SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address");
-
+    SOLICITOR_FIRM_NAME("solsSolicitorFirmName", "Solicitors Firm name");
+    
     private final String key;
     private final String value;
 

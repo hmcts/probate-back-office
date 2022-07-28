@@ -41,17 +41,13 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
         ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorAddressLine1");
         ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorAddressPostCode");
         ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorFirmName");
-        ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorAppReference");
-        ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorEmail");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        assertEquals(5, warnings.size());
+        assertEquals(3, warnings.size());
         assertEquals("Solictor address line 1 (solsSolicitorAddressLine1) is mandatory.", warnings.get(0));
         assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warnings.get(1));
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warnings.get(2));
-        assertEquals("Solictor application reference (solsSolicitorAppReference) is mandatory.", warnings.get(3));
-        assertEquals("Solictor email address (solsSolicitorEmail) is mandatory.", warnings.get(4));
     }
 
     @Test
