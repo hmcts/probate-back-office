@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -50,7 +49,6 @@ import java.util.Optional;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
