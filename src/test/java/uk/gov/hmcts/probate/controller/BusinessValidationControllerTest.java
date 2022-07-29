@@ -147,7 +147,7 @@ class BusinessValidationControllerTest {
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
-    private static final String REACTIVE_CASE = "/case/reactivate-case";
+    private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -1133,7 +1133,7 @@ class BusinessValidationControllerTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(REACTIVE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
 }
