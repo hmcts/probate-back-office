@@ -69,8 +69,7 @@ class NonMandatoryFieldsValidatorTest {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         List<String> warningsResult = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA8A);
-        assertEquals(1, warningsResult.size());
-        assertEquals("The form has been flagged as a Solictor case.", warningsResult.get(0));
+        assertEquals(0, warningsResult.size());
     }
 
     @Test

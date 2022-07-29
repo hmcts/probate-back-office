@@ -38,11 +38,6 @@ public class NonMandatoryFieldsValidator {
                     || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
                     isSolicitorForm = true;
                 }
-
-                if (isSolicitorForm) {
-                    log.warn("Solictor details have been provided this will be flagged as a solicitor case.");
-                    warnings.add("The form has been flagged as a Solictor case.");
-                }
                 break;
             case PA1A:
             case PA1P:
