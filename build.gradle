@@ -361,7 +361,7 @@ dependencies {
   contractTestImplementation sourceSets.test.runtimeClasspath
 
   // Provides fast-reload of the probate service upon edit & compile during local development
-  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+//  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.withType(JavaCompile) {
