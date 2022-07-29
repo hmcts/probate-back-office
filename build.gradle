@@ -449,18 +449,18 @@ task buildBackOfficeXlsx(type: Exec) {
   outputs.file project.file('jsonToXLS/CCD_Probate_Backoffice.xlsx')
 }
 
-bootWithCCD {
-  dependsOn buildBackOfficeXlsx
-  authMode = uk.gov.hmcts.rse.AuthMode.Local
-  // Request the cftlib create the probate_man database
-  environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
-
-  environment 'IDAM_S2S_URL', 'http://localhost:8489'
-  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
-  environment 'PROBATE_POSTGRESQL_PORT', '6432'
-  environment 'PROBATE_POSTGRESQL_USER', 'postgres'
-  environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
-}
+//bootWithCCD {
+//  dependsOn buildBackOfficeXlsx
+//  authMode = uk.gov.hmcts.rse.AuthMode.Local
+//  // Request the cftlib create the probate_man database
+//  environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
+//
+//  environment 'IDAM_S2S_URL', 'http://localhost:8489'
+//  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
+//  environment 'PROBATE_POSTGRESQL_PORT', '6432'
+//  environment 'PROBATE_POSTGRESQL_USER', 'postgres'
+//  environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
+//}
 
 bootJar {
   getArchiveFileName().set(provider {
