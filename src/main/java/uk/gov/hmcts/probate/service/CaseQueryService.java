@@ -116,8 +116,8 @@ public class CaseQueryService {
                 queryDate);
     }
 
-    public List<ReturnedCaseDetails> findCaseToBeMadeDormant(String startDate, String endDate) {
-        return findCaseStateWithinDateRange("MakeDormant", DORMANT_QUERY, startDate, endDate);
+    public List<ReturnedCaseDetails> findCaseToBeMadeDormant(String date) {
+        return findCaseStateWithinDateRange("MakeDormant", DORMANT_QUERY, date, date);
     }
 
     public List<ReturnedCaseDetails> findCaseToBeReactivatedFromDormant(String startDate, String endDate) {

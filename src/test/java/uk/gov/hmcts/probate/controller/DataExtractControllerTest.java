@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.service.DormantCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
@@ -148,5 +149,25 @@ class DataExtractControllerTest {
     void smeeAndFordShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/smee-and-ford"))
             .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void shouldReturnOkResponseForDormantOnValidDate() throws Exception {
+        mockMvc.perform(post("/data-extract/make-dormant?date=2022-01-01"))
+                .andExpect(status().isAccepted());
+    }
+
+    @Test
+    void shouldReturnErrorWithNoDateOnPathParamOnDormant() throws Exception {
+        mockMvc.perform(post("/data-extract/make-dormant"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void shouldThrowClientExceptionWithBadRequestForDormantWithIncorrectDateFormat() throws Exception {
+        doThrow(new ClientException(HttpStatus.BAD_REQUEST.value(), "")).when(dataExtractDateValidator)
+                .dateValidator("2022-2-3");
+        mockMvc.perform(post("/data-extract/make-dormant?date=2022-2-3"))
+                .andExpect(status().is4xxClientError());
     }
 }

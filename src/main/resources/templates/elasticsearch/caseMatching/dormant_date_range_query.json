@@ -13,10 +13,28 @@
           }
         },
         {
-          "bool":{
-            "should":[
-              { "match" : { "state": "BOCaseMatchingIssueGrant"} },
-              { "match" : { "state": "BOCaseStopped"} }
+          "bool": {
+            "should": [
+              { "match": { "state": "BOCaseMatchingExamining" }},
+              { "match": { "state": "BOCaseMatchingIssueGrant" }},
+              { "match": { "state": "BOCaseQA" }},
+              { "match": { "state": "BOReadyToIssue" }},
+              { "match": { "state": "BORegistrarEscalation" }},
+              { "match": { "state": "BOCaseStopped" }},
+              { "match": { "state": "BOExamining" }},
+              { "match": { "state": "BOReadyForExamination" }},
+              { "match": { "state": "CasePrinted" }},
+              { "match": { "state": "CasePaymentFailed" }},
+              { "match": { "state": "CaseCreated" }},
+              { "match": { "state": "BOSotGenerated" }},
+              { "match": { "state": "BORedecNotificationSent" }},
+              { "match": { "state": "BOCaseStoppedAwaitRedec" }},
+              { "match": { "state": "BOCaseStoppedReissue" }},
+              { "match": { "state": "BOCaseMatchingReissue" }},
+              { "match": { "state": "BOExaminingReissue" }},
+              { "match": { "state": "BOCaseImported" }},
+              { "match": { "state": "applyforGrantPaperApplication" }},
+              { "match": { "state": "BOCaveatPermenant" }}
             ]
           }
         }
