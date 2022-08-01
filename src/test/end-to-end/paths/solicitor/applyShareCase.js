@@ -39,7 +39,7 @@ Scenario(scenarioName, async function ({I}) {
     const SAC = true;
 
     await I.logInfo(scenarioName, 'Login as Solicitor');
-    await I.authenticateWithIdamIfAvailable(SAC);
+    await I.authenticateWithIdamIfAvailable();
 
 
   //  let nextStepName = 'Deceased details';
