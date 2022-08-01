@@ -35,21 +35,21 @@ const scenarioName = 'Solicitor - Share A Case';
 Scenario(scenarioName, async function ({I}) {
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
-    const willType = 'WillLeft';
+
     const SAC = true;
 
     await I.logInfo(scenarioName, 'Login as Solicitor');
-    await I.authenticateWithIdamIfAvailable();
+    await I.authenticateUserShareCase();
 
 
-  //  let nextStepName = 'Deceased details';
-  //  let endState = 'Application created';
-  //  await I.logInfo(scenarioName, nextStepName);
-  //  await I.selectNewCase();
-  //  await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
-   // await I.applyForProbatePage1();
-  //  await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
-  //  await I.cyaPage();
+   let nextStepName = 'Deceased details';
+   let endState = 'Application created';
+   await I.logInfo(scenarioName, nextStepName);
+   await I.selectNewCase();
+   await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
+   await I.applyForProbatePage1();
+    await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
+    await I.cyaPage();
 
   //  await I.seeEndState(endState);
 
@@ -58,5 +58,6 @@ Scenario(scenarioName, async function ({I}) {
    // await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
    // await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
     await I.shareCaseSelection();
+    await I.verifyShareCase();
 
 }).retry(testConfig.TestRetryScenarios);

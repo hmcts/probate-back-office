@@ -11,18 +11,14 @@ module.exports = async function (useProfessionalUser, signInDelay = testConfig.S
     await I.waitForText('Sign in', 600);
     await I.waitForText('Email address');
     await I.waitForText('Password');
-    // testConfig.TestEnvCwUser
-    if (useProfessionalUser == false){
-        await I.fillField('#username', testConfig.TestEnvProfUser);
-        await I.fillField('#password', testConfig.TestEnvProfPassword);
-    }
-    else if (SAC == true) {
-        await I.fillField('#username', testConfig.TestEnvSACUser);
+  
+    if (SAC == true) {
+        await I.fillField('#username', testConfig.TestEnvSACUser1);
         await I.fillField('#password', testConfig.TestEnvSACPassword1);
     }
     else {
-        await I.fillField('#username', testConfig.TestEnvSACUser);
-        await I.fillField('#password', testConfig.TestEnvSACPassword1);
+        await I.fillField('#username', testConfig.TestEnvSACUser2);
+        await I.fillField('#password', testConfig.TestEnvSACPassword2);
     }
 
 
