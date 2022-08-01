@@ -7,7 +7,7 @@ const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-s
 module.exports = async function (verifyShareCase) {
 
     const I = this;
-    await I.wait(6);
+    await I.wait(4);
     console.log(caseRefNumber);
     await I.seeElement('//input[@id="select-'+caseRefNumber+'"]');
     await I.click('//span[normalize-space()="'+caseIdShareCase+'"]');
@@ -21,7 +21,7 @@ module.exports = async function (verifyShareCase) {
     await I.click('//button[normalize-space()="Submit"]');
     await I.wait(testConfig.CreateCaseDelay);
     await I.see('Case '+caseRef+' has been updated with event: Delete');
-    await I.wait(5);
+    await I.wait(testConfig.CreateCaseDelay);
     await I.click('//a[normalize-space()="Sign out"]');
 
 
