@@ -26,20 +26,24 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfPr
 
 const caseDetailsUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsUpdateTabConfig');
 const deceasedUpdateTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedUpdateTabConfig');
+const {TestEnvSACUser1} = require("../../../config");
 
 
 Feature('Solicitor - Share A Case').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Share A Case';
 
 
-Scenario(scenarioName, async function ({I}) {
+Scenario(scenarioName, async function ({I}, SAC) {
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
 
-    const SAC = true;
+
 
     await I.logInfo(scenarioName, 'Login as Solicitor');
-    await I.authenticateUserShareCase();
+
+
+
+    await I.authenticateUserShareCase(true);
 
 
    let nextStepName = 'Deceased details';
@@ -57,7 +61,8 @@ Scenario(scenarioName, async function ({I}) {
 
    // await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
    // await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
-    await I.shareCaseSelection();
+    await I.shareCaseSelection(false);
+    await I.authenticateUserShareCase();
     await I.verifyShareCase();
 
 }).retry(testConfig.TestRetryScenarios);

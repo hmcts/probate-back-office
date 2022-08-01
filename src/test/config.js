@@ -12,7 +12,7 @@ module.exports = {
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Monday01',
     TestEnvSACUser1: process.env.SAC_USER_EMAIL ||'probate.pp1.org2@gmail.com',
     TestEnvSACPassword1: process.env.SAC_USER_PASSWORD ||'Probate123',
-    TestEnvSACUser2: process.env.SAC_USER_EMAIL ||'probate.pp1.org2@gmail.com',
+    TestEnvSACUser2: process.env.SAC_USER_EMAIL ||'probate.pp2.org2@gmail.com',
     TestEnvSACPassword2: process.env.SAC_USER_PASSWORD ||'Probate123',
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',

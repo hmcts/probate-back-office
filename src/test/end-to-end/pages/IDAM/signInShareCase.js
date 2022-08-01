@@ -2,7 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault, SAC =false) {
+module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
 
     const I = this;
     await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
@@ -11,15 +11,9 @@ module.exports = async function (useProfessionalUser, signInDelay = testConfig.S
     await I.waitForText('Sign in', 600);
     await I.waitForText('Email address');
     await I.waitForText('Password');
-  
-    if (SAC == true) {
-        await I.fillField('#username', testConfig.TestEnvSACUser1);
-        await I.fillField('#password', testConfig.TestEnvSACPassword1);
-    }
-    else {
-        await I.fillField('#username', testConfig.TestEnvSACUser2);
-        await I.fillField('#password', testConfig.TestEnvSACPassword2);
-    }
+
+    await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvSACUser1 : testConfig.TestEnvSACUser2);
+    await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvSACPassword1 : testConfig.TestEnvSACPassword2);
 
 
     await I.waitForNavigationToComplete('input[type="submit"]', signInDelay);

@@ -7,6 +7,8 @@ const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-s
 module.exports = async function (verifyShareCase) {
 
     const I = this;
+    await I.wait(testConfig.CreateCaseDelay);
+
 
 
 
