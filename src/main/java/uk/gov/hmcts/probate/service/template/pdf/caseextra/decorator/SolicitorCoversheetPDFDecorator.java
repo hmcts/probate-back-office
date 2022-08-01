@@ -1,44 +1,30 @@
 package uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator;
 
+import java.util.List;
+import java.util.stream.Collectors;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.AdmonWillRenunciationCaseExtra;
-import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.NotApplyingExecutorFormPoint;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
-import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.TCResolutionLodgedWithAppCaseExtra;
-
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_ADMON_WILL;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
@@ -48,6 +34,20 @@ import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTA
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AdmonWillRenunciationCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.NoDocumentsRequiredCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.NotApplyingExecutorFormPoint;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA17FormCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.TCResolutionLodgedWithAppCaseExtra;
 
 @Component
 @AllArgsConstructor
@@ -63,9 +63,18 @@ public class SolicitorCoversheetPDFDecorator {
     private final AdmonWillRenunicationRule admonWillRenunicationRule;
     private final NotApplyingExecutorsMapper notApplyingExecutorsMapper;
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
 
     public String decorate(CaseData caseData) {
         String decoration = "";
+        if (noDocumentsRequiredBusinessRule.isApplicable(caseData)) {
+            NoDocumentsRequiredCaseExtra noDocumentsRequiredCaseExtra = NoDocumentsRequiredCaseExtra
+                .builder()
+                .documentsNotRequired(YES)
+                .build();
+            decoration = caseExtraDecorator.combineDecorations(decoration,
+                caseExtraDecorator.decorate(noDocumentsRequiredCaseExtra));
+        }
         if (pa14FormBusinessRule.isApplicable(caseData)) {
             PA14FormCaseExtra pa14FormCaseExtra = PA14FormCaseExtra.builder()
                 .notApplyingExecutorFormPoints(buildNotApplyingExecutorsLinks(caseData,
@@ -109,7 +118,7 @@ public class SolicitorCoversheetPDFDecorator {
                 .build();
             decoration = caseExtraDecorator.combineDecorations(decoration,
                 caseExtraDecorator.decorate(ihtEstate207CaseExtra));
-        }        
+        }
         if (authenticatedTranslationBusinessRule.isApplicable(caseData)) {
             AuthenticatedTranslationCaseExtra authenticatedTranslationCaseExtra =
                     AuthenticatedTranslationCaseExtra.builder()

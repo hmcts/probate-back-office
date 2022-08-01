@@ -134,6 +134,7 @@ notifications:
       english:
         personal:
           applicationReceived: "pa-application-received"
+          applicationReceivedNoDocs: "pa-application-received-no-docs"
           applicationReceivedPaperFormCaseworker: "pa-application-received-cw"
           documentReceived: "pa-document-received"
           caseStopped: "pa-case-stopped"
@@ -175,6 +176,7 @@ notifications:
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
+          applicationReceivedNoDocs: "pa-application-received-no-docs-welsh"
           applicationReceivedPaperFormCaseworker: "pa-application-received-cw-welsh"
           documentReceived: "pa-document-received-welsh"
           caseStopped: "pa-case-stopped-welsh"

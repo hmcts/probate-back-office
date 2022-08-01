@@ -111,8 +111,6 @@ The default postgres port can be overridden by setting the `RSE_LIB_DB_PORT` env
 | CCD user profile | userprofile |
 | AM role assignment service | am |
 
-eg. to connect to ccd data store db ```psql postgresql://postgres:postgres@localhost:6432/datastore```
-
 #### Ports
 
 Services run on the following default ports:
@@ -166,6 +164,7 @@ kill -9 PID_JUST_FOUND
 
 Also needs back office docker to bring up all services:
 ./bin/dev-cft-setup.sh
+./bin/dev-cft-start.sh
 
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
 ## END: NEW ############################################################################################################
