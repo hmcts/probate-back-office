@@ -7,9 +7,11 @@ const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-s
 module.exports = async function (shareCaseSelection) {
 
     const I = this;
-    let caseRef = await I.grabTextFrom('//div[@class="column-one-half"]//ccd-case-header');
+    global.caseRef = await I.grabTextFrom('//div[@class="column-one-half"]//ccd-case-header');
     console.log(caseRef);
-    let caseRefNumber = caseRef.replace(/\D/g, '');
+    global.caseIdShareCase =caseRef.replace(/#/g, '')
+    console.log(caseIdShareCase);
+    global.caseRefNumber = caseRef.replace(/\D/g, '');
     console.log(caseRefNumber);
     //const caseRefNumber = parseInt(caseRef.match(/\d/g).join(''), 20);
 
@@ -24,7 +26,7 @@ module.exports = async function (shareCaseSelection) {
 
         await I.wait(4);
         await I.click('//input[@id="select-'+caseRefNumber+'"]');
-        await I.wait(2);
+    await I.wait(testConfig.CreateCaseDelay);
         await I.click('#btn-share-button');
         await I.wait(testConfig.CreateCaseDelay);
         await I.fillField('input[role="combobox"]', 'PP');
@@ -37,7 +39,7 @@ module.exports = async function (shareCaseSelection) {
         await I.click('button[title="Continue"]');
         await I.wait(testConfig.CreateCaseDelay);
         await I.click('button[title="Confirm"]');
-        await I.wait(testConfig.CreateCaseDelay);
+        await I.wait(4);
         await I.see('Your cases have been updated');
         await I.click('//a[normalize-space()="Sign out"]');
 
