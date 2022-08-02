@@ -39,7 +39,7 @@ module.exports = async function (shareCaseSelection) {
         await I.click('button[title="Continue"]');
         await I.wait(testConfig.CreateCaseDelay);
         await I.click('button[title="Confirm"]');
-        await I.wait(4);
+        await I.waitForText('Your cases have been updated', 5);
         await I.see('Your cases have been updated');
         await I.click('//a[normalize-space()="Sign out"]');
 

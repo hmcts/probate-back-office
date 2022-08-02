@@ -7,7 +7,7 @@ const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-s
 module.exports = async function (verifyShareCase) {
 
     const I = this;
-    await I.wait(4);
+    await I.waitForText('Your cases', 10);
     console.log(caseRefNumber);
     await I.seeElement('//input[@id="select-'+caseRefNumber+'"]');
     await I.click('//span[normalize-space()="'+caseIdShareCase+'"]');
