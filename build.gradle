@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.6.9'
+    springBootVersion = '2.6.8'
   }
   repositories {
     jcenter()
@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.6.9'
+  id 'org.springframework.boot' version '2.6.8'
   id 'uk.gov.hmcts.java' version '0.12.2'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
@@ -157,7 +157,7 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.6.9',
+        springBootVersion               : '2.6.8',
         springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
