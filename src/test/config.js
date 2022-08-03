@@ -1,5 +1,5 @@
 module.exports = {
-    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
+    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'https://manage-case.aat.platform.hmcts.net',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: 0, // process.env.RETRY_FEATURES || 2,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,

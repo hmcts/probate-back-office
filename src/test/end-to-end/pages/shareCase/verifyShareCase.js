@@ -9,7 +9,6 @@ module.exports = async function (verifyShareCase) {
 
     const I = this;
     await I.waitForText('Your cases', 10);
-    console.log(caseRefNumber);
     await I.seeElement('//input[@id="select-'+caseRefNumber+'"]');
     await I.click('//span[normalize-space()="'+caseIdShareCase+'"]');
     await I.wait(3);
@@ -24,11 +23,5 @@ module.exports = async function (verifyShareCase) {
     await I.see('Case '+caseRef+' has been updated with event: Delete');
     await I.wait(testConfig.CreateCaseDelay);
     await I.click('//a[normalize-space()="Sign out"]');
-
-
-
-
-
-
 
 };
