@@ -157,7 +157,7 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.6.6',
+        springBootVersion               : '2.6.7',
         springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
@@ -221,9 +221,6 @@ dependencyManagement {
 configurations.all {
   resolutionStrategy {
     eachDependency { DependencyResolveDetails details ->
-      if (details.requested.group in ['org.apache.tomcat.embed']) {
-        details.useVersion '9.0.63'
-      }
       if (details.requested.group in ['org.hibernate']) {
         details.useVersion '5.6.5.Final'
       }
