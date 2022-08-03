@@ -145,7 +145,7 @@ public class BusinessValidationController {
         @RequestHeader(value = "Authorization") String authToken,
         @RequestParam(value = "caseTypeId") String caseTypeId,
         @RequestBody CallbackRequest request) {
-        assignCaseAccessService.assignCaseAccess(request.getCaseDetails().getId().toString(), authToken, caseTypeId);
+        assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
@@ -492,9 +492,7 @@ public class BusinessValidationController {
             response = callbackResponseTransformer.transformWithConditionalStateChange(callbackRequest, newState);
         } else {
             Document document = pdfManagementService.generateAndUpload(callbackRequest, documentType);
-            Document coversheet = pdfManagementService
-                .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-            response = callbackResponseTransformer.transform(callbackRequest, document, coversheet, caseType);
+            response = callbackResponseTransformer.transform(callbackRequest, document, caseType);
         }
         return response;
     }

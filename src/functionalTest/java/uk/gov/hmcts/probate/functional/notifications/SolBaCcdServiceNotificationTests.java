@@ -5,6 +5,7 @@ import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -137,7 +138,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     public void verifyDigitalIntestacyApplicationReceivedNotificationSent() throws IOException {
         final ResponseBody responseBody =
             validatePostSuccessWithAttributeUpdate("digitalApplicationRecievedPayload.json",
-                    APPLICATION_RECEIVED,"\"caseType\":\"gop\"", "\"caseType\":\"intestacy\"");
+                    APPLICATION_RECEIVED,"\"caseType\":\"gop\"",
+                "\"caseType\":\"intestacy\"");
         assertTrue(responseBody.asString().contains("DocumentLink"));
     }
 
@@ -175,6 +177,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         validatePostSuccess("personalPayloadNotifications.json", DOCUMENTS_RECEIVED);
     }
 
+    @Ignore // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     public void verifyPersonalApplicantDocumentReceivedContentIsOk() throws IOException {
         final String document = sendEmail("personalPayloadNotifications.json", DOCUMENTS_RECEIVED,
@@ -182,6 +185,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         verifyPAEmailNotificationReceived(document);
     }
 
+    @Ignore // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     public void verifySolicitorApplicantDocumentReceivedContentIsOk() throws IOException {
         final String document =
@@ -218,6 +222,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertExpectedContents("grantRaisedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
+    @Ignore // tech decision to be made if have these conditional on launch darkly toggle or remove permantently
     @Test
     public void verifySolicitorDocumentsReceivedShouldReturnOkResponseCode() throws IOException {
         postNotificationEmailAndVerifyContents(DOCUMENTS_RECEIVED, "solicitorPayloadNotifications.json",
@@ -225,6 +230,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
             EMAIL_NOTIFICATION_URL);
     }
 
+    @Ignore
     @Test
     public void verifySolicitorDocumentsReceivedIntestacyShouldReturnOkResponseCode() throws IOException {
         final ResponseBody responseBody =
@@ -233,6 +239,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertExpectedContents("documentReceivedSolicitorResponse.txt", EMAIL_NOTIFICATION_URL, responseBody);
     }
 
+    @Ignore
     @Test
     public void verifySolicitorDocumentsReceivedAdmonWillShouldReturnOkResponseCode() throws IOException {
         final ResponseBody responseBody =

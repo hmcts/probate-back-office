@@ -20,4 +20,6 @@ public class AdditionalExecutorApplying {
     private String applyingExecutorOtherNames;
     private String applyingExecutorOtherNamesReason;
     private String applyingExecutorOtherReason;
+    private final String applyingExecutorAgreed;
+    private final String applyingExecutorInvitationId;
 }

@@ -3,7 +3,7 @@
 set -eu
 
 binFolder=$(dirname "$0")/../../bin
-xlsToJsonFolder=$(dirname "$0")/../../jsonToXLS-"$1"
+xlsToJsonFolder=$(dirname "$0")/../../jsonToXLS
 
 echo binFolder = $binFolder
 echo xlsToJsonFolder = $xlsToJsonFolder

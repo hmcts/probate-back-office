@@ -1,22 +1,22 @@
 package uk.gov.hmcts.probate.service;
 
 import org.apache.logging.log4j.util.Strings;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(MockitoJUnitRunner.class)
-public class AddressFormatterServiceTest {
+@ExtendWith(SpringExtension.class)
+class AddressFormatterServiceTest {
 
     @InjectMocks
     private AddressFormatterService addressFormatterService;
 
     @Test
-    public void shouldReturnFormattedAddress() {
+    void shouldReturnFormattedAddress() {
         ProbateAddress probateAddress = ProbateAddress.builder()
                 .proAddressLine1("addressLine1")
                 .proAddressLine2("addressLine2")
@@ -31,7 +31,7 @@ public class AddressFormatterServiceTest {
     }
 
     @Test
-    public void shouldReturnFormattedAddressWillNulls() {
+    void shouldReturnFormattedAddressWillNulls() {
         ProbateAddress probateAddress = ProbateAddress.builder()
                 .proAddressLine1("addressLine1")
                 .proPostCode("postcode")
@@ -41,7 +41,7 @@ public class AddressFormatterServiceTest {
     }
 
     @Test
-    public void shouldReturnBlankStringFormattedAddress() {
+    void shouldReturnBlankStringFormattedAddress() {
         assertEquals(Strings.EMPTY, addressFormatterService.formatAddress(null));
     }
 

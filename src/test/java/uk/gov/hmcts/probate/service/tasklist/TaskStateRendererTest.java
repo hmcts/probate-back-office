@@ -1,13 +1,14 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -27,19 +28,15 @@ import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.ExecutorNotApplyingReason;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
@@ -48,7 +45,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
-public class TaskStateRendererTest {
+class TaskStateRendererTest {
     @InjectMocks
     private TaskStateRenderer taskStateRenderer;
     @Mock
@@ -73,6 +70,8 @@ public class TaskStateRendererTest {
     private SendDocumentsRenderer sendDocumentsRenderer;
     @Mock
     private TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
+    @Mock
+    private NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
 
 
     private CaseDetails caseDetails;
@@ -105,9 +104,9 @@ public class TaskStateRendererTest {
 
     private List<CollectionMember<AdditionalExecutorNotApplying>> additionalExecutorsNotApplyingList;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         CaseDataBuilder caseDataBuilder = CaseData.builder()
             .escalatedDate(LocalDate.of(2020, 1, 1));
         caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
@@ -120,7 +119,7 @@ public class TaskStateRendererTest {
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced1);
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingRenounced2);
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingDied);
-    }    
+    }
 
     public void shouldRenderCorrectHtmlForState_CaseCreatedSolDtls() {
         final String expectedHtml = "<div><a href=\""
@@ -163,7 +162,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectHtmlForState_CaseCreatedDeceasedDtls() {
+    void shouldRenderCorrectHtmlForState_CaseCreatedDeceasedDtls() {
 
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div><a href=\""
@@ -204,7 +203,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_UpdateCase() {
+    void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_UpdateCase() {
 
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
@@ -258,7 +257,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_NotUpdatingCase() {
+    void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_NotUpdatingCase() {
 
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
@@ -305,7 +304,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectHtmlForState_AddAppDtls_Intestacy() {
+    void shouldRenderCorrectHtmlForState_AddAppDtls_Intestacy() {
 
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
@@ -353,7 +352,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectHtmlForState_AddAppDtls_AdmonWill() {
+    void shouldRenderCorrectHtmlForState_AddAppDtls_AdmonWill() {
 
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
             + "<div>Add deceased details</div>\n"
@@ -404,7 +403,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA17Form() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA17Form() {
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
 
@@ -446,7 +445,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA14Form() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA14Form() {
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("MentallyIncapable");
 
@@ -496,7 +495,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA15Form() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_GopWithPA15Form() {
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorName()).thenReturn("Executor One");
         when(additionalExecutorNotApplyingRenounced1.getNotApplyingExecutorReason()).thenReturn("Renunciation");
 
@@ -546,7 +545,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopWillHasCodicils() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_GopWillHasCodicils() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -576,7 +575,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_GopIht217() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_GopIht217() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -606,7 +605,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacy() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacy() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -634,7 +633,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndPA16Form() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndPA16Form() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -668,7 +667,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndNoPA16Form() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithIntestacyAndNoPA16Form() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -700,7 +699,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstate207() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstate207() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -731,7 +730,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstate400421() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstate400421() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -761,7 +760,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstateCompletedNo() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithIhtEstateCompletedNo() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -790,7 +789,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_IntestacyIht217() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_IntestacyIht217() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -820,7 +819,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_WithAdmonWill() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_WithAdmonWill() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -856,7 +855,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_AdmonWillWillHasCodicils() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_AdmonWillWillHasCodicils() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -886,7 +885,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_AdmonWillIht217() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_AdmonWillIht217() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -916,7 +915,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentForState_SendDocuments_GopTcResolutionLodgedWithApplication() {
+    void shouldRenderCorrectDocumentForState_SendDocuments_GopTcResolutionLodgedWithApplication() {
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
             .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
@@ -948,7 +947,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_NoEnglishWill() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_NoEnglishWill() {
 
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
@@ -980,7 +979,7 @@ public class TaskStateRendererTest {
     }
 
     @Test
-    public void shouldRenderCorrectDocumentsForState_SendDocuments_DispenseNotice() {
+    void shouldRenderCorrectDocumentsForState_SendDocuments_DispenseNotice() {
 
         final CaseData caseData = CaseData.builder()
             .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
@@ -1007,6 +1006,16 @@ public class TaskStateRendererTest {
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    void shouldRenderEmptySendDocsDetailsWhenNoDocumentsRequired() {
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/intestacy/SendDocsDetailsWhenNoDocumentsRequired");
+        when(noDocumentsRequiredBusinessRule.isApplicable(any())).thenReturn(true);
+        String result = taskStateRenderer.renderSendDocsDetails(TaskState.IN_PROGRESS, "", mock(CaseDetails.class));
         assertEquals(expectedHtml, result);
     }
 }

@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis.assembler;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
@@ -13,11 +13,11 @@ import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.Witn
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessExecution;
 import static uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode.WitnessSignature;
 
-public class AssembleWitnessTest extends AssembleTestBase {
+class AssembleWitnessTest extends AssembleTestBase {
     private AssembleWitness assembleWitness = new AssembleWitness(assemblerBase);
     private static HashMap<ParagraphCode, String[]> code2Expected = new HashMap();
 
-    @BeforeClass
+    @BeforeAll
     public static void setUpClass() {
         code2Expected.put(WitnessExecution, new String[]{"WitExecution", "FL-PRB-GNO-ENG-00171.docx",
             "Due execution of will affidavit - witness required", "Will / Codicil"});
@@ -32,7 +32,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessExecution() {
+    void shouldPopulateWitnessExecution() {
 
         List<ParagraphDetail> response = assembleWitness.witnessExecution(WitnessExecution,
             CaseData.builder().build());
@@ -40,7 +40,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessSignature() {
+    void shouldPopulateWitnessSignature() {
 
         List<ParagraphDetail> response = assembleWitness.witnessSignature(WitnessSignature,
             CaseData.builder().build());
@@ -48,7 +48,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessDate() {
+    void shouldPopulateWitnessDate() {
 
         List<ParagraphDetail> response = assembleWitness.witnessDate(WitnessDate,
             CaseData.builder().build());
@@ -56,7 +56,7 @@ public class AssembleWitnessTest extends AssembleTestBase {
     }
 
     @Test
-    public void shouldPopulateWitnessConsent() {
+    void shouldPopulateWitnessConsent() {
 
         List<ParagraphDetail> response = assembleWitness.witnessConsent(WitnessConsent,
             CaseData.builder().build());

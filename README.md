@@ -93,7 +93,83 @@ To build the project execute the following command:
 ```bash
   ./gradlew build
 ```
+################################################################################################
+## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
+details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+##### Accessing databases
 
+Postgres is started on port 6432 (default) and can be accessed with user `postgres` password `postgres`
+
+The default postgres port can be overridden by setting the `RSE_LIB_DB_PORT` environment variable.
+
+##### Database names
+
+| Service | Database name |
+| ------- | ---- |
+| CCD definition store | definitionstore |
+| CCD data store | datastore |
+| CCD user profile | userprofile |
+| AM role assignment service | am |
+
+#### Ports
+
+Services run on the following default ports:
+
+| Service | Port |
+| ------- | ---- |
+| CCD definition store | 4451 |
+| CCD data store | 4452 |
+| CCD user profile | 4453 |
+| CCD case document Access Management | 4455 |
+| AM role assignment service | 4096 |
+| AAC assign access to a case | 4454 |
+| XUI Manage cases | 4454 |
+| XUI Manage org | 4454 |
+| IDAM Simulator* | 5000 |
+| S2S Simulator* | 8489 |
+
+When running AuthMode.Local 
+
+### Clean boot
+
+For a clean boot define the RSE_LIB_CLEAN_BOOT environment variable, which will force recreate all docker containers upon boot.
+
+### Live reload
+
+[Spring boot's devtools](https://docs.spring.io/spring-boot/docs/current/reference/html/using.html#using.devtools) can be used to fast-reload your application whilst leaving other CFT services running, significantly
+improving the edit-compile-test cycle.
+
+```groovy
+dependencies {
+  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+}
+
+./gradlew bootJar
+# run gradle with bootWithCCD to bring up the IDAM and CCD including cftlib Docker with elastic and database
+./gradle bootWithCCD 
+# run in debugger with 
+./gradlew bootWithCCD --debug-jvm
+or just click debug in intellij on probate-back-office [bootWithCCD] run/debug configuration
+
+
+NOTE that the bootWithCCD brings up a prcess that just sits there, to exit either Ctrl-C 
+     or press stop on the run tab in intellij.
+
+NOTE I have sometimes had issues trying to get debugger up, my solution is to stop and terminate and try again.
+If there is a problem with debugging message about "JDWP Transport dt_socket failed to initialize"
+Debugger might be stuck running, need to go to cmd line to kill task if it's been left hanging:
+lsof -i tcp:5005
+This will show the PID then can kill that PID using 
+kill -9 PID_JUST_FOUND
+
+Also needs back office docker to bring up all services:
+./bin/dev-cft-setup.sh
+./bin/dev-cft-start.sh
+
+Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
+## END: NEW ############################################################################################################
+########################################################################################################################
+## Original docker environment:
 ## Docker environment
 
 Because the probate back office relies on CCD callbacks it must be run inside the docker-compose environment, and must be built before bringing the environment up. You will need to recompile after any code changes.
@@ -162,17 +238,14 @@ docker-compose stop probate-back-office
 docker-compose up -d --build probate-back-office
 ```
 
-#### share case - manage-case setup
+##This is now the default setup
+
+#### share case - manage-case setup 
 ```
 before --create make sure you have this env var setup
 LD_SDK_AM_KEY (see Sanjay for the value)
 npx @hmcts/probate-dev-env --create
-uncomment 2 docker images from the local docker-compose.yml: manage-case-assignment, xui-manage-org
-and uncomment manage-case-assignment dependency on probate-back-office docker image
 npx @hmcts/probate-dev-env
-
-after this setup from dev-env, do, from this probate-back-office branch, do
-./bin/share-a-case-setup.sh
 
 upload new xls from local
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104
@@ -192,9 +265,11 @@ you should be able to share that case with the other PP user
 if you are running low on memory you can stop probate-frontend, business-service, submit-service, orchestrtor etc
 ```
 
-#### share case - manage-org setup
+#### share case - manage-org additional setup
 ```
 complete above
+uncomment docker image from the local docker-compose.yml: xui-manage-org
+docker-compose up -d xui-manage-org
 create a case to share
 unshare that case from everyone
 go to
@@ -610,6 +685,11 @@ Here are some other functionalities it provides:
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) file for details
+
+# PR XUI testing
+A sample xui url for BO testing on the deployed env is:
+
+https://xui-probate-back-office-pr-1809.service.core-compute-preview.internal
 
 # e2e Testing
 To run Probate Practitioner tests on ExUI locally do the following:

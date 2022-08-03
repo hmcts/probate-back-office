@@ -8,17 +8,20 @@ postgresql:
   resources:
     requests:
       cpu: 25m
-  initdbScripts:
-    init.sql: |-
-      CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-      CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-  postgresqlUsername: hmcts
-  postgresqlPassword: hmcts
-  persistence:
-    enabled: false
+  auth:
+    username: hmcts
+    password: hmcts
+  primary:
+    persistence:
+      enabled: false
+    initdb:
+      scripts:
+         create.sql: |
+           CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+           CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+           CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+           CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+           CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
 idam-pr:
   enabled: true
@@ -123,6 +126,7 @@ ccd:
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   elasticsearch:
+    nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
     imageTag: "7.17.0"
     replicas: 1
@@ -148,7 +152,7 @@ ccd:
   logstash:
     image:
       repository: hmctspublic.azurecr.io/ccd/logstash
-      tag: latest
+      tag: ccd-probate-logstash-latest
       pullPolicy: Always
     logstashJavaOpts: -Xmx1g -Xms512M
     persistence:
@@ -225,6 +229,7 @@ java:
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
+    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
   keyVaults:
     probate:

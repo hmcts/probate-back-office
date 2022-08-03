@@ -38,7 +38,7 @@ public class PaymentsService {
     private static final String PAYMENT_ERROR_400 = "Payment Failed";
     private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
     private static final String PAYMENT_ERROR_OTHER = "Unexpected Exception";
-    private static final String DUPICANT_PAYMENT_ERROR_KEY = "duplicate payment";
+    private static final String DUPLICANT_PAYMENT_ERROR_KEY = "duplicate payment";
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -76,9 +76,9 @@ public class PaymentsService {
         return paymentResponse;
     }
 
-    private BusinessValidationException getExceptionForDuplicatePayment(HttpClientErrorException e) {
+    protected BusinessValidationException getExceptionForDuplicatePayment(HttpClientErrorException e) {
         String message = e.getMessage();
-        if (message != null && message.contains(DUPICANT_PAYMENT_ERROR_KEY)) {
+        if (message != null && message.contains(DUPLICANT_PAYMENT_ERROR_KEY)) {
             String[] empty = {};
             String duplicateMessage = businessValidationMessageRetriever.getMessage(
                 "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);

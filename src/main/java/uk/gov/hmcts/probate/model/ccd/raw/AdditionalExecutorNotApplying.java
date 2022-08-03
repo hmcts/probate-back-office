@@ -17,4 +17,9 @@ public class AdditionalExecutorNotApplying {
     private final String notApplyingExecutorDispenseWithNotice;
     private final String notApplyingExecutorDispenseWithNoticeLeaveGiven;
     private final LocalDate notApplyingExecutorDispenseWithNoticeLeaveGivenDate;
+
+    public boolean hasName(String name) {
+        return null != name && (name.equalsIgnoreCase(notApplyingExecutorName)
+            || name.equalsIgnoreCase(notApplyingExecutorNameOnWill));
+    }
 }

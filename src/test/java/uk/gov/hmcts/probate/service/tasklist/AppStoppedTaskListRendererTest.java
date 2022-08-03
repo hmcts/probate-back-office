@@ -1,15 +1,13 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
-import static org.junit.Assert.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
-public class AppStoppedTaskListRendererTest {
+class AppStoppedTaskListRendererTest {
 
     public static final Long ID = 1L;
     public static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -17,7 +15,7 @@ public class AppStoppedTaskListRendererTest {
     private AppStoppedTaskListRenderer renderer = new AppStoppedTaskListRenderer();
 
     @Test
-    public void shouldRenderStoppedCaseProgressHtmlCorrectly() {
+    void shouldRenderStoppedCaseProgressHtmlCorrectly() {
         final CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState(STOPPED.getId());

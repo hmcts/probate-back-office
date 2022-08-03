@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.filebuilder;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,15 +10,15 @@ import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
 
-public class TextFileBuilderServiceTest {
+class TextFileBuilderServiceTest {
 
     private TextFileBuilderService textFileBuilderService;
     private List<String> data;
 
-    @Before
+    @BeforeEach
     public void setup() {
         textFileBuilderService = new TextFileBuilderService();
 
@@ -28,12 +28,12 @@ public class TextFileBuilderServiceTest {
     }
 
     @Test
-    public void testFileContentsMatch() throws IOException {
+    void testFileContentsMatch() throws IOException {
         assertThat(createFile("testFile.txt").readLine(), is("Bob|Smith|"));
     }
 
     @Test
-    public void testEmptyListItemsDisplayDelimiter() throws IOException {
+    void testEmptyListItemsDisplayDelimiter() throws IOException {
         data.add("");
         data.add("");
 
@@ -41,7 +41,7 @@ public class TextFileBuilderServiceTest {
     }
 
     @Test
-    public void testFileNameIsSanitised() throws IOException {
+    void testFileNameIsSanitised() throws IOException {
         assertThat(createFile("te/st/F/il///e.//tx/t").readLine(), is("Bob|Smith|"));
     }
 

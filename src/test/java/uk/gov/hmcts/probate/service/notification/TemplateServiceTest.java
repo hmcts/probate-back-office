@@ -1,22 +1,23 @@
 package uk.gov.hmcts.probate.service.notification;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
@@ -29,9 +30,9 @@ import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
-public class TemplateServiceTest {
+class TemplateServiceTest {
 
     @Autowired
     private TemplateService templateService;
@@ -40,7 +41,7 @@ public class TemplateServiceTest {
     private AppInsights appInsights;
 
     @Test
-    public void getDocumentsReceivedPA() {
+    void getDocumentsReceivedPA() {
 
         String response = templateService.getTemplateId(DOCUMENTS_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -52,7 +53,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getApplicationReceivedPA() {
+    void getApplicationReceivedPA() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -63,9 +64,21 @@ public class TemplateServiceTest {
         assertEquals("pa-application-received-welsh", responseWelsh);
     }
 
+    @Test
+    void getApplicationReceivedPANoDocsRequired() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED_NO_DOCS, PERSONAL, CTSC,
+            LanguagePreference.ENGLISH);
+        assertEquals("pa-application-received-no-docs", response);
+
+        String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED_NO_DOCS, PERSONAL, CTSC,
+            LanguagePreference.WELSH);
+        assertEquals("pa-application-received-no-docs-welsh", responseWelsh);
+    }
+
 
     @Test
-    public void getDocumentsReceivedSols() {
+    void getDocumentsReceivedSols() {
 
         String response = templateService.getTemplateId(DOCUMENTS_RECEIVED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -77,7 +90,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaseStoppedPA() {
+    void getCaseStoppedPA() {
 
         String response = templateService.getTemplateId(CASE_STOPPED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -89,7 +102,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaseStoppedSols() {
+    void getCaseStoppedSols() {
 
         String response = templateService.getTemplateId(CASE_STOPPED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -101,7 +114,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaseStoppedCaveatPA() {
+    void getCaseStoppedCaveatPA() {
 
         String response = templateService.getTemplateId(CASE_STOPPED_CAVEAT, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -113,7 +126,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaseStoppedCaveatSols() {
+    void getCaseStoppedCaveatSols() {
 
         String response = templateService.getTemplateId(CASE_STOPPED_CAVEAT, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -125,7 +138,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getGrantIssuedPA() {
+    void getGrantIssuedPA() {
 
         String response = templateService.getTemplateId(GRANT_ISSUED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -137,7 +150,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getGrantIssuedSols() {
+    void getGrantIssuedSols() {
 
         String response = templateService.getTemplateId(GRANT_ISSUED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -149,7 +162,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getGrantReissuedPA() {
+    void getGrantReissuedPA() {
 
         String response = templateService.getTemplateId(GRANT_REISSUED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -161,7 +174,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getGrantReissuedSols() {
+    void getGrantReissuedSols() {
 
         String response = templateService.getTemplateId(GRANT_REISSUED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -173,7 +186,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getGeneralCaveatMessagePA() {
+    void getGeneralCaveatMessagePA() {
 
         String response = templateService.getTemplateId(GENERAL_CAVEAT_MESSAGE, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -185,7 +198,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getGeneralCaveatMessageSols() {
+    void getGeneralCaveatMessageSols() {
 
         String response = templateService.getTemplateId(GENERAL_CAVEAT_MESSAGE, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -197,7 +210,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaseStoppedRequestForInfoPA() {
+    void getCaseStoppedRequestForInfoPA() {
 
         String response =
             templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.ENGLISH);
@@ -209,7 +222,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaseStoppedRequestForInfoSols() {
+    void getCaseStoppedRequestForInfoSols() {
 
         String response = templateService
             .getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.ENGLISH);
@@ -221,7 +234,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaveatRaisedPA() {
+    void getCaveatRaisedPA() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, "oxford",
             LanguagePreference.ENGLISH);
@@ -233,7 +246,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaveatRaisedSols() {
+    void getCaveatRaisedSols() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, "oxford",
             LanguagePreference.ENGLISH);
@@ -245,7 +258,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaveatRaisedPersonalCTSC() {
+    void getCaveatRaisedPersonalCTSC() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -257,7 +270,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaveatRaisedSolsCTSC() {
+    void getCaveatRaisedSolsCTSC() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
@@ -269,7 +282,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getSolsCaveatRaised() {
+    void getSolsCaveatRaised() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, SOLICITOR,
             CTSC, LanguagePreference.ENGLISH);
@@ -278,7 +291,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getCaveatExtendPersonalCTSC() {
+    void getCaveatExtendPersonalCTSC() {
 
         String response = templateService.getTemplateId(CAVEAT_EXTEND, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -290,7 +303,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void shouldGetGrantRaisedTemplateForDigital() {
+    void shouldGetGrantRaisedTemplateForDigital() {
 
         String response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH);
@@ -302,7 +315,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void shouldGetGrantRaisedTemplateForPaperFormIsNo() {
+    void shouldGetGrantRaisedTemplateForPaperFormIsNo() {
 
         String response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH, NO);
@@ -314,7 +327,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void shouldGetGrantRaisedTemplateForPaperForm() {
+    void shouldGetGrantRaisedTemplateForPaperForm() {
 
         String response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH, YES);
@@ -326,7 +339,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getApplicationReceivedPACaseworkerOrigin() {
+    void getApplicationReceivedPACaseworkerOrigin() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH, YES, CaseOrigin.CASEWORKER);
@@ -338,7 +351,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getApplicationReceivedPACaseworkerOriginPaperFormNo() {
+    void getApplicationReceivedPACaseworkerOriginPaperFormNo() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH, NO, CaseOrigin.CASEWORKER);
@@ -350,7 +363,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getApplicationReceivedPACaseworkerOriginWelsh() {
+    void getApplicationReceivedPACaseworkerOriginWelsh() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.WELSH, YES, CaseOrigin.CASEWORKER);
@@ -362,7 +375,7 @@ public class TemplateServiceTest {
     }
 
     @Test
-    public void getApplicationReceivedPAOtherOrigin() {
+    void getApplicationReceivedPAOtherOrigin() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.ENGLISH, YES, CaseOrigin.CITIZEN);

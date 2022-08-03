@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Before;
-import org.junit.Test;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
@@ -21,11 +21,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-public class CaveatDocmosisServiceTest {
+class CaveatDocmosisServiceTest {
 
     private static final String DATE_INPUT_FORMAT = "ddMMyyyy";
     private static final long ID = 1234567891234567L;
@@ -43,9 +43,9 @@ public class CaveatDocmosisServiceTest {
     @Mock
     private CcdReferenceFormatterService ccdReferenceFormatterServiceMock;
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        MockitoAnnotations.openMocks(this);
         registry.setName("leeds");
         registry.setPhone("123456789");
         registries = mapper.convertValue(registry, Map.class);
@@ -55,7 +55,7 @@ public class CaveatDocmosisServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholders() {
+    void testCreateDataAsPlaceholders() {
         CaveatData caveatData = CaveatData.builder()
             .registryLocation("leeds")
             .expiryDate(LocalDate.of(2019, 12, 31))
@@ -74,7 +74,7 @@ public class CaveatDocmosisServiceTest {
     }
 
     @Test
-    public void testCreateDataAsPlaceholdersCoverSheet() {
+    void testCreateDataAsPlaceholdersCoverSheet() {
         CaveatData caveatData = CaveatData.builder()
             .registryLocation("leeds")
             .build();

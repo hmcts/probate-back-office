@@ -1,8 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -39,10 +39,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-public class CaveatControllerTest {
+class CaveatControllerTest {
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     @Autowired
@@ -65,7 +65,7 @@ public class CaveatControllerTest {
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
 
-    @Before
+    @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
         MockitoAnnotations.openMocks(this);
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
@@ -79,12 +79,13 @@ public class CaveatControllerTest {
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
         organisationEntityResponse.setName("ORGANISATION_NAME");
-        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(
+                "1234567890123456", AUTH_TOKEN);
 
     }
 
     @Test
-    public void solsCaveatCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+    void solsCaveatCreated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
 
@@ -97,7 +98,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void solsCaveatCreatedForOrganisation_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+    void solsCaveatCreatedForOrganisation_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("solicitorCreateCaveatPayloadWithOrgPolicy.json");
 
@@ -110,7 +111,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void solsCaveatCreated_ShouldReturnError_400ResponseCode() throws Exception {
+    void solsCaveatCreated_ShouldReturnError_400ResponseCode() throws Exception {
         String personalPayload = testUtils.getStringFromFile("solsCaveatPayloadNoEmail.json");
 
         mockMvc.perform(post("/caveat/solsCreate")
@@ -120,7 +121,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void solsCaveatUpdated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+    void solsCaveatUpdated_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("solicitorUpdateCaveatPayload.json");
 
@@ -133,7 +134,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void solsCaveatConfirmation_ShouldReturnDataPayload_OkResponseCode() throws Exception {
+    void solsCaveatConfirmation_ShouldReturnDataPayload_OkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("solicitorValidateCaveatPayload.json");
 
@@ -145,7 +146,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void caveatRaisedShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void caveatRaisedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
@@ -157,7 +158,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void personalCaveatRaisedNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalCaveatRaisedNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/caveat/raise")
@@ -171,7 +172,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void personalCaveatRaisedNoValidResponseFromBulkPrintReturnDataPayloadOkResponseCode() throws Exception {
+    void personalCaveatRaisedNoValidResponseFromBulkPrintReturnDataPayloadOkResponseCode() throws Exception {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsBulkPrint.json");
 
         mockMvc.perform(post("/caveat/raise")
@@ -185,7 +186,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void personalGeneralCaveatMessageShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalGeneralCaveatMessageShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
@@ -197,7 +198,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void personalGeneralCaveatMessageNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void personalGeneralCaveatMessageNoEmailShouldReturnDataPayloadOkResponseCode() throws Exception {
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post("/caveat/general-message")
@@ -211,7 +212,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void caveatDefaultValuesShouldReturnDataPayloadOkResponseCode() throws Exception {
+    void caveatDefaultValuesShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
@@ -223,7 +224,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatExpiryValidateExtend() throws Exception {
+    void shouldCaveatExpiryValidateExtend() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
         DateTimeFormatter caveatExpiryDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -238,7 +239,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatExpiryValidateExtendErrorsAlreadyExpired() throws Exception {
+    void shouldCaveatExpiryValidateExtendErrorsAlreadyExpired() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
         DateTimeFormatter caveatExpiryDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -255,7 +256,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatExpiryValidateExtendErrorsMoreThan1MonthRemaining() throws Exception {
+    void shouldCaveatExpiryValidateExtendErrorsMoreThan1MonthRemaining() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
         DateTimeFormatter caveatExpiryDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -272,7 +273,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatExpiryExtend() throws Exception {
+    void shouldCaveatExpiryExtend() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 
@@ -283,7 +284,7 @@ public class CaveatControllerTest {
     }
 
     @Test
-    public void shouldCaveatWithdraw() throws Exception {
+    void shouldCaveatWithdraw() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
 

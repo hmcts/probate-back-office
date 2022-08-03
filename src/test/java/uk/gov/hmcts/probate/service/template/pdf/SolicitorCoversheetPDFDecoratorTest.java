@@ -1,25 +1,26 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
+import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
-import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.AuthenticatedTranslationCaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.DispenseNoticeCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.IhtEstate207CaseExtra;
+import uk.gov.hmcts.probate.service.template.pdf.caseextra.NoDocumentsRequiredCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA14FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA15FormCaseExtra;
 import uk.gov.hmcts.probate.service.template.pdf.caseextra.PA16FormCaseExtra;
@@ -30,17 +31,20 @@ import uk.gov.hmcts.probate.service.template.pdf.caseextra.decorator.SolicitorCo
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.initMocks;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-public class SolicitorCoversheetPDFDecoratorTest {
+class SolicitorCoversheetPDFDecoratorTest {
 
     @InjectMocks
     private SolicitorCoversheetPDFDecorator solicitorCoversheetPDFDecorator;
 
+    @Mock
+    private NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
     @Mock
     private PA14FormBusinessRule pa14FormBusinessRuleMock;
     @Mock
@@ -66,9 +70,9 @@ public class SolicitorCoversheetPDFDecoratorTest {
     @Mock
     private CaseData caseDataMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
-        initMocks(this);
+        openMocks(this);
         setBusinessRuleMocksApplicable(false);
     }
 
@@ -83,7 +87,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldNotProvideAdditionalDecoration() {
+    void shouldNotProvideAdditionalDecoration() {
         String caseJson = "";
         String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
 
@@ -91,7 +95,25 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvidePA14Decoration() {
+    void shouldProvideNoDocumentsRequiredDecoration() {
+        when(noDocumentsRequiredBusinessRule.isApplicable(caseDataMock)).thenReturn(true);
+        String extra = "{\"documentsNotRequired\": \"Yes\"}";
+        final NoDocumentsRequiredCaseExtra noDocumentsRequiredCaseExtra = NoDocumentsRequiredCaseExtra.builder()
+                .documentsNotRequired("Yes").build();
+        when(caseExtraDecorator.decorate(any(NoDocumentsRequiredCaseExtra.class)))
+            .thenReturn(extra);
+        when(caseExtraDecorator.combineDecorations("", extra)).thenReturn(extra);
+
+        String json = solicitorCoversheetPDFDecorator.decorate(caseDataMock);
+
+        assertEquals(extra, json);
+        verify(noDocumentsRequiredBusinessRule).isApplicable(caseDataMock);
+        verify(caseExtraDecorator).decorate(eq(noDocumentsRequiredCaseExtra));
+        verify(caseExtraDecorator).combineDecorations(any(),eq(extra));
+    }
+
+    @Test
+    void shouldProvidePA14Decoration() {
         when(pa14FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa14Form\":\"Yes\",\"pa14FormUrl\":\"PA14FormURL\","
             + "\"pa14FormText\":\"PA14FormTEXT\"}";
@@ -109,7 +131,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvidePA15Decoration() {
+    void shouldProvidePA15Decoration() {
         when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa15Form\":\"Yes\",\"pa15FormUrl\":\"PA15FormURL\","
             + "\"pa15FormText\":\"PA15FormTEXT\"}";
@@ -126,7 +148,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvidePA16Decoration() {
+    void shouldProvidePA16Decoration() {
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa16Form\":\"Yes\",\"pa16FormUrl\":\"PA16FormURL\","
             + "\"pa16FormText\":\"PA16FormTEXT\"}";
@@ -140,7 +162,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideAdditionalDecorationPA17() {
+    void shouldProvideAdditionalDecorationPA17() {
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showPa17Form\":\"Yes\",\"pa17FormUrl\":\"PA17FormURL\","
             + "\"pa17FormText\":\"PA17FormTEXT\"}";
@@ -153,7 +175,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideIhtEstate207Decoration() {
+    void shouldProvideIhtEstate207Decoration() {
         when(ihtEstate207BusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"ihtEstate207Text\":\"the inheritance tax form IHT 207\", \"showIhtEstate\":\"Yes\"}";
         when(caseExtraDecorator.decorate(any(IhtEstate207CaseExtra.class))).thenReturn(extra);
@@ -165,7 +187,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideAdmonWillRenunciationDecoration() {
+    void shouldProvideAdmonWillRenunciationDecoration() {
         when(admonWillRenunicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"showAdmonWillRenunciation\": \"Yes\","
             + "\"pa15FormUrl\":\"PA15FormURL\", \"admonWillRenunciationText\":\"admonWillRenunciationText\""
@@ -180,7 +202,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
+    void shouldProvideTcResolutionLodgedWithApplicationDecoration() {
         when(tcResolutionLodgedWithApplicationRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         String extra = "{\"tcResolutionLodgedWithAppText\":\"a certified copy of the resolution\"}";
         when(caseExtraDecorator.decorate(any())).thenReturn(extra);
@@ -192,7 +214,7 @@ public class SolicitorCoversheetPDFDecoratorTest {
     }
 
     @Test
-    public void shouldProvideAllDecorations() {
+    void shouldProvideAllDecorations() {
         when(pa15FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa16FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
         when(pa17FormBusinessRuleMock.isApplicable(caseDataMock)).thenReturn(true);
