@@ -7,7 +7,7 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 Feature('Solicitor - Share A Case').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Share A Case';
 
-Scenario(scenarioName, async function ({I}, SAC) {
+Scenario(scenarioName, async function ({I}) {
     if(testConfig.TestBackOfficeUrl.includes("aat")) {
         const isSolicitorNamedExecutor = true;
         const isSolicitorApplyingExecutor = true;
