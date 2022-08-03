@@ -1,6 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-scanner-executable");
 
 
@@ -13,12 +14,12 @@ module.exports = async function (verifyShareCase) {
     await I.click('//span[normalize-space()="'+caseIdShareCase+'"]');
     await I.wait(3);
     await I.selectOption('//select[@id="next-step"]', 'Delete' );
-    await I.click('button[type="submit"]');
+    await I.waitForNavigationToComplete('button[type="submit"]');
     await I.wait(testConfig.CreateCaseDelay);
-    await I.click('//button[normalize-space()="Continue"]');
+    await I.waitForNavigationToComplete(commonConfig.continueButton);
     await I.seeElement('//h2[normalize-space()="'+caseRef+'"]');
     await I.wait(testConfig.CreateCaseDelay);
-    await I.click('//button[normalize-space()="Submit"]');
+    await I.waitForNavigationToComplete(commonConfig.submitButton);
     await I.wait(testConfig.CreateCaseDelay);
     await I.see('Case '+caseRef+' has been updated with event: Delete');
     await I.wait(testConfig.CreateCaseDelay);
