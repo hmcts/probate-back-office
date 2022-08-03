@@ -18,13 +18,13 @@ module.exports = async function (shareCaseSelection) {
     await I.wait(testConfig.CreateCaseDelay);
    // await I.click({xpath: '//a[normalize-space()="Case list"]'}, testConfig.WaitForTextTimeout || 60);
     await I.click('//a[normalize-space()="Case list"]');
-    await I.wait(4);
+    await I.waitForText('Your cases', 10);
     await I.selectOption('#wb-jurisdiction', '0');
     await I.selectOption('#wb-case-type','Grant of representation');
     await I.click("button[title='Apply filter']");
 
 
-        await I.wait(4);
+        await I.waitForElement('//input[@id="select-'+caseRefNumber+'"]');
         await I.click('//input[@id="select-'+caseRefNumber+'"]');
         await I.wait(testConfig.CreateCaseDelay);
         await I.click('#btn-share-button');
