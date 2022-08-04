@@ -39,12 +39,13 @@ public class DormantCaseService {
         }
     }
 
-    public void reactivateDormantCases(String fromDate, String toDate) {
-        log.info("Reactivate Dormant cases for date: {}", fromDate);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(fromDate, fromDate);
+    public void reactivateDormantCases(String date) {
+        log.info("Reactivate Dormant cases for date: {}", date);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(date);
         log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
-            GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder().evidenceHandled(false)
+            GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                    .evidenceHandled(false)
                     .build();
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
                     returnedCaseDetails.getId().toString(),

@@ -75,4 +75,32 @@ class DormantCaseServiceTest {
         dormantCaseService.makeCasesDormant("2022-01-01");
         assertEquals(0, caseQueryService.findCaseToBeMadeDormant("2022-01-01").size());
     }
+
+    @Test
+    void shouldReactivateDormant() {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList);
+        dormantCaseService.reactivateDormantCases("2022-01-01");
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+        assertEquals(1, caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01").size());
+    }
+
+    @Test
+    void shouldReturnWhenNoCasesInReactivateDormant() {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        List<ReturnedCaseDetails> results = new ArrayList<>();
+        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(results);
+        dormantCaseService.reactivateDormantCases("2022-01-01");
+        assertEquals(0, caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01").size());
+    }
 }

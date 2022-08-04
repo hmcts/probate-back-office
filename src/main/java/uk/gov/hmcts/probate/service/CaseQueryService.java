@@ -120,8 +120,8 @@ public class CaseQueryService {
         return findCaseStateWithinDateRange("MakeDormant", DORMANT_QUERY, date, date);
     }
 
-    public List<ReturnedCaseDetails> findCaseToBeReactivatedFromDormant(String startDate, String endDate) {
-        return findCaseStateWithinDateRange("ReactivateDormant", REACTIVATE_DORMANT_QUERY, startDate, endDate);
+    public List<ReturnedCaseDetails> findCaseToBeReactivatedFromDormant(String date) {
+        return findCaseStateWithinDateRange("ReactivateDormant", REACTIVATE_DORMANT_QUERY, date, date);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
