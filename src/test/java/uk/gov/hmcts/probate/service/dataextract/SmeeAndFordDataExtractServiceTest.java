@@ -134,15 +134,12 @@ class SmeeAndFordDataExtractServiceTest {
         assertThrows(ClientException.class, () -> {
             File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
             smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
-            when(zipFileService.createTempZipFile(anyString())).thenReturn(zipFile);
-            doNothing().when(blobUpload).uploadFile(any());
+            doNothing().when(zipFileService).generateZipFile(returnedCases);
 
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
             verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
-            verify(zipFileService, times(1)).createTempZipFile(anyString());
-            verify(zipFileService, times(1)).generateZipFile(returnedCases, zipFile);
-            verify(blobUpload, times(1)).uploadFile(zipFile);
+            verify(zipFileService, times(1)).generateZipFile(returnedCases);
         });
     }
 }

@@ -12,11 +12,16 @@ public class ZippedManifestData {
     private final String docFileType;
     private final String subType;
     private final String caseType;
-    private final String errorDescription;
+    private String errorDescription;
 
     public String getDocumentName() {
         return this.caseNumber + "_" + this.docType
                 + (this.subType != null ? "_" + this.subType : "")
                 + this.docFileType;
     }
+
+    public void setErrorDescription(String errorDescription) {
+        this.errorDescription = errorDescription;
+    }
+
 }

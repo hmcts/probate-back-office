@@ -495,7 +495,7 @@ excelaEmail: ${EXCELA_EMAIL:probatetest@gmail.com}
 
 data-extract:
   pagination:
-    size: 1500
+    size: 100
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 
