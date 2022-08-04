@@ -45,6 +45,8 @@ public class TemplateService {
                 } else {
                     return emailTemplates.getApplicationReceived();
                 }
+            case APPLICATION_RECEIVED_NO_DOCS:
+                return emailTemplates.getApplicationReceivedNoDocs();
             case DOCUMENTS_RECEIVED:
                 return emailTemplates.getDocumentReceived();
             case CASE_STOPPED:
