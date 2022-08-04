@@ -20,9 +20,6 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.io.File;
-import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -31,11 +28,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doThrow;
 
 class SmeeAndFordDataExtractServiceTest {
 
@@ -129,16 +126,16 @@ class SmeeAndFordDataExtractServiceTest {
     }
 
     @Test
-    void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException()
-            throws NotificationClientException, IOException {
+    void shouldExtractDataForDateRangeAndGenerateZipFileThenOnUploadThrowException() {
         assertThrows(ClientException.class, () -> {
-            File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
             smeeAndFordDataExtractService.featureBlobStorageSmeeAndFord = true;
             doNothing().when(zipFileService).generateZipFile(returnedCases);
-
+            doThrow(NotificationClientException.class).when(notificationService)
+                    .sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange("2000-12-30", "2000-12-31");
 
-            verify(notificationService, times(1)).sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
+            verify(notificationService, times(1))
+                    .sendSmeeAndFordEmail(any(), eq("2000-12-30"), eq("2000-12-31"));
             verify(zipFileService, times(1)).generateZipFile(returnedCases);
         });
     }

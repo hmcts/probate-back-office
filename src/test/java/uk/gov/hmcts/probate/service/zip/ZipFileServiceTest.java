@@ -9,7 +9,6 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
-import uk.gov.hmcts.probate.exception.ZipFileException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -30,10 +29,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.any;
 
 @ExtendWith(SpringExtension.class)
 public class ZipFileServiceTest {
@@ -131,13 +132,6 @@ public class ZipFileServiceTest {
         zipFileService.generateZipFile(returnedCaseDetails);
         verify(documentManagementService,times(12)).getDocumentByBinaryUrl(anyString());
         verify(blobUpload, times(14)).upload(any());
-    }
-
-    @Test
-    public void shouldThrowExceptionAndZipFileShouldNotGenerated() {
-        assertThrows(ZipFileException.class, () -> {
-            doThrow(Exception.class).when(blobUpload).upload(null);
-        });
     }
 
 }
