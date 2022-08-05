@@ -31,6 +31,7 @@ public class ApplicationTypeMapper {
     @ToApplicationTypeCaveat
     public ApplicationType toApplicationTypeCaveat(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for Application Type (Caveat)");
-        return BooleanUtils.toBoolean(ocrFields.getLegalRepresentative()) ? ApplicationType.SOLICITORS : ApplicationType.PERSONAL;
+        return BooleanUtils.toBoolean(ocrFields.getLegalRepresentative()) 
+            ? ApplicationType.SOLICITORS : ApplicationType.PERSONAL;
     }
 }
