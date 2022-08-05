@@ -122,44 +122,6 @@ class ExceptionRecordCaveatMapperAfterMappingTest {
         assertEquals("caveator@probate-test.com", response.getCaveatorEmailAddress());
     }
 
-    @Test
-    void testSetSolsSolicitorRepresentativeSingleName() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .legalRepresentative("true")
-                .caveatorForenames("Tom")
-                .caveatorSurnames("Baker")
-                .solsSolicitorRepresentativeName("Jim")
-                .build();
-        CaveatData response = exceptionRecordCaveatMapper.toCcdData(ocrFields);
-        assertEquals("", response.getCaveatorSurname());
-        assertEquals("Jim", response.getCaveatorForenames());
-    }
-
-    @Test
-    void testSetSolsSolicitorRepresentativeThreeName() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .legalRepresentative("true")
-                .caveatorForenames("Tom")
-                .caveatorSurnames("Baker")
-                .solsSolicitorRepresentativeName("Jim Young")
-                .build();
-        CaveatData response = exceptionRecordCaveatMapper.toCcdData(ocrFields);
-        assertEquals("Young", response.getCaveatorSurname());
-        assertEquals("Jim", response.getCaveatorForenames());
-    }
-
-    @Test
-    void testSetSolsSolicitorRepresentativeNameTwoNames() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .legalRepresentative("true")
-                .caveatorForenames("Tom")
-                .caveatorSurnames("Baker")
-                .solsSolicitorRepresentativeName("Jim Martyn Young")
-                .build();
-        CaveatData response = exceptionRecordCaveatMapper.toCcdData(ocrFields);
-        assertEquals("Young", response.getCaveatorSurname());
-        assertEquals("Jim Martyn", response.getCaveatorForenames());
-    }
 
     @Test
     void testSetSolsSolicitorRepresentativeNameNoNames() {

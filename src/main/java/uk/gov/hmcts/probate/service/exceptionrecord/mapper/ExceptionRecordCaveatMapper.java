@@ -15,12 +15,9 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToDefaultL
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToProbateFee;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToProbateFeeNotIncludedReason;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
-import uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.SolsPaymentMethods;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
-
-import java.util.List;
 
 @Mapper(componentModel = "spring",
     imports = {StringUtils.class, ApplicationType.class},
@@ -85,26 +82,6 @@ public interface ExceptionRecordCaveatMapper {
         if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
             && StringUtils.isNotBlank(ocrField.getSolsSolicitorEmail())) {
             caseData.setCaveatorEmailAddress(ocrField.getSolsSolicitorEmail());
-        }
-    }
-
-    @AfterMapping
-    default void setSolsSolicitorRepresentativeName(
-        @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {
-        if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
-            && (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
-            String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
-            List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
-            if (names.size() > 2) {
-                caseData.setCaveatorSurname(names.get(names.size() - 1));
-                caseData.setCaveatorForenames(String.join(" ", names.subList(0, names.size() - 1)));
-            } else if (names.size() == 1) {
-                caseData.setCaveatorSurname("");
-                caseData.setCaveatorForenames(names.get(0));
-            } else {
-                caseData.setCaveatorSurname(names.get(1));
-                caseData.setCaveatorForenames(names.get(0));
-            }
         }
     }
 }
