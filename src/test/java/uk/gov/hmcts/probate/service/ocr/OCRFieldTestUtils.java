@@ -219,6 +219,10 @@ public class OCRFieldTestUtils {
 
     public List<OCRField> addAllMandatoryCaveatCitizenFields() {
         List<OCRField> ocrFields = new ArrayList<>();
+        OCRField field0 = OCRField.builder()
+            .name("legalRepresentative")
+            .value("true")
+            .description("Legal Representative").build();
         OCRField field1 = OCRField.builder()
             .name("deceasedForenames")
             .value("John")
@@ -248,6 +252,7 @@ public class OCRFieldTestUtils {
             .value("NW1 5LE")
             .description("Caveator address postcode").build();
 
+        ocrFields.add(field0);
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
