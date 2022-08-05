@@ -262,6 +262,10 @@ public class OCRFieldTestUtils {
     public List<OCRField> addAllMandatoryCaveatSolicitorFields() {
         List<OCRField> ocrFields = new ArrayList<>();
         ocrFields.addAll(addAllMandatoryCaveatCitizenFields());
+        OCRField field0 = OCRField.builder()
+            .name("legalRepresentative")
+            .value("true")
+            .description("Legal Representative").build();
         OCRField field1 = OCRField.builder()
             .name("solsSolicitorRepresentativeName")
             .value("Mark Jones")
@@ -279,6 +283,7 @@ public class OCRFieldTestUtils {
             .value("NW1 5LA")
             .description("Solicitor address postcode").build();
 
+        ocrFields.add(field0);
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
@@ -316,9 +321,7 @@ public class OCRFieldTestUtils {
 
     public HashMap<String, String> addAllFields(List<OCRField> ocrFields) {
         HashMap<String, String> ocrFieldValues = new HashMap<>();
-        ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
-        });
+        ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
         return ocrFieldValues;
     }
 

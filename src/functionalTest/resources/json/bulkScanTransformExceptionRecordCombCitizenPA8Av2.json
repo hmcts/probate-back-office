@@ -62,6 +62,7 @@
     { "name": "probateFeeNotIncludedExplanation", "value": "Some reason"},
     { "name": "probateFeeAccountNumber", "value": "accountentry"},
     { "name": "probateFeeAccountReference", "value": "accountreference"},
-    { "name": "bilingualCorrespondenceRequested", "value": "true"}
+    { "name": "bilingualCorrespondenceRequested", "value": "true"},
+    { "name": "legalRepresentative", "value": "false" }
   ]
 }

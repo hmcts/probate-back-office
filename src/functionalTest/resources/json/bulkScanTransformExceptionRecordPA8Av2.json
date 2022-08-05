@@ -44,6 +44,7 @@
     { "name": "deceasedAddressTown", "value": "La La Land" },
     { "name": "deceasedAddressCounty", "value": "" },
     { "name": "deceasedAddressPostCode", "value": "LA5 6TE" },
+    { "name": "legalRepresentative", "value": "false" },
     { "name": "caveatorPhoneNumber", "value": "12345678"},
     { "name": "probateFee", "value": "probateFeeNotIncluded"},
     { "name": "probateFeeNotIncludedReason", "value": "other"},
