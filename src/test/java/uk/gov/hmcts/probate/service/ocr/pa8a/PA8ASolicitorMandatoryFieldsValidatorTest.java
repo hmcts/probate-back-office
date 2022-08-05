@@ -49,17 +49,4 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
         assertEquals("Solictor address postcode (solsSolicitorAddressPostCode) is mandatory.", warnings.get(1));
         assertEquals("Solicitors Firm name (solsSolicitorFirmName) is mandatory.", warnings.get(2));
     }
-
-    @Test
-    void testSolicitorMissingPaymentMethodFieldsPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.put("paperPaymentMethod", "PBA");
-
-        pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("Solicitors fee account number (solsFeeAccountNumber) is mandatory.", warnings.get(0));
-    }
-
 }

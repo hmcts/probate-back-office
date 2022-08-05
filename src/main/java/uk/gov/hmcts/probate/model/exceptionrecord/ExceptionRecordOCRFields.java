@@ -48,6 +48,7 @@ public class ExceptionRecordOCRFields {
     private final String probateFeeAccountNumber;
     private final String probateFeeAccountReference;
     private final String bilingualCorrespondenceRequested;
+    private final String legalRepresentative;
 
     // PA1A and PA1P
     private final String extraCopiesOfGrant;

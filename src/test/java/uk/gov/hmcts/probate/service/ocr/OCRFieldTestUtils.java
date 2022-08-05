@@ -221,7 +221,7 @@ public class OCRFieldTestUtils {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField field0 = OCRField.builder()
             .name("legalRepresentative")
-            .value("true")
+            .value("false")
             .description("Legal Representative").build();
         OCRField field1 = OCRField.builder()
             .name("deceasedForenames")
