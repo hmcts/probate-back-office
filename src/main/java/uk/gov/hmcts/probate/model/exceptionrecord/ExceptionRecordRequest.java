@@ -1,12 +1,11 @@
 package uk.gov.hmcts.probate.model.exceptionrecord;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
 import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
 
@@ -296,6 +295,7 @@ public class ExceptionRecordRequest {
             .probateFeeAccountNumber(get(ocrFields, "probateFeeAccountNumber"))
             .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
             .bilingualCorrespondenceRequested(get(ocrFields, "bilingualCorrespondenceRequested"))
+            .legalRepresentative(get(ocrFields, "legalRepresentative"))
             .build();
     }
 }
