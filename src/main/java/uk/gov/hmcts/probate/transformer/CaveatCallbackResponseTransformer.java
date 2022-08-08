@@ -298,7 +298,8 @@ public class CaveatCallbackResponseTransformer {
             .probateFeeNotIncludedExplanation(caveatData.getProbateFeeNotIncludedExplanation())
             .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
             .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
-            .bilingualCorrespondenceRequested(caveatData.getBilingualCorrespondenceRequested());
+            .bilingualCorrespondenceRequested(caveatData.getBilingualCorrespondenceRequested())
+            .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName());
 
     }
 

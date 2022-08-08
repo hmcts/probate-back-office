@@ -39,6 +39,7 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "deceasedDateOfDeath", source = "deceasedDateOfDeath", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedDateOfBirth", source = "deceasedDateOfBirth", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedAnyOtherNames", source = "deceasedAnyOtherNames", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "solsSolicitorRepresentativeName", source = "solsSolicitorRepresentativeName")
     @Mapping(target = "solsSolicitorFirmName", source = "solsSolicitorFirmName")
     @Mapping(target = "solsSolicitorAppReference", source = "solsSolicitorAppReference")
     @Mapping(target = "solsFeeAccountNumber", source = "solsFeeAccountNumber")
