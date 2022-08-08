@@ -7,7 +7,7 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 Feature('Solicitor - Share A Case').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Share A Case';
 
-Scenario(scenarioName, async function ({I}, SAC) {
+Scenario(scenarioName, async function ({I}) {
     if(testConfig.TestBackOfficeUrl.includes("aat")) {
         const isSolicitorNamedExecutor = true;
         const isSolicitorApplyingExecutor = true;
@@ -24,12 +24,17 @@ Scenario(scenarioName, async function ({I}, SAC) {
         await I.applyForProbatePage1();
         await I.applyForProbatePage2(isSolicitorNamedExecutor, isSolicitorApplyingExecutor);
         await I.cyaPage();
-
         await I.shareCaseSelection(false);
-
         await I.logInfo(scenarioName, 'Login as PP user 2');
         await I.authenticateUserShareCase();
         await I.verifyShareCase();
+        await I.logInfo(scenarioName, 'Login as PP user 1');
+        await I.authenticateUserShareCase(true);
+        await I.shareCaseVerifyUserRemove();
+        await I.logInfo(scenarioName, 'Login as PP user 2');
+        await I.authenticateUserShareCase();
+        await I.shareCaseDelete();
+
     }
 
 }).retry(testConfig.TestRetryScenarios);

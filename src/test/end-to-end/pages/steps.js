@@ -142,6 +142,8 @@ module.exports = function () {
         checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp,
         shareCaseSelection: steps.shareCase.shareCaseSelection,
         authenticateUserShareCase: steps.IDAM.signInShareCase,
-        verifyShareCase: steps.shareCase.verifyShareCase
+        verifyShareCase: steps.shareCase.verifyShareCase,
+        shareCaseVerifyUserRemove:steps.shareCase.shareCaseVerifyUserRemove,
+        shareCaseDelete:steps.shareCase.shareCaseDelete
     });
 };
