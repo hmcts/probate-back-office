@@ -630,7 +630,7 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatMatching", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatRaised", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatMatching", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatRaised", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatRaised", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatMatching", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "uploadDocumentForCaveatRaised", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
 ]
