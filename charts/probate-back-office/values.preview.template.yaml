@@ -126,6 +126,7 @@ ccd:
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
   elasticsearch:
+    nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
     imageTag: "7.17.0"
     replicas: 1
