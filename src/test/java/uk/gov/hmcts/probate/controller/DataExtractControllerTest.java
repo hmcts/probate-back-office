@@ -191,6 +191,7 @@ class DataExtractControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isAccepted());
     }
+
     @Test
     void shouldReturnErrorWithNoDateOnPathParamOnReactivateDormant() throws Exception {
         mockMvc.perform(post("/data-extract/reactivate-dormant"))
