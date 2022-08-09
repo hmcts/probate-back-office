@@ -8,20 +8,25 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.service.DormantCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -45,6 +50,8 @@ class DataExtractControllerTest {
     private DataExtractDateValidator dataExtractDateValidator;
     @MockBean
     private AppInsights appInsights;
+    @MockBean
+    private DormantCaseService dormantCaseService;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -150,6 +157,17 @@ class DataExtractControllerTest {
             .andExpect(status().is4xxClientError());
     }
 
+
+    @Test
+    void shouldReturnAcceptedForMakeDormant() throws Exception {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = dateTimeFormatter.format(LocalDate.now().minusDays(1L));
+        doNothing().when(dormantCaseService).makeCasesDormant(any());
+        mockMvc.perform(post("/data-extract/make-dormant?date=" + date).accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+    }
+
     @Test
     void shouldReturnErrorWithNoDateOnPathParamOnDormant() throws Exception {
         mockMvc.perform(post("/data-extract/make-dormant"))
@@ -164,6 +182,15 @@ class DataExtractControllerTest {
                 .andExpect(status().is4xxClientError());
     }
 
+    @Test
+    void shouldReturnAcceptedForReactivateDormant() throws Exception {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        String date = dateTimeFormatter.format(LocalDate.now().minusDays(1L));
+        doNothing().when(dormantCaseService).reactivateDormantCases(any());
+        mockMvc.perform(post("/data-extract/reactivate-dormant?date=" + date).accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isAccepted());
+    }
     @Test
     void shouldReturnErrorWithNoDateOnPathParamOnReactivateDormant() throws Exception {
         mockMvc.perform(post("/data-extract/reactivate-dormant"))
