@@ -31,7 +31,7 @@ idam-pr:
       - https://${SERVICE_FQDN}/oauth2/callback
     XUI:
       - https://xui-${SERVICE_FQDN}/oauth2/callback
-      - https://xui-${SERVICE_FQDN}/oauth2/callback
+      - http://xui-${SERVICE_FQDN}/oauth2/callback
 
 ccd:
   ccd:
@@ -53,13 +53,13 @@ ccd:
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
-    ccdDataStoreUrl: https://${SERVICE_NAME}-ccd-data-store-api
-    ccdDefinitionStoreUrl: https://${SERVICE_NAME}-ccd-definition-store
-    ccdUserProfileUrl: https://${SERVICE_NAME}-ccd-user-profile-api
-    dmStoreUrl: https://dm-store-aat.service.core-compute-aat.internal
+    ccdDataStoreUrl: http://${SERVICE_NAME}-ccd-data-store-api
+    ccdDefinitionStoreUrl: http://${SERVICE_NAME}-ccd-definition-store
+    ccdUserProfileUrl: http://${SERVICE_NAME}-ccd-user-profile-api
+    dmStoreUrl: http://dm-store-aat.service.core-compute-aat.internal
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
     idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
-    s2sUrl: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+    s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
     postgresUsername: hmcts
     postgresPassword: hmcts
     devMode: true
@@ -71,7 +71,7 @@ ccd:
         ADDRESS_LOOKUP_TOKEN: ${ADDRESS_LOOKUP_TOKEN}
         IDAM_SERVICE_KEY: ${API_GATEWAY_S2S_KEY}
         IDAM_OAUTH2_CLIENT_SECRET: ${API_GATEWAY_IDAM_SECRET}
-        PROXY_DOCUMENT_MANAGEMENT: https://dm-store-aat.service.core-compute-aat.internal
+        PROXY_DOCUMENT_MANAGEMENT: http://dm-store-aat.service.core-compute-aat.internal
       ingressHost: gateway-${SERVICE_FQDN}
       ingressIP: ${INGRESS_IP}
       keyVaults: []
@@ -88,14 +88,14 @@ ccd:
         IDAM_DATA_STORE_SYSTEM_USER_PASSWORD: ${IDAM_DATA_STORE_SYSTEM_USER_PASSWORD}
         ELASTIC_SEARCH_ENABLED: true
         ELASTIC_SEARCH_HOSTS: ${SERVICE_NAME}-es-master:9200
-        ELASTIC_SEARCH_DATA_NODES_HOSTS:  https://${SERVICE_NAME}-es-master:9200
+        ELASTIC_SEARCH_DATA_NODES_HOSTS:  http://${SERVICE_NAME}-es-master:9200
         HTTP_CLIENT_READ_TIMEOUT: '120000'
         HTTP_CLIENT_MAX_TOTAL: '300'
         HTTP_CLIENT_MAX_CLIENT_PER_ROUTE: '30'
         DATA_STORE_DB_MAX_POOL_SIZE: 80
         DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&ssl=disable&gssEncMode=disable"
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
-        CASE_DOCUMENT_AM_URL: https://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+        CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
@@ -168,7 +168,7 @@ ccd:
       db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
       db.user: hmcts
       db.pwd: hmcts
-      es.data.nodes.url: https://${SERVICE_NAME}-es-master:9200
+      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
   ccd-user-profile-importer:
@@ -185,16 +185,16 @@ xui-webapp:
     image: hmctspublic.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
     environment:
-      HEALTH_CCD_COMPONENT_API: https://gateway-${SERVICE_FQDN}/health
-      HEALTH_CCD_DATA_API: https://${SERVICE_NAME}-ccd-data-store-api/health
-      HEALTH_TERMS_AND_CONDITIONS_API: https://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
-      SERVICES_CCD_COMPONENT_API: https://gateway-${SERVICE_FQDN}
-      SERVICES_CCD_DATA_STORE_API: https://${SERVICE_NAME}-ccd-data-store-api
-      SERVICES_DOCUMENTS_API_V2: https://ccd-case-document-am-api-aat.service.core-compute-aat.internal
-      SERVICES_CCD_CASE_ASSIGNMENT_API: https://aac-${SERVICE_FQDN}
-      SERVICES_TERMS_AND_CONDITIONS: https://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
+      HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
+      HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
+      HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal/health
+      SERVICES_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}
+      SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
+      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
+      SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}.service.core-compute-preview.internal
       SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
-      SERVICES_S2S: https://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
       JURISDICTIONS: PROBATE
       LAUNCH_DARKLY_CLIENT_ID: 5de6610b23ce5408280f2268
       FEATURE_REDIS_ENABLED: false
@@ -205,7 +205,7 @@ xui-webapp:
       FEATURE_HELMET_ENABLED: false
       FEATURE_OIDC_ENABLED: false
       NOW: false
-      REDISCLOUD_URL: https://dummyrediscloudurl
+      REDISCLOUD_URL: http://dummyrediscloudurl
       UV_THREADPOOL_SIZE: 128
       PROTOCOL: http
     keyVaults:
@@ -225,11 +225,11 @@ java:
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
     PROBATE_POSTGRESQL_DATABASE: probate
-    CCD_GATEWAY_HOST: https://gateway-${SERVICE_FQDN}
-    SERVICES_CORECASEDATA_BASEURL : https://${SERVICE_NAME}-ccd-data-store-api
-    CCD_DATA_STORE_API_HOST : https://${SERVICE_NAME}-ccd-data-store-api
+    CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
+    SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
+    CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
-    CASE_DOCUMENT_AM_URL: https://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
   keyVaults:
     probate:
