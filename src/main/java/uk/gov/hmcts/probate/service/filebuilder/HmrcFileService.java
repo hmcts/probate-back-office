@@ -24,8 +24,6 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Optional.ofNullable;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -82,10 +80,10 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(ROW_TYPE_GRANT_DETAILS);
             fileData.add(id.toString());
             fileData.add(data.getRegistryLocation());
-            fileData.add(ofNullable(data.getBoDeceasedTitle()).orElse(""));
+            fileData.add(nullToString(data.getBoDeceasedTitle()));
             fileData.add(data.getDeceasedForenames());
             fileData.add(data.getDeceasedSurname());
-            fileData.add(StringUtils.isEmpty(data.getBoDeceasedHonours()) ? "" : data.getBoDeceasedHonours());
+            fileData.add(nullToString(data.getBoDeceasedHonours()));
             fileData.add("");
             fileData.add(fileExtractDateFormatter.formatDataDate(data.getDeceasedDateOfDeath()));
             fileData.add("");
@@ -107,11 +105,11 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(getPoundValue(data.getIhtEstateGrossValue()));
             fileData.add(getPoundValue(data.getIhtEstateNetValue()));
             fileData.add(getPoundValue(data.getIhtEstateNetQualifyingValue()));
-            fileData.add(ofNullable(data.getIhtUnusedAllowanceClaimed()).orElse(""));
-            fileData.add(ofNullable(data.getDeceasedMaritalStatus()).orElse(""));
-            fileData.add(ofNullable(data.getSpouseOrPartner()).orElse(""));
-            fileData.add(ofNullable(data.getChildrenUnderEighteenSurvived()).orElse(""));
-            fileData.add(ofNullable(data.getChildrenOverEighteenSurvived()).orElse(""));
+            fileData.add(nullToString(data.getIhtUnusedAllowanceClaimed()));
+            fileData.add(nullToString(data.getDeceasedMaritalStatus()));
+            fileData.add(nullToString(data.getSpouseOrPartner()));
+            fileData.add(nullToString(data.getChildrenUnderEighteenSurvived()));
+            fileData.add(nullToString(data.getChildrenOverEighteenSurvived()));
             fileData.add(ROW_DELIMITER);
             if (data.getSolsDeceasedAliasNamesList() != null && !data.getSolsDeceasedAliasNamesList().isEmpty()) {
                 for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
@@ -196,5 +194,9 @@ public class HmrcFileService extends BaseFileService {
             fileData.add("");
             fileData.add("");
         }
+    }
+
+    private String nullToString(String data){
+        return data!=null?data:"";
     }
 }
