@@ -478,12 +478,12 @@ public class BusinessValidationController {
             .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
     }
 
-    @PostMapping(path = "/stop-dormant-case", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> stopDormantCase(
+    @PostMapping(path = "/reactivate-case", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> reactivateCase(
         @RequestBody CallbackRequest callbackRequest) {
         log.info("Reactivating case - " + callbackRequest.getCaseDetails().getId().toString());
-        CallbackResponse response = callbackResponseTransformer.transformCaseForReactivateCase(callbackRequest);
-        return ResponseEntity.ok(response);
+        caseStoppedService.setEvidenceHandledNo(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

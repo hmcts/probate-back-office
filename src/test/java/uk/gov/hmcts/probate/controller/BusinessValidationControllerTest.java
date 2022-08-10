@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -145,7 +146,7 @@ class BusinessValidationControllerTest {
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
-    private static final String REACTIVATE_CASE = "/case/stop-dormant-case";
+    private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()

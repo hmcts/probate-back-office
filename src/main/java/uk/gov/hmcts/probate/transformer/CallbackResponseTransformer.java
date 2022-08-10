@@ -614,16 +614,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformCaseForReactivateCase(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (YES.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
-            responseCaseDataBuilder.evidenceHandled(NO);
-        }
-
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
