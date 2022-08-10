@@ -21,9 +21,10 @@ import java.io.File;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static java.util.Optional.ofNullable;
 
 @Slf4j
 @Service
@@ -81,7 +82,7 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(ROW_TYPE_GRANT_DETAILS);
             fileData.add(id.toString());
             fileData.add(data.getRegistryLocation());
-            fileData.add(Optional.ofNullable(data.getBoDeceasedTitle()).orElse(""));
+            fileData.add(ofNullable(data.getBoDeceasedTitle()).orElse(""));
             fileData.add(data.getDeceasedForenames());
             fileData.add(data.getDeceasedSurname());
             fileData.add(StringUtils.isEmpty(data.getBoDeceasedHonours()) ? "" : data.getBoDeceasedHonours());
@@ -106,11 +107,11 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(getPoundValue(data.getIhtEstateGrossValue()));
             fileData.add(getPoundValue(data.getIhtEstateNetValue()));
             fileData.add(getPoundValue(data.getIhtEstateNetQualifyingValue()));
-            fileData.add(Optional.ofNullable(data.getIhtUnusedAllowanceClaimed()).orElse(""));
-            fileData.add(Optional.ofNullable(data.getDeceasedMaritalStatus()).orElse(""));
-            fileData.add(Optional.ofNullable(data.getSpouseOrPartner()).orElse(""));
-            fileData.add(Optional.ofNullable(data.getChildrenUnderEighteenSurvived()).orElse(""));
-            fileData.add(Optional.ofNullable(data.getChildrenOverEighteenSurvived()).orElse(""));
+            fileData.add(ofNullable(data.getIhtUnusedAllowanceClaimed()).orElse(""));
+            fileData.add(ofNullable(data.getDeceasedMaritalStatus()).orElse(""));
+            fileData.add(ofNullable(data.getSpouseOrPartner()).orElse(""));
+            fileData.add(ofNullable(data.getChildrenUnderEighteenSurvived()).orElse(""));
+            fileData.add(ofNullable(data.getChildrenOverEighteenSurvived()).orElse(""));
             fileData.add(ROW_DELIMITER);
             if (data.getSolsDeceasedAliasNamesList() != null && !data.getSolsDeceasedAliasNamesList().isEmpty()) {
                 for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
