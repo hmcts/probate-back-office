@@ -196,7 +196,7 @@ public class HmrcFileService extends BaseFileService {
         }
     }
 
-    private String nullToString(String data){
-        return data!=null?data:"";
+    private String nullToString(String data) {
+        return data != null ? data : "";
     }
 }
