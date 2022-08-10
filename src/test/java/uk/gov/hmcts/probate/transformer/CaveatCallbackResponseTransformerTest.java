@@ -271,7 +271,7 @@ class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, NO);
+        assertPaperForm(caveatCallbackResponse, YES);
 
         assertEquals("pba",
             caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
@@ -300,7 +300,7 @@ class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, NO);
+        assertPaperForm(caveatCallbackResponse, YES);
 
         assertEquals("RC1",
             caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getReference());
