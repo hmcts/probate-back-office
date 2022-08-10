@@ -1133,6 +1133,8 @@ class BusinessValidationControllerTest {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+
+        verify(caseStoppedService).setEvidenceHandledNo(caseDetails);
     }
 }
 
