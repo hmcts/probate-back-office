@@ -313,7 +313,7 @@ class HmrcFileServiceTest {
         caseList.add(createdCase);
         String expected = FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalMissingIHT.txt");
 
-         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
             is(expected));
     }
 
