@@ -103,6 +103,14 @@ public class HmrcFileService extends BaseFileService {
             fileData.add(getPoundValue(data.getIhtNetValue()));
             fileData.add(DataExtractGrantType.valueOf(data.getCaseType()).getCaseTypeMapped());
             fileData.add(FINAL_GRANT);
+            fileData.add(getPoundValue(data.getIhtEstateGrossValue()));
+            fileData.add(getPoundValue(data.getIhtEstateNetValue()));
+            fileData.add(getPoundValue(data.getIhtEstateNetQualifyingValue()));
+            fileData.add(Optional.ofNullable(data.getIhtUnusedAllowanceClaimed()).orElse(""));
+            fileData.add(Optional.ofNullable(data.getDeceasedMaritalStatus()).orElse(""));
+            fileData.add(Optional.ofNullable(data.getSpouseOrPartner()).orElse(""));
+            fileData.add(Optional.ofNullable(data.getChildrenUnderEighteenSurvived()).orElse(""));
+            fileData.add(Optional.ofNullable(data.getChildrenOverEighteenSurvived()).orElse(""));
             fileData.add(ROW_DELIMITER);
             if (data.getSolsDeceasedAliasNamesList() != null && !data.getSolsDeceasedAliasNamesList().isEmpty()) {
                 for (CollectionMember<AliasName> member : data.getSolsDeceasedAliasNamesList()) {
