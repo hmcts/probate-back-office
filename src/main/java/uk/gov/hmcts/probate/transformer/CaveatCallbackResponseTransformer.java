@@ -87,14 +87,16 @@ public class CaveatCallbackResponseTransformer {
 
             responseCaveatDataBuilder
                 .payments(paymentsList)
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         } else {
             responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES);
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
-
+        
+        if (null == caveatData.getPaperForm()) {
+            responseCaveatDataBuilder.paperForm(YES); 
+        }
+        
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
