@@ -82,6 +82,9 @@ public class ZipFileService {
             generateManifestFile(zos, out, manifestDataList);
             zos.close();
             out.close();
+            final ByteArrayInputStream input = new ByteArrayInputStream(out.toByteArray());
+            BinaryData binaryData = BinaryData.fromStream(input);
+            blobUpload.upload(binaryData);
         } catch (IOException e) {
             log.error("Exception occurred while generating zip file ", e);
             throw new ZipFileException(e.getMessage());
