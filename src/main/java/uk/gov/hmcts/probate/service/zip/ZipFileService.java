@@ -23,6 +23,8 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.time.*;
+import java.time.format.*;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -50,6 +52,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 @RequiredArgsConstructor
 public class ZipFileService {
 
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public static final int BUFFER = 2048;
     private final DocumentManagementService documentManagementService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -98,10 +101,11 @@ public class ZipFileService {
                                         ByteArrayOutputStream out,
                                         List<ReturnedCaseDetails> cases) throws IOException {
         byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
+        String todaysDate = DATE_FORMAT.format(LocalDate.now());
         ZippedManifestData zippedManifestData = ZippedManifestData.builder()
                         .caseNumber("all_cases")
                         .docFileType(CSV)
-                        .docType("data")
+                        .docType("data_" + todaysDate)
                         .build();
         zipMultipleDocs(zos, out, new ByteArrayResource(bytes), zippedManifestData.getDocumentName());
     }
