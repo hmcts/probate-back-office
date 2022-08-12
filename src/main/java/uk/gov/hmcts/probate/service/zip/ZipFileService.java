@@ -125,7 +125,7 @@ public class ZipFileService {
         AtomicInteger scannedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getScannedDocuments() != null) {
             caseDetails.getData()
-                    .getScannedDocuments().stream()
+                    .getScannedDocuments().parallelStream()
                     .filter(this::filterScannedDocs)
                     .forEach(doc -> {
                         final String binaryUrl = doc.getValue().getUrl().getDocumentBinaryUrl();
@@ -145,7 +145,7 @@ public class ZipFileService {
         AtomicInteger uploadedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getBoDocumentsUploaded() != null) {
             caseDetails.getData()
-                    .getBoDocumentsUploaded().stream()
+                    .getBoDocumentsUploaded().parallelStream()
                     .filter(this::filterUploadedDocs)
                     .forEach(doc -> {
                         final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
@@ -163,7 +163,7 @@ public class ZipFileService {
                                    ReturnedCaseDetails caseDetails,
                                    List<ZippedManifestData> manifestDataList) {
         caseDetails.getData()
-                .getProbateDocumentsGenerated().stream()
+                .getProbateDocumentsGenerated().parallelStream()
                 .filter(collectionMember -> Arrays.asList(GRANT_TYPES).contains(collectionMember.getValue()
                         .getDocumentType()))
                 .forEach(doc -> {
@@ -179,7 +179,7 @@ public class ZipFileService {
                                           List<ZippedManifestData> manifestDataList) {
         AtomicInteger reIssueGrantDocIndex = new AtomicInteger(1);
         caseDetails.getData()
-                .getProbateDocumentsGenerated().stream()
+                .getProbateDocumentsGenerated().parallelStream()
                 .filter(collectionMember -> Arrays.asList(REISSUE_GRANT_TYPES).contains(collectionMember.getValue()
                         .getDocumentType()))
                 .forEach(doc -> {
@@ -252,9 +252,6 @@ public class ZipFileService {
         }
         entryStream.close();
         zos.closeEntry();
-        final ByteArrayInputStream input = new ByteArrayInputStream(out.toByteArray());
-        BinaryData binaryData = BinaryData.fromStream(input);
-        blobUpload.upload(binaryData);
     }
 
     private void addHeaderRow(StringBuilder data) {
