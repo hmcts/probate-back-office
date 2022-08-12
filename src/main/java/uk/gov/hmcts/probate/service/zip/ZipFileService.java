@@ -125,15 +125,14 @@ public class ZipFileService {
         AtomicInteger scannedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getScannedDocuments() != null) {
             caseDetails.getData()
-                    .getScannedDocuments().parallelStream()
+                    .getScannedDocuments().stream()
                     .filter(this::filterScannedDocs)
                     .forEach(doc -> {
                         final String binaryUrl = doc.getValue().getUrl().getDocumentBinaryUrl();
                         final String documentTypeName = "scanned_" + WILL.getTemplateName()
-                                + "_" + scannedDocIndex.get();
+                                + "_" + scannedDocIndex.getAndIncrement();
                         fetchAndUploadDocument(zos, out, binaryUrl, caseDetails, documentTypeName, PDF,
                                 manifestDataList);
-                        scannedDocIndex.getAndIncrement();
                     });
         }
     }
@@ -145,15 +144,14 @@ public class ZipFileService {
         AtomicInteger uploadedDocIndex = new AtomicInteger(1);
         if (caseDetails.getData().getBoDocumentsUploaded() != null) {
             caseDetails.getData()
-                    .getBoDocumentsUploaded().parallelStream()
+                    .getBoDocumentsUploaded().stream()
                     .filter(this::filterUploadedDocs)
                     .forEach(doc -> {
                         final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                         final String documentTypeName = "uploaded_" + WILL.getTemplateName()
-                                + "_" + uploadedDocIndex.get();
+                                + "_" + uploadedDocIndex.getAndIncrement();
                         fetchAndUploadDocument(zos, out, binaryUrl, caseDetails, documentTypeName, PDF,
                                 manifestDataList);
-                        uploadedDocIndex.getAndIncrement();
                     });
         }
     }
@@ -163,7 +161,7 @@ public class ZipFileService {
                                    ReturnedCaseDetails caseDetails,
                                    List<ZippedManifestData> manifestDataList) {
         caseDetails.getData()
-                .getProbateDocumentsGenerated().parallelStream()
+                .getProbateDocumentsGenerated().stream()
                 .filter(collectionMember -> Arrays.asList(GRANT_TYPES).contains(collectionMember.getValue()
                         .getDocumentType()))
                 .forEach(doc -> {
@@ -179,15 +177,14 @@ public class ZipFileService {
                                           List<ZippedManifestData> manifestDataList) {
         AtomicInteger reIssueGrantDocIndex = new AtomicInteger(1);
         caseDetails.getData()
-                .getProbateDocumentsGenerated().parallelStream()
+                .getProbateDocumentsGenerated().stream()
                 .filter(collectionMember -> Arrays.asList(REISSUE_GRANT_TYPES).contains(collectionMember.getValue()
                         .getDocumentType()))
                 .forEach(doc -> {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     final String documentTypeName = doc.getValue().getDocumentType().getTemplateName()
-                            + "_" + reIssueGrantDocIndex.get();
+                            + "_" + reIssueGrantDocIndex.getAndIncrement();
                     fetchAndUploadDocument(zos, out, binaryUrl, caseDetails, documentTypeName, PDF, manifestDataList);
-                    reIssueGrantDocIndex.getAndIncrement();
                 });
 
     }
