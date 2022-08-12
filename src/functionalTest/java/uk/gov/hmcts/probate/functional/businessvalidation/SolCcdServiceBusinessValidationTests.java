@@ -56,6 +56,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String SOLS_CREATED_URL = "/case/sols-created";
     private static final String SOLS_ACCESS_URL = "/case/sols-access";
+    private static final String REACTIVATE_CASE = "/case/reactivate-case";
 
     private static final String SOLS_CASE_CREATION_PAYLOAD = "solsCaseCreationDefaultPayload.json";
     private static final String SOLS_CASE_CREATE_EVENT_ID = "solicitorCreateApplication";
@@ -1017,6 +1018,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             jsonPath.get("data.applicantOrganisationPolicy.Organisation.OrganisationName"));
         assertEquals("[APPLICANTSOLICITOR]",
             jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"));
+    }
+    
+    @Test
+    public void shouldReturnSuccessReactivateCase() throws IOException{
+        validatePostSuccessForPayload(utils.getJsonFromFile("success.paperForm.json"),
+            REACTIVATE_CASE, utils.getHeadersWithUserId());
     }
 
     private String transformCase(String jsonFileName, String path) throws IOException {
