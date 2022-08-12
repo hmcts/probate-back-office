@@ -131,7 +131,7 @@ public class ZipFileServiceTest {
     public void shouldCreateZip() throws IOException {
         zipFileService.generateZipFile(returnedCaseDetails);
         verify(documentManagementService,times(12)).getDocumentByBinaryUrl(anyString());
-        verify(blobUpload, times(15)).upload(any());
+        verify(blobUpload, times(1)).upload(any());
     }
 
 }
