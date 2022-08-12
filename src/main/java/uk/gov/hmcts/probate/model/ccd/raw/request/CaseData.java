@@ -297,11 +297,11 @@ public class CaseData extends CaseDataParent {
 
     private final String solsReviewSOTConfirmCheckbox2Names;
 
-    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message = 
+    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message =
         "{extraCopiesOfGrantIsNegative}")
     private final Long extraCopiesOfGrant;
 
-    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message = 
+    @Min(value = 0, groups = {ApplicationReviewedGroup.class, AmendCaseDetailsGroup.class}, message =
         "{outsideUKGrantCopiesIsNegative}")
     private final Long outsideUKGrantCopies;
 
@@ -564,6 +564,7 @@ public class CaseData extends CaseDataParent {
 
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
+    private LocalDate lastEvidenceAddedDate;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

@@ -18,6 +18,7 @@ import java.util.List;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class DocumentGenerationTests extends DocumentGenerationTestBase {
@@ -30,6 +31,8 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocs.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
     private static final String NON_PROBATE_DOC_NAME = "documentsGenerated[0].value.DocumentLink";
+    private static final String UPLOAD_DOCUMENT = "/document/uploadDocument";
+    private static final String UPLOAD = "/document/upload";
 
     @Before
     public void setUp() {
@@ -141,10 +144,18 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     @Test
     public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
-            PREVIEW_LETTER);
+                PREVIEW_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertEquals(jsonPath.get("data.ihtFormId"), "IHT205");
         assertNull(jsonPath.get("data.errors"));
+    }
+
+    @Test
+    public void verifyUploadDocument() throws IOException {
+        final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
+                UPLOAD_DOCUMENT);
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        assertNotNull(jsonPath.get("data.lastEvidenceAddedDate"));
     }
 
     @Test
