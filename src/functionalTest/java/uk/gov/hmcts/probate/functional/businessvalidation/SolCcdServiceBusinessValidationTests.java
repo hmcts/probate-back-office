@@ -1021,7 +1021,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
     
     @Test
-    public void shouldReturnSuccessReactivateCase() throws IOException{
+    public void shouldReturnSuccessReactivateCase() throws IOException {
         validatePostSuccessForPayload(utils.getJsonFromFile("success.paperForm.json"),
             REACTIVATE_CASE, utils.getHeadersWithUserId());
     }
