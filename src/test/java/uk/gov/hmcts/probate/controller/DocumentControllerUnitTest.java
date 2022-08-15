@@ -189,7 +189,7 @@ public class DocumentControllerUnitTest {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
-        ResponseEntity<CallbackResponse> response = documentController.uploadDocument(callbackRequest);
+        ResponseEntity<CallbackResponse> response = documentController.evidenceAdded(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
         verify(evidenceUploadService).updateLastEvidenceAddedDate(caseDetailsMock);

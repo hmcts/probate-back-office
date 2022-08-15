@@ -352,8 +352,8 @@ public class DocumentController {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
     }
 
-    @PostMapping(path = "/uploadDocument", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> uploadDocument(@RequestBody CallbackRequest callbackRequest) {
+    @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
