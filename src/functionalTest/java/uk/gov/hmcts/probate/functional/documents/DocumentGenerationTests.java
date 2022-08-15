@@ -31,8 +31,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     private static final String DEFAULT_WILL_NO_DOCS_PAYLOAD = "willLodgementPayloadNoDocs.json";
     private static final String GENERATE_LETTER_PAYLOAD = "/document/generateLetter.json";
     private static final String NON_PROBATE_DOC_NAME = "documentsGenerated[0].value.DocumentLink";
-    private static final String UPLOAD_DOCUMENT = "/document/uploadDocument";
-    private static final String UPLOAD = "/document/upload";
+    private static final String EVIDENCE_ADDED = "/document/evidenceAdded";
 
     @Before
     public void setUp() {
@@ -151,9 +150,9 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyUploadDocument() throws IOException {
+    public void verifyEvidenceAdded() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
-                UPLOAD_DOCUMENT);
+                EVIDENCE_ADDED);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         assertNotNull(jsonPath.get("data.lastEvidenceAddedDate"));
     }

@@ -31,7 +31,7 @@ class EvidenceUploadServiceTest {
     }
 
     @Test
-    void shouldGatherValidationErrors() {
+    void shouldVerifyUpdateOfLastEvidenceAddedDate() {
 
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         evidenceUploadService.updateLastEvidenceAddedDate(caseDetailsMock);

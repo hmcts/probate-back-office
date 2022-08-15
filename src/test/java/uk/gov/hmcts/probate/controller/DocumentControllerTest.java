@@ -715,9 +715,9 @@ class DocumentControllerTest {
     }
 
     @Test
-    void shouldUploadDocument() throws Exception {
+    void shouldUpdateLastEvidenceAddedDate() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
-        mockMvc.perform(post("/document/uploadDocument")
+        mockMvc.perform(post("/document/evidenceAdded")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
