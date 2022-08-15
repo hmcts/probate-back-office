@@ -8,7 +8,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -22,11 +21,8 @@ import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
