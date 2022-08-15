@@ -8,8 +8,7 @@
         {
           "range": {
             "last_modified": {
-              "gte": ":fromDate",
-              "lte": ":toDate"
+              "lte": ":fromDate"
             }
           }
         },

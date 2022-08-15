@@ -564,6 +564,7 @@ public class CaseData extends CaseDataParent {
 
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
+    private final String movedIntoDormantDateTime;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

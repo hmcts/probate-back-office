@@ -70,10 +70,11 @@ public class SecurityUtils {
     }
 
     public SecurityDTO getUserByAuthTokenAndServiceSecurityDTO() {
+        String token = getCaseworkerToken();
         return SecurityDTO.builder()
-                .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
+                .authorisation(token)
                 .serviceAuthorisation(generateServiceToken())
-                .userId(getUserId(httpServletRequest.getHeader(AUTHORIZATION)))
+                .userId(getUserId(token))
                 .build();
     }
 

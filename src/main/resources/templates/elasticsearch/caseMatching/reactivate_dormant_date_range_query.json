@@ -7,8 +7,14 @@
         {
           "range": {
             "last_modified": {
-              "gte": ":fromDate"
+              "gte": ":fromDate",
+              "lte": ":toDate"
             }
+          }
+        },
+        {
+          "script": {
+            "script": "if (doc['last_modified'].size() > 0 && doc['data.movedIntoDormantDateTime'].size() > 0) { return doc['last_modified'].value.millis > doc['data.movedIntoDormantDateTime'].value.millis } return false;"
           }
         },
         {

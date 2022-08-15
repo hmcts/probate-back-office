@@ -10,7 +10,11 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
+
+import static uk.gov.hmcts.probate.model.Constants.MOVED_INTO_DORMANT_TIME_ELAPSED;
 
 @Service
 @RequiredArgsConstructor
@@ -30,12 +34,15 @@ public class DormantCaseService {
         log.info("Found {} cases with dated document for Make Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                    .movedIntoDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
+                            .plusMinutes(MOVED_INTO_DORMANT_TIME_ELAPSED))
                     .build();
+            log.info("Updating case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
                     returnedCaseDetails.getId().toString(),
                     grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
                     securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), "", DORMANT_SUMMARY);
-
+            log.info("Updated case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
         }
     }
 
@@ -51,7 +58,6 @@ public class DormantCaseService {
                     returnedCaseDetails.getId().toString(),
                     grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
                     securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), "", REACTIVATE_DORMANT_SUMMARY);
-
         }
     }
 }
