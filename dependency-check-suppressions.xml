@@ -75,8 +75,4 @@
     <suppress until="2023-01-07">
         <cve>CVE-2022-31569</cve>
     </suppress>
-    <suppress>
-        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
-        <cve>CVE-2022-31197</cve>
-    </suppress>
 </suppressions>
