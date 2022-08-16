@@ -296,6 +296,8 @@ public class ExceptionRecordRequest {
             .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
             .bilingualCorrespondenceRequested(get(ocrFields, "bilingualCorrespondenceRequested"))
             .legalRepresentative(get(ocrFields, "legalRepresentative"))
+            .dxNumber(get(ocrFields, "dxNumber"))
+            .practitionerAcceptsServiceByEmail(get(ocrFields, "practitionerAcceptsServiceByEmail"))
             .build();
     }
 }

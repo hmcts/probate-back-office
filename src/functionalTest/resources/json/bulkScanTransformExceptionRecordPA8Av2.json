@@ -51,6 +51,8 @@
     { "name": "probateFeeNotIncludedExplanation", "value": "Some reason"},
     { "name": "probateFeeAccountNumber", "value": "accountentry"},
     { "name": "probateFeeAccountReference", "value": "accountreference"},
-    { "name": "bilingualCorrespondenceRequested", "value": "false"}
+    { "name": "bilingualCorrespondenceRequested", "value": "false"},
+    { "name": "dxNumber", "value": "123456789"},
+    { "name": "practitionerAcceptsServiceByEmail", "value": "true"}
   ]
 }
