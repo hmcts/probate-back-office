@@ -80,8 +80,7 @@ public class SecurityUtils {
 
     public String getUserId(String authToken) {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
-        String result = Objects.requireNonNull(userInfo.getUid());
-        return result;
+        return Objects.requireNonNull(userInfo.getUid());
     }
 
     public String getUserId() {
