@@ -97,7 +97,10 @@ public class CaveatData {
     private String solsSolicitorRepresentativeName;
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorFirmNameIsNull}")
     private String solsSolicitorFirmName;
-
+    @Getter
+    private String dxNumber;
+    @Getter
+    private String practitionerAcceptsServiceByEmail;
     // EVENT = solicitorUpdateCaveat - application details
     private String solsSolicitorPhoneNumber;
     @NotBlank(groups = {CaveatCreatedGroup.class}, message = "{solsSolicitorAppReferenceIsNull}")

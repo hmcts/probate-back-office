@@ -19,6 +19,8 @@ public class ExceptionRecordOCRFields {
     private final String caveatorAddressCounty;
     private final String caveatorAddressPostCode;
     private final String solsSolicitorRepresentativeName;
+    private final String dxNumber;
+    private final String practitionerAcceptsServiceByEmail;
     private final String solsSolicitorFirmName;
     private final String solsSolicitorAppReference;
     private final String solsSolicitorAddressLine1;

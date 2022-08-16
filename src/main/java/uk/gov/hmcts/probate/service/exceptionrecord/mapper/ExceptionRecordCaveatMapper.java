@@ -40,11 +40,14 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "deceasedDateOfBirth", source = "deceasedDateOfBirth", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedAnyOtherNames", source = "deceasedAnyOtherNames", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "solsSolicitorRepresentativeName", source = "solsSolicitorRepresentativeName")
+    @Mapping(target = "dxNumber", source = "dxNumber")
+    @Mapping(target = "practitionerAcceptsServiceByEmail", source = "practitionerAcceptsServiceByEmail", qualifiedBy = {
+        ToYesOrNo.class})
     @Mapping(target = "solsSolicitorFirmName", source = "solsSolicitorFirmName")
     @Mapping(target = "solsSolicitorAppReference", source = "solsSolicitorAppReference")
     @Mapping(target = "solsFeeAccountNumber", source = "solsFeeAccountNumber")
     @Mapping(target = "solsPaymentMethods", ignore = true)
-    @Mapping(target = "languagePreferenceWelsh", source = "ocrFields.bilingualCorrespondenceRequested", qualifiedBy = {
+    @Mapping(target = "languagePreferenceWelsh", source = "bilingualCorrespondenceRequested", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "solsSolicitorPhoneNumber", source = "solsSolicitorPhoneNumber")
     @Mapping(target = "caveatorPhoneNumber", source = "caveatorPhoneNumber")

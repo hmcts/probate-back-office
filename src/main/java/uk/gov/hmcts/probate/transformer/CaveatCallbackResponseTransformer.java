@@ -301,8 +301,9 @@ public class CaveatCallbackResponseTransformer {
             .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
             .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
             .bilingualCorrespondenceRequested(caveatData.getBilingualCorrespondenceRequested())
-            .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName());
-
+            .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
+            .dxNumber(caveatData.getDxNumber())
+            .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(

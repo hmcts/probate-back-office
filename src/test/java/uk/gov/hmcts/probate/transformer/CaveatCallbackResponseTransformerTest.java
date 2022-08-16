@@ -62,6 +62,8 @@ class CaveatCallbackResponseTransformerTest {
 
     public static final String ORGANISATION_NAME = "OrganisationName";
     public static final String ORG_ID = "OrgID";
+    private static final String REPRESENTATIVE_NAME = "Representative Name";
+    private static final String DX_NUMBER = "1234567890";
 
     @Mock
     private OrganisationsRetrievalService organisationsRetrievalService;
@@ -228,6 +230,9 @@ class CaveatCallbackResponseTransformerTest {
             .probateFeeNotIncludedExplanation(CAV_NOT_INCLUDED_EXPLANATION)
             .probateFeeAccountNumber(CAV_FEE_ACCOUNT_NUMBER)
             .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE)
+            .solsSolicitorRepresentativeName(REPRESENTATIVE_NAME)
+            .dxNumber(DX_NUMBER)
+            .practitionerAcceptsServiceByEmail(true)
             .build();
     }
 
@@ -624,7 +629,9 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals(CAV_NOT_INCLUDED_EXPLANATION, caveatData.getProbateFeeNotIncludedExplanation());
         assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatData.getProbateFeeAccountNumber());
         assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatData.getProbateFeeAccountReference());
-
+        assertEquals(REPRESENTATIVE_NAME, caveatData.getSolsSolicitorRepresentativeName());
+        assertEquals(DX_NUMBER, caveatData.getDxNumber());
+        assertTrue(caveatData.getPractitionerAcceptsServiceByEmail());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
