@@ -28,7 +28,7 @@
     "page1_solsSolicitorPhoneNumber": "01793 987654",
     "page1_solsSOTJobTitle": "Solicitor",
     "page1_paperForm": "No",
-    
+
     "page1_list3_case_type": "Grant of Probate",
     "page1_extraCopiesOfGrant": "1",
     "page1_outsideUKGrantCopies": "1",
@@ -92,7 +92,7 @@
     "page4_executor0_alias_reason": "Marriage",
     "page4_executor1_name": "executor1_name",
     "page4_executor1_alias": "executor1_alias",
-    "page4_name_difference": "why not",
+    "page4_name_difference": "executor1_alias1",
     "page4_not_applying_reason": "3: PowerReserved",
     "page4_dispense_notice_leave_day" : "10",
     "page4_dispense_notice_leave_month" : "10",
@@ -149,7 +149,7 @@
     "page6_originalWillSignedDate_month": "10",
     "page6_originalWillSignedDate_year": "2017",
     "page6_originalWillSignedDate": "10 Oct 2017",
-  
+
     "page6_codicilDate_day": "11",
     "page6_codicilDate_month": "10",
     "page6_codicilDate_year": "2017",

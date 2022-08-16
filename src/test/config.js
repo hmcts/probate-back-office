@@ -1,5 +1,5 @@
 module.exports = {
-    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
+    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'https://localhost:3455',
     TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
     TestRetryFeatures: 0, // process.env.RETRY_FEATURES || 2,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 0,
@@ -8,8 +8,8 @@ module.exports = {
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
     WaitForTextTimeout: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 200),
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
-    TestEnvCwUser: process.env.CW_USER_EMAIL || 'ProbateSolCW1@gmail.com',
-    TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
+    TestEnvCwUser: process.env.CW_USER_EMAIL || 'probatecaseworker@gmail.com',
+    TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Monday01',
     TestEnvSACUser1: process.env.SAC_USER_EMAIL ||'probate.pp1.org2@gmail.com',
     TestEnvSACPassword1: process.env.SAC_USER_PASSWORD ||'Probate123',
     TestEnvSACUser2: process.env.SAC_USER_EMAIL ||'probate.pp2.org2@gmail.com',
