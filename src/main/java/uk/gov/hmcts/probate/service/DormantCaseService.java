@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -14,8 +15,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.MOVED_INTO_DORMANT_TIME_ELAPSED;
-
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -27,6 +26,8 @@ public class DormantCaseService {
     private final CaseQueryService caseQueryService;
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
+    @Value("${make_dormant.add_time_minutes}")
+    private int makeDormantAddTimeMinutes;
 
     public void makeCasesDormant(String date) {
         log.info("Make Dormant for date: {}", date);
@@ -35,13 +36,13 @@ public class DormantCaseService {
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                     .movedIntoDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
-                            .plusMinutes(MOVED_INTO_DORMANT_TIME_ELAPSED))
+                    .plusMinutes(Long.valueOf(makeDormantAddTimeMinutes)))
                     .build();
             log.info("Updating case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
                     returnedCaseDetails.getId().toString(),
                     grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
-                    securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), "", DORMANT_SUMMARY);
+                    securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), DORMANT_SUMMARY, DORMANT_SUMMARY);
             log.info("Updated case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
         }
     }
@@ -57,7 +58,8 @@ public class DormantCaseService {
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
                     returnedCaseDetails.getId().toString(),
                     grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
-                    securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), "", REACTIVATE_DORMANT_SUMMARY);
+                    securityUtils.getUserByAuthTokenAndServiceSecurityDTO(),
+                    REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
         }
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.service.DormantCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
@@ -32,7 +31,6 @@ public class DataExtractController {
     private final ExelaDataExtractService exelaDataExtractService;
     private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     private final DataExtractDateValidator dataExtractDateValidator;
-    private final DormantCaseService dormantCaseService;
 
     @Operation(summary = "Initiate HMRC data extract within 2 dates",
             description = "Dates MUST be in format 'yyyy-MM-dd'")

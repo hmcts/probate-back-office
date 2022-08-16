@@ -98,9 +98,6 @@ public final class Constants {
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use
     // >, >=, <=, < comparisions etc, converting to numeric
     public static final String LATEST_SCHEMA_VERSION = "2.0.0";
-    public static final Long MOVED_INTO_DORMANT_TIME_ELAPSED = 5L;
-    public static final Long MAKE_DORMANT_FROM_MONTH = 6L;
-    public static final Long REACTIVATE_DORMANT_FROM_DAY = 1L;
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static List<String> getNonTrustPtnrTitleClearingTypes() {

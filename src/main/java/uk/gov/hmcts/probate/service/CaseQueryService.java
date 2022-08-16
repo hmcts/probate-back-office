@@ -117,6 +117,7 @@ public class CaseQueryService {
     }
 
     public List<ReturnedCaseDetails> findCaseToBeMadeDormant(String date) {
+        //When a new state is being added ,it should be added in the elastic search query DORMANT_QUERY
         return findCaseStateWithinDateRange("MakeDormant", DORMANT_QUERY, date, date);
     }
 

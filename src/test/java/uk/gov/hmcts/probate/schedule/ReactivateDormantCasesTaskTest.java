@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.schedule;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -7,6 +8,7 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.DormantCaseService;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -18,7 +20,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
-import static uk.gov.hmcts.probate.model.Constants.REACTIVATE_DORMANT_FROM_DAY;
 
 @ExtendWith(SpringExtension.class)
 class ReactivateDormantCasesTaskTest {
@@ -31,7 +32,12 @@ class ReactivateDormantCasesTaskTest {
 
     @InjectMocks
     private ReactivateDormantCasesTask reactivateDormantCasesTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(REACTIVATE_DORMANT_FROM_DAY));
+    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        ReflectionTestUtils.setField(reactivateDormantCasesTask, "reactivateDormantMinusDays", 1);
+    }
 
     @Test
     void shouldReactivateDormantCasesDateRange() {

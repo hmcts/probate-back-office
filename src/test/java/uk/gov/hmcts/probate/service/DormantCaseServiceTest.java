@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -39,13 +40,12 @@ class DormantCaseServiceTest {
     @BeforeEach
     void setUp() {
         MockitoAnnotations.openMocks(this);
+        ReflectionTestUtils.setField(dormantCaseService, "makeDormantAddTimeMinutes", 5);
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("Smith")
                 .build();
-        caseList =
-                new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                                LAST_MODIFIED, 1L))
-                        .build();
+        caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
+                LAST_MODIFIED, 1L)).build();
     }
 
     @Test
@@ -59,7 +59,7 @@ class DormantCaseServiceTest {
         dormantCaseService.makeCasesDormant("2022-01-01");
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
-                        any(), any(), any(), any());
+                 any(), any(), any(), any());
         assertEquals(1, caseQueryService.findCaseToBeMadeDormant("2022-01-01").size());
     }
 
@@ -87,7 +87,7 @@ class DormantCaseServiceTest {
         dormantCaseService.reactivateDormantCases("2022-01-01");
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
-                        any(), any(), any(), any());
+                 any(), any(), any(), any());
         assertEquals(1, caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01").size());
     }
 
