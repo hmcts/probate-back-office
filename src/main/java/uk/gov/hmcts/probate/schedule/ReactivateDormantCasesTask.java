@@ -26,7 +26,7 @@ public class ReactivateDormantCasesTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task ReactivateDormantCasesTask started to reactivate dormant cases");
-        final String date = DATE_FORMAT.format(LocalDate.now().minusDays(Long.valueOf(reactivateDormantMinusDays)));
+        final String date = DATE_FORMAT.format(LocalDate.now().minusDays(reactivateDormantMinusDays));
         log.info("Calling perform reactivate dormant from date, to date {} {}", date, date);
         try {
             dataExtractDateValidator.dateValidator(date, date);

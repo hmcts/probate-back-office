@@ -36,7 +36,7 @@ public class DormantCaseService {
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                     .movedIntoDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
-                    .plusMinutes(Long.valueOf(makeDormantAddTimeMinutes)))
+                    .plusMinutes(makeDormantAddTimeMinutes))
                     .build();
             log.info("Updating case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,

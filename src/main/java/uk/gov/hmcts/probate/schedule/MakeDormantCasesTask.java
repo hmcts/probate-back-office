@@ -25,7 +25,7 @@ public class MakeDormantCasesTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task MakeDormantCasesTask started to make dormant cases");
-        final String date = DATE_FORMAT.format(LocalDate.now().minusMonths(Long.valueOf(dormancyPeriodMonths)));
+        final String date = DATE_FORMAT.format(LocalDate.now().minusMonths(dormancyPeriodMonths));
         log.info("Calling perform make dormant from date, to date {} {}", date, date);
         try {
             dataExtractDateValidator.dateValidator(date, date);
