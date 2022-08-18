@@ -14,6 +14,7 @@ public class FeesResponse {
     private FeeResponse applicationFeeResponse;
     private FeeResponse ukCopiesFeeResponse;
     private FeeResponse overseasCopiesFeeResponse;
+    private String serviceRequestReference;
 
     public BigDecimal getTotalAmount() {
         List<FeeResponse> allFees = Arrays.asList(applicationFeeResponse, ukCopiesFeeResponse,

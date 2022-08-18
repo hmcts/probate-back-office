@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,19 +25,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
-import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
-import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
-import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
-import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
+import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -49,17 +46,14 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/nextsteps")
 public class NextStepsController {
 
-    private final EventValidationService eventValidationService;
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final ServiceRequestTransformer serviceRequestTransformer;
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
-    private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
-    private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
-    private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     private final PDFManagementService pdfManagementService;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
@@ -95,30 +89,26 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
-            if (feesResponse.getTotalAmount().doubleValue() > 0) {
 
-                solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
+            //do we need the serviceRequestReference added to our case data?
+            String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
+                    .buildCCDData(callbackRequest.getCaseDetails(), feesResponse));
+            feesResponse.setServiceRequestReference(serviceRequestReference);
 
-                CreditAccountPayment creditAccountPayment =
-                    creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
-                PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
-                    creditAccountPayment);
-                CallbackResponse creditPaymentResponse =
-                    eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
-                        paymentResponse, creditAccountPaymentValidationRule);
-                if (creditPaymentResponse.getErrors().isEmpty()) {
-                    callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, paymentResponse, coversheet);
-                } else {
-                    callbackResponse = creditPaymentResponse;
-                }
-            } else {
-                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                    feesResponse, null, coversheet);
-            }
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                feesResponse, null, coversheet);
+
         }
 
         return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PutMapping(path = "/service-request-update", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity doServiceRequestUpdate(
+            @RequestBody ServiceRequestUpdateResponseDto serviceRequestUpdateResponseDto) {
+        paymentsService.updateCaseFromServiceRequest(serviceRequestUpdateResponseDto);
+        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})

@@ -22,11 +22,7 @@ Payment summary
 
 **Fee amount** &pound;{{paymentAmount}}
 
-**Payment method** {{paymentMethod}}
-
-**Selected PBA account** {{selectedPBA}}
-
-**Customer reference** {{paymentReferenceNumber}}
+**Customer application reference** {{solsSolicitorAppReference}}
 
 Notes for this application
 -------------------------------------------------

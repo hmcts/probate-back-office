@@ -12,12 +12,31 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.PaymentStatus;
+import uk.gov.hmcts.reform.probate.model.cases.CasePayment;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.net.URI;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 import static java.util.Locale.UK;
@@ -42,11 +61,79 @@ public class PaymentsService {
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    private final ServiceRequestClient serviceRequestClient;
+    private final SecurityUtils securityUtils;
+    private final CcdClientApi ccdClientApi;
+    private final IdamApi idamApi;
 
     @Value("${payment.url}")
     private String payUri;
     @Value("${payment.api}")
     private String payApi;
+
+    public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        return serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), serviceRequestDto);
+    }
+
+    public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response) {
+        String caseId = response.getCcdCaseNumber();
+        log.info("Updating case for Service Request, caseId: {}", caseId);
+
+        CasePayment casePayment = CasePayment.builder()
+                .amount(response.getServiceRequesAmount().longValue() * 100)
+                .date(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))
+                .method(getPaymentMethod(response))
+                .reference(response.getServiceRequestReference())
+                .siteId("ABA6")
+                .transactionId(response.getServiceRequestReference())
+                .status(getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()))
+                .build();
+        List<CollectionMember<CasePayment>> payments = new ArrayList<>();
+        payments.add(new CollectionMember<CasePayment>(null, casePayment));
+
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                .payments(payments)
+                .build();
+        securityUtils.setSecurityContextUserAsCaseworker();
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        SecurityDTO securityDTO = SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
+                .serviceAuthorisation(securityUtils.generateServiceToken())
+                .userId(userId)
+                .build();
+        CaseDetails caseDetails = ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
+                grantOfRepresentationData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
+                    securityDTO, "Service request payment details updated on case",
+                    "Service request payment details updated on case");
+        log.info("Updated Service Request on case:{}", caseId);
+
+    }
+
+    private String getPaymentMethod(ServiceRequestUpdateResponseDto response) {
+        //"cheque", online", "card", "pba"
+        if ("Payment by account".equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
+            return "pba";
+        } else if ("card".equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
+            return "card";
+        }
+
+        return "pba";
+    }
+
+    private PaymentStatus getPaymentStatusByServiceRequestStatus(String serviceRequestStatus) {
+        if ("Paid".equals(serviceRequestStatus)) {
+            return PaymentStatus.SUCCESS;
+        } else if ("Not Paid".equals(serviceRequestStatus)) {
+            return PaymentStatus.FAILED;
+        } else if ("Partially paid".equals(serviceRequestStatus)) {
+            return PaymentStatus.INITIATED;
+        }
+
+        throw new IllegalArgumentException("serviceRequestStatus not a valid value");
+    }
 
     public PaymentResponse getCreditAccountPaymentResponse(String authToken,
                                                            CreditAccountPayment creditAccountPayment) {
@@ -128,4 +215,13 @@ public class PaymentsService {
         return new HttpEntity<>(creditAccountPayment, headers);
     }
 
+    private HttpEntity<ServiceRequestDto> buildRequest(String authToken, ServiceRequestDto serviceRequestDto) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Authorization", authToken);
+        headers.add("Content-Type", "application/json");
+        String sa = authTokenGenerator.generate();
+        headers.add("ServiceAuthorization", sa);
+
+        return new HttpEntity<ServiceRequestDto>(serviceRequestDto, headers);
+    }
 }

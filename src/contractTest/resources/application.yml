@@ -21,7 +21,7 @@ management:
       show-details: always
       enabled: true
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator,payment_app
 auth.provider.service.client:
   key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
   baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
@@ -121,6 +121,9 @@ payment:
   pba:
     siteId: ABA6
   service: PROBATE
+  serviceRequest:
+    url: ${PAYMENT_URL:http://localhost:8080}
+    api: /service-request
 
 pba:
   retrieval:

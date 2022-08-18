@@ -50,16 +50,7 @@ import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_
 @RequiredArgsConstructor
 public class ConfirmationResponseService {
 
-    static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
-    static final String PAYMENT_REFERENCE_CHEQUE = "Cheque (payable to 'HM Courts & Tribunals Service')";
-    private static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
-    private static final String REASON_FOR_NOT_APPLYING_DIED_AFTER = "DiedAfter";
     private static final String CAVEAT_APPLICATION_FEE = "3.00";
-    public static final String NO_PAYMENT_NEEDED = "No payment needed";
-    public static final String PARM_PAYMENT_METHOD = "{{paymentMethod}}";
-    public static final String PARM_SELECTED_PBA = "{{selectedPBA}}";
-    public static final String PARM_PAYMENT_REFERENCE_NUMBER = "{{paymentReferenceNumber}}";
     private final MessageResourceService messageResourceService;
     private final MarkdownSubstitutionService markdownSubstitutionService;
     private final MarkdownDecoratorService markdownDecoratorService;
@@ -200,9 +191,6 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put(PARM_PAYMENT_METHOD, caveatData.getSolsPaymentMethods());
-        keyValue.put(PARM_SELECTED_PBA, caveatData.getSolsPBANumber().getValue().getCode());
-        keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(caveatData));
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
@@ -233,20 +221,11 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
-        if (ccdData.getFee().getPaymentMethod() != null) {
-            keyValue.put(PARM_PAYMENT_METHOD, ccdData.getFee().getPaymentMethod());
-            keyValue.put(PARM_SELECTED_PBA, ccdData.getFee().getSolsPBANumber());
-            keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, getPaymentReference(ccdData));
-        } else {
-            keyValue.put(PARM_PAYMENT_METHOD, NO_PAYMENT_NEEDED);
-            keyValue.put(PARM_SELECTED_PBA, NO_PAYMENT_NEEDED);
-            keyValue.put(PARM_PAYMENT_REFERENCE_NUMBER, NO_PAYMENT_NEEDED);
-        }
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
-        keyValue.put("{{paymentReferenceNumber}}", getPaymentReference(ccdData));
+        keyValue.put("{{solsSolicitorAppReference}}", ccdData.getFee().getSolsSolicitorAppReference());
         keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
         keyValue.put("{{originalWill}}", getWillLabel(caseData));
 
@@ -390,21 +369,5 @@ public class ConfirmationResponseService {
 
     private String getAmountAsString(BigDecimal amount) {
         return amount.divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP).toString();
-    }
-
-    private String getPaymentReference(CCDData ccdData) {
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(ccdData.getFee().getPaymentMethod())) {
-            return ccdData.getFee().getSolsPBAPaymentReference();
-        } else {
-            return PAYMENT_REFERENCE_CHEQUE;
-        }
-    }
-
-    private String getPaymentReference(CaveatData caveatData) {
-        if (PAYMENT_METHOD_VALUE_FEE_ACCOUNT.equals(caveatData.getSolsPaymentMethods())) {
-            return caveatData.getSolsPBAPaymentReference();
-        } else {
-            return PAYMENT_REFERENCE_CHEQUE;
-        }
     }
 }

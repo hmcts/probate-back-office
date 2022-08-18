@@ -748,6 +748,25 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
+#Users no roles
+curl -X POST \
+--data '{
+          "request": {
+            "method": "POST",
+            "urlPath": "/service-request"
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+               "service_request_reference": "abcdef123456"
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
 # make responses persistent in Docker volume
 curl -X POST http://localhost:8991/__admin/mappings/save
 

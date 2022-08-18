@@ -51,6 +51,9 @@ class PaymentsServiceTest {
     private CreditAccountPayment creditAccountPayment;
 
     @MockBean
+    private ServiceRequestClient serviceRequestClient;
+
+    @MockBean
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     @Mock
