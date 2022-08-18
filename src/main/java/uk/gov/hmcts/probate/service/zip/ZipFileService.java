@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.zip;
 
-import com.azure.core.util.BinaryData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
@@ -86,8 +85,7 @@ public class ZipFileService {
             zos.close();
             out.close();
             final ByteArrayInputStream input = new ByteArrayInputStream(out.toByteArray());
-            BinaryData binaryData = BinaryData.fromStream(input);
-            blobUpload.upload(binaryData);
+            blobUpload.upload(input, out.size());
         } catch (IOException e) {
             log.error("Exception occurred while generating zip file ", e);
             throw new ZipFileException(e.getMessage());

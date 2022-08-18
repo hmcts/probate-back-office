@@ -35,6 +35,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.anyLong;
 
 @ExtendWith(SpringExtension.class)
 public class ZipFileServiceTest {
@@ -131,7 +132,7 @@ public class ZipFileServiceTest {
     public void shouldCreateZip() throws IOException {
         zipFileService.generateZipFile(returnedCaseDetails);
         verify(documentManagementService,times(12)).getDocumentByBinaryUrl(anyString());
-        verify(blobUpload, times(1)).upload(any());
+        verify(blobUpload, times(1)).upload(any(), anyLong());
     }
 
 }
