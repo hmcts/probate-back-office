@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
@@ -54,13 +55,15 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
+import static uk.gov.hmcts.probate.model.Constants.DATE_OF_DEATH_TYPE_DEFAULT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -839,6 +842,7 @@ public class CallbackResponseTransformer {
             .deceasedAddress(caseData.getDeceasedAddress())
             .deceasedAnyOtherNames(caseData.getDeceasedAnyOtherNames())
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
+            .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
             .caseMatches(caseData.getCaseMatches())
 
@@ -1069,8 +1073,9 @@ public class CallbackResponseTransformer {
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
-        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
+        updateCaseHandedOffToLegacySiteFlag(caseData, builder);
 
+        builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
         return builder;
     }
@@ -1280,6 +1285,51 @@ public class CallbackResponseTransformer {
         }
 
         return builder;
+    }
+
+    private void updateCaseHandedOffToLegacySiteFlag(CaseData caseData,
+                                                     ResponseCaseDataBuilder<?, ?> builder) {
+
+        if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
+            || ANSWER_NO.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite())) {
+
+            builder.caseHandedOffToLegacySite(ANSWER_NO);
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (TITLE_AND_CLEARING_TRUST_CORP_SDJ.equals(caseData.getTitleAndClearingType())
+                    || TITLE_AND_CLEARING_TRUST_CORP.equals(caseData.getTitleAndClearingType()))) {
+                builder.caseHandedOffToLegacySite(ANSWER_YES);
+            }
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && ANSWER_NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
+                builder.caseHandedOffToLegacySite(ANSWER_YES);
+            }
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType()))
+                    && ANSWER_NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
+                    && ANSWER_YES.equalsIgnoreCase(caseData.getWillAccessNotarial())) {
+                builder.caseHandedOffToLegacySite(ANSWER_YES);
+            }
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                    && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())) {
+                builder.caseHandedOffToLegacySite(ANSWER_YES);
+            }
+
+            if (PERSONAL.equals(caseData.getApplicationType())
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                    && "adoptedChild".equals(caseData.getPrimaryApplicantRelationshipToDeceased())
+                    && ANSWER_YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
+                builder.caseHandedOffToLegacySite(ANSWER_YES);
+            }
+        }
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
