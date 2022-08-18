@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
+import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
@@ -86,15 +87,18 @@ class CaveatControllerUnitTest {
     private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRuleMock;
     @Mock
     private PaymentResponse paymentResponseMock;
+    @Mock
+    private ServiceRequestTransformer serviceRequestTransformer;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
-            caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
-            confirmationResponseService, paymentsService, feeService, creditAccountPaymentTransformer,
-            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock);
+            caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
+            caveatNotificationService, confirmationResponseService, paymentsService, feeService,
+            creditAccountPaymentTransformer, creditAccountPaymentValidationRule,
+            solicitorPaymentMethodValidationRuleMock);
 
     }
 
@@ -108,7 +112,7 @@ class CaveatControllerUnitTest {
             .thenReturn(paymentResponseMock);
         when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
             .thenReturn(caveatCallbackResponse);
-        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, paymentResponseMock))
+        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest))
             .thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
             bindingResultMock);

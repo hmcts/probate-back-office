@@ -434,7 +434,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          PaymentResponse paymentResponse, Document coversheet) {
+                                                          Document coversheet) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -448,22 +448,6 @@ public class CallbackResponseTransformer {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         List<CollectionMember<Payment>> paymentsList = null;
-        if (caseData.getPayments() != null) {
-            paymentsList = new ArrayList<>();
-            paymentsList.addAll(caseData.getPayments());
-        }
-
-        if (paymentResponse != null) {
-            if (paymentsList == null) {
-                paymentsList = new ArrayList<>();
-            }
-            Payment payment = Payment.builder()
-                .reference(paymentResponse.getReference())
-                .status(paymentResponse.getStatus())
-                .method(PBA_PAYMENT_METHOD)
-                .build();
-            paymentsList.add(new CollectionMember<Payment>(payment));
-        }
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -475,8 +459,8 @@ public class CallbackResponseTransformer {
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
-            .payments(paymentsList)
             .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
+            .serviceRequestReference(feesResponse.getApplicationFeeResponse().getServiceRequestReference())
             .build();
 
         return transformResponse(responseCaseData);
@@ -1060,7 +1044,8 @@ public class CallbackResponseTransformer {
             .codicilsDamageDateKnown(caseData.getCodicilsDamageDateKnown())
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
-            .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy());
+            .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
+            .serviceRequestReference(caseData.getServiceRequestReference());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

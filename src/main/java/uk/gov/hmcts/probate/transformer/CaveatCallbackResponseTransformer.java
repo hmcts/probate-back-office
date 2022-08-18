@@ -57,7 +57,7 @@ public class CaveatCallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
-                                               PaymentResponse paymentResponse, List<Document> documents,
+                                               List<Document> documents,
                                                String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         CaveatData caveatData = caveatDetails.getData();
@@ -66,27 +66,8 @@ public class CaveatCallbackResponseTransformer {
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
 
-        List<CollectionMember<Payment>> paymentsList = null;
-        if (caveatData.getPayments() != null) {
-            paymentsList = new ArrayList<>();
-            paymentsList.addAll(caveatData.getPayments());
-        }
-
         if (caveatData.getApplicationType() != null) {
-            if (SOLICITOR.equals(caveatData.getApplicationType()) && paymentResponse != null) {
-                if (paymentsList == null) {
-                    paymentsList = new ArrayList<>();
-                }
-                Payment payment = Payment.builder()
-                    .reference(paymentResponse.getReference())
-                    .status(paymentResponse.getStatus())
-                    .method(PBA_PAYMENT_METHOD)
-                    .build();
-                paymentsList.add(new CollectionMember<Payment>(payment));
-            }
-
             responseCaveatDataBuilder
-                .payments(paymentsList)
                 .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
                 .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
         } else {
@@ -290,7 +271,8 @@ public class CaveatCallbackResponseTransformer {
             .pcqId(caveatData.getPcqId())
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
             .payments(caveatData.getPayments())
-            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy());
+            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy())
+            .serviceRequestReference(caveatData.getServiceRequestReference());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(

@@ -80,6 +80,12 @@ public class NextStepsController {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
+            if (callbackRequest.getCaseDetails().getData().getServiceRequestReference() != null) {
+                //already requested payment
+                throw new BadRequestException("Payment already requested on ref:"
+                        + callbackRequest.getCaseDetails().getData().getServiceRequestReference()
+                        +" for caseId:" + callbackRequest.getCaseDetails().getId(), bindingResult);
+            }
             Document coversheet = pdfManagementService
                     .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
 
@@ -90,25 +96,16 @@ public class NextStepsController {
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
 
-            //do we need the serviceRequestReference added to our case data?
             String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
-                    .buildCCDData(callbackRequest.getCaseDetails(), feesResponse));
-            feesResponse.setServiceRequestReference(serviceRequestReference);
+                    .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
 
+            feesResponse.getApplicationFeeResponse().setServiceRequestReference(serviceRequestReference);
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                feesResponse, null, coversheet);
+                feesResponse, coversheet);
 
         }
 
         return ResponseEntity.ok(callbackResponse);
-    }
-
-    @PutMapping(path = "/service-request-update", consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity doServiceRequestUpdate(
-            @RequestBody ServiceRequestUpdateResponseDto serviceRequestUpdateResponseDto) {
-        paymentsService.updateCaseFromServiceRequest(serviceRequestUpdateResponseDto);
-        return ResponseEntity.ok().body(null);
     }
 
     @PostMapping(path = "/confirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})

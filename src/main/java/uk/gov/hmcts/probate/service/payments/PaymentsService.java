@@ -26,8 +26,10 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.PaymentStatus;
+import uk.gov.hmcts.reform.probate.model.cases.CaseData;
 import uk.gov.hmcts.reform.probate.model.cases.CasePayment;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.net.URI;
@@ -70,6 +72,8 @@ public class PaymentsService {
     private String payUri;
     @Value("${payment.api}")
     private String payApi;
+    @Value("${payment.pba.siteId}")
+    private String siteId;
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
@@ -77,7 +81,7 @@ public class PaymentsService {
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
     }
 
-    public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response) {
+    public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
         String caseId = response.getCcdCaseNumber();
         log.info("Updating case for Service Request, caseId: {}", caseId);
 
@@ -86,16 +90,24 @@ public class PaymentsService {
                 .date(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))
                 .method(getPaymentMethod(response))
                 .reference(response.getServiceRequestReference())
-                .siteId("ABA6")
+                .siteId(siteId)
                 .transactionId(response.getServiceRequestReference())
                 .status(getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()))
                 .build();
         List<CollectionMember<CasePayment>> payments = new ArrayList<>();
         payments.add(new CollectionMember<CasePayment>(null, casePayment));
 
-        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                .payments(payments)
-                .build();
+        CaseData caseData = null;
+        if (CcdCaseType.GRANT_OF_REPRESENTATION == ccdCaseType) {
+            caseData = GrantOfRepresentationData.builder()
+                    .payments(payments)
+                    .build();
+        } else if (CcdCaseType.CAVEAT == ccdCaseType) {
+            caseData = CaveatData.builder()
+                    .payments(payments)
+                    .build();
+        }
+
         securityUtils.setSecurityContextUserAsCaseworker();
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
@@ -104,8 +116,8 @@ public class PaymentsService {
                 .serviceAuthorisation(securityUtils.generateServiceToken())
                 .userId(userId)
                 .build();
-        CaseDetails caseDetails = ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
-                grantOfRepresentationData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
+        CaseDetails caseDetails = ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
+                caseData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
                     securityDTO, "Service request payment details updated on case",
                     "Service request payment details updated on case");
         log.info("Updated Service Request on case:{}", caseId);

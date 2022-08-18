@@ -86,12 +86,11 @@ public class CaveatData {
     private String solsDeceasedNameSection;
     // EVENT = cavConfirmation - confirmation details
     private String solsFeeAccountNumber;
-    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
     private String solsPaymentMethods;
     private DynamicList solsPBANumber;
     private String solsPBAPaymentReference;
     private String solsOrgHasPBAs;
-    
+
     private String caveatRaisedEmailNotificationRequested;
     private String sendToBulkPrintRequested;
 
@@ -139,6 +138,7 @@ public class CaveatData {
     private String autoClosedExpiry;
     private String pcqId;
     private OrganisationPolicy applicantOrganisationPolicy;
+    private String serviceRequestReference;
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();

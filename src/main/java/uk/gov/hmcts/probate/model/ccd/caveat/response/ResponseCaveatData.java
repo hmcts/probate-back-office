@@ -78,7 +78,7 @@ public class ResponseCaveatData {
     private String paperForm;
 
     private String languagePreferenceWelsh;
-    
+
     private String autoClosedExpiry;
     private String pcqId;
 
@@ -86,4 +86,5 @@ public class ResponseCaveatData {
 
     private final List<CollectionMember<Payment>> payments;
     private final OrganisationPolicy applicantOrganisationPolicy;
+    private final String serviceRequestReference;
 }

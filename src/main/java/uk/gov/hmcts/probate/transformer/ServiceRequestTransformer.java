@@ -3,8 +3,12 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentFee;
 import uk.gov.hmcts.probate.model.payments.servicerequest.CasePayentRequestDto;
@@ -21,16 +25,35 @@ public class ServiceRequestTransformer {
     @Autowired
     private PaymentFeeBuilder paymentFeeBuilder;
 
-    private static final String CALLBACK = "callback";
-    private static final String PARTY = "party";
-    private static final String ACTION = "action";
+    //http://civil-general-applications-demo.service.core-compute-demo.internal/payment-request-update
+    private static final String GRANT_OF_REPRESENTATION_CALLBACK = "/payment/gor-payment-request-update";
+    private static final String CAVEAT_CALLBACK = "/payment/caveat-payment-request-update";
+    private static final String PARTY = "'name' of person or org making the transaction";
+    private static final String ACTION = "payment attempt";
 
-    public ServiceRequestDto buildCCDData(CaseDetails caseDetails, FeesResponse feesResponse) {
+    public ServiceRequestDto buildServiceRequest(CaveatDetails caseDetails, FeeResponse feeResponse) {
+        CasePayentRequestDto casePayentRequestDto = CasePayentRequestDto.builder()
+                .responsibleParty(PARTY).action(ACTION).build();
+
+        PaymentFee paymentFee = paymentFeeBuilder.buildPaymentFee(feeResponse, BigDecimal.ONE);
+        List<PaymentFee> fees = new ArrayList<>();
+        fees.add(paymentFee);
+        return ServiceRequestDto.builder()
+                .callbackUrl(CAVEAT_CALLBACK)
+                .casePaymentRequest(casePayentRequestDto)
+                .caseReference(caseDetails.getData().getSolsSolicitorAppReference())
+                .ccdCaseNumber(caseDetails.getId().toString())
+                .fees(fees)
+                .build();
+
+    }
+
+    public ServiceRequestDto buildServiceRequest(CaseDetails caseDetails, FeesResponse feesResponse) {
         CasePayentRequestDto casePayentRequestDto = CasePayentRequestDto.builder()
                 .responsibleParty(PARTY).action(ACTION).build();
         List<PaymentFee> fees = buildFees(caseDetails.getData(), feesResponse);
         return ServiceRequestDto.builder()
-                .callbackUrl(CALLBACK)
+                .callbackUrl(GRANT_OF_REPRESENTATION_CALLBACK)
                 .casePaymentRequest(casePayentRequestDto)
                 .caseReference(caseDetails.getData().getSolsSolicitorAppReference())
                 .ccdCaseNumber(caseDetails.getId().toString())

@@ -55,7 +55,7 @@ public class CaveatNotificationService {
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
@@ -110,13 +110,12 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, null, documents, letterId);
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
         }
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest,
-                                                  PaymentResponse paymentResponse)
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
         Document document;
@@ -131,7 +130,7 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null);
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
         }
         return caveatCallbackResponse;
     }
