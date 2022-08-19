@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +21,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
 
 class DormantCaseServiceTest {
@@ -33,6 +36,8 @@ class DormantCaseServiceTest {
     private CcdClientApi ccdClientApi;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
+    private  CoreCaseDataApi coreCaseDataApi;
 
     private static final String[] LAST_MODIFIED = {"2022", "1", "1", "0", "0", "0", "0"};
     private List<ReturnedCaseDetails> caseList;
@@ -102,5 +107,41 @@ class DormantCaseServiceTest {
         when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(results);
         dormantCaseService.reactivateDormantCases("2022-01-01");
         assertEquals(0, caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01").size());
+    }
+
+    @Test
+    void shouldThrowExceptionForMakeDormantCases() {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01")).thenReturn(caseList);
+        doThrow(new NullPointerException()).when(ccdClientApi)
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+        dormantCaseService.makeCasesDormant("2022-01-01");
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+        verifyNoInteractions(coreCaseDataApi);
+    }
+
+    @Test
+    void shouldThrowForReactivateDormantCases() {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList);
+        doThrow(new NullPointerException()).when(ccdClientApi)
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+        dormantCaseService.reactivateDormantCases("2022-01-01");
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+        verifyNoInteractions(coreCaseDataApi);
     }
 }

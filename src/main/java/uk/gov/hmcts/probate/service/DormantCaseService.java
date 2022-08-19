@@ -35,15 +35,20 @@ public class DormantCaseService {
         log.info("Found {} cases with dated document for Make Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                    .movedIntoDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
-                    .plusMinutes(makeDormantAddTimeMinutes))
-                    .build();
+                        .movedIntoDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
+                        .plusMinutes(makeDormantAddTimeMinutes))
+                        .build();
             log.info("Updating case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
-            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
-                    returnedCaseDetails.getId().toString(),
-                    grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
-                    securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), DORMANT_SUMMARY, DORMANT_SUMMARY);
-            log.info("Updated case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
+            try {
+                ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
+                            returnedCaseDetails.getId().toString(),
+                            grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
+                            securityUtils.getUserByAuthTokenAndServiceSecurityDTO(), DORMANT_SUMMARY, DORMANT_SUMMARY);
+                log.info("Updated case to Dormant in CCD by scheduler for case id : {}", returnedCaseDetails.getId());
+            } catch (Exception e) {
+                log.error("Dormant case error: Case:{}, cannot be moved in Dormant state {}",
+                        returnedCaseDetails.getId(),e.getMessage());
+            }
         }
     }
 
@@ -53,13 +58,22 @@ public class DormantCaseService {
         log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                    .evidenceHandled(false)
-                    .build();
-            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
-                    returnedCaseDetails.getId().toString(),
-                    grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
-                    securityUtils.getUserByAuthTokenAndServiceSecurityDTO(),
-                    REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
+                        .evidenceHandled(false)
+                        .build();
+            log.info("Updating case to Stopped from Dormant in CCD by scheduler for case id : {}",
+                    returnedCaseDetails.getId());
+            try {
+                ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
+                            returnedCaseDetails.getId().toString(),
+                            grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
+                            securityUtils.getUserByAuthTokenAndServiceSecurityDTO(),
+                            REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
+                log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}",
+                        returnedCaseDetails.getId());
+            } catch (Exception e) {
+                log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}",
+                        returnedCaseDetails.getId(),e.getMessage());
+            }
         }
     }
 }
