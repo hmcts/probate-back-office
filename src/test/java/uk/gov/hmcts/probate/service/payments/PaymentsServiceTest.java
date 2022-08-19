@@ -16,6 +16,9 @@ import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -61,6 +64,11 @@ class PaymentsServiceTest {
 
     @Mock
     private HttpClientErrorException httpClientErrorExceptionMock;
+
+    @Mock
+    private SecurityUtils securityUtilsMock;
+    @Mock
+    private ServiceRequestClient serviceRequestClientMock;
 
     private static final String AUTH_TOKEN = "Bearer .AUTH";
 
@@ -239,4 +247,15 @@ class PaymentsServiceTest {
             verify(businessValidationMessageRetriever, times(2)).getMessage(any(), any(), any());
         }
     }
+    @Test
+    void shouldCreateServiceRequest() {
+        ServiceRequestDto serviceDto = ServiceRequestDto.builder().build();
+        when(securityUtilsMock.getSecurityDTO()).thenReturn(SecurityDTO.builder().build());
+        when(serviceRequestClient.createServiceRequest(any(),any(), any()))
+                .thenReturn("{\"service_request_reference\":\"abcdef123456\"}");
+        String request = paymentsService.createServiceRequest(serviceDto);
+
+        assertEquals("abcdef123456", request);
+    }
+
 }

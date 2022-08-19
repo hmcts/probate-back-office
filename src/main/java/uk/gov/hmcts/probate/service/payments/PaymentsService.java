@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.service.payments;
 
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
@@ -54,6 +56,7 @@ import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 @Slf4j
 public class PaymentsService {
 
+    private static final String SERVICE_REQUEST_REFERENCE_KEY = "service_request_reference";
     private static final String PAYMENT_ERROR_404 = "Account information could not be found";
     private static final String PAYMENT_ERROR_422 = "Invalid or missing attribute";
     private static final String PAYMENT_ERROR_400 = "Payment Failed";
@@ -77,8 +80,11 @@ public class PaymentsService {
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        return serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
+        String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
+        DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
+        String readPath = "$['"+SERVICE_REQUEST_REFERENCE_KEY+"']";
+        return jsonContext.read(readPath);
     }
 
     public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
