@@ -575,22 +575,6 @@ curl -X POST \
                     "idamStatus": "ACTIVE",
                     "idamStatusCode": "200",
                     "idamMessage": "11 OK"
-                  },
-                  {
-                    "userIdentifier": "'${probatesolicitortestorg2test1}'",
-                    "firstName": "PBA",
-                    "lastName": "TestUser2",
-                    "email": "probatesolicitortestorg2test1@gmail.com",
-                    "roles": [
-                      "caseworker",
-                      "caseworker-probate",
-                      "caseworker-probate-solicitor",
-                      "pui-user-manager",
-                      "pui-case-manager"
-                    ],
-                    "idamStatus": "ACTIVE",
-                    "idamStatusCode": "200",
-                    "idamMessage": "11 OK"
                   }
                 ]
             }
@@ -725,24 +709,59 @@ curl -X POST \
                     "idamStatus": "ACTIVE",
                     "idamStatusCode": "200",
                     "idamMessage": "11 OK"
-                  },
-                  {
-                    "userIdentifier": "'${probatesolicitortestorg2test1}'",
-                    "firstName": "PBA",
-                    "lastName": "TestUser2",
-                    "email": "probatesolicitortestorg2test1@gmail.com",
-                    "roles": [
-                      "caseworker",
-                      "caseworker-probate",
-                      "caseworker-probate-solicitor",
-                      "pui-user-manager",
-                      "pui-case-manager"
-                    ],
-                    "idamStatus": "ACTIVE",
-                    "idamStatusCode": "200",
-                    "idamMessage": "11 OK"
                   }
                 ]
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
+
+#ACTIVE User status
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/users/accountId",
+            "queryParameters": {
+              "email": {
+                "equalTo": "probatesolicitortestorgtest1@gmail.com"
+              }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "idamStatus": "ACTIVE",
+              "userIdentifier": "'${probatesolicitortestorgtest1}'"
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
+#PENDING User status
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/users/accountId",
+            "queryParameters": {
+              "email": {
+                "equalTo": "probatesolicitortestorg2test1@gmail.com"
+              }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "idamStatus": "PENDING",
+              "userIdentifier": "'${probatesolicitortestorg2test1}'"
             }
           }
         }' \

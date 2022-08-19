@@ -9,12 +9,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
@@ -41,6 +43,9 @@ class AssignCaseAccessServiceTest {
 
     @MockBean
     private IdamApi idamApi;
+
+    @MockBean
+    private UserAccessStatusErrorReporter userAccessStatusErrorReporter;
 
     @Test
     void testAssignCaseAccess() {
@@ -71,8 +76,13 @@ class AssignCaseAccessServiceTest {
         when(authTokenGenerator.generate()).thenReturn("Generate");
         doThrow(FeignException.class).when(assignCaseAccessClient)
                 .assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
-        assignCaseAccessService.assignCaseAccess("ABC123", "42", "GrantOfRepersentation");
+        AfterSubmitCallbackResponse response = AfterSubmitCallbackResponse.builder().build();
+        when(userAccessStatusErrorReporter.getAccessError(anyString(), anyString(), anyString()))
+                .thenReturn(response);
+        AfterSubmitCallbackResponse message = assignCaseAccessService.assignCaseAccess("ABC123", "42",
+                "GrantOfRepersentation");
 
+        assertEquals(response, message);
         verify(idamApi).getUserDetails(anyString());
         verify(authTokenGenerator).generate();
         verify(assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());

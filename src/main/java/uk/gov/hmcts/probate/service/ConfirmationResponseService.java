@@ -80,16 +80,20 @@ public class ConfirmationResponseService {
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
+    public AfterSubmitCallbackResponse getCaseAccessErrorConfirmation(String caseId) {
+        return getConfirmationResponse(getCaseAccessErrorMarkdown(caseId));
+    }
+
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
+        return getConfirmationResponse(generateNextStepsBodyMarkdown(caveatData));
     }
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData, CaseData caseData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(ccdData, caseData));
+        return getConfirmationResponse(generateNextStepsBodyMarkdown(ccdData, caseData));
     }
 
     public AfterSubmitCallbackResponse getStopConfirmation(CallbackRequest callbackRequest) {
-        return getStopConfirmationUsingMarkdown(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
+        return getConfirmationResponse(generateStopBodyMarkdown(callbackRequest.getCaseDetails().getData()));
     }
 
     private TemplateResponse generateStopBodyMarkdown(CaseData caseData) {
@@ -184,7 +188,7 @@ public class ConfirmationResponseService {
         return Optional.empty();
     }
 
-    private AfterSubmitCallbackResponse getStopConfirmationUsingMarkdown(TemplateResponse templateResponse) {
+    private AfterSubmitCallbackResponse getConfirmationResponse(TemplateResponse templateResponse) {
         return AfterSubmitCallbackResponse.builder()
             .confirmationHeader(null)
             .confirmationBody(templateResponse.getTemplate())
@@ -278,6 +282,13 @@ public class ConfirmationResponseService {
             template = MarkdownTemplate.NEXT_STEPS;
         }
         return markdownSubstitutionService.generatePage(templatesDirectory, template, keyValue);
+    }
+
+    private TemplateResponse getCaseAccessErrorMarkdown(String caseId) {
+        Map<String, String> keyValue = new HashMap<>();
+        keyValue.put("{{caseId}}", caseId);
+        return markdownSubstitutionService
+                .generatePage(templatesDirectory, MarkdownTemplate.CASE_ASSIGNMENT_ERROR, keyValue);
     }
 
     private String getIhtForm(CCDData ccdData) {

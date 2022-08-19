@@ -34,9 +34,9 @@ public class PBARetrievalService {
     private final SecurityUtils securityUtils;
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
-    @Value("${pba.retrieval.url}")
-    protected String pbaUri;
-    @Value("${pba.retrieval.api}")
+    @Value("${prd.url}")
+    protected String orgUri;
+    @Value("${prd.organisations.pba}")
     protected String pbaApi;
 
     public List<String> getPBAs(String authToken) {
@@ -71,7 +71,7 @@ public class PBARetrievalService {
     }
 
     private URI buildUri() {
-        return fromHttpUrl(pbaUri + pbaApi)
+        return fromHttpUrl(orgUri + pbaApi)
             .build().toUri();
     }
 }
