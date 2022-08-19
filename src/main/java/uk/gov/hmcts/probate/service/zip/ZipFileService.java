@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ZipFileException;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -16,12 +17,13 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -69,23 +71,23 @@ public class ZipFileService {
         WELSH_ADMON_WILL_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
 
-    public void generateZipFile(List<ReturnedCaseDetails> cases) {
+    public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile) {
         log.info("generateZipFile for {} cases", cases.size());
-        final ByteArrayOutputStream out = new ByteArrayOutputStream();
-        final ZipOutputStream zos = new ZipOutputStream(out);
+
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
         try {
+            FileOutputStream fos = new FileOutputStream(tempFile);
+            final ZipOutputStream zipOut = new ZipOutputStream(fos);
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
-                getWillDocuments(zos, out, returnedCaseDetails, manifestDataList);
-                getGrantDocuments(zos, out, returnedCaseDetails, manifestDataList);
-                getReIssueGrantDocuments(zos, out, returnedCaseDetails, manifestDataList);
+                getWillDocuments(zipOut, returnedCaseDetails, manifestDataList);
+                getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
+                getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
             }
-            getSmeeAndFordCaseData(zos, out, cases);
-            generateManifestFile(zos, out, manifestDataList);
-            zos.close();
-            out.close();
-            final ByteArrayInputStream input = new ByteArrayInputStream(out.toByteArray());
-            blobUpload.upload(input, out.size());
+            getSmeeAndFordCaseData(zipOut, cases);
+            generateManifestFile(zipOut, manifestDataList);
+            zipOut.close();
+            fos.close();
+            blobUpload.uploadFile(tempFile);
         } catch (IOException e) {
             log.error("Exception occurred while generating zip file ", e);
             throw new ZipFileException(e.getMessage());
@@ -96,7 +98,6 @@ public class ZipFileService {
     }
 
     private void getSmeeAndFordCaseData(ZipOutputStream zos,
-                                        ByteArrayOutputStream out,
                                         List<ReturnedCaseDetails> cases) throws IOException {
         byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
         String todaysDate = DATE_FORMAT.format(LocalDate.now());
@@ -105,19 +106,17 @@ public class ZipFileService {
                         .docFileType(CSV)
                         .docType("data_" + todaysDate)
                         .build();
-        zipMultipleDocs(zos, out, new ByteArrayResource(bytes), zippedManifestData.getDocumentName());
+        zipMultipleDocs(zos, new ByteArrayResource(bytes), zippedManifestData.getDocumentName());
     }
 
     private void getWillDocuments(final ZipOutputStream zos,
-                                  final ByteArrayOutputStream out,
                                   final ReturnedCaseDetails caseDetails,
                                   List<ZippedManifestData> manifestDataList) {
-        getScannedDocuments(zos, out, caseDetails, manifestDataList);
-        getUploadedWillDocuments(zos, out, caseDetails, manifestDataList);
+        getScannedDocuments(zos, caseDetails, manifestDataList);
+        getUploadedWillDocuments(zos, caseDetails, manifestDataList);
     }
 
     private void getScannedDocuments(final ZipOutputStream zos,
-                                     final ByteArrayOutputStream out,
                                      ReturnedCaseDetails caseDetails,
                                      List<ZippedManifestData> manifestDataList) {
         AtomicInteger scannedDocIndex = new AtomicInteger(1);
@@ -129,14 +128,13 @@ public class ZipFileService {
                         final String binaryUrl = doc.getValue().getUrl().getDocumentBinaryUrl();
                         final String documentTypeName = "scanned_" + WILL.getTemplateName()
                                 + "_" + scannedDocIndex.getAndIncrement();
-                        fetchAndUploadDocument(zos, out, binaryUrl, caseDetails, documentTypeName, PDF,
+                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF,
                                 manifestDataList);
                     });
         }
     }
 
     private void getUploadedWillDocuments(ZipOutputStream zos,
-                                          ByteArrayOutputStream out,
                                           ReturnedCaseDetails caseDetails,
                                           List<ZippedManifestData> manifestDataList) {
         AtomicInteger uploadedDocIndex = new AtomicInteger(1);
@@ -148,14 +146,13 @@ public class ZipFileService {
                         final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                         final String documentTypeName = "uploaded_" + WILL.getTemplateName()
                                 + "_" + uploadedDocIndex.getAndIncrement();
-                        fetchAndUploadDocument(zos, out, binaryUrl, caseDetails, documentTypeName, PDF,
+                        fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF,
                                 manifestDataList);
                     });
         }
     }
 
     private void getGrantDocuments(ZipOutputStream zos,
-                                   ByteArrayOutputStream out,
                                    ReturnedCaseDetails caseDetails,
                                    List<ZippedManifestData> manifestDataList) {
         caseDetails.getData()
@@ -164,13 +161,12 @@ public class ZipFileService {
                         .getDocumentType()))
                 .forEach(doc -> {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
-                    fetchAndUploadDocument(zos, out, binaryUrl, caseDetails,
+                    fetchAndUploadDocument(zos, binaryUrl, caseDetails,
                             doc.getValue().getDocumentType().getTemplateName(), PDF, manifestDataList);
                 });
     }
 
     private void getReIssueGrantDocuments(ZipOutputStream zos,
-                                          ByteArrayOutputStream out,
                                           ReturnedCaseDetails caseDetails,
                                           List<ZippedManifestData> manifestDataList) {
         AtomicInteger reIssueGrantDocIndex = new AtomicInteger(1);
@@ -182,13 +178,12 @@ public class ZipFileService {
                     final String binaryUrl = doc.getValue().getDocumentLink().getDocumentBinaryUrl();
                     final String documentTypeName = doc.getValue().getDocumentType().getTemplateName()
                             + "_" + reIssueGrantDocIndex.getAndIncrement();
-                    fetchAndUploadDocument(zos, out, binaryUrl, caseDetails, documentTypeName, PDF, manifestDataList);
+                    fetchAndUploadDocument(zos, binaryUrl, caseDetails, documentTypeName, PDF, manifestDataList);
                 });
 
     }
 
     private void fetchAndUploadDocument(ZipOutputStream zos,
-                                        ByteArrayOutputStream out,
                                         String binaryUrl,
                                         ReturnedCaseDetails caseDetails,
                                         String documentTypeName,
@@ -209,7 +204,7 @@ public class ZipFileService {
             ByteArrayResource byteArrayResource =
                     new ByteArrayResource(documentManagementService.getDocumentByBinaryUrl(binaryUrl));
             if (byteArrayResource != null) {
-                zipMultipleDocs(zos, out, byteArrayResource, zippedManifestData.getDocumentName());
+                zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
                 log.info("file added: {} for case id {}", zippedManifestData.getDocumentName(),
                         caseDetails.getId().toString());
             }
@@ -223,6 +218,24 @@ public class ZipFileService {
         manifestDataList.add(zippedManifestData);
     }
 
+    public File createTempZipFile(String zipName) throws IOException {
+        if (secureDir == null) {
+            secureDir = Paths.get("").toAbsolutePath();
+            File file = ResourceUtils.getFile(secureDir.toString() + "/" + zipName + ".zip");
+            if (file.exists()) {
+                Files.delete(file.toPath());
+            }
+        }
+
+        log.info("secureDir:" + secureDir);
+        Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
+        boolean isReadable = tempFilePath.toFile().setReadable(true, true);
+        boolean isWritable = tempFilePath.toFile().setWritable(true, true);
+        log.info("tempFile: {} and file is isReadable {} and isWritable {}",
+                tempFilePath.toAbsolutePath(), isReadable, isWritable);
+        return tempFilePath.toFile();
+    }
+
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
         return collectionMember.getValue().getType().equalsIgnoreCase(OTHER.getTemplateName())
                 && collectionMember.getValue().getSubtype().equalsIgnoreCase(WILL.getTemplateName());
@@ -233,19 +246,12 @@ public class ZipFileService {
     }
 
     private void zipMultipleDocs(final ZipOutputStream zos,
-                                 final ByteArrayOutputStream out,
                                  final ByteArrayResource byteArrayResource,
                                  final String documentName) throws IOException {
 
         ZipEntry zipEntry = new ZipEntry(documentName);
         zos.putNextEntry(zipEntry);
-        final byte[] buffer = new byte[BUFFER];
-        int length;
-        final BufferedInputStream entryStream = new BufferedInputStream(byteArrayResource.getInputStream(), BUFFER);
-        while ((length = entryStream.read(buffer)) >= 0) {
-            zos.write(buffer, 0, length);
-        }
-        entryStream.close();
+        zos.write(byteArrayResource.getByteArray());
         zos.closeEntry();
     }
 
@@ -254,9 +260,7 @@ public class ZipFileService {
         data.append(header);
     }
 
-    private void generateManifestFile(ZipOutputStream zos,
-                                                    ByteArrayOutputStream out,
-                                                    List<ZippedManifestData> zippedManifestDataList)
+    private void generateManifestFile(ZipOutputStream zos, List<ZippedManifestData> zippedManifestDataList)
             throws IOException {
         StringBuilder data = new StringBuilder();
         addHeaderRow(data);
@@ -285,7 +289,7 @@ public class ZipFileService {
                 .docFileType(CSV)
                 .errorDescription("").build();
         ByteArrayResource byteArrayResource = new ByteArrayResource(data.toString().getBytes(StandardCharsets.UTF_8));
-        zipMultipleDocs(zos, out, byteArrayResource, zippedManifestData.getDocumentName());
+        zipMultipleDocs(zos, byteArrayResource, zippedManifestData.getDocumentName());
     }
 
 }

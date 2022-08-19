@@ -1,7 +1,8 @@
 package uk.gov.hmcts.probate.service.zip;
 
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -9,6 +10,7 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.blob.component.BlobUpload;
+import uk.gov.hmcts.probate.exception.ZipFileException;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -25,17 +27,18 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipEntry;
 
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.any;
-import static org.mockito.Mockito.anyLong;
 
 @ExtendWith(SpringExtension.class)
 public class ZipFileServiceTest {
@@ -129,10 +132,44 @@ public class ZipFileServiceTest {
     }
 
     @Test
-    public void shouldCreateZip() throws IOException {
-        zipFileService.generateZipFile(returnedCaseDetails);
+    void shouldCreateZip() throws IOException {
+        File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
+        zipFileService.generateZipFile(returnedCaseDetails, zipFile);
+        Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
+        ZipFile zip = new ZipFile(zipFile);
+        Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.equalsIgnoreCase("all_cases_data_"
+                        + DATE_FORMAT.format(LocalDate.now()) + ".csv")));
+        Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.equalsIgnoreCase("manifest_file.csv")));
+        Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("scanned_will")));
+        Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("uploaded_will")));
+        Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("digitalGrant")));
+        Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
+                .anyMatch(name -> name.contains("digitalGrantReissue")));
         verify(documentManagementService,times(12)).getDocumentByBinaryUrl(anyString());
-        verify(blobUpload, times(1)).upload(any(), anyLong());
+        Files.delete(zipFile.toPath());
+    }
+
+    @Test
+    public void shouldThrowExceptionAndZipFileShouldNotGenerated() {
+        File zipFile = new File("");
+        Assertions.assertThrows(ZipFileException.class, () ->
+                zipFileService.generateZipFile(returnedCaseDetails, zipFile));
+    }
+
+    @Test
+    public void shouldCreateTempZipFile() throws IOException {
+        String fileName = "Probate_Docs_" + DATE_FORMAT.format(LocalDate.now());
+        File tempFile = zipFileService.createTempZipFile(fileName);
+        Assertions.assertTrue(tempFile.exists());
+        Assertions.assertTrue(tempFile.canRead());
+        Assertions.assertTrue(tempFile.canWrite());
+        Assertions.assertTrue(tempFile.getName().contains(fileName));
+        Files.delete(tempFile.toPath());
     }
 
 }
