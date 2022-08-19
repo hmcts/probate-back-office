@@ -38,12 +38,6 @@ public class SmeeAndFordExtractTask implements Runnable {
         } catch (Exception e) {
             log.error("Error on SmeeAndFordExtractTask Scheduler {}", e.getMessage());
         }
-
-        try {
-            Thread.sleep(10 * 60 * 60 * 1000);
-        } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();
-        }
     }
 
 }
