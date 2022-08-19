@@ -12,8 +12,8 @@ module.exports = async function (useProfessionalUser, signInDelay = testConfig.S
     await I.waitForText('Email address');
     await I.waitForText('Password');
 
-    await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvSACUser1 : testConfig.TestEnvSACUser2);
-    await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvSACPassword1 : testConfig.TestEnvSACPassword2);
+    await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvProfUser1);
+    await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvProfPassword1);
 
 
     await I.waitForNavigationToComplete('input[type="submit"]', signInDelay);

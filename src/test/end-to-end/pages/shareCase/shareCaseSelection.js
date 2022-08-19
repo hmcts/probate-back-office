@@ -17,21 +17,23 @@ module.exports = async function (shareCaseSelection) {
    // await I.click({xpath: '//a[normalize-space()="Case list"]'}, testConfig.WaitForTextTimeout || 60);
     await I.click('//a[normalize-space()="Case list"]');
     await I.waitForText('Your cases', 20);
-    await I.selectOption('#wb-jurisdiction', '0');
+    await I.selectOption('#wb-jurisdiction', 'Manage probate application');
     await I.selectOption('#wb-case-type','Grant of representation');
     await I.click("button[title='Apply filter']");
-
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.click('//div[normalize-space()="Case reference"]')
+    await I.wait(testConfig.CreateCaseDelay)
     await I.waitForElement('//input[@id="select-'+caseRefNumber+'"]');
     await I.click('//input[@id="select-'+caseRefNumber+'"]');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete('#btn-share-button', testConfig.CreateCaseDelay);
     await I.wait(testConfig.CreateCaseDelay);
-    await I.fillField('input[role="combobox"]', 'PP');
+    await I.fillField('input[role="combobox"]', 'P');
     await I.wait(testConfig.CreateCaseDelay);
-    await I.click('//span[normalize-space()="ProbatePPTwo Org2 - probate.pp2.org2@gmail.com"]');
+    await I.click('//span[contains(text(),"ProbateSolicitor TestUser - probate.practitioner.a")]');
     await I.click('#btn-add-user');
     await I.click('.govuk-accordion__open-all');
-    await I.see('probate.pp2.org2@gmail.com');
+    await I.see('probate.practitioner.aat.test@gmail.com');
     await I.see('TO BE ADDED');
     await I.waitForNavigationToComplete('button[title="Continue"]');
     await I.wait(testConfig.CreateCaseDelay);

@@ -8,6 +8,9 @@ const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-s
 module.exports = async function (verifyUnsharedCase){
     const I = this;
     await I.waitForText('Your cases', 20);
+    await I.wait(testConfig.CreateCaseDelay);
+    await I.click('//div[normalize-space()="Case reference"]');
+    await I.wait(testConfig.CreateCaseDelay);
     await I.dontSeeElement('//input[@id="select-'+caseRefNumber+'"]');
     await I.click('//a[normalize-space()="Sign out"]');
    // await I.logInfo(scenarioName, 'PP1 User verified unshared caseRef: '+caseRef+'');
