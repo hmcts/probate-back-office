@@ -138,6 +138,7 @@ public class CaveatData {
     private String pcqId;
     private OrganisationPolicy applicantOrganisationPolicy;
     private String serviceRequestReference;
+    private String paymentTaken;
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();

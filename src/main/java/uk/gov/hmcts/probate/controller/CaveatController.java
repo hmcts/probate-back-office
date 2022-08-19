@@ -168,9 +168,9 @@ public class CaveatController {
         FeeResponse feeResponse = feeService.getCaveatFeesData();
         String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                 .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
-        feeResponse.setServiceRequestReference(serviceRequestReference);
 
-        caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+        caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest,
+                serviceRequestReference);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

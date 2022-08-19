@@ -54,8 +54,8 @@ public class CaveatCallbackResponseTransformer {
     private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
-                                               List<Document> documents,
-                                               String letterId) {
+                                               List<Document> documents, String letterId,
+                                               String serviceRequestReference) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
@@ -73,6 +73,7 @@ public class CaveatCallbackResponseTransformer {
                 .paperForm(YES);
         }
 
+        responseCaveatDataBuilder.serviceRequestReference(serviceRequestReference);
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
@@ -269,7 +270,8 @@ public class CaveatCallbackResponseTransformer {
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
             .payments(caveatData.getPayments())
             .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy())
-            .serviceRequestReference(caveatData.getServiceRequestReference());
+            .serviceRequestReference(caveatData.getServiceRequestReference())
+            .paymentTaken(caveatData.getPaymentTaken());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(

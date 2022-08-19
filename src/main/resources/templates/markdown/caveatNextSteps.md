@@ -8,10 +8,6 @@ Payment summary
 -------------------------------------------------
 **Application fee** &pound;{{applicationFee}}
 
-**Payment method** {{paymentMethod}}
-
-**Selected PBA account** {{selectedPBA}}
-
 **Customer reference** {{paymentReferenceNumber}}
 
 What happens next

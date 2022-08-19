@@ -115,7 +115,7 @@ class CaveatControllerUnitTest {
             .thenReturn(paymentResponseMock);
         when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
             .thenReturn(caveatCallbackResponse);
-        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest))
+        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, null))
             .thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
             bindingResultMock);

@@ -247,6 +247,7 @@ class PaymentsServiceTest {
             verify(businessValidationMessageRetriever, times(2)).getMessage(any(), any(), any());
         }
     }
+
     @Test
     void shouldCreateServiceRequest() {
         ServiceRequestDto serviceDto = ServiceRequestDto.builder().build();

@@ -244,7 +244,7 @@ class CaveatCallbackResponseTransformerTest {
         String letterId = "123-456";
 
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
@@ -273,7 +273,7 @@ class CaveatCallbackResponseTransformerTest {
         String letterId = "123-456";
 
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
@@ -300,7 +300,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
 
         assertCommon(caveatCallbackResponse);
 
@@ -319,7 +319,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = null;
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
 
         assertCommon(caveatCallbackResponse);
 
@@ -339,7 +339,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
 
         assertCommon(caveatCallbackResponse);
 

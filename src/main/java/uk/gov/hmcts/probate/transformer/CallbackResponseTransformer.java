@@ -436,7 +436,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          Document coversheet) {
+                                                          String serviceRequestReference, Document coversheet) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -462,7 +462,7 @@ public class CallbackResponseTransformer {
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
             .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
-            .serviceRequestReference(feesResponse.getApplicationFeeResponse().getServiceRequestReference())
+            .serviceRequestReference(serviceRequestReference)
             .build();
 
         return transformResponse(responseCaseData);
@@ -1047,7 +1047,8 @@ public class CallbackResponseTransformer {
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
-            .serviceRequestReference(caseData.getServiceRequestReference());
+            .serviceRequestReference(caseData.getServiceRequestReference())
+            .paymentTaken(caseData.getPaymentTaken());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

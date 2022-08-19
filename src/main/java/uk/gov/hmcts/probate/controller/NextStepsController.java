@@ -95,9 +95,8 @@ public class NextStepsController {
             String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                     .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
 
-            feesResponse.getApplicationFeeResponse().setServiceRequestReference(serviceRequestReference);
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                feesResponse, coversheet);
+                feesResponse, serviceRequestReference, coversheet);
 
         }
 

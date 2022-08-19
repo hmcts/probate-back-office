@@ -87,4 +87,5 @@ public class ResponseCaveatData {
     private final List<CollectionMember<Payment>> payments;
     private final OrganisationPolicy applicantOrganisationPolicy;
     private final String serviceRequestReference;
+    private final String paymentTaken;
 }

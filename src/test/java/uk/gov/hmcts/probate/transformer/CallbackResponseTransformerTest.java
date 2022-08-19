@@ -875,7 +875,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                coversheetMock);
+                null, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -896,7 +896,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                coversheetMock);
+                null, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -920,7 +920,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            coversheetMock);
+                null, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -947,7 +947,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, coversheetMock);
+                feesResponse, null, coversheetMock);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
@@ -961,7 +961,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         paymentResponseMock = null;
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            coversheetMock);
+                null, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -983,7 +983,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            coversheetMock);
+                null, coversheetMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -995,7 +995,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            coversheetMock);
+                null, coversheetMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -1007,7 +1007,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                coversheetMock);
+                null, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1026,7 +1026,7 @@ class CallbackResponseTransformerTest {
     void shouldAddCoversheet() {
         when(coversheetMock.getDocumentLink()).thenReturn(documentLinkMock);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, coversheetMock);
+                feesResponse, null, coversheetMock);
 
         assertEquals(documentLinkMock, callbackResponse.getData().getSolsCoversheetDocument());
     }
@@ -1034,7 +1034,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldBeNullSafe() {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, null);
+                feesResponse, null, null);
 
         assertEquals(null, callbackResponse.getData().getSolsCoversheetDocument());
     }

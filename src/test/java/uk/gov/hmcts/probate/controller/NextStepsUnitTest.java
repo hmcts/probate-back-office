@@ -133,7 +133,7 @@ class NextStepsUnitTest {
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET))
                 .thenReturn(coversheetMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, coversheetMock))
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, coversheetMock))
             .thenReturn(callbackResponseMock);
 
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
@@ -151,7 +151,7 @@ class NextStepsUnitTest {
             .thenReturn(creditAccountPaymentMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, coversheetMock))
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, coversheetMock))
             .thenReturn(callbackResponseMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -173,7 +173,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, coversheetMock))
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, coversheetMock))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,

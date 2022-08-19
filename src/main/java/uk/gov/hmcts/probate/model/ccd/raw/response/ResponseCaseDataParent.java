@@ -87,4 +87,5 @@ public class ResponseCaseDataParent {
     protected String solsNeedsPBAPayment;
     protected OrganisationPolicy applicantOrganisationPolicy;
     protected String serviceRequestReference;
+    protected String paymentTaken;
 }

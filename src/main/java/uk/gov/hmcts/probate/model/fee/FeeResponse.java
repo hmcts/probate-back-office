@@ -17,6 +17,5 @@ public class FeeResponse {
     private String description;
     private String version;
     private String code;
-    private String serviceRequestReference;
 
 }

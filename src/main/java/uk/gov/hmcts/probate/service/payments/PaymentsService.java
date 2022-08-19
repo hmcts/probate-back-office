@@ -82,8 +82,10 @@ public class PaymentsService {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
+        System.out.println("serviceRequestResponse:" + serviceRequestResponse);
         DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
-        String readPath = "$['"+SERVICE_REQUEST_REFERENCE_KEY+"']";
+        String readPath = "$['" + SERVICE_REQUEST_REFERENCE_KEY + "']";
+        System.out.println("readPath:" + jsonContext.read(readPath).toString());
         return jsonContext.read(readPath);
     }
 
@@ -107,10 +109,12 @@ public class PaymentsService {
         if (CcdCaseType.GRANT_OF_REPRESENTATION == ccdCaseType) {
             caseData = GrantOfRepresentationData.builder()
                     .payments(payments)
+                    .paymentTaken(Boolean.TRUE)
                     .build();
         } else if (CcdCaseType.CAVEAT == ccdCaseType) {
             caseData = CaveatData.builder()
                     .payments(payments)
+                    .paymentTaken(Boolean.TRUE)
                     .build();
         } else {
             throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType");
