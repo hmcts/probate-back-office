@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationR
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -64,6 +65,7 @@ public class CaveatController {
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
+    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -159,12 +161,7 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        if (caveatCallbackRequest.getCaseDetails().getData().getServiceRequestReference() != null) {
-            //already requested payment
-            throw new BadRequestException("Payment already requested on ref:"
-                    + caveatCallbackRequest.getCaseDetails().getData().getServiceRequestReference()
-                    +" for caseId:" + caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
-        }
+        serviceRequestAlreadyCreatedValidationRule.validate(caveatCallbackRequest.getCaseDetails());
 
         CaveatCallbackResponse caveatCallbackResponse;
 
@@ -174,7 +171,6 @@ public class CaveatController {
         feeResponse.setServiceRequestReference(serviceRequestReference);
 
         caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
-
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

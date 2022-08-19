@@ -191,6 +191,7 @@ public class ConfirmationResponseService {
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
         keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
+        keyValue.put("{{paymentReferenceNumber}}", caveatData.getSolsPBAPaymentReference());
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);
@@ -221,11 +222,11 @@ public class ConfirmationResponseService {
         keyValue.put("{{deceasedFirstname}}", ccdData.getDeceased().getFirstname());
         keyValue.put("{{deceasedLastname}}", ccdData.getDeceased().getLastname());
         keyValue.put("{{deceasedDateOfDeath}}", ccdData.getDeceased().getDateOfDeath().format(formatter));
+        keyValue.put("{{paymentReferenceNumber}}", ccdData.getFee().getSolsPBAPaymentReference());
         keyValue.put("{{paymentAmount}}", getAmountAsString(ccdData.getFee().getAmount()));
         keyValue.put("{{applicationFee}}", getAmountAsString(ccdData.getFee().getApplicationFee()));
         keyValue.put("{{feeForUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForUkCopies()));
         keyValue.put("{{feeForNonUkCopies}}", getOptionalAmountAsString(ccdData.getFee().getFeeForNonUkCopies()));
-        keyValue.put("{{solsSolicitorAppReference}}", ccdData.getFee().getSolsSolicitorAppReference());
         keyValue.put("{{caseRef}}", ccdData.getCaseId().toString());
         keyValue.put("{{originalWill}}", getWillLabel(caseData));
 

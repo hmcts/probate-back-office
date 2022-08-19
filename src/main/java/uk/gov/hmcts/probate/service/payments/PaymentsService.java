@@ -106,6 +106,8 @@ public class PaymentsService {
             caseData = CaveatData.builder()
                     .payments(payments)
                     .build();
+        } else {
+            throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType");
         }
 
         securityUtils.setSecurityContextUserAsCaseworker();
@@ -118,8 +120,8 @@ public class PaymentsService {
                 .build();
         CaseDetails caseDetails = ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
                 caseData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
-                    securityDTO, "Service request payment details updated on case",
-                    "Service request payment details updated on case");
+                securityDTO, "Service request payment details updated on case",
+                "Service request payment details updated on case");
         log.info("Updated Service Request on case:{}", caseId);
 
     }
@@ -155,7 +157,7 @@ public class PaymentsService {
         PaymentResponse paymentResponse = null;
         try {
             ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
-                request, PaymentResponse.class);
+                    request, PaymentResponse.class);
             paymentResponse = Objects.requireNonNull(responseEntity.getBody());
         } catch (HttpClientErrorException e) {
             if (e.getStatusCode().value() == FORBIDDEN.value()) {
@@ -180,9 +182,9 @@ public class PaymentsService {
         if (message != null && message.contains(DUPLICANT_PAYMENT_ERROR_KEY)) {
             String[] empty = {};
             String duplicateMessage = businessValidationMessageRetriever.getMessage(
-                "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);
+                    "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);
             String duplicateMessage2 = businessValidationMessageRetriever.getMessage(
-                "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);
+                    "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);
             return new BusinessValidationException(duplicateMessage, e.getMessage(), duplicateMessage2);
         } else {
             return new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
@@ -192,18 +194,18 @@ public class PaymentsService {
     private BusinessValidationException getNewBusinessValidationException(HttpClientErrorException e) {
         String[] payError = {getErrorMessage(e)};
         String error1 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage", payError,
-            UK);
+                UK);
         String[] empty = {};
         String error2 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage2",
-            empty, UK);
+                empty, UK);
         String error3 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage3",
-            empty, UK);
+                empty, UK);
         String error4 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage4",
-            empty, UK);
+                empty, UK);
         String error5 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage5",
-            empty, UK);
+                empty, UK);
         return new BusinessValidationException(error1, e.getMessage(), error2, error3,
-            error4, error5);
+                error4, error5);
     }
 
     private String getErrorMessage(HttpClientErrorException e) {

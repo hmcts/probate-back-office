@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
@@ -108,6 +109,8 @@ class NextStepsUnitTest {
     Document coversheetMock;
     @Mock
     private ServiceRequestTransformer serviceRequestTransformer;
+    @Mock
+    private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
 
     private static final String AUTH = "Auth";
 
@@ -120,8 +123,8 @@ class NextStepsUnitTest {
 
         underTest = new NextStepsController(ccdBeanTransformerMock,
             confirmationResponseServiceMock, callbackResponseTransformerMock, serviceRequestTransformer,
-                objectMapperMock, feeServiceMock,
-            stateChangeServiceMock, paymentsService, pdfManagementServiceMock);
+                objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService, pdfManagementServiceMock,
+                serviceRequestAlreadyCreatedValidationRuleMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);

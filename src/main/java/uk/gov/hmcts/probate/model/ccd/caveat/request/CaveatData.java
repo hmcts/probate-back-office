@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;

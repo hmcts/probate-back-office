@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +24,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
-import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
@@ -34,6 +32,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
@@ -55,6 +54,7 @@ public class NextStepsController {
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
     private final PDFManagementService pdfManagementService;
+    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -80,12 +80,8 @@ public class NextStepsController {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
-            if (callbackRequest.getCaseDetails().getData().getServiceRequestReference() != null) {
-                //already requested payment
-                throw new BadRequestException("Payment already requested on ref:"
-                        + callbackRequest.getCaseDetails().getData().getServiceRequestReference()
-                        +" for caseId:" + callbackRequest.getCaseDetails().getId(), bindingResult);
-            }
+            serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
+
             Document coversheet = pdfManagementService
                     .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
 

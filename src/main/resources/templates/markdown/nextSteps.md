@@ -22,7 +22,7 @@ Payment summary
 
 **Fee amount** &pound;{{paymentAmount}}
 
-**Customer application reference** {{solsSolicitorAppReference}}
+**Customer application reference** {{paymentReferenceNumber}}
 
 Notes for this application
 -------------------------------------------------
@@ -31,6 +31,11 @@ Notes for this application
 
 What you need to do now
 ==================================================
+**You must complete payment next**
+
+Go to the Service Request tab on you case details
+
+Complete the payment process
 
 Print a copy of this page for your records. 
  
