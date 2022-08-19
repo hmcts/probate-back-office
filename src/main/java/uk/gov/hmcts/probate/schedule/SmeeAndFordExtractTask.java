@@ -10,7 +10,7 @@ import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 @Component
 @Slf4j
@@ -32,13 +32,18 @@ public class SmeeAndFordExtractTask implements Runnable {
             log.info("Perform Smee And Ford data extract from date started");
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(date, date);
             log.info("Perform Smee And Ford data extract from date finished");
-            TimeUnit.MINUTES.sleep(10);
         } catch (ApiClientException e) {
             log.error(e.getMessage());
         } catch (FeignException e) {
             log.error("Error on calling BackOfficeAPI {}", e.getMessage());
         } catch (Exception e) {
             log.error("Error on SmeeAndFordExtractTask Scheduler {}", e.getMessage());
+        }
+
+        try {
+            Thread.sleep(10 * 60 * 60 * 1000);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
         }
     }
 
