@@ -219,9 +219,10 @@ public class ZipFileService {
     }
 
     public File createTempZipFile(String zipName) throws IOException {
+        File file = null;
         if (secureDir == null) {
             secureDir = Paths.get("").toAbsolutePath();
-            File file = ResourceUtils.getFile(secureDir.toString() + "/" + zipName + ".zip");
+            file = ResourceUtils.getFile(secureDir.toString() + "/" + zipName + ".zip");
             if (file.exists()) {
                 Files.delete(file.toPath());
             }
@@ -233,7 +234,11 @@ public class ZipFileService {
         boolean isWritable = tempFilePath.toFile().setWritable(true, true);
         log.info("tempFile: {} and file is isReadable {} and isWritable {}",
                 tempFilePath.toAbsolutePath(), isReadable, isWritable);
-        return tempFilePath.toFile();
+        boolean isRenamed = tempFilePath.toFile().renameTo(file);
+        file.setReadable(true, true);
+        file.setWritable(true, true);
+        Files.deleteIfExists(tempFilePath);
+        return file;
     }
 
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
