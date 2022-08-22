@@ -41,7 +41,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.times;
 
 @ExtendWith(SpringExtension.class)
-public class ZipFileServiceTest {
+class ZipFileServiceTest {
 
     @Mock
     private DocumentManagementService documentManagementService;
@@ -155,14 +155,14 @@ public class ZipFileServiceTest {
     }
 
     @Test
-    public void shouldThrowExceptionAndZipFileShouldNotGenerated() {
+    void shouldThrowExceptionAndZipFileShouldNotGenerated() {
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
                 zipFileService.generateZipFile(returnedCaseDetails, zipFile));
     }
 
     @Test
-    public void shouldCreateTempZipFile() throws IOException {
+    void shouldCreateTempZipFile() throws IOException {
         String fileName = "Probate_Docs_" + DATE_FORMAT.format(LocalDate.now());
         File tempFile = zipFileService.createTempZipFile(fileName);
         Assertions.assertTrue(tempFile.exists());
