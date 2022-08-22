@@ -230,14 +230,14 @@ public class ZipFileService {
 
         log.info("secureDir:" + secureDir);
         Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
-        boolean isReadable = tempFilePath.toFile().setReadable(true, true);
-        boolean isWritable = tempFilePath.toFile().setWritable(true, true);
-        log.info("tempFile: {} and file is isReadable {} and isWritable {}",
-                tempFilePath.toAbsolutePath(), isReadable, isWritable);
         boolean isRenamed = tempFilePath.toFile().renameTo(file);
-        file.setReadable(true, true);
-        file.setWritable(true, true);
-        Files.deleteIfExists(tempFilePath);
+        if (isRenamed) {
+            boolean isReadable = file.setReadable(true, true);
+            boolean isWritable = file.setWritable(true, true);
+            log.info("file: {} and file is isReadable {} and isWritable {}",
+                    file.getPath(), isReadable, isWritable);
+            Files.deleteIfExists(tempFilePath);
+        }
         return file;
     }
 
