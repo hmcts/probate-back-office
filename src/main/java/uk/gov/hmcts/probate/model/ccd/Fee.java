@@ -12,7 +12,6 @@ public class Fee implements Serializable {
     private final String paymentMethod;
     private final String solsPBANumber;
     private final String solsPBAPaymentReference;
-    private final String solsSolicitorAppReference;
     private final BigDecimal applicationFee;
     private final BigDecimal amount;
     private final Long extraCopiesOfGrant;

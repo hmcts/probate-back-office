@@ -26,7 +26,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
-import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.PaymentStatus;
 import uk.gov.hmcts.reform.probate.model.cases.CaseData;
 import uk.gov.hmcts.reform.probate.model.cases.CasePayment;
@@ -96,28 +95,34 @@ public class PaymentsService {
         CasePayment casePayment = CasePayment.builder()
                 .amount(response.getServiceRequesAmount().longValue() * 100)
                 .date(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))
-                .method(getPaymentMethod(response))
+                .method(getCasePyamentMethod(response))
                 .reference(response.getServiceRequestReference())
                 .siteId(siteId)
                 .transactionId(response.getServiceRequestReference())
                 .status(getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()))
                 .build();
         List<CollectionMember<CasePayment>> payments = new ArrayList<>();
-        payments.add(new CollectionMember<CasePayment>(null, casePayment));
 
         CaseData caseData = null;
         if (CcdCaseType.GRANT_OF_REPRESENTATION == ccdCaseType) {
+            List<CollectionMember<CasePayment>> gorPayments = ((GrantOfRepresentationData) caseData).getPayments();
+            payments.addAll(gorPayments);
+            payments.add(new CollectionMember<CasePayment>(null, casePayment));
             caseData = GrantOfRepresentationData.builder()
                     .payments(payments)
                     .paymentTaken(Boolean.TRUE)
                     .build();
         } else if (CcdCaseType.CAVEAT == ccdCaseType) {
+            List<CollectionMember<CasePayment>> caveatPayments = ((CaveatData) caseData).getPayments();
+            payments.addAll(caveatPayments);
+            payments.add(new CollectionMember<CasePayment>(null, casePayment));
             caseData = CaveatData.builder()
                     .payments(payments)
                     .paymentTaken(Boolean.TRUE)
                     .build();
         } else {
-            throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType");
+            throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType:"
+                    + ccdCaseType);
         }
 
         securityUtils.setSecurityContextUserAsCaseworker();
@@ -128,7 +133,7 @@ public class PaymentsService {
                 .serviceAuthorisation(securityUtils.generateServiceToken())
                 .userId(userId)
                 .build();
-        CaseDetails caseDetails = ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
+        ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
                 caseData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
                 securityDTO, "Service request payment details updated on case",
                 "Service request payment details updated on case");
@@ -136,7 +141,7 @@ public class PaymentsService {
 
     }
 
-    private String getPaymentMethod(ServiceRequestUpdateResponseDto response) {
+    private String getCasePyamentMethod(ServiceRequestUpdateResponseDto response) {
         //"cheque", online", "card", "pba"
         if ("Payment by account".equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
             return "pba";

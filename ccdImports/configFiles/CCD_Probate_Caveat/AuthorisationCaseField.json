@@ -447,7 +447,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "serviceRequestReference", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "paymentTaken", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorAppReference", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorForenames", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
