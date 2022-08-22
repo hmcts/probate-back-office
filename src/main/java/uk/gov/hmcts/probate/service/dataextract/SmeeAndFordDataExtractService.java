@@ -75,7 +75,7 @@ public class SmeeAndFordDataExtractService {
                         log.info("SmeeAndFordDataExtractService performed on: " + LocalDateTime.now()
                                 + " Thread's name: " + Thread.currentThread().getName());
                     }
-                }, 20, TimeUnit.MINUTES);
+                }, 8, TimeUnit.MINUTES);
                 executorService.shutdown();
 
                 return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
