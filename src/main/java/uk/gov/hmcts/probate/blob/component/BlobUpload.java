@@ -35,7 +35,7 @@ public class BlobUpload {
         log.info("Uploading to Blob storage as blob:" + blobClient.getBlobUrl());
 
         // Upload the blob
-        blobClient.uploadFromFile(blobFile.getPath());
+        blobClient.uploadFromFile(blobFile.getPath(), true);
 
     }
 

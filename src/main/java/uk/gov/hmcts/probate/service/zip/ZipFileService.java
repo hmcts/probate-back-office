@@ -231,14 +231,15 @@ public class ZipFileService {
         log.info("secureDir:" + secureDir);
         Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
         boolean isRenamed = tempFilePath.toFile().renameTo(file);
-        if (isRenamed) {
+        if (file != null && isRenamed) {
             boolean isReadable = file.setReadable(true, true);
             boolean isWritable = file.setWritable(true, true);
             log.info("file: {} and file is isReadable {} and isWritable {}",
                     file.getPath(), isReadable, isWritable);
             Files.deleteIfExists(tempFilePath);
+            return file;
         }
-        return file;
+        return tempFilePath.toFile();
     }
 
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
