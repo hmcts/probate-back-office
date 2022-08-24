@@ -106,7 +106,15 @@ class HmrcFileServiceTest {
             .registryLocation("Liverpool")
             .grantIssuedDate(grantIssuedDate)
             .solsSOTName("John The solicitor")
-            .applicationType(ApplicationType.SOLICITOR);
+            .applicationType(ApplicationType.SOLICITOR)
+            .ihtEstateGrossValue(new BigDecimal(new BigInteger("28000000"), 0))
+            .ihtEstateNetValue(new BigDecimal(new BigInteger("25000000"), 0))
+            .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("24500000"), 0))
+            .ihtUnusedAllowanceClaimed("Yes")
+            .deceasedMaritalStatus("marriedCivilPartnership")
+            .spouseOrPartner("Yes")
+            .childrenUnderEighteenSurvived("1")
+            .childrenOverEighteenSurvived("2");
 
         caseDataPersonal = CaseData.builder()
             .deceasedForenames("PETAR")
@@ -137,7 +145,15 @@ class HmrcFileServiceTest {
             .registryLocation("Liverpool")
             .grantIssuedDate(grantIssuedDate)
             .solsSOTName("John The personal")
-            .applicationType(ApplicationType.PERSONAL);
+            .applicationType(ApplicationType.PERSONAL)
+            .ihtEstateGrossValue(new BigDecimal(new BigInteger("28000000"), 0))
+            .ihtEstateNetValue(new BigDecimal(new BigInteger("25000000"), 0))
+            .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("24500000"), 0))
+            .ihtUnusedAllowanceClaimed("Yes")
+            .deceasedMaritalStatus("marriedCivilPartnership")
+            .spouseOrPartner("Yes")
+            .childrenUnderEighteenSurvived("1")
+            .childrenOverEighteenSurvived("2");
 
         caseDataCarriageReturns = CaseData.builder()
             .deceasedForenames("PETAR")
@@ -168,7 +184,15 @@ class HmrcFileServiceTest {
             .registryLocation("Liverpool")
             .grantIssuedDate(grantIssuedDate)
             .solsSOTName("John The personal")
-            .applicationType(ApplicationType.PERSONAL);
+            .applicationType(ApplicationType.PERSONAL)
+            .ihtEstateGrossValue(new BigDecimal(new BigInteger("28000000"), 0))
+            .ihtEstateNetValue(new BigDecimal(new BigInteger("25000000"), 0))
+            .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("24500000"), 0))
+            .ihtUnusedAllowanceClaimed("Yes")
+            .deceasedMaritalStatus("marriedCivilPartnership")
+            .spouseOrPartner("Yes")
+            .childrenUnderEighteenSurvived("1")
+            .childrenOverEighteenSurvived("2");
 
         caseDataMissingData = CaseData.builder()
             .deceasedForenames("PETAR")
