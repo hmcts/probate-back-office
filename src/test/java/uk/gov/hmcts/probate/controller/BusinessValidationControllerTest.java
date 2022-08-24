@@ -51,6 +51,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -862,12 +863,6 @@ class BusinessValidationControllerTest {
         mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(document);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -1122,6 +1117,17 @@ class BusinessValidationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(CoreMatchers.containsString("data")));
+    }
+
+    @Test
+    void shouldNotSendEmailForErrorCase() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("paperFormWithoutExecutorAddress.json");
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The executor address line 1 cannot be empty"));
+        verify(notificationService, never()).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
     }
 }
 
