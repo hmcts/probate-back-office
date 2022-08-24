@@ -24,8 +24,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.Files;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -53,7 +51,6 @@ import static uk.gov.hmcts.reform.probate.model.cases.DocumentType.WILL;
 @RequiredArgsConstructor
 public class ZipFileService {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
     public static final int BUFFER = 2048;
     private final DocumentManagementService documentManagementService;
     private final SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -71,7 +68,7 @@ public class ZipFileService {
         WELSH_ADMON_WILL_GRANT_REISSUE};
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
 
-    public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile) {
+    public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String fromDate) {
         log.info("generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
@@ -83,7 +80,7 @@ public class ZipFileService {
                 getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
             }
-            getSmeeAndFordCaseData(zipOut, cases);
+            getSmeeAndFordCaseData(zipOut, cases, fromDate);
             generateManifestFile(zipOut, manifestDataList);
             zipOut.close();
             fos.close();
@@ -98,13 +95,13 @@ public class ZipFileService {
     }
 
     private void getSmeeAndFordCaseData(ZipOutputStream zos,
-                                        List<ReturnedCaseDetails> cases) throws IOException {
+                                        List<ReturnedCaseDetails> cases,
+                                        String fromDate) throws IOException {
         byte[] bytes = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
-        String todaysDate = DATE_FORMAT.format(LocalDate.now());
         ZippedManifestData zippedManifestData = ZippedManifestData.builder()
                         .caseNumber("all_cases")
                         .docFileType(CSV)
-                        .docType("data_" + todaysDate)
+                        .docType("data_" + fromDate)
                         .build();
         zipMultipleDocs(zos, new ByteArrayResource(bytes), zippedManifestData.getDocumentName());
     }

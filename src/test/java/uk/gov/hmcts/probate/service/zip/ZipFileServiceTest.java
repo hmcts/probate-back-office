@@ -57,7 +57,7 @@ class ZipFileServiceTest {
 
     private ZipFileService zipFileService;
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private final List<ByteArrayResource> byteArrayResourceList = new ArrayList<>();
     private final List<ReturnedCaseDetails> returnedCaseDetails = new ArrayList<>();
 
@@ -133,8 +133,9 @@ class ZipFileServiceTest {
 
     @Test
     void shouldCreateZip() throws IOException {
-        File zipFile = new File("Probate_Docs_" + DATE_FORMAT.format(LocalDate.now()) + ".zip");
-        zipFileService.generateZipFile(returnedCaseDetails, zipFile);
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
+        File zipFile = new File("Probate_Docs_" + todayDate + ".zip");
+        zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate);
         Assertions.assertTrue(zipFile.getAbsolutePath().contains("Probate_Docs_"));
         ZipFile zip = new ZipFile(zipFile);
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
@@ -156,9 +157,10 @@ class ZipFileServiceTest {
 
     @Test
     void shouldThrowExceptionAndZipFileShouldNotGenerated() {
+        String todayDate = DATE_FORMAT.format(LocalDate.now());
         File zipFile = new File("");
         Assertions.assertThrows(ZipFileException.class, () ->
-                zipFileService.generateZipFile(returnedCaseDetails, zipFile));
+                zipFileService.generateZipFile(returnedCaseDetails, zipFile, todayDate));
     }
 
     @Test
