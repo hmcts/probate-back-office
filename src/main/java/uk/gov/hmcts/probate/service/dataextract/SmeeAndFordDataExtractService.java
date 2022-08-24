@@ -17,12 +17,7 @@ import uk.gov.service.notify.NotificationClientException;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.LocalDateTime;
-import java.util.TimerTask;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 @Service
 @RequiredArgsConstructor
@@ -67,16 +62,6 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.delete(tempFile.toPath());
                 }
-
-                final ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-                executorService.schedule(new TimerTask() {
-                    @Override
-                    public void run() {
-                        log.info("SmeeAndFordDataExtractService performed on: " + LocalDateTime.now()
-                                + " Thread's name: " + Thread.currentThread().getName());
-                    }
-                }, 8, TimeUnit.MINUTES);
-                executorService.shutdown();
 
                 return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
