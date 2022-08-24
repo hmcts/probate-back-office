@@ -105,16 +105,16 @@ public class PaymentsService {
 
         CaseData caseData = null;
         if (CcdCaseType.GRANT_OF_REPRESENTATION == ccdCaseType) {
-            List<CollectionMember<CasePayment>> gorPayments = ((GrantOfRepresentationData) caseData).getPayments();
-            payments.addAll(gorPayments);
+//            List<CollectionMember<CasePayment>> gorPayments = ((GrantOfRepresentationData) caseData).getPayments();
+//            payments.addAll(gorPayments);
             payments.add(new CollectionMember<CasePayment>(null, casePayment));
             caseData = GrantOfRepresentationData.builder()
                     .payments(payments)
                     .paymentTaken(Boolean.TRUE)
                     .build();
         } else if (CcdCaseType.CAVEAT == ccdCaseType) {
-            List<CollectionMember<CasePayment>> caveatPayments = ((CaveatData) caseData).getPayments();
-            payments.addAll(caveatPayments);
+//            List<CollectionMember<CasePayment>> caveatPayments = ((CaveatData) caseData).getPayments();
+//            payments.addAll(caveatPayments);
             payments.add(new CollectionMember<CasePayment>(null, casePayment));
             caseData = CaveatData.builder()
                     .payments(payments)
