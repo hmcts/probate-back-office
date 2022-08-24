@@ -3,17 +3,17 @@ package uk.gov.hmcts.probate.service.tasklist;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
-import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
 import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
-import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
-import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
+import uk.gov.hmcts.probate.businessrule.AuthenticatedTranslationBusinessRule;
+import uk.gov.hmcts.probate.businessrule.DispenseNoticeSupportDocsRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
 import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
+import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA17FormBusinessRule;
+import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.htmlrendering.DetailsComponentRenderer;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.LinkRenderer;
@@ -36,22 +36,22 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import static java.lang.String.format;
-import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_WITH_CODICILS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
+import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
-import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
-import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
+import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
@@ -78,6 +78,7 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
+    private static final String MAKE_PAYMENT_TEXT = "Make payment";
     static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
@@ -113,6 +114,7 @@ public class TaskStateRenderer {
                 solSOTNeedToUpdate);
         final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
                 solSOTNeedToUpdate);
+        final TaskState paymentState = getPaymentTaskState(currState, TaskListState.TL_STATE_PAYMENT_ATTEMPTED);
         final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS,
                 solSOTNeedToUpdate);
         final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
@@ -120,7 +122,7 @@ public class TaskStateRenderer {
         final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
                 solSOTNeedToUpdate);
         final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate);
-
+        
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
@@ -139,6 +141,8 @@ public class TaskStateRenderer {
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
+                .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, MAKE_PAYMENT_TEXT,  "#"))
+                .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
@@ -155,6 +159,26 @@ public class TaskStateRenderer {
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
     }
 
+
+    private TaskState getPaymentTaskState(TaskListState currState, TaskListState renderState) {
+        TaskState taskState;
+        if(currState == TaskListState.TL_STATE_MAKE_PAYMENT){
+            taskState = TaskState.NOT_STARTED;
+        } else if(currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED){
+            taskState =  TaskState.IN_PROGRESS;
+        } else if (currState.compareTo(renderState) > 0) {
+            taskState =  TaskState.COMPLETED;
+        } else {
+            taskState = TaskState.NOT_AVAILABLE;
+        }
+        return taskState;
+    }
+    
+    private String renderPaymentLinkOrText (TaskState currTaskState, String linkText, String link){
+        return (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
+                ? LinkRenderer.render(linkText, link) : linkText;
+    }
+    
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
                                    String solSOTNeedToUpdate) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)

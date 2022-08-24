@@ -119,7 +119,7 @@ public class PaymentsService {
         CasePayment casePayment = CasePayment.builder()
                 .amount(response.getServiceRequesAmount().longValue() * 100)
                 .date(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))
-                .method(getCasePyamentMethod(response))
+                .method(getCasePaymentMethod(response))
                 .reference(response.getServiceRequestReference())
                 .siteId(siteId)
                 .transactionId(response.getServiceRequestReference())
@@ -150,7 +150,7 @@ public class PaymentsService {
 
     }
 
-    private String getCasePyamentMethod(ServiceRequestUpdateResponseDto response) {
+    private String getCasePaymentMethod(ServiceRequestUpdateResponseDto response) {
         //"cheque", online", "card", "pba"
         if (SRP_METHOD_ACCOUNT.equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
             return CASE_PAYMENT_METHOD_PBA;

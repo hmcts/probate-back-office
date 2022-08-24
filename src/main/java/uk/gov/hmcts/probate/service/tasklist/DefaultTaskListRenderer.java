@@ -20,7 +20,9 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
     private final TaskStateRenderer taskStateRenderer;
 
     public String renderHtml(CaseDetails details) {
-        final TaskListState tlState = TaskListState.mapCaseState(details.getState());
+        final String paymentTaken = details.getData().getPaymentTaken();
+        final String state = details.getState();
+        final TaskListState tlState = TaskListState.mapCaseState(state, paymentTaken);
         if (tlState == TaskListState.TL_STATE_NOT_APPLICABLE) {
             return "";
         }
