@@ -45,6 +45,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
+    private static final String PERSONALISATION_SOLICITOR_SOT_FORENAMES = "solicitor_sot_forenames";
+    private static final String PERSONALISATION_SOLICITOR_SOT_SURNAME = "solicitor_sot_surname";
     private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
@@ -110,6 +112,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedSurname("deceased surname")
             .deceasedForenames("deceased forenames")
             .solsSOTName("sols sot name")
+            .solsSOTForenames("sols sot forenames")
+            .solsSOTSurname("sols sot surname")
             .solsSolicitorAppReference("app reference")
             .boStopDetails("stop details")
             .boCaseStopCaveatId("123456789012345678")
@@ -182,6 +186,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
         assertEquals("app reference", response.get(PERSONALISATION_SOLICITOR_REFERENCE));
         assertEquals("sols sot name", response.get(PERSONALISATION_SOLICITOR_NAME));
+        assertEquals("sols sot forenames", response.get(PERSONALISATION_SOLICITOR_SOT_FORENAMES));
+        assertEquals("sols sot surname", response.get(PERSONALISATION_SOLICITOR_SOT_SURNAME));
         assertEquals("stop details", response.get(PERSONALISATION_CASE_STOP_DETAILS));
         assertEquals("123456789012345678", response.get(PERSONALISATION_CAVEAT_CASE_ID));
         assertEquals(caseDetails.getData().getDeceasedDateOfDeathFormatted(),
@@ -205,6 +211,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
         assertEquals("app reference", response.get(PERSONALISATION_SOLICITOR_REFERENCE));
         assertEquals("sols sot name", response.get(PERSONALISATION_SOLICITOR_NAME));
+        assertEquals("sols sot forenames", response.get(PERSONALISATION_SOLICITOR_SOT_FORENAMES));
+        assertEquals("sols sot surname", response.get(PERSONALISATION_SOLICITOR_SOT_SURNAME));
         assertEquals("stop details", response.get(PERSONALISATION_CASE_STOP_DETAILS));
         assertEquals("123456789012345678", response.get(PERSONALISATION_CAVEAT_CASE_ID));
         assertEquals(caseDetails.getData().getDeceasedDateOfDeathFormatted(),
