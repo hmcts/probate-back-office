@@ -69,6 +69,9 @@ class PaymentsServiceTest {
     private SecurityUtils securityUtilsMock;
     @Mock
     private ServiceRequestClient serviceRequestClientMock;
+    @Mock
+    private CasePaymentBuilder casePaymentBuilderMock;
+
 
     private static final String AUTH_TOKEN = "Bearer .AUTH";
 

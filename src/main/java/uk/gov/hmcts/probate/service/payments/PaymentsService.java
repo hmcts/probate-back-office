@@ -114,7 +114,8 @@ public class PaymentsService {
                 .build();
         CaseDetails retrievedCaseDetails = ccdClientApi.readForCaseWorker(ccdCaseType, caseId, securityDTO);
         log.info("Retrieved case for Service Request, caseId:{}", caseId);
-        List<CollectionMember<CasePayment>> currentPayments = casePaymentBuilder.buildCurrentPayments(retrievedCaseDetails);
+        List<CollectionMember<CasePayment>> currentPayments = casePaymentBuilder
+                .buildCurrentPayments(retrievedCaseDetails);
         CasePayment casePayment = CasePayment.builder()
                 .amount(response.getServiceRequesAmount().longValue() * 100)
                 .date(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))

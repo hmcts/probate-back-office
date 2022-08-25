@@ -43,7 +43,7 @@ public class CasePaymentBuilder {
 
         List<Map> payMapList = (List<Map>) (caseDataMap.get(KEY_PAYMENTS));
         for (Map pay : payMapList) {
-            Map cpHM = (Map) pay.get("value");
+            Map cpHM = (Map) pay.get(KEY_COLLECTION_VALUE);
             CasePayment casePayment = CasePayment.builder()
                     .status(getPaymentStatus(cpHM.get(KEY_PAYMENT_STATUS).toString()))
                     .transactionId(cpHM.get(KEY_PAYMENT_TRANSACTION_ID).toString())
