@@ -2,13 +2,17 @@ package uk.gov.hmcts.probate.service.dataextract;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.blob.component.BlobUpload;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.zip.ZipFileService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
@@ -16,10 +20,15 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Configuration
 public class SmeeAndFordDataExtractService {
     private final CaseQueryService caseQueryService;
     private final NotificationService notificationService;
-    
+    private final ZipFileService zipFileService;
+    private final BlobUpload blobUpload;
+    @Value("${feature.blobstorage.smeeandford.enabled}")
+    public boolean featureBlobStorageSmeeAndFord;
+
     public Document performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
             return performSmeeAndFordExtractForDate(fromDate);
@@ -45,6 +54,12 @@ public class SmeeAndFordDataExtractService {
         log.info("Sending email to Smee And Ford for {} filtered cases", cases.size());
         if (!cases.isEmpty()) {
             try {
+                log.info("FeatureBlobStorageSmeeAndFord flag enabled is {}", featureBlobStorageSmeeAndFord);
+                if (featureBlobStorageSmeeAndFord) {
+                    zipFileService.generateZipFile(cases);
+                    log.info("Zip file uploaded on blob store");
+                }
+
                 return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);

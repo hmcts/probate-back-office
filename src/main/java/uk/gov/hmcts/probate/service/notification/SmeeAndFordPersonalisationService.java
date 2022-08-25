@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
@@ -69,6 +70,10 @@ public class SmeeAndFordPersonalisationService {
     private String getSubject(String fromDate, String toDate) {
         return SUBJECT.replace(":fromDate", fromDate)
             .replace(":toDate", toDate);
+    }
+
+    public byte[] getSmeeAndFordByteArray(List<ReturnedCaseDetails> cases) {
+        return getSmeeAndFordBuiltData(cases).toString().getBytes(StandardCharsets.UTF_8);
     }
 
     private StringBuilder getSmeeAndFordBuiltData(List<ReturnedCaseDetails> cases) {
@@ -147,7 +152,7 @@ public class SmeeAndFordPersonalisationService {
     private String getWillFileName(CaseData data) {
         if (data.getScannedDocuments() != null) {
             for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-                if (DocumentType.OTHER.name().equalsIgnoreCase(document.getValue().getType()) 
+                if (DocumentType.OTHER.name().equalsIgnoreCase(document.getValue().getType())
                     && DOC_SUBTYPE_WILL.equals(document.getValue().getSubtype())) {
                     return document.getValue().getFileName();
                 }
@@ -181,7 +186,7 @@ public class SmeeAndFordPersonalisationService {
             sol = sol + DELIMITER;
             sol = sol + DELIMITER;
         }
-        
+
         return sol;
     }
 
@@ -190,11 +195,11 @@ public class SmeeAndFordPersonalisationService {
         primary = primary + ifNotEmptyWithSpace(data.getPrimaryApplicantForenames());
         primary = primary + ifNotEmptyWithSpace(data.getPrimaryApplicantSurname());
         primary = primary + ifNotEmpty(data.getPrimaryApplicantAlias());
-        
+
         return replaceDelimeters(primary);
     }
 
-    private String getApplyingExecutorsDetails(List<CollectionMember<AdditionalExecutorApplying>> 
+    private String getApplyingExecutorsDetails(List<CollectionMember<AdditionalExecutorApplying>>
                                                   additionalExecutorsApplying) {
         int execCount = 0;
         StringBuilder allExecs = new StringBuilder();
@@ -223,11 +228,11 @@ public class SmeeAndFordPersonalisationService {
         execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorName()));
         execNames.append(ifNotEmptyWithSpace(applying.getValue().getApplyingExecutorFirstName()));
         execNames.append(ifNotEmpty(applying.getValue().getApplyingExecutorLastName()));
-        
+
         var allExecs = new StringBuilder();
         allExecs.append(replaceDelimeters(execNames.toString()));
         allExecs.append(DELIMITER);
-        
+
         allExecs.append(getFullAddress(applying.getValue().getApplyingExecutorAddress()));
         return allExecs.toString();
     }
@@ -254,13 +259,13 @@ public class SmeeAndFordPersonalisationService {
         }
         return addBuilder.toString();
     }
-    
+
     private String getAddress(SolsAddress address) {
         var addBuilder = new StringBuilder();
         addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine1()));
         addBuilder.append(ifNotEmptyWithSpace(address.getAddressLine2()));
         addBuilder.append(ifNotEmpty(address.getAddressLine3()));
-        
+
         return replaceDelimeters(addBuilder.toString());
     }
 
@@ -335,7 +340,7 @@ public class SmeeAndFordPersonalisationService {
     }
 
     private String getDeceasedNameWithHonours(CaseData data) {
-        return ifNotEmpty(data.getDeceasedForenames()) + SPACE + ifNotEmptyWithSpace(data.getDeceasedSurname()) 
+        return ifNotEmpty(data.getDeceasedForenames()) + SPACE + ifNotEmptyWithSpace(data.getDeceasedSurname())
             + ifNotEmpty(data.getBoDeceasedHonours());
     }
 

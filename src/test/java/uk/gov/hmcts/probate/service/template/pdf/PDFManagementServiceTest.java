@@ -1,33 +1,40 @@
 package uk.gov.hmcts.probate.service.template.pdf;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.config.PDFServiceConfiguration;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.SentEmail;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
+import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFile;
 import uk.gov.hmcts.probate.model.evidencemanagement.EvidenceManagementFileUpload;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
+import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
-import uk.gov.hmcts.reform.ccd.document.am.model.Document.Link;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document.Links;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
+import javax.crypto.BadPaddingException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
@@ -63,11 +70,26 @@ class PDFManagementServiceTest {
     private UploadResponse uploadResponseMock;
 
     private uk.gov.hmcts.reform.ccd.document.am.model.Document document;
+    @Mock
+    private EvidenceManagementFile evidenceManagementFile;
 
+    private Optional<Link> optionalLink;
+    @Mock
+    private Link link;
     @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private WillLodgementCallbackRequest willLodgementCallbackRequestMock;
+    @Mock
+    private CaveatCallbackRequest caveatCallbackRequestMock;
+    @Mock
+    private CaveatDocmosisService caveatDocmosisServiceMock;
+    @Mock
+    private SentEmail sentEmailMock;
+    @Mock
+    private JsonProcessingException jsonProcessingException;
+    @Mock
+    private BadPaddingException badPaddingException;
     @Mock
     private HttpServletRequest httpServletRequest;
     @Mock
@@ -95,18 +117,18 @@ class PDFManagementServiceTest {
         when(pdfServiceConfiguration.getGrantSignatureEncryptedFile()).thenReturn("image.png");
         when(pdfServiceConfiguration.getGrantSignatureSecretKey()).thenReturn("testkey123456789");
         when(fileSystemResourceServiceMock.getFileFromResourceAsString(any(String.class)))
-            .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
+                .thenReturn("1kbCfLrFBFTQpS2PnDDYW2r11jfRBVFbjhdLYDEMCR8=");
         underTest = new PDFManagementService(pdfGeneratorServiceMock, httpServletRequest, documentManagementServiceMock,
-            pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService);
+                pdfServiceConfiguration, fileSystemResourceServiceMock, pdfDecoratorService);
     }
 
     @Test
-    public void shouldGenerateAndUploadIntestacyCoversheet() throws IOException {
+    void shouldGenerateAndUploadIntestacyCoversheet() throws IOException {
         assertDocumentUploaded(SOLICITOR_COVERSHEET, "solicitorCoverSheet.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
+    void shouldGenerateAndUploadProbateLegalStatement() throws IOException {
         assertDocumentUploaded(LEGAL_STATEMENT_PROBATE, "legalStatementProbate.pdf");
     }
 
@@ -118,8 +140,8 @@ class PDFManagementServiceTest {
             .thenReturn(evidenceManagementFileUpload);
         when(documentManagementServiceMock.upload(any(), any())).thenReturn(uploadResponseMock);
         Links links = new Links();
-        links.self = new Link();
-        links.binary = new Link();
+        links.self = new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
+        links.binary = new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
         links.self.href = "href";
         links.binary.href = "binaryhref";
         uk.gov.hmcts.reform.ccd.document.am.model.Document document =
@@ -138,47 +160,47 @@ class PDFManagementServiceTest {
     }
 
     @Test
-    void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
+    public void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
         assertDocumentUploaded(LEGAL_STATEMENT_INTESTACY, "legalStatementIntestacy.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
+    public void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
         assertDocumentUploaded(LEGAL_STATEMENT_ADMON, "legalStatementAdmon.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadDigitalGrant() throws IOException {
+    public void shouldGenerateAndUploadDigitalGrant() throws IOException {
         assertDocumentUploaded(DIGITAL_GRANT, "digitalGrant.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadIntestacyGrant() throws IOException {
+    public void shouldGenerateAndUploadIntestacyGrant() throws IOException {
         assertDocumentUploaded(INTESTACY_GRANT, "intestacyGrant.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
+    public void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
         assertDocumentUploaded(ADMON_WILL_GRANT, "admonWillGrant.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
+    public void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
         assertDocumentUploaded(WILL_LODGEMENT_DEPOSIT_RECEIPT, "willLodgementDepositReceipt.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadSentEmail() throws IOException {
+    public void shouldGenerateAndUploadSentEmail() throws IOException {
         assertDocumentUploaded(SENT_EMAIL, "sentEmail.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadCaveatRaised() throws IOException {
+    public void shouldGenerateAndUploadCaveatRaised() throws IOException {
         assertDocumentUploaded(CAVEAT_RAISED, "caveatRaised.pdf");
     }
 
     @Test
-    void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
+    public void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
         assertDocmosisDocumentUploaded(CAVEAT_RAISED, "caveatRaised.pdf");
     }
 
@@ -217,99 +239,24 @@ class PDFManagementServiceTest {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 
-            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
             when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenThrow(new ConnectionException(""));
-
-            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
-        });
-    }
-
-    @Test
-    void shouldThrowConnectExceptionResponseIsNull() throws IOException {
-        assertThrows(ConnectionException.class, () -> {
-            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
-        });
-    }
-
-    @Test
-    void shouldThrowConnectExceptionResponseDocumentsIsNull() throws IOException {
-        assertThrows(ConnectionException.class, () -> {
-            String json = "{}";
-
+                    .thenThrow(new ConnectionException(""));
             when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
-            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenReturn(evidenceManagementFileUpload);
-            when(uploadResponseMock.getDocuments()).thenReturn(null);
-            when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-                .thenReturn(uploadResponseMock);
 
             underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
     }
 
     @Test
-    void shouldThrowConnectExceptionResponseDocumentsIsEmpty() throws IOException {
-        assertThrows(ConnectionException.class, () -> {
-            String json = "{}";
-
-            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
-            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenReturn(evidenceManagementFileUpload);
-            when(uploadResponseMock.getDocuments()).thenReturn(Collections.emptyList());
-            when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-                .thenReturn(uploadResponseMock);
-
-            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
-        });
-    }
-
-    @Test
-    void shouldThrowConnectExceptionResponseFirstDocumentLinksAreNUll() throws IOException {
-        assertThrows(ConnectionException.class, () -> {
-            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
-        });
-    }
-
-    @Test
-    void shouldThrowConnectExceptionResponseFirstDocumentLinkBinaryIsNUll() throws IOException {
-        assertThrows(ConnectionException.class, () -> {
-            String json = "{}";
-
-            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
-            when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenReturn(evidenceManagementFileUpload);
-            Links links = new Links();
-            links.self = new Link();
-            uk.gov.hmcts.reform.ccd.document.am.model.Document document =
-                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-                    .links(links)
-                    .build();
-            when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
-            when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-                .thenReturn(uploadResponseMock);
-
-            underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
-        });
-    }
-
-    @Test
-    void shouldThrowConnectExceptionResponseFirstDocumentLinkSelfIsNUll() throws IOException {
+    void shouldThrowConnectExceptionWhenFileUploadThrowsIOException() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
 
             when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenReturn(evidenceManagementFileUpload);
-            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
-            Links links = new Links();
-            links.binary = new Link();
-            uk.gov.hmcts.reform.ccd.document.am.model.Document document =
-                uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-                    .links(links)
-                    .build();
-            when(uploadResponseMock.getDocuments()).thenReturn(Arrays.asList(document));
+                    .thenReturn(evidenceManagementFileUpload);
             when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-                .thenReturn(uploadResponseMock);
+                    .thenReturn(uploadResponseMock);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
             underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
@@ -324,11 +271,14 @@ class PDFManagementServiceTest {
     void shouldThrowConnectExceptionWhenBinaryLinkNotPresent() throws IOException {
         assertThrows(ConnectionException.class, () -> {
             String json = "{}";
+
             when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenReturn(evidenceManagementFileUpload);
-            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+                    .thenReturn(evidenceManagementFileUpload);
             when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-                .thenReturn(uploadResponseMock);
+                    .thenReturn(uploadResponseMock);
+            optionalLink = Optional.of(link);
+            when(evidenceManagementFile.getLink(IanaLinkRelations.SELF)).thenReturn(optionalLink);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
             underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
@@ -340,28 +290,39 @@ class PDFManagementServiceTest {
             String json = "{}";
 
             when(pdfGeneratorServiceMock.generatePdf(LEGAL_STATEMENT_PROBATE, json))
-                .thenReturn(evidenceManagementFileUpload);
-            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
+                    .thenReturn(evidenceManagementFileUpload);
             when(documentManagementServiceMock.upload(evidenceManagementFileUpload, LEGAL_STATEMENT_PROBATE))
-                .thenReturn(uploadResponseMock);
+                    .thenReturn(uploadResponseMock);
+            optionalLink = Optional.of(link);
+            when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
+            when(pdfDecoratorService.decorate(callbackRequestMock, LEGAL_STATEMENT_PROBATE)).thenReturn(json);
 
             underTest.generateAndUpload(callbackRequestMock, LEGAL_STATEMENT_PROBATE);
         });
     }
 
+    private void mockLinks(String href) {
+        optionalLink = Optional.of(link);
+        when(evidenceManagementFile.getLink(IanaLinkRelations.SELF)).thenReturn(optionalLink);
+        when(evidenceManagementFile.getLink("binary")).thenReturn(optionalLink);
+        when(link.getHref()).thenReturn(href);
+    }
+
     private void setupResponseDocument(String fileName) {
-        Link self = new Link();
+        uk.gov.hmcts.reform.ccd.document.am.model.Document.Link self =
+                new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
         self.href = SELF_URL;
-        Link binary = new Link();
+        uk.gov.hmcts.reform.ccd.document.am.model.Document.Link binary =
+                new uk.gov.hmcts.reform.ccd.document.am.model.Document.Link();
         binary.href = BINARY_URL;
         Links links = new Links();
         links.self = self;
         links.binary = binary;
         document = uk.gov.hmcts.reform.ccd.document.am.model.Document.builder()
-            .links(links)
-            .originalDocumentName(fileName)
-            .classification(PRIVATE)
-            .build();
+                .links(links)
+                .originalDocumentName(fileName)
+                .classification(PRIVATE)
+                .build();
 
         List<uk.gov.hmcts.reform.ccd.document.am.model.Document> documentsList = new ArrayList<>();
         documentsList.add(document);
@@ -372,9 +333,9 @@ class PDFManagementServiceTest {
         String json = "{}";
         when(pdfDecoratorService.decorate(callbackRequestMock, docType)).thenReturn(json);
         when(pdfGeneratorServiceMock.generatePdf(docType, json))
-            .thenReturn(evidenceManagementFileUpload);
+                .thenReturn(evidenceManagementFileUpload);
         when(documentManagementServiceMock.upload(evidenceManagementFileUpload, docType))
-            .thenReturn(uploadResponseMock);
+                .thenReturn(uploadResponseMock);
         setupResponseDocument(fileName);
 
         Document response = underTest.generateAndUpload(callbackRequestMock, docType);
