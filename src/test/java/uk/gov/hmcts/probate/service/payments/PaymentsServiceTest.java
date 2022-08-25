@@ -258,5 +258,4 @@ class PaymentsServiceTest {
 
         assertEquals("abcdef123456", request);
     }
-
 }

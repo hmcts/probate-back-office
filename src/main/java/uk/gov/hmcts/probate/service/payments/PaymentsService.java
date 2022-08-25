@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.PaymentStatus;
 import uk.gov.hmcts.reform.probate.model.cases.CaseData;
 import uk.gov.hmcts.reform.probate.model.cases.CasePayment;
@@ -36,7 +37,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.net.URI;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +49,11 @@ import static org.springframework.http.HttpStatus.FORBIDDEN;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.reform.probate.model.PaymentStatus.FAILED;
+import static uk.gov.hmcts.reform.probate.model.PaymentStatus.INITIATED;
+import static uk.gov.hmcts.reform.probate.model.PaymentStatus.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -62,6 +67,15 @@ public class PaymentsService {
     private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
     private static final String PAYMENT_ERROR_OTHER = "Unexpected Exception";
     private static final String DUPLICANT_PAYMENT_ERROR_KEY = "duplicate payment";
+    private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
+    private static final String PAYMENT_COMMENT = "Service request payment status ";
+    private static final String SRP_METHOD_ACCOUNT = "Payment by account";
+    private static final String SRP_METHOD_CARD = "card";
+    private static final String SRP_STATUS_PAID = "Paid";
+    private static final String SRP_STATUS_NOT_PAID = "Not Paid";
+    private static final String SRP_STATUS_PARTIALLY_PAID = "Partially paid";
+    private static final String CASE_PAYMENT_METHOD_PBA = "pba";
+    private static final String CASE_PAYMENT_METHOD_CARD = "card";
     private final RestTemplate restTemplate;
     private final AuthTokenGenerator authTokenGenerator;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -69,6 +83,7 @@ public class PaymentsService {
     private final SecurityUtils securityUtils;
     private final CcdClientApi ccdClientApi;
     private final IdamApi idamApi;
+    private final CasePaymentBuilder casePaymentBuilder;
 
     @Value("${payment.url}")
     private String payUri;
@@ -81,17 +96,25 @@ public class PaymentsService {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
-        System.out.println("serviceRequestResponse:" + serviceRequestResponse);
         DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
         String readPath = "$['" + SERVICE_REQUEST_REFERENCE_KEY + "']";
-        System.out.println("readPath:" + jsonContext.read(readPath).toString());
         return jsonContext.read(readPath);
     }
 
     public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
         String caseId = response.getCcdCaseNumber();
-        log.info("Updating case for Service Request, caseId: {}", caseId);
-
+        log.info("Updating case for Service Request, caseId:{}", caseId);
+        securityUtils.setSecurityContextUserAsCaseworker();
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        SecurityDTO securityDTO = SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
+                .serviceAuthorisation(securityUtils.generateServiceToken())
+                .userId(userId)
+                .build();
+        CaseDetails retrievedCaseDetails = ccdClientApi.readForCaseWorker(ccdCaseType, caseId, securityDTO);
+        log.info("Retrieved case for Service Request, caseId:{}", caseId);
+        List<CollectionMember<CasePayment>> currentPayments = casePaymentBuilder.buildCurrentPayments(retrievedCaseDetails);
         CasePayment casePayment = CasePayment.builder()
                 .amount(response.getServiceRequesAmount().longValue() * 100)
                 .date(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()))
@@ -101,64 +124,50 @@ public class PaymentsService {
                 .transactionId(response.getServiceRequestReference())
                 .status(getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()))
                 .build();
-        List<CollectionMember<CasePayment>> payments = new ArrayList<>();
+        currentPayments.add(new CollectionMember<>(null, casePayment));
 
         CaseData caseData = null;
-        if (CcdCaseType.GRANT_OF_REPRESENTATION == ccdCaseType) {
-//            List<CollectionMember<CasePayment>> gorPayments = ((GrantOfRepresentationData) caseData).getPayments();
-//            payments.addAll(gorPayments);
-            payments.add(new CollectionMember<CasePayment>(null, casePayment));
+        if (GRANT_OF_REPRESENTATION == ccdCaseType) {
             caseData = GrantOfRepresentationData.builder()
-                    .payments(payments)
-                    .paymentTaken(Boolean.TRUE)
+                    .payments(currentPayments)
+                    .paymentTaken(casePayment.getStatus() == SUCCESS)
                     .build();
-        } else if (CcdCaseType.CAVEAT == ccdCaseType) {
-//            List<CollectionMember<CasePayment>> caveatPayments = ((CaveatData) caseData).getPayments();
-//            payments.addAll(caveatPayments);
-            payments.add(new CollectionMember<CasePayment>(null, casePayment));
+        } else if (CAVEAT == ccdCaseType) {
             caseData = CaveatData.builder()
-                    .payments(payments)
-                    .paymentTaken(Boolean.TRUE)
+                    .payments(currentPayments)
+                    .paymentTaken(casePayment.getStatus() == SUCCESS)
                     .build();
         } else {
             throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType:"
                     + ccdCaseType);
         }
 
-        securityUtils.setSecurityContextUserAsCaseworker();
-        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
-        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
-        String userId = result.get("id").toString().toLowerCase();
-        SecurityDTO securityDTO = SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
-                .serviceAuthorisation(securityUtils.generateServiceToken())
-                .userId(userId)
-                .build();
         ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
                 caseData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
-                securityDTO, "Service request payment details updated on case",
-                "Service request payment details updated on case");
-        log.info("Updated Service Request on case:{}", caseId);
+                securityDTO, PAYMENT_COMMENT + casePayment.getStatus().getName(), PAYMENT_SUMMARY);
+        log.info("Updated Service Request on caseId:{}", caseId);
 
     }
 
     private String getCasePyamentMethod(ServiceRequestUpdateResponseDto response) {
         //"cheque", online", "card", "pba"
-        if ("Payment by account".equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
-            return "pba";
-        } else if ("card".equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
-            return "card";
+        if (SRP_METHOD_ACCOUNT.equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
+            return CASE_PAYMENT_METHOD_PBA;
+        } else if (SRP_METHOD_CARD.equals(response.getServiceRequestPaymentResponseDto().getPaymentMethod())) {
+            return CASE_PAYMENT_METHOD_CARD;
         }
 
-        return "pba";
+        throw new IllegalArgumentException("Service request payment method for Case:"
+                + response.getCcdCaseNumber() + " not valid");
     }
 
     private PaymentStatus getPaymentStatusByServiceRequestStatus(String serviceRequestStatus) {
-        if ("Paid".equals(serviceRequestStatus)) {
-            return PaymentStatus.SUCCESS;
-        } else if ("Not Paid".equals(serviceRequestStatus)) {
-            return PaymentStatus.FAILED;
-        } else if ("Partially paid".equals(serviceRequestStatus)) {
-            return PaymentStatus.INITIATED;
+        if (SRP_STATUS_PAID.equals(serviceRequestStatus)) {
+            return SUCCESS;
+        } else if (SRP_STATUS_NOT_PAID.equals(serviceRequestStatus)) {
+            return FAILED;
+        } else if (SRP_STATUS_PARTIALLY_PAID.equals(serviceRequestStatus)) {
+            return INITIATED;
         }
 
         throw new IllegalArgumentException("serviceRequestStatus not a valid value");
