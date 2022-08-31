@@ -1073,7 +1073,6 @@ public class CallbackResponseTransformer {
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
-        updateCaseHandedOffToLegacySiteFlag(caseData, builder);
 
         builder = taskListUpdateService.generateTaskList(caseDetails, builder);
 
@@ -1285,51 +1284,6 @@ public class CallbackResponseTransformer {
         }
 
         return builder;
-    }
-
-    private void updateCaseHandedOffToLegacySiteFlag(CaseData caseData,
-                                                     ResponseCaseDataBuilder<?, ?> builder) {
-
-        if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
-            || ANSWER_NO.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite())) {
-
-            builder.caseHandedOffToLegacySite(ANSWER_NO);
-
-            if (SOLICITOR.equals(caseData.getApplicationType())
-                    && (TITLE_AND_CLEARING_TRUST_CORP_SDJ.equals(caseData.getTitleAndClearingType())
-                    || TITLE_AND_CLEARING_TRUST_CORP.equals(caseData.getTitleAndClearingType()))) {
-                builder.caseHandedOffToLegacySite(ANSWER_YES);
-            }
-
-            if (SOLICITOR.equals(caseData.getApplicationType())
-                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
-                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType())
-                    || DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
-                    && ANSWER_NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
-                builder.caseHandedOffToLegacySite(ANSWER_YES);
-            }
-
-            if (SOLICITOR.equals(caseData.getApplicationType())
-                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
-                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType()))
-                    && ANSWER_NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
-                    && ANSWER_YES.equalsIgnoreCase(caseData.getWillAccessNotarial())) {
-                builder.caseHandedOffToLegacySite(ANSWER_YES);
-            }
-
-            if (SOLICITOR.equals(caseData.getApplicationType())
-                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
-                    && "ChildAdopted".equals(caseData.getSolsApplicantRelationshipToDeceased())) {
-                builder.caseHandedOffToLegacySite(ANSWER_YES);
-            }
-
-            if (PERSONAL.equals(caseData.getApplicationType())
-                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
-                    && "adoptedChild".equals(caseData.getPrimaryApplicantRelationshipToDeceased())
-                    && ANSWER_YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
-                builder.caseHandedOffToLegacySite(ANSWER_YES);
-            }
-        }
     }
 
     private void updateCaseBuilder(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
