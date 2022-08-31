@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.HandOffLegacyService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -101,6 +102,7 @@ public class BusinessValidationController {
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
+    private final HandOffLegacyService handOffLegacyService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -401,6 +403,7 @@ public class BusinessValidationController {
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
 
+        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
@@ -465,6 +468,8 @@ public class BusinessValidationController {
         APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForLegalStatementRegeneration(
         @RequestBody CallbackRequest callbackRequest) {
+
+        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequest);
 
         return ResponseEntity
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
