@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -10,7 +11,6 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD;
-import static uk.gov.hmcts.probate.model.Constants.SOLS_APP_RELATIONSHIP_TO_DECEASED;
 import static uk.gov.hmcts.probate.model.Constants.SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
