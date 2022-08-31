@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
@@ -100,9 +99,6 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
-import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_SOLE_PRINCIPLE;
-import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
-import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
@@ -3651,174 +3647,5 @@ class CallbackResponseTransformerTest {
         verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
-    }
-
-    @Test
-    void setNoIfCaseHandedOffFlagIsNull() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(NO, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void setNoIfCaseHandedOffFlagIsBlank() {
-        caseDataBuilder.caseHandedOffToLegacySite("");
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(NO, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenApplicationTypeIsSolicitorAndTitleClearingTypeIsTrustCorpSdj() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ);
-        caseDataBuilder.applicationType(SOLICITOR);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenApplicationTypeIsSolicitorAndTitleClearingTypeIsTrustCorp() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP);
-        caseDataBuilder.applicationType(SOLICITOR);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeGopAndDeceasedDomicileInEngWalesIsNo() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(SOLICITOR);
-        caseDataBuilder.caseType(DocumentCaseType.GOP.getCaseType());
-        caseDataBuilder.deceasedDomicileInEngWales(NO);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeAdmonWillAndDeceasedDomicileInEngWalesIsNo() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(SOLICITOR);
-        caseDataBuilder.caseType(DocumentCaseType.ADMON_WILL.getCaseType());
-        caseDataBuilder.deceasedDomicileInEngWales(NO);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeIntestacyAndDeceasedDomicileInEngWalesIsNo() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(SOLICITOR);
-        caseDataBuilder.caseType(DocumentCaseType.INTESTACY.getCaseType());
-        caseDataBuilder.deceasedDomicileInEngWales(NO);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeGopAndWillAccessNoAndWillNotarialIsYes() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(SOLICITOR);
-        caseDataBuilder.caseType(DocumentCaseType.GOP.getCaseType());
-        caseDataBuilder.willAccessOriginal(NO);
-        caseDataBuilder.willAccessNotarial(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagShouldSetToYesWhenAppTypeIsSolicitorCaseTypeAdmonWillAndWillAccessNoAndWillNotarialIsYes() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(SOLICITOR);
-        caseDataBuilder.caseType(DocumentCaseType.ADMON_WILL.getCaseType());
-        caseDataBuilder.willAccessOriginal(NO);
-        caseDataBuilder.willAccessNotarial(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagSetToYesWhenAppTypeIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(SOLICITOR);
-        caseDataBuilder.caseType(DocumentCaseType.INTESTACY.getCaseType());
-        caseDataBuilder.solsApplicantRelationshipToDeceased("ChildAdopted");
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
-    }
-
-    @Test
-    void caseHandedOffFlagSetToYesWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
-        caseDataBuilder.caseHandedOffToLegacySite(null);
-        caseDataBuilder.titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE);
-        caseDataBuilder.applicationType(PERSONAL);
-        caseDataBuilder.caseType(DocumentCaseType.INTESTACY.getCaseType());
-        caseDataBuilder.primaryApplicantRelationshipToDeceased("adoptedChild");
-        caseDataBuilder.primaryApplicantAdoptionInEnglandOrWales(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
-
-        assertEquals(YES, callbackResponse.getData().getCaseHandedOffToLegacySite());
     }
 }
