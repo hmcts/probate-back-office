@@ -456,7 +456,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "numberOfDeathRecords", "Label": "Number of death records", "FieldType": "Number",  "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deathRecords", "Label": "Deceased", "FieldType": "Collection", "FieldTypeParameter": "DeathRecord", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicantOrganisationPolicy", "Label": "Applicant Solicitor Details", "FieldType": "OrganisationPolicy", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "movedIntoDormantDateTime", "Label": "Moved to Dormant Date and Time", "FieldType": "DateTime", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "movedIntoDormantDateTime", "Label": "Moved to Dormant Date and Time", "FieldType": "DateTime", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "letterType", "Label": "What type of letter do you want to assemble?", "FieldType": "FixedRadioList", "FieldTypeParameter": "LetterType", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "letterText", "Label": "Blank letter", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseworkerName", "Label": "Caseworker", "FieldType": "Text", "SecurityClassification": "Public"},
