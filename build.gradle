@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.6.7'
+    springBootVersion = '2.6.10'
   }
   repositories {
     jcenter()
@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.6.7'
+  id 'org.springframework.boot' version '2.6.10'
   id 'uk.gov.hmcts.java' version '0.12.2'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
@@ -157,7 +157,7 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.6.6',
+        springBootVersion               : '2.6.10',
         springBootStarterHateoas        : '2.6.3',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
@@ -221,14 +221,11 @@ dependencyManagement {
 configurations.all {
   resolutionStrategy {
     eachDependency { DependencyResolveDetails details ->
-      if (details.requested.group in ['org.apache.tomcat.embed']) {
-        details.useVersion '9.0.63'
-      }
       if (details.requested.group in ['org.hibernate']) {
         details.useVersion '5.6.5.Final'
       }
       if (details.requested.group in ['org.apache.logging.log4j']) {
-        details.useVersion '2.17.1'
+        details.useVersion '2.18.0'
       }
     }
   }
@@ -276,7 +273,7 @@ dependencies {
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.6.4'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.10.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
@@ -289,7 +286,7 @@ dependencies {
 
   implementation group: 'uk.gov.hmcts.reform', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
-  implementation ('org.postgresql:postgresql:42.3.3') {
+  implementation ('org.postgresql:postgresql:42.4.1') {
     exclude module: 'slf4j-simple'
   }
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct

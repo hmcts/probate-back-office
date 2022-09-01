@@ -125,6 +125,9 @@ public enum DocumentType {
     @JsonProperty("assembledLetter")
     ASSEMBLED_LETTER("assembledLetter"),
 
+    @JsonProperty("blankLetter")
+    BLANK_LETTER("blankLetter"),
+
     @JsonProperty("welshDigitalGrantDraft")
     WELSH_DIGITAL_GRANT_DRAFT("welshDigitalGrantDraft"),
 

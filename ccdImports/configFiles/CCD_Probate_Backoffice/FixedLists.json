@@ -108,6 +108,7 @@
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "statementOfTruth", "ListElement": "Legal Statement"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "welshStatementOfTruth", "ListElement": "Legal Statement"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "assembledLetter", "ListElement": "Assembled Letter"},
+  {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "blankLetter", "ListElement": "Blank Letter"},
   {"LiveFrom": "01/01/2017", "ID": "probateDocumentTypeEnum", "ListElementCode": "other", "ListElement": "Other"},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "email", "ListElement": "Email", "DisplayOrder": 1},
   {"LiveFrom": "01/01/2017", "ID": "documentUploadTypeEnum", "ListElementCode": "correspondence", "ListElement": "Correspondence", "DisplayOrder": 2},
@@ -347,5 +348,7 @@
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "paperClipMarks", "ListElement": "Paper clip marks"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "tornEdges", "ListElement": "Torn edges"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "waterDamage", "ListElement": "Water damage"},
-  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"}
+  {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"},
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "blank", "ListElement": "Blank letter", "DisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2}
 ]
