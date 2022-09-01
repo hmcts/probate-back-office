@@ -46,6 +46,7 @@ public class DocumentTransformer {
             case SOT_INFORMATION_REQUEST:
             case GRANT_COVER:
             case ASSEMBLED_LETTER:
+            case BLANK_LETTER:
             case WELSH_DIGITAL_GRANT_DRAFT:
             case WELSH_DIGITAL_GRANT:
             case WELSH_ADMON_WILL_GRANT_DRAFT:
