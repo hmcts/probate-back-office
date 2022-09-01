@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.service;
+package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Component
 @RequiredArgsConstructor
-public class HandOffLegacyService {
+public class HandOffLegacyTransformer {
 
     public void setHandOffToLegacySiteYes(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();

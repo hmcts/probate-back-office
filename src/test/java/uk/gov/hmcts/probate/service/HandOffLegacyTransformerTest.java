@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -21,10 +22,10 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @ExtendWith(MockitoExtension.class)
-class HandOffLegacyServiceTest {
+class HandOffLegacyTransformerTest {
 
     @InjectMocks
-    private HandOffLegacyService handOffLegacyService;
+    private HandOffLegacyTransformer handOffLegacyTransformer;
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
@@ -46,7 +47,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(NO, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -60,7 +61,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(NO, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -75,7 +76,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -90,7 +91,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -107,7 +108,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -124,7 +125,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -141,7 +142,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -159,7 +160,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -176,7 +177,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -193,7 +194,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
@@ -210,7 +211,7 @@ class HandOffLegacyServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        handOffLegacyService.setHandOffToLegacySiteYes(callbackRequestMock);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
         assertEquals(YES, callbackRequestMock.getCaseDetails().getData().getCaseHandedOffToLegacySite());
     }
