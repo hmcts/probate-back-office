@@ -26,7 +26,7 @@ const {
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Caseworker Grant of Representation - probateman case match';
 Scenario(scenarioName, async function ({I}) {
-    if(testConfig.TestBackOfficeUrl.includes("demo") || testConfig.TestBackOfficeUrl.includes("aat")  ) {
+    if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')) {
         let endState;
         await I.logInfo(scenarioName, 'Login as Caseworker');
         await I.authenticateWithIdamIfAvailable(false);
