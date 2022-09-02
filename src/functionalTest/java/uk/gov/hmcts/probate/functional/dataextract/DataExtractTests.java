@@ -151,8 +151,8 @@ public class DataExtractTests extends IntegrationTestBase {
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeaders(email, password, id))
-            .queryParam("fromDate", "2022-04-21")
-            .queryParam("toDate", "2022-04-21")
+            .queryParam("fromDate", "2019-02-03")
+            .queryParam("toDate", "2019-02-03")
             .when()
             .post(SMEE_AND_FORD_URL)
             .then().assertThat().statusCode(202);

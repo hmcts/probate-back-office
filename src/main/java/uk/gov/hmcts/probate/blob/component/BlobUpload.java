@@ -24,7 +24,6 @@ public class BlobUpload {
 
     public void uploadFile(File blobFile) {
 
-        log.info("Blob connection : " + storageConnectionString);
         // Create a BlobServiceClient object which will be used to create a container client
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
             .connectionString(storageConnectionString).buildClient();
