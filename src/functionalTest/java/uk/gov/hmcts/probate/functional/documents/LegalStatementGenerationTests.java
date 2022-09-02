@@ -190,7 +190,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     public void verifySoTIndividualExecutorPowerReserved() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("executor4_name, another executor named in the will or codicils,"
+        assertTrue(response.contains("executor4_name, another executor named in the will,"
             + " is not making this application but reserves power to do so at a later date."));
     }
 
@@ -198,7 +198,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     public void verifySoTIndividualExecutorRenunciation() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
-        assertTrue(response.contains("executor3_name, another executor named in the will or codicils, "
+        assertTrue(response.contains("executor3_name, another executor named in the will, "
             + "has renounced probate and letters "
             + "of administration with will annexed"));
     }
@@ -208,10 +208,10 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-            "executor1_name, another executor named in the will or codicils, "
+            "executor1_name, another executor named in the will, "
             + "has died in the lifetime of the deceased."));
         assertTrue(response.contains(
-            "executor2_name, another executor named in the will or codicils, "
+            "executor2_name, another executor named in the will, "
             + "has survived the deceased and died since."));
     }
 
@@ -220,7 +220,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-            "executor5_name, another executor named in the will or codicils, lacks capacity to manage their"
+            "executor5_name, another executor named in the will, lacks capacity to manage their"
                 + " affairs under the Mental Capacity Act 2005 and is unable to act as an executor."));
     }
 

@@ -84,6 +84,20 @@
       "willAccessOriginal": "Yes",
       "willHasCodicils": "Yes",
       "willNumberOfCodicils": "3",
+      "codicilAddedDateList": [
+        {
+          "id": "2c0e2c04-20f5-472f-a45b-19112848eb73",
+          "value": {
+            "dateCodicilAdded": "1992-10-10"
+          }
+        },
+        {
+          "id": "2cae88b6-80e7-4261-9c85-994e90a1299c",
+          "value": {
+            "dateCodicilAdded": "1992-10-15"
+          }
+        }
+      ],
       "primaryApplicantForenames": "FirstName",
       "primaryApplicantSurname": "LastName",
       "primaryApplicantHasAlias": "No",

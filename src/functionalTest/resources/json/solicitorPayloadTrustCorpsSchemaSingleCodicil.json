@@ -116,6 +116,14 @@
         "document_binary_url": "http://dm-store:8080/documents/ab58aaa7-f422-4613-b87c-22c19c30e7b1/binary"
       },
       "willNumberOfCodicils": "1",
+      "codicilAddedDateList": [
+        {
+          "id": "2c0e2c04-20f5-472f-a45b-19112848eb73",
+          "value": {
+            "dateCodicilAdded": "1992-10-10"
+          }
+        }
+      ],
       "boCaveatStopSendToBulkPrint": "Yes",
       "boRequestInfoSendToBulkPrint": "Yes",
       "probateSotDocumentsGenerated": [],
