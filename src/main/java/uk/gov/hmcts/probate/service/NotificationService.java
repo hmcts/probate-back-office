@@ -122,9 +122,14 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR) && !StringUtils
-            .isEmpty(caseData.getSolsSOTName())) {
-            personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
+                    .isEmpty(caseData.getSolsSOTSurname())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME,
+                        String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+            }
         }
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);

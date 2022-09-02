@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import static uk.gov.hmcts.probate.model.DocumentType.BLANK_LETTER;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -479,6 +480,16 @@ class DocumentTransformerTest {
 
         documentTransformer
             .addDocument(callbackRequest, Document.builder().documentType(ASSEMBLED_LETTER).build(), false);
+
+        assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
+    }
+
+    @Test
+    public void shouldAddBlankLetterToGeneratedDocuments() {
+        assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
+
+        documentTransformer
+            .addDocument(callbackRequest, Document.builder().documentType(BLANK_LETTER).build(), false);
 
         assertEquals(1, callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().size());
     }
