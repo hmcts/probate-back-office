@@ -469,8 +469,6 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> defaulsSolicitorNextStepsForLegalStatementRegeneration(
         @RequestBody CallbackRequest callbackRequest) {
 
-        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
-
         return ResponseEntity
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
     }

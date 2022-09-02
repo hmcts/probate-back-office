@@ -59,4 +59,10 @@ public class LifeEventController {
         lifeEventValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
+
+    @PostMapping(path = "/handOffToLegacySite")
+    public ResponseEntity<CallbackResponse> handOffToLegacySite(@RequestBody CallbackRequest request) {
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(request);
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+    }
 }
