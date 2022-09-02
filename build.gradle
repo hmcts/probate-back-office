@@ -22,7 +22,7 @@ plugins {
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.280'
+  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
 }
 
 apply plugin: 'project-report'

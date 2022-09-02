@@ -16,7 +16,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: branch
-          path: build/branch/ccdImports/configFiles/*
+          path: build/branch/ccdImports/configFiles/CCD_Probate_Backoffice
 
   buildMaster:
     runs-on: ubuntu-latest
@@ -28,7 +28,7 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: master
-          path: build/master/ccdImports/configFiles/*
+          path: build/master/ccdImports/configFiles/CCD_Probate_Backoffice
 
   report:
     runs-on: ubuntu-latest
