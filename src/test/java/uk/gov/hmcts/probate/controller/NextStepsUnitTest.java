@@ -107,7 +107,7 @@ class NextStepsUnitTest {
     @Mock
     Document coversheetMock;
     @Mock
-    HandOffLegacyTransformer handOffLegacyTransformerMock;
+    private HandOffLegacyTransformer handOffLegacyTransformerMock;
 
     private static final String AUTH = "Auth";
 
