@@ -47,6 +47,12 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String DOMICILITY_SENTENCE_NON_UK = "The gross value for the estate in England and Wales";
     private static final String FIRM_AUTHORISATION = "They have authorised Firm Name to sign a statement";
     private static final String WILL_NO_CODICILS = "and is named in the will as";
+    private static final String WILL_WITH_CODICIL =
+            "which was settled previously to the death (and not by the will and codicil)";
+    private static final String WILL_WITH__MULTIPLE_CODICILS =
+            "which was settled previously to the death (and not by the will and codicils)";
+    private static final String WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION =
+            "there are no beneficiaries under the age of 18 named in the will and codicil";
     private static final String SIGNED_DATE = ", signed and dated 1st January 2021";
 
     private static final String NO_DUPE_SOL_EXECUTORS = "solicitorPayloadLegalStatementNoDuplicateExecsCheck.json";
@@ -66,7 +72,10 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private static final String DEFAULT_SOLS_PDF_ADMON_PAYLOAD = "solicitorPDFPayloadAdmonWill.json";
     private static final String ADMON_PAYLOAD_WILL_AND_CODICILS_DATES =
         "solicitorPDFPayloadAdmonWillWithWillAndCodicilDates.json";
-
+    private static final String ADMON_PAYLOAD_WILL_AND_ONE_CODICILS =
+            "solicitorPDFPayloadAdmonWillWithOneCodicil.json";
+    private static final String ADMON_PAYLOAD_WILL_AND_MULTIPLE_CODICILS =
+            "solicitorPDFPayloadAdmonWillWithMultipleCodicils.json";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
 
@@ -145,6 +154,38 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(WILL_NO_CODICILS));
         assertTrue(response.contains(SIGNED_DATE));
         assertTrue(response.contains(CODICIL_DATES));
+    }
+
+    @Test
+    public void verifySuccessForAdmonWillWithWillAndOneCodicilAdded() throws IOException {
+        final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_ONE_CODICILS, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(response.contains(WILL_WITH_CODICIL));
+        assertTrue(response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION));
+    }
+
+    @Test
+    public void verifySuccessForAdmonWillWithWillAndMultipleCodicilAdded() throws IOException {
+        final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(response.contains(WILL_WITH__MULTIPLE_CODICILS));
+    }
+
+    @Test
+    public void verifySuccessForAdmonWillWithWillAndNoCodicil() throws IOException {
+        final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
+
+        assertTrue(response.contains(LEGAL_STATEMENT));
+        assertTrue(response.contains(DOMICILITY_SENTENCE_UK));
+        assertTrue(response.contains(FIRM_AUTHORISATION));
+        assertTrue(!response.contains(WILL_WITH_CODICIL));
+        assertTrue(!response.contains(WILL_WITH_CODICIL_LETTERS_OF_ADMINISTRATION));
     }
 
     @Test
