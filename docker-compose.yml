@@ -449,7 +449,7 @@ services:
     build:
       context: .
     environment:
-      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,address=*:8001,server=y,suspend=n -Xms128m -Xmx400m
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
       S2S_AUTH_URL: http://service-auth-provider-api:8080
       SPRING_DATASOURCE_URL: jdbc:postgresql://shared-database:5432/probate_man
@@ -473,7 +473,6 @@ services:
       CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
     ports:
       - 4104:4104
-      - 8001:8001
     depends_on:
       - sidam-api
       - shared-database
