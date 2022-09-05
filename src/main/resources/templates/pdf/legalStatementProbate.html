@@ -146,7 +146,7 @@
             {% if case_extras != null %}
                 {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
-            <p>To the best of {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will{% if numberOfCodicils == 1 %} and codicil{% elseif numberOfCodicils > 1 %} and codicils{% endif %}) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
+            <p>To the best of {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} and codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} and codicils{% endif %}) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
 
@@ -163,7 +163,7 @@
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
             <p>
                 {{ executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorLastName }},
-                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if numberOfCodicils == 1 %} and codicil{% elseif numberOfCodicils > 1 %} and codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} and codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} and codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 is applying for probate.
             </p>
             {% endfor %}
