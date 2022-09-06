@@ -3650,7 +3650,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldWipeCodicilAddedDateForNoCodicil(){
+    void shouldWipeCodicilAddedDateForNoCodicil() {
         caseDataBuilder.willHasCodicils(NO);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -3662,7 +3662,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldWipeCodicilAddedDateForNoCodicilDoTransform(){
+    void shouldWipeCodicilAddedDateForNoCodicilDoTransform() {
         caseDataBuilder.willHasCodicils(NO);
         caseDataBuilder.recordId(null);
         caseDataBuilder.paperForm(NO);
