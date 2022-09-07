@@ -442,7 +442,8 @@ document_management:
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
 
 dormancy:
-  period_months: 6
+  period_months: 0
+  start_date: 2022-09-05
 
 make_dormant:
   add_time_minutes: 5

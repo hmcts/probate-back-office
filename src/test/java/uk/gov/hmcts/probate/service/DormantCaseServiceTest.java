@@ -60,12 +60,12 @@ class DormantCaseServiceTest {
                 .serviceAuthorisation("S2S")
                 .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01")).thenReturn(caseList);
-        dormantCaseService.makeCasesDormant("2022-01-01");
+        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10")).thenReturn(caseList);
+        dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
                  any(), any(), any(), any());
-        assertEquals(1, caseQueryService.findCaseToBeMadeDormant("2022-01-01").size());
+        assertEquals(1, caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10").size());
     }
 
     @Test
@@ -76,9 +76,9 @@ class DormantCaseServiceTest {
                 .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         List<ReturnedCaseDetails> results = new ArrayList<>();
-        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01")).thenReturn(results);
-        dormantCaseService.makeCasesDormant("2022-01-01");
-        assertEquals(0, caseQueryService.findCaseToBeMadeDormant("2022-01-01").size());
+        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10")).thenReturn(results);
+        dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
+        assertEquals(0, caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10").size());
     }
 
     @Test
@@ -116,11 +116,11 @@ class DormantCaseServiceTest {
                 .serviceAuthorisation("S2S")
                 .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01")).thenReturn(caseList);
+        when(caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10")).thenReturn(caseList);
         doThrow(new NullPointerException()).when(ccdClientApi)
                 .updateCaseAsCaseworker(any(), any(), any(),
                         any(), any(), any(), any());
-        dormantCaseService.makeCasesDormant("2022-01-01");
+        dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
                         any(), any(), any(), any());

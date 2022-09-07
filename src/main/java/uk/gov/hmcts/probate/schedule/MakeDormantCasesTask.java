@@ -21,16 +21,18 @@ public class MakeDormantCasesTask implements Runnable {
     private final DormantCaseService dormantCaseService;
     @Value("${dormancy.period_months}")
     private int dormancyPeriodMonths;
+    @Value("${dormancy.start_date}")
+    private String dormancyStartDate;
 
     @Override
     public void run() {
         log.info("Scheduled task MakeDormantCasesTask started to make dormant cases");
-        final String date = DATE_FORMAT.format(LocalDate.now().minusMonths(dormancyPeriodMonths));
-        log.info("Calling perform make dormant from date, to date {} {}", date, date);
+        final String endDate = DATE_FORMAT.format(LocalDate.now().minusMonths(dormancyPeriodMonths));
+        log.info("Calling perform make dormant from date, to date {} {}", dormancyStartDate, endDate);
         try {
-            dataExtractDateValidator.dateValidator(date, date);
+            dataExtractDateValidator.dateValidator(dormancyStartDate, endDate);
             log.info("Perform make dormant from date started");
-            dormantCaseService.makeCasesDormant(date);
+            dormantCaseService.makeCasesDormant(dormancyStartDate, endDate);
             log.info("Perform make dormant from date finished");
         } catch (ApiClientException e) {
             log.error(e.getMessage());

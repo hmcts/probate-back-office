@@ -33,10 +33,12 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
     @InjectMocks
     private MakeDormantCasesTask makeDormantCasesTask;
     private static final String date = DATE_FORMAT.format(LocalDate.now().minusMonths(6L));
+    private String fromDate = "2022-09-05";
 
     @BeforeEach
     public void setUp() throws Exception {
         ReflectionTestUtils.setField(makeDormantCasesTask, "dormancyPeriodMonths", 6);
+        ReflectionTestUtils.setField(makeDormantCasesTask, "dormancyStartDate", "2022-09-05");
     }
 
     @Test
@@ -46,25 +48,25 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
         makeDormantCasesTask.run();
         assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
         assertEquals("Perform make dormant finished", responseEntity.getBody());
-        verify(dataExtractDateValidator).dateValidator(date,date);
-        verify(dormantCaseService).makeCasesDormant(date);
+        verify(dataExtractDateValidator).dateValidator(fromDate, date);
+        verify(dormantCaseService).makeCasesDormant(fromDate, date);
     }
 
     @Test
      void shouldThrowClientExceptionWithBadRequestForMakeDormantCasesWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
-                .dateValidator(date, date);
+                .dateValidator(fromDate, date);
         makeDormantCasesTask.run();
-        verify(dataExtractDateValidator).dateValidator(date,date);
+        verify(dataExtractDateValidator).dateValidator(fromDate,date);
         verifyNoInteractions(dormantCaseService);
     }
 
     @Test
     void shouldThrowNullPointerExceptionForMakeDormantCases() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
-                .dateValidator(date, date);
+                .dateValidator(fromDate, date);
         makeDormantCasesTask.run();
-        verify(dataExtractDateValidator).dateValidator(date,date);
+        verify(dataExtractDateValidator).dateValidator(fromDate,date);
         verifyNoInteractions(dormantCaseService);
     }
 

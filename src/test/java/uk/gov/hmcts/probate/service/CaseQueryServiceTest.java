@@ -289,7 +289,7 @@ class CaseQueryServiceTest {
                 returnedCases3);
 
         List<ReturnedCaseDetails> cases = caseQueryService
-                .findCaseToBeMadeDormant("2022-01-01");
+                .findCaseToBeMadeDormant("2022-01-01", "2022-01-10");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.get(0).getId().intValue());

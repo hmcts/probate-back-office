@@ -29,9 +29,9 @@ public class DormantCaseService {
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
 
-    public void makeCasesDormant(String date) {
-        log.info("Make Dormant for date: {}", date);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeMadeDormant(date);
+    public void makeCasesDormant(String dormancyStartDate, String enddate) {
+        log.info("Make Dormant upto date: {}", enddate);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeMadeDormant(dormancyStartDate, enddate);
         log.info("Found {} cases with dated document for Make Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
