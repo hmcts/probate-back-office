@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
@@ -16,11 +17,13 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP_SDJ;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class HandOffLegacyTransformer {
 
     public void setHandOffToLegacySiteYes(CallbackRequest callbackRequest) {
+        log.info("in setHandOffToLegacySiteYes, caseId={}", callbackRequest.getCaseDetails().getId());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
