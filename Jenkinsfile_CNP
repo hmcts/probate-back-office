@@ -3,7 +3,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure")
+@Library("Infrastructure@renovate/openjdk-18.x")
 
 String product = "probate"
 String component = "back-office"
