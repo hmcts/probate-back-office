@@ -22,7 +22,7 @@ plugins {
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.350'
 }
 
 apply plugin: 'project-report'
@@ -453,7 +453,6 @@ task buildBackOfficeXlsx(type: Exec) {
 }
 
 bootWithCCD {
-  dependsOn buildBackOfficeXlsx
   authMode = uk.gov.hmcts.rse.AuthMode.Local
   // Request the cftlib create the probate_man database
   environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
@@ -463,6 +462,7 @@ bootWithCCD {
   environment 'PROBATE_POSTGRESQL_PORT', '6432'
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
+  environment 'COMPOSE_PROFILES', 'localAuth'
 }
 
 bootJar {
