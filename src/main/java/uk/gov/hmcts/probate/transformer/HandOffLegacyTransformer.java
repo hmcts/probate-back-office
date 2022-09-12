@@ -23,7 +23,9 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 public class HandOffLegacyTransformer {
 
     public void setHandOffToLegacySiteYes(CallbackRequest callbackRequest) {
-        log.info("in setHandOffToLegacySiteYes, caseId={}", callbackRequest.getCaseDetails().getId());
+        log.info("in setHandOffToLegacySiteYes, caseId={}, getCaseHandedOffToLegacySite={}",
+                callbackRequest.getCaseDetails().getId(),
+                callbackRequest.getCaseDetails().getData().getCaseHandedOffToLegacySite());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
         if (StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
