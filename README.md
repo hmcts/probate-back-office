@@ -1,7 +1,8 @@
 # Probate Back Office
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Sols-CCD-Service-API&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Sols-CCD-Service-API) [![Security Rating](https://sonarcloud.io/api/project_badges/measure?project=Sols-CCD-Service-API&metric=security_rating)](https://sonarcloud.io/summary/new_code?id=Sols-CCD-Service-API) [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=Sols-CCD-Service-API&metric=vulnerabilities)](https://sonarcloud.io/summary/new_code?id=Sols-CCD-Service-API) [![Maintainability Rating](https://sonarcloud.io/api/project_badges/measure?project=Sols-CCD-Service-API&metric=sqale_rating)](https://sonarcloud.io/summary/new_code?id=Sols-CCD-Service-API) [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Sols-CCD-Service-API&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Sols-CCD-Service-API)
 
-Short explanation of what Probate Back Office is and what it does.
+The Probate Back Office handles callbacks from the CCD data store to implement business logic for the Probate case type.
+
 ## Overview
 
 <p align="center">
