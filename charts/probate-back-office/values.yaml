@@ -47,6 +47,7 @@ java:
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     PROBATE_POSTGRESQL_PORT: 5432
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: false
+    ADHOC_JOB_DATE:
   keyVaults:
     probate:
       secrets:

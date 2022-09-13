@@ -475,6 +475,8 @@ welsh:
 blobstorage:
   connection: ${BLOB_STORAGE_CONNECTION_STRING:dummy}
 
+adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+
 feature:
   blobstorage:
     smeeandford:
