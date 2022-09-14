@@ -19,6 +19,9 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.time.LocalDate;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,13 +40,16 @@ public class LifeEventCCDService {
     private DeathService deathService;
     private CcdClientApi ccdClientApi;
     private DeathRecordService deathRecordService;
+    private HandOffLegacyService handOffLegacyService;
 
     @Autowired
     public LifeEventCCDService(final DeathService deathService, final CcdClientApi ccdClientApi,
-                               final DeathRecordService deathRecordService) {
+                               final DeathRecordService deathRecordService,
+                               final HandOffLegacyService handOffLegacyService) {
         this.deathService = deathService;
         this.ccdClientApi = ccdClientApi;
         this.deathRecordService = deathRecordService;
+        this.handOffLegacyService = handOffLegacyService;
     }
 
     @Async
@@ -60,20 +66,21 @@ public class LifeEventCCDService {
                 .searchForDeathRecordsByNamesAndDate(deceasedForenames, deceasedSurname, deceasedDateOfDeath);
         } catch (Exception e) {
             log.error("Error during LEV call", e);
-            updateCCDLifeEventVerificationError(caseId, securityDTO);
+            updateCCDLifeEventVerificationError(caseDetails, caseId, securityDTO);
             throw e;
         }
         log.info("LEV Records returned: " + records.size());
         if (1 == records.size()) {
-            updateCCDLifeEventVerified(caseId, records, securityDTO);
+            updateCCDLifeEventVerified(caseDetails, caseId, records, securityDTO);
         } else if (records.isEmpty()) {
-            updateCCDLifeEventVerificationNoRecordsFound(caseId, securityDTO);
+            updateCCDLifeEventVerificationNoRecordsFound(caseDetails, caseId, securityDTO);
         } else {
-            updateCCDLifeEventVerificationMultipleRecordsFound(caseId, records, securityDTO);
+            updateCCDLifeEventVerificationMultipleRecordsFound(caseDetails, caseId, records, securityDTO);
         }
     }
 
-    private void updateCCDLifeEventVerified(final String caseId,
+    private void updateCCDLifeEventVerified(final CaseDetails caseDetails,
+                                            final String caseId,
                                             final List<V1Death> records,
                                             final SecurityDTO securityDTO) {
 
@@ -82,6 +89,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
+            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -95,14 +103,20 @@ public class LifeEventCCDService {
         );
     }
 
-    private void updateCCDLifeEventVerificationNoRecordsFound(final String caseId, final SecurityDTO securityDTO) {
+    private void updateCCDLifeEventVerificationNoRecordsFound(final CaseDetails caseDetails,
+                                                              final String caseId, final SecurityDTO securityDTO) {
+
+        final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
+            .builder()
+            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
+            .build();
 
         log.info("LEV updateCCDLifeEventVerificationNoRecordsFound: " + caseId);
 
         ccdClientApi.updateCaseAsCitizen(
             CcdCaseType.GRANT_OF_REPRESENTATION,
             caseId,
-            null,
+            grantOfRepresentationData,
             EventId.DEATH_RECORD_VERIFICATION_FAILED,
             securityDTO,
             LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION,
@@ -110,7 +124,8 @@ public class LifeEventCCDService {
         );
     }
 
-    private void updateCCDLifeEventVerificationMultipleRecordsFound(final String caseId,
+    private void updateCCDLifeEventVerificationMultipleRecordsFound(final CaseDetails caseDetails,
+                                                                    final String caseId,
                                                                     final List<V1Death> records,
                                                                     final SecurityDTO securityDTO) {
 
@@ -119,6 +134,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
+            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -132,19 +148,34 @@ public class LifeEventCCDService {
         );
     }
 
-    private void updateCCDLifeEventVerificationError(final String caseId,
+    private void updateCCDLifeEventVerificationError(final CaseDetails caseDetails,
+                                                     final String caseId,
                                                      final SecurityDTO securityDTO) {
 
         log.info("LEV updateCCDLifeEventVerificationError: " + caseId);
 
+        final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
+            .builder()
+            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
+            .build();
+
         ccdClientApi.updateCaseAsCitizen(
+
+
             CcdCaseType.GRANT_OF_REPRESENTATION,
             caseId,
-            null,
+            grantOfRepresentationData,
             EventId.DEATH_RECORD_VERIFICATION_FAILED,
             securityDTO,
             LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION,
             LIFE_EVENT_VERIFICATION_ERROR_SUMMARY
         );
+    }
+
+    private String setGorHandOffToLegacySite(CaseDetails caseDetails) {
+        if (this.handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails)) {
+            return YES;
+        }
+        return NO;
     }
 }

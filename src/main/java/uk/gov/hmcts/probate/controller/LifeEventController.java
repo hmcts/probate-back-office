@@ -34,7 +34,6 @@ public class LifeEventController {
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
         final CaseDetails caseDetails = request.getCaseDetails();
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityUtils.getSecurityDTO());
-        handOffLegacyTransformer.setHandOffToLegacySiteYes(request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
