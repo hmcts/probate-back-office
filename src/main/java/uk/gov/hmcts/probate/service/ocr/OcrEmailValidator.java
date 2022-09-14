@@ -1,7 +1,7 @@
 package uk.gov.hmcts.probate.service.ocr;
 
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.EmailValidationService;
 
 import java.util.HashMap;
@@ -41,13 +41,13 @@ public class OcrEmailValidator {
         emailFields.put(FOURTH_APPLYING_EMAIL_ADDRESS, FOURTH_APPLYING_EMAIL_DESCRIPTION);
     }
 
-    public List<String> validateField(List<OCRField> ocrFields) {
+    public List<String> validateField(List<OcrDataField> ocrFields) {
         return ocrFields
             .stream()
-            .filter(f -> emailFields.containsKey(f.getName()))
-            .filter(f -> isNotValid(f.getValue()))
+            .filter(f -> emailFields.containsKey(f.name()))
+            .filter(f -> isNotValid(f.value()))
             .map(
-                f -> format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, emailFields.get(f.getName()), f.getName()))
+                f -> format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, emailFields.get(f.name()), f.name()))
             .collect(toList());
     }
 

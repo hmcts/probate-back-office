@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.CitizenMandatoryFieldsValidatorV2;
 import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
@@ -40,7 +40,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testAllMandatoryFieldsPresentPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -49,7 +49,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingMandatoryFieldsReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addDeceasedMandatoryFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addDeceasedMandatoryFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -58,19 +58,19 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testOptionalFieldsNotAddedForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("non-mandatoryField", "test");
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
         assertEquals(0, warnings.size());
-        ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
+        ocrFields.add(new OcrDataField("non-mandatoryField", "test"));
     }
 
     @Test
     void testFieldDescriptionIsAddedToMissingValueListForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("solsSolicitorIsApplying");
 
@@ -82,7 +82,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testAllMandatoryFieldsPresentPA1ACitizenV2() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         ocrFieldTestUtils.addAllV2Data(ocrFields);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
@@ -95,7 +95,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingMandatoryFieldsForPA1ACitizenV2() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
 

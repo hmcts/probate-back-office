@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ASolicitorMandatoryFieldsValidator;
@@ -22,7 +22,7 @@ import static org.mockito.Mockito.verify;
 
 class OCRToCCDMandatoryFieldTest {
 
-    private List<OCRField> ocrFields;
+    private List<OcrDataField> ocrFields;
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
 
     @Mock

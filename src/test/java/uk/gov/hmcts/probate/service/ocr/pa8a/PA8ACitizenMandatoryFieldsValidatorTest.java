@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ class PA8ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testAllMandatoryFieldsPresentPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa8ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -37,7 +37,7 @@ class PA8ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingMandatoryFieldsReturnSuccessfullyForPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addDeceasedMandatoryFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addDeceasedMandatoryFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa8ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -46,8 +46,8 @@ class PA8ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testOptionalFieldsNotAddedForPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
-        ocrFields.add(OCRField.builder().name("non-mandatoryField").value("test").description("test").build());
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
+        ocrFields.add(new OcrDataField("non-mandatoryField", "test"));
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa8ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -56,7 +56,7 @@ class PA8ACitizenMandatoryFieldsValidatorTest {
 
     @Test
     void testFieldDescriptionIsAddedToMissingValueListForPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatCitizenFields();
         ocrFields.remove(ocrFields.size() - 1);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 

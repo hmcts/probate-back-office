@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -17,7 +18,6 @@ import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
@@ -157,11 +157,11 @@ public class ExceptionRecordService {
                 new CaveatDetails(exceptionRecordCaveatDetails.getData(), null,
                         exceptionRecordCaveatDetails.getExceptionRecordId());
         HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
-        List<OCRField> ocrFields = erRequest.getOcrFields();
+        List<OcrDataField> ocrFields = erRequest.getOcrFields();
         String caseReference = null;
 
         ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
+            ocrFieldValues.put(ocrField.name(), ocrField.value());
         });
 
         try {

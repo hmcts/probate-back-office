@@ -7,8 +7,8 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 
@@ -48,17 +48,13 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldCheckIht207CompletedIfIht400421completedFalse() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("true")
-            .description("IHT Completed").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "true"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
@@ -72,27 +68,15 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldCheckDateOfDeathAgainstSwitchDate() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("true")
-            .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("01012021")
-            .description("deceasedDateOfDeath").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(deceasedDateOfDeath);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "true"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012021"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -106,22 +90,13 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldNotCheckDateOfDeathAgainstSwitchDate() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("01012021")
-            .description("deceasedDateOfDeath").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDateOfDeath);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012021"));
+            }
+        };
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
@@ -130,27 +105,14 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldCheckSwitchDateAndIHTEstateFields() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("true")
-            .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-            .name("deceasedDateOfDeath")
-            .value("01012022")
-            .description("deceasedDateOfDeath").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(deceasedDateOfDeath);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "true"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012022"));
+            }
+        };
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
@@ -180,37 +142,17 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     public void shouldCheckSwitchDateAndIHTEstateFieldsWithUnusedAllowanceForWidowedNvq() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-                .name("iht400421completed")
-                .value("false")
-                .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-                .name("iht207completed")
-                .value("false")
-                .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-                .name("deceasedDiedOnAfterSwitchDate")
-                .value("true")
-                .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-                .name("deceasedDateOfDeath")
-                .value("01012022")
-                .description("deceasedDateOfDeath").build();
-        OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMartialStatus")
-                .value("widowed")
-                .description("deceasedMartialStatus").build();
-        OCRField ihtEstateNetQualifyingValue = OCRField.builder()
-                .name("ihtEstateNetQualifyingValue")
-                .value("50000000")
-                .description("ihtEstateNetQualifyingValue").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(deceasedDateOfDeath);
-        ocrFields.add(deceasedMaritalStatus);
-        ocrFields.add(ihtEstateNetQualifyingValue);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "true"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012022"));
+                add(new OcrDataField("deceasedMartialStatus", "widowed"));
+                add(new OcrDataField("ihtEstateNetQualifyingValue", "50000000"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(ihtEstateValidationRule.isNqvBetweenValues(any())).thenReturn(true);
 
@@ -244,37 +186,17 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     public void shouldCheckSwitchDateAndIHTEstateFieldsWithNoUnusedAllowanceForWidowedNvq() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-                .name("iht400421completed")
-                .value("false")
-                .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-                .name("iht207completed")
-                .value("false")
-                .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-                .name("deceasedDiedOnAfterSwitchDate")
-                .value("true")
-                .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-                .name("deceasedDateOfDeath")
-                .value("01012022")
-                .description("deceasedDateOfDeath").build();
-        OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMartialStatus")
-                .value("widowed")
-                .description("deceasedMartialStatus").build();
-        OCRField ihtEstateNetQualifyingValue = OCRField.builder()
-                .name("ihtEstateNetQualifyingValue")
-                .value("10000000")
-                .description("ihtEstateNetQualifyingValue").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(deceasedDateOfDeath);
-        ocrFields.add(deceasedMaritalStatus);
-        ocrFields.add(ihtEstateNetQualifyingValue);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "true"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012022"));
+                add(new OcrDataField("deceasedMartialStatus", "widowed"));
+                add(new OcrDataField("ihtEstateNetQualifyingValue", "10000000"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(ihtEstateValidationRule.isNqvBetweenValues(any())).thenReturn(false);
 
@@ -306,37 +228,17 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     public void shouldCheckSwitchDateAndIHTEstateFieldsWithUnusedAllowanceForNvq() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-                .name("iht400421completed")
-                .value("false")
-                .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-                .name("iht207completed")
-                .value("false")
-                .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-                .name("deceasedDiedOnAfterSwitchDate")
-                .value("true")
-                .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-                .name("deceasedDateOfDeath")
-                .value("01012022")
-                .description("deceasedDateOfDeath").build();
-        OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMartialStatus")
-                .value("neverMarried")
-                .description("deceasedMartialStatus").build();
-        OCRField ihtEstateNetQualifyingValue = OCRField.builder()
-                .name("ihtEstateNetQualifyingValue")
-                .value("10000000")
-                .description("ihtEstateNetQualifyingValue").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(deceasedDateOfDeath);
-        ocrFields.add(deceasedMaritalStatus);
-        ocrFields.add(ihtEstateNetQualifyingValue);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "true"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012022"));
+                add(new OcrDataField("deceasedMartialStatus", "neverMarried"));
+                add(new OcrDataField("ihtEstateNetQualifyingValue", "10000000"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(ihtEstateValidationRule.isNqvBetweenValues(any())).thenReturn(true);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
@@ -367,37 +269,17 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     public void shouldCheckSwitchDateAndIHTEstateFieldsWithUnusedAllowanceForNotWidowedNvq() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-                .name("iht400421completed")
-                .value("false")
-                .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-                .name("iht207completed")
-                .value("false")
-                .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-                .name("deceasedDiedOnAfterSwitchDate")
-                .value("true")
-                .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField deceasedDateOfDeath = OCRField.builder()
-                .name("deceasedDateOfDeath")
-                .value("01012022")
-                .description("deceasedDateOfDeath").build();
-        OCRField deceasedMaritalStatus = OCRField.builder()
-                .name("deceasedMartialStatus")
-                .value("neverMarried")
-                .description("deceasedMartialStatus").build();
-        OCRField ihtEstateNetQualifyingValue = OCRField.builder()
-                .name("ihtEstateNetQualifyingValue")
-                .value("50000000")
-                .description("ihtEstateNetQualifyingValue").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(deceasedDateOfDeath);
-        ocrFields.add(deceasedMaritalStatus);
-        ocrFields.add(ihtEstateNetQualifyingValue);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "true"));
+                add(new OcrDataField("deceasedDateOfDeath", "01012022"));
+                add(new OcrDataField("deceasedMartialStatus", "neverMarried"));
+                add(new OcrDataField("ihtEstateNetQualifyingValue", "50000000"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         when(ihtEstateValidationRule.isNqvBetweenValues(any())).thenReturn(true);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
@@ -428,22 +310,14 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldCheckSwitchDateAndIHT205CompletedOnline() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("false")
-            .description("deceasedDiedOnAfterSwitchDate").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "false"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
@@ -462,17 +336,12 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldNotCheckIHT205CompletedOnline() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+            }
+        };
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
@@ -490,27 +359,14 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldCheckIHTCompletedOnline() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("false")
-            .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField iht205completedOnline = OCRField.builder()
-            .name("iht205completedOnline")
-            .value("true")
-            .description("Did you complete the IHT205 online with HMRC?").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(iht205completedOnline);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "false"));
+                add(new OcrDataField("iht205completedOnline", "true"));
+            }
+        };
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =
@@ -527,32 +383,16 @@ class CitizenMandatoryFieldsValidatorV2Test {
 
     @Test
     void shouldCheckIHTFormIdSetCorrectly() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField iht400421completed = OCRField.builder()
-            .name("iht400421completed")
-            .value("false")
-            .description("IHT Completed online?").build();
-        OCRField iht207completed = OCRField.builder()
-            .name("iht207completed")
-            .value("false")
-            .description("IHT Completed").build();
-        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
-            .name("deceasedDiedOnAfterSwitchDate")
-            .value("false")
-            .description("deceasedDiedOnAfterSwitchDate").build();
-        OCRField iht205completedOnline = OCRField.builder()
-            .name("iht205completedOnline")
-            .value("false")
-            .description("Did you complete the IHT205 online with HMRC?").build();
-        OCRField ihtFormId = OCRField.builder()
-            .name("ihtFormId")
-            .value("IHT205")
-            .description("ihtFormId").build();
-        ocrFields.add(iht400421completed);
-        ocrFields.add(iht207completed);
-        ocrFields.add(deceasedDiedOnAfterSwitchDate);
-        ocrFields.add(iht205completedOnline);
-        ocrFields.add(ihtFormId);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("iht400421completed", "false"));
+                add(new OcrDataField("iht207completed", "false"));
+                add(new OcrDataField("deceasedDiedOnAfterSwitchDate", "false"));
+                add(new OcrDataField("iht205completedOnline", "false"));
+                add(new OcrDataField("ihtFormId", "IHT205"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =

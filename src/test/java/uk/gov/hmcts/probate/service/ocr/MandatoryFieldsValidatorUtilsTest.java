@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.service.ocr;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ class MandatoryFieldsValidatorUtilsTest {
     private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
     private List<String> warnings;
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
-    private List<OCRField> ocrFields;
+    private List<OcrDataField> ocrFields;
 
     @BeforeEach
     public void setup() {
@@ -55,12 +55,12 @@ class MandatoryFieldsValidatorUtilsTest {
 
     @Test
     void shouldReturnTrueIfVersion2() {
-        List<OCRField> ocrFields = new ArrayList<>();
-        OCRField formVersion = OCRField.builder()
-            .name("formVersion")
-            .value("2")
-            .build();
-        ocrFields.add(formVersion);
+        List<OcrDataField> ocrFields = new ArrayList<>() {
+            {
+                add(new OcrDataField("formVersion", "2"));
+            }
+        };
+
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         assertTrue(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues));
     }

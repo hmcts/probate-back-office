@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ASolicitorMandatoryFieldsValidator;
@@ -28,7 +28,7 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KE
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OCRToCCDMandatoryField {
+public class OCRToCCDMandatoryField  {
 
     private final PA1PCommonMandatoryFieldsValidator pa1PCommonMandatoryFieldsValidator;
     private final PA1PCitizenMandatoryFieldsValidator pa1PCitizenMandatoryFieldsValidator;
@@ -39,26 +39,19 @@ public class OCRToCCDMandatoryField {
     private final PA8ACitizenMandatoryFieldsValidator pa8ACitizenMandatoryFieldsValidator;
     private final PA8ASolicitorMandatoryFieldsValidator pa8ASolicitorMandatoryFieldsValidator;
 
-    public List<String> ocrToCCDMandatoryFields(List<OCRField> ocrFields, FormType formType) {
+    public List<String> ocrToCCDMandatoryFields(List<OcrDataField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
         Map<String, String> ocrFieldValues = new HashMap<>();
 
         ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
+            ocrFieldValues.put(ocrField.name(), ocrField.value());
         });
 
         switch (formType) {
-            case PA8A:
-                warnings.addAll(getWarningsForPA8ACase(ocrFieldValues));
-                break;
-            case PA1A:
-                warnings.addAll(getWarningsForPA1ACase(ocrFieldValues));
-                break;
-            case PA1P:
-                warnings.addAll(getWarningsForPA1PCase(ocrFieldValues));
-                break;
-            default:
-                log.error("Error '{}' does not match a known form-type.", formType);
+            case PA8A -> warnings.addAll(getWarningsForPA8ACase(ocrFieldValues));
+            case PA1A -> warnings.addAll(getWarningsForPA1ACase(ocrFieldValues));
+            case PA1P -> warnings.addAll(getWarningsForPA1PCase(ocrFieldValues));
+            default -> log.error("Error '{}' does not match a known form-type.", formType);
         }
 
         return warnings;
@@ -81,7 +74,7 @@ public class OCRToCCDMandatoryField {
     private ArrayList<String> getWarningsForPA1ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = isSolicitorForm(ocrFieldValues);
-        
+
         if (isSolicitorForm) {
             pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         } else {
@@ -94,11 +87,8 @@ public class OCRToCCDMandatoryField {
 
     private ArrayList<String> getWarningsForPA8ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
-        boolean isSolicitorForm = false;
-        if (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))
-            || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
-            isSolicitorForm = true;
-        }
+        boolean isSolicitorForm = StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))
+                || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)));
 
         if (isSolicitorForm) {
             pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
@@ -115,5 +105,4 @@ public class OCRToCCDMandatoryField {
 
         return false;
     }
-
 }

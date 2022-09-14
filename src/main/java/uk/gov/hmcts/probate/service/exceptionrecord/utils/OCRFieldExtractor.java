@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,14 +15,14 @@ public class OCRFieldExtractor {
     private OCRFieldExtractor() {
     }
 
-    public static String get(List<OCRField> ocrFields, String name) {
+    public static String get(List<OcrDataField> ocrFields, String name) {
         String response = null;
 
         try {
             response = ocrFields
                     .stream()
-                    .filter(it -> it.getName().equals(name))
-                    .map(it -> it.getValue().trim())
+                    .filter(it -> it.name().equals(name))
+                    .map(it -> it.name().trim())
                     .findFirst()
                     .orElse(null);
         } catch (NullPointerException npe) {
@@ -32,12 +32,12 @@ public class OCRFieldExtractor {
         return response;
     }
 
-    public static String get(List<OCRField> ocrFields, String name1, String name2) {
+    public static String get(List<OcrDataField> ocrFields, String name1, String name2) {
         return (get(ocrFields, name1) + " "
                 + get(ocrFields, name2)).replace("null", "").replaceAll("\\s{2,}", " ").trim();
     }
 
-    public static String get(List<OCRField> ocrFields, String name1, String name2, String name3) {
+    public static String get(List<OcrDataField> ocrFields, String name1, String name2, String name3) {
         return (get(ocrFields, name1) + " "
                 + get(ocrFields, name2) + " "
                 + get(ocrFields, name3)).replace("null", "").replaceAll("\\s{2,}", " ").trim();

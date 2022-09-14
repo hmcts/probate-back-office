@@ -3,7 +3,7 @@ package uk.gov.hmcts.probate.service.ocr;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 
 import java.util.HashMap;
 import java.util.List;
@@ -54,11 +54,7 @@ class OcrEmailValidatorTest {
     @Test
     void shouldCreateWarningForAnInvalidField() {
 
-        final OCRField field = OCRField
-            .builder()
-            .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
-            .value(RandomStringUtils.randomAlphabetic(10))
-            .build();
+        final OcrDataField field = new OcrDataField(PRIMARY_APPLICANT_EMAIL_ADDRESS, RandomStringUtils.randomAlphabetic(10));
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result.size(), is(1));
@@ -67,15 +63,10 @@ class OcrEmailValidatorTest {
 
     @Test
     void shouldCreateWarningForEachInvalidField() {
-        final List<OCRField> fields = emailFields
+        final List<OcrDataField> fields = emailFields
             .keySet()
             .stream()
-            .map(f -> OCRField
-                .builder()
-                .name(f)
-                .value(RandomStringUtils.randomAlphabetic(10))
-                .build()
-            )
+            .map(f -> new OcrDataField(f, RandomStringUtils.randomAlphabetic(10)))
             .collect(toList());
 
         final List<String> result = ocrEmailValidator.validateField(fields);
@@ -87,15 +78,10 @@ class OcrEmailValidatorTest {
 
     @Test
     void shouldNotCreateWarningForValidField() {
-        final List<OCRField> fields = emailFields
+        final List<OcrDataField> fields = emailFields
             .keySet()
             .stream()
-            .map(f -> OCRField
-                .builder()
-                .name(f)
-                .value(RandomStringUtils.randomAlphabetic(10) + "@probate-test.com")
-                .build()
-            )
+            .map(f -> new OcrDataField(f, RandomStringUtils.randomAlphabetic(10) + "@probate-test.com"))
             .collect(toList());
 
         final List<String> result = ocrEmailValidator.validateField(fields);
@@ -105,10 +91,7 @@ class OcrEmailValidatorTest {
     @Test
     void shouldCreateWarningForNullField() {
 
-        final OCRField field = OCRField
-            .builder()
-            .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
-            .build();
+        final OcrDataField field = new OcrDataField(PRIMARY_APPLICANT_EMAIL_ADDRESS, null);
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result.size(), is(1));
@@ -118,11 +101,7 @@ class OcrEmailValidatorTest {
     @Test
     void shouldCreateWarningForEmptyField() {
 
-        final OCRField field = OCRField
-            .builder()
-            .name(PRIMARY_APPLICANT_EMAIL_ADDRESS)
-            .value("")
-            .build();
+        final OcrDataField field = new OcrDataField(PRIMARY_APPLICANT_EMAIL_ADDRESS, "");
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
 
@@ -132,19 +111,18 @@ class OcrEmailValidatorTest {
 
     @Test
     void shouldNotCreateWarningNonEmailField() {
-        final OCRField field = OCRField
-            .builder()
-            .name("executorsNotApplying_0_notApplyingExecutorName")
-            .value("Peter Smith")
-            .build();
+        final OcrDataField field = new OcrDataField(
+                "executorsNotApplying_0_notApplyingExecutorName",
+                "Peter Smith"
+        );
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result, is(empty()));
     }
 
-    private void assertWarning(final List<String> result, final OCRField ocrField) {
+    private void assertWarning(final List<String> result, final OcrDataField ocrField) {
         assertThat(result, hasItem(
-            format("%s (%s) does not appear to be a valid email address", emailFields.get(ocrField.getName()),
-                ocrField.getName())));
+            format("%s (%s) does not appear to be a valid email address", emailFields.get(ocrField.name()),
+                ocrField.name())));
     }
 }

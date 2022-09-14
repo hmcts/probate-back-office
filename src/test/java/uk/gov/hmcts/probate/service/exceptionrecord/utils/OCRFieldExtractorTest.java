@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,16 +21,16 @@ class OCRFieldExtractorTest {
     private static final String LAST_NAME_VALUE = "Monkhouse";
     private static final String MIDDLE_NAME_VALUE = "Marley";
     private static final String FIRST_NAME_VALUE = "Bob";
-    private List<OCRField> ocrFields = new ArrayList<>();
+    private List<OcrDataField> ocrFields = new ArrayList<>();
 
     @BeforeEach
     public void setUp() {
-        ocrFields.add(OCRField.builder().name(FIRST_NAME_KEY).value(FIRST_NAME_VALUE).build());
-        ocrFields.add(OCRField.builder().name(MIDDLE_NAME_KEY).value(MIDDLE_NAME_VALUE).build());
-        ocrFields.add(OCRField.builder().name(LAST_NAME_KEY).value(LAST_NAME_VALUE).build());
-        ocrFields.add(OCRField.builder().name(SOME_KEY_WITH_NO_VALUE).build());
-        ocrFields.add(OCRField.builder().name(SOME_KEY_WITH_NULL_VALUE).value(null).build());
-        ocrFields.add(OCRField.builder().name(SOME_KEY_WITH_EMPTY_VALUE).value("").build());
+        ocrFields.add(new OcrDataField(FIRST_NAME_KEY, FIRST_NAME_VALUE));
+        ocrFields.add(new OcrDataField(MIDDLE_NAME_KEY, MIDDLE_NAME_VALUE));
+        ocrFields.add(new OcrDataField(LAST_NAME_KEY, LAST_NAME_VALUE));
+        ocrFields.add(new OcrDataField(SOME_KEY_WITH_NO_VALUE, null));
+        ocrFields.add(new OcrDataField(SOME_KEY_WITH_NULL_VALUE, null));
+        ocrFields.add(new OcrDataField(SOME_KEY_WITH_EMPTY_VALUE, ""));
     }
 
     @Test

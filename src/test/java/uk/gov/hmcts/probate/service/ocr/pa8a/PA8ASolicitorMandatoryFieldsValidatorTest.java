@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -28,7 +28,7 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
 
     @Test
     void testSolictorMandatoryFieldsPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
@@ -37,7 +37,7 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
 
     @Test
     void testSolicitorMissingMandatoryFieldsPA8A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorAddressLine1");
         ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorAddressPostCode");
         ocrFieldTestUtils.removeOCRField(ocrFields, "solsSolicitorFirmName");
@@ -56,7 +56,7 @@ class PA8ASolicitorMandatoryFieldsValidatorTest {
 
     @Test
     void testSolicitorMissingPaymentMethodFieldsPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryCaveatSolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.put("paperPaymentMethod", "PBA");
 

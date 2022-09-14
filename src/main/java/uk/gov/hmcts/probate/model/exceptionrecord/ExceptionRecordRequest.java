@@ -1,6 +1,6 @@
 package uk.gov.hmcts.probate.model.exceptionrecord;
 
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,7 +22,7 @@ public class ExceptionRecordRequest {
     private final LocalDateTime deliveryDate;
     private final LocalDateTime openingDate;
     private final List<InputScannedDoc> scannedDocuments;
-    private final List<OCRField> ocrFields;
+    private final List<OcrDataField> ocrFields;
     private final String envelopeId;
     private final Boolean isAutomatedProcess;
 
@@ -36,7 +36,7 @@ public class ExceptionRecordRequest {
         @JsonProperty("delivery_date") LocalDateTime deliveryDate,
         @JsonProperty("opening_date") LocalDateTime openingDate,
         @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
-        @JsonProperty("ocr_data_fields") List<OCRField> ocrFields,
+        @JsonProperty("ocr_data_fields") List<OcrDataField> ocrFields,
         @JsonProperty("envelope_id") String envelopeId,
         @JsonProperty("is_automated_process") Boolean isAutomatedProcess
     ) {

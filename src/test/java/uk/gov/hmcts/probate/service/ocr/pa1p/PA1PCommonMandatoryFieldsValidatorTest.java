@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ class PA1PCommonMandatoryFieldsValidatorTest {
 
     @Test
     void testNoPrimaryApplicantHasAlasKeyReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "primaryApplicantHasAlias");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -39,7 +39,7 @@ class PA1PCommonMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingNotApplyingMandatoryFieldReturnSuccessfullyForPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         ocrFieldValues.remove("executorsNotApplying_0_notApplyingExecutorReason");
@@ -52,7 +52,7 @@ class PA1PCommonMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         ocrFieldValues.remove("ihtFormId");
@@ -64,7 +64,7 @@ class PA1PCommonMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         ocrFieldValues.remove("ihtFormId");

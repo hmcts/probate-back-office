@@ -5,7 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -24,13 +24,13 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KE
 public class NonMandatoryFieldsValidator {
     private final OcrEmailValidator ocrEmailValidator;
 
-    public List<String> ocrToCCDNonMandatoryWarnings(List<OCRField> ocrFields, FormType formType) {
+    public List<String> ocrToCCDNonMandatoryWarnings(List<OcrDataField> ocrFields, FormType formType) {
         List<String> warnings = new ArrayList<>();
         warnings.addAll(ocrEmailValidator.validateField(ocrFields));
         Map<String, String> ocrFieldValues = new HashMap<>();
         boolean isSolicitorForm = false;
 
-        ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
+        ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.name(), ocrField.value()));
 
         switch (formType) {
             case PA8A:

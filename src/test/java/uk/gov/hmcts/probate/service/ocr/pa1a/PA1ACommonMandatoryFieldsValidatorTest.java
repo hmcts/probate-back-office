@@ -4,7 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ class PA1ACommonMandatoryFieldsValidatorTest {
 
     @Test
     void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         ocrFieldTestUtils.removeOCRField(ocrFields, "ihtFormCompletedOnline");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
@@ -39,7 +39,7 @@ class PA1ACommonMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
 
@@ -50,7 +50,7 @@ class PA1ACommonMandatoryFieldsValidatorTest {
 
     @Test
     void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        List<OcrDataField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
         ocrFieldValues.put("ihtFormCompletedOnline","true");

@@ -14,9 +14,9 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.exceptionrecord.JourneyClassification;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -68,7 +68,7 @@ class ExceptionRecordControllerTest {
     private String exceptionRecordInvalidJsonPayloadPA1P;
     private String exceptionRecordInvalidJsonPayloadPA8A;
     private String updateCasePayload;
-    private List<OCRField> ocrFields = new ArrayList<>();
+    private List<OcrDataField> ocrFields = new ArrayList<>();
     private List<String> warnings = new ArrayList<>();
 
     @BeforeEach
