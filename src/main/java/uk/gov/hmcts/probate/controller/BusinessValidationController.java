@@ -46,6 +46,7 @@ import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IhtNetQualifyingValueValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -98,6 +99,7 @@ public class BusinessValidationController {
     private final CaseEscalatedService caseEscalatedService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
+    private final IhtNetQualifyingValueValidationRule ihtNetQualifyingValueValidationRule;
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
@@ -114,6 +116,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
+        ihtNetQualifyingValueValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }

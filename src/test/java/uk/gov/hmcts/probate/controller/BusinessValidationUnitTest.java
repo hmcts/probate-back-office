@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IhtNetQualifyingValueValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -127,6 +128,8 @@ class BusinessValidationUnitTest {
     @Mock
     private IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     @Mock
+    private IhtNetQualifyingValueValidationRule ihtNetQualifyingValueValidationRule;
+    @Mock
     private IhtEstateValidationRule ihtEstateValidationRule;
     @Mock
     private CodicilDateValidationRule codicilDateValidationRuleMock;
@@ -173,6 +176,7 @@ class BusinessValidationUnitTest {
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule,
+            ihtNetQualifyingValueValidationRule,
             ihtEstateValidationRule,
             solicitorPostcodeValidationRule,
             assignCaseAccessService);
@@ -697,8 +701,8 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         ResponseEntity<CallbackResponse> response =
             underTest.validateIhtEstateData(callbackRequestMock);
-        verify(ihtEstateValidationRule, times(1))
-            .validate(caseDetailsMock);
+        verify(ihtEstateValidationRule, times(1)).validate(caseDetailsMock);
+        verify(ihtNetQualifyingValueValidationRule, times(1)).validate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
