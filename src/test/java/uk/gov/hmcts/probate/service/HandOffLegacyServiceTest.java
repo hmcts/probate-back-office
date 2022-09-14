@@ -159,7 +159,7 @@ public class HandOffLegacyServiceTest {
     }
 
     @Test
-    void caseHandedOffFlagReturnTrueWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
+    void handedOffFlagReturnTrueWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null)
             .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
             .applicationType(PERSONAL)
