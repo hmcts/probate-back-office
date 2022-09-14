@@ -72,4 +72,11 @@ public class HandOffLegacyService {
             return YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite());
         }
     }
+
+    public String getHandOffLegacySiteYesOrNo(CaseDetails caseDetails) {
+        if (setCaseToHandedOffToLegacySite(caseDetails)) {
+            return YES;
+        }
+        return NO;
+    }
 }

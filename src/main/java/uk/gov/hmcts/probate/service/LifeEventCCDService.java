@@ -19,9 +19,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.time.LocalDate;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -89,7 +86,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
-            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -108,7 +105,7 @@ public class LifeEventCCDService {
 
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
-            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
             .build();
 
         log.info("LEV updateCCDLifeEventVerificationNoRecordsFound: " + caseId);
@@ -134,7 +131,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
-            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -156,7 +153,7 @@ public class LifeEventCCDService {
 
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
-            .caseHandedOffToLegacySite(setGorHandOffToLegacySite(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -170,12 +167,5 @@ public class LifeEventCCDService {
             LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION,
             LIFE_EVENT_VERIFICATION_ERROR_SUMMARY
         );
-    }
-
-    private String setGorHandOffToLegacySite(CaseDetails caseDetails) {
-        if (this.handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails)) {
-            return YES;
-        }
-        return NO;
     }
 }
