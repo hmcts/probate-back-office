@@ -56,14 +56,14 @@ public class SmeeAndFordDataExtractService {
         if (!cases.isEmpty()) {
             try {
                 log.info("FeatureBlobStorageSmeeAndFord flag enabled is {}", featureBlobStorageSmeeAndFord);
+                Document document = notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
                 if (featureBlobStorageSmeeAndFord) {
                     File tempFile = zipFileService.createTempZipFile("Probate_Docs_" + fromDate);
                     zipFileService.generateZipFile(cases, tempFile, fromDate);
                     log.info("Zip file uploaded on blob store");
                     Files.delete(tempFile.toPath());
                 }
-
-                return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
+                return document;
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
