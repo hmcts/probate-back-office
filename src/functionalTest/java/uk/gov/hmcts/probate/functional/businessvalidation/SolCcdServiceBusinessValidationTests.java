@@ -43,6 +43,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String TRANSFORM_URL = "/case/casePrinted";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
+    private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
@@ -643,7 +644,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
     }
-    
+
+    @Test
+    public void verifyCaseworkerDefaultDateOfDeathType() throws IOException {
+        //String payload = getJsonFromFile("caseworkerDefaultDateOfDeathType.json");
+        validatePostSuccessAndCheckValue("{\"case_details\":{}}", INIT_PAPER_FORM_URL, "dateOfDeathType", "diedOn");
+    }
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() throws IOException {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
@@ -1039,7 +1045,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .body(jsonPayload)
             .when().post(url)
             .thenReturn();
-
+        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
     }

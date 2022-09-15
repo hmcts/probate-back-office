@@ -396,6 +396,17 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/initPaperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> initPaperForm(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+        CallbackResponse response = callbackResponseTransformer.defaultDateOfDeathType(callbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
