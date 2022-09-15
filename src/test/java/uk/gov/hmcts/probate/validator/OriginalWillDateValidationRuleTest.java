@@ -35,6 +35,7 @@ class OriginalWillDateValidationRuleTest {
     @Test
     void shouldErrorIfDateIsToday() {
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now());
+        when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.now());
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
                 .thenReturn(fieldErrorResponse);
@@ -48,6 +49,7 @@ class OriginalWillDateValidationRuleTest {
     @Test
     void shouldErrorIfDateIsInTheFuture() {
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(LocalDate.now().plusDays(1));
+        when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.now().plusDays(1));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
                 .thenReturn(fieldErrorResponse);
@@ -74,7 +76,7 @@ class OriginalWillDateValidationRuleTest {
     }
 
     @Test
-    void shouldErrorIfDateIsOnDateOfDeath() {
+    void shouldNotErrorIfDateIsOnDateOfDeath() {
         LocalDate dod = LocalDate.now().minusDays(1);
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(dod);
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(dod);
@@ -83,9 +85,7 @@ class OriginalWillDateValidationRuleTest {
                 .thenReturn(fieldErrorResponse);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        assertEquals(1, validationError.size());
-        assertEquals(fieldErrorResponse, validationError.get(0));
+        assertTrue(validationError.isEmpty());
     }
 
     @Test
