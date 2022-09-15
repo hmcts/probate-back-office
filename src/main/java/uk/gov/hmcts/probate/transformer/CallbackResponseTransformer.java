@@ -111,7 +111,7 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
-    private static final String DEFAULT_DATE_OF_DEATHTYPE="diedOn";
+    private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
     private static final String SOL_AS_EXEC_ID = "solicitor";
     private static final String PBA_PAYMENT_METHOD = "pba";
@@ -148,6 +148,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
         return transformResponse(builder.build());
     }
+
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             true);
