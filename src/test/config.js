@@ -10,14 +10,10 @@ module.exports = {
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
     TestEnvCwUser: process.env.CW_USER_EMAIL || 'ProbateSolCW1@gmail.com',
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
-   // TestEnvSACUser1: process.env.SAC_USER_EMAIL ||'probate.pp1.org2@gmail.com',
-   // TestEnvSACPassword1: process.env.SAC_USER_PASSWORD ||'Probate123',
-   // TestEnvSACUser2: process.env.SAC_USER_EMAIL ||'probate.pp2.org2@gmail.com',
-   // TestEnvSACPassword2: process.env.SAC_USER_PASSWORD ||'Probate123',
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
-    TestEnvProfUser1: process.env.SOL_USER_EMAIL || 'probate.practitioner.aat.test@gmail.com',
-    TestEnvProfPassword1: process.env.SOL_USER_PASSWORD || 'Probate123',
+    TestEnvProfUser1: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest2@gmail.com',
+    TestEnvProfPassword1: process.env.SOL_USER_PASSWORD || 'Pa55wordTest',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
     //TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
     // only used when running locally, not in pipeline (where autodelay is on) - other than case matching

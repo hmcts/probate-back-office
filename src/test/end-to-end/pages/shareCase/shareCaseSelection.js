@@ -21,8 +21,8 @@ module.exports = async function (shareCaseSelection) {
     await I.selectOption('#wb-case-type','Grant of representation');
     await I.click("button[title='Apply filter']");
     await I.wait(testConfig.CreateCaseDelay);
-    await I.click('//div[normalize-space()="Case reference"]')
-    await I.wait(testConfig.CreateCaseDelay)
+    await I.click('//div[normalize-space()="Case reference"]');
+    await I.wait(4);
     await I.waitForElement('//input[@id="select-'+caseRefNumber+'"]');
     await I.click('//input[@id="select-'+caseRefNumber+'"]');
     await I.wait(testConfig.CreateCaseDelay);
