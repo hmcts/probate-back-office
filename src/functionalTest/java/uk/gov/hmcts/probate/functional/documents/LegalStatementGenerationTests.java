@@ -76,6 +76,14 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
             "solicitorPDFPayloadAdmonWillWithOneCodicil.json";
     private static final String ADMON_PAYLOAD_WILL_AND_MULTIPLE_CODICILS =
             "solicitorPDFPayloadAdmonWillWithMultipleCodicils.json";
+    private static final String GOP_PAYLOAD_MULTIPLE_CODICILS = "solicitorPDFPayloadProbateMultipleCodicils.json";
+    private static final String GOP_PAYLOAD_SINGLE_CODICIL = "solicitorPDFPayloadProbateSingleCodicils.json";
+    private static final String GOP_PAYLOAD_NO_CODICIL = "solicitorPDFPayloadProbate.json";
+    private static final String GOP_PAYLOAD_TRUSTCORP_MULTIPLE_CODICILS =
+        "solicitorPayloadTrustCorpsSchemaMultipleCodicil.json";
+    private static final String GOP_PAYLOAD_TRUSTCORP_SINGLE_CODICIL =
+        "solicitorPayloadTrustCorpsSchemaSingleCodicil.json";
+    private static final String GOP_PAYLOAD_TRUSTCORP_NO_CODICIL = "solicitorPayloadTrustCorpsNoSolExecRepeat.json";
     private static final String SOT_DOC_NAME = "probateSotDocumentsGenerated[0].value.DocumentLink";
     private static final String GENERATE_LEGAL_STATEMENT = "/document/generate-sot";
 
@@ -242,9 +250,11 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
-            "executor1_name, another executor named in the will, has died in the lifetime of the deceased."));
+            "executor1_name, another executor named in the will, "
+            + "has died in the lifetime of the deceased."));
         assertTrue(response.contains(
-            "executor2_name, another executor named in the will, has survived the deceased and died since."));
+            "executor2_name, another executor named in the will, "
+            + "has survived the deceased and died since."));
     }
 
     @Test
@@ -569,6 +579,47 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
             + " testament of De Ceased"));
     }
 
+    @Test
+    public void verifyGOPLegalStatementMultipleCodicils() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("which was settled previously to the death "
+                + "(and not by the will and codicils) of"));
+    }
+
+    @Test
+    public void verifyGOPLegalStatementSingleCodicil() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_SINGLE_CODICIL, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("which was settled previously to the death "
+                + "(and not by the will and codicil) of"));
+    }
+
+    @Test
+    public void verifyGOPLegalStatementNoCodicil() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("which was settled previously to the death "
+                + "(and not by the will) of"));
+    }
+
+    @Test
+    public void verifyTrustCorpGOPLegalStatementMultipleCodicils() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("which was settled previously to the death "
+                + "(and not by the will and codicils) of"));
+    }
+
+    @Test
+    public void verifyTrustCorpGOPLegalStatementSingleCodicil() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_SINGLE_CODICIL, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("which was settled previously to the death "
+                + "(and not by the will and codicil) of"));
+    }
+
+    @Test
+    public void verifyTrustCorpGOPLegalStatementNoCodicil() throws IOException {
+        final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
+        assertTrue(response.contains("which was settled previously to the death "
+                + "(and not by the will) of"));
+    }
 
     private String generateSotDocument(String jsonFileName, String path) throws IOException {
         return generateSotDocumentFromPayload(utils.getJsonFromFile(jsonFileName), path);
