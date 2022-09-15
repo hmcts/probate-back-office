@@ -50,6 +50,16 @@ class IhtNetQualifyingValueValidationRuleTest {
     }
 
     @Test
+    void shouldErrorForNQVGreaterThanEstateGrossWithProbateVlaues() {
+        assertError(1001d, ESTATE_GROSS, ESTATE_NET, PROBATE_GROSS, PROBATE_NET, true);
+    }
+
+    @Test
+    void shouldErrorForNQVGreaterThanEstateNetWithProbateVlaues() {
+        assertError(901d, ESTATE_GROSS, ESTATE_NET, PROBATE_GROSS, PROBATE_NET, true);
+    }
+
+    @Test
     void shouldNotErrorForNQVLessThanEstate() {
         assertError(700d, ESTATE_GROSS, ESTATE_NET, null, null, false);
     }
