@@ -50,13 +50,18 @@ class IhtNetQualifyingValueValidationRuleTest {
     }
 
     @Test
-    void shouldErrorForNQVGreaterThanEstateGrossWithProbateVlaues() {
-        assertError(1001d, ESTATE_GROSS, ESTATE_NET, PROBATE_GROSS, PROBATE_NET, true);
+    void shouldNotErrorForNQVnull() {
+        assertError(null, ESTATE_GROSS, ESTATE_NET, PROBATE_GROSS, PROBATE_NET, false);
     }
 
     @Test
-    void shouldErrorForNQVGreaterThanEstateNetWithProbateVlaues() {
-        assertError(901d, ESTATE_GROSS, ESTATE_NET, PROBATE_GROSS, PROBATE_NET, true);
+    void shouldNotErrorForNQVEstateGrossNull() {
+        assertError(801d, null, ESTATE_NET, null, null, false);
+    }
+
+    @Test
+    void shouldErrorForNQVEstateNetNull() {
+        assertError(901d, ESTATE_GROSS, null, null, null, false);
     }
 
     @Test
@@ -83,7 +88,9 @@ class IhtNetQualifyingValueValidationRuleTest {
 
     private void assertError(Double nqv, Double estGross, Double estNet, Double probGross, Double probNet,
                              boolean shouldThrowError) {
-        when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(new BigDecimal(nqv));
+        if (nqv != null) {
+            when(caseDataMock.getIhtEstateNetQualifyingValue()).thenReturn(new BigDecimal(nqv));
+        }
         if (estGross != null) {
             when(caseDataMock.getIhtEstateGrossValue()).thenReturn(new BigDecimal(estGross));
         }
