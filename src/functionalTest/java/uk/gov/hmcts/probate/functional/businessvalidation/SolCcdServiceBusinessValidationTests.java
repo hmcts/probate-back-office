@@ -650,6 +650,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         //String payload = getJsonFromFile("caseworkerDefaultDateOfDeathType.json");
         validatePostSuccessAndCheckValue("{\"case_details\":{}}", INIT_PAPER_FORM_URL, "dateOfDeathType", "diedOn");
     }
+
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() throws IOException {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
