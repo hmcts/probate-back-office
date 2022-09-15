@@ -1045,7 +1045,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .body(jsonPayload)
             .when().post(url)
             .thenReturn();
-        final JsonPath jsonPath = JsonPath.from(response.getBody().asString());
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
     }
