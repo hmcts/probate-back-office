@@ -10,6 +10,8 @@ import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+
 @Component
 @Slf4j
 // Handles some casedata mappings for when a solicitor application becomes a case
@@ -41,5 +43,11 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         }
         formatFields(caseData);
         mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
+    }
+
+    public void eraseCodicilAddedDateIfWillHasCodicilIsNo(CaseData caseData) {
+        if (NO.equals(caseData.getWillHasCodicils())) {
+            caseData.setCodicilAddedDateList(null);
+        }
     }
 }
