@@ -44,6 +44,7 @@ public class CaseDataTransformer {
     public void transformCaseDataForValidateAdmon(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         legalStatementExecutorTransformer.formatFields(caseData);
+        solicitorApplicationCompletionTransformer.eraseCodicilAddedDateIfWillHasCodicilIsNo(caseData);
     }
 
 
