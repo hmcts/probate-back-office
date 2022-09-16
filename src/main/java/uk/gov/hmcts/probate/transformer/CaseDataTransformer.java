@@ -38,6 +38,7 @@ public class CaseDataTransformer {
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
+        solicitorApplicationCompletionTransformer.eraseCodicilAddedDateIfWillHasCodicilIsNo(caseData);
     }
 
     public void transformCaseDataForValidateAdmon(CallbackRequest callbackRequest) {
