@@ -203,7 +203,7 @@ class SolicitorApplicationCompletionTransformerTest {
     }
 
     @Test
-    void shouldEraseCodicilAddedDateIfWillHasCodicilIsNo() {
+    void shouldEraseCodicilAddedDateIfWillHasNoCodicils() {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
@@ -212,7 +212,7 @@ class SolicitorApplicationCompletionTransformerTest {
                 .codicilAddedDateList(codicilDates);
 
         CaseData caseData = caseDataBuilder.build();
-        solicitorApplicationCompletionTransformerMock.eraseCodicilAddedDateIfWillHasCodicilIsNo(caseData);
+        solicitorApplicationCompletionTransformerMock.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
 
         assertNull(caseData.getCodicilAddedDateList());
     }
