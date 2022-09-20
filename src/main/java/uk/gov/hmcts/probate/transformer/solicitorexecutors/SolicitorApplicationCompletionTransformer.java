@@ -45,7 +45,7 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         mapSolicitorExecutorFieldsToLegalStatementExecutorFields(caseData);
     }
 
-    public void eraseCodicilAddedDateIfWillHasCodicilIsNo(CaseData caseData) {
+    public void eraseCodicilAddedDateIfWillHasNoCodicils(CaseData caseData) {
         if (NO.equals(caseData.getWillHasCodicils())) {
             caseData.setCodicilAddedDateList(null);
         }
