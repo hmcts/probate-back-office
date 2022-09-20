@@ -141,8 +141,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
-        validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsGreaterThanGross.json",
-            "The gross probate value cannot be less than the net probate value", 200);
+        validatePostFailure("failure.ihtNetIsGreaterThanGross.json",
+                "The gross probate value cannot be less than the net probate value", 200, SOLS_VALIDATE_IHT_ESTATE);
+
     }
 
     @Test
@@ -643,7 +644,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
     }
-    
+
     @Test
     public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() throws IOException {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);

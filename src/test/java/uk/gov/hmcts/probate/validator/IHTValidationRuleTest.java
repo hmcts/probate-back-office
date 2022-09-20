@@ -4,25 +4,22 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.math.BigDecimal;
-import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
 
 class IHTValidationRuleTest {
 
@@ -30,98 +27,180 @@ class IHTValidationRuleTest {
     private static final BigDecimal LOWER_VALUE = BigDecimal.valueOf(1f);
 
     @Mock
-    private BusinessValidationMessageService businessValidationMessageService;
+    private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     @Mock
-    private CCDData ccdDataMock;
+    private CaseDetails caseDetailsMock;
     @Mock
-    private InheritanceTax inheritanceTaxMock;
-
-    private FieldErrorResponse businessValidationError;
-
-    private IHTValidationRule underTest;
+    private CaseData caseDataMock;
+    @Mock
+    private IHTValidationRule ihtValidationRule;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        businessValidationError = FieldErrorResponse.builder().build();
 
-        this.underTest = new IHTValidationRule(businessValidationMessageService);
-        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        this.ihtValidationRule = new IHTValidationRule(businessValidationMessageRetriever);
     }
 
     @Test
     void testValidateWithSuccess() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
-        when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
-
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
-        assertThat(validationError.isEmpty(), is(true));
+        when(caseDataMock.getIhtGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(LOWER_VALUE);
+        ihtValidationRule.validate(caseDetailsMock);
     }
 
     @Test
     void testValidateWithSuccessWhenEqual() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
-        when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
-
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
-        assertThat(validationError.isEmpty(), is(true));
+        when(caseDataMock.getIhtGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(HIGHER_VALUE);
+        ihtValidationRule.validate(caseDetailsMock);
     }
 
     @Test
     void testValidateWithSuccessWhenIhtIsNull() {
-        when(ccdDataMock.getIht()).thenReturn(null);
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(null);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(null);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(null);
+        when(caseDataMock.getIhtNetValue()).thenReturn(null);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(null);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(null);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
-        assertThat(validationError.isEmpty(), is(true));
+        ihtValidationRule.validate(caseDetailsMock);
     }
 
     @Test
     void testValidateFailureWhenProbateNetHigherThanGross() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS))
-                .thenReturn(businessValidationError);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn(IHT_PROBATE_NET_GREATER_THAN_GROSS);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        assertThat(validationError.isEmpty(), is(false));
-        verify(businessValidationMessageService, times(1))
-            .generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS);
-        assertTrue(validationError.contains(businessValidationError));
+        try {
+            ihtValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, bve.getUserMessage());
+        }
     }
 
     @Test
     void testValidateFailureWhenIHTNetHigherThanGross() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getNetValue()).thenReturn(HIGHER_VALUE);
-        when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_ESTATE_NET_GREATER_THAN_GROSS))
-            .thenReturn(businessValidationError);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn(IHT_ESTATE_NET_GREATER_THAN_GROSS);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        assertThat(validationError.isEmpty(), is(false));
-        verify(businessValidationMessageService, times(1))
-            .generateError(BUSINESS_ERROR, IHT_ESTATE_NET_GREATER_THAN_GROSS);
-        assertTrue(validationError.contains(businessValidationError));
+        try {
+            ihtValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, bve.getUserMessage());
+        }
     }
 
     @Test
     void testValidateSuccessWhenIhtValuesNetIsTheSameAsGross() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getNetValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
-        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
 
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+        ihtValidationRule.validate(caseDetailsMock);
+    }
 
-        assertThat(validationError.isEmpty(), is(true));
+    @Test
+    void testValidateIht207WithSuccess() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(LOWER_VALUE);
+
+        ihtValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    void testValidateIht207FailureWhenIHTNetHigherThanGross() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT207_VALUE);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn(IHT_PROBATE_NET_GREATER_THAN_GROSS);
+
+        try {
+            ihtValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, bve.getUserMessage());
+        }
+    }
+
+    @Test
+    void testValidateIht400421WithSuccess() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(LOWER_VALUE);
+
+        ihtValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    void testValidateIht400421FailureWhenIHTNetHigherThanGross() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(YES);
+        when(caseDataMock.getIhtFormEstate()).thenReturn(IHT400421_VALUE);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn(IHT_PROBATE_NET_GREATER_THAN_GROSS);
+
+        try {
+            ihtValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, bve.getUserMessage());
+        }
+    }
+
+    @Test
+    void testValidateIhtFormNotCompletedWithSuccess() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(NO);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+
+        ihtValidationRule.validate(caseDetailsMock);
+    }
+
+    @Test
+    void testValidateIhtFormNotCompletedWhenIHTNetHigherThanGross() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(NO);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(LOWER_VALUE);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn(IHT_PROBATE_NET_GREATER_THAN_GROSS);
+
+        try {
+            ihtValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, bve.getUserMessage());
+        }
+    }
+
+    @Test
+    void testValidateIhtFormNotCompletedWhenIHTEstateNetHigherThanGross() {
+        when(caseDataMock.getIhtFormEstateValuesCompleted()).thenReturn(NO);
+        when(caseDataMock.getIhtGrossValue()).thenReturn(HIGHER_VALUE);
+        when(caseDataMock.getIhtNetValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
+        when(caseDataMock.getIhtEstateNetValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageRetriever.getMessage(any(), any(), any()))
+                .thenReturn(IHT_ESTATE_NET_GREATER_THAN_GROSS);
+
+        try {
+            ihtValidationRule.validate(caseDetailsMock);
+        } catch (BusinessValidationException bve) {
+            assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, bve.getUserMessage());
+        }
     }
 }

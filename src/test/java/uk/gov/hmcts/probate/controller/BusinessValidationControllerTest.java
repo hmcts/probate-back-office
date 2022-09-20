@@ -984,10 +984,7 @@ class BusinessValidationControllerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(null);
-
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
@@ -1006,10 +1003,7 @@ class BusinessValidationControllerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(null);
-
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")

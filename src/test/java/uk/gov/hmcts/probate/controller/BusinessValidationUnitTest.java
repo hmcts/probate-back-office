@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -129,6 +130,8 @@ class BusinessValidationUnitTest {
     @Mock
     private IhtEstateValidationRule ihtEstateValidationRule;
     @Mock
+    private IHTValidationRule ihtValidationRule;
+    @Mock
     private CodicilDateValidationRule codicilDateValidationRuleMock;
     @Mock
     private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
@@ -174,6 +177,7 @@ class BusinessValidationUnitTest {
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
+            ihtValidationRule,
             solicitorPostcodeValidationRule,
             assignCaseAccessService);
 
