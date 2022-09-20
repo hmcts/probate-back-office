@@ -785,6 +785,8 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
+        responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
+                callbackRequest.getCaseDetails(), null));
 
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
@@ -1079,21 +1081,27 @@ public class CallbackResponseTransformer {
     public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
         CaseData caseData = caseDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
+        String policyRef = "ref";
+        String orgPolicyCaseAssignedRole = "[APPLICANTSOLICITOR]";
+        String orgId = null;
+        String orgName = null;
         if (null != authToken) {
             organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
                     caseDetails.getId().toString(), authToken);
+            policyRef = caseData.getApplicantOrganisationPolicy().getOrgPolicyReference();
+            orgPolicyCaseAssignedRole = caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole();
+            orgId = organisationEntityResponse.getOrganisationIdentifier();
+            orgName = organisationEntityResponse.getName();
         }
-        if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
-            return OrganisationPolicy.builder()
-            .organisation(Organisation.builder()
-                .organisationID(organisationEntityResponse.getOrganisationIdentifier())
-                .organisationName(organisationEntityResponse.getName())
-                .build())
-            .orgPolicyReference(caseData.getApplicantOrganisationPolicy().getOrgPolicyReference())
-            .orgPolicyCaseAssignedRole(caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
-            .build();
-        }
-        return null;
+
+        return OrganisationPolicy.builder()
+        .organisation(Organisation.builder()
+            .organisationID(orgId)
+            .organisationName(orgName)
+            .build())
+        .orgPolicyReference(policyRef)
+        .orgPolicyCaseAssignedRole(orgPolicyCaseAssignedRole)
+        .build();
     }
 
     private boolean isPaperForm(CaseData caseData) {
