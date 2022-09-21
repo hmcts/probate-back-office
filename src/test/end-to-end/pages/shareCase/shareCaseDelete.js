@@ -15,9 +15,9 @@ module.exports = async function (shareCaseDelete) {
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
     await I.seeElement('//h2[normalize-space()="'+caseRef+'"]');
-    await I.wait(testConfig.CreateCaseDelay);
+    await I.wait(2);
     await I.waitForNavigationToComplete(commonConfig.submitButton);
-    await I.wait(testConfig.CreateCaseDelay);
+    await I.wait(2);
     await I.see('Case '+caseRef+' has been updated with event: Delete');
     await I.wait(testConfig.CreateCaseDelay);
     await I.click('//a[normalize-space()="Sign out"]');
