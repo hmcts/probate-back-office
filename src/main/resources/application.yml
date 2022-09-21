@@ -548,4 +548,4 @@ make_dormant:
   add_time_minutes: 5
 
 reactivate_dormant:
-  minus_days: 1
+  minus_days: 0
