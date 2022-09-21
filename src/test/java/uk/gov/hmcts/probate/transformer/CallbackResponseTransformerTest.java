@@ -2086,6 +2086,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        when(caseDataMock.getApplicationType()).thenReturn(SOLICITOR);
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertSolsDetails(callbackResponse);
     }
@@ -2125,6 +2126,7 @@ class CallbackResponseTransformerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        when(caseDataMock.getApplicationType()).thenReturn(SOLICITOR);
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
@@ -2132,7 +2134,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsEmpty() {
         CaseData.CaseDataBuilder caseDataBuilder2;
-        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("");
+        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("").applicationType(APPLICATION_TYPE.SOLICITOR);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -3605,18 +3607,22 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void testBuildOrganisationPolicy() {
+    void testBuildOrganisationPolicyForPersonal() {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
 
-        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
+        when(caseDataMock.getApplicationType()).thenReturn(PERSONAL);
+        OrganisationPolicy organisationPolicy = underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123");
+        assertNull(organisationPolicy.getOrganisation().getOrganisationID());
         verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
+        when(caseDataMock.getApplicationType()).thenReturn(PERSONAL);
+        OrganisationPolicy organisationPolicy = underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123");
+        assertNull(organisationPolicy.getOrganisation().getOrganisationID());
         verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
@@ -3634,6 +3640,7 @@ class CallbackResponseTransformerTest {
         when(organisationPolicy.getOrgPolicyReference()).thenReturn("Org Policy Reference");
 
         CaseData caseData = CaseData.builder().applicantOrganisationPolicy(organisationPolicy)
+                .applicationType(APPLICATION_TYPE.SOLICITOR)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest

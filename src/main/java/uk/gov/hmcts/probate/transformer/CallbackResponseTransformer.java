@@ -1080,18 +1080,20 @@ public class CallbackResponseTransformer {
 
     public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
         CaseData caseData = caseDetails.getData();
-        OrganisationEntityResponse organisationEntityResponse = null;
-        String policyRef = "ref";
-        String orgPolicyCaseAssignedRole = "[APPLICANTSOLICITOR]";
+        String policyRef = null;
+        String orgPolicyCaseAssignedRole = SOLICITOR.equals(caseDetails.getData().getApplicationType())
+                ? "[APPLICANTSOLICITOR]" : null;
         String orgId = null;
         String orgName = null;
         if (null != authToken) {
-            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
+            OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
                     caseDetails.getId().toString(), authToken);
-            policyRef = caseData.getApplicantOrganisationPolicy().getOrgPolicyReference();
-            orgPolicyCaseAssignedRole = caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole();
-            orgId = organisationEntityResponse.getOrganisationIdentifier();
-            orgName = organisationEntityResponse.getName();
+            if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
+                policyRef = caseData.getApplicantOrganisationPolicy().getOrgPolicyReference();
+                orgPolicyCaseAssignedRole = caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole();
+                orgId = organisationEntityResponse.getOrganisationIdentifier();
+                orgName = organisationEntityResponse.getName();
+            }
         }
 
         return OrganisationPolicy.builder()
