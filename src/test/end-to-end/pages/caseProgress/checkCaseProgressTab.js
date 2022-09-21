@@ -11,7 +11,7 @@ module.exports = async function (opts) {
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
-    //assert (texts.length === 17);
+    assert (texts.length === 17);
     assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[1] === 'Add Probate practitioner details');
     assert (texts[2] === 'Add deceased details');
