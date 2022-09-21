@@ -14,6 +14,9 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,6 +44,8 @@ class DormantCaseServiceTest {
 
     private static final String[] LAST_MODIFIED = {"2022", "1", "1", "0", "0", "0", "0"};
     private List<ReturnedCaseDetails> caseList;
+    private List<ReturnedCaseDetails> caseList1;
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     @BeforeEach
     void setUp() {
@@ -50,7 +55,14 @@ class DormantCaseServiceTest {
                 .deceasedSurname("Smith")
                 .build();
         caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LAST_MODIFIED, 1L)).build();
+                LocalDateTime.now(ZoneOffset.UTC), 1L)).build();
+        CaseData caseData1 = CaseData.builder()
+                .deceasedSurname("Doe")
+                .movedIntoDormantDateTime(DATE_FORMAT.format(LocalDateTime.now(ZoneOffset.UTC)
+                .minusMonths(1L)))
+                .build();
+        caseList1 = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData1,
+                LocalDateTime.now(ZoneOffset.UTC), 1L)).build();
     }
 
     @Test
@@ -88,7 +100,7 @@ class DormantCaseServiceTest {
                 .serviceAuthorisation("S2S")
                 .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList);
+        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList1);
         dormantCaseService.reactivateDormantCases("2022-01-01");
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
@@ -134,7 +146,7 @@ class DormantCaseServiceTest {
                 .serviceAuthorisation("S2S")
                 .build();
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList);
+        when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList1);
         doThrow(new NullPointerException()).when(ccdClientApi)
                 .updateCaseAsCaseworker(any(), any(), any(),
                         any(), any(), any(), any());

@@ -23,6 +23,8 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +51,7 @@ class SmeeAndFordPersonalisationServiceTest {
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
 
     private static final Long ID = 1234567812345678L;
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final BigDecimal GROSS = BigDecimal.valueOf(1000000);
     private static final BigDecimal NET = BigDecimal.valueOf(900000);
 

@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
 import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ class HmrcDataExtractServiceTest {
     @InjectMocks
     private HmrcDataExtractService hmrcDataExtractService;
 
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private CaseData caseData;
 
     @BeforeEach
