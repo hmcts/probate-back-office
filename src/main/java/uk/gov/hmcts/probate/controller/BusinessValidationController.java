@@ -406,10 +406,6 @@ public class BusinessValidationController {
 
         Document document = null;
         final CaseData data = callbackRequest.getCaseDetails().getData();
-        if (hasRequiredEmailAddress(data)) {
-            document = notificationService
-                .sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails(), Optional.of(CaseOrigin.CASEWORKER));
-        }
 
         CallbackResponse response;
 
@@ -417,6 +413,11 @@ public class BusinessValidationController {
 
         if (!response.getErrors().isEmpty()) {
             return ResponseEntity.ok(response);
+        }
+
+        if (hasRequiredEmailAddress(data)) {
+            document = notificationService
+                .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails(),Optional.of(CaseOrigin.CASEWORKER));
         }
 
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
