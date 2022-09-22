@@ -117,8 +117,12 @@ public class BusinessValidationController {
     @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         ihtEstateValidationRule.validate(request.getCaseDetails());
-        ihtValidationRule.validate(request.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+        final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
+        CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
+        if (response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+        }
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -699,10 +699,25 @@ class BusinessValidationUnitTest {
     @Test
     void shouldValidateIHTEstateData() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
             underTest.validateIhtEstateData(callbackRequestMock);
         verify(ihtEstateValidationRule, times(1))
             .validate(caseDetailsMock);
+        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldValidateIHTEstateDataWithError() {
+        List<String> errors = new ArrayList<>();
+        errors.add("some error");
+        when(callbackResponseMock.getErrors()).thenReturn(errors);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateIhtEstateData(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -722,16 +737,6 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldValidateIHTGrossGreaterThanNet() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.validateIhtEstateData(callbackRequestMock);
-        verify(ihtValidationRule, times(1))
-                .validate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
