@@ -725,4 +725,13 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
+    @Test
+    void shouldValidateIHTGrossGreaterThanNet() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateIhtEstateData(callbackRequestMock);
+        verify(ihtValidationRule, times(1))
+                .validate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
