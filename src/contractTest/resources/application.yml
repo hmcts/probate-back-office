@@ -472,6 +472,16 @@ welsh:
     11: "Tachwedd"
     12: "Rhagfyr"
 
+blobstorage:
+  connection: ${BLOB_STORAGE_CONNECTION_STRING:dummy}
+
+adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+
+feature:
+  blobstorage:
+    smeeandford:
+      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:false}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy_key}
   user:
