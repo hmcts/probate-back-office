@@ -156,7 +156,7 @@
             {% if case_extras != null %}
                 {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
-            <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
+            <p>To the best of {% if (multipleExecutors) %}our{% else %}my{% endif %} knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death (and not by the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} and codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} and codicils{% endif %}) of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
     </tr>
 
@@ -169,7 +169,7 @@
 
             {% if executor.value.applyingExecutorType == "Named" %}
             <p>
-                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if numberOfCodicils == 1 %} or codicil{% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                {{ executor.value.applyingExecutorName }}, {% if multipleExecutors %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 is applying for probate.
             </p>
             {% endif %}
@@ -272,7 +272,7 @@
             </span></p>
             {% endif %}
             {% else %}
-            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if numberOfCodicils == 1 %} or codicil{% elseif numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
                         {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
                         {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
                         {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
