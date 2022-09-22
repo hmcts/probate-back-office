@@ -61,7 +61,7 @@ class DocumentServiceTest {
     }
 
     @Test
-    public void shouldExpiryDocument() throws JsonProcessingException {
+    void shouldExpiryDocument() throws JsonProcessingException {
         doNothing().when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
@@ -70,7 +70,7 @@ class DocumentServiceTest {
     }
 
     @Test
-    public void shouldProduceWaringLog() throws JsonProcessingException {
+    void shouldProduceWaringLog() throws JsonProcessingException {
         doThrow(JsonProcessingException.class).when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
