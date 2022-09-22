@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
@@ -144,6 +145,8 @@ class BusinessValidationUnitTest {
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     @Mock
     private AssignCaseAccessService assignCaseAccessService;
+    @Mock
+    private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
 
     private BusinessValidationController underTest;
 
@@ -175,7 +178,8 @@ class BusinessValidationUnitTest {
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
             solicitorPostcodeValidationRule,
-            assignCaseAccessService);
+            assignCaseAccessService,
+            furtherEvidenceForApplicationValidationRule);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -721,4 +725,17 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
+    @Test
+    void shouldValidateFurtherEvidenceForApplication() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.solsValidateAdmon(callbackRequestMock, bindingResultMock, httpServletRequest);
+        verify(furtherEvidenceForApplicationValidationRule, times(1))
+                .validate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
