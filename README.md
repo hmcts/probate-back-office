@@ -646,4 +646,3 @@ To run Caseworker tests on XUI locally do the following:
         TestBackOfficeUrl -  http://localhost:3455
         TestEnvUser - ProbateSolCW1@gmail.com
         TestEnvPassword - Pa55word11
-    
