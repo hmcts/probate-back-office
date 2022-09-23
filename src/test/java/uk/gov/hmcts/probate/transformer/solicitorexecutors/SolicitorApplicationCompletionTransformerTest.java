@@ -207,13 +207,17 @@ class SolicitorApplicationCompletionTransformerTest {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+        final List<CollectionMember<String>> formattedDate =
+                Arrays.asList(new CollectionMember<>("Formatted Date"));
         caseDataBuilder
                 .willHasCodicils(NO)
-                .codicilAddedDateList(codicilDates);
+                .codicilAddedDateList(codicilDates)
+                .codicilAddedFormattedDateList(formattedDate);
 
         CaseData caseData = caseDataBuilder.build();
         solicitorApplicationCompletionTransformerMock.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
 
         assertNull(caseData.getCodicilAddedDateList());
+        assertNull(caseData.getCodicilAddedFormattedDateList());
     }
 }

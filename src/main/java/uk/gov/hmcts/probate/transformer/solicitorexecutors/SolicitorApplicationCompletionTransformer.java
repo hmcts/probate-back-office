@@ -48,6 +48,7 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
     public void eraseCodicilAddedDateIfWillHasNoCodicils(CaseData caseData) {
         if (NO.equals(caseData.getWillHasCodicils())) {
             caseData.setCodicilAddedDateList(null);
+            caseData.setCodicilAddedFormattedDateList(null);
         }
     }
 }
