@@ -29,7 +29,7 @@ public class IhtNetQualifyingValueValidationRule implements CaseDetailsValidatio
         BigDecimal probateGross = caseDetails.getData().getIhtGrossValue();
 
         if (nqv != null) {
-            if (estateGross != null && nqv.doubleValue() > estateGross.doubleValue()) {
+            if (estateGross != null && nqv.compareTo(estateGross) > 0) {
                 String userMessage = businessValidationMessageRetriever.getMessage(IHT_NQV_GT_ESTATE_GROSS, null,
                         Locale.UK);
                 throw new BusinessValidationException(userMessage,
@@ -41,13 +41,13 @@ public class IhtNetQualifyingValueValidationRule implements CaseDetailsValidatio
                 throw new BusinessValidationException(userMessage,
                         "NQV cannot be larger than Estate Net value for case:" + caseDetails.getId());
             }
-            if (probateGross != null && nqv.doubleValue() > probateGross.doubleValue()) {
+            if (probateGross != null && nqv.compareTo(probateGross) > 0) {
                 String userMessage = businessValidationMessageRetriever.getMessage(IHT_NQV_GT_PROBATE_GROSS, null,
                         Locale.UK);
                 throw new BusinessValidationException(userMessage,
                         "NQV cannot be larger than Probate Gross value for case:" + caseDetails.getId());
             }
-            if (probateNet != null && nqv.doubleValue() > probateNet.doubleValue()) {
+            if (probateNet != null && nqv.compareTo(probateNet) > 0) {
                 String userMessage = businessValidationMessageRetriever.getMessage(IHT_NQV_GT_PROBATE_NET, null,
                         Locale.UK);
                 throw new BusinessValidationException(userMessage,
