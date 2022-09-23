@@ -7,8 +7,12 @@ module.exports = async function (useProfessionalUser, signInDelay = testConfig.S
     const I = this;
     await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
     await I.wait(testConfig.ManualDelayMedium);
+    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
+    await I.wait(testConfig.ManualDelayMedium);
+    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
+    await I.wait(testConfig.ManualDelayMedium);
 
-    await I.waitForText('Sign in', 600);
+    await I.waitForText('Sign in', 60);
     await I.waitForText('Email address');
     await I.waitForText('Password');
 
