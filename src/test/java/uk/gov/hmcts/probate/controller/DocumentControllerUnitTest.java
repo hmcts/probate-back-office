@@ -8,15 +8,21 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -41,6 +47,7 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -80,6 +87,8 @@ public class DocumentControllerUnitTest {
     private DocumentValidation documentValidation;
     @Mock
     private DocumentManagementService documentManagementService;
+    @Mock
+    private EvidenceUploadService evidenceUploadService;
 
     private DocumentController documentController;
 
@@ -97,10 +106,11 @@ public class DocumentControllerUnitTest {
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
         documentController = new DocumentController(documentGeneratorService, registryDetailsService,
-            pdfManagementService, callbackResponseTransformer, caseDataTransformer, 
+            pdfManagementService, callbackResponseTransformer, caseDataTransformer,
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
-            redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService);
+            redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
+            evidenceUploadService);
     }
 
     @Test
@@ -117,7 +127,7 @@ public class DocumentControllerUnitTest {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: no files passed");
 
-        List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, DUMMY_SAUTH_TOKEN, 
+        List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, DUMMY_SAUTH_TOKEN,
             Collections.emptyList());
         assertThat(actualResult, equalTo(expectedResult));
     }
@@ -166,11 +176,22 @@ public class DocumentControllerUnitTest {
         links.self = selfLink;
         Document document = Document.builder().links(links).build();
         when(uploadResponseMock.getDocuments()).thenReturn(Collections.singletonList(document));
-        
+
         when(documentManagementService.uploadForCitizen(any(List.class), any(String.class), any(DocumentType.class)))
             .thenReturn(uploadResponseMock);
 
         List<String> actualResult = documentController.upload(DUMMY_OAUTH_2_TOKEN, DUMMY_SAUTH_TOKEN, files);
         assertThat(actualResult, hasItems());
+    }
+
+    @Test
+    public void shouldSetLastEvidenceAddedDate() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        ResponseEntity<CallbackResponse> response = documentController.uploadDocument(callbackRequest);
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+
+        verify(evidenceUploadService).updateLastEvidenceAddedDate(caseDetailsMock);
     }
 }

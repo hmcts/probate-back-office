@@ -1060,7 +1060,8 @@ public class CallbackResponseTransformer {
             .codicilsDamageDateKnown(caseData.getCodicilsDamageDateKnown())
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
-            .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy());
+            .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
+            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
