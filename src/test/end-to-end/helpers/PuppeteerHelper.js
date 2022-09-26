@@ -44,6 +44,18 @@ class PuppeteerHelper extends Helper {
         }
     }
 
+    async addAndRemoveTemporaryDummyTab() {
+        // With Xui we have an issue where it gets stuck unless you open a new tab for some reason
+        const page = this.helpers[helperName].page;
+
+        let dummyTab = await this.helpers[helperName].browser.newPage();
+        await this.delay(0.75);
+        await dummyTab.close();
+        await this.delay(0.5);
+
+        await page.bringToFront();
+    }
+
     async waitForNavigationToComplete(locator, delay = 0) {
         const page = this.helpers[helperName].page;
 
