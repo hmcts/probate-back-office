@@ -71,7 +71,6 @@ public class DocumentManagementServiceImplTest {
         when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
         when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());
         when(documentUploadRequestMock.getJurisdictionId()).thenReturn("PROBATE");
-
         when(documentManagementRequestBuilder.perpareDocumentUploadRequest(evidenceManagementFileUpload, DIGITAL_GRANT))
             .thenReturn(documentUploadRequestMock);
         when(caseDocumentClient.uploadDocuments("Bearer AUTH", "S2S", "GrantOfRepresentation", "PROBATE",
@@ -99,7 +98,7 @@ public class DocumentManagementServiceImplTest {
         List<MultipartFile> multipartFileList = new ArrayList<>();
         when(documentManagementRequestBuilder.perpareDocumentUploadRequestForCitizen(multipartFileList, DIGITAL_GRANT))
             .thenReturn(documentUploadRequestMock);
-        UploadResponse uploadResponse = documentManagementService.uploadForCitizen(multipartFileList, 
+        UploadResponse uploadResponse = documentManagementService.uploadForCitizen(multipartFileList,
             "AUTH", DIGITAL_GRANT);
 
         assertEquals(uploadResponseMock, uploadResponse);
@@ -122,11 +121,8 @@ public class DocumentManagementServiceImplTest {
 
     @Test
     public void shoulGetDocument() throws IOException {
-        SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation("AUTH")
-            .serviceAuthorisation("S2S")
-            .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
+        when(securityUtils.generateServiceToken()).thenReturn("S2S");
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
         when(getResponseMock.getBody()).thenReturn(getBodyMock);
         File file = ResourceUtils.getFile(FileUtils.class.getResource("/" + "digitalCase.json"));
@@ -143,11 +139,8 @@ public class DocumentManagementServiceImplTest {
 
     @Test(expected = ClientException.class)
     public void shoulThrowExceptionForNoBodyGetDocument() throws IOException {
-        SecurityDTO securityDTO = SecurityDTO.builder()
-            .authorisation("AUTH")
-            .serviceAuthorisation("S2S")
-            .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
+        when(securityUtils.generateServiceToken()).thenReturn("S2S");
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
         documentManagementService.getDocument(Document.builder()
             .documentLink(DocumentLink.builder()

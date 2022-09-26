@@ -52,6 +52,19 @@ class SmeeAndFordExtractTaskTest {
     }
 
     @Test
+    void shouldInitiateSmeeAndFordForAdhocJobDateRange() {
+        smeeAndFordExtractTask.adHocJobDate = "2022-09-01";
+        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
+                .body("Perform Smee And Ford data extract finished");
+        smeeAndFordExtractTask.run();
+        String date = smeeAndFordExtractTask.adHocJobDate;
+        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals("Perform Smee And Ford data extract finished", responseEntity.getBody());
+        verify(dataExtractDateValidator).dateValidator(date,date);
+        verify(smeeAndFordDataExtractService).performSmeeAndFordExtractForDateRange(date,date);
+    }
+
+    @Test
     void shouldThrowClientExceptionWithBadRequestForSmeeAndFordExtractWithIncorrectDateFormat() {
         String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
@@ -91,4 +104,5 @@ class SmeeAndFordExtractTaskTest {
         verify(dataExtractDateValidator).dateValidator(date,date);
         verifyNoInteractions(smeeAndFordDataExtractService);
     }
+
 }
