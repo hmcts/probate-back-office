@@ -1,5 +1,6 @@
 'use strict';
 
+const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const testConfig = require('src/test/config.js');
 
 module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
@@ -7,6 +8,7 @@ module.exports = async function (useProfessionalUser, signInDelay = testConfig.S
     const I = this;
     await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/`);
     await I.wait(testConfig.ManualDelayMedium);
+    await I.addAndRemoveTemporaryDummyTab();
 
     await I.waitForText('Sign in', 60);
     await I.waitForText('Email address');
