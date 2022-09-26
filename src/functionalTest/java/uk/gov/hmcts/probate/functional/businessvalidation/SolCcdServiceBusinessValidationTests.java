@@ -647,7 +647,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyCaseworkerDefaultDateOfDeathType() throws IOException {
-        //String payload = getJsonFromFile("caseworkerDefaultDateOfDeathType.json");
         validatePostSuccessAndCheckValue("{\"case_details\":{}}", INIT_PAPER_FORM_URL, "dateOfDeathType", "diedOn");
     }
 
