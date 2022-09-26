@@ -164,16 +164,7 @@ class PuppeteerHelper extends Helper {
 
     async signOut(delay = testConfig.SignOutDelayDefault) {
         await this.waitForNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', delay);
-
-        // With Xui we have an issue where it gets stuck unless you open a new tab for some reason
         const page = this.helpers[helperName].page;
-
-        let dummyTab = await this.helpers[helperName].browser.newPage();
-        await this.delay(0.75);
-        await dummyTab.close();
-        await this.delay(0.5);
-
-        await page.bringToFront();
         await page.waitForSelector('#username');
     }
 
