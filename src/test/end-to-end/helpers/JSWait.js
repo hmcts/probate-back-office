@@ -21,6 +21,8 @@ class JSWait extends codecept_helper {
         const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
         const helperIsPuppeteer = this.helpers.Puppeteer;
 
+        await helper.addAndRemoveTemporaryDummyTab();
+
         if (helperIsPuppeteer) {
             if (url.indexOf('http') !== 0) {
                 url = helper.options.url + url;
