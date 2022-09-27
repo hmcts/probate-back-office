@@ -18,6 +18,10 @@ java:
   image: hmctspublic.azurecr.io/probate/back-office:latest
   aadIdentityName: probate
   ingressHost: probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  devcpuRequests: 1
+  devmemoryRequests: 2Gi
+  devcpuLimits: 2
+  devmemoryLimits: 3Gi
   autoscaling:
     enabled: true
     maxReplicas: 4
