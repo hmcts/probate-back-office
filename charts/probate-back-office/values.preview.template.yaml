@@ -78,6 +78,10 @@ ccd:
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
+      devcpuRequests: 1
+      devmemoryRequests: 1Gi
+      devcpuLimits: 2
+      devmemoryLimits: 2Gi
       environment:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
