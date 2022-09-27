@@ -12,16 +12,20 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
@@ -198,4 +202,22 @@ class SolicitorApplicationCompletionTransformerTest {
         assertEquals(new ArrayList<>(), caseData.getExecutorsApplyingLegalStatement());
     }
 
+    @Test
+    void shouldEraseCodicilAddedDateIfWillHasNoCodicils() {
+        final List<CollectionMember<CodicilAddedDate>> codicilDates =
+                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
+                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
+        final List<CollectionMember<String>> formattedDate =
+                Arrays.asList(new CollectionMember<>("Formatted Date"));
+        caseDataBuilder
+                .willHasCodicils(NO)
+                .codicilAddedDateList(codicilDates)
+                .codicilAddedFormattedDateList(formattedDate);
+
+        CaseData caseData = caseDataBuilder.build();
+        solicitorApplicationCompletionTransformerMock.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
+
+        assertNull(caseData.getCodicilAddedDateList());
+        assertNull(caseData.getCodicilAddedFormattedDateList());
+    }
 }
