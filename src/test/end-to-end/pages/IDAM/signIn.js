@@ -1,6 +1,5 @@
 'use strict';
 
-const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const testConfig = require('src/test/config.js');
 
 module.exports = async function (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
