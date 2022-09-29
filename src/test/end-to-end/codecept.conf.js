@@ -1,20 +1,20 @@
 const testConfig = require('src/test/config.js');
 
 exports.config = {
-    'tests': testConfig.TestPathToRun,
-    'output': testConfig.TestOutputDir,
-    'helpers': {
-        'Puppeteer': {
-            'waitForTimeout': 60000,
-            'getPageTimeout': 60000,
-            'show': testConfig.TestShowBrowserWindow,
-            'waitForNavigation': ['domcontentloaded', 'networkidle0'],
-            'chrome': {
+    tests: testConfig.TestPathToRun,
+    output: testConfig.TestOutputDir,
+    helpers: {
+        Playwright: {
+            waitForTimeout: 60000,
+            getPageTimeout: 60000,
+            show: testConfig.TestShowBrowserWindow,
+            waitForNavigation: 'networkidle',
+            chrome: {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
                 'defaultViewport': {
-                    'width': 1280,
-                    'height': 960
+                    'width': 1920,
+                    'height': 1020
                 },
                 args: [
                     // '--headless',
