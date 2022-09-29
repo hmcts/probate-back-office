@@ -18,15 +18,17 @@ class JSWait extends codecept_helper {
     }
 
     async amOnLoadedPage (url, waitForNetworkIdle = true) {
-        const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
-        const helperIsPuppeteer = this.helpers.Puppeteer;
+        const helper = this.helpers.WebDriver || this.helpers.Playwright;
+        const helperIsPlaywright = this.helpers.Playwright;
 
-        if (helperIsPuppeteer) {
+        if (helperIsPlaywright) {
             if (url.indexOf('http') !== 0) {
                 url = helper.options.url + url;
             }
 
             // With Xui we have an issue where it gets stuck unless you open a new tab for some reason
+
+            /*
             const page = helper.page;
             let dummyTab = await helper.browser.newPage();
             await page.bringToFront();
@@ -42,6 +44,8 @@ class JSWait extends codecept_helper {
             await this.delay(0.75);
             await dummyTab.close();
         } else {
+
+             */
             // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
             await helper.amOnPage(url, 60);
         }
