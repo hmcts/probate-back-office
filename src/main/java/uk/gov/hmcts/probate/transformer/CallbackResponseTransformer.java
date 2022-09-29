@@ -1363,7 +1363,8 @@ public class CallbackResponseTransformer {
 
         if (!isCodicil(caseData)) {
             builder
-                    .willNumberOfCodicils(null);
+                    .willNumberOfCodicils(null)
+                    .codicilAddedDateList(null);
         }
 
         if (!didDeceasedDieEngOrWales(caseData)) {
@@ -1483,7 +1484,9 @@ public class CallbackResponseTransformer {
         }
 
         if (!isCodicil(caseData)) {
-            builder.willNumberOfCodicils(null);
+            builder
+                    .willNumberOfCodicils(null)
+                    .codicilAddedDateList(null);
         }
 
         if (!didDeceasedDieEngOrWales(caseData)) {
