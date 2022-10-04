@@ -120,6 +120,12 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }
 
+    @PostMapping(path = "/validate-further-evidence")
+    public ResponseEntity<CallbackResponse> validateFurtherEvidence(@RequestBody CallbackRequest request) {
+        furtherEvidenceForApplicationValidationRule.validate(request.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+    }
+
     @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateSolsCreate(
             @Validated({ApplicationCreatedGroup.class}) @RequestBody
