@@ -418,7 +418,7 @@ iht-estate:
   switch-date: "2022-01-01"
 
 blobstorage:
-  connection: ${BLOB_STORAGE_CONNECTION_STRING:dummy}
+  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 
