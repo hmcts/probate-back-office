@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
@@ -53,6 +54,7 @@ public class NextStepsController {
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
@@ -89,6 +91,7 @@ public class NextStepsController {
             Document coversheet = pdfManagementService
                     .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
 
+            caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(

@@ -3508,6 +3508,8 @@ class CallbackResponseTransformerTest {
         assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
         assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
         assertEquals(GRANT_STOPPED_DATE, grantOfRepresentationData.getGrantStoppedDate());
+
+        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEvidenceHandled());
     }
 
     @Test

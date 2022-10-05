@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.EvidenceHandledTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
@@ -68,6 +69,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 class BusinessValidationUnitTest {
 
@@ -151,8 +153,6 @@ class BusinessValidationUnitTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         businessValidationErrorMock = FieldErrorResponse.builder().build();
-        CaseDataTransformer cdt = new CaseDataTransformer(solCompletionTransformer, resetCdTransformer,
-            legalStatementExecutorTransformer);
         underTest = new BusinessValidationController(eventValidationServiceMock,
             notificationService,
             objectMapper,
@@ -160,7 +160,7 @@ class BusinessValidationUnitTest {
             caseworkerAmendAndCreateValidationRules,
             checkListAmendCaseValidationRules,
             callbackResponseTransformerMock,
-            cdt,
+            caseDataTransformerMock,
             confirmationResponseServiceMock,
             stateChangeServiceMock,
             pdfManagementServiceMock,
@@ -499,6 +499,9 @@ class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
             .thenReturn(callbackResponseMock);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
         ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
             bindingResultMock);
 
@@ -721,4 +724,52 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
+    @Test
+    void shouldTransformCaseDataForEvidenceHandledPACreateCaseOK() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
+        ResponseEntity<CallbackResponse> response =  underTest.paCreate(callbackRequestMock, bindingResultMock);
+        verify(callbackResponseTransformerMock).transformCase(callbackRequestMock);
+        verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformCaseDataForEvidenceHandledCasePrinted() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
+        ResponseEntity<CallbackResponse> response = underTest.casePrinted(callbackRequestMock,
+                bindingResultMock);
+
+        verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformCaseDataForEvidenceHandledCW() throws NotificationClientException {
+        String paperFormValue = "Any";
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().paperForm(paperFormValue).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        Document documentMock = Mockito.mock(Document.class);
+        when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock))
+                .thenReturn(callbackResponseMock);
+        when(emailAddressNotifyApplicantValidationRule.validate(any(CCDData.class))).thenReturn(Collections.EMPTY_LIST);
+        ResponseEntity<CallbackResponse> response = underTest.paperFormCaseDetails(callbackRequestMock,
+                bindingResultMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caseDataTransformerMock).transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequestMock);
+    }
 }
