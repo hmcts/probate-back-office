@@ -86,7 +86,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
-            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -105,7 +105,7 @@ public class LifeEventCCDService {
 
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
-            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
             .build();
 
         log.info("LEV updateCCDLifeEventVerificationNoRecordsFound: " + caseId);
@@ -131,7 +131,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
-            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -153,7 +153,7 @@ public class LifeEventCCDService {
 
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
-            .caseHandedOffToLegacySite(handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails))
+            .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
