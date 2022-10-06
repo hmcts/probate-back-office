@@ -119,7 +119,8 @@ public class TaskStateRenderer {
                 solSOTNeedToUpdate,details.getData().getEvidenceHandled());
         final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
                 solSOTNeedToUpdate,details.getData().getEvidenceHandled());
-        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate,details.getData().getEvidenceHandled());
+        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT,
+                solSOTNeedToUpdate,details.getData().getEvidenceHandled());
 
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
@@ -166,23 +167,24 @@ public class TaskStateRenderer {
         }
 
         if (currState == renderState) {
-            if(renderState == TaskListState.TL_STATE_SEND_DOCUMENTS
-                    && evidenceHandled!=null && evidenceHandled.equals(NO)){
-                System.out.println("return--->"+TaskState.COMPLETED);
+            if (renderState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                    && evidenceHandled != null && evidenceHandled.equals(NO)) {
                 return TaskState.COMPLETED;
-            }else{
+            } else {
                 return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
             }
         }
         if (currState.compareTo(renderState) > 0) {
             return TaskState.COMPLETED;
         }
-        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS && renderState == TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS
-                && evidenceHandled!=null && evidenceHandled.equals(NO)){
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && renderState == TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS
+                && evidenceHandled != null && evidenceHandled.equals(NO)) {
             return TaskState.COMPLETED;
         }
-        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS && renderState == TaskListState.TL_STATE_EXAMINE_APPLICATION
-                && evidenceHandled!=null && evidenceHandled.equals(NO)){
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && renderState == TaskListState.TL_STATE_EXAMINE_APPLICATION
+                && evidenceHandled != null && evidenceHandled.equals(NO)) {
             return TaskState.IN_PROGRESS;
         }
         return TaskState.NOT_AVAILABLE;
