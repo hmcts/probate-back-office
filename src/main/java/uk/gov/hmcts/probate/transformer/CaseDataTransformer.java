@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationC
 
 import java.util.List;
 
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
+
 @Component
 @RequiredArgsConstructor
 public class CaseDataTransformer {
@@ -19,6 +21,7 @@ public class CaseDataTransformer {
     private final SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
     private final ResetCaseDataTransformer resetCaseDataTransformer;
     private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
+    private final EvidenceHandledTransformer evidenceHandledTransformer;
 
     public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -67,5 +70,23 @@ public class CaseDataTransformer {
     public void transformCaseDataForSolicitorExecutorNames(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
+    }
+
+    public void transformCaseDataForEvidenceHandled(CallbackRequest callbackRequest) {
+        if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            evidenceHandledTransformer.updateEvidenceHandled(callbackRequest.getCaseDetails().getData());
+        }
+    }
+
+    public void transformCaseDataForEvidenceHandledForManualCreateByCW(CallbackRequest callbackRequest) {
+        if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            evidenceHandledTransformer.updateEvidenceHandledToNo(callbackRequest.getCaseDetails().getData());
+        }
+    }
+
+    public void transformCaseDataForEvidenceHandledForCreateBulkscan(CallbackRequest callbackRequest) {
+        if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            evidenceHandledTransformer.updateEvidenceHandledToNo(callbackRequest.getCaseDetails().getData());
+        }
     }
 }

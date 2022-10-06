@@ -1616,6 +1616,10 @@ public class CallbackResponseTransformer {
             grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
         }
 
+        if (grantOfRepresentationData.getEvidenceHandled() == null) {
+            grantOfRepresentationData.setEvidenceHandled(false);
+        }
+
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData)
                 .caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();

@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
@@ -78,6 +79,7 @@ public class NotificationController {
     private final RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
     private final ObjectMapper objectMapper;
     private final GrantNotificationService grantNotificationService;
+    private final CaseDataTransformer caseDataTransformer;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -201,6 +203,7 @@ public class NotificationController {
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
     }

@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.math.BigDecimal;
@@ -146,6 +147,7 @@ class BusinessValidationControllerTest {
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
+    private static final String PA_CREATE_URL = "/case/pa-create";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -187,6 +189,8 @@ class BusinessValidationControllerTest {
 
     @MockBean
     private NotificationService notificationService;
+    @MockBean
+    private CaseDataTransformer caseDataTransformer;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -1088,6 +1092,18 @@ class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("The executor address line 1 cannot be empty"));
         verify(notificationService, never()).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
+    }
+
+    @Test
+    void shouldTransformCaseDataForEvidenceHandledPACreateCaseOK() throws Exception {
+        String caseDetails = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(PA_CREATE_URL)
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caseDetails)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any(CallbackRequest.class));
     }
 }
 

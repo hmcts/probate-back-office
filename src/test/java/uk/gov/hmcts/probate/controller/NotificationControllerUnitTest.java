@@ -23,10 +23,12 @@ import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
@@ -49,6 +51,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 
 @ExtendWith(SpringExtension.class)
 class NotificationControllerUnitTest {
@@ -77,6 +80,10 @@ class NotificationControllerUnitTest {
     RedeclarationNotificationService redeclarationNotificationService;
     @Mock
     DocumentsReceivedNotificationService documentsReceivedNotificationService;
+    @Mock
+    CaseDataTransformer caseDataTransformer;
+    @Mock
+    RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
 
     @InjectMocks
     NotificationController notificationController;
@@ -180,6 +187,8 @@ class NotificationControllerUnitTest {
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
         when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
         when(notificationService.sendEmail(any(), any())).thenReturn(document);
+        when(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(any()))
+                .thenReturn(callbackResponse);;
 
     }
 
@@ -187,5 +196,12 @@ class NotificationControllerUnitTest {
         this.setUpMocks(state, new String[0]);
     }
 
-
+    @Test
+    void shouldTransformEvidenceHandledGrantReceived() throws NotificationClientException {
+        setUpMocks(GRANT_RAISED);
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.sendGrantReceivedNotification(callbackRequest);
+        verify(caseDataTransformer).transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
 }
