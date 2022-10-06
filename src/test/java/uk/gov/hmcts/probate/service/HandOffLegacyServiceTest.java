@@ -35,7 +35,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(false, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(NO, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -46,7 +45,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(false, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(NO, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -58,7 +56,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -70,7 +67,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -84,7 +80,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -98,7 +93,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -112,7 +106,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -127,7 +120,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -141,7 +133,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -155,7 +146,6 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 
     @Test
@@ -169,6 +159,5 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         assertEquals(true, handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails));
-        assertEquals(YES, handOffLegacyService.getHandOffLegacySiteYesOrNo(caseDetails));
     }
 }
