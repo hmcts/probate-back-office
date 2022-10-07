@@ -78,6 +78,10 @@ ccd:
   ccd-data-store-api:
     java:
       imagePullPolicy: Always
+      devcpuRequests: 1
+      devmemoryRequests: 1Gi
+      devcpuLimits: 2
+      devmemoryLimits: 2Gi
       environment:
         DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
@@ -184,6 +188,10 @@ xui-webapp:
     releaseNameOverride: ${SERVICE_NAME}-xui-webapp
     image: hmctspublic.azurecr.io/xui/webapp:latest
     ingressHost: xui-${SERVICE_FQDN}
+    devcpuRequests: 500m
+    devmemoryRequests: 512Mi
+    devcpuLimits: 1
+    devmemoryLimits: 1Gi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
@@ -230,6 +238,7 @@ java:
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
     CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
 
   keyVaults:
     probate:
@@ -284,4 +293,6 @@ java:
           alias: lev.bearertoken.password
         - name: levDeathUrl
           alias: lev.death.url
+        - name: probate-storage-account-primary-connection-string
+          alias: PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING
 
