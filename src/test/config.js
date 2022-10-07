@@ -12,6 +12,7 @@ module.exports = {
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
+    //TestEnvProfUser1 User for share case e2e only
     TestEnvProfUser1: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest2@gmail.com',
     TestEnvProfPassword1: process.env.SOL_USER_PASSWORD || 'Pa55wordTest',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
