@@ -43,7 +43,7 @@ Scenario(scenarioName, async function ({I}) {
 
     // FIRST case is only needed for case-matching with SECOND one
 
-    let nextStepName = 'Raise a caveat';z
+    let nextStepName = 'Raise a caveat';
     await I.logInfo(scenarioName, nextStepName);
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat);
