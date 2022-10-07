@@ -20,7 +20,7 @@ module.exports = async function (shareCaseSelection) {
     await I.selectOption('#wb-jurisdiction', 'Manage probate application');
     await I.selectOption('#wb-case-type','Grant of representation');
     await I.click("button[title='Apply filter']");
-    await I.wait(3);
+    await I.wait(4);
     await I.click('//div[normalize-space()="Case reference"]');
     await I.wait(2);
     await I.waitForElement('//input[@id="select-'+caseRefNumber+'"]');
@@ -28,9 +28,9 @@ module.exports = async function (shareCaseSelection) {
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete('#btn-share-button', testConfig.CreateCaseDelay);
     await I.wait(2);
-    await I.fillField('input[role="combobox"]', 'Test1');
-    await I.wait(2);
-    await I.click('//span[contains(text(),"Test1 Probate - probatesolicitortestorgtest2@gmail")]');
+    await I.fillField('input[role="combobox"]', 'T');
+    await I.wait(3);
+    await I.click('//span[contains(text(),"probatesolicitortestorgtest2@gmail")]');
     await I.click('#btn-add-user');
     await I.click('.govuk-accordion__open-all');
     await I.see('probatesolicitortestorgtest2@gmail');

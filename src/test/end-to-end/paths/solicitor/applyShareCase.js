@@ -8,7 +8,7 @@ Feature('Solicitor - Share A Case').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Share A Case';
 
 Scenario(scenarioName, async function ({I}) {
-    if(testConfig.TestBackOfficeUrl.includes("aat")) {
+    if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')){
         const isSolicitorNamedExecutor = true;
         const isSolicitorApplyingExecutor = true;
 
@@ -17,7 +17,6 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateUserShareCase(true);
         let nextStepName = 'Deceased details';
         let endState = 'Application created';
-
         await I.logInfo(scenarioName, nextStepName);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);
