@@ -61,7 +61,7 @@ def secrets = [
                 secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('blob-storage-connection-string', 'BLOB_STORAGE_CONNECTION_STRING')
+                secret('probate-storage-account-primary-connection-string', 'PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -191,7 +191,7 @@ withPipeline("java", product, component) {
     if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
       env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       sh 'yarn install'
-      sh 'yarn test:fullfunctional'
+      sh 'yarn test:fullfunctional-pr'
     }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
