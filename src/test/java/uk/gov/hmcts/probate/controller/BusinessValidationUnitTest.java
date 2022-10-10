@@ -182,8 +182,7 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             solicitorPostcodeValidationRule,
             assignCaseAccessService,
-            furtherEvidenceForApplicationValidationRule);
-            assignCaseAccessService,
+            furtherEvidenceForApplicationValidationRule,
             handOffLegacyTransformer);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
