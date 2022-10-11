@@ -28,8 +28,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.io.File;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +49,7 @@ public class BulkScanEnvelopeHandler implements IEnvelopeReceiver {
 
     @Override
     public BulkScanEnvelopeProcessingResponse onEnvelopeReceived(ProcessedEnvelopeContents envelopeContents) {
+
 
         // upload the pdfs, attach to a case etc
         log.info("Uploading contents of {}", envelopeContents.getEnvelope().getFileName());
@@ -80,20 +81,43 @@ public class BulkScanEnvelopeHandler implements IEnvelopeReceiver {
                 }
             });
 
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+            var caseNumber = envelopeContents.getInputEnvelope().caseNumber;
+            var inputFormType = envelopeContents.getInputEnvelope().getFormType();
+            FormType.isFormTypeValid(inputFormType);
+            var formType = FormType.valueOf(inputFormType);
+            var caseData = upsertCase(envelopeContents, formType, uploadedPdfs);
+
+            // payments
+
+            envelopeContents.getInputEnvelope().payments.forEach(inputPayment -> {
+                log.info("Process inputPayment DCN {}", inputPayment.documentControlNumber);
+            });
+
+        } catch (RuntimeException e) {
+            return new BulkScanEnvelopeProcessingResponse(
+                    envelopeContents.getEnvelope().getEtag(),
+                    String.format("Failed to process Envelope %s", envelopeContents.getEnvelope().getEtag()),
+                    EnvelopeProcessStatus.ERRORS,
+                    emptyList(),
+                    new ArrayList<>() {
+                        {
+                            add(e.getMessage());
+                        }
+                    }
+            );
+        } catch (Exception e) {
+            return new BulkScanEnvelopeProcessingResponse(
+                    envelopeContents.getEnvelope().getEtag(),
+                    String.format("Failed to process Envelope %s", envelopeContents.getEnvelope().getEtag()),
+                    EnvelopeProcessStatus.FATAL,
+                    emptyList(),
+                    new ArrayList<>() {
+                        {
+                            add(e.getMessage());
+                        }
+                    }
+            );
         }
-
-        var caseNumber = envelopeContents.getInputEnvelope().caseNumber;
-        var inputFormType = envelopeContents.getInputEnvelope().getFormType();
-        FormType.isFormTypeValid(inputFormType);
-        var formType = FormType.valueOf(inputFormType);
-        var caseData = upsertCase(envelopeContents, formType, uploadedPdfs);
-
-        envelopeContents.getInputEnvelope().payments.forEach(inputPayment -> {
-            log.info("Process inputPayment DCN {}", inputPayment.documentControlNumber);
-        });
-
         return new BulkScanEnvelopeProcessingResponse(
                 envelopeContents.getEnvelope().getEtag(),
                 String.format("Successfully processed Envelope %s", envelopeContents.getEnvelope().getEtag()),
@@ -101,7 +125,6 @@ public class BulkScanEnvelopeHandler implements IEnvelopeReceiver {
                 emptyList(),
                 emptyList()
         );
-
     }
 
     private CaseCreationDetails upsertCase(ProcessedEnvelopeContents processedEnvelopeContents,
