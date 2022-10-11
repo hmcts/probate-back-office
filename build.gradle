@@ -198,6 +198,7 @@ repositories {
 
 
 processResources {
+  dependsOn('generateGitProperties')
   from ('src/lib/AI-Agent.xml') {
     into 'lib'
   }
