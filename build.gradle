@@ -191,11 +191,9 @@ jacocoTestReport {
 repositories {
   mavenLocal()
   mavenCentral()
-  mavenLocal()
-  mavenCentral()
-  maven { url "https://jitpack.io" }
   jcenter()
   maven { url "https://repo.maven.apache.org/maven2" }
+  maven { url "https://jitpack.io" }
 }
 
 
@@ -260,7 +258,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.9'
-  implementation group: 'com.github.hmcts', name: 'bulk-scan-java-client', version: '0.1.3'
+  implementation group: 'com.github.hmcts', name: 'bulk-scan-java-client', version: '0.1.6'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO

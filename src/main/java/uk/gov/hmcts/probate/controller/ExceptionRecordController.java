@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
@@ -32,10 +33,14 @@ import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
+import uk.gov.hmcts.reform.probate.model.ScannedDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -74,7 +79,6 @@ public class ExceptionRecordController {
             erRequest.getFormType(), erRequest.getExceptionRecordId());
         FormType.isFormTypeValid(erRequest.getFormType());
         FormType formType = FormType.valueOf(erRequest.getFormType());
-        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder().build();
         List<String> warnings = ocrToCCDMandatoryField
             .ocrToCCDMandatoryFields(ocrPopulatedValueMapper.ocrPopulatedValueMapper(erRequest.getOcrFields()),
                 formType);
@@ -91,25 +95,21 @@ public class ExceptionRecordController {
 
         log.info("Validation check passed, attempting to transform case for form-type {}, caseId {}", formType,
             erRequest.getExceptionRecordId());
-        switch (formType) {
-            case PA8A:
-                callbackResponse = erService.createCaveatCaseFromExceptionRecord(erRequest, warnings);
-                break;
-            case PA1P:
-                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                    erRequest, GrantType.GRANT_OF_PROBATE, warnings);
-                break;
-            case PA1A:
-                callbackResponse = erService.createGrantOfRepresentationCaseFromExceptionRecord(
-                    erRequest, GrantType.INTESTACY, warnings);
-                break;
-            default:
-                throw new OCRMappingException(
+        CaseCreationDetails callbackResponse = switch (formType) {
+            case PA8A -> erService.createCaveatCaseFromExceptionRecord(erRequest);
+            case PA1P -> erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                    erRequest, GrantType.GRANT_OF_PROBATE);
+            case PA1A -> erService.createGrantOfRepresentationCaseFromExceptionRecord(
+                    erRequest, GrantType.INTESTACY);
+            default -> throw new OCRMappingException(
                     "This Exception Record form currently has no case mapping for case "
-                        + erRequest.getExceptionRecordId());
-        }
+                            + erRequest.getExceptionRecordId());
+        };
 
-        return ResponseEntity.ok(callbackResponse);
+        return ResponseEntity.ok(SuccessfulTransformationResponse.builder()
+                .caseCreationDetails(callbackResponse)
+                .warnings(warnings)
+                .build());
     }
 
     @Operation(summary = "Transforms OCR data to case data", description = "Will return "

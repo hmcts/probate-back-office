@@ -27,18 +27,18 @@ public class ExceptionRecordRequest {
     private final Boolean isAutomatedProcess;
 
     public ExceptionRecordRequest(
-        @JsonProperty("exception_record_id") String exceptionRecordId,
-        @JsonProperty("exception_record_case_type_id") String exceptionRecordCaseTypeId,
-        @JsonProperty("po_box") String poBox,
-        @JsonProperty("po_box_jurisdiction") String jurisdiction,
-        @JsonProperty("form_type") String formType,
-        @JsonProperty("journey_classification") JourneyClassification journeyClassification,
-        @JsonProperty("delivery_date") LocalDateTime deliveryDate,
-        @JsonProperty("opening_date") LocalDateTime openingDate,
-        @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
-        @JsonProperty("ocr_data_fields") List<OcrDataField> ocrFields,
-        @JsonProperty("envelope_id") String envelopeId,
-        @JsonProperty("is_automated_process") Boolean isAutomatedProcess
+            @JsonProperty("exception_record_id") String exceptionRecordId,
+            @JsonProperty("exception_record_case_type_id") String exceptionRecordCaseTypeId,
+            @JsonProperty("po_box") String poBox,
+            @JsonProperty("po_box_jurisdiction") String jurisdiction,
+            @JsonProperty("form_type") String formType,
+            @JsonProperty("journey_classification") JourneyClassification journeyClassification,
+            @JsonProperty("delivery_date") LocalDateTime deliveryDate,
+            @JsonProperty("opening_date") LocalDateTime openingDate,
+            @JsonProperty("scanned_documents") List<InputScannedDoc> scannedDocuments,
+            @JsonProperty("ocr_data_fields") List<OcrDataField> ocrFields,
+            @JsonProperty("envelope_id") String envelopeId,
+            @JsonProperty("is_automated_process") Boolean isAutomatedProcess
     ) {
         this.exceptionRecordId = exceptionRecordId;
         this.exceptionRecordCaseTypeId = exceptionRecordCaseTypeId;
@@ -54,7 +54,7 @@ public class ExceptionRecordRequest {
         this.isAutomatedProcess = isAutomatedProcess;
     }
 
-    public ExceptionRecordOCRFields getOCRFieldsObject() {
+    public static ExceptionRecordOCRFields getOCRFieldsObject(List<OcrDataField> ocrFields) {
 
         return ExceptionRecordOCRFields.builder()
             .caveatorForenames(get(ocrFields, "caveatorForenames", "caveatorMiddleNames"))

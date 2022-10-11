@@ -38,21 +38,21 @@ class OCRPopulatedValueMapperTest {
         assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
     }
 
-//    @Test
-//    void testNullFieldValueIsNotAdded() {
-//        ocrFields.add(new OcrDataField("test", "test"));
-//        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
-//    }
-//
-//    @Test
-//    void testNullObjectsAreNotAdded() {
-//        ocrFields.add(new OcrDataField(null, null));
-//        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
-//    }
-//
-//    @Test
-//    void testEmptyValueFieldsAreNotAdded() {
-//        ocrFields.add(new OcrDataField("test", ""));
-//        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
-//    }
+    //    @Test
+    //    void testNullFieldValueIsNotAdded() {
+    //        ocrFields.add(new OcrDataField("test", "test"));
+    //        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
+    //    }
+    //
+    //    @Test
+    //    void testNullObjectsAreNotAdded() {
+    //        ocrFields.add(new OcrDataField(null, null));
+    //        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
+    //    }
+    //
+    //    @Test
+    //    void testEmptyValueFieldsAreNotAdded() {
+    //        ocrFields.add(new OcrDataField("test", ""));
+    //        assertEquals(5, ocrPopulatedValueMapper.ocrPopulatedValueMapper(ocrFields).size());
+    //    }
 }

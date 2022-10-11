@@ -8,7 +8,10 @@ import java.util.Arrays;
 
 public class OcrHelper {
 
-    public final static FormData expectedOCRData = new FormData(new ArrayList<OcrDataField>(
+    private OcrHelper() {
+    }
+
+    public static final FormData expectedOCRData = new FormData(new ArrayList<OcrDataField>(
             Arrays.asList(
                     new OcrDataField("deceasedSurname", "Smith"),
                     new OcrDataField("deceasedAddressLine1", "123 Alphabet Street")

@@ -54,7 +54,9 @@ class OcrEmailValidatorTest {
     @Test
     void shouldCreateWarningForAnInvalidField() {
 
-        final OcrDataField field = new OcrDataField(PRIMARY_APPLICANT_EMAIL_ADDRESS, RandomStringUtils.randomAlphabetic(10));
+        final OcrDataField field = new OcrDataField(
+                PRIMARY_APPLICANT_EMAIL_ADDRESS,
+                RandomStringUtils.randomAlphabetic(10));
 
         final List<String> result = ocrEmailValidator.validateField(singletonList(field));
         assertThat(result.size(), is(1));

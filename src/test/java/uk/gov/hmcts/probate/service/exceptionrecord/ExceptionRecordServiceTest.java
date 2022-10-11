@@ -146,8 +146,11 @@ class ExceptionRecordServiceTest {
 
     @Test
     void createCaveatCaseFromExceptionRecord() {
-        SuccessfulTransformationResponse response =
-            erService.createCaveatCaseFromExceptionRecord(erRequestCaveat, warnings);
+        var response = SuccessfulTransformationResponse.builder()
+                .caseCreationDetails(erService.createCaveatCaseFromExceptionRecord(erRequestCaveat))
+                .warnings(warnings)
+                .build();
+
         CaveatData caveatDataResponse = (CaveatData) response.getCaseCreationDetails().getCaseData();
         assertEquals(RegistryLocation.CTSC, caveatDataResponse.getRegistryLocation());
         assertEquals(ApplicationType.PERSONAL, caveatDataResponse.getApplicationType());
@@ -267,10 +270,14 @@ class ExceptionRecordServiceTest {
 
     @Test
     void createGrantOfProbateCaseFromExceptionRecord() {
-        SuccessfulTransformationResponse response =
-            erService
-                .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbate, GrantType.GRANT_OF_PROBATE,
-                    warnings);
+        var response = SuccessfulTransformationResponse.builder()
+                .caseCreationDetails(erService
+                        .createGrantOfRepresentationCaseFromExceptionRecord(
+                                erRequestGrantOfProbate,
+                                GrantType.GRANT_OF_PROBATE))
+                .warnings(warnings)
+                .build();
+
         GrantOfRepresentationData grantOfRepresentationDataResponse
             = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
         assertEquals(RegistryLocation.CTSC, grantOfRepresentationDataResponse.getRegistryLocation());

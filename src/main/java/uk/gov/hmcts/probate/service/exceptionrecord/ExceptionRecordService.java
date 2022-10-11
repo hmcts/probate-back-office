@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import uk.gov.hmcts.bulkscan.type.InputScannableItem;
 import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
@@ -13,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetail
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaveatCaseUpdateRequest;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
@@ -26,14 +28,19 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
+import uk.gov.hmcts.reform.probate.model.ScannedDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
+import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.stream.Collectors.toList;
@@ -69,34 +76,24 @@ public class ExceptionRecordService {
     @Autowired
     CallbackResponseTransformer grantOfRepresentationTransformer;
 
-    public SuccessfulTransformationResponse createCaveatCaseFromExceptionRecord(
-        ExceptionRecordRequest erRequest,
-        List<String> warnings) {
-
-        List<String> errors = new ArrayList<String>();
+    public CaseCreationDetails createCaveatCaseFromExceptionRecord(
+            String exceptionRecordId,
+            ExceptionRecordOCRFields ocrFields,
+            Map<String, CollectionMember<ScannedDocument>> uploadedPdfs) {
 
         try {
-            log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
-            CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
+            log.info("About to map Caveat OCR fields to CCD for case: {}", exceptionRecordId);
+            CaveatData caveatData = erCaveatMapper.toCcdData(ocrFields);
 
             // Add bulkScanReferenceId
-            caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
+            caveatData.setBulkScanCaseReference(exceptionRecordId);
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
-            caveatData.setScannedDocuments(erRequest.getScannedDocuments()
-                .stream()
-                .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+            caveatData.setScannedDocuments(uploadedPdfs.values().stream().toList());
 
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
-            CaseCreationDetails caveatCaseDetailsResponse =
-                caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
-
-            return SuccessfulTransformationResponse.builder()
-                .caseCreationDetails(caveatCaseDetailsResponse)
-                .warnings(warnings)
-                .build();
+            return caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
 
         } catch (Exception e) {
             log.error("Error transforming Caveat case from Exception Record", e);
@@ -104,18 +101,74 @@ public class ExceptionRecordService {
         }
     }
 
-    public SuccessfulTransformationResponse createGrantOfRepresentationCaseFromExceptionRecord(
-        ExceptionRecordRequest erRequest,
-        GrantType grantType,
-        List<String> warnings) {
+    public CaseCreationDetails createCaveatCaseFromExceptionRecord(
+            ExceptionRecordRequest erRequest) {
 
-        List<String> errors = new ArrayList<String>();
+        try {
+            log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
+            CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject(erRequest.getOcrFields()));
+
+            // Add bulkScanReferenceId
+            caveatData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
+
+            // Add scanned documents
+            log.info("About to map Caveat Scanned Documents to CCD.");
+            caveatData.setScannedDocuments(erRequest.getScannedDocuments()
+                    .stream()
+                    .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
+                    .collect(toList()));
+
+            log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
+            return caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
+
+        } catch (Exception e) {
+            log.error("Error transforming Caveat case from Exception Record", e);
+            throw new OCRMappingException(e.getMessage());
+        }
+    }
+
+    public CaseCreationDetails createGrantOfRepresentationCaseFromExceptionRecord(
+            String exceptionRecordId,
+            ExceptionRecordOCRFields ocrFields,
+            GrantType grantType,
+            Map<String, CollectionMember<ScannedDocument>> uploadedPdfs) {
+
+        try {
+            log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
+                    exceptionRecordId);
+            GrantOfRepresentationData grantOfRepresentationData =
+                    erGrantOfRepresentationMapper.toCcdData(ocrFields, grantType);
+
+            // Add bulkScanReferenceId
+            grantOfRepresentationData.setBulkScanCaseReference(exceptionRecordId);
+
+            // Add scanned documents
+            log.info("About to map Grant of Representation Scanned Documents to CCD.");
+            grantOfRepresentationData.setScannedDocuments(uploadedPdfs.values().stream().toList());
+
+            // Add grant type
+            grantOfRepresentationData.setGrantType(grantType);
+
+            log.info(
+                    "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
+                            + "orchestrator.");
+            return grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
+
+        } catch (Exception e) {
+            log.error("Error transforming Grant of Representation case from Exception Record", e);
+            throw new OCRMappingException(e.getMessage());
+        }
+    }
+
+    public CaseCreationDetails createGrantOfRepresentationCaseFromExceptionRecord(
+            ExceptionRecordRequest erRequest,
+            GrantType grantType) {
 
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
             GrantOfRepresentationData grantOfRepresentationData =
-                    erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
+                    erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(erRequest.getOcrFields()), grantType);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
@@ -123,23 +176,17 @@ public class ExceptionRecordService {
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
-                .stream()
-                .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+                    .stream()
+                    .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
+                    .collect(toList()));
 
             // Add grant type
             grantOfRepresentationData.setGrantType(grantType);
 
             log.info(
-                "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
-                    + "orchestrator.");
-            CaseCreationDetails grantOfRepresentationCaseDetailsResponse =
-                grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
-
-            return SuccessfulTransformationResponse.builder()
-                .caseCreationDetails(grantOfRepresentationCaseDetailsResponse)
-                .warnings(warnings)
-                .build();
+                    "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
+                            + "orchestrator.");
+            return grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
 
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);
@@ -187,7 +234,7 @@ public class ExceptionRecordService {
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(
                             caveatData.getScannedDocuments(),
-                            erRequest.getScannedDocuments(),
+                            erRequest.getScannedDocuments(), //@todo fix this - needs mapping to bulk scan docs
                             erRequest.getExceptionRecordId()));
 
             Assert.isTrue(
@@ -233,12 +280,12 @@ public class ExceptionRecordService {
     }
 
     private List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
-        > mergeScannedDocuments(
-           List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
-               caseScannedDocuments,List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference) {
+            > mergeScannedDocuments(
+            List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
+                    caseScannedDocuments,List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference) {
         log.info("About to merge Caveat Scanned Documents to existing case.");
         List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
-            newScannedDocuments;
+                newScannedDocuments;
         if (caseScannedDocuments == null) {
             newScannedDocuments = new ArrayList<>();
         } else {
@@ -248,11 +295,11 @@ public class ExceptionRecordService {
         exceptionScannedDocuments.forEach(newScannedDoc -> {
             AtomicBoolean foundDoc = new AtomicBoolean(false);
             caseScannedDocuments.forEach(caseScannedDoc -> {
-                    if (StringUtils.isNotBlank(newScannedDoc.controlNumber)
-                        && newScannedDoc.controlNumber.equalsIgnoreCase(caseScannedDoc.getValue().getControlNumber())) {
-                        foundDoc.set(true);
+                        if (StringUtils.isNotBlank(newScannedDoc.controlNumber)
+                                && newScannedDoc.controlNumber.equalsIgnoreCase(caseScannedDoc.getValue().getControlNumber())) {
+                            foundDoc.set(true);
+                        }
                     }
-                }
             );
 
             if (!foundDoc.get()) {
