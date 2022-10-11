@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
@@ -147,6 +148,8 @@ class BusinessValidationUnitTest {
     private AssignCaseAccessService assignCaseAccessService;
     @Mock
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
+    @Mock
+    private HandOffLegacyTransformer handOffLegacyTransformer;
 
     private BusinessValidationController underTest;
 
@@ -179,7 +182,8 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             solicitorPostcodeValidationRule,
             assignCaseAccessService,
-            furtherEvidenceForApplicationValidationRule);
+            furtherEvidenceForApplicationValidationRule,
+            handOffLegacyTransformer);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
