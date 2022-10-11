@@ -22,7 +22,7 @@ public class OCRFieldExtractor {
             response = ocrFields
                     .stream()
                     .filter(it -> it.name().equals(name))
-                    .map(it -> it.name().trim())
+                    .map(it -> it.value().trim())
                     .findFirst()
                     .orElse(null);
         } catch (NullPointerException npe) {
