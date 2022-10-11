@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.bulkscan;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Component;
 import uk.gov.hmcts.bulkscan.enums.EnvelopeProcessStatus;
 import uk.gov.hmcts.bulkscan.type.IPdfProcessor;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -43,18 +42,6 @@ public class BulkScanPdfProcessor implements IPdfProcessor {
             }
         }
         return status;
-    }
-
-    public void addFilesToCase(String caseNumber) {
-
-
-//        if (uploadResponse != null) {
-//            result = uploadResponse
-//                    .getDocuments()
-//                    .stream()
-//                    .map(f -> f.links.self.href)
-//                    .collect(Collectors.toList());
-//        }
     }
 
     private EvidenceManagementFileUpload getEmFile(byte[] bytes) {

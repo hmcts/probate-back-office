@@ -27,8 +27,7 @@ public interface IdamApi {
     /**
      * User Authenticate method.
      *
-     * @deprecated
-     * IDAM oauth2/authorize endpoint is deprecated
+     * @deprecated IDAM oauth2/authorize endpoint is deprecated
      */
     @Deprecated
     @PostMapping(

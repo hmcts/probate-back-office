@@ -33,14 +33,10 @@ import uk.gov.hmcts.probate.service.exceptionrecord.ExceptionRecordService;
 import uk.gov.hmcts.probate.service.ocr.FormType;
 import uk.gov.hmcts.probate.service.ocr.OCRPopulatedValueMapper;
 import uk.gov.hmcts.probate.service.ocr.OCRToCCDMandatoryField;
-import uk.gov.hmcts.reform.probate.model.ScannedDocument;
-import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import javax.validation.Valid;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

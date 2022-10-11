@@ -88,7 +88,7 @@ public class ScannedDocumentMapper {
     }
 
     public uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
-    updateCaseDoc(InputScannedDoc exceptionRecordDoc, String exceptionRecordReference) {
+        updateCaseDoc(InputScannedDoc exceptionRecordDoc, String exceptionRecordReference) {
         if (exceptionRecordDoc == null) {
             return null;
         } else {

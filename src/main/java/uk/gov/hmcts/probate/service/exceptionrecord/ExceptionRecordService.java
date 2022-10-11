@@ -5,7 +5,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
-import uk.gov.hmcts.bulkscan.type.InputScannableItem;
 import uk.gov.hmcts.bulkscan.type.OcrDataField;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
@@ -19,7 +18,6 @@ import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordRequest;
 import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.probate.model.exceptionrecord.ResponseCaveatDetails;
 import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulCaveatUpdateResponse;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
@@ -28,14 +26,12 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import uk.gov.hmcts.reform.probate.model.ScannedDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
-import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -152,7 +148,9 @@ public class ExceptionRecordService {
             log.info(
                     "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
                             + "orchestrator.");
-            return grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
+            return grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(
+                    grantOfRepresentationData
+            );
 
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);
@@ -168,7 +166,10 @@ public class ExceptionRecordService {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
             GrantOfRepresentationData grantOfRepresentationData =
-                    erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(erRequest.getOcrFields()), grantType);
+                    erGrantOfRepresentationMapper.toCcdData(
+                            erRequest.getOCRFieldsObject(erRequest.getOcrFields()),
+                            grantType
+                    );
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
@@ -186,7 +187,9 @@ public class ExceptionRecordService {
             log.info(
                     "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
                             + "orchestrator.");
-            return grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(grantOfRepresentationData);
+            return grantOfRepresentationTransformer.bulkScanGrantOfRepresentationCaseTransform(
+                    grantOfRepresentationData
+            );
 
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);
@@ -281,8 +284,13 @@ public class ExceptionRecordService {
 
     private List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
             > mergeScannedDocuments(
-            List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
-                    caseScannedDocuments,List<InputScannedDoc> exceptionScannedDocuments, String exceptionRecordReference) {
+            List<
+                    uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<
+                            uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>
+                    >
+                    caseScannedDocuments,
+            List<InputScannedDoc> exceptionScannedDocuments,
+            String exceptionRecordReference) {
         log.info("About to merge Caveat Scanned Documents to existing case.");
         List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument>>
                 newScannedDocuments;
@@ -295,11 +303,12 @@ public class ExceptionRecordService {
         exceptionScannedDocuments.forEach(newScannedDoc -> {
             AtomicBoolean foundDoc = new AtomicBoolean(false);
             caseScannedDocuments.forEach(caseScannedDoc -> {
-                        if (StringUtils.isNotBlank(newScannedDoc.controlNumber)
-                                && newScannedDoc.controlNumber.equalsIgnoreCase(caseScannedDoc.getValue().getControlNumber())) {
-                            foundDoc.set(true);
-                        }
+                    if (StringUtils.isNotBlank(newScannedDoc.controlNumber)
+                            && newScannedDoc.controlNumber.equalsIgnoreCase(
+                            caseScannedDoc.getValue().getControlNumber())) {
+                        foundDoc.set(true);
                     }
+                }
             );
 
             if (!foundDoc.get()) {

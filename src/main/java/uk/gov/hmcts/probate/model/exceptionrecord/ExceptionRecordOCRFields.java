@@ -3,12 +3,6 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import uk.gov.hmcts.bulkscan.type.OcrDataField;
-
-import java.lang.reflect.InvocationTargetException;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Builder
 @Data
