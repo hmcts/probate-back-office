@@ -168,7 +168,7 @@ public class TaskStateRenderer {
 
         if (currState == renderState) {
             if (renderState == TaskListState.TL_STATE_SEND_DOCUMENTS
-                    && evidenceHandled != null && evidenceHandled.equals(NO)) {
+                    && NO.equals(evidenceHandled)) {
                 return TaskState.COMPLETED;
             } else {
                 return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
@@ -179,12 +179,12 @@ public class TaskStateRenderer {
         }
         if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
                 && renderState == TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS
-                && evidenceHandled != null && evidenceHandled.equals(NO)) {
+                && NO.equals(evidenceHandled)) {
             return TaskState.COMPLETED;
         }
         if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
                 && renderState == TaskListState.TL_STATE_EXAMINE_APPLICATION
-                && evidenceHandled != null && evidenceHandled.equals(NO)) {
+                && NO.equals(evidenceHandled)) {
             return TaskState.IN_PROGRESS;
         }
         return TaskState.NOT_AVAILABLE;
