@@ -147,6 +147,8 @@ class BusinessValidationControllerTest {
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -562,6 +564,7 @@ class BusinessValidationControllerTest {
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.solsSolicitorIsExec(NO);
         caseDataBuilder.solsSolicitorIsApplying(NO);
+        caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -1088,6 +1091,17 @@ class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("The executor address line 1 cannot be empty"));
         verify(notificationService, never()).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
+    }
+
+    @Test
+    void shouldValidateFurtherEvidence() throws Exception {
+        caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SOLS_VALIDATE_FURTHER_EVIDENCE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 
