@@ -43,6 +43,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String TRANSFORM_URL = "/case/casePrinted";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
+    private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
@@ -377,20 +378,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWhenWillDateIsOnDeathDate() throws IOException {
-        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
-
-        payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
-            "\"originalWillSignedDate\": \"2018-01-01\",");
-
-        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of death",
-            200, VALIDATE_URL);
-
-        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of death",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
-    }
-
-    @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWhenWillDateIsBeforeDeathDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
@@ -415,21 +402,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
             200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
-
-    @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWithCodicilDateSameAsWillDate() throws IOException {
-        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
-
-        payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
-            "\"dateCodicilAdded\": \"2017-10-10\"");
-
-        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
-            200, VALIDATE_URL);
-
-        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
-    }
-
+    
     @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWithCodicilDateOneDayAfterWillDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
@@ -643,6 +616,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+    }
+
+    @Test
+    public void verifyCaseworkerDefaultDateOfDeathType() throws IOException {
+        validatePostSuccessAndCheckValue("{\"case_details\":{}}", INIT_PAPER_FORM_URL, "dateOfDeathType", "diedOn");
     }
 
     @Test
@@ -1040,7 +1018,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .body(jsonPayload)
             .when().post(url)
             .thenReturn();
-
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
     }

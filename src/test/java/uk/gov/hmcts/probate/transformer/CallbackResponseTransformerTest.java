@@ -3649,4 +3649,30 @@ class CallbackResponseTransformerTest {
         verify(organisationPolicy).getOrgPolicyReference();
     }
 
+    @Test
+    void shouldWipeCodicilAddedDateForNoCodicil() {
+        caseDataBuilder.willHasCodicils(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getCodicilAddedDateList());
+    }
+
+    @Test
+    void shouldWipeCodicilAddedDateForNoCodicilDoTransform() {
+        caseDataBuilder.willHasCodicils(NO);
+        caseDataBuilder.recordId(null);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getCodicilAddedDateList());
+    }
+
 }

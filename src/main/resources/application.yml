@@ -521,6 +521,16 @@ welsh:
 iht-estate:
   switch-date: ${EXCEPTED_ESTATE_DATE_OF_DEATH:2022-01-01}
 
+blobstorage:
+  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+
+adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+
+feature:
+  blobstorage:
+    smeeandford:
+      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:false}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy}
   user:

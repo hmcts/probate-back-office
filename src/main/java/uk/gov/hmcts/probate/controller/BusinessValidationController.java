@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -44,6 +45,7 @@ import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
@@ -103,6 +105,8 @@ public class BusinessValidationController {
     private final IHTValidationRule ihtValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
+    private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
+    private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -123,6 +127,12 @@ public class BusinessValidationController {
             return ResponseEntity.ok(callbackResponseTransformer.transform(request));
         }
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-further-evidence")
+    public ResponseEntity<CallbackResponse> validateFurtherEvidence(@RequestBody CallbackRequest request) {
+        furtherEvidenceForApplicationValidationRule.validate(request.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }
 
     @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -264,6 +274,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        furtherEvidenceForApplicationValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         if (response.getErrors().isEmpty()) {
 
@@ -403,11 +414,23 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/initPaperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> initPaperForm(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+        CallbackResponse response = callbackResponseTransformer.defaultDateOfDeathType(callbackRequest);
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/paperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
 
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 

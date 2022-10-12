@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
@@ -39,6 +40,7 @@ import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
@@ -147,6 +149,10 @@ class BusinessValidationUnitTest {
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     @Mock
     private AssignCaseAccessService assignCaseAccessService;
+    @Mock
+    private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
+    @Mock
+    private HandOffLegacyTransformer handOffLegacyTransformer;
 
     private BusinessValidationController underTest;
 
@@ -179,7 +185,9 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             ihtValidationRule,
             solicitorPostcodeValidationRule,
-            assignCaseAccessService);
+            assignCaseAccessService,
+            furtherEvidenceForApplicationValidationRule,
+            handOffLegacyTransformer);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -737,6 +745,20 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldValidateFurtherEvidenceForApplication() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.solsValidateAdmon(callbackRequestMock, bindingResultMock, httpServletRequest);
+        verify(furtherEvidenceForApplicationValidationRule, times(1))
+                .validate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
