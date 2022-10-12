@@ -28,7 +28,6 @@ import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
@@ -69,8 +68,6 @@ class NextStepsUnitTest {
     private ObjectMapper objectMapperMock;
     @Mock
     private FeeService feeServiceMock;
-    @Mock
-    private NotificationService notificationService;
     @Mock
     private BindingResult bindingResultMock;
     @Mock
@@ -121,7 +118,7 @@ class NextStepsUnitTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        underTest = new NextStepsController(eventValidationService, notificationService, ccdBeanTransformerMock,
+        underTest = new NextStepsController(eventValidationService, ccdBeanTransformerMock,
             confirmationResponseServiceMock, callbackResponseTransformerMock,
             caseDataTransformer,objectMapperMock, feeServiceMock,
             stateChangeServiceMock, paymentsService, creditAccountPaymentTransformer,
