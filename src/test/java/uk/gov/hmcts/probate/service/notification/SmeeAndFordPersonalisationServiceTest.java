@@ -321,4 +321,19 @@ class SmeeAndFordPersonalisationServiceTest {
 
         assertThat(personalisation.get("caseData"), is(smeeAndFordRespnse));
     }
+
+    @Test
+    void shouldGetSmeeAndFordByteArray() {
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+                false, false, true).build(), LAST_MODIFIED, ID);
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+                false, true, false, false).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsPersonal);
+        cases.add(returnedCaseDetailsSolicitor);
+        byte[] actual = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
+
+        assertThat(1497, is(actual.length));
+    }
 }

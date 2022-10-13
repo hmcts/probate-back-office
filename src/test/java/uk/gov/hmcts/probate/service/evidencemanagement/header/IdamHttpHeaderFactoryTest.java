@@ -51,4 +51,13 @@ class IdamHttpHeaderFactoryTest {
         assertTrue(httpHeaders.containsKey("Authorization"));
         assertEquals(MediaType.APPLICATION_JSON, httpHeaders.getContentType());
     }
+
+    @Test
+    public void getAuthorizationHeadersForDocuments() {
+        HttpHeaders httpHeaders = underTest.getAuthorizationHeadersForDownloadDocuments();
+
+        assertTrue(httpHeaders.containsKey("Authorization"));
+        assertTrue(httpHeaders.containsKey("user-roles"));
+        assertEquals(IdamHttpHeaderFactory.CASEWORKER_PROBATE_SCHEDULER, httpHeaders.get("user-roles").get(0));
+    }
 }

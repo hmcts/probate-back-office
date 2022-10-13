@@ -13,6 +13,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static java.time.LocalDate.now;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
@@ -23,29 +24,29 @@ public class OriginalWillSignedDateValidationRule implements ValidationRule {
             = "originalWillSignedDateMustBeBeforeDateOfDeath";
 
     private final BusinessValidationMessageService businessValidationMessageService;
-
+    
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         return Optional.ofNullable(ccdData)
-                .map(this::getErrorCodeForOriginalWillDateDateNotInThePast)
+                .map(c -> getErrorCodeForOriginalWillDateDateNotInThePast(
+                        c.getOriginalWillSignedDate(), c.getDeceasedDateOfDeath()))
                 .map(List::stream)
                 .orElse(Stream.empty())
                 .map(code -> businessValidationMessageService.generateError(BUSINESS_ERROR, code))
                 .collect(Collectors.toList());
     }
 
-    private List<String> getErrorCodeForOriginalWillDateDateNotInThePast(CCDData ccdData) {
+    private List<String> getErrorCodeForOriginalWillDateDateNotInThePast(
+            LocalDate willSignedDate, LocalDate dateOfDeath) {
         List<String> allErrorCodes = new ArrayList<>();
-        LocalDate willSignedDate = ccdData.getOriginalWillSignedDate();
-        if (willSignedDate != null) {
-            if (willSignedDate.compareTo(LocalDate.now()) >= 0) {
-                allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST);
-            }
-            LocalDate dateOfDeath = ccdData.getDeceasedDateOfDeath();
-            if (dateOfDeath != null && willSignedDate.compareTo(dateOfDeath) >= 0) {
-                allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH);
-            }
+        if (willSignedDate == null || dateOfDeath == null) {
+            return allErrorCodes;
         }
-
+        if (!willSignedDate.isBefore(now())) {
+            allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST);
+        }
+        if (willSignedDate.isAfter(dateOfDeath)) {
+            allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH);
+        }
         return allErrorCodes;
     }
 }

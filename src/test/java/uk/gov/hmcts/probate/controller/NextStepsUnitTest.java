@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
@@ -105,6 +106,8 @@ class NextStepsUnitTest {
     private PaymentResponse paymentResponseMock;
     @Mock
     Document coversheetMock;
+    @Mock
+    private HandOffLegacyTransformer handOffLegacyTransformerMock;
 
     private static final String AUTH = "Auth";
 
@@ -118,7 +121,8 @@ class NextStepsUnitTest {
         underTest = new NextStepsController(eventValidationService, ccdBeanTransformerMock,
             confirmationResponseServiceMock, callbackResponseTransformerMock, objectMapperMock, feeServiceMock,
             stateChangeServiceMock, paymentsService, creditAccountPaymentTransformer,
-            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRule, pdfManagementServiceMock);
+            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRule, pdfManagementServiceMock,
+            handOffLegacyTransformerMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
