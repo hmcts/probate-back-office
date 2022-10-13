@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
@@ -61,6 +62,7 @@ public class NextStepsController {
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     private final PDFManagementService pdfManagementService;
+    private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -73,6 +75,7 @@ public class NextStepsController {
         HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
 
         CallbackResponse callbackResponse;
         Optional<String> newState =

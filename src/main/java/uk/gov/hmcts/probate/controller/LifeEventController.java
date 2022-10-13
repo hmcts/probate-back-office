@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -27,6 +28,7 @@ public class LifeEventController {
     private final LifeEventCallbackResponseService lifeEventCallBackResponseService;
     private final SecurityUtils securityUtils;
     private final LifeEventValidationRule lifeEventValidationRule;
+    private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     @PostMapping(path = "/update")
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
@@ -54,6 +56,12 @@ public class LifeEventController {
     @PostMapping(path = "/selectFromMultipleRecords")
     public ResponseEntity<CallbackResponse> selectFromMultipleRecords(@RequestBody CallbackRequest request) {
         lifeEventValidationRule.validate(request.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+    }
+
+    @PostMapping(path = "/handOffToLegacySite")
+    public ResponseEntity<CallbackResponse> handOffToLegacySite(@RequestBody CallbackRequest request) {
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }
