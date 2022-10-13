@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -131,6 +132,8 @@ class BusinessValidationUnitTest {
     @Mock
     private IhtEstateValidationRule ihtEstateValidationRule;
     @Mock
+    private IHTValidationRule ihtValidationRule;
+    @Mock
     private CodicilDateValidationRule codicilDateValidationRuleMock;
     @Mock
     private OriginalWillSignedDateValidationRule originalWillSignedDateValidationRuleMock;
@@ -180,6 +183,7 @@ class BusinessValidationUnitTest {
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
+            ihtValidationRule,
             solicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
@@ -703,10 +707,25 @@ class BusinessValidationUnitTest {
     @Test
     void shouldValidateIHTEstateData() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
             underTest.validateIhtEstateData(callbackRequestMock);
         verify(ihtEstateValidationRule, times(1))
             .validate(caseDetailsMock);
+        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldValidateIHTEstateDataWithError() {
+        List<String> errors = new ArrayList<>();
+        errors.add("some error");
+        when(callbackResponseMock.getErrors()).thenReturn(errors);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateIhtEstateData(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
