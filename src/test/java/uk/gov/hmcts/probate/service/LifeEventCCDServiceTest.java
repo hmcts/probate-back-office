@@ -59,6 +59,8 @@ class LifeEventCCDServiceTest {
     CcdClientApi ccdClientApi;
     @MockBean
     DeathRecordService deathRecordService;
+    @MockBean
+    HandOffLegacyService handOffLegacyService;
     @Mock
     CaseDetails caseDetails;
     @Mock
@@ -139,7 +141,7 @@ class LifeEventCCDServiceTest {
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
                 eq(caseId.toString()),
-                eq(null),
+                grantOfRepresentationDataCaptor.capture(),
                 eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
                 eq(securityDTO),
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION),
