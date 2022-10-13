@@ -137,6 +137,36 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
+    nextStepName = 'Withdraw caveat';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.withdrawCaveatPage1();
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Caveat closed';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Email caveator'; // When in state 'Caveat closed'
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.emailCaveator(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    // Note that End State does not change when emailing the caveator.
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // When emailing the caveator, the Date added for the email document is set to today
+    emailCaveatorConfig.dateAdded = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+    await I.seeCaseDetails(caseRef, documentsTabEmailCaveatorConfig, emailCaveatorConfig);
+
+    nextStepName = 'Reopen caveat'; // When in state 'Caveat closed'
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.reopenCaveat(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Caveat raised';
+    await I.logInfo(scenarioName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
+
+
     await I.signOut();
 
 }).retry(testConfig.TestRetryScenarios);
