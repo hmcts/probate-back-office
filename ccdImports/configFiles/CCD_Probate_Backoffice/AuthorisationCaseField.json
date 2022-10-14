@@ -2964,6 +2964,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "serviceRequestReference", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deathRecords", "UserRole": "citizen", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseHandedOffToLegacySite", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "caseworker-probate-charity", "CRUD": "CRUD"},

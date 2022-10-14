@@ -29,7 +29,7 @@ class CodicilDateValidationRuleTest {
 
     @Mock
     private CCDData ccdDataMock;
-
+    
     @BeforeEach
     public void setup() {
         openMocks(this);
@@ -84,12 +84,7 @@ class CodicilDateValidationRuleTest {
         final LocalDate willDate = LocalDate.now().minusDays(1);
         final ArrayList<CodicilAddedDate> dates = new ArrayList<>();
         dates.add(CodicilAddedDate.builder()
-                .dateCodicilAdded(LocalDate.of(2020,10,10)).build());
-        dates.add(CodicilAddedDate.builder()
-                .dateCodicilAdded(LocalDate.now().minusDays(1)).build());
-        dates.add(CodicilAddedDate.builder()
-                .dateCodicilAdded(LocalDate.of(2020,12,10)).build());
-
+                .dateCodicilAdded(willDate.minusDays(1)).build());
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
         when(ccdDataMock.getCodicilAddedDateList()).thenReturn(dates);
@@ -104,16 +99,13 @@ class CodicilDateValidationRuleTest {
     }
 
     @Test
-    void shouldErrorIfOneOfTheDatesIsOnOriginalWillDate() {
+    void shouldNotErrorIfOneOfTheDatesIsOnOriginalWillDate() {
         final LocalDate willDate = LocalDate.now().minusDays(1);
 
         final ArrayList<CodicilAddedDate> dates = new ArrayList<>();
-        dates.add(CodicilAddedDate.builder()
-                .dateCodicilAdded(LocalDate.of(2020,10,10)).build());
+
         dates.add(CodicilAddedDate.builder()
                 .dateCodicilAdded(willDate).build());
-        dates.add(CodicilAddedDate.builder()
-                .dateCodicilAdded(LocalDate.of(2020,12,10)).build());
 
         when(ccdDataMock.getOriginalWillSignedDate()).thenReturn(willDate);
         when(ccdDataMock.getWillHasCodicils()).thenReturn(Constants.YES);
@@ -124,8 +116,7 @@ class CodicilDateValidationRuleTest {
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
-        assertEquals(1, validationError.size());
-        assertEquals(fieldErrorResponse, validationError.get(0));
+        assertTrue(validationError.isEmpty());
     }
 
     @Test

@@ -33,6 +33,18 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
+    public void shouldReturn200HandCaseOffToLegacySite() throws IOException {
+        final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreatedSolDtls.json");
+        Response response = RestAssured.given()
+            .relaxedHTTPSValidation()
+            .headers(utils.getHeadersWithUserId())
+            .body(jsonFromFile)
+            .when().post("/lifeevent/handOffToLegacySite");
+
+        assertEquals(200, response.getStatusCode());
+    }
+
+    @Test
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());

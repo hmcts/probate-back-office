@@ -74,7 +74,8 @@ public class CaseDataParent {
     protected final String iht217;
     protected final String noOriginalWillAccessReason;
     protected final LocalDate originalWillSignedDate;
-    protected final List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
+    // Not final so field can be reset in CaseDataTransformer
+    protected List<CollectionMember<CodicilAddedDate>> codicilAddedDateList;
 
     @Getter
     protected LocalDate authenticatedDate;

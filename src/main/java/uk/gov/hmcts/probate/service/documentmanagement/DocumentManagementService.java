@@ -12,12 +12,14 @@ import java.util.List;
 
 public interface DocumentManagementService {
     UploadResponse upload(EvidenceManagementFileUpload file, DocumentType documentType);
-    
+
     UploadResponse uploadForCitizen(List<MultipartFile> multipartFileList, String authorizationToken,
                                     DocumentType documentType);
 
     void delete(Document document) throws JsonProcessingException;
 
-    public byte[] getDocument(Document document) throws IOException;
+    byte[] getDocument(Document document) throws IOException;
+
+    byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException;
 
 }

@@ -3,6 +3,8 @@ package uk.gov.hmcts.probate.schedule;
 import feign.FeignException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
@@ -21,10 +23,17 @@ public class SmeeAndFordExtractTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
 
+    @Value("${adhocSchedulerJobDate}")
+    public String adHocJobDate;
+
     @Override
     public void run() {
         log.info("Scheduled task SmeeAndFordExtractTask started to extract data for Smee and Ford");
-        final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+        String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+        if (StringUtils.isNotEmpty(adHocJobDate)) {
+            log.info("Ad hoc scheduler job date is given");
+            date = adHocJobDate;
+        }
         log.info("Calling perform Smee and Ford data extract from date, to date {} {}", date, date);
         try {
             dataExtractDateValidator.dateValidator(date, date);

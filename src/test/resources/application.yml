@@ -420,6 +420,16 @@ welsh:
 iht-estate:
   switch-date: "2022-01-01"
 
+blobstorage:
+  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+
+adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+
+feature:
+  blobstorage:
+    smeeandford:
+      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:false}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:off}
   user:
