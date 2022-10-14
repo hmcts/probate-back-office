@@ -217,6 +217,7 @@ public class NotificationController {
         log.info("start-delayed-notify-period started");
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
+        caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }

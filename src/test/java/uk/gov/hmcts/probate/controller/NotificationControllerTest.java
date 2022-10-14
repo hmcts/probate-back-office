@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
@@ -131,6 +132,8 @@ class NotificationControllerTest {
 
     @MockBean
     private FeatureToggleService featureToggleService;
+    @MockBean
+    CaseDataTransformer caseDataTransformer;
 
     @SpyBean
     private DocumentService documentService;
@@ -584,6 +587,7 @@ class NotificationControllerTest {
             .andExpect(content().string(containsString("data")));
         verify(notificationService).startGrantDelayNotificationPeriod(any());
         verify(notificationService).resetAwaitingDocumentationNotificationDate(any());
+        verify(caseDataTransformer).transformCaseDataForAttachDocuments(any());
     }
 
     @Test

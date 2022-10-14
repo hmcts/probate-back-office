@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -34,6 +35,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -84,6 +86,10 @@ class NotificationControllerUnitTest {
     CaseDataTransformer caseDataTransformer;
     @Mock
     RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
+    @Mock
+    private HttpServletRequest httpServletRequest;
+    @Mock
+    private BindingResult bindingResultMock;
 
     @InjectMocks
     NotificationController notificationController;
@@ -202,6 +208,16 @@ class NotificationControllerUnitTest {
         ResponseEntity<CallbackResponse> callbackResponse =
                 notificationController.sendGrantReceivedNotification(callbackRequest);
         verify(caseDataTransformer).transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformForAttachDocs() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                httpServletRequest);
+        verify(caseDataTransformer).transformCaseDataForAttachDocuments(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 }

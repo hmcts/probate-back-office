@@ -22,6 +22,7 @@ public class CaseDataTransformer {
     private final ResetCaseDataTransformer resetCaseDataTransformer;
     private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
     private final EvidenceHandledTransformer evidenceHandledTransformer;
+    private final AttachDocumentsTransformer attachDocumentsTransformer;
 
     public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -87,6 +88,12 @@ public class CaseDataTransformer {
     public void transformCaseDataForEvidenceHandledForCreateBulkscan(CallbackRequest callbackRequest) {
         if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
             evidenceHandledTransformer.updateEvidenceHandledToNo(callbackRequest.getCaseDetails().getData());
+        }
+    }
+
+    public void transformCaseDataForAttachDocuments(CallbackRequest callbackRequest) {
+        if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+            attachDocumentsTransformer.updateAttachDocuments(callbackRequest.getCaseDetails().getData());
         }
     }
 }

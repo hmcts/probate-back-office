@@ -11,7 +11,8 @@ public class CaseStoppedHtmlTemplate {
         + "weeks or more and you have not received any communication since then.</p>";
 
     public static final List<String> CASE_STOP_REASONS =
-        List.of("an internal review is needed", "further information from the applicant or Probate practitioner is needed");
+        List.of("an internal review is needed", "further information from the applicant or Probate practitioner "
+                + "is needed");
 
     private CaseStoppedHtmlTemplate() {
         throw new IllegalStateException("Utility class");
