@@ -169,6 +169,46 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     @Test
+    public void validateSuccessForAdmonWillWithWillAndOneCodicilAdded() throws IOException {
+        final Response response = given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWillWithOneCodicil.json"))
+                .when().post(VALIDATE_ADMON_URL);
+
+        assertEquals(200, response.getStatusCode());
+        downloadPdfAndVerifyString(extractDocumentId(response), "and not by the will and codicil");
+    }
+
+    @Test
+    public void validateSuccessForAdmonWillWithWillAndMultipleCodicilAdded() throws IOException {
+        final Response response = given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWillWithMultipleCodicils.json"))
+                .when().post(VALIDATE_ADMON_URL);
+
+        assertEquals(200, response.getStatusCode());
+        downloadPdfAndVerifyString(extractDocumentId(response), "and not by the will and codicils");
+    }
+
+    @Test
+    public void validateSuccessForAdmonWillWithWillAndNoCodicilAdded() throws IOException {
+        final Response response = given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("solicitorPDFPayloadAdmonWill.json"))
+                .when().post(VALIDATE_ADMON_URL);
+
+        assertEquals(200, response.getStatusCode());
+        downloadPdfAndVerifyString(extractDocumentId(response), "and not by the will");
+    }
+
+
+    @Test
     public void verifyEmptyForeNamesSolicitorValidateIntestacyReturnsError() throws IOException {
         final Response response = given()
             .config(config)

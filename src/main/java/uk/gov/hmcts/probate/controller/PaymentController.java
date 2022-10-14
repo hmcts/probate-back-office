@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -25,7 +26,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class PaymentController {
 
     private final PaymentsService paymentsService;
-    private final TaskListUpdateService taskListUpdateService;
+    private final CallbackResponseTransformer callbackResponseTransformer;
 
     @PutMapping(path = "/gor-payment-request-update", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
@@ -49,9 +50,6 @@ public class PaymentController {
         produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateTaskList(
         @RequestBody CallbackRequest request) {
-        ResponseCaseData.ResponseCaseDataBuilder builder = ResponseCaseData.builder();
-        builder = taskListUpdateService.generateTaskList(request.getCaseDetails(), builder);
-        final ResponseCaseData responseCaseData = builder.build();
-        return ResponseEntity.ok(CallbackResponse.builder().data(responseCaseData).build());
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }

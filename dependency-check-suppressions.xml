@@ -46,9 +46,77 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
         <cve>CVE-2016-1000027</cve>
+        <cve>CVE-2022-22970</cve>
+        <cve>CVE-2022-22971</cve>
     </suppress>
     <suppress>
+        <notes><![CDATA[
+    file name: netty-tcnative-classes-2.0.52.Final.jar
+    ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io\.netty/netty-tcnative-classes@.*$</packageUrl>
+        <cve>CVE-2014-3488</cve>
+        <cve>CVE-2015-2156</cve>
+        <cve>CVE-2019-16869</cve>
+        <cve>CVE-2019-20444</cve>
+        <cve>CVE-2019-20445</cve>
+        <cve>CVE-2021-21290</cve>
+        <cve>CVE-2021-21295</cve>
+        <cve>CVE-2021-21409</cve>
+        <cve>CVE-2021-37136</cve>
+        <cve>CVE-2021-37137</cve>
+        <cve>CVE-2021-43797</cve>
+        <cve>CVE-2022-24823</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@.*$</packageUrl>
+        <cve>CVE-2022-34305</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-websocket@.*$</packageUrl>
+        <cve>CVE-2022-34305</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-api@.*$</packageUrl>
+        <cve>CVE-2022-33915</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-to-slf4j@.*$</packageUrl>
+        <cve>CVE-2022-33915</cve>
+    </suppress>
+    <suppress until="2023-01-07">
+        <cve>CVE-2022-31569</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-42.3.3.jar
+   ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
         <cve>CVE-2022-31197</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: launchdarkly-java-server-sdk-5.10.0.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-25857</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: launchdarkly-java-server-sdk-5.10.0.jar (shaded: org.yaml:snakeyaml:1.26)
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-25857</cve>
+        <cve>CVE-2022-38749</cve>
+        <cve>CVE-2022-38750</cve>
+        <cve>CVE-2022-38751</cve>
+        <cve>CVE-2022-38752</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-databind-2.13.2.1.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-databind@.*$</packageUrl>
+        <cve>CVE-2022-42003</cve>
+        <cve>CVE-2022-42004</cve>
     </suppress>
 </suppressions>
