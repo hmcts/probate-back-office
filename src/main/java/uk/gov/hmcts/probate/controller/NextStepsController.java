@@ -32,8 +32,6 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
-import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 

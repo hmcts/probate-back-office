@@ -127,7 +127,7 @@ class NextStepsUnitTest {
         underTest = new NextStepsController(ccdBeanTransformerMock,
             confirmationResponseServiceMock, callbackResponseTransformerMock, serviceRequestTransformer,
                 objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService, pdfManagementServiceMock,
-                serviceRequestAlreadyCreatedValidationRuleMock, handOffLegacyTransformerMock);
+                handOffLegacyTransformerMock, serviceRequestAlreadyCreatedValidationRuleMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
