@@ -127,8 +127,8 @@ public class TaskStateRenderer {
 
         return html == null ? null : html
                 .replaceFirst("<addSolicitorLink/>",
-                        renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
-                                currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details))
+                    renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+                        currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                         currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType, details))
@@ -213,22 +213,22 @@ public class TaskStateRenderer {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS.replaceFirst("<refNum/>", caseId)
-                                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
-                                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
-                                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
-                                .replaceFirst(PA14_FORM, keyValues.getOrDefault("pa14Form", ""))
-                                .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa15Form", ""))
-                                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
-                                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
-                                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
-                                .replaceFirst(AUTHENTICATED_TRANSLATION,
+                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
+                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
+                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
+                .replaceFirst(PA14_FORM, keyValues.getOrDefault("pa14Form", ""))
+                .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa15Form", ""))
+                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
+                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
+                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                .replaceFirst(AUTHENTICATED_TRANSLATION,
                                         keyValues.getOrDefault("authenticatedTranslation", ""))
-                                .replaceFirst(ADMON_WILL_RENUNCIATION,
-                                        keyValues.getOrDefault("admonWillRenForms", ""))
-                                .replaceFirst(TC_RESOLUTION_WITH_APP,
-                                        keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
-                                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
-                                        keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
+                .replaceFirst(ADMON_WILL_RENUNCIATION,
+                    keyValues.getOrDefault("admonWillRenForms", ""))
+                .replaceFirst(TC_RESOLUTION_WITH_APP,
+                    keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
+                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
+                    keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
                 );
     }
 
@@ -238,12 +238,12 @@ public class TaskStateRenderer {
 
         String linkUrlTemplate = getLinkUrlTemplate(taskListState, willType);
         String coversheetUrl = details.getData().getSolsCoversheetDocument() == null ? "#" : details
-                .getData().getSolsCoversheetDocument().getDocumentBinaryUrl();
+            .getData().getSolsCoversheetDocument().getDocumentBinaryUrl();
 
         if (linkUrlTemplate != null && currState == taskListState
-                && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
+            && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
             return LinkRenderer.renderOutside(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)
-                    .replaceFirst("<DOCUMENT_LINK>", coversheetUrl));
+                .replaceFirst("<DOCUMENT_LINK>", coversheetUrl));
         }
 
         return linkUrlTemplate != null && currState == taskListState
@@ -257,7 +257,7 @@ public class TaskStateRenderer {
         }
         String authDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
                 .replaceFirst("<stateChangeDateText/>",
-                        format("Authenticated on %s", authDate.format(dateFormat)));
+                    format("Authenticated on %s", authDate.format(dateFormat)));
         return GridRenderer.renderByReplace(authDateTemplate);
     }
 
@@ -267,7 +267,7 @@ public class TaskStateRenderer {
         }
         String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
                 .replaceFirst("<stateChangeDateText/>",
-                        format("Submitted on %s", submitDate.format(dateFormat)));
+                    format("Submitted on %s", submitDate.format(dateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 
@@ -359,7 +359,7 @@ public class TaskStateRenderer {
         if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
             dispenseWithNotice = YES;
             dispenseWithNoticeSupportingDocs = LIST_ITEM_START + DISPENSE_NOTICE_SUPPORT_TEXT
-                    + data.getDispenseWithNoticeSupportingDocs() + LIST_ITEM_END;
+                + data.getDispenseWithNoticeSupportingDocs() + LIST_ITEM_END;
         }
         keyValue.put("dispenseWithNotice", dispenseWithNotice);
         keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
@@ -377,36 +377,35 @@ public class TaskStateRenderer {
             willText = LIST_ITEM_START + ORIGINAL_WILL_WITH_CODICILS_TEXT + LIST_ITEM_END;
         } else if (YES.equals(data.getWillAccessNotarial())) {
             willText = LIST_ITEM_START + NOTARIAL_COPY_WILL_TEXT + LIST_ITEM_END
-                    + LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT + LIST_ITEM_END;
+                + LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT + LIST_ITEM_END;
         }
         return willText;
     }
 
     private String buildPA14NotApplyingExecutorsLinks(CaseData caseData, String reason) {
         List<AdditionalExecutorNotApplying> notApplyingExecs =
-                notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
+            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
         return notApplyingExecs.stream()
-                .map(executor -> buildPA14NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
-                .collect(Collectors.joining());
+            .map(executor -> buildPA14NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
+            .collect(Collectors.joining());
     }
 
     private String buildPA15NotApplyingExecutorsLinks(CaseData caseData, String reason) {
         List<AdditionalExecutorNotApplying> notApplyingExecs =
-                notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
+            notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
         return notApplyingExecs.stream()
-                .map(executor -> buildPA15NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
-                .collect(Collectors.joining());
+            .map(executor -> buildPA15NotApplyingExecLabel(executor.getNotApplyingExecutorName()))
+            .collect(Collectors.joining());
 
     }
 
     private String buildPA15NotApplyingExecLabel(String renouncingExecutorName) {
         return LIST_ITEM_START + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName)
-                + LIST_ITEM_END;
+            + LIST_ITEM_END;
     }
 
     private String buildPA14NotApplyingExecLabel(String renouncingExecutorName) {
         return LIST_ITEM_START + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName)
-                + LIST_ITEM_END;
+            + LIST_ITEM_END;
     }
 }
-
