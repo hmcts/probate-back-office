@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.schedule;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.DormantCaseService;
@@ -23,10 +24,17 @@ public class ReactivateDormantCasesTask implements Runnable {
     @Value("${reactivate_dormant.minus_days}")
     private int reactivateDormantMinusDays;
 
+    @Value("${adhocSchedulerJobDate}")
+    public String adHocJobDate;
+
     @Override
     public void run() {
         log.info("Scheduled task ReactivateDormantCasesTask started to reactivate dormant cases");
-        final String date = DATE_FORMAT.format(LocalDate.now().minusDays(reactivateDormantMinusDays));
+        String date = DATE_FORMAT.format(LocalDate.now().minusDays(reactivateDormantMinusDays));
+        if (StringUtils.isNotEmpty(adHocJobDate)) {
+            log.info("Running ReactivateDormantCasesTask with Adhoc date");
+            date = adHocJobDate;
+        }
         log.info("Calling perform reactivate dormant from date, to date {} {}", date, date);
         try {
             dataExtractDateValidator.dateValidator(date, date);

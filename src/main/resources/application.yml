@@ -552,10 +552,10 @@ document_management:
 
 dormancy:
   period_months: 0
-  start_date: 2022-09-05
+  start_date: 2022-10-13
 
 make_dormant:
   add_time_minutes: 5
 
 reactivate_dormant:
-  minus_days: 0
+  minus_days: 1

@@ -33,6 +33,7 @@ class ReactivateDormantCasesTaskTest {
     @InjectMocks
     private ReactivateDormantCasesTask reactivateDormantCasesTask;
     private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+    private String adhocDate = "2022-09-05";
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -48,6 +49,18 @@ class ReactivateDormantCasesTaskTest {
         assertEquals("Perform reactivate dormant finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(date, date);
         verify(dormantCaseService).reactivateDormantCases(date);
+    }
+
+    @Test
+    void shouldReactivateDormantCasesForAdhocDate() {
+        reactivateDormantCasesTask.adHocJobDate = "2022-09-05";
+        ResponseEntity<String> responseEntity = ResponseEntity.accepted()
+                .body("Perform reactivate dormant finished");
+        reactivateDormantCasesTask.run();
+        assertEquals(HttpStatus.ACCEPTED, responseEntity.getStatusCode());
+        assertEquals("Perform reactivate dormant finished", responseEntity.getBody());
+        verify(dataExtractDateValidator).dateValidator(adhocDate, adhocDate);
+        verify(dormantCaseService).reactivateDormantCases(adhocDate);
     }
 
     @Test
