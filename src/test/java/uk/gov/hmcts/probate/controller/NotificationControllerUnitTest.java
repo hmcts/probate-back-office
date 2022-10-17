@@ -92,7 +92,7 @@ class NotificationControllerUnitTest {
     @Mock
     private BindingResult bindingResultMock;
     @Mock
-    private HandOffLegacyTransformer HandOffLegacyTransformerMock;
+    private HandOffLegacyTransformer handOffLegacyTransformerMock;
 
     @InjectMocks
     NotificationController notificationController;
