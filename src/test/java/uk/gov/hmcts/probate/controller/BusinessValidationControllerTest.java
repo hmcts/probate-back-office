@@ -149,6 +149,8 @@ class BusinessValidationControllerTest {
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
     private static final String PA_CREATE_URL = "/case/pa-create";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -566,6 +568,7 @@ class BusinessValidationControllerTest {
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.solsSolicitorIsExec(NO);
         caseDataBuilder.solsSolicitorIsApplying(NO);
+        caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -948,10 +951,7 @@ class BusinessValidationControllerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(null);
-
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
@@ -970,10 +970,7 @@ class BusinessValidationControllerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(null);
-
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
@@ -1104,6 +1101,17 @@ class BusinessValidationControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
         verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any(CallbackRequest.class));
+    }
+
+    @Test
+    void shouldValidateFurtherEvidence() throws Exception {
+        caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SOLS_VALIDATE_FURTHER_EVIDENCE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 
