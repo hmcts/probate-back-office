@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapper
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
@@ -90,6 +91,8 @@ class NotificationControllerUnitTest {
     private HttpServletRequest httpServletRequest;
     @Mock
     private BindingResult bindingResultMock;
+    @Mock
+    private HandOffLegacyTransformer HandOffLegacyTransformerMock;
 
     @InjectMocks
     NotificationController notificationController;
