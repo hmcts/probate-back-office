@@ -96,7 +96,7 @@ class NotificationControllerUnitTest {
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
     @Mock
-    EvidenceUploadService;
+    EvidenceUploadService evidenceUploadService;
 
     @InjectMocks
     NotificationController notificationController;
