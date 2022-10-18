@@ -86,4 +86,5 @@ public class ResponseCaseDataParent {
     protected String solsOrgHasPBAs;
     protected String solsNeedsPBAPayment;
     protected OrganisationPolicy applicantOrganisationPolicy;
+    protected LocalDate lastEvidenceAddedDate;
 }
