@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.InformationRequestService;
@@ -68,6 +69,7 @@ public class NotificationController {
     private final DocumentGeneratorService documentGeneratorService;
     private final DocumentsReceivedNotificationService documentsReceivedNotificationService;
     private final NotificationService notificationService;
+    private final EvidenceUploadService evidenceUploadService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
@@ -221,6 +223,7 @@ public class NotificationController {
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
+        evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }

@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
@@ -45,6 +46,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -93,6 +95,8 @@ class NotificationControllerUnitTest {
     private BindingResult bindingResultMock;
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
+    @Mock
+    EvidenceUploadService;
 
     @InjectMocks
     NotificationController notificationController;
@@ -182,17 +186,28 @@ class NotificationControllerUnitTest {
     }
 
 
+    @Test
+    void shouldUpdateEvidenceAddedDate() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        BindingResult bindingResultMock = mock(BindingResult.class);
+        ResponseEntity<CallbackResponse> responseEntity =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock, requestMock);
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
     private void setUpMocks(State state, String... errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         document = Document.builder()
-            .documentDateAdded(LocalDate.now())
-            .documentFileName("fileName")
-            .documentGeneratedBy("generatedBy")
-            .documentLink(
-                DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .build();
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .build();
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
         when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
         when(notificationService.sendEmail(any(), any())).thenReturn(document);

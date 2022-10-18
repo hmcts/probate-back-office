@@ -7,4 +7,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registryLocation", "Label": "Registry Location", "DisplayOrder": 6},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationType", "Label": "Application Type", "DisplayOrder": 7},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 8}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastEvidenceAddedDate", "Label": "Date last evidence added", "DisplayOrder": 9}
 ]
