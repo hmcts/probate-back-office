@@ -1067,7 +1067,8 @@ public class CallbackResponseTransformer {
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
-            .movedIntoDormantDateTime(caseData.getMovedIntoDormantDateTime());
+            .movedIntoDormantDateTime(caseData.getMovedIntoDormantDateTime())
+            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

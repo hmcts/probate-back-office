@@ -3,29 +3,29 @@ const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig.json');
-const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
+const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig.json');
 
-const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig');
-const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig');
-const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig');
+const createCaveatConfig = require('src/test/end-to-end/pages/createCaveat/createCaveatConfig.json');
+const emailCaveatorConfig = require('src/test/end-to-end/pages/emailNotifications/caveat/emailCaveatorConfig.json');
+const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/caveat/caseMatchesConfig.json');
+const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/caveat/documentUploadConfig.json');
 
-const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig');
+const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/historyTabConfig.json');
 
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseDetailsTabConfig');
-const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabConfig');
-const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabConfig');
-const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabConfig');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseDetailsTabConfig.json');
+const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabConfig.json');
+const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabConfig.json');
+const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabConfig.json');
 
-const caseDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseDetailsTabUpdateConfig');
-const deceasedDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig');
-const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig');
-const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig');
+const caseDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseDetailsTabUpdateConfig.json');
+const deceasedDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/deceasedDetailsTabUpdateConfig.json');
+const caveatorDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatorDetailsTabUpdateConfig.json');
+const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caveatDetailsTabUpdateConfig.json');
 
-const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
+const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig.json');
 // this check has been removed as a temporary measure 14/01/2020, due to an Elastic Search bug
 // const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/caseMatchesTabConfig');
-const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
+const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig.json');
 
 const {
     legacyParse,

@@ -139,6 +139,11 @@ module.exports = function () {
         navigateToCase: steps.utility.navigateToCase,
         rejectCookies: steps.utility.rejectCookies,
         checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
-        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
+        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp,
+        shareCaseSelection: steps.shareCase.shareCaseSelection,
+        authenticateUserShareCase: steps.IDAM.signInShareCase,
+        verifyShareCase: steps.shareCase.verifyShareCase,
+        shareCaseVerifyUserRemove:steps.shareCase.shareCaseVerifyUserRemove,
+        shareCaseDelete:steps.shareCase.shareCaseDelete
     });
 };
