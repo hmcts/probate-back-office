@@ -244,7 +244,8 @@ class NotificationControllerUnitTest {
     @Test
     void shouldSendNotificationForAttachDocsCasePrinted() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
-        CaseDetails caseDetails = new CaseDetails(CaseData.builder().build(), LAST_MODIFIED, ID);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().primaryApplicantEmailAddress("pa@probate-test.com")
+                .build(), LAST_MODIFIED, ID);
         caseDetails.setState(CASE_PRINTED.getId());
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<CallbackResponse> callbackResponse =
