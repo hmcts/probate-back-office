@@ -231,13 +231,16 @@ public class NotificationController {
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
-        CallbackResponse response = eventValidationService
-                .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
         Document document = null;
-        if (!response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(response);
-        } else if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
-            document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
+        if (isAnEmailAddressPresent(caseData)) {
+            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+            if (!response.getErrors().isEmpty()) {
+                return ResponseEntity.ok(response);
+            } else if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
+                document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+            }
         }
         response = callbackResponseTransformer.transformCaseForAttachScannedDocs(callbackRequest, document);
         return ResponseEntity.ok(response);

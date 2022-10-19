@@ -255,9 +255,23 @@ class NotificationControllerUnitTest {
     }
 
     @Test
-    void shouldNotSendNotificationForAttachDocs() throws NotificationClientException {
+    void shouldNotSendNotificationForAttachDocsNotCasePrinted() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                        httpServletRequest);
+        verify(notificationService, times(0)).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotSendNotificationForAttachDocsNoEmailAddressPresent() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        CaseDetails caseDetails =
+            new CaseDetails(CaseDataTestBuilder.withDefaultsAndNoPrimaryApplicantEmailAddress().build(), LAST_MODIFIED,
+                    ID);
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<CallbackResponse> callbackResponse =
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
