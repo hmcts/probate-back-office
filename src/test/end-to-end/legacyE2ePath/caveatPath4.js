@@ -138,7 +138,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
-
     await I.signOut();
 
 }).retry(testConfig.TestRetryScenarios);
