@@ -8,9 +8,6 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
-import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
-import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
