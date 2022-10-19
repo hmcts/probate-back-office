@@ -118,8 +118,12 @@ class ZipFileServiceTest {
                 .subtype(DocumentType.WILL.getTemplateName())
                 .url(link)
                 .build();
+        ScannedDocument scannedWillDocumentWithoutSubType = ScannedDocument.builder().type(DocumentType.OTHER.getTemplateName())
+                .url(link)
+                .build();
         List<CollectionMember<ScannedDocument>> scannedWillDocuments = new ArrayList<>();
         scannedWillDocuments.add(new CollectionMember<>(scannedWillDocument));
+        scannedWillDocuments.add(new CollectionMember<>(scannedWillDocumentWithoutSubType));
 
         CaseData data = CaseData.builder().caseType(GrantType.Constants.GRANT_OF_PROBATE_NAME)
                 .probateDocumentsGenerated(grantDocuments)
