@@ -53,6 +53,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
@@ -124,6 +125,7 @@ class NotificationControllerUnitTest {
             .paperForm("No")
             .primaryApplicantNotRequiredToSendDocuments("Yes")
             .primaryApplicantEmailAddress("1@1.com")
+            .caseType("intestacy")
             .build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         ResponseEntity<ProbateDocument> stringResponseEntity =
@@ -212,7 +214,7 @@ class NotificationControllerUnitTest {
         when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
         when(notificationService.sendEmail(any(), any())).thenReturn(document);
         when(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(any()))
-                .thenReturn(callbackResponse);;
+                .thenReturn(callbackResponse);
 
     }
 
@@ -237,5 +239,56 @@ class NotificationControllerUnitTest {
                 httpServletRequest);
         verify(caseDataTransformer).transformCaseDataForAttachDocuments(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSendNotificationForAttachDocsCasePrinted() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().build(), LAST_MODIFIED, ID);
+        caseDetails.setState(CASE_PRINTED.getId());
+        callbackRequest = new CallbackRequest(caseDetails);
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                        httpServletRequest);
+        verify(notificationService).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotSendNotificationForAttachDocs() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                        httpServletRequest);
+        verify(notificationService, times(0)).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldStartAwaitingDocumentationNotificationPeriodNoEvidenceHandled() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED_NO_DOCS);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .paperForm("No")
+                .primaryApplicantNotRequiredToSendDocuments("Yes")
+                .primaryApplicantEmailAddress("1@1.com")
+                .primaryApplicantNotRequiredToSendDocuments("Yes")
+                .caseType("intestacy")
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        ResponseEntity<ProbateDocument> stringResponseEntity =
+                notificationController.sendApplicationReceivedNotification(callbackRequest);
+        verify(notificationService, times(0)).startAwaitingDocumentationNotificationPeriod(any());
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotStartAwaitingDocumentationNotificationPeriodNullEvidenceHandled() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        ResponseEntity<ProbateDocument> stringResponseEntity =
+                notificationController.sendApplicationReceivedNotification(callbackRequest);
+        verify(notificationService).startAwaitingDocumentationNotificationPeriod(any());
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 }

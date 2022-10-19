@@ -440,7 +440,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          PaymentResponse paymentResponse, Document coversheet) {
+                                      PaymentResponse paymentResponse, Document coversheet, Document sentEmail) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -449,7 +449,9 @@ public class CallbackResponseTransformer {
 
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
         caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
 
@@ -564,6 +566,18 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document) {
+        boolean transform = doTransform(callbackRequest);
+        if (document != null) {
+            documentTransformer.addDocument(callbackRequest, document, false);
+        }
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+        responseCaseDataBuilder.probateNotificationsGenerated(
+                callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {

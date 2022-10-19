@@ -583,7 +583,8 @@ class NotificationControllerTest {
     @Test
     void shouldReturnSuccessfulResponseForStartGrantDelayNotification() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
-        when(callbackResponseTransformer.transformCase(any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer
+                .transformCaseForAttachScannedDocs(any(), any())).thenReturn(successfulResponse);
         mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE).content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -593,6 +594,7 @@ class NotificationControllerTest {
         verify(notificationService).resetAwaitingDocumentationNotificationDate(any());
         verify(caseDataTransformer).transformCaseDataForAttachDocuments(any());
         verify(evidenceUploadService).updateLastEvidenceAddedDate(any());
+        verify(notificationService).sendEmail(any(), any());
     }
 
     @Test
