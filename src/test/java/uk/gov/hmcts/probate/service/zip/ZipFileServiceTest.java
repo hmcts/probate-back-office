@@ -118,7 +118,8 @@ class ZipFileServiceTest {
                 .subtype(DocumentType.WILL.getTemplateName())
                 .url(link)
                 .build();
-        ScannedDocument scannedWillDocumentWithoutSubType = ScannedDocument.builder().type(DocumentType.OTHER.getTemplateName())
+        ScannedDocument scannedWillDocumentWithoutSubType = ScannedDocument.builder()
+                .type(DocumentType.OTHER.getTemplateName())
                 .url(link)
                 .build();
         List<CollectionMember<ScannedDocument>> scannedWillDocuments = new ArrayList<>();
