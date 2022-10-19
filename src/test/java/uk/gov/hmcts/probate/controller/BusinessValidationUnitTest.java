@@ -43,6 +43,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IhtNetQualifyingValueValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
@@ -133,6 +134,8 @@ class BusinessValidationUnitTest {
     @Mock
     private IhtEstateValidationRule ihtEstateValidationRule;
     @Mock
+    private IhtNetQualifyingValueValidationRule ihtNetQualifyingValueValidationRule;
+    @Mock
     private IHTValidationRule ihtValidationRule;
     @Mock
     private CodicilDateValidationRule codicilDateValidationRuleMock;
@@ -181,6 +184,7 @@ class BusinessValidationUnitTest {
             caseEscalatedServiceMock,
             emailAddressNotifyApplicantValidationRule,
             ihtFourHundredDateValidationRule,
+            ihtNetQualifyingValueValidationRule,
             ihtEstateValidationRule,
             ihtValidationRule,
             solicitorPostcodeValidationRule,
@@ -712,10 +716,10 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
             underTest.validateIhtEstateData(callbackRequestMock);
-        verify(ihtEstateValidationRule, times(1))
-            .validate(caseDetailsMock);
-        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(ihtEstateValidationRule, times(1)).validate(caseDetailsMock);
+        verify(ihtNetQualifyingValueValidationRule, times(1)).validate(caseDetailsMock);
+        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
     }
 
     @Test
