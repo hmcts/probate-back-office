@@ -26,12 +26,6 @@ class CaseDataTransformerTest {
     @Mock
     private CaseData caseDataMock;
     @Mock
-    private SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
-    @Mock
-    private ResetCaseDataTransformer resetCaseDataTransformer;
-    @Mock
-    private LegalStatementExecutorTransformer legalStatementExecutorTransformer;
-    @Mock
     private EvidenceHandledTransformer evidenceHandledTransformer;
     @Mock
     private AttachDocumentsTransformer attachDocumentsTransformer;
@@ -88,5 +82,19 @@ class CaseDataTransformerTest {
     void shouldNotTransformEvidenceHandledForCreateBulkscanNotCasePrinted() {
         caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequestMock);
         verify(evidenceHandledTransformer, times(0)).updateEvidenceHandledToNo(caseDataMock);
+    }
+
+    @Test
+    void shouldTransformForAttachDocuments() {
+        when(caseDetailsMock.getState()).thenReturn(CASE_PRINTED_NAME);
+
+        caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequestMock);
+        verify(attachDocumentsTransformer).updateAttachDocuments(caseDataMock);
+    }
+
+    @Test
+    void shouldNotTransformAttachDocs() {
+        caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequestMock);
+        verify(attachDocumentsTransformer, times(0)).updateAttachDocuments(caseDataMock);
     }
 }
