@@ -38,7 +38,6 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
@@ -88,7 +87,6 @@ public class NotificationController {
     private final GrantNotificationService grantNotificationService;
     private final CaseDataTransformer caseDataTransformer;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
-    private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -233,16 +231,14 @@ public class NotificationController {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         Document document = null;
-        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
-        if (isAnEmailAddressPresent(caseData)) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
-            if (!response.getErrors().isEmpty()) {
-                return ResponseEntity.ok(response);
-            } else if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
-                document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
-            }
+        if (isAnEmailAddressPresent(caseData)
+            && eventValidationService
+                .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules).getErrors().isEmpty()
+            && (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState()))) {
+            document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
         }
-        response = callbackResponseTransformer.transformCaseForAttachScannedDocs(callbackRequest, document);
+        CallbackResponse response = callbackResponseTransformer
+                .transformCaseForAttachScannedDocs(callbackRequest, document);
         return ResponseEntity.ok(response);
     }
 
