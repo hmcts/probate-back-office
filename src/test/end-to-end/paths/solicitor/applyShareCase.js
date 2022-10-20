@@ -1,5 +1,4 @@
 'use strict';
-const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
@@ -8,15 +7,15 @@ Feature('Solicitor - Share A Case').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Share A Case';
 
 Scenario(scenarioName, async function ({I}) {
-    if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')){
+    if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')) {
         const isSolicitorNamedExecutor = true;
         const isSolicitorApplyingExecutor = true;
 
         await I.logInfo(scenarioName, 'Login as PP user 1');
         await I.logInfo(scenarioName, 'Create and share a case with PP user 2');
         await I.authenticateUserShareCase(true);
-        let nextStepName = 'Deceased details';
-        let endState = 'Application created';
+        const nextStepName = 'Deceased details';
+
         await I.logInfo(scenarioName, nextStepName);
         await I.selectNewCase();
         await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_solGor);

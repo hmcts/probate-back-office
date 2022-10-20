@@ -2,8 +2,6 @@
 
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const {getLocalSonarScannerExecutable} = require("sonarqube-scanner/dist/sonar-scanner-executable");
-
 
 module.exports = async function (shareCaseSelection) {
 
@@ -42,4 +40,3 @@ module.exports = async function (shareCaseSelection) {
     await I.see('Your cases have been updated');
     await I.click('//a[normalize-space()="Sign out"]');
 };
-
