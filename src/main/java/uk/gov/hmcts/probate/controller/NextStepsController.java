@@ -100,11 +100,6 @@ public class NextStepsController {
                     .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
             Document sentEmail = null;
             caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
-            if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
-                notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
-                sentEmail = notificationService
-                        .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
-            }
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
@@ -123,12 +118,23 @@ public class NextStepsController {
                     eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
                         paymentResponse, creditAccountPaymentValidationRule);
                 if (creditPaymentResponse.getErrors().isEmpty()) {
+                    if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
+                        notificationService
+                                .startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+                        sentEmail = notificationService
+                                .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
+                    }
                     callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                         feesResponse, paymentResponse, coversheet, sentEmail);
                 } else {
                     callbackResponse = creditPaymentResponse;
                 }
             } else {
+                if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
+                    notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+                    sentEmail = notificationService
+                            .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
+                }
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                     feesResponse, null, coversheet, sentEmail);
             }
