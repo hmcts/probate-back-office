@@ -24,16 +24,16 @@ Scenario(scenarioName, async function ({I}) {
         await I.cyaPage();
         await I.shareCaseSelection(false);
         await I.logInfo(scenarioName, 'Login as PP user 2');
-        await I.logInfo(scenarioName, 'Verify Case '+caseRef+'by PP user 2 and then remove PP user 1');
-        await I.authenticateUserShareCase();
+        await I.logInfo(scenarioName, 'Verify Case ' + caseRef + 'by PP user 2 and then remove PP user 1');
+        await I.authenticateUserShareCase(false);
         await I.verifyShareCase();
         await I.logInfo(scenarioName, 'Login as PP user 1');
-        await I.logInfo(scenarioName, 'Verify Case '+caseRef+' is not shared with  PP user 1');
+        await I.logInfo(scenarioName, 'Verify Case ' + caseRef + ' is not shared with  PP user 1');
         await I.authenticateUserShareCase(true);
         await I.shareCaseVerifyUserRemove();
         await I.logInfo(scenarioName, 'Login as PP user 2');
-        await I.logInfo(scenarioName, 'Delete the case '+caseRef+' and sign out');
-        await I.authenticateUserShareCase();
+        await I.logInfo(scenarioName, 'Delete the case ' + caseRef + ' and sign out');
+        await I.authenticateUserShareCase(false);
         await I.shareCaseDelete();
 
     }
