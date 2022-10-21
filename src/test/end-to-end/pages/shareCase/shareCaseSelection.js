@@ -1,13 +1,11 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function (caseRefNumber) {
 
     const I = this;
     await I.wait(testConfig.CreateCaseDelay);
-    // await I.click({xpath: '//a[normalize-space()="Case list"]'}, testConfig.WaitForTextTimeout || 60);
     await I.click('//a[normalize-space()="Case list"]');
     await I.waitForText('Your cases', 20);
     await I.selectOption('#wb-jurisdiction', 'Manage probate application');
