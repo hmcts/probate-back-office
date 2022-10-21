@@ -36,6 +36,7 @@ To build the project execute the following command:
 ```bash
   ./gradlew build
 ```
+##CFT removed due to jitpack issue temporarily
 ################################################################################################
 ## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
 details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md

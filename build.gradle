@@ -22,7 +22,6 @@ plugins {
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
 }
 
 apply plugin: 'project-report'
@@ -388,8 +387,6 @@ dependencies {
 
   contractTestAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  // Provides fast-reload of the probate service upon edit & compile during local development
-  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 }
 
 tasks.withType(JavaCompile) {
@@ -475,27 +472,4 @@ task buildBackOfficeXlsx(type: Exec) {
   // Register the inputs and outputs so Gradle can skip if up-to-date.
   inputs.dir input
   outputs.file project.file('jsonToXLS/CCD_Probate_Backoffice.xlsx')
-}
-
-bootWithCCD {
-  dependsOn buildBackOfficeXlsx
-  authMode = uk.gov.hmcts.rse.AuthMode.Local
-  // Request the cftlib create the probate_man database
-  environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
-
-  environment 'IDAM_S2S_URL', 'http://localhost:8489'
-  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
-  environment 'PROBATE_POSTGRESQL_PORT', '6432'
-  environment 'PROBATE_POSTGRESQL_USER', 'postgres'
-  environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
-}
-
-bootJar {
-  getArchiveFileName().set(provider {
-    'back-office.jar'
-  })
-
-  manifest {
-    attributes('Implementation-Version': project.version.toString())
-  }
 }
