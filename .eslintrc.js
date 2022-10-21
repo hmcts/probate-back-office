@@ -315,9 +315,6 @@ module.exports = {
         'actor': true,
         'Feature': true,
         'Scenario': true,
-        'codecept_helper': true,
-        'caseRef' : true,
-        'caseIdShareCase':true,
-        'caseRefNumber':true
+        'codecept_helper': true
     }
 };
