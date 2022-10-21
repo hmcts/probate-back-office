@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (shareCaseDelete) {
+module.exports = async function (caseIdShareCase, caseRef) {
     const I = this;
     await I.waitForText('Your cases', 20);
     await I.click('//span[normalize-space()="' + caseIdShareCase + '"]');
@@ -12,12 +12,11 @@ module.exports = async function (shareCaseDelete) {
     await I.waitForNavigationToComplete('button[type="submit"]');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete(commonConfig.continueButton);
-    await I.seeElement('//h2[normalize-space()="' + caseRef + '"]');
+    await I.seeElement('//h2[normalize-space()="'+caseRef+'"]');
     await I.wait(2);
     await I.waitForNavigationToComplete(commonConfig.submitButton);
     await I.wait(2);
     await I.see('Case ' + caseRef + ' has been updated with event: Delete');
-    await I.logInfo(shareCaseDelete);
     await I.wait(testConfig.CreateCaseDelay);
     await I.click('//a[normalize-space()="Sign out"]');
 

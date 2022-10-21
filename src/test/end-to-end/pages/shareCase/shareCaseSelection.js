@@ -3,14 +3,9 @@
 const testConfig = require('src/test/config.js');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (shareCaseSelection) {
+module.exports = async function (caseRefNumber) {
 
     const I = this;
-    global.caseRef = await I.grabTextFrom('//div[@class="column-one-half"]//ccd-case-header');
-    global.caseIdShareCase = caseRef.replace(/#/g, '')
-    global.caseRefNumber = caseRef.replace(/\D/g, '');
-    //const caseRefNumber = parseInt(caseRef.match(/\d/g).join(''), 20);
-
     await I.wait(testConfig.CreateCaseDelay);
     // await I.click({xpath: '//a[normalize-space()="Case list"]'}, testConfig.WaitForTextTimeout || 60);
     await I.click('//a[normalize-space()="Case list"]');
@@ -38,6 +33,6 @@ module.exports = async function (shareCaseSelection) {
     await I.waitForNavigationToComplete('button[title="Confirm"]');
     await I.waitForText('Your cases have been updated', 20);
     await I.see('Your cases have been updated');
-    await I.logInfo(shareCaseSelection);
     await I.click('//a[normalize-space()="Sign out"]');
+
 };
