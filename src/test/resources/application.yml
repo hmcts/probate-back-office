@@ -421,6 +421,7 @@ blobstorage:
   connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
 
 feature:
   blobstorage:
@@ -450,3 +451,6 @@ document_management:
   fileupload:
     extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
+
+hmrc_extract:
+  minus_days: 1

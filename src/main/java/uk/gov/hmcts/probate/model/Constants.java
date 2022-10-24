@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -73,7 +74,7 @@ public final class Constants {
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
     public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners";
-    public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form" 
+    public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form"
         + " (PA17)";
     public static final String PA15_FORM_TEXT_ADMON_WILL = "PA15";
     public static final String PA17_FORM_TEXT_ADMON_WILL = "PA17";
@@ -100,6 +101,7 @@ public final class Constants {
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use
     // >, >=, <=, < comparisions etc, converting to numeric
     public static final String LATEST_SCHEMA_VERSION = "2.0.0";
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static List<String> getNonTrustPtnrTitleClearingTypes() {
         return new ArrayList<>(asList(
