@@ -68,7 +68,6 @@ public class ServiceAuthenConsummerLeaseTest {
                 .toPact();
     }
 
-    @Ignore
     @Test
     @PactTestFor(pactMethod = "executeLease")
     void verifyLease() {
