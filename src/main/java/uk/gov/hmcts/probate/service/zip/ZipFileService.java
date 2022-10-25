@@ -75,6 +75,7 @@ public class ZipFileService {
         try (FileOutputStream fos = new FileOutputStream(tempFile);
             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
+                log.info("Starting for case {}", returnedCaseDetails.getId());
                 getWillDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
@@ -237,8 +238,8 @@ public class ZipFileService {
     }
 
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
-        return collectionMember.getValue().getType().equalsIgnoreCase(OTHER.getTemplateName())
-                && collectionMember.getValue().getSubtype().equalsIgnoreCase(WILL.getTemplateName());
+        return OTHER.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getType())
+                && WILL.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getSubtype());
     }
 
     private boolean filterUploadedDocs(CollectionMember<UploadDocument> collectionMember) {

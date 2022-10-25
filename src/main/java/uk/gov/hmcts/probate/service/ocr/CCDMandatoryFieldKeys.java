@@ -4,30 +4,31 @@ import uk.gov.hmcts.probate.model.ccd.ocr.GORSolicitorMandatoryFields;
 
 public interface CCDMandatoryFieldKeys {
 
-    static final String MANDATORY_FIELD_WARNING_STIRNG = "%s (%s) is mandatory.";
-    static final String MANDATORY_FIELD_NOT_FOUND_LOG = "{} was not found in ocr fields";
-    static final String DEPENDANT_KEY_PRIMARYAPPLICANTALIAS = "primaryApplicantAlias";
-    static final String DEPENDANT_DESC_PRIMARYAPPLICANTALIAS = "Primary applicant alias";
-    static final String DEPENDANT_KEY_IHTREFERENCENUMBER = "ihtReferenceNumber";
-    static final String DEPENDANT_DESC_IHTREFERENCENUMBER = "IHT reference number";
-    static final String DEPENDANT_KEY_IHTFORMID = "ihtFormId";
-    static final String DEPENDANT_DESC_IHTFORMID = "IHT form id";
-    static final String DEPENDANT_KEY_PAPERPAYMENTMETHOD = "paperPaymentMethod";
-    static final String DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER = "solsFeeAccountNumber";
-    static final String DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER = "Solicitors fee account number";
-    static final String DEPENDANT_KEY_SOLSWILLTYPE = "solsWillType";
-    static final String DEPENDANT_KEY_SOLSWILLTYPEREASON = "solsWillTypeReason";
-    static final String MANDATORY_KEY_EXECUTORSNOTAPPLYING_EXECUTORNAME =
+    String MANDATORY_FIELD_WARNING_STRING = "%s (%s) is mandatory.";
+    String MANDATORY_FIELD_NOT_FOUND_LOG = "{} was not found in ocr fields";
+    String DEPENDANT_KEY_PRIMARYAPPLICANTALIAS = "primaryApplicantAlias";
+    String DEPENDANT_DESC_PRIMARYAPPLICANTALIAS = "Primary applicant alias";
+    String DEPENDANT_KEY_IHTREFERENCENUMBER = "ihtReferenceNumber";
+    String DEPENDANT_DESC_IHTREFERENCENUMBER = "IHT reference number";
+    String DEPENDANT_KEY_IHTFORMID = "ihtFormId";
+    String DEPENDANT_DESC_IHTFORMID = "IHT form id";
+    String DEPENDANT_KEY_PAPERPAYMENTMETHOD = "paperPaymentMethod";
+    String DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER = "solsFeeAccountNumber";
+    String DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER = "Solicitors fee account number";
+    String DEPENDANT_KEY_SOLSWILLTYPE = "solsWillType";
+    String DEPENDANT_KEY_SOLSWILLTYPEREASON = "solsWillTypeReason";
+    String MANDATORY_KEY_EXECUTORSNOTAPPLYING_EXECUTORNAME =
         "executorsNotApplying_%s_notApplyingExecutorName";
-    static final String DEPENDANT_KEY_EXECUTORSNOTAPPLYING_EXECUTORREASON =
+    String DEPENDANT_KEY_EXECUTORSNOTAPPLYING_EXECUTORREASON =
         "executorsNotApplying_%s_notApplyingExecutorReason";
-    static final String DEPENDANT_DESC_EXECUTORSNOTAPPLYING_EXECUTORREASON =
+    String DEPENDANT_DESC_EXECUTORSNOTAPPLYING_EXECUTORREASON =
         "Executor %s not applying reason";
-    static final String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS =
+    String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS =
         GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
-    static final String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE =
+    String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE =
         GORSolicitorMandatoryFields.IHT_FORM_COMPLETED_ONLINE.getKey();
-    static final String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
-    static final String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
-    static final String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
+    String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
+    String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
+    String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
+    String LEGAL_REPRESENTATIVE = "legalRepresentative";
 }
