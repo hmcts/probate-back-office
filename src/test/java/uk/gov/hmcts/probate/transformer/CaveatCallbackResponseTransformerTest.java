@@ -35,6 +35,8 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.BulkScanEnvelope;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -60,6 +62,8 @@ class CaveatCallbackResponseTransformerTest {
 
     public static final String ORGANISATION_NAME = "OrganisationName";
     public static final String ORG_ID = "OrgID";
+    private static final String REPRESENTATIVE_NAME = "Representative Name";
+    private static final String DX_NUMBER = "1234567890";
 
     @Mock
     private OrganisationsRetrievalService organisationsRetrievalService;
@@ -126,6 +130,13 @@ class CaveatCallbackResponseTransformerTest {
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
         BULK_SCAN_ENVELOPES = new ArrayList<>();
+    private static final String CAV_CAVEATOR_PHONENUMBER = "123456789";
+    private static final String CAV_PROBATE_FEE = "probateFeeNotIncluded";
+    private static final String CAV_PROBATE_FEE_NOT_INCLUDED_REASON = "helpWithFeesApplied";
+    private static final String CAV_HELP_WITH_FEES_REFERENCE = "Free Text for fees reference";
+    private static final String CAV_NOT_INCLUDED_EXPLANATION = "helpWithFeesApplying";
+    private static final String CAV_FEE_ACCOUNT_NUMBER = "Free Text for fee account number";
+    private static final String CAV_FEE_ACCOUNT_REFERENCE = "Free Text for account reference";
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -187,7 +198,14 @@ class CaveatCallbackResponseTransformerTest {
                 .value(DynamicListItem.builder().code(SOLS_SELECTED_PBA).label(SOLS_SELECTED_PBA).build())
                 .build())
             .solsPBAPaymentReference(SOLS_PBA_PAY_REF)
-            .pcqId(CAV_SOLICITOR_APP_REFERENCE);
+            .pcqId(CAV_SOLICITOR_APP_REFERENCE)
+            .caveatorPhoneNumber(CAV_CAVEATOR_PHONENUMBER)
+            .probateFee(CAV_PROBATE_FEE)
+            .helpWithFeesReference(CAV_HELP_WITH_FEES_REFERENCE)
+            .probateFeeNotIncludedReason(CAV_PROBATE_FEE_NOT_INCLUDED_REASON)
+            .probateFeeNotIncludedExplanation(CAV_NOT_INCLUDED_EXPLANATION)
+            .probateFeeAccountNumber(CAV_FEE_ACCOUNT_NUMBER)
+            .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE);
 
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
@@ -205,6 +223,16 @@ class CaveatCallbackResponseTransformerTest {
             .applicationSubmittedDate(CAV_SUBMISSION_DATE)
             .bulkScanCaseReference(BULK_SCAN_REFERENCE)
             .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
+            .caveatorPhoneNumber(CAV_CAVEATOR_PHONENUMBER)
+            .probateFee(ProbateFee.PROBATE_FEE_NOT_INCLUDED)
+            .helpWithFeesReference(CAV_HELP_WITH_FEES_REFERENCE)
+            .probateFeeNotIncludedReason(ProbateFeeNotIncludedReason.HELP_WITH_FEES_APPLIED)
+            .probateFeeNotIncludedExplanation(CAV_NOT_INCLUDED_EXPLANATION)
+            .probateFeeAccountNumber(CAV_FEE_ACCOUNT_NUMBER)
+            .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE)
+            .solsSolicitorRepresentativeName(REPRESENTATIVE_NAME)
+            .dxNumber(DX_NUMBER)
+            .practitionerAcceptsServiceByEmail(true)
             .build();
     }
 
@@ -248,7 +276,7 @@ class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, NO);
+        assertPaperForm(caveatCallbackResponse, YES);
 
         assertEquals("pba",
             caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
@@ -277,7 +305,7 @@ class CaveatCallbackResponseTransformerTest {
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, NO);
+        assertPaperForm(caveatCallbackResponse, YES);
 
         assertEquals("RC1",
             caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getReference());
@@ -593,6 +621,17 @@ class CaveatCallbackResponseTransformerTest {
         assertFalse(caveatData.getDeceasedAnyOtherNames());
         assertTrue(caveatData.getCaveatRaisedEmailNotificationRequested());
         assertFalse(caveatData.getSendToBulkPrintRequested());
+
+        assertEquals(CAV_CAVEATOR_PHONENUMBER, caveatData.getCaveatorPhoneNumber());
+        assertEquals(CAV_PROBATE_FEE, caveatData.getProbateFee().getDescription());
+        assertEquals(CAV_HELP_WITH_FEES_REFERENCE, caveatData.getHelpWithFeesReference());
+        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON, caveatData.getProbateFeeNotIncludedReason().getDescription());
+        assertEquals(CAV_NOT_INCLUDED_EXPLANATION, caveatData.getProbateFeeNotIncludedExplanation());
+        assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatData.getProbateFeeAccountNumber());
+        assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatData.getProbateFeeAccountReference());
+        assertEquals(REPRESENTATIVE_NAME, caveatData.getSolsSolicitorRepresentativeName());
+        assertEquals(DX_NUMBER, caveatData.getDxNumber());
+        assertTrue(caveatData.getPractitionerAcceptsServiceByEmail());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
@@ -643,6 +682,15 @@ class CaveatCallbackResponseTransformerTest {
 
         assertEquals(YES, caveatCallbackResponse.getCaveatData().getAutoClosedExpiry());
         assertEquals(CAV_SOLICITOR_APP_REFERENCE, caveatCallbackResponse.getCaveatData().getPcqId());
+        assertEquals(CAV_CAVEATOR_PHONENUMBER, caveatCallbackResponse.getCaveatData().getCaveatorPhoneNumber());
+        assertEquals(CAV_PROBATE_FEE, caveatCallbackResponse.getCaveatData().getProbateFee());
+        assertEquals(CAV_HELP_WITH_FEES_REFERENCE, caveatCallbackResponse.getCaveatData().getHelpWithFeesReference());
+        assertEquals(CAV_PROBATE_FEE_NOT_INCLUDED_REASON,
+            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedReason());
+        assertEquals(CAV_NOT_INCLUDED_EXPLANATION,
+            caveatCallbackResponse.getCaveatData().getProbateFeeNotIncludedExplanation());
+        assertEquals(CAV_FEE_ACCOUNT_NUMBER, caveatCallbackResponse.getCaveatData().getProbateFeeAccountNumber());
+        assertEquals(CAV_FEE_ACCOUNT_REFERENCE, caveatCallbackResponse.getCaveatData().getProbateFeeAccountReference());
     }
 
     private void assertCaveatPayment(CaveatCallbackResponse caveatCallbackResponse) {

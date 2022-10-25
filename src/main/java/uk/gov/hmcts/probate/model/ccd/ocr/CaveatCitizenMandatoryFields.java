@@ -7,7 +7,8 @@ public enum CaveatCitizenMandatoryFields {
     CAVEATOR_ADDRESS_POSTCODE("caveatorAddressPostCode", "Caveator address postcode"),
     DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
     DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
-    DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death");
+    DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
+    LEGAL_REPRESENTATIVE("legalRepresentative","Legal representative");
 
     private final String key;
     private final String value;
