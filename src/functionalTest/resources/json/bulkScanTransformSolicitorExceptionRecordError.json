@@ -53,6 +53,7 @@
     { "name": "deceasedAddressLine2", "value": "Roebuck Street" },
     { "name": "deceasedAddressTown", "value": "La La Land" },
     { "name": "deceasedAddressCounty", "value": "Middlesex" },
-    { "name": "deceasedAddressPostCode", "value": "LA5 6TE" }
+    { "name": "deceasedAddressPostCode", "value": "LA5 6TE" },
+    { "name": "legalRepresentative", "value": "true" }
   ]
 }

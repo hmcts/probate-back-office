@@ -37,9 +37,12 @@ public class ResponseCaveatData {
     private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
     private final ProbateAddress deceasedAddress;
 
+    private final String solsSolicitorRepresentativeName;
     private final String solsSolicitorFirmName;
     private final String solsSolicitorPhoneNumber;
     private final String solsSolicitorAppReference;
+    private final String dxNumber;
+    private final String practitionerAcceptsServiceByEmail;
 
     private final String solsPaymentMethods;
     private final String solsFeeAccountNumber;
@@ -51,6 +54,14 @@ public class ResponseCaveatData {
     private final String caveatorSurname;
     private final String caveatorEmailAddress;
     private final ProbateAddress caveatorAddress;
+    private final String caveatorPhoneNumber;
+    private final String probateFee;
+    private final String probateFeeNotIncludedReason;
+    private final String helpWithFeesReference;
+    private final String probateFeeNotIncludedExplanation;
+    private final String probateFeeAccountNumber;
+    private final String probateFeeAccountReference;
+    private final String bilingualCorrespondenceRequested;
 
     private final List<CollectionMember<CaseMatch>> caseMatches;
     private final String applicationSubmittedDate;
