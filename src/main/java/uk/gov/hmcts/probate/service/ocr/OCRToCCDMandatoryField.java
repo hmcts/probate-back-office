@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.ocr;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
@@ -21,9 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KEY_FIRM_NAME;
+import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.LEGAL_REPRESENTATIVE;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KEY_IS_APPLYING;
-import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KEY_REPRESENTATIVE_NAME;
 
 @Slf4j
 @Service
@@ -43,9 +41,7 @@ public class OCRToCCDMandatoryField {
         List<String> warnings = new ArrayList<>();
         Map<String, String> ocrFieldValues = new HashMap<>();
 
-        ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
-        });
+        ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
 
         switch (formType) {
             case PA8A:
@@ -94,12 +90,8 @@ public class OCRToCCDMandatoryField {
 
     private ArrayList<String> getWarningsForPA8ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
-        boolean isSolicitorForm = false;
-        if (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))
-            || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
-            isSolicitorForm = true;
-        }
-
+        boolean isSolicitorForm =  BooleanUtils.toBoolean(ocrFieldValues.get(LEGAL_REPRESENTATIVE));
+    
         if (isSolicitorForm) {
             pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         } else {
