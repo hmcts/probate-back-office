@@ -460,6 +460,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "letterText", "Label": "Blank letter", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseworkerName", "Label": "Caseworker", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "includeStatementOfTruth", "Label": "Do you want to include a statement of truth?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "serviceRequestReference", "Label": "Service request reference", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "lastEvidenceAddedDate", "Label": "When was the last scanned or uploaded doc added?", "HintText": "For example, 31 03 2020", "FieldType": "Date", "SecurityClassification": "Public"}
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

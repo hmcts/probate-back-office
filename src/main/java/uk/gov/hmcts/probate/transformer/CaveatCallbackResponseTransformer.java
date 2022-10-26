@@ -69,9 +69,13 @@ public class CaveatCallbackResponseTransformer {
                 .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
         } else {
             responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES);
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
+
+        if (null == caveatData.getPaperForm()) {
+            responseCaveatDataBuilder.paperForm(YES);
+        }
+
 
         responseCaveatDataBuilder.serviceRequestReference(serviceRequestReference);
         return transformResponse(responseCaveatDataBuilder.build());
@@ -270,6 +274,17 @@ public class CaveatCallbackResponseTransformer {
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
             .payments(caveatData.getPayments())
             .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy())
+            .caveatorPhoneNumber(caveatData.getCaveatorPhoneNumber())
+            .probateFee(caveatData.getProbateFee())
+            .probateFeeNotIncludedReason(caveatData.getProbateFeeNotIncludedReason())
+            .helpWithFeesReference(caveatData.getHelpWithFeesReference())
+            .probateFeeNotIncludedExplanation(caveatData.getProbateFeeNotIncludedExplanation())
+            .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
+            .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
+            .bilingualCorrespondenceRequested(caveatData.getBilingualCorrespondenceRequested())
+            .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
+            .dxNumber(caveatData.getDxNumber())
+            .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
             .serviceRequestReference(caveatData.getServiceRequestReference())
             .paymentTaken(caveatData.getPaymentTaken());
     }

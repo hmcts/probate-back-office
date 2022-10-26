@@ -65,17 +65,13 @@ module.exports = function () {
         caseProgressClickSubmitAndSignOut: steps.caseProgress.clickSubmitAndSignOut,
         caseProgressFeePayment: steps.caseProgress.feePayment,
         caseProgressContinueWithoutChangingAnything: steps.caseProgress.continueWithoutChangingAnything,
-
         caseProgressAppStoppedDetails: steps.caseProgressAppStopped.appStoppedDetails,
         caseProgressAppStoppedTabCheck: steps.caseProgressAppStopped.appStoppedTabCheck,
-
         caseProgressStandardDeceasedDetailsCheck: steps.caseProgressStandard.deceasedDetailsCheck,
-
         caseProgressStopEscalateIssueDeceasedDetailsCheck: steps.caseProgressStopEscalateIssue.deceasedDetailsCheck,
         caseProgressStopEscalateIssueStoppedTabCheck: steps.caseProgressStopEscalateIssue.stoppedTabCheck,
         caseProgressStopEscalateIssueAddCaseStoppedReason: steps.caseProgressStopEscalateIssue.addCaseStoppedReason,
         caseProgressStopEscalateIssueEscalatedTabCheck: steps.caseProgressStopEscalateIssue.escalatedTabCheck,
-
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         dontSeeCaseDetails: steps.caseDetails.checkCaseDetailsDoNotAppear,
@@ -139,6 +135,11 @@ module.exports = function () {
         navigateToCase: steps.utility.navigateToCase,
         rejectCookies: steps.utility.rejectCookies,
         checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
-        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
+        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp,
+        shareCaseSelection: steps.shareCase.shareCaseSelection,
+        authenticateUserShareCase: steps.IDAM.signInShareCase,
+        verifyShareCase: steps.shareCase.verifyShareCase,
+        shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
+        shareCaseDelete: steps.shareCase.shareCaseDelete
     });
 };

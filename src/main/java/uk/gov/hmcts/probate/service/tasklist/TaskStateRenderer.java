@@ -122,7 +122,7 @@ public class TaskStateRenderer {
         final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
                 solSOTNeedToUpdate);
         final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate);
-        
+
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
@@ -162,9 +162,9 @@ public class TaskStateRenderer {
 
     private TaskState getPaymentTaskState(TaskListState currState, TaskListState renderState) {
         TaskState taskState;
-        if(currState == TaskListState.TL_STATE_MAKE_PAYMENT){
+        if (currState == TaskListState.TL_STATE_MAKE_PAYMENT) {
             taskState = TaskState.NOT_STARTED;
-        } else if(currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED){
+        } else if (currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED) {
             taskState =  TaskState.IN_PROGRESS;
         } else if (currState.compareTo(renderState) > 0) {
             taskState =  TaskState.COMPLETED;
@@ -173,12 +173,12 @@ public class TaskStateRenderer {
         }
         return taskState;
     }
-    
-    private String renderPaymentLinkOrText (TaskState currTaskState, String linkText, String link){
+
+    private String renderPaymentLinkOrText(TaskState currTaskState, String linkText, String link) {
         return (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
                 ? LinkRenderer.render(linkText, link) : linkText;
     }
-    
+
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
                                    String solSOTNeedToUpdate) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)

@@ -1047,6 +1047,7 @@ public class CallbackResponseTransformer {
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
+            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken());
 
