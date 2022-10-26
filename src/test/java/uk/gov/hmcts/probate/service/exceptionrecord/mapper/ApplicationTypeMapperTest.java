@@ -19,6 +19,7 @@ class ApplicationTypeMapperTest {
     private ExceptionRecordOCRFields ocrFieldsWithSolicitor;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorNoRepName;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorNoFirmName;
+    private ExceptionRecordOCRFields ocrFieldsWithSolicitorCaveat;
 
     @BeforeEach
     public void setUpClass() throws Exception {
@@ -41,6 +42,10 @@ class ApplicationTypeMapperTest {
             .solsSolicitorIsApplying(YES)
             .solsSolicitorFirmName("")
             .solsSolicitorRepresentativeName(SOLS_SOLICITORS_REPRESENTITIVE_NAME)
+            .build();
+
+        ocrFieldsWithSolicitorCaveat = ExceptionRecordOCRFields.builder()
+            .legalRepresentative(YES)
             .build();
     }
 
@@ -79,21 +84,7 @@ class ApplicationTypeMapperTest {
 
     @Test
     void testApplicationTypeCaveatIsSolicitor() {
-        ApplicationType applicationType = applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitor);
-        assertEquals(ApplicationType.SOLICITORS, applicationType);
-    }
-
-    @Test
-    void testApplicationTypeCaveatIsSolicitorMissingFirmName() {
-        ApplicationType applicationType =
-            applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitorNoFirmName);
-        assertEquals(ApplicationType.SOLICITORS, applicationType);
-    }
-
-    @Test
-    void testApplicationTypeCaveatIsSolicitorMissingRepName() {
-        ApplicationType applicationType =
-            applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitorNoRepName);
+        ApplicationType applicationType = applicationTypeMapper.toApplicationTypeCaveat(ocrFieldsWithSolicitorCaveat);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 }

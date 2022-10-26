@@ -1,12 +1,11 @@
 package uk.gov.hmcts.probate.model.exceptionrecord;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.Data;
 
 import static uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor.get;
 
@@ -288,6 +287,17 @@ public class ExceptionRecordRequest {
             .iht207Completed(get(ocrFields, "iht207completed"))
             .formVersion(get(ocrFields, "formVersion"))
             .iht205completedOnline(get(ocrFields, "iht205completedOnline"))
+            .caveatorPhoneNumber(get(ocrFields, "caveatorPhoneNumber"))
+            .probateFee(get(ocrFields,"probateFee"))
+            .probateFeeNotIncludedReason(get(ocrFields, "probateFeeNotIncludedReason"))
+            .helpWithFeesReference(get(ocrFields, "helpWithFeesReference"))
+            .probateFeeNotIncludedExplanation(get(ocrFields, "probateFeeNotIncludedExplanation"))
+            .probateFeeAccountNumber(get(ocrFields, "probateFeeAccountNumber"))
+            .probateFeeAccountReference(get(ocrFields, "probateFeeAccountReference"))
+            .bilingualCorrespondenceRequested(get(ocrFields, "bilingualCorrespondenceRequested"))
+            .legalRepresentative(get(ocrFields, "legalRepresentative"))
+            .dxNumber(get(ocrFields, "dxNumber"))
+            .practitionerAcceptsServiceByEmail(get(ocrFields, "practitionerAcceptsServiceByEmail"))
             .build();
     }
 }
