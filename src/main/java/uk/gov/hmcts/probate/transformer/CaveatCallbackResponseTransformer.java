@@ -82,19 +82,21 @@ public class CaveatCallbackResponseTransformer {
                     .status(paymentResponse.getStatus())
                     .method(PBA_PAYMENT_METHOD)
                     .build();
-                paymentsList.add(new CollectionMember<Payment>(payment));
+                paymentsList.add(new CollectionMember<>(payment));
             }
 
             responseCaveatDataBuilder
                 .payments(paymentsList)
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         } else {
             responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES);
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
-
+        
+        if (null == caveatData.getPaperForm()) {
+            responseCaveatDataBuilder.paperForm(YES); 
+        }
+        
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
@@ -290,7 +292,18 @@ public class CaveatCallbackResponseTransformer {
             .pcqId(caveatData.getPcqId())
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
             .payments(caveatData.getPayments())
-            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy());
+            .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy())
+            .caveatorPhoneNumber(caveatData.getCaveatorPhoneNumber())
+            .probateFee(caveatData.getProbateFee())
+            .probateFeeNotIncludedReason(caveatData.getProbateFeeNotIncludedReason())
+            .helpWithFeesReference(caveatData.getHelpWithFeesReference())
+            .probateFeeNotIncludedExplanation(caveatData.getProbateFeeNotIncludedExplanation())
+            .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
+            .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
+            .bilingualCorrespondenceRequested(caveatData.getBilingualCorrespondenceRequested())
+            .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
+            .dxNumber(caveatData.getDxNumber())
+            .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(

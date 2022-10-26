@@ -1,6 +1,6 @@
 {
   "waitForText" : "Documents uploaded",
-  "documentType": ["Email", "Correspondence", "Warning", "Will", "Codicil", "Other", "Death Certificate"],
+  "documentType": ["Email", "Correspondence", "Warning", "Will", "Codicil", "Other", "Death Certificate", "Caveat Extension"],
   "documentTypeSelected": "Email",
   "fileToUploadUrl":"uploadDocuments/test_file_for_document_upload.png",
   "filename": "test_file_for_document_upload.png",
