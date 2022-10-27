@@ -568,6 +568,7 @@ public class CaseData extends CaseDataParent {
     private final String caseworkerName;
     private final String letterText;
     private final String includeStatementOfTruth;
+    private LocalDate lastEvidenceAddedDate;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

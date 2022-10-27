@@ -14,9 +14,7 @@ import java.util.Map;
 
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_KEY_SOLSWILLTYPE;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_KEY_SOLSWILLTYPEREASON;
-import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KEY_FIRM_NAME;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KEY_IS_APPLYING;
-import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.SOLICTOR_KEY_REPRESENTATIVE_NAME;
 
 @Slf4j
 @Service
@@ -33,17 +31,6 @@ public class NonMandatoryFieldsValidator {
         ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
 
         switch (formType) {
-            case PA8A:
-                if (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_REPRESENTATIVE_NAME))
-                    || (StringUtils.isNotBlank(ocrFieldValues.get(SOLICTOR_KEY_FIRM_NAME)))) {
-                    isSolicitorForm = true;
-                }
-
-                if (isSolicitorForm) {
-                    log.warn("Solictor details have been provided this will be flagged as a solicitor case.");
-                    warnings.add("The form has been flagged as a Solictor case.");
-                }
-                break;
             case PA1A:
             case PA1P:
                 if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
