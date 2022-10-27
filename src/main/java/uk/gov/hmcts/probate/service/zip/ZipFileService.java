@@ -72,7 +72,7 @@ public class ZipFileService {
         log.info("generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
-        try (FileOutputStream fos = new FileOutputStream(tempFile);
+        try (final FileOutputStream fos = new FileOutputStream(tempFile);
             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
                 log.info("Starting for case {}", returnedCaseDetails.getId());
@@ -82,6 +82,9 @@ public class ZipFileService {
             }
             getSmeeAndFordCaseData(zipOut, cases, fromDate);
             generateManifestFile(zipOut, manifestDataList);
+            zipOut.closeEntry();
+            zipOut.close();
+            fos.close();
             blobUpload.uploadFile(tempFile);
         } catch (IOException e) {
             log.error("Exception occurred while generating zip file ", e);
