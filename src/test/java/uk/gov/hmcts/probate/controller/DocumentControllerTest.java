@@ -6,7 +6,6 @@ import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -14,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -34,6 +32,7 @@ import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbac
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
@@ -97,6 +96,9 @@ class DocumentControllerTest {
 
     @MockBean
     private DocumentGeneratorService documentGeneratorService;
+
+    @MockBean
+    private EvidenceUploadService evidenceUploadService;
 
     @MockBean
     private AppInsights appInsights;
@@ -710,6 +712,18 @@ class DocumentControllerTest {
         mockMvc.perform(post("/document/generate-grant").content(payload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"Yes\"")));
+    }
+
+    @Test
+    void shouldUpdateLastEvidenceAddedDate() throws Exception {
+        String payload = testUtils.getStringFromFile("digitalCase.json");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                    .andReturn();
+        verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
     }
 
     private Matcher<String> doesNotContainString(String s) {

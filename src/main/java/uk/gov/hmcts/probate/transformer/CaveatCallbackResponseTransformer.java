@@ -270,6 +270,17 @@ public class CaveatCallbackResponseTransformer {
             .bulkScanEnvelopes(caveatData.getBulkScanEnvelopes())
             .payments(caveatData.getPayments())
             .applicantOrganisationPolicy(caveatData.getApplicantOrganisationPolicy())
+            .caveatorPhoneNumber(caveatData.getCaveatorPhoneNumber())
+            .probateFee(caveatData.getProbateFee())
+            .probateFeeNotIncludedReason(caveatData.getProbateFeeNotIncludedReason())
+            .helpWithFeesReference(caveatData.getHelpWithFeesReference())
+            .probateFeeNotIncludedExplanation(caveatData.getProbateFeeNotIncludedExplanation())
+            .probateFeeAccountNumber(caveatData.getProbateFeeAccountNumber())
+            .probateFeeAccountReference(caveatData.getProbateFeeAccountReference())
+            .bilingualCorrespondenceRequested(caveatData.getBilingualCorrespondenceRequested())
+            .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
+            .dxNumber(caveatData.getDxNumber())
+            .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
             .serviceRequestReference(caveatData.getServiceRequestReference())
             .paymentTaken(caveatData.getPaymentTaken());
     }

@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -107,6 +108,9 @@ public class DocumentController {
     private final DocumentValidation documentValidation;
     @Autowired
     private final DocumentManagementService documentManagementService;
+    @Autowired
+    private final EvidenceUploadService evidenceUploadService;
+
 
     private Function<String, State> grantState = (String caseType) -> {
         if (caseType.equals(INTESTACY.getCaseType())) {
@@ -346,6 +350,13 @@ public class DocumentController {
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
+    }
+
+    @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+        evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
     }
 
     private boolean useHtmlPdfGeneratorForReissue(CaseData cd) {
