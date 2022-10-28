@@ -62,18 +62,12 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
+        responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                                 .serviceRequestReference(serviceRequestReference);
 
-        if (caveatData.getApplicationType() != null) {
-            responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(caveatData.getApplicationType().equals(SOLICITOR) ? NO : YES);
-        } else {
-            responseCaveatDataBuilder
-                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                .paperForm(YES);
+        if (null == caveatData.getPaperForm()) {
+            responseCaveatDataBuilder.paperForm(YES);
         }
-
-        responseCaveatDataBuilder.serviceRequestReference(serviceRequestReference);
         return transformResponse(responseCaveatDataBuilder.build());
     }
 

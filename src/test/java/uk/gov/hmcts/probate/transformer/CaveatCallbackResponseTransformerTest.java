@@ -26,7 +26,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -137,6 +136,8 @@ class CaveatCallbackResponseTransformerTest {
     private static final String CAV_NOT_INCLUDED_EXPLANATION = "helpWithFeesApplying";
     private static final String CAV_FEE_ACCOUNT_NUMBER = "Free Text for fee account number";
     private static final String CAV_FEE_ACCOUNT_REFERENCE = "Free Text for account reference";
+    private static final String CAV_SERVICE_REQUEST_REFERENCE = "Service Request Ref";
+    private static final String CAV_PAYMENT_TAKEN = "Yes";
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -205,7 +206,8 @@ class CaveatCallbackResponseTransformerTest {
             .probateFeeNotIncludedReason(CAV_PROBATE_FEE_NOT_INCLUDED_REASON)
             .probateFeeNotIncludedExplanation(CAV_NOT_INCLUDED_EXPLANATION)
             .probateFeeAccountNumber(CAV_FEE_ACCOUNT_NUMBER)
-            .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE);
+            .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE)
+            .paymentTaken(CAV_PAYMENT_TAKEN);
 
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
@@ -258,7 +260,7 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithPayment() {
+    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithServiceRequest() {
         setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -266,55 +268,20 @@ class CaveatCallbackResponseTransformerTest {
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
         documents.add(0, document);
-        when(paymentResponseMock.getReference()).thenReturn("ref");
         caveatDataBuilder.applicationType(SOLICITOR);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         String letterId = "123-456";
 
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, CAV_SERVICE_REQUEST_REFERENCE);
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
         assertPaperForm(caveatCallbackResponse, YES);
 
-        assertEquals("pba",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
-    }
-
-    @Test
-    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithMultiplePayments() {
-        setupMocks();
-        List<Document> documents = new ArrayList<>();
-        Document document = Document.builder()
-            .documentLink(documentLinkMock)
-            .documentType(DocumentType.CAVEAT_RAISED)
-            .build();
-        documents.add(0, document);
-        when(paymentResponseMock.getReference()).thenReturn("RC2");
-        List<CollectionMember<Payment>> payments = new ArrayList<>();
-        Payment payment = Payment.builder().reference("RC1").method("something").build();
-        payments.add(new CollectionMember<Payment>(payment));
-        caveatDataBuilder.applicationType(SOLICITOR);
-        caveatDataBuilder.payments(payments);
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
-        String letterId = "123-456";
-
-        CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
-
-        assertCommonDetails(caveatCallbackResponse);
-        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, YES);
-
-        assertEquals("RC1",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getReference());
-        assertEquals("something",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
-        assertEquals("RC2",
-            caveatCallbackResponse.getCaveatData().getPayments().get(1).getValue().getReference());
-        assertEquals("pba",
-            caveatCallbackResponse.getCaveatData().getPayments().get(1).getValue().getMethod());
+        assertEquals(CAV_SERVICE_REQUEST_REFERENCE,
+            caveatCallbackResponse.getCaveatData().getServiceRequestReference());
+        assertEquals(CAV_PAYMENT_TAKEN, caveatCallbackResponse.getCaveatData().getPaymentTaken());
     }
 
     @Test

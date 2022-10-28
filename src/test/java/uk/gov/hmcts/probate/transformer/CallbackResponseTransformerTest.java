@@ -395,6 +395,7 @@ class CallbackResponseTransformerTest {
     public static final String DAMAGE_CULPRIT_FN = "Damage Culprit FN";
     public static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
     public static final String DAMAGE_DATE = "9/2021";
+    private static final String SERVICE_REQUEST_REFEREMCE = "Service Request Ref";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -904,19 +905,12 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndExistingPayments() {
-        List<CollectionMember<Payment>> payments = new ArrayList<>();
-        Payment payment = Payment.builder().reference("RC1").method("something").status("Other").build();
-        payments.add(new CollectionMember<Payment>(payment));
+    void shouldConvertRequestToDataBeanForPaymentWithServiceRequest() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
-            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
-            .payments(payments)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
-        when(paymentResponseMock.getReference()).thenReturn("RC-1234");
-        when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                null, coversheetMock);
+                SERVICE_REQUEST_REFEREMCE, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -927,13 +921,7 @@ class CallbackResponseTransformerTest {
 
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
-        assertEquals(FEE_ACCT_NUMBER, callbackResponse.getData().getSolsFeeAccountNumber());
-        assertEquals("RC1", callbackResponse.getData().getPayments().get(0).getValue().getReference());
-        assertEquals("Other", callbackResponse.getData().getPayments().get(0).getValue().getStatus());
-        assertEquals("something", callbackResponse.getData().getPayments().get(0).getValue().getMethod());
-        assertEquals("RC-1234", callbackResponse.getData().getPayments().get(1).getValue().getReference());
-        assertEquals("Success", callbackResponse.getData().getPayments().get(1).getValue().getStatus());
-        assertEquals("pba", callbackResponse.getData().getPayments().get(1).getValue().getMethod());
+        assertEquals(SERVICE_REQUEST_REFEREMCE, callbackResponse.getData().getServiceRequestReference());
     }
 
     @Test

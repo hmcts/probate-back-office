@@ -206,7 +206,7 @@ class NextStepsUnitTest {
     }
 
     @Test
-    void shouldValidateWithPaymentChequeError() {
+    void shouldValidateWithServiceRequestAlreadyCreatedError() {
         assertThrows(BusinessValidationException.class, () -> {
             when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
             when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
@@ -214,7 +214,7 @@ class NextStepsUnitTest {
             when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
             when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
 
-            doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRule)
+            doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
                     .validate(caseDetailsMock);
 
             underTest.validate(AUTH, callbackRequestMock,
