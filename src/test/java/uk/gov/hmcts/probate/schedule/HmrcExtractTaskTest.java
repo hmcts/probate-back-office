@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.schedule;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,7 +7,6 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -35,11 +33,6 @@ class HmrcExtractTaskTest {
     private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
     private String adhocToDate = "2022-09-10";
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        ReflectionTestUtils.setField(hmrcExtractTask, "hmrcExtractMinusDays", 1);
-    }
 
     @Test
     void shouldReactivateDormantCasesDateRange() {

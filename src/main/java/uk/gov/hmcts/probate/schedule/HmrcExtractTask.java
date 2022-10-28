@@ -21,8 +21,6 @@ public class HmrcExtractTask implements Runnable {
     private final DataExtractDateValidator dataExtractDateValidator;
     private final HmrcDataExtractService hmrcDataExtractService;
 
-    @Value("${hmrc_extract.minus_days}")
-    private int hmrcExtractMinusDays;
     @Value("${adhocSchedulerJobDate}")
     public String adHocJobFromDate;
     @Value("${adhocSchedulerJobToDate}")
@@ -32,7 +30,7 @@ public class HmrcExtractTask implements Runnable {
     @Override
     public void run() {
         log.info("Scheduled task HmrcExtractTask started to extract data for Hmrc");
-        String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(hmrcExtractMinusDays));
+        String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
         toDate = fromDate;
         if (StringUtils.isNotEmpty(adHocJobFromDate)) {
             fromDate = adHocJobFromDate;
