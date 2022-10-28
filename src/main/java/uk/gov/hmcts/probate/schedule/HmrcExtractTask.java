@@ -25,13 +25,12 @@ public class HmrcExtractTask implements Runnable {
     public String adHocJobFromDate;
     @Value("${adhocSchedulerJobToDate}")
     public String adHocJobToDate;
-    private String toDate;
 
     @Override
     public void run() {
         log.info("Scheduled task HmrcExtractTask started to extract data for Hmrc");
         String fromDate = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
-        toDate = fromDate;
+        String toDate = fromDate;
         if (StringUtils.isNotEmpty(adHocJobFromDate)) {
             fromDate = adHocJobFromDate;
             toDate = StringUtils.isNotEmpty(adHocJobToDate) ? adHocJobToDate : adHocJobFromDate;
