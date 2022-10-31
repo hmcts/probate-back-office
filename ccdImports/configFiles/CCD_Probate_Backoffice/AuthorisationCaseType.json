@@ -1,15 +1,15 @@
 [
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "citizen", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-charity", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-caa", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-issuer", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-solicitor", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-systemupdate", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-scheduler", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "citizen", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseadmin", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-registrar", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-superuser", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "D"},
+  {"CaseTypeID": "GrantOfRepresentation", "UserRole": "caseworker-probate-charity", "CRUD": "D"}
 ]
