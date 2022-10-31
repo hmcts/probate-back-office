@@ -3,7 +3,7 @@ buildscript {
     springBootVersion = '2.6.10'
   }
   repositories {
-    jcenter()
+    gradlePluginPortal()
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
