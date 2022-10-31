@@ -22,11 +22,7 @@ Payment summary
 
 **Fee amount** &pound;{{paymentAmount}}
 
-**Payment method** {{paymentMethod}}
-
-**Selected PBA account** {{selectedPBA}}
-
-**Customer reference** {{paymentReferenceNumber}}
+**Customer application reference** {{paymentReferenceNumber}}
 
 Notes for this application
 -------------------------------------------------
@@ -35,6 +31,11 @@ Notes for this application
 
 What you need to do now
 ==================================================
+**You must complete payment next**
+
+Go to the Service Request tab on you case details
+
+Complete the payment process
 
 Print a copy of this page for your records.
 

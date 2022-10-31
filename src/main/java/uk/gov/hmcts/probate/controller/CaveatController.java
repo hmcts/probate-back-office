@@ -26,7 +26,6 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
-import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
@@ -35,9 +34,7 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.List;
@@ -62,9 +59,6 @@ public class CaveatController {
     private final ConfirmationResponseService confirmationResponseService;
     private final PaymentsService paymentsService;
     private final FeeService feeService;
-    private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
-    private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
-    private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")

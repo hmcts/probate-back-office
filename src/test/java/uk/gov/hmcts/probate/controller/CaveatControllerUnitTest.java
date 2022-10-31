@@ -12,8 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
-import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
-import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
@@ -28,16 +27,13 @@ import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
@@ -71,6 +67,7 @@ class CaveatControllerUnitTest {
     private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
 
     private static final String AUTH = "Auth";
+    private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
 
     @Mock
     private CaveatCallbackRequest caveatCallbackRequest;
@@ -83,15 +80,11 @@ class CaveatControllerUnitTest {
     @Mock
     private BindingResult bindingResultMock;
     @Mock
-    private CreditAccountPayment creditAccountPaymentMock;
-    @Mock
-    private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRuleMock;
-    @Mock
-    private PaymentResponse paymentResponseMock;
-    @Mock
     private ServiceRequestTransformer serviceRequestTransformer;
     @Mock
     private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
+    @Mock
+    private ServiceRequestDto serviceRequestDtoMock;
 
     @BeforeEach
     public void setUp() {
@@ -100,8 +93,7 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
             caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            creditAccountPaymentTransformer, creditAccountPaymentValidationRule,
-            solicitorPaymentMethodValidationRuleMock, serviceRequestAlreadyCreatedValidationRuleMock);
+            serviceRequestAlreadyCreatedValidationRuleMock);
 
     }
 
@@ -109,13 +101,11 @@ class CaveatControllerUnitTest {
     void shouldValidateWithNoErrors() throws NotificationClientException {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
-            .thenReturn(creditAccountPaymentMock);
-        when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
-            .thenReturn(paymentResponseMock);
-        when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
-            .thenReturn(caveatCallbackResponse);
-        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, null))
+        when(serviceRequestTransformer.buildServiceRequest(caveatDetailsMock, feeResponseMock))
+                .thenReturn(serviceRequestDtoMock);
+        when(paymentsService.createServiceRequest(serviceRequestDtoMock))
+            .thenReturn(SERVICE_REQUEST_REFERENCE);
+        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, SERVICE_REQUEST_REFERENCE))
             .thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
             bindingResultMock);
@@ -125,32 +115,13 @@ class CaveatControllerUnitTest {
     }
 
     @Test
-    void shouldValidateWithPaymentMethodErrors() throws NotificationClientException {
+    void shouldValidateWithServiceRequestAlreadyCreatedErrors() throws NotificationClientException {
         assertThrows(BusinessValidationException.class, () -> {
             when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-            doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRuleMock)
+            doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
                     .validate(caveatDetailsMock);
             underTest.validate(AUTH, caveatCallbackRequest, bindingResultMock);
         });
-    }
-
-    @Test
-    void shouldValidateWithPaymentErrors() throws NotificationClientException {
-        when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
-        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
-            .thenReturn(creditAccountPaymentMock);
-        when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
-            .thenReturn(paymentResponseMock);
-        when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
-            .thenReturn(caveatCallbackResponse);
-        when(caveatCallbackResponse.getErrors()).thenReturn(Arrays.asList("Error"));
-        ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(caveatCallbackResponse));
-        assertThat(response.getBody().getErrors().size(), is(1));
     }
 
     @Test
