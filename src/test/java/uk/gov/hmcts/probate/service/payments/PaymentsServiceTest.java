@@ -54,8 +54,9 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.WILL_LODGEMENT;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -344,11 +345,11 @@ class PaymentsServiceTest {
                 .serviceRequestReference("2020-1599477846961")
                 .ccdCaseNumber("1661448513999408")
                 .serviceRequesAmount(BigDecimal.valueOf(50.00))
-                .serviceRequestStatus("Paid")
+                .serviceRequestStatus(paymentStatus)
                 .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
                         .paymentAmount(BigDecimal.valueOf(50.00))
                         .paymentReference("RC-1234")
-                        .paymentMethod("Payment by account")
+                        .paymentMethod(paymentMethod)
                         .caseReference("example of case ref")
                         .accountNumber("PBA123")
                         .build())
@@ -372,6 +373,46 @@ class PaymentsServiceTest {
         paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
         verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+    }
+
+    @Test
+    void shouldThrowExceptionForUpdateCaseFromServiceRequest() {
+        final ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
+                .serviceRequestReference("2020-1599477846961")
+                .ccdCaseNumber("1661448513999408")
+                .serviceRequesAmount(BigDecimal.valueOf(50.00))
+                .serviceRequestStatus("Paid")
+                .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
+                        .paymentAmount(BigDecimal.valueOf(50.00))
+                        .paymentReference("RC-1234")
+                        .paymentMethod("Payment by account")
+                        .caseReference("example of case ref")
+                        .accountNumber("PBA123")
+                        .build())
+                .build();
+        when(securityUtilsMock.getSecurityDTO()).thenReturn(SecurityDTO.builder().build());
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(new TokenResponse(USER_TOKEN, "360000", USER_TOKEN, null, null, null));
+        when(securityUtilsMock.getCaseworkerToken()).thenReturn("AUTH");
+        when(securityUtilsMock.generateServiceToken()).thenReturn("S2S");
+        HashMap<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", "Value");
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
+        when(idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
+                paymentsService.updateCaseFromServiceRequest(responseDto, WILL_LODGEMENT));
+
+        assertEquals("Service request payment for Case:1661448513999408 not valid CaseType:WILL_LODGEMENT",
+                exception.getMessage());
+        verify(ccdClientApi, times(0))
                 .updateCaseAsCaseworker(any(), any(), any(),
                         any(), any(), any(), any());
     }
