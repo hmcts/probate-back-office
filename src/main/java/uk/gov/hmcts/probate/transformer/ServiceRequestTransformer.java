@@ -68,7 +68,7 @@ public class ServiceRequestTransformer {
     }
 
     private List<PaymentFee> buildFees(FeesResponse feesResponse, Long extraCopies,
-                                       Long outseideUKGrantCopies) {
+                                       Long outsideUKGrantCopies) {
         ArrayList<PaymentFee> paymentFees = new ArrayList<>();
         PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(),
                 BigDecimal.ONE);
@@ -79,10 +79,10 @@ public class ServiceRequestTransformer {
                     BigDecimal.valueOf(extraCopies));
             paymentFees.add(ukCopiesFee);
         }
-        if (outseideUKGrantCopies != null && outseideUKGrantCopies > 0) {
+        if (outsideUKGrantCopies != null && outsideUKGrantCopies > 0) {
             PaymentFee overseasCopiesFee =
                     paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
-                            BigDecimal.valueOf(outseideUKGrantCopies));
+                            BigDecimal.valueOf(outsideUKGrantCopies));
             paymentFees.add(overseasCopiesFee);
         }
 

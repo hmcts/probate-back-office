@@ -2,7 +2,11 @@ package uk.gov.hmcts.probate.service.payments;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -17,19 +21,31 @@ import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestPaymentResponseDto;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
+import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.util.Locale.UK;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.params.provider.Arguments.arguments;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,6 +54,8 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -71,8 +89,18 @@ class PaymentsServiceTest {
     private ServiceRequestClient serviceRequestClientMock;
     @Mock
     private CasePaymentBuilder casePaymentBuilderMock;
+    @MockBean
+    private CcdClientApi ccdClientApi;
+    @MockBean
+    private IdamApi idamApi;
 
-
+    private static final String USER_TOKEN = "1312jdhdh";
+    private static final String CASEWORKER_PASSWORD = "caseworkerPassword";
+    private static final String CASEWORKER_USER_NAME = "caseworkerUserName";
+    private static final String AUTH_CLIENT_SECRET = "authClientSecret";
+    private static final String AUTH_CLIENT_ID = "authClientId";
+    private static final String REDIRECT = "http://redirect";
+    private static final String BEARER = "Bearer ";
     private static final String AUTH_TOKEN = "Bearer .AUTH";
 
     @Test
@@ -260,5 +288,91 @@ class PaymentsServiceTest {
         String request = paymentsService.createServiceRequest(serviceDto);
 
         assertEquals("abcdef123456", request);
+    }
+
+    private static Stream<Arguments> paymentMethodAndStatus() {
+        return Stream.of(arguments("Payment by account", "Paid"),
+                arguments("Payment by account", "Not Paid"),
+                arguments("Payment by account", "Partially paid"),
+                arguments("card", "Paid"),
+                arguments("card", "Not Paid"),
+                arguments("card", "Partially paid"));
+    }
+
+    @ParameterizedTest
+    @MethodSource("paymentMethodAndStatus")
+    void shouldUpdateCaseFromServiceRequestForGop(final String paymentMethod, final String paymentStatus) {
+        final ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
+                .serviceRequestReference("2020-1599477846961")
+                .ccdCaseNumber("1661448513999408")
+                .serviceRequesAmount(BigDecimal.valueOf(50.00))
+                .serviceRequestStatus(paymentStatus)
+                .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
+                        .paymentAmount(BigDecimal.valueOf(50.00))
+                        .paymentReference("RC-1234")
+                        .paymentMethod(paymentMethod)
+                        .caseReference("example of case ref")
+                        .accountNumber("PBA123")
+                        .build())
+                .build();
+        when(securityUtilsMock.getSecurityDTO()).thenReturn(SecurityDTO.builder().build());
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(new TokenResponse(USER_TOKEN, "360000", USER_TOKEN, null, null, null));
+        when(securityUtilsMock.getCaseworkerToken()).thenReturn("AUTH");
+        when(securityUtilsMock.generateServiceToken()).thenReturn("S2S");
+        HashMap<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", "Value");
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
+        when(idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
+
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
+    }
+
+    @ParameterizedTest
+    @MethodSource("paymentMethodAndStatus")
+    void shouldUpdateCaseFromServiceRequestForCaveat(final String paymentMethod, final String paymentStatus) {
+        final ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
+                .serviceRequestReference("2020-1599477846961")
+                .ccdCaseNumber("1661448513999408")
+                .serviceRequesAmount(BigDecimal.valueOf(50.00))
+                .serviceRequestStatus("Paid")
+                .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
+                        .paymentAmount(BigDecimal.valueOf(50.00))
+                        .paymentReference("RC-1234")
+                        .paymentMethod("Payment by account")
+                        .caseReference("example of case ref")
+                        .accountNumber("PBA123")
+                        .build())
+                .build();
+        when(securityUtilsMock.getSecurityDTO()).thenReturn(SecurityDTO.builder().build());
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(new TokenResponse(USER_TOKEN, "360000", USER_TOKEN, null, null,
+                        null));
+        when(securityUtilsMock.getCaseworkerToken()).thenReturn("AUTH");
+        when(securityUtilsMock.generateServiceToken()).thenReturn("S2S");
+        HashMap<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", "Value");
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
+        when(idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
+                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
+        Map caseData = Mockito.mock(Map.class);
+        when(caseDetails.getData()).thenReturn(caseData);
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+
+        paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
+
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
     }
 }
