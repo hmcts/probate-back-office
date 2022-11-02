@@ -377,17 +377,19 @@ class PaymentsServiceTest {
                         any(), any(), any(), any());
     }
 
-    @Test
-    void shouldThrowExceptionForUpdateCaseFromServiceRequestInvalidCaseType() {
+    @ParameterizedTest
+    @MethodSource("serviceRequestStatusAndPaymentMethodAndExceptionMessage")
+    void shouldThrowExceptionForUpdateCaseFromServiceRequestInvalidCaseType(String status,
+                                                                        String paymentMethod, String message) {
         final ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
                 .serviceRequestReference("2020-1599477846961")
                 .ccdCaseNumber("1661448513999408")
                 .serviceRequesAmount(BigDecimal.valueOf(50.00))
-                .serviceRequestStatus("Paid")
+                .serviceRequestStatus(status)
                 .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
                         .paymentAmount(BigDecimal.valueOf(50.00))
                         .paymentReference("RC-1234")
-                        .paymentMethod("Payment by account")
+                        .paymentMethod(paymentMethod)
                         .caseReference("example of case ref")
                         .accountNumber("PBA123")
                         .build())
@@ -410,90 +412,16 @@ class PaymentsServiceTest {
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
                 paymentsService.updateCaseFromServiceRequest(responseDto, WILL_LODGEMENT));
 
-        assertEquals("Service request payment for Case:1661448513999408 not valid CaseType:WILL_LODGEMENT",
-                exception.getMessage());
+        assertEquals(message, exception.getMessage());
         verify(ccdClientApi, times(0))
                 .updateCaseAsCaseworker(any(), any(), any(),
                         any(), any(), any(), any());
     }
 
-    @Test
-    void shouldThrowExceptionForUpdateCaseFromServiceRequestInvalidCaseTypePaymentMethod() {
-        final ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
-                .serviceRequestReference("2020-1599477846961")
-                .ccdCaseNumber("1661448513999408")
-                .serviceRequesAmount(BigDecimal.valueOf(50.00))
-                .serviceRequestStatus("Paid")
-                .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
-                        .paymentAmount(BigDecimal.valueOf(50.00))
-                        .paymentReference("RC-1234")
-                        .paymentMethod("Cheque")
-                        .caseReference("example of case ref")
-                        .accountNumber("PBA123")
-                        .build())
-                .build();
-        when(securityUtilsMock.getSecurityDTO()).thenReturn(SecurityDTO.builder().build());
-        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
-                .thenReturn(new TokenResponse(USER_TOKEN, "360000", USER_TOKEN, null, null, null));
-        when(securityUtilsMock.getCaseworkerToken()).thenReturn("AUTH");
-        when(securityUtilsMock.generateServiceToken()).thenReturn("S2S");
-        HashMap<String, Object> stringObjectMap = new HashMap<>();
-        stringObjectMap.put("id", "Value");
-        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
-        when(idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
-        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
-                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
-        Map caseData = Mockito.mock(Map.class);
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                paymentsService.updateCaseFromServiceRequest(responseDto, WILL_LODGEMENT));
-
-        assertEquals("Service request payment method for Case:1661448513999408 not valid",
-                exception.getMessage());
-        verify(ccdClientApi, times(0))
-                .updateCaseAsCaseworker(any(), any(), any(),
-                        any(), any(), any(), any());
-    }
-
-    @Test
-    void shouldThrowExceptionForUpdateCaseFromServiceRequestInvalidServiceRequestStatus() {
-        final ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
-                .serviceRequestReference("2020-1599477846961")
-                .ccdCaseNumber("1661448513999408")
-                .serviceRequesAmount(BigDecimal.valueOf(50.00))
-                .serviceRequestStatus(null)
-                .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
-                        .paymentAmount(BigDecimal.valueOf(50.00))
-                        .paymentReference("RC-1234")
-                        .paymentMethod("Payment by account")
-                        .caseReference("example of case ref")
-                        .accountNumber("PBA123")
-                        .build())
-                .build();
-        when(securityUtilsMock.getSecurityDTO()).thenReturn(SecurityDTO.builder().build());
-        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
-                .thenReturn(new TokenResponse(USER_TOKEN, "360000", USER_TOKEN, null, null, null));
-        when(securityUtilsMock.getCaseworkerToken()).thenReturn("AUTH");
-        when(securityUtilsMock.generateServiceToken()).thenReturn("S2S");
-        HashMap<String, Object> stringObjectMap = new HashMap<>();
-        stringObjectMap.put("id", "Value");
-        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
-        when(idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
-        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails =
-                Mockito.mock(uk.gov.hmcts.reform.ccd.client.model.CaseDetails.class);
-        Map caseData = Mockito.mock(Map.class);
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
-
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () ->
-                paymentsService.updateCaseFromServiceRequest(responseDto, WILL_LODGEMENT));
-
-        assertEquals("serviceRequestStatus not a valid value",
-                exception.getMessage());
-        verify(ccdClientApi, times(0))
-                .updateCaseAsCaseworker(any(), any(), any(),
-                        any(), any(), any(), any());
+    private static Stream<Arguments> serviceRequestStatusAndPaymentMethodAndExceptionMessage() {
+        return Stream.of(arguments("Paid", "Payment by account",
+                        "Service request payment for Case:1661448513999408 not valid CaseType:WILL_LODGEMENT"),
+                arguments("Paid", "Cheque", "Service request payment method for Case:1661448513999408 not valid"),
+                arguments(null, "Payment by account", "serviceRequestStatus not a valid value"));
     }
 }
