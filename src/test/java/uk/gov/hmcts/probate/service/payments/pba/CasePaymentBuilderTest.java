@@ -89,12 +89,9 @@ class CasePaymentBuilderTest {
         caseDataMap.put("payments", paymentsList);
 
         when(caseDetails.getData()).thenReturn(caseDataMap);
-        RuntimeException exception = assertThrows(RuntimeException.class, () -> {
+        assertThrows(RuntimeException.class, () -> {
             casePaymentBuilder.buildCurrentPayments(caseDetails);
         });
-
-        assertEquals("Unparseable date: \"02/11-2022\"",
-                exception.getMessage());
     }
 
     @Test
