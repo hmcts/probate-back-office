@@ -350,14 +350,6 @@ class CcdClientApiTest {
                 eventId,
                 securityDTO);
 
-
-        verify(ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
-                "1",
-                grantOfRepresentationData,
-                eventId,
-                securityDTO,
-                CcdClientApi.PROBATE_APPLICATION,
-                CcdClientApi.PROBATE_APPLICATION));
         assertThat(actualCaseDetails, equalTo(caseDetails));
     }
 }
