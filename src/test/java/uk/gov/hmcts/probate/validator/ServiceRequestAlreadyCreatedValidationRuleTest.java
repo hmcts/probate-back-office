@@ -89,7 +89,7 @@ class ServiceRequestAlreadyCreatedValidationRuleTest {
 
     @ParameterizedTest
     @MethodSource("data")
-    public void shouldNotThrowExceptionForNoRefAndNoStatus(final String reference, final String status) {
+    void shouldNotThrowExceptionForNoRefAndNoStatus(final String reference, final String status) {
         CaseDetails caseDetails1 = new CaseDetails(CaseData.builder()
                 .serviceRequestReference(reference)
                 .payments(Arrays.asList(
@@ -118,7 +118,7 @@ class ServiceRequestAlreadyCreatedValidationRuleTest {
 
     @ParameterizedTest
     @MethodSource("data")
-    public void shouldNotThrowExceptionForNoRefAndNoStatusCaveat(final String reference, final String status) {
+    void shouldNotThrowExceptionForNoRefAndNoStatusCaveat(final String reference, final String status) {
         CaveatDetails caseDetails1 = new CaveatDetails(CaveatData.builder()
                 .serviceRequestReference(reference)
                 .payments(Arrays.asList(

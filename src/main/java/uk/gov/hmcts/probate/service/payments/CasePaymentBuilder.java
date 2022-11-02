@@ -54,7 +54,7 @@ public class CasePaymentBuilder {
                     .amount(Long.valueOf(cpHM.get(KEY_PAYMENT_AMOUNT).toString()))
                     .build();
 
-            CollectionMember<CasePayment> collectionMember = new CollectionMember(pay.get(KEY_COLLECTION_ID)
+            CollectionMember<CasePayment> collectionMember = new CollectionMember<>(pay.get(KEY_COLLECTION_ID)
                     .toString(), casePayment);
             allPayments.add(collectionMember);
 
@@ -71,7 +71,8 @@ public class CasePaymentBuilder {
         try {
             return dateFormatter.parse(dateString);
         } catch (ParseException e) {
-            throw new RuntimeException(e.getMessage());
+            e.getMessage();
+            return null;
         }
     }
 

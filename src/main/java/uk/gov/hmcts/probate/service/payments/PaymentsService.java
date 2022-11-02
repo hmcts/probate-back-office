@@ -254,13 +254,4 @@ public class PaymentsService {
         return new HttpEntity<>(creditAccountPayment, headers);
     }
 
-    private HttpEntity<ServiceRequestDto> buildRequest(String authToken, ServiceRequestDto serviceRequestDto) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", authToken);
-        headers.add("Content-Type", "application/json");
-        String sa = authTokenGenerator.generate();
-        headers.add("ServiceAuthorization", sa);
-
-        return new HttpEntity<ServiceRequestDto>(serviceRequestDto, headers);
-    }
 }

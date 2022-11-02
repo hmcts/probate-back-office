@@ -255,4 +255,109 @@ class CcdClientApiTest {
 
         assertThat(actualCaseDetails, equalTo(caseDetails));
     }
+
+    @Test
+    void updateCaseAsCaseworker() {
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+
+        CaseDetails caseDetails = Mockito.mock(CaseDetails.class);
+        StartEventResponse startEventResponse = StartEventResponse.builder().build();
+        EventId eventId = EventId.SERVICE_REQUEST_PAYMENT_UPDATE;
+
+        when(coreCaseDataApi.startEventForCaseWorker(
+                eq(AUTHORISATION),
+                eq(SERVICE_AUTHORISATION),
+                eq(USER_ID),
+                eq(JurisdictionId.PROBATE.name()),
+                eq(ccdCaseType.getName()),
+                any(),
+                any())).thenReturn(startEventResponse);
+
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                .build();
+
+        when(coreCaseDataApi.submitEventForCaseWorker(
+                eq(AUTHORISATION),
+                eq(SERVICE_AUTHORISATION),
+                eq(USER_ID),
+                eq(JurisdictionId.PROBATE.name()),
+                eq(ccdCaseType.getName()),
+                eq("1"),
+                eq(false),
+                any(CaseDataContent.class))).thenReturn(caseDetails);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+
+
+        CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCaseworker(
+                CcdCaseType.GRANT_OF_REPRESENTATION,
+                "1",
+                grantOfRepresentationData,
+                eventId,
+                securityDTO,
+                "Description",
+                "Summary");
+
+        assertThat(actualCaseDetails, equalTo(caseDetails));
+    }
+
+
+    @Test
+    void updateCaseAsCaseworkerGeneric() {
+        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
+
+        CaseDetails caseDetails = Mockito.mock(CaseDetails.class);
+        StartEventResponse startEventResponse = StartEventResponse.builder().build();
+        EventId eventId = EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT;
+
+        when(coreCaseDataApi.startEventForCaseWorker(
+                eq(AUTHORISATION),
+                eq(SERVICE_AUTHORISATION),
+                eq(USER_ID),
+                eq(JurisdictionId.PROBATE.name()),
+                eq(ccdCaseType.getName()),
+                any(),
+                any())).thenReturn(startEventResponse);
+
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                .build();
+
+        when(coreCaseDataApi.submitEventForCaseWorker(
+                eq(AUTHORISATION),
+                eq(SERVICE_AUTHORISATION),
+                eq(USER_ID),
+                eq(JurisdictionId.PROBATE.name()),
+                eq(ccdCaseType.getName()),
+                eq("1"),
+                eq(false),
+                any(CaseDataContent.class))).thenReturn(caseDetails);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+
+
+        CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCaseworker(
+                CcdCaseType.GRANT_OF_REPRESENTATION,
+                "1",
+                grantOfRepresentationData,
+                eventId,
+                securityDTO);
+
+
+        verify(ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
+                "1",
+                grantOfRepresentationData,
+                eventId,
+                securityDTO,
+                CcdClientApi.PROBATE_APPLICATION,
+                CcdClientApi.PROBATE_APPLICATION));
+        assertThat(actualCaseDetails, equalTo(caseDetails));
+    }
 }
