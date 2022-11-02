@@ -10,7 +10,7 @@ Scenario(scenarioName, async function ({I}) {
 
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
-    //  await I.logInfo(scenarioName, 'Login as PP user 1');
+    // await I.logInfo(scenarioName, 'Login as PP user 1');
     // await I.logInfo(scenarioName, 'Create and share a case with PP user 2');
     await I.authenticateUserShareCase(true);
     const nextStepName = 'Deceased details';
