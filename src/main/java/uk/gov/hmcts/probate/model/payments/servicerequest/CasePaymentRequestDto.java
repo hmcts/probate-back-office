@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class CasePayentRequestDto {
+public class CasePaymentRequestDto {
     @JsonProperty(value = "action")
     private String action;
     @JsonProperty(value = "responsible_party")

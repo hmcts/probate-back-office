@@ -16,12 +16,18 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentFee;
+import uk.gov.hmcts.probate.model.payments.servicerequest.CasePaymentRequestDto;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.service.payments.PaymentFeeBuilder;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
+import static org.mockito.Mockito.when;
 
 class ServiceRequestTransformerTest {
     @InjectMocks
@@ -33,6 +39,7 @@ class ServiceRequestTransformerTest {
     private CaseDetails caseDetails;
     private CaveatDetails caveatDetails;
     private FeesResponse feesResponse;
+    private FeeResponse feeResponse;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
 
@@ -66,10 +73,19 @@ class ServiceRequestTransformerTest {
                 .solsSOTSurname("Smith")
                 .extraCopiesOfGrant(extraCopies)
                 .outsideUKGrantCopies(outsideUkCopies)
+                .solsPBAPaymentReference("SOL-PBA-12345")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
+        CasePaymentRequestDto casePayentRequestDto = CasePaymentRequestDto.builder()
+                .responsibleParty("Joe Smith").action("payment attempt created").build();
+        List<PaymentFee> paymentFees = buildFees(caseDetails.getData(), feesResponse);
+        ServiceRequestDto serviceRequestDto = serviceRequestTransformer.buildServiceRequest(caseDetails, feesResponse);
 
-        serviceRequestTransformer.buildServiceRequest(caseDetails, feesResponse);
+        assertEquals(casePayentRequestDto, serviceRequestDto.getCasePaymentRequest());
+        assertEquals(paymentFees, serviceRequestDto.getFees());
+        assertEquals("/payment/gor-payment-request-update", serviceRequestDto.getCallbackUrl());
+        assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
+        assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
     }
 
     @Test
@@ -78,12 +94,45 @@ class ServiceRequestTransformerTest {
                 .applicationType(ApplicationType.SOLICITOR)
                 .caveatorForenames("Joe")
                 .caveatorSurname("Smith")
+                .solsPBAPaymentReference("SOL-PBA-12345")
                 .build(),
                 LAST_MODIFIED, CASE_ID);
-        feesResponse = FeesResponse.builder()
-                .applicationFeeResponse(FeeResponse.builder().feeAmount(BigDecimal.valueOf(215)).code("appCode")
-                        .description("appDesc").build()).build();
+        when(paymentFeeBuilder.buildPaymentFee(feeResponse, BigDecimal.ONE)).thenReturn(paymentFeeApplication);
+        CasePaymentRequestDto casePaymentRequestDto = CasePaymentRequestDto.builder()
+                .responsibleParty("Joe Smith").action("payment attempt created").build();
+        List<PaymentFee> fees = new ArrayList<>();
+        fees.add(paymentFeeApplication);
+        ServiceRequestDto serviceRequestDto = serviceRequestTransformer.buildServiceRequest(caveatDetails, feeResponse);
+        assertEquals(fees, serviceRequestDto.getFees());
+        assertEquals(casePaymentRequestDto, serviceRequestDto.getCasePaymentRequest());
+        assertEquals("/payment/caveat-payment-request-update", serviceRequestDto.getCallbackUrl());
+        assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
+        assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
+    }
 
-        serviceRequestTransformer.buildServiceRequest(caveatDetails, feesResponse.getApplicationFeeResponse());
+    protected List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
+        return buildFees(feesResponse, caseData.getExtraCopiesOfGrant(), caseData.getOutsideUKGrantCopies());
+    }
+
+    protected List<PaymentFee> buildFees(FeesResponse feesResponse, Long extraCopies,
+                                       Long outsideUKGrantCopies) {
+        ArrayList<PaymentFee> paymentFees = new ArrayList<>();
+        PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(),
+                BigDecimal.ONE);
+        paymentFees.add(applicationFee);
+
+        if (extraCopies != null && extraCopies > 0) {
+            PaymentFee ukCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getUkCopiesFeeResponse(),
+                    BigDecimal.valueOf(extraCopies));
+            paymentFees.add(ukCopiesFee);
+        }
+        if (outsideUKGrantCopies != null && outsideUKGrantCopies > 0) {
+            PaymentFee overseasCopiesFee =
+                    paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
+                            BigDecimal.valueOf(outsideUKGrantCopies));
+            paymentFees.add(overseasCopiesFee);
+        }
+
+        return paymentFees;
     }
 }

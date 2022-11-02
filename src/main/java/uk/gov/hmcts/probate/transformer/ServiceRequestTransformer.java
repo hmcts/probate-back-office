@@ -9,7 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentFee;
-import uk.gov.hmcts.probate.model.payments.servicerequest.CasePayentRequestDto;
+import uk.gov.hmcts.probate.model.payments.servicerequest.CasePaymentRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.service.payments.PaymentFeeBuilder;
 
@@ -31,12 +31,12 @@ public class ServiceRequestTransformer {
     public ServiceRequestDto buildServiceRequest(CaseDetails caseDetails, FeesResponse feesResponse) {
         String party = caseDetails.getData().getSolsSOTForenames() + " "
                 + caseDetails.getData().getSolsSOTSurname();
-        CasePayentRequestDto casePayentRequestDto = CasePayentRequestDto.builder()
+        CasePaymentRequestDto casePaymentRequestDto = CasePaymentRequestDto.builder()
                 .responsibleParty(party).action(ACTION).build();
         List<PaymentFee> fees = buildFees(caseDetails.getData(), feesResponse);
         return ServiceRequestDto.builder()
                 .callbackUrl(GRANT_OF_REPRESENTATION_CALLBACK)
-                .casePaymentRequest(casePayentRequestDto)
+                .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
                 .fees(fees)
@@ -47,7 +47,7 @@ public class ServiceRequestTransformer {
     public ServiceRequestDto buildServiceRequest(CaveatDetails caseDetails, FeeResponse feeResponse) {
         String party = caseDetails.getData().getCaveatorForenames() + " "
                 + caseDetails.getData().getCaveatorSurname();
-        CasePayentRequestDto casePayentRequestDto = CasePayentRequestDto.builder()
+        CasePaymentRequestDto casePaymentRequestDto = CasePaymentRequestDto.builder()
                 .responsibleParty(party).action(ACTION).build();
 
         PaymentFee paymentFee = paymentFeeBuilder.buildPaymentFee(feeResponse, BigDecimal.ONE);
@@ -55,7 +55,7 @@ public class ServiceRequestTransformer {
         fees.add(paymentFee);
         return ServiceRequestDto.builder()
                 .callbackUrl(CAVEAT_CALLBACK)
-                .casePaymentRequest(casePayentRequestDto)
+                .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
                 .fees(fees)
