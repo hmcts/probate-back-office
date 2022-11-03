@@ -2,13 +2,13 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRefNumber) {
+module.exports = async function (SacCaseRefNumber) {
     const I = this;
     await I.waitForText('Your cases', 20);
     await I.wait(4);
     await I.click('//div[normalize-space()="Case reference"]');
     await I.wait(2);
-    await I.click('//input[@id="select-' + caseRefNumber + '"]');
+    await I.click('//input[@id="select-' + SacCaseRefNumber + '"]');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete('#btn-share-button', 2);
     await I.click('.govuk-accordion__open-all');
