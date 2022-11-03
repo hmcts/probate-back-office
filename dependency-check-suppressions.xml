@@ -36,6 +36,13 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: spring-cloud-starter-oauth2-2.2.5.RELEASE.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.cloud/spring-cloud-starter-oauth2@.*$</packageUrl>
+        <vulnerabilityName>CVE-2022-22969</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: spring-core-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
@@ -60,6 +67,34 @@
         <cve>CVE-2021-37137</cve>
         <cve>CVE-2021-43797</cve>
         <cve>CVE-2022-24823</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@.*$</packageUrl>
+        <cve>CVE-2022-34305</cve>
+        <cve>CVE-2022-42252</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-websocket@.*$</packageUrl>
+        <cve>CVE-2022-34305</cve>
+        <cve>CVE-2022-42252</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-api@.*$</packageUrl>
+        <cve>CVE-2022-33915</cve>
+    </suppress>
+    <suppress>
+        <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-to-slf4j@.*$</packageUrl>
+        <cve>CVE-2022-33915</cve>
+    </suppress>
+    <suppress until="2023-01-07">
+        <cve>CVE-2022-31569</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: postgresql-42.3.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.postgresql/postgresql@.*$</packageUrl>
+        <cve>CVE-2022-31197</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -89,10 +124,10 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: spring-security-oauth2-2.5.1.RELEASE.jar
+   file name: spring-security-oauth2-client-5.6.6.jar
    ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org.springframework.security.oauth/spring-security-oauth2@2.5.1.RELEASE</packageUrl>
-        <vulnerabilityName>CVE-2022-22969</vulnerabilityName>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-(client|core|jose)@.*$</packageUrl>
+        <cve>CVE-2018-1258</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -100,5 +135,16 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org.springframework/spring-web@5.3.23</packageUrl>
         <vulnerabilityName>CVE-2016-1000027</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lang-tag-1.5.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.nimbusds/lang\-tag@.*$</packageUrl>
+        <cve>CVE-2020-23171</cve>
+        <cve>CVE-2020-29242</cve>
+        <cve>CVE-2020-29243</cve>
+        <cve>CVE-2020-29244</cve>
+        <cve>CVE-2020-29245</cve>
     </suppress>
 </suppressions>

@@ -2,7 +2,7 @@
 
 const testConfig = require('src/test/config.js');
 
-module.exports = async function (caseRefNumber) {
+module.exports = async function (sacCaseRefNumber) {
 
     const I = this;
     await I.wait(testConfig.CreateCaseDelay);
@@ -10,12 +10,12 @@ module.exports = async function (caseRefNumber) {
     await I.waitForText('Your cases', 20);
     await I.selectOption('#wb-jurisdiction', 'Manage probate application');
     await I.selectOption('#wb-case-type', 'Grant of representation');
-    await I.click("button[title='Apply filter']");
+    await I.click('//button[normalize-space()="Apply"]');
     await I.wait(4);
     await I.click('//div[normalize-space()="Case reference"]');
     await I.wait(2);
-    await I.waitForElement('//input[@id="select-' + caseRefNumber + '"]');
-    await I.click('//input[@id="select-' + caseRefNumber + '"]');
+    await I.waitForElement('//input[@id="select-' + sacCaseRefNumber + '"]');
+    await I.click('//input[@id="select-' + sacCaseRefNumber + '"]');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForNavigationToComplete('#btn-share-button', testConfig.CreateCaseDelay);
     await I.wait(2);
