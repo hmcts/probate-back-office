@@ -259,8 +259,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorCaveatRaisedEmailContents() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
-        assertTrue(responseBody.asString().contains("payments"));
-        assertTrue(responseBody.asString().contains("RC-"));
+        assertTrue(responseBody.asString().contains("serviceRequestReference"));
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE, EMAIL_NOTIFICATION_URL,
@@ -317,9 +316,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertThat(confirmationText, containsString("This caveat application has now been submitted"));
         assertThat(confirmationText, containsString("**Your reference:** REF1123"));
         assertThat(confirmationText, containsString("**Application fee** &pound;3.00"));
-        assertThat(confirmationText, containsString("**Payment method** fee account"));
-        assertThat(confirmationText, containsString("**Selected PBA account** PBA0082126"));
         assertThat(confirmationText, containsString("**Customer reference** appref-PAY1"));
+        assertThat(confirmationText, containsString("**You must complete payment next**"));
+        assertThat(confirmationText, containsString("Complete the payment process"));
     }
 
     @Test

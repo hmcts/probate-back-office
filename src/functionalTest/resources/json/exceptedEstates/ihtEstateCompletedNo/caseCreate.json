@@ -179,7 +179,9 @@
       "ihtFormEstateValuesCompleted": "No",
       "ihtEstateGrossValue": "70000000",
       "ihtEstateNetValue": "60000000",
-      "ihtEstateNetQualifyingValue": "10000000"
+      "ihtEstateNetQualifyingValue": "10000000",
+      "paymentTaken": "Yes",
+      "serviceRequestReference": "abcdef123456"
     }
   },
   "event_id": "solicitorReviewAndConfirm"

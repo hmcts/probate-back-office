@@ -9,6 +9,7 @@ import net.thucydides.core.annotations.Pending;
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -41,13 +42,13 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     @Test
     public void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
-            true, true, true);
+            true, true);
         assertTrue(response.getBody().asPrettyString().contains("(PA17)"));
     }
 
     @Test
     public void shouldTransformSolicitorExecutorFields() throws IOException {
-        Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true, true,
+        Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true,
             true);
 
         final JsonPath jsonPath = JsonPath.from(response.getBody().asPrettyString());
@@ -77,25 +78,27 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Test
     public void verifyAllFeesAboveThreshold() throws IOException {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true, true);
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true);
     }
 
     @Test
     public void verifyAllFeesBelowThreshold() throws IOException {
-        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, true, true);
+        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, true);
     }
 
     @Test
     public void shouldValidatePBAPaymentNoFees() throws IOException {
-        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false, false);
+        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false);
     }
 
+    @Ignore
     @Test
     public void shouldValidatePaymentAccountDeleted() throws IOException {
         validatePostRequestFailureForPBAs(1, "solicitorPDFPayloadProbateAccountDeleted.json",
             "Your account is deleted");
     }
 
+    @Ignore
     @Test
     public void shouldValidatePaymentInsufficientFunds() throws IOException {
         validatePostRequestFailureForPBAs(1000, "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
@@ -104,7 +107,7 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Pending
     @Test
-    public void shouldValidatePaymentAountOnHold() throws IOException {
+    public void shouldValidatePaymentAccountOnHold() throws IOException {
         //this test cannot be automated on a deployed env - leaving it for local checking
         validatePostRequestFailureForPBAsForSolicitor2(1, "solicitorPDFPayloadProbateAccountOnHold.json",
             "Your account is on hold");
@@ -131,29 +134,16 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             + "negative");
     }
 
-    private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication, boolean hasFees,
-                                                      boolean hasPayments) throws IOException {
+    private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication,
+                                                      boolean hasServiceRequest) throws IOException {
         int rndUkCopies = (int) (Math.random() * MAX_UK_COPIES) + 1;
         int rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
-        int applicationFee = hasApplication ? APP_FEE : 0;
-        int ukFee = rndUkCopies * COPIES_FEE;
-        int nonUkFee = rndNonUkCopies * COPIES_FEE;
-        int totalFee = applicationFee + ukFee + nonUkFee;
 
         Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
 
         response.then().assertThat().statusCode(200);
-        if (hasApplication) {
-            response.then().assertThat().body("data.applicationFee", equalTo("" + applicationFee));
-        }
-        if (hasFees) {
-            response.then().assertThat().body("data.feeForUkCopies", equalTo("" + ukFee));
-            response.then().assertThat().body("data.feeForNonUkCopies", equalTo("" + nonUkFee));
-            response.then().assertThat().body("data.totalFee", equalTo("" + totalFee));
-        }
-        if (hasPayments) {
-            response.then().assertThat().body("data.payments[0].value.status", equalTo("Success"));
-            response.then().assertThat().body("data.payments[0].value.reference", containsString("RC-"));
+        if (hasServiceRequest) {
+            response.then().assertThat().body("data.serviceRequestReference", equalTo("abcdef123456"));
         }
 
         return response;
