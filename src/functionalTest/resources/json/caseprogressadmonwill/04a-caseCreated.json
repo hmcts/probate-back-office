@@ -514,7 +514,9 @@
       "ihtFormId": "PUBLIC",
       "registryLocation": "PUBLIC",
       "primaryApplicantSurname": "PUBLIC",
-      "solsSolicitorAppReference": "PUBLIC"
+      "solsSolicitorAppReference": "PUBLIC",
+      "paymentTaken": "Yes",
+      "serviceRequestReference": "2000-1234567890"
     }
   },
   "event_id": "solicitorReviewAndConfirm"
