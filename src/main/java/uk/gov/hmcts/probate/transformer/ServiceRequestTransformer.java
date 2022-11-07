@@ -81,14 +81,14 @@ public class ServiceRequestTransformer {
         BigDecimal totalCopiesFee = new BigDecimal(0).setScale(2);
         FeeResponse copiesFee = null;
         if (extraCopies != null && extraCopies > 0) {
-            totalCopiesFee.add(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+            totalCopiesFee = totalCopiesFee.add(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
             copiesFee = feesResponse.getUkCopiesFeeResponse();
         }
         if (outsideUKGrantCopies != null && outsideUKGrantCopies > 0) {
-            totalCopiesFee.add(feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
+            totalCopiesFee = totalCopiesFee.add(feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
             copiesFee = feesResponse.getOverseasCopiesFeeResponse();
         }
-        if (totalCopiesFee.doubleValue() > 0 && copiesFee != null) {
+        if (totalCopiesFee.compareTo(BigDecimal.ZERO) > 0 && copiesFee != null) {
             PaymentFee totalCopiesPayment = paymentFeeBuilder.buildCopiesPaymentFee(totalCopiesFee, copiesFee.getCode(),
                                                             copiesFee.getDescription(), copiesFee.getVersion(),
                                                             BigDecimal.valueOf(extraCopies + outsideUKGrantCopies));
