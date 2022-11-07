@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -22,6 +23,8 @@ import java.util.List;
 public class ServiceRequestTransformer {
     @Autowired
     private PaymentFeeBuilder paymentFeeBuilder;
+    @Value("${payment.serviceRequest.hmctsOrgId}")
+    private String hmctsOrgId;
 
     //http://civil-general-applications-demo.service.core-compute-demo.internal/payment-request-update
     private static final String GRANT_OF_REPRESENTATION_CALLBACK = "/payment/gor-payment-request-update";
@@ -39,6 +42,7 @@ public class ServiceRequestTransformer {
                 .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
+                .hmctsOrgId(hmctsOrgId)
                 .fees(fees)
                 .build();
 
@@ -58,6 +62,7 @@ public class ServiceRequestTransformer {
                 .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
+                .hmctsOrgId(hmctsOrgId)
                 .fees(fees)
                 .build();
 

@@ -8,6 +8,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -42,6 +43,8 @@ class ServiceRequestTransformerTest {
     private FeeResponse feeResponse;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;
+    @Value("${payment.serviceRequest.hmctsOrgId}")
+    private String hmctsOrgId;
 
 
     @BeforeEach
@@ -86,6 +89,7 @@ class ServiceRequestTransformerTest {
         assertEquals("/payment/gor-payment-request-update", serviceRequestDto.getCallbackUrl());
         assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
         assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
+        assertEquals(hmctsOrgId, serviceRequestDto.getHmctsOrgId());
     }
 
     @Test
@@ -108,6 +112,7 @@ class ServiceRequestTransformerTest {
         assertEquals("/payment/caveat-payment-request-update", serviceRequestDto.getCallbackUrl());
         assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
         assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
+        assertEquals(hmctsOrgId, serviceRequestDto.getHmctsOrgId());
     }
 
     protected List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {

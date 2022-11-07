@@ -59,6 +59,7 @@ payment:
   serviceRequest:
     url: ${PAYMENT_URL:http://localhost:8080}
     api: /service-request
+    hmctsOrgId: ABA6
 
 pba:
   retrieval:
