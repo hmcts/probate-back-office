@@ -62,7 +62,8 @@ class ServiceRequestTransformerTest {
     private static Stream<Arguments> copies() {
         return Stream.of(arguments(null, null),
                 arguments(1L, null),
-                arguments(null, 1L)
+                arguments(null, 1L),
+                arguments(1L, 1L)
                 );
     }
 
@@ -81,7 +82,7 @@ class ServiceRequestTransformerTest {
                 LAST_MODIFIED, CASE_ID);
         CasePaymentRequestDto casePayentRequestDto = CasePaymentRequestDto.builder()
                 .responsibleParty("Joe Smith").action("payment attempt created").build();
-        List<PaymentFee> paymentFees = buildFees(caseDetails.getData(), feesResponse);
+        List<PaymentFee> paymentFees = serviceRequestTransformer.buildFees(caseDetails.getData(), feesResponse);
         ServiceRequestDto serviceRequestDto = serviceRequestTransformer.buildServiceRequest(caseDetails, feesResponse);
 
         assertEquals(casePayentRequestDto, serviceRequestDto.getCasePaymentRequest());
@@ -113,31 +114,5 @@ class ServiceRequestTransformerTest {
         assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
         assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
         assertEquals(hmctsOrgId, serviceRequestDto.getHmctsOrgId());
-    }
-
-    protected List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
-        return buildFees(feesResponse, caseData.getExtraCopiesOfGrant(), caseData.getOutsideUKGrantCopies());
-    }
-
-    protected List<PaymentFee> buildFees(FeesResponse feesResponse, Long extraCopies,
-                                       Long outsideUKGrantCopies) {
-        ArrayList<PaymentFee> paymentFees = new ArrayList<>();
-        PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(),
-                BigDecimal.ONE);
-        paymentFees.add(applicationFee);
-
-        if (extraCopies != null && extraCopies > 0) {
-            PaymentFee ukCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getUkCopiesFeeResponse(),
-                    BigDecimal.valueOf(extraCopies));
-            paymentFees.add(ukCopiesFee);
-        }
-        if (outsideUKGrantCopies != null && outsideUKGrantCopies > 0) {
-            PaymentFee overseasCopiesFee =
-                    paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
-                            BigDecimal.valueOf(outsideUKGrantCopies));
-            paymentFees.add(overseasCopiesFee);
-        }
-
-        return paymentFees;
     }
 }

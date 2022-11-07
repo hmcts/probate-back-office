@@ -68,7 +68,7 @@ public class ServiceRequestTransformer {
 
     }
 
-    private List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
+    protected List<PaymentFee> buildFees(CaseData caseData, FeesResponse feesResponse) {
         return buildFees(feesResponse, caseData.getExtraCopiesOfGrant(), caseData.getOutsideUKGrantCopies());
     }
 
@@ -78,20 +78,22 @@ public class ServiceRequestTransformer {
         PaymentFee applicationFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getApplicationFeeResponse(),
                 BigDecimal.ONE);
         paymentFees.add(applicationFee);
-
+        BigDecimal totalCopiesFee = new BigDecimal(0).setScale(2);
+        FeeResponse copiesFee = null;
         if (extraCopies != null && extraCopies > 0) {
-            PaymentFee ukCopiesFee = paymentFeeBuilder.buildPaymentFee(feesResponse.getUkCopiesFeeResponse(),
-                    BigDecimal.valueOf(extraCopies));
-            paymentFees.add(ukCopiesFee);
+            totalCopiesFee.add(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+            copiesFee = feesResponse.getUkCopiesFeeResponse();
         }
         if (outsideUKGrantCopies != null && outsideUKGrantCopies > 0) {
-            PaymentFee overseasCopiesFee =
-                    paymentFeeBuilder.buildPaymentFee(feesResponse.getOverseasCopiesFeeResponse(),
-                            BigDecimal.valueOf(outsideUKGrantCopies));
-            paymentFees.add(overseasCopiesFee);
+            totalCopiesFee.add(feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
+            copiesFee = feesResponse.getOverseasCopiesFeeResponse();
         }
-
+        if (totalCopiesFee.doubleValue() > 0 && copiesFee != null) {
+            PaymentFee totalCopiesPayment = paymentFeeBuilder.buildCopiesPaymentFee(totalCopiesFee, copiesFee.getCode(),
+                                                            copiesFee.getDescription(), copiesFee.getVersion(),
+                                                            BigDecimal.valueOf(extraCopies + outsideUKGrantCopies));
+            paymentFees.add(totalCopiesPayment);
+        }
         return paymentFees;
     }
-
 }
