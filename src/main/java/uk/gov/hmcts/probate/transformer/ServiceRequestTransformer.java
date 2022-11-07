@@ -79,19 +79,21 @@ public class ServiceRequestTransformer {
                 BigDecimal.ONE);
         paymentFees.add(applicationFee);
         BigDecimal totalCopiesFee = new BigDecimal(0).setScale(2);
+        BigDecimal totalCopies = new BigDecimal(0).setScale(2);
         FeeResponse copiesFee = null;
         if (extraCopies != null && extraCopies > 0) {
             totalCopiesFee = totalCopiesFee.add(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
+            totalCopies = totalCopies.add(BigDecimal.valueOf(extraCopies));
             copiesFee = feesResponse.getUkCopiesFeeResponse();
         }
         if (outsideUKGrantCopies != null && outsideUKGrantCopies > 0) {
             totalCopiesFee = totalCopiesFee.add(feesResponse.getOverseasCopiesFeeResponse().getFeeAmount());
+            totalCopies = totalCopies.add(BigDecimal.valueOf(outsideUKGrantCopies));
             copiesFee = feesResponse.getOverseasCopiesFeeResponse();
         }
         if (totalCopiesFee.compareTo(BigDecimal.ZERO) > 0 && copiesFee != null) {
             PaymentFee totalCopiesPayment = paymentFeeBuilder.buildCopiesPaymentFee(totalCopiesFee, copiesFee.getCode(),
-                                                            copiesFee.getDescription(), copiesFee.getVersion(),
-                                                            BigDecimal.valueOf(extraCopies + outsideUKGrantCopies));
+                                                    copiesFee.getDescription(), copiesFee.getVersion(), totalCopies);
             paymentFees.add(totalCopiesPayment);
         }
         return paymentFees;
