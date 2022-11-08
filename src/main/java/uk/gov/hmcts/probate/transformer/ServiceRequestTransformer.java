@@ -79,7 +79,7 @@ public class ServiceRequestTransformer {
                 BigDecimal.ONE);
         paymentFees.add(applicationFee);
         BigDecimal totalCopiesFee = new BigDecimal(0).setScale(2);
-        BigDecimal totalCopies = new BigDecimal(0).setScale(2);
+        BigDecimal totalCopies = new BigDecimal(0);
         FeeResponse copiesFee = null;
         if (extraCopies != null && extraCopies > 0) {
             totalCopiesFee = totalCopiesFee.add(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
