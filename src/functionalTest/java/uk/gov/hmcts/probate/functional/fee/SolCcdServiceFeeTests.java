@@ -22,7 +22,7 @@ import static io.restassured.http.ContentType.JSON;
 import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.notNullValue;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -135,17 +135,16 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication,
-                                                      boolean hasServiceRequest) throws IOException {
-        int rndUkCopies = (int) (Math.random() * MAX_UK_COPIES) + 1;
-        int rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
-
-        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
-
-        response.then().assertThat().statusCode(200);
-        if (hasServiceRequest) {
-            response.then().assertThat().body("data.serviceRequestReference", equalTo("abcdef123456"));
+                                                      boolean hasCopies) throws IOException {
+        int rndUkCopies = 0;
+        int rndNonUkCopies = 0;
+        if (hasCopies) {
+            rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) + 1);
+            rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
         }
-
+        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
+        response.then().assertThat().statusCode(200);
+        response.then().assertThat().body("data.serviceRequestReference", notNullValue());
         return response;
     }
 
