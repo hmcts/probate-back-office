@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -94,13 +95,16 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
+            if (1 == feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO)) {
+                String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
+                        .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
 
-            String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
-                    .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
-
-            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                feesResponse, serviceRequestReference, coversheet);
-
+                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                        feesResponse, serviceRequestReference, coversheet);
+            } else {
+                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                        feesResponse, null, coversheet);
+            }
         }
 
         return ResponseEntity.ok(callbackResponse);

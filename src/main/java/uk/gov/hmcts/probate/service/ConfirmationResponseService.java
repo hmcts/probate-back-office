@@ -70,6 +70,8 @@ public class ConfirmationResponseService {
     @Value("${markdown.templatesDirectory}")
     private String templatesDirectory;
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private String paymentInfo = null;
+    private String paymentSummary = null;
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
         return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
@@ -235,6 +237,23 @@ public class ConfirmationResponseService {
             additionalInfo = "None provided";
         }
 
+        if (1 == ccdData.getFee().getAmount().compareTo(BigDecimal.ZERO)) {
+            paymentSummary = "**Application fee** &pound;" + getAmountAsString(ccdData.getFee().getApplicationFee())
+                    + "\n\n" + "**Fee for additional UK copies** &pound;" + getOptionalAmountAsString(ccdData.getFee()
+                    .getFeeForUkCopies()) + "\n\n"
+                    + "**Fee for certified copies** &pound;" + getOptionalAmountAsString(ccdData.getFee()
+                    .getFeeForNonUkCopies()) + "\n\n"
+                    + "**Fee amount** &pound;" + getAmountAsString(ccdData.getFee().getAmount()) + "\n\n"
+                    + "**Customer application reference** " + ccdData.getFee().getSolsPBAPaymentReference();
+
+            paymentInfo = "**You must complete payment next**\n"
+                    + "\n" + "Go to the Service Request tab on you case details\n"
+                    + "\n" + "Complete the payment process\n";
+        } else {
+            paymentSummary = "Not applicable";
+            paymentInfo = "";
+        }
+
         String legalPhotocopy = "";
         if (hasNoLegalStatmentBeenUploaded(ccdData)) {
             legalPhotocopy = format("*   %s", PageTextConstants.DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY);
@@ -243,6 +262,8 @@ public class ConfirmationResponseService {
         keyValue.put("{{ihtText}}", getIhtText(ccdData));
         keyValue.put("{{ihtForm}}", getIhtForm(ccdData));
         keyValue.put("{{additionalInfo}}", additionalInfo);
+        keyValue.put("{{paymentSummary}}", paymentSummary);
+        keyValue.put("{{paymentInfo}}", paymentInfo);
         keyValue.put("{{pa14form}}", getPA14FormLabel(caseData));
         keyValue.put("{{pa15form}}", getPA15FormLabel(caseData));
         keyValue.put("{{pa16form}}", getPA16FormLabel(caseData));
