@@ -95,7 +95,7 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
-            if ( feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) > 0 ) {
+            if (feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) > 0) {
                 String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                         .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
 
