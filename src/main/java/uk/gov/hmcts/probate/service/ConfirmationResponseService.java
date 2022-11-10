@@ -237,7 +237,7 @@ public class ConfirmationResponseService {
             additionalInfo = "None provided";
         }
 
-        if (1 == ccdData.getFee().getAmount().compareTo(BigDecimal.ZERO)) {
+        if (ccdData.getFee().getAmount().compareTo(BigDecimal.ZERO) > 0) {
             paymentSummary = "**Application fee** &pound;" + getAmountAsString(ccdData.getFee().getApplicationFee())
                     + "\n\n" + "**Fee for additional UK copies** &pound;" + getOptionalAmountAsString(ccdData.getFee()
                     .getFeeForUkCopies()) + "\n\n"
