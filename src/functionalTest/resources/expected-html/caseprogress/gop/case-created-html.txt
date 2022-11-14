@@ -25,7 +25,7 @@
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><a href="#" class="govuk-link">Make payment</a></p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/not-started.png" alt="NOT STARTED" title="NOT STARTED" /></p>
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><a href="cases/case-details/1528365719153338#Service Request" class="govuk-link">Make payment</a></p><p class="govuk-body-s"><font color="#505a5f"></font></p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/not-started.png" alt="NOT STARTED" title="NOT STARTED" /></p>
 </div></div><hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Send documents<br/></p></div><div class="govuk-grid-column-one-third"></div></div>
