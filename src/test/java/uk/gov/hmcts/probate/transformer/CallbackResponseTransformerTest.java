@@ -289,6 +289,7 @@ class CallbackResponseTransformerTest {
 
     public static final String ORGANISATION_NAME = "OrganisationName";
     public static final String ORG_ID = "OrgID";
+    public static final String NOT_APPLICABLE = "NotApplicable";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
         new CollectionMember<>(null,
@@ -921,7 +922,30 @@ class CallbackResponseTransformerTest {
 
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
-        assertEquals(SERVICE_REQUEST_REFEREMCE, callbackResponse.getData().getServiceRequestReference());
+        verify(caseDataTransformerMock).transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock,
+                SERVICE_REQUEST_REFEREMCE);
+    }
+
+    @Test
+    void shouldConvertRequestToDataBeanForPaymentWithoutServiceRequest() {
+        CaseData caseData = (CaseData) caseDataBuilder
+                .payments(null)
+                .paymentTaken(NOT_APPLICABLE)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
+                null, coversheetMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertCommonAdditionalExecutors(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.SOLICITOR);
+        assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
+        assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
+
+        assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
+        assertNull(callbackResponse.getData().getServiceRequestReference());
+        assertEquals(NOT_APPLICABLE, callbackResponse.getData().getPaymentTaken());
     }
 
     @Test

@@ -32,6 +32,20 @@ public class CaseDataTransformer {
         solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
     }
 
+    public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest,
+                                                                   String serviceRequestReference) {
+
+        final var caseData = callbackRequest.getCaseDetails().getData();
+        resetCaseDataTransformer.resetExecutorLists(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
+        solicitorApplicationCompletionTransformer
+                .mapSolicitorExecutorFieldsOnCompletion(caseData);
+
+        // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
+        solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
+        solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseData, serviceRequestReference);
+    }
+
 
     public void transformCaseDataForValidateProbate(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();

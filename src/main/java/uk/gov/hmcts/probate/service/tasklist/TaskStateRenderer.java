@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.htmltemplate.StatusTagHtmlTemplate;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -68,6 +69,7 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.DECEASED_DETA
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
+import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_SERVICE_REQUEST_URL_TEMPLATE;
 
 // Renders links / text and also the status tag - i.e. details varying by state
 @Slf4j
@@ -79,6 +81,7 @@ public class TaskStateRenderer {
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
     private static final String MAKE_PAYMENT_TEXT = "Make payment";
+    private static final String NO_PAYMENT_REQUIRED_TEXT = "</p><p><secText>No payment is required.</secText>";
     static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
@@ -141,7 +144,9 @@ public class TaskStateRenderer {
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
-                .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, MAKE_PAYMENT_TEXT,  "#"))
+                .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, currState, caseIdStr,
+                        willType))
+                .replaceFirst("<paymentHintText/>", renderPaymentHintText(currState, details))
                 .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
@@ -159,7 +164,6 @@ public class TaskStateRenderer {
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
     }
 
-
     private TaskState getPaymentTaskState(TaskListState currState, TaskListState renderState) {
         TaskState taskState;
         if (currState == TaskListState.TL_STATE_MAKE_PAYMENT) {
@@ -174,9 +178,22 @@ public class TaskStateRenderer {
         return taskState;
     }
 
-    private String renderPaymentLinkOrText(TaskState currTaskState, String linkText, String link) {
-        return (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
-                ? LinkRenderer.render(linkText, link) : linkText;
+    private String renderPaymentLinkOrText(TaskState currTaskState, TaskListState currState, String caseId,
+                                           String willType) {
+        String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
+        return linkUrlTemplate != null
+                && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
+                    || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED)
+                && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
+                ? LinkRenderer.render(MAKE_PAYMENT_TEXT, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId))
+                : MAKE_PAYMENT_TEXT;
+    }
+
+    private String renderPaymentHintText(TaskListState currState, CaseDetails details) {
+        return currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && details.getData().getServiceRequestReference() == null
+                && (details.getData().getTotalFee() == null
+                || details.getData().getTotalFee().compareTo(BigDecimal.ZERO) == 0) ? NO_PAYMENT_REQUIRED_TEXT : "";
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
@@ -293,6 +310,10 @@ public class TaskStateRenderer {
                 return REVIEW_OR_SUBMIT_URL_TEMPLATE;
             case TL_STATE_SEND_DOCUMENTS:
                 return TL_COVERSHEET_URL_TEMPLATE;
+            case TL_STATE_MAKE_PAYMENT:
+                return TL_SERVICE_REQUEST_URL_TEMPLATE;
+            case TL_STATE_PAYMENT_ATTEMPTED:
+                return TL_SERVICE_REQUEST_URL_TEMPLATE;
             default:
                 return null;
         }

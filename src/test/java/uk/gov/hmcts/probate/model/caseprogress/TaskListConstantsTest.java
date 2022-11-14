@@ -28,6 +28,8 @@ class TaskListConstantsTest {
                 TaskListState.mapCaseState(StateConstants.STATE_CASE_CREATED, null));
         assertEquals(TaskListState.TL_STATE_SEND_DOCUMENTS,
                 TaskListState.mapCaseState(StateConstants.STATE_CASE_CREATED, "Yes"));
+        assertEquals(TaskListState.TL_STATE_SEND_DOCUMENTS,
+                TaskListState.mapCaseState(StateConstants.STATE_CASE_CREATED, "NotApplicable"));
         assertEquals(TaskListState.TL_STATE_PAYMENT_ATTEMPTED,
                 TaskListState.mapCaseState(StateConstants.STATE_CASE_CREATED, "No"));
         assertEquals(TaskListState.TL_STATE_SEND_DOCUMENTS,

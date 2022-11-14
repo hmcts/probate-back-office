@@ -24,6 +24,8 @@ public class UrlConstants {
 
     public static final String TL_COVERSHEET_URL_TEMPLATE = "<DOCUMENT_LINK>";
 
+    public static final String TL_SERVICE_REQUEST_URL_TEMPLATE = URL_PREFIX + "<CASE_ID>#Service Request";
+
     private UrlConstants() {
         throw new IllegalStateException("Utility class");
     }

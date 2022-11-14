@@ -56,7 +56,7 @@ public enum TaskListState {
                 return TL_STATE_REVIEW_AND_SUBMIT;
 
             case StateConstants.STATE_CASE_CREATED:
-                if ("Yes".equalsIgnoreCase(paymentTaken)) {
+                if ("Yes".equalsIgnoreCase(paymentTaken) || "NotApplicable".equalsIgnoreCase(paymentTaken)) {
                     return TL_STATE_SEND_DOCUMENTS;
                 } else if ("No".equalsIgnoreCase(paymentTaken)) {
                     return TL_STATE_PAYMENT_ATTEMPTED;

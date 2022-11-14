@@ -144,7 +144,9 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         }
         Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
         response.then().assertThat().statusCode(200);
-        response.then().assertThat().body("data.serviceRequestReference", notNullValue());
+        if (hasApplication || hasCopies) {
+            response.then().assertThat().body("data.serviceRequestReference", notNullValue());
+        }
         return response;
     }
 

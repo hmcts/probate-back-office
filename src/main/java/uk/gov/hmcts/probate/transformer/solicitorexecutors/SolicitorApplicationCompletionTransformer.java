@@ -18,6 +18,8 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 // for caseworker or solicitor journeys
 public class SolicitorApplicationCompletionTransformer extends LegalStatementExecutorTransformer {
 
+    private static final String NOT_APPLICABLE = "NotApplicable";
+
     public SolicitorApplicationCompletionTransformer(ExecutorListMapperService executorListMapperService,
                                                      DateFormatterService dateFormatterService) {
         super(executorListMapperService, dateFormatterService);
@@ -49,6 +51,14 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         if (NO.equals(caseData.getWillHasCodicils())) {
             caseData.setCodicilAddedDateList(null);
             caseData.setCodicilAddedFormattedDateList(null);
+        }
+    }
+
+    public void setFieldsOnServiceRequest(CaseData caseData, String serviceRequestReference) {
+        if (serviceRequestReference != null) {
+            caseData.setServiceRequestReference(serviceRequestReference);
+        } else {
+            caseData.setPaymentTaken(NOT_APPLICABLE);
         }
     }
 }

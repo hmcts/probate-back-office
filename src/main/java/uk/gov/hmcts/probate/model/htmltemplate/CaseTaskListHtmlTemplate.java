@@ -53,12 +53,13 @@ public class CaseTaskListHtmlTemplate {
         + "then sign and submit your application.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
-            + OPEN_ROW
-            + "<p><paymentTabLink/></p>"
-            + CLOSE_COL1_OPEN_COL2
-            + "<status-paymentMade/>"
-            + CLOSE_GRID_ROW
-            + SEPARATOR
+        + OPEN_ROW
+        + "<p><paymentTabLink/></p>"
+        + "<p><secText><paymentHintText/></secText></p>"
+        + CLOSE_COL1_OPEN_COL2
+        + "<status-paymentMade/>"
+        + CLOSE_GRID_ROW
+        + SEPARATOR
         + OPEN_ROW
         + "<p>Send documents<br/><sendDocsLink/></p>"
         + CLOSE_COL1_OPEN_COL2

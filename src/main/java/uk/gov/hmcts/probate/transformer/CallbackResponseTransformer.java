@@ -448,8 +448,8 @@ public class CallbackResponseTransformer {
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
 
-        caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
-        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        caseDataTransformer
+                .transformCaseDataForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -462,7 +462,6 @@ public class CallbackResponseTransformer {
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
             .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
-            .serviceRequestReference(serviceRequestReference)
             .build();
 
         return transformResponse(responseCaseData);
