@@ -350,5 +350,8 @@
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "waterDamage", "ListElement": "Water damage"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"},
   {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "blank", "ListElement": "Blank letter", "DisplayOrder": 1},
-  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2}
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2},
+  {"LiveFrom": "02/01/2017", "ID": "paymentTaken", "ListElementCode": "Yes", "ListElement": "Yes", "DisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "ID": "paymentTaken", "ListElementCode": "No", "ListElement": "No", "DisplayOrder": 2},
+  {"LiveFrom": "02/01/2017", "ID": "paymentTaken", "ListElementCode": "NotApplicable", "ListElement": "Not Applicable", "DisplayOrder": 3}
 ]
