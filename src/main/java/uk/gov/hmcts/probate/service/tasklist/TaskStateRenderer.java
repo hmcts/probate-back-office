@@ -90,6 +90,7 @@ public class TaskStateRenderer {
     private static final String IHT_400421 = "IHT400421";
     private static final String LIST_ITEM_START = "<li>";
     private static final String LIST_ITEM_END = "</li>";
+    private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
@@ -185,7 +186,7 @@ public class TaskStateRenderer {
                 && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
                     || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED)
                 && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
-                ? LinkRenderer.render(MAKE_PAYMENT_TEXT, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId))
+                ? LinkRenderer.render(MAKE_PAYMENT_TEXT, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId))
                 : MAKE_PAYMENT_TEXT;
     }
 
@@ -262,13 +263,13 @@ public class TaskStateRenderer {
 
         if (linkUrlTemplate != null && currState == taskListState
             && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
-            return LinkRenderer.renderOutside(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)
+            return LinkRenderer.renderOutside(linkText, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId)
                 .replaceFirst("<DOCUMENT_LINK>", coversheetUrl));
         }
 
         return linkUrlTemplate != null && currState == taskListState
                 && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
-                ? LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)) : linkText;
+                ? LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId)) : linkText;
     }
 
     private static String renderAuthenticatedDate(LocalDate authDate) {

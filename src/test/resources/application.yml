@@ -45,6 +45,8 @@ payment:
     url: ${PAYMENT_URL:http://localhost:8080}
     api: /service-request
     hmctsOrgId: ABA6
+    callbackUrl: http://probate-back-office-pr-2086.service.core-compute-preview.internal
+    #    callbackUrl: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
 pba:
   retrieval:
