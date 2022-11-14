@@ -22,7 +22,7 @@
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
-<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Make payment</p></div><div class="govuk-grid-column-one-third"></div></div><hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Make payment</p><p class="govuk-body-s"><font color="#505a5f"></font></p></div><div class="govuk-grid-column-one-third"></div></div><hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Send documents<br/></p></div><div class="govuk-grid-column-one-third"></div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
