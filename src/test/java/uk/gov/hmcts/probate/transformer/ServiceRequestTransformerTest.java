@@ -45,8 +45,8 @@ class ServiceRequestTransformerTest {
     private static final Long CASE_ID = 12345678987654321L;
     @Value("${payment.serviceRequest.hmctsOrgId}")
     private String hmctsOrgId;
-    @Value("${payment.serviceRequest.callbackUrl")
-    private static String baseUrl;
+    @Value("${payment.serviceRequest.baseUrl}")
+    private String baseUrl;
 
     @BeforeEach
     public void setUp() throws Exception {

@@ -25,12 +25,12 @@ public class ServiceRequestTransformer {
     private PaymentFeeBuilder paymentFeeBuilder;
     @Value("${payment.serviceRequest.hmctsOrgId}")
     private String hmctsOrgId;
-    @Value("${payment.serviceRequest.callbackUrl")
-    private static String baseUrl;
+    @Value("${payment.serviceRequest.baseUrl}")
+    private String baseUrl;
 
     //http://civil-general-applications-demo.service.core-compute-demo.internal/payment-request-update
-    private static final String GRANT_OF_REPRESENTATION_CALLBACK = baseUrl + "/payment/gor-payment-request-update";
-    private static final String CAVEAT_CALLBACK = baseUrl + "/payment/caveat-payment-request-update";
+    private static final String GRANT_OF_REPRESENTATION_CALLBACK = "/payment/gor-payment-request-update";
+    private static final String CAVEAT_CALLBACK = "/payment/caveat-payment-request-update";
     private static final String ACTION = "payment attempt created";
 
     public ServiceRequestDto buildServiceRequest(CaseDetails caseDetails, FeesResponse feesResponse) {
@@ -40,7 +40,7 @@ public class ServiceRequestTransformer {
                 .responsibleParty(party).action(ACTION).build();
         List<PaymentFee> fees = buildFees(caseDetails.getData(), feesResponse);
         return ServiceRequestDto.builder()
-                .callbackUrl(GRANT_OF_REPRESENTATION_CALLBACK)
+                .callbackUrl(baseUrl + GRANT_OF_REPRESENTATION_CALLBACK)
                 .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
@@ -60,7 +60,7 @@ public class ServiceRequestTransformer {
         List<PaymentFee> fees = new ArrayList<>();
         fees.add(paymentFee);
         return ServiceRequestDto.builder()
-                .callbackUrl(CAVEAT_CALLBACK)
+                .callbackUrl(baseUrl + CAVEAT_CALLBACK)
                 .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
