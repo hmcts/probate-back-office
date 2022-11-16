@@ -35,6 +35,7 @@ import static org.springframework.security.test.web.servlet.response.SecurityMoc
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
@@ -128,6 +129,20 @@ class SecurityConfigurationTest {
         mvc.perform(post("/notify/grant-awaiting-documents-scheduled")
             .header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
             .andExpect(unauthenticated());
+    }
+
+    @Test
+    void shouldAuthenticateForPaymentGOREndpointWithServiceAuthorizationHeader() throws Exception {
+        mvc.perform(put("/payment/gor-payment-request-update")
+                        .header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
+                .andExpect(authenticated());
+    }
+
+    @Test
+    void shouldAuthenticateForPaymentCaveatEndpointWithServiceAuthorizationHeader() throws Exception {
+        mvc.perform(put("/payment/caveat-payment-request-update")
+                        .header(SERVICE_AUTHORIZATION, "Bearer xxxxx.yyyyy.zzzzz"))
+                .andExpect(authenticated());
     }
 
     @TestConfiguration
