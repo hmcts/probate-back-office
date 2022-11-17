@@ -38,7 +38,6 @@ public class GrantNotificationService {
     private static final String IDENTIFIED_KEY = "grantDelayedNotificationIdentified";
     private static final String DELAY_SENT_KEY = "grantDelayedNotificationSent";
     private static final String AWAITING_SENT_KEY = "grantAwaitingDocumentatioNotificationSent";
-    public static final String PROBATE_APPLICATION = "Probate application";
 
     private final NotificationService notificationService;
     private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
@@ -156,7 +155,7 @@ public class GrantNotificationService {
 
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
             grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED,
-            securityUtils.getUserAndServiceSecurityDTO(), PROBATE_APPLICATION, PROBATE_APPLICATION);
+            securityUtils.getUserAndServiceSecurityDTO());
 
     }
 
@@ -173,8 +172,7 @@ public class GrantNotificationService {
                 getProbateDocuments(emailDocument, foundCase.getData().getProbateNotificationsGenerated()))
             .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, sentEvent, securityUtils.getUserAndServiceSecurityDTO(),
-                PROBATE_APPLICATION, PROBATE_APPLICATION);
+            grantOfRepresentationData, sentEvent, securityUtils.getUserAndServiceSecurityDTO());
         log.info("Updated found case:{}", foundCase.getId());
 
     }

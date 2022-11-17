@@ -23,8 +23,6 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +36,7 @@ import static org.mockito.Mockito.when;
 
 class CaseQueryServiceTest {
 
-    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     @Mock
     private RestTemplate restTemplate;
@@ -275,40 +273,6 @@ class CaseQueryServiceTest {
 
         List<ReturnedCaseDetails> cases = caseQueryService
             .findCaseStateWithinDateRangeSmeeAndFord("2019-01-01", "2019-02-05");
-
-        assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
-    void findCasesWithDateRangeReturnsCaseListMakeDormant() {
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-        ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
-        ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
-        ReturnedCases returnedCases3 = getReturnedCases(1, 2, 3);
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
-                returnedCases3);
-
-        List<ReturnedCaseDetails> cases = caseQueryService
-                .findCaseToBeMadeDormant("2022-01-01", "2022-01-10");
-
-        assertEquals(3, cases.size());
-        assertEquals(0, cases.get(0).getId().intValue());
-        assertEquals("Smith0", cases.get(0).getData().getDeceasedSurname());
-    }
-
-    @Test
-    void findCasesWithDateRangeReturnsCaseReactivateDormant() {
-        when(fileSystemResourceService.getFileFromResourceAsString(anyString())).thenReturn("qry");
-        ReturnedCases returnedCases1 = getReturnedCases(1, 0, 3);
-        ReturnedCases returnedCases2 = getReturnedCases(1, 1, 3);
-        ReturnedCases returnedCases3 = getReturnedCases(1, 2, 3);
-        when(restTemplate.postForObject(any(), any(), any())).thenReturn(returnedCases1, returnedCases2,
-                returnedCases3);
-
-        List<ReturnedCaseDetails> cases = caseQueryService
-                .findCaseToBeReactivatedFromDormant("2022-01-01");
 
         assertEquals(3, cases.size());
         assertEquals(0, cases.get(0).getId().intValue());
