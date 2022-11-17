@@ -503,3 +503,13 @@ document_management:
   fileupload:
     extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
+
+dormancy:
+  period_months: 6
+  start_date: 1900-01-01
+
+make_dormant:
+  add_time_minutes: 5
+
+reactivate_dormant:
+  minus_days: 1
