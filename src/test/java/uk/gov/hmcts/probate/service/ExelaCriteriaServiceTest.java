@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ import static org.hamcrest.core.Is.is;
 @ExtendWith(SpringExtension.class)
 class ExelaCriteriaServiceTest {
 
-    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
 
     private ImmutableList.Builder<ReturnedCaseDetails> cases = new ImmutableList.Builder<>();
     private ReturnedCaseDetails case1;

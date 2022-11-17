@@ -512,14 +512,6 @@ public class BusinessValidationController {
             .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
     }
 
-    @PostMapping(path = "/reactivate-case", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> reactivateCase(
-        @RequestBody CallbackRequest callbackRequest) {
-        log.info("Reactivating case - " + callbackRequest.getCaseDetails().getId().toString());
-        caseStoppedService.setEvidenceHandledNo(callbackRequest.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
-    }
-
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);

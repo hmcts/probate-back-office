@@ -96,15 +96,4 @@ class CaseStoppedServiceTest {
         assertEquals(LocalDate.now().plusWeeks(6), caseDetails.getData().getGrantDelayedNotificationDate());
         assertEquals(null, caseDetails.getData().getGrantAwaitingDocumentationNotificationDate());
     }
-
-    @Test
-    void shouldSetEvidenceHandledNo() {
-        caseDetails.getData().setEvidenceHandled(Constants.YES);
-        caseStoppedService.setEvidenceHandledNo(caseDetails);
-        assertEquals(Constants.NO, caseDetails.getData().getEvidenceHandled());
-
-        caseDetails.getData().setEvidenceHandled(null);
-        caseStoppedService.setEvidenceHandledNo(caseDetails);
-        assertEquals(Constants.NO, caseDetails.getData().getEvidenceHandled());
-    }
 }

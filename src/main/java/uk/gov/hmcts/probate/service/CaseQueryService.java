@@ -68,10 +68,6 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_hmrc.json";
     private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_smeeford.json";
-    private static final String DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
-            + "dormant_date_range_query.json";
-    private static final String REACTIVATE_DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
-            + "reactivate_dormant_date_range_query.json";
     private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -114,15 +110,6 @@ public class CaseQueryService {
 
         return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate,
                 queryDate);
-    }
-
-    public List<ReturnedCaseDetails> findCaseToBeMadeDormant(String dormancyStartDate,String endDate) {
-        //When a new state is being added ,it should be added in the elastic search query DORMANT_QUERY
-        return findCaseStateWithinDateRange("MakeDormant", DORMANT_QUERY, dormancyStartDate, endDate);
-    }
-
-    public List<ReturnedCaseDetails> findCaseToBeReactivatedFromDormant(String date) {
-        return findCaseStateWithinDateRange("ReactivateDormant", REACTIVATE_DORMANT_QUERY, date, date);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
