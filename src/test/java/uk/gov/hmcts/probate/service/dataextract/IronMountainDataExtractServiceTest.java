@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
 import uk.gov.hmcts.probate.service.filebuilder.IronMountainFileService;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +42,7 @@ class IronMountainDataExtractServiceTest {
     @InjectMocks
     private IronMountainDataExtractService ironMountainDataExtractService;
 
-    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
+    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private CaseData caseData;
 
     @BeforeEach

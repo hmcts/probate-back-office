@@ -24,7 +24,6 @@ import uk.gov.service.notify.SendEmailResponse;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +41,6 @@ class GrantOfRepresentationPersonalisationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
-    private static final LocalDateTime LAST_DATE_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
@@ -124,7 +122,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .build();
 
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_DATE_MODIFIED, ID);
+        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
 
         exelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -134,7 +132,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, ID));
+            .build(), LAST_MODIFIED, ID));
 
         exelaCaseDataWithCommas.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -144,7 +142,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, ID));
+            .build(), LAST_MODIFIED, ID));
 
         exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -154,7 +152,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoWill)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, ID));
+            .build(), LAST_MODIFIED, ID));
 
         exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -164,7 +162,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, ID));
+            .build(), LAST_MODIFIED, ID));
 
         exelaCaseDataNoDOB.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -173,7 +171,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .grantIssuedDate("2019-05-01")
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
-            .build(), LAST_DATE_MODIFIED, ID));
+            .build(), LAST_MODIFIED, ID));
 
     }
 

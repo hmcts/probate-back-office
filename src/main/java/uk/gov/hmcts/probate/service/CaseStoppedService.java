@@ -20,10 +20,6 @@ public class CaseStoppedService {
         caseDetails.getData().setGrantStoppedDate(LocalDate.now());
     }
 
-    public void setEvidenceHandledNo(CaseDetails caseDetails) {
-        caseDetails.getData().setEvidenceHandled(Constants.NO);
-    }
-
     public void caseResolved(CaseDetails caseDetails) {
         log.info("Case resolved: {} ", caseDetails.getId());
 
