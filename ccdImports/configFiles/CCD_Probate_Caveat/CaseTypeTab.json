@@ -49,5 +49,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "recordId", "TabFieldDisplayOrder": 1, "TabShowCondition":  "recordId=\"*\""},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 11, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "serviceRequestTab", "TabLabel": "Service Request", "TabDisplayOrder": 12, "CaseFieldID": "serviceRequestWaysToPay", "TabShowCondition": "serviceRequestReference !=\"\"","TabFieldDisplayOrder": 1},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "serviceRequestTab", "TabLabel": "Service Request", "TabDisplayOrder": 12, "CaseFieldID": "serviceRequestReference", "TabFieldDisplayOrder": 2, "FieldShowCondition": "serviceRequestReference = \"DO_NOT_SHOW\""}
 ]

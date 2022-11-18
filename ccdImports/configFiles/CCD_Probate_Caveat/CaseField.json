@@ -71,5 +71,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "deleteApplication", "Label": "Are you sure you want to permanently delete this application? You will no longer be able to view the details in the future.", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicantOrganisationPolicy", "Label": "Applicant Solicitor Details", "FieldType": "OrganisationPolicy", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestReference", "Label": "Service request reference", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"}
 ]
