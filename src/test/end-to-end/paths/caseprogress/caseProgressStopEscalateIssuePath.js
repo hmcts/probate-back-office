@@ -110,7 +110,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             numNotStarted: 0,
             signOut: true});
 
-        await I.logInfo(scenarioName, 'Print case', caseRef);
+ /*       await I.logInfo(scenarioName, 'Print case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
@@ -127,7 +127,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
-
+*/
         await I.logInfo(scenarioName, 'Stop case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
@@ -155,6 +155,74 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressStopEscalateIssueEscalatedTabCheck();
+
+        await I.logInfo(scenarioName, 'Stop case', caseRef);
+        // log in as case worker
+        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCaseworkerChooseNextStepAndGo('Stop case');
+        await I.caseProgressStopEscalateIssueCaseStopAgainReason();
+        await I.caseProgressContinueWithoutChangingAnything();
+        await I.signOut();
+
+        await I.logInfo(scenarioName, 'Check progress tab for Case stopped', caseRef);
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressStopEscalateIssueStoppedTabCheck();
+
+        await I.logInfo(scenarioName, 'Resolve stop', caseRef);
+        // log in as case worker
+        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCaseworkerChooseNextStepAndGo('Resolve stop', caseRef);
+        await I.caseProgressStopEscalateIssueAddCaseResolveStop();
+        await I.caseProgressClickSubmitAndSignOut();
+
+        await I.logInfo(scenarioName, 'Check progress tab for Resolve stop', caseRef);
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 6,
+            numInProgress: 1,
+            numNotStarted: 0,
+            checkSubmittedDate: true,
+            signOut: true});
+
+        await I.logInfo(scenarioName, 'Select for QA', caseRef);
+        // log in as case worker
+        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCaseworkerChooseNextStepAndGo('Select for QA');
+        await I.caseProgressClickSubmitAndSignOut();
+
+        await I.logInfo(scenarioName, 'Check progress tab for Select for QA', caseRef);
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 6,
+            numInProgress: 1,
+            numNotStarted: 0,
+            signOut: true});
+
+        await I.logInfo(scenarioName, 'Generate grant preview', caseRef);
+        // log in as case worker
+        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCaseworkerChooseNextStepAndGo('Generate grant preview');
+        await I.caseProgressClickSubmitAndSignOut();
+
+        await I.logInfo(scenarioName, 'Check progress tab for Generate grant preview', caseRef);
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 6,
+            numInProgress: 1,
+            numNotStarted: 0,
+            signOut: true});
 
         await I.logInfo(scenarioName, 'Find matches (Issue grant)', caseRef);
         // log in as case worker

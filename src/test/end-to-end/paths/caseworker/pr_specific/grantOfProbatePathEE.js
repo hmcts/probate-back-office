@@ -69,7 +69,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
     await I.enterGrantOfProbateManualPage3('create');
     await I.checkMyAnswers(nextStepName);
-    endState = 'Case created';
+    endState = 'Awaiting documentation';
 
     const caseRef = await I.getCaseRefFromUrl();
 
@@ -91,13 +91,13 @@ Scenario(scenarioName, async function ({I}) {
 
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
-    nextStepName = 'Print the case';
+ /*   nextStepName = 'Print the case';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.printCase(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Awaiting documentation';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);*/
 
     nextStepName = 'Add Comment';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -113,7 +113,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
-    nextStepName = 'Mark as ready for examination';
+/*    nextStepName = 'Mark as ready for examination';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.markForExamination(caseRef);
@@ -122,7 +122,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // When sending a notification, the Date added for the notification is set to today
     markForExaminationConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
-    await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);
+    await I.seeCaseDetails(caseRef, docNotificationsTabConfig, markForExaminationConfig);*/
 
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
@@ -132,7 +132,21 @@ Scenario(scenarioName, async function ({I}) {
     await I.checkMyAnswers(nextStepName);
     await I.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
-    nextStepName = 'Find matches (Examining)';
+    nextStepName = 'Select for QA';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Case selected for QA';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Generate grant preview';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Ready to issue';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+/*    nextStepName = 'Find matches (Examining)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
@@ -154,7 +168,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.markForIssue(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready to issue';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);*/
 
     nextStepName = 'Find matches (Issue grant)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
@@ -178,6 +192,7 @@ Scenario(scenarioName, async function ({I}) {
     // When sending an email notification, the Date added for the email notification is set to today
     issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
-    await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
+    //Need to remove this as part of new CW change
+    //await I.seeCaseDetails(caseRef, examChecklistTabConfig, markForIssueConfig);
 
 }).retry(testConfig.TestRetryScenarios);

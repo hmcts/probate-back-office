@@ -150,7 +150,7 @@ Scenario(scenarioName, async function ({I}) {
             numNotStarted: 0,
             signOut: true});
 
-        await I.logInfo(scenarioName, 'Print case', caseRef);
+/*        await I.logInfo(scenarioName, 'Print case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
@@ -244,6 +244,40 @@ Scenario(scenarioName, async function ({I}) {
             numInProgress: 1,
             numNotStarted: 0,
             checkSubmittedDate: true,
+            signOut: true});
+*/
+        await I.logInfo(scenarioName, 'Select for QA', caseRef);
+        // log in as case worker
+        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCaseworkerChooseNextStepAndGo('Select for QA');
+        await I.caseProgressClickSubmitAndSignOut();
+
+        await I.logInfo(scenarioName, 'Check progress tab for Select for QA', caseRef);
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 6,
+            numInProgress: 1,
+            numNotStarted: 0,
+            signOut: true});
+
+        await I.logInfo(scenarioName, 'Generate grant preview', caseRef);
+        // log in as case worker
+        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCaseworkerChooseNextStepAndGo('Generate grant preview');
+        await I.caseProgressClickSubmitAndSignOut();
+
+        await I.logInfo(scenarioName, 'Check progress tab for Generate grant preview', caseRef);
+        // log back in as solicitor
+        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+        await I.navigateToCase(caseRef);
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 6,
+            numInProgress: 1,
+            numNotStarted: 0,
             signOut: true});
 
         await I.logInfo(scenarioName, 'Find matches (Issue grant)', caseRef);
