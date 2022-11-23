@@ -110,24 +110,6 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
             numNotStarted: 0,
             signOut: true});
 
- /*       await I.logInfo(scenarioName, 'Print case', caseRef);
-        // log in as case worker
-        await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
-        await I.caseProgressCaseworkerChooseNextStepAndGo('Print the case');
-        await I.caseProgressClickSelectOrFillElementsAndContinue([{locator: {css: '#casePrinted'}, option: '1: Yes'}]);
-        await I.caseProgressClickSubmitAndSignOut();
-
-        await I.logInfo(scenarioName, 'Check progress tab for Print case', caseRef);
-        // log back in as solicitor
-        await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        await I.navigateToCase(caseRef);
-        await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 4,
-            numInProgress: 1,
-            numNotStarted: 0,
-            signOut: true});
-*/
         await I.logInfo(scenarioName, 'Stop case', caseRef);
         // log in as case worker
         await I.authenticateWithIdamIfAvailable(false, testConfig.CaseProgressSignInDelay);
