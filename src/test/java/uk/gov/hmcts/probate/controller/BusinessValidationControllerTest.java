@@ -906,7 +906,8 @@ class BusinessValidationControllerTest {
 
     @Test
     void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseMatchingIssueGrant.json");
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadResolveStopForCaseMatchingIssueGrant.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
