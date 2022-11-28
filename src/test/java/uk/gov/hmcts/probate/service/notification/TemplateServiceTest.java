@@ -312,6 +312,14 @@ class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
         assertEquals("sol-grant-raised", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
+                LanguagePreference.WELSH);
+        assertEquals("pa-grant-raised-welsh", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
+                LanguagePreference.WELSH);
+        assertEquals("sol-grant-raised-welsh", response);
     }
 
     @Test
@@ -324,6 +332,14 @@ class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, NO);
         assertEquals("sol-grant-raised", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
+                LanguagePreference.WELSH, NO);
+        assertEquals("pa-grant-raised-welsh", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
+                LanguagePreference.WELSH, NO);
+        assertEquals("sol-grant-raised-welsh", response);
     }
 
     @Test
@@ -336,6 +352,14 @@ class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, YES);
         assertEquals("sol-grant-raised-paper-bulk-scan", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
+                LanguagePreference.WELSH, YES);
+        assertEquals("pa-grant-raised-paper-bulk-scan-welsh", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
+                LanguagePreference.WELSH, YES);
+        assertEquals("sol-grant-raised-paper-bulk-scan-welsh", response);
     }
 
     @Test
