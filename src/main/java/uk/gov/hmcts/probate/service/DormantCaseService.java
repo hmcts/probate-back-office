@@ -32,13 +32,13 @@ public class DormantCaseService {
     private int makeDormantAddTimeMinutes;
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-    public void makeCasesDormant(String dormancyStartDate, String enddate) {
-        log.info("Make Dormant upto date: {}", enddate);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeMadeDormant(dormancyStartDate, enddate);
+    public void makeCasesDormant(String dormancyStartDate, String endDate) {
+        log.info("Make Dormant upto date: {}", endDate);
+        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeMadeDormant(dormancyStartDate, endDate);
         log.info("Found {} cases with dated document for Make Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                        .movedIntoDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
+                        .moveToDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
                         .plusMinutes(makeDormantAddTimeMinutes))
                         .build();
             log.info("Updating case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
@@ -60,10 +60,10 @@ public class DormantCaseService {
         List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(date);
         log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
-            if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMovedIntoDormantDateTime())) {
-                LocalDateTime movedIntoDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
-                        .getMovedIntoDormantDateTime(),DATE_FORMAT);
-                if (returnedCaseDetails.getLastModified().isAfter(movedIntoDormantDateTime)) {
+            if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
+                LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
+                        .getMoveToDormantDateTime(),DATE_FORMAT);
+                if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
                     GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                             .evidenceHandled(false)
                             .build();
