@@ -60,7 +60,7 @@ payment:
     url: ${PAYMENT_URL:http://localhost:8080}
     api: /service-request
     hmctsOrgId: ABA6
-    baseUrl: http://probate-back-office-pr-2086.service.core-compute-preview.internal
+    baseUrl: http://probate-back-office-pr-2102.service.core-compute-preview.internal
 #    baseUrl: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
 pba:
