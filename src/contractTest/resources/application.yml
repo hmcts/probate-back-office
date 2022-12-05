@@ -125,7 +125,7 @@ payment:
     url: ${PAYMENT_URL:http://localhost:8080}
     api: /service-request
     hmctsOrgId: ABA6
-    baseUrl: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
 
 pba:
   retrieval:
