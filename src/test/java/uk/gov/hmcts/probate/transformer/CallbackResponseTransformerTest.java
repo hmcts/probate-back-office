@@ -273,10 +273,10 @@ class CallbackResponseTransformerTest {
     private static final String DECEASED_ANY_CHILDREN = NO;
     private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
     private static final DocumentLink SOT = DocumentLink.builder().documentFilename("SOT.pdf").build();
-    private static final String CASE_CREATED = "CaseCreated";
+    public static final String QA_CASE_STATE = "BOCaseQA";
     private static final String CASE_PRINTED = "CasePrinted";
-    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
-    private static final String EXAMINING = "BOExamining";
+    private static final String READY_FOR_ISSUE = "BOReadyToIssue";
+    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
     private static final LocalDate VALID_ORIGINAL_WILL_SIGNED_DATE = LocalDate.now().minusDays(1);
@@ -2308,14 +2308,14 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldResolveStopCaseCreated() {
+    void shouldResolveStopCaseQA() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .resolveStopState(CASE_CREATED);
+            .resolveStopState(QA_CASE_STATE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
-        assertEquals(CASE_CREATED, callbackResponse.getData().getState());
+        assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
     @Test
@@ -2330,25 +2330,25 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldResolveStopCaseReadyForExamining() {
+    void shouldResolveStopCaseReadyToIssue() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .resolveStopState(READY_FOR_EXAMINATION);
+            .resolveStopState(READY_FOR_ISSUE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
-        assertEquals(READY_FOR_EXAMINATION, callbackResponse.getData().getState());
+        assertEquals(READY_FOR_ISSUE, callbackResponse.getData().getState());
     }
 
     @Test
-    void shouldResolveStopCaseExamining() {
+    void shouldResolveStopCaseCaseMatchingIssueGrant() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .resolveStopState(EXAMINING);
+            .resolveStopState(CASE_MATCHING_ISSUE_GRANT);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
-        assertEquals(EXAMINING, callbackResponse.getData().getState());
+        assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
     }
 
     @Test

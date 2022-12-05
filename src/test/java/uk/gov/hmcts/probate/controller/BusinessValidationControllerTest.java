@@ -868,12 +868,12 @@ class BusinessValidationControllerTest {
     }
 
     @Test
-    void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseCreated.json");
+    void shouldSetStateToBOCaseQAAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForBOCaseQA.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("CaseCreated"))
+            .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
@@ -894,11 +894,11 @@ class BusinessValidationControllerTest {
     @Test
     void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
         String solicitorPayload =
-                testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
+                testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForReadyToIssue.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("BOReadyForExamination"))
+            .andExpect(jsonPath("$.data.state").value("BOReadyToIssue"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
@@ -906,11 +906,12 @@ class BusinessValidationControllerTest {
 
     @Test
     void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForExamining.json");
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadResolveStopForCaseMatchingIssueGrant.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("BOExamining"))
+            .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
