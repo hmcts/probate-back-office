@@ -18,14 +18,12 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
-import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -61,10 +59,6 @@ class CaveatControllerUnitTest {
     private PaymentsService paymentsService;
     @Mock
     private FeeService feeService;
-    @Mock
-    private CreditAccountPaymentTransformer creditAccountPaymentTransformer;
-    @Mock
-    private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
 
     private static final String AUTH = "Auth";
     private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
@@ -115,7 +109,7 @@ class CaveatControllerUnitTest {
     }
 
     @Test
-    void shouldValidateWithServiceRequestAlreadyCreatedErrors() throws NotificationClientException {
+    void shouldValidateWithServiceRequestAlreadyCreatedErrors() {
         assertThrows(BusinessValidationException.class, () -> {
             when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
             doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)

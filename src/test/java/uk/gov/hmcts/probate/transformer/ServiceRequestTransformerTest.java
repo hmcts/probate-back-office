@@ -45,8 +45,10 @@ class ServiceRequestTransformerTest {
     private static final Long CASE_ID = 12345678987654321L;
     @Value("${payment.serviceRequest.hmctsOrgId}")
     private String hmctsOrgId;
-    @Value("${payment.serviceRequest.baseUrl}")
-    private String baseUrl;
+    @Value("${payment.serviceRequest.GrantOfRepresentationCallbackUrl}")
+    private String grantOfRepresentationCallback;
+    @Value("${payment.serviceRequest.CaveatCallbackUrl}")
+    private String caveatCallback;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -88,7 +90,7 @@ class ServiceRequestTransformerTest {
 
         assertEquals(casePayentRequestDto, serviceRequestDto.getCasePaymentRequest());
         assertEquals(paymentFees, serviceRequestDto.getFees());
-        assertEquals(baseUrl + "/payment/gor-payment-request-update", serviceRequestDto.getCallbackUrl());
+        assertEquals(grantOfRepresentationCallback, serviceRequestDto.getCallbackUrl());
         assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
         assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
         assertEquals(hmctsOrgId, serviceRequestDto.getHmctsOrgId());
@@ -111,7 +113,7 @@ class ServiceRequestTransformerTest {
         ServiceRequestDto serviceRequestDto = serviceRequestTransformer.buildServiceRequest(caveatDetails, feeResponse);
         assertEquals(fees, serviceRequestDto.getFees());
         assertEquals(casePaymentRequestDto, serviceRequestDto.getCasePaymentRequest());
-        assertEquals(baseUrl + "/payment/caveat-payment-request-update", serviceRequestDto.getCallbackUrl());
+        assertEquals(caveatCallback, serviceRequestDto.getCallbackUrl());
         assertEquals("SOL-PBA-12345", serviceRequestDto.getCaseReference());
         assertEquals(CASE_ID.toString(), serviceRequestDto.getCcdCaseNumber());
         assertEquals(hmctsOrgId, serviceRequestDto.getHmctsOrgId());

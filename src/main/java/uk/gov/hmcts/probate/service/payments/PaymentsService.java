@@ -72,7 +72,7 @@ public class PaymentsService {
     private static final String SRP_METHOD_ACCOUNT = "Payment by account";
     private static final String SRP_METHOD_CARD = "card";
     private static final String SRP_STATUS_PAID = "Paid";
-    private static final String SRP_STATUS_NOT_PAID = "Not Paid";
+    private static final String SRP_STATUS_NOT_PAID = "Not paid";
     private static final String SRP_STATUS_PARTIALLY_PAID = "Partially paid";
     private static final String CASE_PAYMENT_METHOD_PBA = "pba";
     private static final String CASE_PAYMENT_METHOD_CARD = "card";
@@ -171,7 +171,7 @@ public class PaymentsService {
             return INITIATED;
         }
 
-        throw new IllegalArgumentException("serviceRequestStatus not a valid value");
+        throw new IllegalArgumentException("Invalid serviceRequestStatus:" + serviceRequestStatus);
     }
 
     public PaymentResponse getCreditAccountPaymentResponse(String authToken,

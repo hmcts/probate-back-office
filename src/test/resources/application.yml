@@ -46,6 +46,8 @@ payment:
     api: /service-request
     hmctsOrgId: ABA6
     baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
+    GrantOfRepresentationCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/gor-payment-request-update
+    CaveatCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/caveat-payment-request-update
 
 pba:
   retrieval:

@@ -25,12 +25,11 @@ public class ServiceRequestTransformer {
     private PaymentFeeBuilder paymentFeeBuilder;
     @Value("${payment.serviceRequest.hmctsOrgId}")
     private String hmctsOrgId;
-    @Value("${payment.serviceRequest.baseUrl}")
-    private String baseUrl;
+    @Value("${payment.serviceRequest.GrantOfRepresentationCallbackUrl}")
+    private String grantOfRepresentationCallback;
+    @Value("${payment.serviceRequest.CaveatCallbackUrl}")
+    private String caveatCallback;
 
-    //http://civil-general-applications-demo.service.core-compute-demo.internal/payment-request-update
-    private static final String GRANT_OF_REPRESENTATION_CALLBACK = "/payment/gor-payment-request-update";
-    private static final String CAVEAT_CALLBACK = "/payment/caveat-payment-request-update";
     private static final String ACTION = "payment attempt created";
 
     public ServiceRequestDto buildServiceRequest(CaseDetails caseDetails, FeesResponse feesResponse) {
@@ -40,7 +39,7 @@ public class ServiceRequestTransformer {
                 .responsibleParty(party).action(ACTION).build();
         List<PaymentFee> fees = buildFees(caseDetails.getData(), feesResponse);
         return ServiceRequestDto.builder()
-                .callbackUrl(baseUrl + GRANT_OF_REPRESENTATION_CALLBACK)
+                .callbackUrl(grantOfRepresentationCallback)
                 .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
@@ -60,7 +59,7 @@ public class ServiceRequestTransformer {
         List<PaymentFee> fees = new ArrayList<>();
         fees.add(paymentFee);
         return ServiceRequestDto.builder()
-                .callbackUrl(baseUrl + CAVEAT_CALLBACK)
+                .callbackUrl(caveatCallback)
                 .casePaymentRequest(casePaymentRequestDto)
                 .caseReference(caseDetails.getData().getSolsPBAPaymentReference())
                 .ccdCaseNumber(caseDetails.getId().toString())
