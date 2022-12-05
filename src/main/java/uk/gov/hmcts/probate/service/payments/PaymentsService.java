@@ -69,7 +69,7 @@ public class PaymentsService {
     private static final String DUPLICANT_PAYMENT_ERROR_KEY = "duplicate payment";
     private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
     private static final String PAYMENT_COMMENT = "Service request payment status ";
-    private static final String SRP_METHOD_ACCOUNT = "Payment by account";
+    private static final String SRP_METHOD_ACCOUNT = "payment by account";
     private static final String SRP_METHOD_CARD = "card";
     private static final String SRP_STATUS_PAID = "Paid";
     private static final String SRP_STATUS_NOT_PAID = "Not paid";
@@ -158,8 +158,9 @@ public class PaymentsService {
             return CASE_PAYMENT_METHOD_CARD;
         }
 
-        throw new IllegalArgumentException("Service request payment method for Case:"
-                + response.getCcdCaseNumber() + " not valid");
+        throw new IllegalArgumentException("Invalid Service request payment method:"
+                + response.getServiceRequestPaymentResponseDto().getPaymentMethod()
+                + " for case:" + response.getCcdCaseNumber());
     }
 
     private PaymentStatus getPaymentStatusByServiceRequestStatus(String serviceRequestStatus) {

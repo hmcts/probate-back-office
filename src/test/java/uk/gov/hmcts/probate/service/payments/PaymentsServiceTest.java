@@ -292,9 +292,9 @@ class PaymentsServiceTest {
     }
 
     private static Stream<Arguments> paymentMethodAndStatus() {
-        return Stream.of(arguments("Payment by account", "Paid"),
-                arguments("Payment by account", "Not paid"),
-                arguments("Payment by account", "Partially paid"),
+        return Stream.of(arguments("payment by account", "Paid"),
+                arguments("payment by account", "Not paid"),
+                arguments("payment by account", "Partially paid"),
                 arguments("card", "Paid"),
                 arguments("card", "Not paid"),
                 arguments("card", "Partially paid"));
@@ -419,9 +419,9 @@ class PaymentsServiceTest {
     }
 
     private static Stream<Arguments> serviceRequestStatusAndPaymentMethodAndExceptionMessage() {
-        return Stream.of(arguments("Paid", "Payment by account",
+        return Stream.of(arguments("Paid", "payment by account",
                         "Service request payment for Case:1661448513999408 not valid CaseType:WILL_LODGEMENT"),
-                arguments("Paid", "Cheque", "Service request payment method for Case:1661448513999408 not valid"),
-                arguments(null, "Payment by account", "Invalid serviceRequestStatus:null"));
+                arguments("Paid", "Cheque", "Invalid Service request payment method:Cheque for case:1661448513999408"),
+                arguments(null, "payment by account", "Invalid serviceRequestStatus:null"));
     }
 }
