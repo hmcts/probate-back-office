@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +51,7 @@ class ExelaDataExtractServiceTest {
     @Captor
     private ArgumentCaptor<List<ReturnedCaseDetails>> filteredCasesCaptor;
 
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private CaseData caseData1;
     private CaseData caseData2;
 
