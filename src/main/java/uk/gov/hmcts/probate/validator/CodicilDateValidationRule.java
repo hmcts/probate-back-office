@@ -36,20 +36,20 @@ public class CodicilDateValidationRule implements ValidationRule {
     }
 
     private List<String> getErrorCodeForCodicilDateNotInThePast(CCDData ccdData) {
+        List<String> allErrorCodes = new ArrayList<>();
         List<CodicilAddedDate> codicilDates = ccdData.getCodicilAddedDateList();
         if (Constants.NO.equals(ccdData.getWillHasCodicils()) || codicilDates == null) {
-            return new ArrayList<>();
+            return allErrorCodes;
         }
-        var willSignedDate = ccdData.getOriginalWillSignedDate();
-        List<String> allErrorCodes = new ArrayList<>();
-        for (var i = 0; i < codicilDates.size(); i++) {
-            var codicilDate = codicilDates.get(i).getDateCodicilAdded();
+        LocalDate willSignedDate = ccdData.getOriginalWillSignedDate();
+        for (CodicilAddedDate date : codicilDates) {
+            LocalDate codicilDate = date.getDateCodicilAdded();
             if (codicilDate != null) {
-                if (codicilDate.compareTo(LocalDate.now()) >= 0
+                if (!codicilDate.isBefore(LocalDate.now())
                         && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_IN_THE_PAST)) {
                     allErrorCodes.add(CODICIL_DATE_MUST_BE_IN_THE_PAST);
                 }
-                if (willSignedDate != null && codicilDate.compareTo(willSignedDate) <= 0
+                if (willSignedDate != null && codicilDate.isBefore(willSignedDate)
                         && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE)) {
                     allErrorCodes.add(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE);
                 }

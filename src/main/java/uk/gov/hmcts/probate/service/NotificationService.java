@@ -22,13 +22,14 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.CaveatPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.GrantOfRepresentationPersonalisationService;
 import uk.gov.hmcts.probate.service.notification.SentEmailPersonalisationService;
@@ -81,8 +82,8 @@ public class NotificationService {
     private final SentEmailPersonalisationService sentEmailPersonalisationService;
     private final TemplateService templateService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
-    private final DocumentStoreClient documentStoreClient;
     private final NotificationClientService notificationClientService;
+    private final DocumentManagementService documentManagementService;
     @Autowired
     private BusinessValidationMessageService businessValidationMessageService;
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
@@ -121,9 +122,14 @@ public class NotificationService {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
 
-        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR) && !StringUtils
-            .isEmpty(caseData.getSolsSOTName())) {
-            personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
+            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
+                    .isEmpty(caseData.getSolsSOTSurname())) {
+                personalisation.replace(PERSONALISATION_APPLICANT_NAME,
+                        String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname()));
+            }
         }
         String emailReplyToId = registry.getEmailReplyToId();
         String emailAddress = getEmail(caseData);
@@ -236,10 +242,10 @@ public class NotificationService {
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
                                                   State state) throws NotificationClientException, IOException {
-        String authHeader = serviceAuthTokenGenerator.generate();
-        byte[] sotDocument = documentStoreClient.retrieveDocument(caseDetails.getData()
-            .getProbateSotDocumentsGenerated()
-            .get(caseDetails.getData().getProbateSotDocumentsGenerated().size() - 1).getValue(), authHeader);
+        List<CollectionMember<Document>> probateSotDocumentsGenerated = caseDetails.getData()
+            .getProbateSotDocumentsGenerated();
+        Document document = probateSotDocumentsGenerated.get(probateSotDocumentsGenerated.size() - 1).getValue();
+        byte[] sotDocument = documentManagementService.getDocument(document);
 
         Registry registry =
             registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());

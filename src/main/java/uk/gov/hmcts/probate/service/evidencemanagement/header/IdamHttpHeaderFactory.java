@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 @RequiredArgsConstructor
 class IdamHttpHeaderFactory implements HttpHeadersFactory {
 
+    public static final String CASEWORKER_PROBATE_SCHEDULER = "caseworker-probate-scheduler";
     private final HttpServletRequest httpServletRequest;
     private static final String USER_ID = "user-id";
+    private static final String USER_ROLES = "user-roles";
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
 
@@ -41,6 +43,15 @@ class IdamHttpHeaderFactory implements HttpHeadersFactory {
         headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
         headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));
         headers.setContentType(MediaType.APPLICATION_JSON);
+        return headers;
+    }
+
+    @Override
+    public HttpHeaders getAuthorizationHeadersForDownloadDocuments() {
+        HttpHeaders headers = new HttpHeaders();
+        headers.add(SERVICE_AUTH, httpServletRequest.getHeader(SERVICE_AUTH));
+        headers.add(AUTHORIZATION, httpServletRequest.getHeader(AUTHORIZATION));
+        headers.add(USER_ROLES, CASEWORKER_PROBATE_SCHEDULER);
         return headers;
     }
 }

@@ -1,30 +1,18 @@
 package uk.gov.hmcts.probate.service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
-import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
-import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
-import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
@@ -41,6 +29,17 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
+import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 
 @Slf4j
@@ -60,6 +59,9 @@ public class DocumentGeneratorService {
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
     private static final String FULL_REDEC = "fullRedec";
     private static final String APP_NAME = "applicantName";
+    private static final String LETTER_TYPE = "letterType";
+    private static final String BLANK = "blank";
+    private static final String TEMPLATE = "template";
     private final PlaceholderDecorator placeholderDecorator;
     private final PDFManagementService pdfManagementService;
     private final DocumentService documentService;
@@ -200,28 +202,41 @@ public class DocumentGeneratorService {
             placeholders.putAll(mappedImages);
         }
 
-        return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-            DocumentType.ASSEMBLED_LETTER);
+        if (BLANK.equals(placeholders.get(LETTER_TYPE))) {
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.BLANK_LETTER);
+        } else if (TEMPLATE.equals(placeholders.get(LETTER_TYPE))) {
+            return pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
+                DocumentType.ASSEMBLED_LETTER);
+        } else {
+            throw new NotFoundException("Unable to determine LETTER_TYPE");
+        }
     }
 
-    private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
-        Document statementOfTruth;
+    private DocumentType getSolicitorSoTDocType(CallbackRequest callbackRequest) {
+        DocumentType documentType;
         switch (callbackRequest.getCaseDetails().getData().getCaseType()) {
             case ADMON_WILL:
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_ADMON);
+                documentType = LEGAL_STATEMENT_ADMON;
                 break;
             case INTESTACY:
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, LEGAL_STATEMENT_INTESTACY);
+                documentType = LEGAL_STATEMENT_INTESTACY;
                 break;
             case GRANT_OF_PROBATE:
             default:
                 String schemaVersion = callbackRequest.getCaseDetails().getData().getSchemaVersion();
                 // Set document version to newer trust corp legal statement for cases with 2.0.0 schema version
-                DocumentType legalStatementVersion = schemaVersion != null && schemaVersion.equals("2.0.0")
-                        ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
-                statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, legalStatementVersion);
+                documentType = schemaVersion != null && schemaVersion.equals("2.0.0")
+                    ? LEGAL_STATEMENT_PROBATE_TRUST_CORPS : LEGAL_STATEMENT_PROBATE;
                 break;
         }
+        return documentType;
+    }
+
+    private Document generateSolicitorSoT(CallbackRequest callbackRequest) {
+        Document statementOfTruth;
+        DocumentType documentType = getSolicitorSoTDocType(callbackRequest);
+        statementOfTruth = pdfManagementService.generateAndUpload(callbackRequest, documentType);
         return statementOfTruth;
     }
 

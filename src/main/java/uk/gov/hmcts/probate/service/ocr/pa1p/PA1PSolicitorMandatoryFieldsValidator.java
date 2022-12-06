@@ -14,7 +14,7 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_D
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_KEY_PAPERPAYMENTMETHOD;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_FIELD_NOT_FOUND_LOG;
-import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_FIELD_WARNING_STIRNG;
+import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_FIELD_WARNING_STRING;
 
 @Slf4j
 @Service
@@ -30,7 +30,7 @@ public class PA1PSolicitorMandatoryFieldsValidator {
             log.info("Checking {} against ocr fields", field.getKey());
             if (!ocrFieldValues.containsKey(field.getKey())) {
                 log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
-                warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG, field.getValue(), field.getKey()));
+                warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
             }
         });
 
@@ -39,7 +39,7 @@ public class PA1PSolicitorMandatoryFieldsValidator {
             && StringUtils.isBlank(ocrFieldValues.get(DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER))
         ) {
             log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER);
-            warnings.add(String.format(MANDATORY_FIELD_WARNING_STIRNG,
+            warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING,
                 DEPENDANT_DESC_SOLSFEEACCOUNTNUMBER, DEPENDANT_KEY_SOLSFEEACCOUNTNUMBER));
         }
     }

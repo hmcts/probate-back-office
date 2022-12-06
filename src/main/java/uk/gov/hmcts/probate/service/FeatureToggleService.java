@@ -30,4 +30,8 @@ public class FeatureToggleService {
         return this.ldClient.boolVariation("probate-newfee-register-code", this.ldUser, true);
     }
 
+    public boolean isFeatureToggleOn(String featureToggleCode, boolean defaultValue) {
+        return this.ldClient.boolVariation(featureToggleCode, this.ldUser, defaultValue);
+    }
+
 }

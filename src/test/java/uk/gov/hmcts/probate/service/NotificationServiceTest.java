@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.exception.InvalidEmailException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.CaseType;
+import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
@@ -37,7 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.client.DocumentStoreClient;
+import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.notification.SmeeAndFordPersonalisationService;
 import uk.gov.hmcts.probate.service.template.pdf.LocalDateToWelshStringConverter;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -50,6 +51,8 @@ import uk.gov.service.notify.SendEmailResponse;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -70,6 +73,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
@@ -89,6 +93,7 @@ class NotificationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_DATE_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
@@ -101,6 +106,8 @@ class NotificationServiceTest {
     private static final String PERSONALISATION_DECEASED_FORNAMES = "deceasedFN";
     private static final String PERSONALISATION_DECEASED_SURNAME = "deceasedSN";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
+    private static final String PERSONALISATION_SOLICITOR_SOT_FORENAMES = "solicitor_sot_forenames";
+    private static final String PERSONALISATION_SOLICITOR_SOT_SURNAME = "solicitor_sot_surname";
     private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
@@ -158,7 +165,7 @@ class NotificationServiceTest {
     private AuthTokenGenerator tokenGenerator;
 
     @MockBean
-    private DocumentStoreClient documentStoreClient;
+    private DocumentManagementService documentManagementService;
 
     @MockBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
@@ -217,7 +224,7 @@ class NotificationServiceTest {
     public void setUp() throws NotificationClientException, IOException {
         when(sendEmailResponse.getFromEmail()).thenReturn(Optional.of("emailResponseFrom@probate-test.com"));
         when(sendEmailResponse.getBody()).thenReturn("test-body");
-        when(documentStoreClient.retrieveDocument(any(), any())).thenReturn(DOC_BYTES);
+        when(documentManagementService.getDocument(any())).thenReturn(DOC_BYTES);
 
         when(tokenGenerator.generate()).thenReturn("123");
 
@@ -422,7 +429,7 @@ class NotificationServiceTest {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -431,7 +438,7 @@ class NotificationServiceTest {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoWill)
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -440,7 +447,7 @@ class NotificationServiceTest {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoSubtype)
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         caveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
             .applicationType(PERSONAL)
@@ -1331,6 +1338,10 @@ class NotificationServiceTest {
         personalisation.put(PERSONALISATION_DECEASED_NAME, personalCaseDataCtsc.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtsc.getData().getSolsSOTName());
         personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
+        personalisation
             .put(PERSONALISATION_SOLICITOR_REFERENCE, personalCaseDataCtsc.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
@@ -1377,6 +1388,10 @@ class NotificationServiceTest {
         personalisation
             .put(PERSONALISATION_DECEASED_NAME, personalCaseDataCtscBilingual.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtscBilingual.getData().getSolsSOTName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
             personalCaseDataCtscBilingual.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
@@ -1423,6 +1438,10 @@ class NotificationServiceTest {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, solsCaseDataCtsc.getData().getSolsSOTName());
         personalisation.put(PERSONALISATION_DECEASED_NAME, solsCaseDataCtsc.getData().getDeceasedFullName());
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, solsCaseDataCtsc.getData().getSolsSOTName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation
             .put(PERSONALISATION_SOLICITOR_REFERENCE, solsCaseDataCtsc.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
@@ -1590,6 +1609,10 @@ class NotificationServiceTest {
             personalCaseDataCtscRequestInformation.getData().getDeceasedFullName());
         personalisation
             .put(PERSONALISATION_SOLICITOR_NAME, personalCaseDataCtscRequestInformation.getData().getSolsSOTName());
+        personalisation
+            .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
             personalCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
@@ -1641,6 +1664,10 @@ class NotificationServiceTest {
             .put(PERSONALISATION_DECEASED_NAME, solsCaseDataCtscRequestInformation.getData().getDeceasedFullName());
         personalisation
             .put(PERSONALISATION_SOLICITOR_NAME, solsCaseDataCtscRequestInformation.getData().getSolsSOTName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
             solsCaseDataCtscRequestInformation.getData().getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
@@ -1824,6 +1851,10 @@ class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalGrantDelayedOxford.getId().toString());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
         personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
@@ -1863,6 +1894,10 @@ class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, personalGrantDelayedOxford.getId().toString());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
         personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, null);
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
         personalisation.put(PERSONALISATION_SOLICITOR_NAME, null);
@@ -1903,6 +1938,10 @@ class NotificationServiceTest {
         personalisation.put(PERSONALISATION_CCD_REFERENCE, solicitorGrantDelayedOxford.getId().toString());
         personalisation.put(PERSONALISATION_CAVEAT_CASE_ID, null);
         personalisation.put(PERSONALISATION_DECEASED_DOD, "12th December 2000");
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, null);
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, null);
         personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE, solicitorGrantDelayedOxford.getData()
             .getSolsSolicitorAppReference());
         personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
@@ -2088,5 +2127,63 @@ class NotificationServiceTest {
             LanguagePreference.WELSH);
         assertEquals("Manchester Probate Registry", registryPassedIn.getName());
 
+    }
+
+    @Test
+    void sendApplicationReceivedEmailCreatedByCaseWorkerPPIsExecToSolicitor()
+            throws NotificationClientException, BadRequestException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .solsSolicitorIsExec("Yes")
+                .solsSOTForenames("PP Forenames")
+                .solsSOTSurname("PP Surname")
+                .primaryApplicantForenames("App Forenames")
+                .primaryApplicantSurname("App Surname")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails, Optional.of(CaseOrigin.CASEWORKER));
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation
+                .put(PERSONALISATION_APPLICANT_NAME, "PP Forenames PP Surname");
+        personalisation
+                .put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_NAME, caseDetails.getData().getSolsSOTName());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_FORENAMES, caseDetails.getData().getSolsSOTForenames());
+        personalisation
+                .put(PERSONALISATION_SOLICITOR_SOT_SURNAME, caseDetails.getData().getSolsSOTSurname());
+        personalisation.put(PERSONALISATION_SOLICITOR_REFERENCE,
+                caseDetails.getData().getSolsSolicitorAppReference());
+        personalisation.put(PERSONALISATION_REGISTRY_NAME, "Manchester Probate Registry");
+        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
+        personalisation.put(PERSONALISATION_CASE_STOP_DETAILS_DEC,
+                caseDetails.getData().getBoStopDetailsDeclarationParagraph());
+        personalisation
+                .put(PERSONALISATION_CASE_STOP_DETAILS, caseDetails.getData().getBoStopDetails());
+        personalisation.put(PERSONALISATION_CAVEAT_CASE_ID,
+                caseDetails.getData().getBoCaseStopCaveatId());
+        personalisation.put(PERSONALISATION_DECEASED_DOD,
+                caseDetails.getData().getDeceasedDateOfDeathFormatted());
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH, localDateToWelshStringConverter
+                .convert(caseDetails.getData().getDeceasedDateOfDeath()));
+
+
+
+        verify(notificationClient).sendEmail(
+                eq("sol-application-received"),
+                eq("solicitor@probate-test.com"),
+                eq(personalisation),
+                eq("1234-5678-9012"),
+                eq(""));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 }

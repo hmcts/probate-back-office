@@ -28,6 +28,8 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -128,6 +130,12 @@ class NotificationControllerTest {
     @MockBean
     private GrantNotificationService grantNotificationService;
 
+    @MockBean
+    private FeatureToggleService featureToggleService;
+
+    @MockBean
+    private EvidenceUploadService evidenceUploadService;
+
     @SpyBean
     private DocumentService documentService;
     private List<String> errors = new ArrayList<>();
@@ -197,6 +205,8 @@ class NotificationControllerTest {
         when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
 
         when(redeclarationNotificationService.handleRedeclarationNotification(any())).thenReturn(successfulResponse);
+
+        when(featureToggleService.isFeatureToggleOn("probate-documents-received-notification", false)).thenReturn(true);
 
     }
 
@@ -412,6 +422,9 @@ class NotificationControllerTest {
 
     @Test
     void shouldReturnEmailSolsValidateUnSuccessful() throws Exception {
+        doReturn(true).when(featureToggleService)
+            .isFeatureToggleOn("probate-documents-received-notification", false);
+
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
@@ -443,6 +456,10 @@ class NotificationControllerTest {
 
     @Test
     void shouldReturnEmailPAValidateUnSuccessful() throws Exception {
+
+        doReturn(true).when(featureToggleService)
+            .isFeatureToggleOn("probate-documents-received-notification", false);
+
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
         mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
@@ -571,6 +588,7 @@ class NotificationControllerTest {
             .andExpect(content().string(containsString("data")));
         verify(notificationService).startGrantDelayNotificationPeriod(any());
         verify(notificationService).resetAwaitingDocumentationNotificationDate(any());
+        verify(evidenceUploadService).updateLastEvidenceAddedDate(any());
     }
 
     @Test

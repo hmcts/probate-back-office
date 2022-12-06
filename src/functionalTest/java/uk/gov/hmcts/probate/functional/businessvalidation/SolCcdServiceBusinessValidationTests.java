@@ -43,6 +43,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String TRANSFORM_URL = "/case/casePrinted";
     private static final String CHECKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
+    private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
@@ -56,6 +57,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
     private static final String SOLS_CREATED_URL = "/case/sols-created";
     private static final String SOLS_ACCESS_URL = "/case/sols-access";
+    private static final String REACTIVATE_CASE = "/case/reactivate-case";
 
     private static final String SOLS_CASE_CREATION_PAYLOAD = "solsCaseCreationDefaultPayload.json";
     private static final String SOLS_CASE_CREATE_EVENT_ID = "solicitorCreateApplication";
@@ -141,8 +143,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
-        validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsGreaterThanGross.json",
-            "The gross probate value cannot be less than the net probate value", 200);
+        validatePostFailure("failure.ihtNetIsGreaterThanGross.json",
+                "The gross probate value cannot be less than the net probate value", 200, SOLS_VALIDATE_IHT_ESTATE);
+
     }
 
     @Test
@@ -262,7 +265,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyEmptyRequestReturnsError() {
-        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeaders())
+        RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithCaseworkerUser())
             .config(config)
             .contentType(ContentType.JSON)
             .body("")
@@ -376,20 +379,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWhenWillDateIsOnDeathDate() throws IOException {
-        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
-
-        payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
-            "\"originalWillSignedDate\": \"2018-01-01\",");
-
-        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of death",
-            200, VALIDATE_URL);
-
-        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of death",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
-    }
-
-    @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWhenWillDateIsBeforeDeathDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
@@ -414,21 +403,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
             200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
-
-    @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWithCodicilDateSameAsWillDate() throws IOException {
-        String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
-
-        payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
-            "\"dateCodicilAdded\": \"2017-10-10\"");
-
-        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
-            200, VALIDATE_URL);
-
-        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
-    }
-
+    
     @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWithCodicilDateOneDayAfterWillDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
@@ -642,6 +617,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 + "\n\"whoSharesInCompanyProfits\" : [\"Partners\", \"Members\"],");
 
         validatePostSuccessForPayload(payload, PAPER_FORM_URL);
+    }
+
+    @Test
+    public void verifyCaseworkerDefaultDateOfDeathType() throws IOException {
+        validatePostSuccessAndCheckValue("{\"case_details\":{}}", INIT_PAPER_FORM_URL, "dateOfDeathType", "diedOn");
     }
 
     @Test
@@ -1018,6 +998,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("[APPLICANTSOLICITOR]",
             jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"));
     }
+    
+    @Test
+    public void shouldReturnSuccessReactivateCase() throws IOException {
+        validatePostSuccessForPayload(utils.getJsonFromFile("success.paperForm.json"),
+            REACTIVATE_CASE, utils.getHeadersWithUserId());
+    }
 
     private String transformCase(String jsonFileName, String path) throws IOException {
         final Response jsonResponse = RestAssured.given()
@@ -1039,7 +1025,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .body(jsonPayload)
             .when().post(url)
             .thenReturn();
-
         response.then().assertThat().statusCode(200)
             .and().body("data." + caseDataAttribute, equalTo(caseDataValue));
     }

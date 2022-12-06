@@ -51,6 +51,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -60,7 +61,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.REDEC_NOTIFICATION_SENT_STATE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.DocumentType.SOLICITOR_COVERSHEET;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -69,7 +69,7 @@ class BusinessValidationControllerTest {
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
-    private static final Long ID = 1L;
+    private static final Long ID = 1234567890123456L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
@@ -146,7 +146,10 @@ class BusinessValidationControllerTest {
     private static final String REDECE_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
+    private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -250,7 +253,8 @@ class BusinessValidationControllerTest {
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("ORG_ID");
         organisationEntityResponse.setName("ORGANISATION_NAME");
-        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(AUTH_TOKEN);
+        doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(ID.toString(),
+                AUTH_TOKEN);
 
     }
 
@@ -442,10 +446,8 @@ class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Codicil date must be in the past"))
                 .andExpect(jsonPath("$.errors[1]")
-                        .value("A codicil cannot be made before the will was signed"))
-                .andExpect(jsonPath("$.errors[2]")
                         .value("Original will signed date must be in the past"))
-                .andExpect(jsonPath("$.errors[3]")
+                .andExpect(jsonPath("$.errors[2]")
                         .value("The will must be signed and dated before the date of death"));
     }
 
@@ -467,48 +469,10 @@ class BusinessValidationControllerTest {
     }
 
     @Test
-    void shouldNotValidateWithWillDateOnDateOfDeath() throws Exception {
-        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
-        caseDataBuilder.deceasedDateOfDeath(LocalDate.now().minusDays(1));
-
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("The will must be signed and dated before the date of death"));
-    }
-
-    @Test
     void shouldNotValidateWithCodicilDateBeforeWillDate() throws Exception {
         final List<CollectionMember<CodicilAddedDate>> codicilDates =
                 Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
                         .dateCodicilAdded(LocalDate.now().minusDays(2)).build()));
-
-        caseDataBuilder.codicilAddedDateList(codicilDates);
-        caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
-
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        mockMvc.perform(post(SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL).content(json)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.errors[0]")
-                        .value("A codicil cannot be made before the will was signed"));
-    }
-
-    @Test
-    void shouldNotValidateWithCodicilDateOnWillDate() throws Exception {
-        final List<CollectionMember<CodicilAddedDate>> codicilDates =
-                Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder()
-                        .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
 
         caseDataBuilder.codicilAddedDateList(codicilDates);
         caseDataBuilder.originalWillSignedDate(LocalDate.now().minusDays(1));
@@ -601,6 +565,7 @@ class BusinessValidationControllerTest {
         caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
         caseDataBuilder.solsSolicitorIsExec(NO);
         caseDataBuilder.solsSolicitorIsApplying(NO);
+        caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -616,80 +581,6 @@ class BusinessValidationControllerTest {
             .andExpect(
                 jsonPath("$.data.solsLegalStatementDocument.document_filename")
                         .value("legalStatementAdmon.pdf"));
-    }
-
-    @Test
-    void shouldGenerateSolCoverSheet_Gop() throws Exception {
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        Document probateDocument = Document.builder().documentType(SOLICITOR_COVERSHEET)
-            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
-            .build();
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
-            .thenReturn(probateDocument);
-        mockMvc.perform(post(SOLS_VALIDATE_PROBATE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                jsonPath("$.data.solsCoversheetDocument.document_filename")
-                    .value("solicitorCoverSheet.pdf"));
-    }
-
-    @Test
-    void shouldGenerateSolCoverSheet_AdmonWill() throws Exception {
-        caseDataBuilder.solsWillType(WILL_TYPE_ADMON);
-        caseDataBuilder.solsEntitledMinority(ENTITLED_MINORITY);
-        caseDataBuilder.solsDiedOrNotApplying(DIED_OR_NOT_APPLYING);
-        caseDataBuilder.solsResiduary(RESIDUARY);
-        caseDataBuilder.solsResiduaryType(RESIDUARY_TYPE);
-        caseDataBuilder.solsLifeInterest(LIFE_INTEREST);
-        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
-        caseDataBuilder.solsSolicitorIsExec(NO);
-        caseDataBuilder.solsSolicitorIsApplying(NO);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        Document probateDocument = Document.builder().documentType(SOLICITOR_COVERSHEET)
-            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
-            .build();
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
-            .thenReturn(probateDocument);
-        mockMvc.perform(post(SOLS_VALIDATE_ADMON_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                jsonPath("$.data.solsCoversheetDocument.document_filename")
-                    .value("solicitorCoverSheet.pdf"));
-    }
-
-    @Test
-    void shouldGenerateSolCoverSheet_Intestacy() throws Exception {
-        caseDataBuilder.solsWillType(WILL_TYPE_INTESTACY);
-        caseDataBuilder.primaryApplicantEmailAddress(PRIMARY_APPLICANT_EMAIL);
-        caseDataBuilder.deceasedMaritalStatus(MARITAL_STATUS);
-        caseDataBuilder.solsApplicantRelationshipToDeceased(RELATIONSHIP_TO_DECEASED);
-        caseDataBuilder.solsMinorityInterest(MINORITY_INTEREST);
-        caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
-        caseDataBuilder.solsSolicitorIsExec(NO);
-        caseDataBuilder.solsSolicitorIsApplying(NO);
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-
-        Document probateDocument = Document.builder().documentType(SOLICITOR_COVERSHEET)
-            .documentLink(DocumentLink.builder().documentFilename("solicitorCoverSheet.pdf").build())
-            .build();
-        when(pdfManagementService.generateAndUpload(any(CallbackRequest.class), any(DocumentType.class)))
-            .thenReturn(probateDocument);
-        mockMvc.perform(post(SOLS_VALIDATE_INTESTACY_URL).content(json).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(
-                jsonPath("$.data.solsCoversheetDocument.document_filename")
-                    .value("solicitorCoverSheet.pdf"));
     }
 
     @Test
@@ -936,12 +827,6 @@ class BusinessValidationControllerTest {
         mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
-
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(document);
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test
@@ -1063,10 +948,7 @@ class BusinessValidationControllerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(null);
-
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
@@ -1085,10 +967,7 @@ class BusinessValidationControllerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
-            .thenReturn(null);
-
-        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson)
+        mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
@@ -1196,6 +1075,38 @@ class BusinessValidationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().string(CoreMatchers.containsString("data")));
+    }
+
+    @Test
+    void shouldNotSendEmailForErrorCase() throws Exception {
+        String caseCreatorJson = testUtils.getStringFromFile("paperFormWithoutExecutorAddress.json");
+
+        mockMvc.perform(post(PAPER_FORM_URL).content(caseCreatorJson).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("The executor address line 1 cannot be empty"));
+        verify(notificationService, never()).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
+    }
+
+    @Test
+    void shouldValidateFurtherEvidence() throws Exception {
+        caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SOLS_VALIDATE_FURTHER_EVIDENCE_URL).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReactivateCase() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
+            .andExpect(status().isOk());
     }
 }
 
