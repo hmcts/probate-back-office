@@ -1,5 +1,14 @@
 {
-  "extends": [
-    "config:base"
-  ]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":dependencyDashboard"],
+  "enabledManagers": ["helm-requirements","gradle-wrapper"],
+  "labels": ["dependencies"],
+  "helm-requirements":
+  {
+    "fileMatch": ["\\Chart.yaml$"],
+    "aliases": {
+      "hmctspublic": "https://hmctspublic.azurecr.io/helm/v1/repo/"
+    }
+  },
+  "schedule": ["before 6am on Monday"]
 }
