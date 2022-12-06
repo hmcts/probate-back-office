@@ -55,6 +55,7 @@
     { "name": "deceasedAddressTown", "value": "La La Land" },
     { "name": "deceasedAddressCounty", "value": "Middlesex" },
     { "name": "deceasedAddressPostCode", "value": "LA5 6TE" },
-    { "name": "caseReference", "value": "" }
-    ]
+    { "name": "caseReference", "value": "" },
+    { "name": "legalRepresentative", "value": "true" }
+  ]
   }

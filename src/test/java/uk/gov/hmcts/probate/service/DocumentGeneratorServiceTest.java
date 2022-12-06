@@ -6,10 +6,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -64,6 +71,8 @@ class DocumentGeneratorServiceTest {
     private static final String WELSH_DIGITAL_GRANT_FINAL_REISSUE_FILE_NAME = "welshDigitalGrantFinalReissue.pdf";
     private static final String WELSH_INTESTACY_FINAL_REISSUE_FILE_NAME = "welshIntestacyGrantFinalReissue.pdf";
     private static final String WELSH_ADMON_WILL_FINAL_REISSUE_FILE_NAME = "welshAdmonWillGrantFinalReissue.pdf";
+    private static final String BLANK = "blank";
+    private static final String TEMPLATE = "template";
 
 
     private CallbackRequest callbackRequest;
@@ -171,7 +180,8 @@ class DocumentGeneratorServiceTest {
 
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
-            mapper.convertValue(CaseData.builder().caseType("gop").registryLocation("Bristol").build(), Map.class);
+            mapper.convertValue(CaseData.builder().caseType("gop").letterType(TEMPLATE)
+                .registryLocation("Bristol").build(), Map.class);
 
         when(registryDetailsService.getRegistryDetails(caseDetails)).thenReturn(returnedCaseDetails);
 
@@ -692,6 +702,32 @@ class DocumentGeneratorServiceTest {
             .thenReturn(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build());
         assertEquals(Document.builder().documentType(DocumentType.ASSEMBLED_LETTER).build(),
             documentGeneratorService.generateLetter(callbackRequest, true));
+    }
+
+    @Test
+    public void testGenerateBlankLetter() {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        expectedMap =
+            mapper.convertValue(CaseData.builder().letterType(BLANK).build(), Map.class);
+        when(previewLetterService.addLetterData(any())).thenReturn(expectedMap);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.BLANK_LETTER))
+            .thenReturn(Document.builder().documentType(DocumentType.BLANK_LETTER).build());
+        assertEquals(Document.builder().documentType(DocumentType.BLANK_LETTER).build(),
+            documentGeneratorService.generateLetter(callbackRequest, true));
+    }
+
+    @Test
+    public void unknownLetterTypeShouldThrowException() {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        expectedMap =
+            mapper.convertValue(CaseData.builder().build(), Map.class);
+        when(previewLetterService.addLetterData(any())).thenReturn(expectedMap);
+        when(pdfManagementService.generateDocmosisDocumentAndUpload(expectedMap, DocumentType.BLANK_LETTER))
+            .thenReturn(Document.builder().documentType(DocumentType.BLANK_LETTER).build());
+
+        assertThrows(NotFoundException.class, () -> {
+            documentGeneratorService.generateLetter(callbackRequest, true);
+        });
     }
 
     @Test

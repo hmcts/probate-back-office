@@ -1,6 +1,6 @@
 #!groovy
-import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.AppPipelineConfig
+import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
 @Library("Infrastructure")
@@ -60,7 +60,8 @@ def secrets = [
                 secret('levPassword', 'LEV_PASSWORD'),
                 secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
-                secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD')
+                secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
+                secret('probate-storage-account-primary-connection-string', 'PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -153,6 +154,7 @@ def archiveCoreCaseDataDefinitions(env) {
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
+  env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
   pipelineConf = config;
 
   enableAksStagingDeployment()
@@ -189,7 +191,7 @@ withPipeline("java", product, component) {
     if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
       env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       sh 'yarn install'
-      sh 'yarn test:fullfunctional'
+      sh 'yarn test:fullfunctional-pr'
     }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
@@ -264,9 +266,9 @@ withPipeline("java", product, component) {
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.CCD_DEF_URL="http://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_PRO_URL="http://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_DAT_URL="http://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_PRO_URL="https://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DAT_URL="https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
 
     env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
     env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
@@ -274,9 +276,9 @@ withPipeline("java", product, component) {
     env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
 
     sh """
- docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DEF_URL/health
- docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_PRO_URL/health
- docker run --rm --interactive curlimages/curl --retry 10 --retry-all-errors $CCD_DAT_URL/health
+ docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DEF_URL/health
+ docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_PRO_URL/health
+ docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
   }
 }

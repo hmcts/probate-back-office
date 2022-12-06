@@ -17,7 +17,9 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -30,8 +32,10 @@ import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 
@@ -57,6 +61,8 @@ public class NextStepsController {
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
+    private final PDFManagementService pdfManagementService;
+    private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -69,6 +75,7 @@ public class NextStepsController {
         HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
 
         CallbackResponse callbackResponse;
         Optional<String> newState =
@@ -81,7 +88,10 @@ public class NextStepsController {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-            
+
+            Document coversheet = pdfManagementService
+                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
@@ -101,13 +111,13 @@ public class NextStepsController {
                         paymentResponse, creditAccountPaymentValidationRule);
                 if (creditPaymentResponse.getErrors().isEmpty()) {
                     callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, paymentResponse);
+                        feesResponse, paymentResponse, coversheet);
                 } else {
                     callbackResponse = creditPaymentResponse;
                 }
             } else {
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                    feesResponse, null);
+                    feesResponse, null, coversheet);
             }
         }
 

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,6 +43,9 @@ public final class Constants {
     public static final String EXECUTOR_TYPE_NAMED = "Named";
 
     public static final String EXECUTOR_NOT_APPLYING_REASON = "PowerReserved";
+
+    public static final String SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "ChildAdopted";
+    public static final String PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD = "adoptedChild";
 
     public static final String TITLE_AND_CLEARING_PARTNER_SUCCESSOR_POWER_RESERVED = "TCTPartSuccPowerRes";
     public static final String TITLE_AND_CLEARING_PARTNER_POWER_RESERVED = "TCTPartPowerRes";
@@ -97,6 +101,7 @@ public final class Constants {
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use
     // >, >=, <=, < comparisions etc, converting to numeric
     public static final String LATEST_SCHEMA_VERSION = "2.0.0";
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static List<String> getNonTrustPtnrTitleClearingTypes() {
         return new ArrayList<>(asList(

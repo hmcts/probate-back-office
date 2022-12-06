@@ -17,6 +17,7 @@ import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
@@ -61,6 +62,18 @@ class TemplateServiceTest {
         String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
             LanguagePreference.WELSH);
         assertEquals("pa-application-received-welsh", responseWelsh);
+    }
+
+    @Test
+    void getApplicationReceivedPANoDocsRequired() {
+
+        String response = templateService.getTemplateId(APPLICATION_RECEIVED_NO_DOCS, PERSONAL, CTSC,
+            LanguagePreference.ENGLISH);
+        assertEquals("pa-application-received-no-docs", response);
+
+        String responseWelsh = templateService.getTemplateId(APPLICATION_RECEIVED_NO_DOCS, PERSONAL, CTSC,
+            LanguagePreference.WELSH);
+        assertEquals("pa-application-received-no-docs-welsh", responseWelsh);
     }
 
 
@@ -299,6 +312,14 @@ class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH);
         assertEquals("sol-grant-raised", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
+                LanguagePreference.WELSH);
+        assertEquals("pa-grant-raised-welsh", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
+                LanguagePreference.WELSH);
+        assertEquals("sol-grant-raised-welsh", response);
     }
 
     @Test
@@ -311,6 +332,14 @@ class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, NO);
         assertEquals("sol-grant-raised", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
+                LanguagePreference.WELSH, NO);
+        assertEquals("pa-grant-raised-welsh", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
+                LanguagePreference.WELSH, NO);
+        assertEquals("sol-grant-raised-welsh", response);
     }
 
     @Test
@@ -323,6 +352,14 @@ class TemplateServiceTest {
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.ENGLISH, YES);
         assertEquals("sol-grant-raised-paper-bulk-scan", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
+                LanguagePreference.WELSH, YES);
+        assertEquals("pa-grant-raised-paper-bulk-scan-welsh", response);
+
+        response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
+                LanguagePreference.WELSH, YES);
+        assertEquals("sol-grant-raised-paper-bulk-scan-welsh", response);
     }
 
     @Test

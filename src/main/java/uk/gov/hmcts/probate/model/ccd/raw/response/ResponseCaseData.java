@@ -120,6 +120,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String primaryApplicantSameWillName;
     private final String primaryApplicantAliasReason;
     private final String primaryApplicantOtherReason;
+    private final String primaryApplicantNotRequiredToSendDocuments;
     private final String solsExecutorAliasNames;
     @JsonProperty(value = "executorsApplying")
     private final List<CollectionMember<AdditionalExecutorApplying>> additionalExecutorsApplying;
@@ -359,4 +360,9 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedHadLateSpouseOrCivilPartner;
     private final String ihtUnusedAllowanceClaimed;
     private final String showIht400421Page;
+    private final String moveToDormantDateTime;
+    private final String letterType;
+    private final String caseworkerName;
+    private final String letterText;
+    private final String includeStatementOfTruth;
 }

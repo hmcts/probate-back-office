@@ -26,7 +26,9 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
@@ -50,6 +52,7 @@ import java.util.Map;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 
@@ -65,6 +68,7 @@ public class NotificationController {
     private final DocumentGeneratorService documentGeneratorService;
     private final DocumentsReceivedNotificationService documentsReceivedNotificationService;
     private final NotificationService notificationService;
+    private final EvidenceUploadService evidenceUploadService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
@@ -77,6 +81,7 @@ public class NotificationController {
     private final RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
     private final ObjectMapper objectMapper;
     private final GrantNotificationService grantNotificationService;
+    private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -90,7 +95,12 @@ public class NotificationController {
             CallbackResponse response =
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
-                Document sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+                Document sentEmailAsDocument;
+                if (YES.equals(caseData.getPrimaryApplicantNotRequiredToSendDocuments())) {
+                    sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetails);
+                } else {
+                    sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+                }
                 return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
             }
         }
@@ -195,6 +205,7 @@ public class NotificationController {
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
     }
@@ -208,6 +219,7 @@ public class NotificationController {
         log.info("start-delayed-notify-period started");
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
+        evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }

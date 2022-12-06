@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.businessrule.AdmonWillRenunicationRule;
 import uk.gov.hmcts.probate.businessrule.NotarialWillBusinessRule;
 import uk.gov.hmcts.probate.businessrule.TCResolutionLodgedWithApplicationRule;
 import uk.gov.hmcts.probate.businessrule.IhtEstate207BusinessRule;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA14FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA15FormBusinessRule;
 import uk.gov.hmcts.probate.businessrule.PA16FormBusinessRule;
@@ -77,7 +78,7 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
-    private static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
+    static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
     private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
@@ -98,6 +99,7 @@ public class TaskStateRenderer {
     private final TCResolutionLodgedWithApplicationRule tcResolutionLodgedWithApplicationRule;
     private final DispenseNoticeSupportDocsRule dispenseNoticeSupportDocsRule;
     private final NotarialWillBusinessRule notarialWillBusinessRule;
+    private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
 
     // isProbate - true if application for probate, false if for caveat
     public String renderByReplace(TaskListState currState, String html, Long caseId,
@@ -182,7 +184,10 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
-    private String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
+    String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
+        if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
+            return DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,"");
+        }
         Map<String, String> keyValues = getKeyValues(details.getData());
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,

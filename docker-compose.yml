@@ -470,6 +470,7 @@ services:
       PAYMENT_URL: http://wiremock:8080
       PRD_API_URL: http://wiremock:8080
       ACA_SERVICE_API_BASEURL: http://manage-case-assignment:4454
+      CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api:4455
     ports:
       - 4104:4104
     depends_on:
@@ -484,17 +485,20 @@ services:
     environment:
       - IDAM_API_URL=http://sidam-api:5000
       - IDAM_S2S_URL=http://service-auth-provider-api:8080
-      - PAYMENT_API_URL=http://payments-api:8383
+      - PAYMENT_API_URL=http://payments-api:8080
       - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
       - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
-      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
+      - FEES_REGISTRY_URL=http://fees-api:8080/fees-register
       - USE_REDIS=false
       - REDIS_USE_TLS=false
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
-      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
-      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
+      - LAUNCHDARKLY_KEY=${LD_SDK_FE_KEY}
+      - LAUNCHDARKLY_USER_KEY=${LD_FE_USER_KEY}
+      - REFORM_ENVIRONMENT=local
+      - PROBATE_USER_EMAIL=ProbateSuperuser@gmail.com
+      - PROBATE_USER_PASSWORD=Pa55word11
 
     ports:
       - 3000:3000
@@ -727,7 +731,7 @@ services:
     image: "${CCD_CASE_DOCUMENT_AM_API_USE_LOCAL-hmctspublic.azurecr.io/}ccd/case-document-am-api:${CCD_CASE_DOCUMENT_AM_API_TAG:-latest}"
     environment:
       CASE_DOCUMENT_AM_API_S2S_SECRET: "AAAAAAAAAAAAAAAC"
-      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor
+      CASE_DOCUMENT_S2S_AUTHORISED_SERVICES: ccd_case_document_am_api,ccd_gw,xui_webapp,ccd_data,bulk_scan_processor,probate_backend
       IDAM_API_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
       IDAM_OIDC_URL: "${IDAM_STUB_SERVICE_NAME:-http://sidam-api:5000}"
       S2S_URL: http://service-auth-provider-api:8080

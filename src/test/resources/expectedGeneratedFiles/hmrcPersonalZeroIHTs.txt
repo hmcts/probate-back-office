@@ -1,5 +1,5 @@
 ENGLAND
-T~2222333344445555~Liverpool~MR~PETAR~KRNETA~~~17-AUG-2018~~20-OCT-1940~77~England and Wales~7 Pevensey Avenue~Leicester~~~LE5 6XQ~24-OCT-2018~~ANDJELKA~KOMODROMOS~~37 Otter Lane~Mountsorrel~Loughborough~Leicestershire~LE12 7GL~~Bob~Smith~~123 Fake street~North West East Field~~~AB2 3CD~~~~~~~~~~~~~~~~~~~~~~~~~0~Y~0~PROBATE~Y~
+T~2222333344445555~Liverpool~MR~PETAR~KRNETA~~~17-AUG-2018~~20-OCT-1940~77~England and Wales~7 Pevensey Avenue~Leicester~~~LE5 6XQ~24-OCT-2018~~ANDJELKA~KOMODROMOS~~37 Otter Lane~Mountsorrel~Loughborough~Leicestershire~LE12 7GL~~Bob~Smith~~123 Fake street~North West East Field~~~AB2 3CD~~~~~~~~~~~~~~~~~~~~~~~~~0~Y~0~PROBATE~Y~280000~250000~245000~Yes~marriedCivilPartnership~Yes~1~2~
 A~2222333344445555~~Citizen PIPER~KRENT~
 A~2222333344445555~~Citizen PETE~KRENT~
 A~2222333344445555~~Citizen PETRA~KRENT~

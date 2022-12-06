@@ -464,6 +464,8 @@ class CallbackResponseTransformerTest {
     private OrganisationsRetrievalService organisationsRetrievalService;
     @Mock
     private PaymentResponse paymentResponseMock;
+    @Mock
+    Document coversheetMock;
 
     @Mock
     private ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
@@ -774,6 +776,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getId()).thenReturn(123456789012456L);
         when(feesResponse.getOverseasCopiesFeeResponse()).thenReturn(feeForNonUkCopies);
         when(feesResponse.getUkCopiesFeeResponse()).thenReturn(feeForUkCopies);
         when(feesResponse.getApplicationFeeResponse()).thenReturn(applicationFee);
@@ -868,7 +871,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock);
+                paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -889,7 +892,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock);
+                paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -913,7 +916,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -940,7 +943,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock);
+                feesResponse, paymentResponseMock, coversheetMock);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
@@ -954,7 +957,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         paymentResponseMock = null;
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -976,7 +979,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -988,7 +991,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock);
+            paymentResponseMock, coversheetMock);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -1000,7 +1003,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock);
+                paymentResponseMock, coversheetMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1013,6 +1016,23 @@ class CallbackResponseTransformerTest {
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
+    }
+
+    @Test
+    void shouldAddCoversheet() {
+        when(coversheetMock.getDocumentLink()).thenReturn(documentLinkMock);
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
+                feesResponse, paymentResponseMock, coversheetMock);
+
+        assertEquals(documentLinkMock, callbackResponse.getData().getSolsCoversheetDocument());
+    }
+
+    @Test
+    void shouldBeNullSafe() {
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
+                feesResponse, paymentResponseMock, null);
+
+        assertEquals(null, callbackResponse.getData().getSolsCoversheetDocument());
     }
 
     @Test
@@ -3586,18 +3606,18 @@ class CallbackResponseTransformerTest {
 
     @Test
     void testBuildOrganisationPolicy() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
 
-        assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(CaseData.builder().build(), "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
+        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
@@ -3607,7 +3627,7 @@ class CallbackResponseTransformerTest {
         organisationEntityResponse.setOrganisationIdentifier(ORG_ID);
         organisationEntityResponse.setName(ORGANISATION_NAME);
 
-        when(this.organisationsRetrievalService.getOrganisationEntity(anyString()))
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(organisationEntityResponse);
         OrganisationPolicy organisationPolicy = mock(OrganisationPolicy.class);
         when(organisationPolicy.getOrgPolicyCaseAssignedRole()).thenReturn("Org Policy Case Assigned Role");
@@ -3615,17 +3635,44 @@ class CallbackResponseTransformerTest {
 
         CaseData caseData = CaseData.builder().applicantOrganisationPolicy(organisationPolicy)
             .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
-            .buildOrganisationPolicy(caseData, "ABC123");
+            .buildOrganisationPolicy(caseDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
         assertEquals("Org Policy Reference", actualBuildOrganisationPolicyResult.getOrgPolicyReference());
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString());
+        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
+    }
+
+    @Test
+    void shouldWipeCodicilAddedDateForNoCodicil() {
+        caseDataBuilder.willHasCodicils(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getCodicilAddedDateList());
+    }
+
+    @Test
+    void shouldWipeCodicilAddedDateForNoCodicilDoTransform() {
+        caseDataBuilder.willHasCodicils(NO);
+        caseDataBuilder.recordId(null);
+        caseDataBuilder.paperForm(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertNull(callbackResponse.getData().getCodicilAddedDateList());
     }
 
 }

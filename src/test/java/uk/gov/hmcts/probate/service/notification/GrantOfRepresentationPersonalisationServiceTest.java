@@ -24,6 +24,7 @@ import uk.gov.service.notify.SendEmailResponse;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,10 +42,13 @@ class GrantOfRepresentationPersonalisationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_DATE_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final DateTimeFormatter EXELA_DATE = DateTimeFormatter.ofPattern("yyyyMMdd");
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_DECEASED_NAME = "deceased_name";
     private static final String PERSONALISATION_SOLICITOR_NAME = "solicitor_name";
+    private static final String PERSONALISATION_SOLICITOR_SOT_FORENAMES = "solicitor_sot_forenames";
+    private static final String PERSONALISATION_SOLICITOR_SOT_SURNAME = "solicitor_sot_surname";
     private static final String PERSONALISATION_SOLICITOR_REFERENCE = "solicitor_reference";
     private static final String PERSONALISATION_REGISTRY_NAME = "registry_name";
     private static final String PERSONALISATION_REGISTRY_PHONE = "registry_phone";
@@ -110,6 +114,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedSurname("deceased surname")
             .deceasedForenames("deceased forenames")
             .solsSOTName("sols sot name")
+            .solsSOTForenames("sols sot forenames")
+            .solsSOTSurname("sols sot surname")
             .solsSolicitorAppReference("app reference")
             .boStopDetails("stop details")
             .boCaseStopCaveatId("123456789012345678")
@@ -118,7 +124,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .build();
 
         caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
-        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
+        returnedCaseDetails = new ReturnedCaseDetails(caseData, LAST_DATE_MODIFIED, ID);
 
         exelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -128,7 +134,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataWithCommas.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -138,7 +144,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
             .registryLocation("Cardiff")
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -148,7 +154,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoWill)
             .registryLocation("Cardiff")
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -158,7 +164,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoDOB.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -167,7 +173,7 @@ class GrantOfRepresentationPersonalisationServiceTest {
             .grantIssuedDate("2019-05-01")
             .scannedDocuments(scannedDocumentsNoSubtype)
             .registryLocation("Cardiff")
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
     }
 
@@ -182,6 +188,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
         assertEquals("app reference", response.get(PERSONALISATION_SOLICITOR_REFERENCE));
         assertEquals("sols sot name", response.get(PERSONALISATION_SOLICITOR_NAME));
+        assertEquals("sols sot forenames", response.get(PERSONALISATION_SOLICITOR_SOT_FORENAMES));
+        assertEquals("sols sot surname", response.get(PERSONALISATION_SOLICITOR_SOT_SURNAME));
         assertEquals("stop details", response.get(PERSONALISATION_CASE_STOP_DETAILS));
         assertEquals("123456789012345678", response.get(PERSONALISATION_CAVEAT_CASE_ID));
         assertEquals(caseDetails.getData().getDeceasedDateOfDeathFormatted(),
@@ -205,6 +213,8 @@ class GrantOfRepresentationPersonalisationServiceTest {
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
         assertEquals("app reference", response.get(PERSONALISATION_SOLICITOR_REFERENCE));
         assertEquals("sols sot name", response.get(PERSONALISATION_SOLICITOR_NAME));
+        assertEquals("sols sot forenames", response.get(PERSONALISATION_SOLICITOR_SOT_FORENAMES));
+        assertEquals("sols sot surname", response.get(PERSONALISATION_SOLICITOR_SOT_SURNAME));
         assertEquals("stop details", response.get(PERSONALISATION_CASE_STOP_DETAILS));
         assertEquals("123456789012345678", response.get(PERSONALISATION_CAVEAT_CASE_ID));
         assertEquals(caseDetails.getData().getDeceasedDateOfDeathFormatted(),

@@ -11,6 +11,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -67,6 +68,10 @@ public class CaseQueryService {
         + "grants_issued_date_range_query_hmrc.json";
     private static final String GRANT_RANGE_QUERY_SMEEFORD = "templates/elasticsearch/caseMatching/"
         + "grants_issued_date_range_query_smeeford.json";
+    private static final String DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
+            + "dormant_date_range_query.json";
+    private static final String REACTIVATE_DORMANT_QUERY = "templates/elasticsearch/caseMatching/"
+            + "reactivate_dormant_date_range_query.json";
     private static final String SORT_COLUMN = "id";
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -109,6 +114,15 @@ public class CaseQueryService {
 
         return runQueryWithPagination(invokedFrom + " findAllCasesWithGrantIssuedDate", jsonQuery, queryDate,
                 queryDate);
+    }
+
+    public List<ReturnedCaseDetails> findCaseToBeMadeDormant(String dormancyStartDate,String endDate) {
+        //When a new state is being added ,it should be added in the elastic search query DORMANT_QUERY
+        return findCaseStateWithinDateRange("MakeDormant", DORMANT_QUERY, dormancyStartDate, endDate);
+    }
+
+    public List<ReturnedCaseDetails> findCaseToBeReactivatedFromDormant(String date) {
+        return findCaseStateWithinDateRange("ReactivateDormant", REACTIVATE_DORMANT_QUERY, date, date);
     }
 
     public List<ReturnedCaseDetails> findCaseStateWithinDateRangeExela(String startDate, String endDate) {
@@ -196,8 +210,12 @@ public class CaseQueryService {
             ReturnedCases cases = runQuery(paginatedQry);
             total = cases.getTotal();
             pagedResults = cases.getCases();
-            log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
-                    pagedResults.get(pagedResults.size() - 1).getId());
+            if (!CollectionUtils.isEmpty(pagedResults)) {
+                log.info("index: {}, first|last case ref: {}|{}", index, pagedResults.get(0).getId(),
+                        pagedResults.get(pagedResults.size() - 1).getId());
+            } else {
+                log.info("index: {}, first|last case ref: {}|{}", index, "Not found", "Not found");
+            }
             allResults.addAll(pagedResults);
             index = index + pagedResults.size();
             pageStart = pageStart + dataExtractPaginationSize;

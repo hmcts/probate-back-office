@@ -91,7 +91,8 @@
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
-      "solsSOTNeedToUpdate": "No"
+      "solsSOTNeedToUpdate": "No",
+      "furtherEvidenceForApplication": "Further Evidence"
     }
   }
 }
