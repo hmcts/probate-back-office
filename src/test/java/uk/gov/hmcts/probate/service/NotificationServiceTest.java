@@ -51,6 +51,8 @@ import uk.gov.service.notify.SendEmailResponse;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -91,6 +93,7 @@ class NotificationServiceTest {
 
     private static final Long ID = 1L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_DATE_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private static final Long CASE_ID = 12345678987654321L;
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
@@ -426,7 +429,7 @@ class NotificationServiceTest {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoWillReference.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -435,7 +438,7 @@ class NotificationServiceTest {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoWill)
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         exelaCaseDataNoSubtype.add(new ReturnedCaseDetails(CaseData.builder()
             .applicationType(PERSONAL)
@@ -444,7 +447,7 @@ class NotificationServiceTest {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocumentsNoSubtype)
-            .build(), LAST_MODIFIED, ID));
+            .build(), LAST_DATE_MODIFIED, ID));
 
         caveatRaisedCaseData = new CaveatDetails(CaveatData.builder()
             .applicationType(PERSONAL)

@@ -1080,6 +1080,7 @@ public class CallbackResponseTransformer {
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
+            .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
 
         if (transform) {
