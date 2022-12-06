@@ -565,6 +565,7 @@ public class CaseData extends CaseDataParent {
 
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
+    private final String moveToDormantDateTime;
     private final String letterType;
     private final String caseworkerName;
     private final String letterText;
