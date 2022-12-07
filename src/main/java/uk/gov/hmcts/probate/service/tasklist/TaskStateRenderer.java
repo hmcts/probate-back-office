@@ -82,6 +82,8 @@ public class TaskStateRenderer {
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
     private static final String MAKE_PAYMENT_TEXT = "Make payment";
     private static final String NO_PAYMENT_REQUIRED_TEXT = "</p><p><secText>No payment is required.</secText>";
+    private static final String PAYMENT_HINT_TEXT = "</p><p><secText>Once payment is made, "
+        + "you'll need to refresh the page or  re-enter the case for the payment status to update.</secText>";
     static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
@@ -191,10 +193,14 @@ public class TaskStateRenderer {
     }
 
     private String renderPaymentHintText(TaskListState currState, CaseDetails details) {
-        return currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
                 && details.getData().getServiceRequestReference() == null
                 && (details.getData().getTotalFee() == null
-                || details.getData().getTotalFee().compareTo(BigDecimal.ZERO) == 0) ? NO_PAYMENT_REQUIRED_TEXT : "";
+                || details.getData().getTotalFee().compareTo(BigDecimal.ZERO) == 0)) {
+            return NO_PAYMENT_REQUIRED_TEXT;
+        }
+        return currState == TaskListState.TL_STATE_MAKE_PAYMENT
+                || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED ? PAYMENT_HINT_TEXT : "";
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,

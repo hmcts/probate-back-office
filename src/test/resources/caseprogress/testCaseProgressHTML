@@ -3,7 +3,8 @@
 <div><addAppLink/></div>
 <div><rvwLink/></div>
 <div><paymentTabLink/></div>
-<div><sendDocsLink/>/div>
+<div><paymentHintText/></div>
+<div><sendDocsLink/></div>
 <div><authDocsLink/></div>
 <div><examAppLink/></div>
 <div><issueGrantLink/></div>

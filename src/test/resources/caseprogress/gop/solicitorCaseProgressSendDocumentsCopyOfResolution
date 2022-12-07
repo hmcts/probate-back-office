@@ -3,6 +3,7 @@
 <div>Add application details</div>
 <div>Review and sign legal statement and submit application</div>
 <div>Make payment</div>
+<div></p><p><secText>No payment is required.</secText></div>
 <div><details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">
     <span class="govuk-details__summary-text">
@@ -12,7 +13,7 @@
   <div class="govuk-details__text">
     You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 9999 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li>the original will</li><li>the inheritance tax form IHT207</li><li>a certified copy of the resolution</li></ul>
   </div>
-</details>/div>
+</details></div>
 <div>Authenticate documents</div>
 <div>Examine application</div>
 <div>Issue grant of representation<</div>
