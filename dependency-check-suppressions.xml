@@ -143,4 +143,18 @@
         <cve>CVE-2020-29244</cve>
         <cve>CVE-2020-29245</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: commons-beanutils-1.9.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/commons\-beanutils/commons\-beanutils@.*$</packageUrl>
+        <cve>CVE-2021-37533</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: snakeyaml-1.30.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-1471</cve>
+    </suppress>
 </suppressions>
