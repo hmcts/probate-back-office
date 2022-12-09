@@ -11,10 +11,8 @@ const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/event
 const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');
 const markForExaminationConfig = require('src/test/end-to-end/pages/markForExamination/markForExaminationConfig');
 const markForIssueConfig = require('src/test/end-to-end/pages/markForIssue/markForIssueConfig');
-
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE');
 const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE');
-
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
@@ -25,7 +23,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfP
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
 const ihtTabConfigUpdate = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtUpdateTabConfig');
-
+const nextStepConfig = require('src/test/end-to-end/pages/nextStep/nextStepConfig.json');
 const {
     legacyParse,
     convertTokens
@@ -83,8 +81,8 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Handle supplementary evidence';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.logInfo(scenarioName, nextStepConfig, caseRef);
+    await I.chooseNextStep(nextStepConfig.handleSupEvidence);
     await I.handleEvidence(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
@@ -93,13 +91,13 @@ Scenario(scenarioName, async function ({I}) {
 
     nextStepName = 'Add Comment';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.addComment);
     await I.enterComment(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Upload Documents';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.uploadDocument);
     await I.uploadDocument(caseRef, documentUploadConfig);
     await I.enterEventSummary(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
@@ -108,28 +106,28 @@ Scenario(scenarioName, async function ({I}) {
     // "reverting" update back to defaults - to enable case-match with matching case
     nextStepName = 'Amend case details';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.amendCaseDetails);
     await I.enterGrantOfProbatePage4('EE');
     await I.checkMyAnswers(nextStepName);
     await I.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
     nextStepName = 'Select for QA';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.selectForQa);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case selected for QA';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Generate grant preview';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.generateGrantPreview);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready to issue';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Find matches (Issue grant)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.findMatchesIssueGrant);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';
@@ -138,7 +136,7 @@ Scenario(scenarioName, async function ({I}) {
 
     nextStepName = 'Issue grant';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
+    await I.chooseNextStep(nextStepConfig.issueGrant);
     await I.issueGrant(caseRef);
     endState = 'Grant issued';
     await I.logInfo(scenarioName, endState, caseRef);
