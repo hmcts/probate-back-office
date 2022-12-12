@@ -52,6 +52,11 @@ public class SecurityUtils {
 
     @Value("${auth.provider.client.password}")
     private String caseworkerPassword;
+    @Value("${SCHEDULER_CASEWORKER_USERNAME}")
+    private String schedulerUserName;
+
+    @Value("${SCHEDULER_CASEWORKER_PASSWORD}")
+    private String schedulerPassword;
 
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
@@ -70,7 +75,7 @@ public class SecurityUtils {
     }
 
     public SecurityDTO getUserByAuthTokenAndServiceSecurityDTO() {
-        String token = getCaseworkerToken();
+        String token = getSchedulerToken();
         return SecurityDTO.builder()
                 .authorisation(token)
                 .serviceAuthorisation(generateServiceToken())
@@ -107,6 +112,10 @@ public class SecurityUtils {
 
     public String getCaseworkerToken() {
         return getIdamOauth2Token(caseworkerUserName, caseworkerPassword);
+    }
+
+    public String getSchedulerToken() {
+        return getIdamOauth2Token(schedulerUserName, schedulerPassword);
     }
 
     private String getIdamOauth2Token(String username, String password) {
