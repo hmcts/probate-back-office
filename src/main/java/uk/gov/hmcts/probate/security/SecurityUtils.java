@@ -52,10 +52,10 @@ public class SecurityUtils {
 
     @Value("${auth.provider.client.password}")
     private String caseworkerPassword;
-    @Value("${SCHEDULER_CASEWORKER_USERNAME}")
+    @Value("${probate.scheduler.username}")
     private String schedulerUserName;
 
-    @Value("${SCHEDULER_CASEWORKER_PASSWORD}")
+    @Value("${probate.scheduler.password}")
     private String schedulerPassword;
 
     public SecurityDTO getSecurityDTO() {
