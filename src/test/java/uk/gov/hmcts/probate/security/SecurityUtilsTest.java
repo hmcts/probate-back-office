@@ -18,6 +18,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atMostOnce;
 import static org.mockito.Mockito.verify;
@@ -124,6 +125,20 @@ class SecurityUtilsTest {
         idamToken = securityUtils.getSchedulerToken();
 
         assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+    }
+
+    @Test
+    void shouldReturnExceptionToken() {
+        ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
+
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
+        assertThrows(RuntimeException.class, () -> {
+            when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                    .thenReturn(null);
+        securityUtils.getSchedulerToken();
+        });
+
     }
 
     @Test
