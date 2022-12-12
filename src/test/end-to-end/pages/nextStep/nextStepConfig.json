@@ -2,17 +2,18 @@
   "addComment": "Add Comment",
   "uploadDocument": "Upload Documents",
   "generateGrantPreview": "Generate grant preview",
-  "selectForQa": "Select the case for quality assurance",
+  "selectForQa": "Select for QA",
   "attachScanDocs": "Attach scanned docs",
   "handleSupEvidence": "Handle supplementary evidence",
   "withdrawApplication": "Withdraw application",
   "amendCaseDetails": "Amend case details",
-  "stopCase": "Mark the case as stopped",
+  "MarkStopCase": "Mark the case as stopped",
   "rePrintCase": "Reprint document",
   "selectMultipleRecords": "Select from multiple records",
   "manuallyVerifyLev": "'Trigger LEV api lookup",
   "generateGrantPreviewDraft": "Generate grant preview (draft)",
   "findMatches": "Find matches (cases)",
   "issueGrant": "issue grant",
-  "findMatchesIssueGrant": "Find matches (Issue grant)"
+  "findMatchesIssueGrant": "Find matches (Issue grant)",
+  "stopCase": "Stop case"
 }
