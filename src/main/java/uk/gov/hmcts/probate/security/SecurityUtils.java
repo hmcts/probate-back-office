@@ -132,6 +132,7 @@ public class SecurityUtils {
             throw e;
         }
     }
+
     private String getIdamOauth2Token(String username, String password) {
 
         TokenResponse idamOpenIdTokenResponse;
