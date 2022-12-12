@@ -123,9 +123,9 @@ public class SecurityUtils {
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
         try {
-                log.info("No cached IDAM token found, requesting from IDAM service.");
-                idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
-                log.info("Getting AccessToken...");
+            log.info("No cached IDAM token found, requesting from IDAM service.");
+            idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
+            log.info("Getting AccessToken...");
             return BEARER + idamOpenIdTokenResponse.accessToken;
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
