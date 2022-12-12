@@ -115,9 +115,23 @@ public class SecurityUtils {
     }
 
     public String getSchedulerToken() {
-        return getIdamOauth2Token(schedulerUserName, schedulerPassword);
+        return getIdamOauth2TokenScheduler(schedulerUserName, schedulerPassword);
     }
 
+    private String getIdamOauth2TokenScheduler(String username, String password) {
+
+        TokenResponse idamOpenIdTokenResponse;
+        log.info("Client ID: {} . Authenticating...", authClientId);
+        try {
+                log.info("No cached IDAM token found, requesting from IDAM service.");
+                idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
+                log.info("Getting AccessToken...");
+            return BEARER + idamOpenIdTokenResponse.accessToken;
+        } catch (Exception e) {
+            log.error("Exception on IDAM token" + e.getMessage());
+            throw e;
+        }
+    }
     private String getIdamOauth2Token(String username, String password) {
 
         TokenResponse idamOpenIdTokenResponse;
