@@ -142,7 +142,6 @@ module.exports = function () {
         authenticateUserShareCase: steps.IDAM.signInShareCase,
         verifyShareCase: steps.shareCase.verifyShareCase,
         shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
-        shareCaseDelete: steps.shareCase.shareCaseDelete,
-        stopCaseProbate:steps.stopCaseProbate.stopCase
+        shareCaseDelete: steps.shareCase.shareCaseDelete
     });
 };
