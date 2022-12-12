@@ -136,7 +136,7 @@ class SecurityUtilsTest {
         assertThrows(RuntimeException.class, () -> {
             when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
                     .thenReturn(null);
-        securityUtils.getSchedulerToken();
+            securityUtils.getSchedulerToken();
         });
 
     }
