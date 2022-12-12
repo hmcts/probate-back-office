@@ -46,7 +46,8 @@ public class DormantCaseService {
                 ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
                             returnedCaseDetails.getId().toString(),
                             grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
-                            securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), DORMANT_SUMMARY, DORMANT_SUMMARY);
+                            securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), DORMANT_SUMMARY,
+                        DORMANT_SUMMARY);
                 log.info("Updated case to Dormant in CCD by scheduler for case id : {}", returnedCaseDetails.getId());
             } catch (Exception e) {
                 log.error("Dormant case error: Case:{}, cannot be moved in Dormant state {}",
