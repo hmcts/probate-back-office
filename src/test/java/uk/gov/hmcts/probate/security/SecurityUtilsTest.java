@@ -9,6 +9,7 @@ import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -42,6 +43,8 @@ class SecurityUtilsTest {
 
     @InjectMocks
     private SecurityUtils securityUtils;
+    @Mock
+    private AuthTokenGenerator authTokenGenerator;
 
 
     @Test
@@ -121,5 +124,26 @@ class SecurityUtilsTest {
         idamToken = securityUtils.getSchedulerToken();
 
         assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+    }
+
+    @Test
+    void shouldReturnSchedulerToken() {
+        ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
+        UserInfo userInfo = UserInfo.builder().sub("ProbateSchedulerDEMO@gmail.com")
+                .uid("12344").build();
+        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
+
+        when(authTokenGenerator.generate()).thenReturn("Test");
+
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(tokenResponse);
+
+        // first time
+        String idamToken = securityUtils.getSchedulerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+        securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
     }
 }
