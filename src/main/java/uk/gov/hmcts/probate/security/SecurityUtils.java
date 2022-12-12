@@ -74,7 +74,7 @@ public class SecurityUtils {
             .build();
     }
 
-    public SecurityDTO getUserByAuthTokenAndServiceSecurityDTO() {
+    public SecurityDTO getUserBySchedulerTokenAndServiceSecurityDTO() {
         String token = getSchedulerToken();
         return SecurityDTO.builder()
                 .authorisation(token)
