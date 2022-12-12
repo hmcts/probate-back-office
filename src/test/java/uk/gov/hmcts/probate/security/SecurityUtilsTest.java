@@ -30,6 +30,8 @@ class SecurityUtilsTest {
     private static final String USER_TOKEN = "1312jdhdh";
     private static final String CASEWORKER_PASSWORD = "caseworkerPassword";
     private static final String CASEWORKER_USER_NAME = "caseworkerUserName";
+    private static final String SCHEDULER_PASSWORD = "schedulerPassword";
+    private static final String SCHEDULER_USER_NAME = "schedulerUserName";
     private static final String AUTH_CLIENT_SECRET = "authClientSecret";
     private static final String AUTH_CLIENT_ID = "authClientId";
     private static final String REDIRECT = "http://redirect";
@@ -99,5 +101,25 @@ class SecurityUtilsTest {
 
         verify(idamApi, atMostOnce()).generateOpenIdToken(any(TokenRequest.class));
 
+    }
+
+    @Test
+    void shouldReturnToken() {
+        ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
+
+        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(tokenResponse);
+
+        // first time
+        String idamToken = securityUtils.getSchedulerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+
+        // second time
+        idamToken = securityUtils.getSchedulerToken();
+
+        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
     }
 }
