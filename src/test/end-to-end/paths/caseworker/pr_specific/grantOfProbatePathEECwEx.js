@@ -111,14 +111,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.checkMyAnswers(nextStepName);
     await I.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
-    nextStepName = 'Stop case';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.stopCase);
-    await I.stopCaseProbate();
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Stop Case';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
     nextStepName = 'Select for QA';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.selectForQa);
@@ -126,9 +118,9 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Case selected for QA';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Generate grant preview(Draft)';
+    nextStepName = 'Generate grant preview';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.generateGrantPreviewDraft);
+    await I.chooseNextStep(nextStepConfig.generateGrantPreview);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready to issue';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
