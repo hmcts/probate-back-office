@@ -176,12 +176,6 @@ class ExceptionRecordServiceTest {
     }
 
     @Test
-    void testRequestForPA1PSolicitor() {
-        assertEquals("qwertyuio", erRequestGrantOfProbateSolicitor.getEnvelopeId());
-        assertEquals(false, erRequestGrantOfProbateSolicitor.getIsAutomatedProcess());
-    }
-
-    @Test
     void shouldUpdateCaveatCaseFromExceptionRecord() throws IOException, NotificationClientException {
         exceptionRecordPayloadPA8A = testUtils.getStringFromFile("updateExceptionRecordDataPA8A.json");
         caveatCaseUpdateRequest =

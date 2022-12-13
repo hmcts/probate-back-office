@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -128,7 +129,7 @@ public class ExceptionRecordService {
 
             //cope with solicitor paper forms coming in by flagging as new po_box
             //need po_box string from business
-            if (Boolean.TRUE.equals(grantOfRepresentationData.getSolsSolicitorIsApplying())) {
+            if (ApplicationType.SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
                 erRequest.setPoBox("Burgess");
             }
             log.info(
