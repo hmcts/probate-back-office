@@ -119,14 +119,15 @@ public class SecurityUtils {
     }
 
     private String getIdamOauth2TokenScheduler(String username, String password) {
-
+        log.info("user and password for debug {},{}",username,password);
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
         try {
             log.info("No cached IDAM token found, requesting from IDAM service.");
-            idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
+            //idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
             log.info("Getting AccessToken...");
-            return BEARER + idamOpenIdTokenResponse.accessToken;
+            //return BEARER + idamOpenIdTokenResponse.accessToken;
+            return "abc";
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
             throw e;
