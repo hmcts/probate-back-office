@@ -128,7 +128,7 @@ public class ExceptionRecordService {
 
             //cope with solicitor paper forms coming in by flagging as new po_box
             //need po_box string from business
-            if(Boolean.TRUE.equals(grantOfRepresentationData.getSolsSolicitorIsApplying())) {
+            if (Boolean.TRUE.equals(grantOfRepresentationData.getSolsSolicitorIsApplying())) {
                 erRequest.setPoBox("Burgess");
             }
             log.info(
