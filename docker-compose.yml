@@ -449,7 +449,7 @@ services:
     build:
       context: .
     environment:
-      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
+      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,address=*:8001,server=y,suspend=n -Xms128m -Xmx400m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
       S2S_AUTH_URL: http://service-auth-provider-api:8080
       SPRING_DATASOURCE_URL: jdbc:postgresql://shared-database:5432/probate_man
@@ -485,20 +485,17 @@ services:
     environment:
       - IDAM_API_URL=http://sidam-api:5000
       - IDAM_S2S_URL=http://service-auth-provider-api:8080
-      - PAYMENT_API_URL=http://payments-api:8080
+      - PAYMENT_API_URL=http://payments-api:8383
       - VALIDATION_SERVICE_URL=http://probate-business-service:8081/validate
       - ORCHESTRATOR_SERVICE_URL=http://probate-orchestrator:8888
-      - FEES_REGISTRY_URL=http://fees-api:8080/fees-register
+      - FEES_REGISTRY_URL=http://fees-api:4411/fees-register
       - USE_REDIS=false
       - REDIS_USE_TLS=false
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
-      - LAUNCHDARKLY_KEY=${LD_SDK_FE_KEY}
-      - LAUNCHDARKLY_USER_KEY=${LD_FE_USER_KEY}
-      - REFORM_ENVIRONMENT=local
-      - PROBATE_USER_EMAIL=ProbateSuperuser@gmail.com
-      - PROBATE_USER_PASSWORD=Pa55word11
+      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
+      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
 
     ports:
       - 3000:3000

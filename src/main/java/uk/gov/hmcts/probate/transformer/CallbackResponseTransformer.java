@@ -1048,7 +1048,7 @@ public class CallbackResponseTransformer {
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .serviceRequestReference(caseData.getServiceRequestReference())
-            .paymentTaken(caseData.getPaymentTaken());
+            .paymentTaken(caseData.getPaymentTaken())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
 
