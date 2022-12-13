@@ -1049,6 +1049,8 @@ public class CallbackResponseTransformer {
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken());
+            .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
+            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
