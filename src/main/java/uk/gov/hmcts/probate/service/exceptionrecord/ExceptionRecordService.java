@@ -73,8 +73,6 @@ public class ExceptionRecordService {
         ExceptionRecordRequest erRequest,
         List<String> warnings) {
 
-        List<String> errors = new ArrayList<String>();
-
         try {
             log.info("About to map Caveat OCR fields to CCD for case: {}", erRequest.getExceptionRecordId());
             CaveatData caveatData = erCaveatMapper.toCcdData(erRequest.getOCRFieldsObject());
@@ -109,8 +107,6 @@ public class ExceptionRecordService {
         GrantType grantType,
         List<String> warnings) {
 
-        List<String> errors = new ArrayList<String>();
-
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
@@ -130,6 +126,11 @@ public class ExceptionRecordService {
             // Add grant type
             grantOfRepresentationData.setGrantType(grantType);
 
+            //cope with solicitor paper forms coming in by flagging as new po_box
+            //need po_box string from business
+            if(Boolean.TRUE.equals(grantOfRepresentationData.getSolsSolicitorIsApplying())) {
+                erRequest.setPoBox("Burgess");
+            }
             log.info(
                 "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
                     + "orchestrator.");
@@ -150,19 +151,18 @@ public class ExceptionRecordService {
     public SuccessfulCaveatUpdateResponse updateCaveatCaseFromExceptionRecord(
         CaveatCaseUpdateRequest erCaseUpdateRequest) {
 
-        List<String> errors = new ArrayList<String>();
         ExceptionRecordRequest erRequest = erCaseUpdateRequest.getExceptionRecord();
         ExceptionRecordCaveatDetails exceptionRecordCaveatDetails = erCaseUpdateRequest.getCaveatDetails();
         CaveatDetails caveatDetails =
                 new CaveatDetails(exceptionRecordCaveatDetails.getData(), null,
                         exceptionRecordCaveatDetails.getExceptionRecordId());
-        HashMap<String, String> ocrFieldValues = new HashMap<String, String>();
+        HashMap<String, String> ocrFieldValues = new HashMap<>();
         List<OCRField> ocrFields = erRequest.getOcrFields();
         String caseReference = null;
 
-        ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
-        });
+        ocrFields.forEach(ocrField ->
+            ocrFieldValues.put(ocrField.getName(), ocrField.getValue())
+        );
 
         try {
             log.info("About to update Caveat expiry date extention for case: {}", erRequest.getExceptionRecordId());

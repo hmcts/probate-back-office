@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.model.exceptionrecord;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+import lombok.Setter;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 
 import java.time.LocalDateTime;
@@ -14,7 +15,8 @@ public class ExceptionRecordRequest {
 
     private final String exceptionRecordId;
     private final String exceptionRecordCaseTypeId;
-    private final String poBox;
+    @Setter
+    private String poBox;
     private final String formType;
     private final String jurisdiction;
     private final JourneyClassification journeyClassification;

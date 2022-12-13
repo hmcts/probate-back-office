@@ -55,7 +55,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(SpringExtension.class)
 class ExceptionRecordServiceTest {
 
-    private static final String EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = "Caveat";
+    private static String EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = "Caveat";
     private static final String EXCEPTION_RECORD_CAVEAT_EVENT_ID = "raiseCaveat";
     private static final String EXCEPTION_RECORD_GOR_CASE_TYPE_ID = "GrantofRepresentation";
     private static final String EXCEPTION_RECORD_GOR_EVENT_ID = "caseCreated";
@@ -88,17 +88,23 @@ class ExceptionRecordServiceTest {
 
     private ExceptionRecordRequest erRequestGrantOfProbate;
 
+    private ExceptionRecordRequest erRequestGrantOfProbateSolicitor;
+
     private CaveatCaseUpdateRequest caveatCaseUpdateRequest;
 
     private String exceptionRecordPayloadPA8A;
 
     private String exceptionRecordPayloadPA1P;
 
+    private String exceptionRecordPayloadPA1PSol;
+
     private List<String> warnings;
 
     private CaveatData caveatData;
 
     private GrantOfRepresentationData grantOfRepresentationData;
+
+    private GrantOfRepresentationData grantOfRepresentationDataSolicitor;
 
     private CaseCreationDetails caveatCaseDetailsResponse;
 
@@ -115,7 +121,6 @@ class ExceptionRecordServiceTest {
             testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
 
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
-
         erRequestGrantOfProbate = getObjectMapper().readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
 
         warnings = new ArrayList<String>();
@@ -132,6 +137,10 @@ class ExceptionRecordServiceTest {
         grantOfRepresentationData.setPrimaryApplicantSurname("Smith");
         grantOfRepresentationData.setApplicationType(ApplicationType.PERSONAL);
         grantOfRepresentationData.setGrantType(GrantType.GRANT_OF_PROBATE);
+
+        if (EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID == null) {
+            EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = new String();
+        }
         grantOfProbateCaseDetailsResponse =
             CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
                 .caseData(grantOfRepresentationData)
@@ -164,6 +173,12 @@ class ExceptionRecordServiceTest {
     void testRequestForPA1P() {
         assertEquals("qwertyuio", erRequestGrantOfProbate.getEnvelopeId());
         assertEquals(false, erRequestGrantOfProbate.getIsAutomatedProcess());
+    }
+
+    @Test
+    void testRequestForPA1PSolicitor() {
+        assertEquals("qwertyuio", erRequestGrantOfProbateSolicitor.getEnvelopeId());
+        assertEquals(false, erRequestGrantOfProbateSolicitor.getIsAutomatedProcess());
     }
 
     @Test
@@ -277,6 +292,51 @@ class ExceptionRecordServiceTest {
         assertEquals(ApplicationType.PERSONAL, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("Smith", grantOfRepresentationDataResponse.getPrimaryApplicantSurname());
+    }
+
+    void setUpSolicitorCase() throws IOException {
+        MockitoAnnotations.openMocks(this);
+
+    exceptionRecordPayloadPA1PSol =
+        testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA1P.json");
+
+
+    erRequestGrantOfProbateSolicitor = getObjectMapper().readValue(exceptionRecordPayloadPA1PSol, ExceptionRecordRequest.class);
+
+
+    grantOfRepresentationDataSolicitor = new GrantOfRepresentationData();
+        grantOfRepresentationDataSolicitor.setRegistryLocation(RegistryLocation.CTSC);
+        grantOfRepresentationDataSolicitor.setPrimaryApplicantSurname("Smith");
+        grantOfRepresentationDataSolicitor.setApplicationType(ApplicationType.SOLICITORS);
+        grantOfRepresentationDataSolicitor.setGrantType(GrantType.GRANT_OF_PROBATE);
+
+        if (EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID == null) {
+        EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = new String();
+    }
+    grantOfProbateCaseDetailsResponse =
+        CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
+                .caseData(grantOfRepresentationDataSolicitor)
+                .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
+
+    when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
+    when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSolicitor);
+    when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
+        .thenReturn(grantOfProbateCaseDetailsResponse);
+    }
+    @Test
+    void createGrantOfProbateCaseSolicitorFromExceptionRecord() throws IOException {
+        setUpSolicitorCase();
+        SuccessfulTransformationResponse response =
+            erService
+                .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateSolicitor, GrantType.GRANT_OF_PROBATE,
+                    warnings);
+        GrantOfRepresentationData grantOfRepresentationDataResponse
+            = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
+        assertEquals(RegistryLocation.CTSC, grantOfRepresentationDataResponse.getRegistryLocation());
+        assertEquals(ApplicationType.SOLICITORS, grantOfRepresentationDataResponse.getApplicationType());
+        assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
+        assertEquals("Smith", grantOfRepresentationDataResponse.getPrimaryApplicantSurname());
+        assertEquals("Burgess", erRequestGrantOfProbateSolicitor.getPoBox());
     }
 
     public ObjectMapper getObjectMapper() {

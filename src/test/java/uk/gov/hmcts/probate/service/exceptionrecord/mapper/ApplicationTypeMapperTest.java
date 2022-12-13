@@ -17,6 +17,7 @@ class ApplicationTypeMapperTest {
 
     private ExceptionRecordOCRFields ocrFields;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitor;
+    private ExceptionRecordOCRFields ocrFieldsWithSolicitorTrue;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorNoRepName;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorNoFirmName;
     private ExceptionRecordOCRFields ocrFieldsWithSolicitorCaveat;
@@ -28,6 +29,12 @@ class ApplicationTypeMapperTest {
 
         ocrFieldsWithSolicitor = ExceptionRecordOCRFields.builder()
             .solsSolicitorIsApplying(YES)
+            .solsSolicitorFirmName(SOLS_SOLICITORS_FIRM_NAME)
+            .solsSolicitorRepresentativeName(SOLS_SOLICITORS_REPRESENTITIVE_NAME)
+            .build();
+
+        ocrFieldsWithSolicitorTrue = ExceptionRecordOCRFields.builder()
+            .solsSolicitorIsApplying("TRUE")
             .solsSolicitorFirmName(SOLS_SOLICITORS_FIRM_NAME)
             .solsSolicitorRepresentativeName(SOLS_SOLICITORS_REPRESENTITIVE_NAME)
             .build();
@@ -59,6 +66,13 @@ class ApplicationTypeMapperTest {
     void testApplicationTypeGrantOfRepresentationIsSolicitor() {
         ApplicationType applicationType =
             applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitor);
+        assertEquals(ApplicationType.SOLICITORS, applicationType);
+    }
+
+    @Test
+    void testApplicationTypeGrantOfRepresentationIsSolicitorTrue() {
+        ApplicationType applicationType =
+            applicationTypeMapper.toApplicationTypeGrantOfRepresentation(ocrFieldsWithSolicitorTrue);
         assertEquals(ApplicationType.SOLICITORS, applicationType);
     }
 
