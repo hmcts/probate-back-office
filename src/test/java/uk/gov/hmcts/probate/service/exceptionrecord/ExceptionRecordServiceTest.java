@@ -129,7 +129,7 @@ class ExceptionRecordServiceTest {
         caveatData.setCaveatorSurname("Jones");
         caveatData.setApplicationType(ApplicationType.PERSONAL);
         caveatCaseDetailsResponse = CaseCreationDetails.builder().<ResponseCaveatData>
-            eventId(EXCEPTION_RECORD_CAVEAT_EVENT_ID).caseData(caveatData)
+                eventId(EXCEPTION_RECORD_CAVEAT_EVENT_ID).caseData(caveatData)
             .caseTypeId(EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID).build();
 
         grantOfRepresentationData = new GrantOfRepresentationData();
@@ -237,19 +237,19 @@ class ExceptionRecordServiceTest {
         throws IOException, NotificationClientException {
         assertThrows(OCRMappingException.class, () -> {
             exceptionRecordPayloadPA8A =
-                    testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoAdditionalDocuments.json");
+                testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoAdditionalDocuments.json");
             caveatCaseUpdateRequest =
-                    getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
+                getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
             CaveatCallbackResponse caveatCallbackResponse = Mockito.mock(CaveatCallbackResponse.class);
             when(caveatCallbackResponse.getErrors()).thenReturn(Collections.emptyList());
             when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), nullable(List.class)))
-                    .thenReturn(caveatCallbackResponse);
+                .thenReturn(caveatCallbackResponse);
             when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
-                    .thenReturn(caveatCallbackResponse);
+                .thenReturn(caveatCallbackResponse);
             ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
             ScannedDocument scannedDocument = ScannedDocument.builder().build();
             when(responseCaseveatData.getScannedDocuments())
-                    .thenReturn(Arrays.asList(new CollectionMember(null, scannedDocument)));
+                .thenReturn(Arrays.asList(new CollectionMember(null, scannedDocument)));
             when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
 
             erService.updateCaveatCaseFromExceptionRecord(caveatCaseUpdateRequest);
@@ -261,19 +261,19 @@ class ExceptionRecordServiceTest {
         throws IOException, NotificationClientException {
         assertThrows(OCRMappingException.class, () -> {
             exceptionRecordPayloadPA8A =
-                    testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoDocuments.json");
+                testUtils.getStringFromFile("updateExceptionRecordDataPA8ANoDocuments.json");
             caveatCaseUpdateRequest =
-                    getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
+                getObjectMapper().readValue(exceptionRecordPayloadPA8A, CaveatCaseUpdateRequest.class);
             CaveatCallbackResponse caveatCallbackResponse = Mockito.mock(CaveatCallbackResponse.class);
             when(caveatCallbackResponse.getErrors()).thenReturn(Collections.emptyList());
             when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), nullable(List.class)))
-                    .thenReturn(caveatCallbackResponse);
+                .thenReturn(caveatCallbackResponse);
             when(caveatNotificationService.caveatExtend(any(CaveatCallbackRequest.class)))
-                    .thenReturn(caveatCallbackResponse);
+                .thenReturn(caveatCallbackResponse);
             ResponseCaveatData responseCaseveatData = Mockito.mock(ResponseCaveatData.class);
             ScannedDocument scannedDocument = ScannedDocument.builder().build();
             when(responseCaseveatData.getScannedDocuments())
-                    .thenReturn(Arrays.asList(new CollectionMember(null, scannedDocument)));
+                .thenReturn(Arrays.asList(new CollectionMember(null, scannedDocument)));
             when(caveatCallbackResponse.getCaveatData()).thenReturn(responseCaseveatData);
 
             erService.updateCaveatCaseFromExceptionRecord(caveatCaseUpdateRequest);
@@ -297,38 +297,41 @@ class ExceptionRecordServiceTest {
     void setUpSolicitorCase() throws IOException {
         MockitoAnnotations.openMocks(this);
 
-    exceptionRecordPayloadPA1PSol =
-        testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA1P.json");
+        exceptionRecordPayloadPA1PSol =
+            testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorPA1P.json");
 
 
-    erRequestGrantOfProbateSolicitor = getObjectMapper().readValue(exceptionRecordPayloadPA1PSol, ExceptionRecordRequest.class);
+        erRequestGrantOfProbateSolicitor =
+            getObjectMapper().readValue(exceptionRecordPayloadPA1PSol, ExceptionRecordRequest.class);
 
 
-    grantOfRepresentationDataSolicitor = new GrantOfRepresentationData();
+        grantOfRepresentationDataSolicitor = new GrantOfRepresentationData();
         grantOfRepresentationDataSolicitor.setRegistryLocation(RegistryLocation.CTSC);
         grantOfRepresentationDataSolicitor.setPrimaryApplicantSurname("Smith");
         grantOfRepresentationDataSolicitor.setApplicationType(ApplicationType.SOLICITORS);
         grantOfRepresentationDataSolicitor.setGrantType(GrantType.GRANT_OF_PROBATE);
 
         if (EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID == null) {
-        EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = new String();
-    }
-    grantOfProbateCaseDetailsResponse =
-        CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
+            EXCEPTION_RECORD_CAVEAT_CASE_TYPE_ID = new String();
+        }
+        grantOfProbateCaseDetailsResponse =
+            CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
                 .caseData(grantOfRepresentationDataSolicitor)
                 .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
 
-    when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
-    when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSolicitor);
-    when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
-        .thenReturn(grantOfProbateCaseDetailsResponse);
+        when(erCaveatMapper.toCcdData(any())).thenReturn(caveatData);
+        when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSolicitor);
+        when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
+            .thenReturn(grantOfProbateCaseDetailsResponse);
     }
+
     @Test
     void createGrantOfProbateCaseSolicitorFromExceptionRecord() throws IOException {
         setUpSolicitorCase();
         SuccessfulTransformationResponse response =
             erService
-                .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateSolicitor, GrantType.GRANT_OF_PROBATE,
+                .createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateSolicitor,
+                    GrantType.GRANT_OF_PROBATE,
                     warnings);
         GrantOfRepresentationData grantOfRepresentationDataResponse
             = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
