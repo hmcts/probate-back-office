@@ -122,7 +122,8 @@ public class SecurityUtils {
         log.info("user and password for debug {},{}",username,password);
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
-        try {
+        return "abc";
+        /*try {
             log.info("No cached IDAM token found, requesting from IDAM service.");
             //idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
             log.info("Getting AccessToken...");
@@ -131,7 +132,7 @@ public class SecurityUtils {
         } catch (Exception e) {
             log.error("Exception on IDAM token" + e.getMessage());
             throw e;
-        }
+        }*/
     }
 
     private String getIdamOauth2Token(String username, String password) {
