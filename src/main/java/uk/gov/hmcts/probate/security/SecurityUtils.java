@@ -38,6 +38,8 @@ public class SecurityUtils {
     private static final String BEARER = "Bearer ";
     private TokenResponse cacheTokenResponse;
 
+    private TokenResponse cacheSchedulerTokenResponse;
+
     @Value("${auth.provider.client.redirect}")
     private String authRedirectUrl;
 
@@ -119,12 +121,26 @@ public class SecurityUtils {
     }
 
     private String getIdamOauth2TokenScheduler(String username, String password) {
-        log.info("user and password for debug {},{}",username,password);
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
         try {
-            log.info("No cached IDAM token found, requesting from IDAM service.");
-            idamOpenIdTokenResponse = getOpenIdTokenResponse(username, password);
+            if (ObjectUtils.isEmpty(cacheSchedulerTokenResponse) || isExpired(cacheSchedulerTokenResponse)) {
+                log.info("No cached IDAM token found, requesting from IDAM service.");
+                TokenResponse tokenResponse = idamApi.generateOpenIdToken(
+                        new TokenRequest(
+                                authClientId,
+                                authClientSecret,
+                                OPENID_GRANT_TYPE,
+                                authRedirectUrl,
+                                username,
+                                password,
+                                "openid profile roles",
+                                null,
+                                null
+                        ));
+                cacheSchedulerTokenResponse = tokenResponse;
+            }
+            idamOpenIdTokenResponse = cacheSchedulerTokenResponse;
             log.info("Getting AccessToken...");
             return BEARER + idamOpenIdTokenResponse.accessToken;
         } catch (Exception e) {

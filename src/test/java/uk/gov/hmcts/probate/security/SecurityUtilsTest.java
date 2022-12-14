@@ -108,7 +108,7 @@ class SecurityUtilsTest {
     }
 
     @Test
-    void shouldReturnToken() {
+    void shouldReturnSchedulerCacheToken() {
         ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
 
@@ -125,10 +125,12 @@ class SecurityUtilsTest {
         idamToken = securityUtils.getSchedulerToken();
 
         assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
+
+        verify(idamApi, atMostOnce()).generateOpenIdToken(any(TokenRequest.class));
     }
 
     @Test
-    void shouldReturnExceptionToken() {
+    void shouldReturnExceptionOnSchedulerToken() {
         ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
 
@@ -154,10 +156,6 @@ class SecurityUtilsTest {
         when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
                 .thenReturn(tokenResponse);
 
-        // first time
-        String idamToken = securityUtils.getSchedulerToken();
-
-        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
         securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
     }
 }
