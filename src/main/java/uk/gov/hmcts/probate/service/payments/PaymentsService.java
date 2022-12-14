@@ -51,6 +51,8 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.reform.probate.model.PaymentStatus.FAILED;
 import static uk.gov.hmcts.reform.probate.model.PaymentStatus.INITIATED;
 import static uk.gov.hmcts.reform.probate.model.PaymentStatus.SUCCESS;
@@ -131,12 +133,12 @@ public class PaymentsService {
         if (GRANT_OF_REPRESENTATION == ccdCaseType) {
             caseData = GrantOfRepresentationData.builder()
                     .payments(currentPayments)
-                    .paymentTaken(casePayment.getStatus() == SUCCESS)
+                    .paymentTaken(casePayment.getStatus() == SUCCESS ? YES : NO)
                     .build();
         } else if (CAVEAT == ccdCaseType) {
             caseData = CaveatData.builder()
                     .payments(currentPayments)
-                    .paymentTaken(casePayment.getStatus() == SUCCESS)
+                    .paymentTaken(casePayment.getStatus() == SUCCESS ? YES : NO)
                     .build();
         } else {
             throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType:"
