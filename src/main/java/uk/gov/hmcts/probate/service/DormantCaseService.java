@@ -93,5 +93,6 @@ public class DormantCaseService {
                 }
             }
         }
+        log.info("End of the reactivateDormantCases method");
     }
 }
