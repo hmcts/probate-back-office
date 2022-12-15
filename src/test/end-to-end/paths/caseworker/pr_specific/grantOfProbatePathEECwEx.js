@@ -118,6 +118,22 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Case selected for QA';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
+
+    nextStepName = 'Fail QA';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.failQa);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Case stopped';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Resolve stop';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.resolveStop);
+    await I.chooseResolveStop();
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Resolve stop';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     nextStepName = 'Generate grant preview';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.generateGrantPreview);
@@ -148,4 +164,4 @@ Scenario(scenarioName, async function ({I}) {
     issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
 
-}).retry(testConfig.TestRetryScenarios);
+});

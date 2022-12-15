@@ -2,7 +2,7 @@
   "addComment": "Add Comment",
   "uploadDocument": "Upload Documents",
   "generateGrantPreview": "Generate grant preview",
-  "selectForQa": "Select the case for quality assurance",
+  "selectForQa": "Select for QA",
   "attachScanDocs": "Attach scanned docs",
   "handleSupEvidence": "Handle supplementary evidence",
   "withdrawApplication": "Withdraw application",
@@ -14,5 +14,7 @@
   "generateGrantPreviewDraft": "Generate grant preview (draft)",
   "findMatches": "Find matches (cases)",
   "issueGrant": "issue grant",
-  "findMatchesIssueGrant": "Find matches (Issue grant)"
+  "findMatchesIssueGrant": "Find matches (Issue grant)",
+  "failQa": "Fail QA",
+  "resolveStop": "Resolve stop"
 }
