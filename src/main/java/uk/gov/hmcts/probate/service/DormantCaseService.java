@@ -57,33 +57,47 @@ public class DormantCaseService {
     }
 
     public void reactivateDormantCases(String date) {
-        log.info("Reactivate Dormant cases for date: {}", date);
-        List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(date);
-        log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
-        for (ReturnedCaseDetails returnedCaseDetails : cases) {
-            if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
-                LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
-                        .getMoveToDormantDateTime(),DATE_FORMAT);
-                if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
-                    GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                            .evidenceHandled(false)
-                            .build();
-                    log.info("Updating case to Stopped from Dormant in CCD by scheduler for case id : {}",
-                            returnedCaseDetails.getId());
-                    try {
-                        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
-                                returnedCaseDetails.getId().toString(),
-                                grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
-                                securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                                REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
-                        log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}",
+        try {
+            log.info("Reactivate Dormant cases for date: {}", date);
+            List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(date);
+            log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
+            for (ReturnedCaseDetails returnedCaseDetails : cases) {
+                log.info("MoveToDormantDateTime before {} ", returnedCaseDetails.getData().getMoveToDormantDateTime());
+                if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
+                    log.info("MoveToDormantDateTime after {} ",
+                            returnedCaseDetails.getData().getMoveToDormantDateTime());
+                    LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
+                            .getMoveToDormantDateTime(), DATE_FORMAT);
+                    log.info("last modified date {} , formatted MoveToDormantDateTime {} ",
+                            returnedCaseDetails.getLastModified(), moveToDormantDateTime);
+                    log.info("Logging condition {} ",
+                            returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime));
+                    if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
+                        log.info("last modified date {} , MoveToDormantDateTime {} ",
+                                returnedCaseDetails.getLastModified(), moveToDormantDateTime);
+                        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                                .evidenceHandled(false)
+                                .build();
+                        log.info("Updating case to Stopped from Dormant in CCD by scheduler for case id : {}",
                                 returnedCaseDetails.getId());
-                    } catch (Exception e) {
-                        log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}",
-                                returnedCaseDetails.getId(), e.getMessage());
+                        try {
+                            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
+                                    returnedCaseDetails.getId().toString(),
+                                    grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
+                                    securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
+                                    REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
+                            log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}",
+                                    returnedCaseDetails.getId());
+                        } catch (Exception e) {
+                            log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}",
+                                    returnedCaseDetails.getId(), e.getMessage());
+                        }
                     }
                 }
             }
+            log.info("End of the reactivateDormantCases method");
+        } catch (Exception e) {
+            log.error("Reactivate Dormant method error {}", e.getMessage());
         }
     }
 }
