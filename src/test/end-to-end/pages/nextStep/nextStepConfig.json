@@ -7,7 +7,7 @@
   "handleSupEvidence": "Handle supplementary evidence",
   "withdrawApplication": "Withdraw application",
   "amendCaseDetails": "Amend case details",
-  "stopCase": "Mark the case as stopped",
+  "stopCase": "Stop case",
   "rePrintCase": "Reprint document",
   "selectMultipleRecords": "Select from multiple records",
   "manuallyVerifyLev": "'Trigger LEV api lookup",

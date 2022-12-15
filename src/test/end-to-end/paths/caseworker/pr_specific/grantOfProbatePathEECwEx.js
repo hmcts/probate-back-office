@@ -90,6 +90,8 @@ Scenario(scenarioName, async function ({I}) {
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Add Comment';
+
+
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.addComment);
     await I.enterComment(caseRef, nextStepName);
@@ -111,34 +113,27 @@ Scenario(scenarioName, async function ({I}) {
     await I.checkMyAnswers(nextStepName);
     await I.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
-    nextStepName = 'Select for QA';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.selectForQa);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Case selected for QA';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-
-    nextStepName = 'Fail QA';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.failQa);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Case stopped';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Resolve stop';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.resolveStop);
-    await I.chooseResolveStop();
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Resolve stop';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
     nextStepName = 'Generate grant preview';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.generateGrantPreview);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Ready to issue';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Stop case';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.stopCase);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Stop case';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Resolve stop';
+    let resolveStop ='Case Matching (Issue grant)';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.resolveStop);
+    await I.chooseResolveStop(resolveStop);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Resolve stop';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Find matches (Issue grant)';

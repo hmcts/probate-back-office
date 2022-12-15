@@ -118,6 +118,23 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Case selected for QA';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
+
+    nextStepName = 'Fail QA';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.failQa);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Case stopped';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Resolve stop';
+    let resolveStop ='Case selected for QA'
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.resolveStop);
+    await I.chooseResolveStop(resolveStop);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Resolve stop';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
     nextStepName = 'Generate grant preview';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.generateGrantPreview);
