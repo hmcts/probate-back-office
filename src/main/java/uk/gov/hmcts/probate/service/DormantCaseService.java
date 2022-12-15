@@ -61,10 +61,18 @@ public class DormantCaseService {
         List<ReturnedCaseDetails> cases = caseQueryService.findCaseToBeReactivatedFromDormant(date);
         log.info("Found {} cases with dated document for Reactivate Dormant", cases.size());
         for (ReturnedCaseDetails returnedCaseDetails : cases) {
+            log.info("MoveToDormantDateTime before {} ", returnedCaseDetails.getData().getMoveToDormantDateTime());
             if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
+                log.info("MoveToDormantDateTime after {} ", returnedCaseDetails.getData().getMoveToDormantDateTime());
                 LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
                         .getMoveToDormantDateTime(),DATE_FORMAT);
+                log.info("last modified date {} , formatted MoveToDormantDateTime {} ",
+                        returnedCaseDetails.getLastModified(), moveToDormantDateTime);
+                log.info("Logging condition {} ",
+                        returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime));
                 if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
+                    log.info("last modified date {} , MoveToDormantDateTime {} ",
+                            returnedCaseDetails.getLastModified(), moveToDormantDateTime);
                     GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                             .evidenceHandled(false)
                             .build();
