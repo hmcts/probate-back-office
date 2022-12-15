@@ -105,6 +105,7 @@ public class TaskStateRenderer {
     public String renderByReplace(TaskListState currState, String html, Long caseId,
                                   String willType, String solSOTNeedToUpdate,
                                   LocalDate authDate, LocalDate submitDate, CaseDetails details) {
+
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                 solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
