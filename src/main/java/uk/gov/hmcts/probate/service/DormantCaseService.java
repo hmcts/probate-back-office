@@ -64,7 +64,8 @@ public class DormantCaseService {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
                 log.info("MoveToDormantDateTime before {} ", returnedCaseDetails.getData().getMoveToDormantDateTime());
                 if (StringUtils.isNotBlank(returnedCaseDetails.getData().getMoveToDormantDateTime())) {
-                    log.info("MoveToDormantDateTime after {} ", returnedCaseDetails.getData().getMoveToDormantDateTime());
+                    log.info("MoveToDormantDateTime after {} ",
+                            returnedCaseDetails.getData().getMoveToDormantDateTime());
                     LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
                             .getMoveToDormantDateTime(), DATE_FORMAT);
                     log.info("last modified date {} , formatted MoveToDormantDateTime {} ",
