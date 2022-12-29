@@ -3,7 +3,6 @@ const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
-
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateManual/createGrantOfProbateManualConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
@@ -90,8 +89,6 @@ Scenario(scenarioName, async function ({I}) {
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Add Comment';
-
-
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.addComment);
     await I.enterComment(caseRef, nextStepName);
@@ -117,18 +114,19 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.generateGrantPreview);
     await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Ready to issue';
+    endState = 'Examining';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Stop case';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.stopCase);
+    await I.probateStopCase();
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Stop case';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Resolve stop';
-    let resolveStop ='Case Matching (Issue grant)';
+    let resolveStop = 'Case Matching (Issue grant)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.resolveStop);
     await I.chooseResolveStop(resolveStop);
@@ -136,9 +134,9 @@ Scenario(scenarioName, async function ({I}) {
     endState = 'Resolve stop';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
-    nextStepName = 'Find matches (Issue grant)';
+    nextStepName = 'Find matches (cases)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.findMatchesIssueGrant);
+    await I.chooseNextStep(nextStepConfig.findMatch);
     await I.selectCaseMatchesForGrantOfProbate(caseRef, nextStepName);
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case Matching (Issue grant)';

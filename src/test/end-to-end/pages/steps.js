@@ -143,6 +143,7 @@ module.exports = function () {
         verifyShareCase: steps.shareCase.verifyShareCase,
         shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
         shareCaseDelete: steps.shareCase.shareCaseDelete,
-        chooseResolveStop:steps.resolveStop.resolveStop
+        chooseResolveStop:steps.resolveStop.resolveStop,
+        probateStopCase:steps.stopCaseProbate.stopCaseProbate
     });
 };

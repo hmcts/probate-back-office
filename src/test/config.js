@@ -1,6 +1,6 @@
 module.exports = {
-    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'http://localhost:3455',
-    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || false,
+    TestBackOfficeUrl: process.env.TEST_E2E_URL || 'https://xui-probate-back-office-pr-2107.service.core-compute-preview.internal',
+    TestShowBrowserWindow: process.env.SHOW_BROWSER_WINDOW || true,
     TestRetryFeatures: 0, // process.env.RETRY_FEATURES || 2,
     TestRetryScenarios: process.env.RETRY_SCENARIOS || 2,
     TestPathToRun: process.env.E2E_TEST_PATH || './paths/**/*.js',
@@ -8,8 +8,8 @@ module.exports = {
     TestDocumentToUpload: 'uploadDocuments/test_file_for_document_upload.png',
     WaitForTextTimeout: parseInt(process.env.BO_E2E_TEST_TIME_TO_WAIT_FOR_TEXT || 200),
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
-    TestEnvCwUser: process.env.CW_USER_EMAIL || 'ProbateSolCW1@gmail.com',
-    TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
+    TestEnvCwUser: process.env.CW_USER_EMAIL || 'probatecaseworker@gmail.com',
+    TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Monday01',
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
     //  TestEnvProfUser2 User for share case e2e only

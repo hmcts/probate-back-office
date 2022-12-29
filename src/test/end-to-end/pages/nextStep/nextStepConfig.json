@@ -12,7 +12,7 @@
   "selectMultipleRecords": "Select from multiple records",
   "manuallyVerifyLev": "'Trigger LEV api lookup",
   "generateGrantPreviewDraft": "Generate grant preview (draft)",
-  "findMatches": "Find matches (cases)",
+  "findMatch": "Find matches (cases)",
   "issueGrant": "issue grant",
   "findMatchesIssueGrant": "Find matches (Issue grant)",
   "failQa": "Fail QA",
