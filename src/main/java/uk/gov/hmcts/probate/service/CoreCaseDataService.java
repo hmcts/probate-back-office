@@ -15,7 +15,7 @@ public interface CoreCaseDataService {
     Optional<CaseDetails> retrieveCaseByLegacyId(String caseType, Long legacyId, SecurityDTO securityDTO);
 
     CaseDetails updateCaseAsCaseworker(CcdCaseType ccdCaseType, String caseId, CaseData caseData, EventId eventId,
-                                       SecurityDTO securityDTO);
+                                       SecurityDTO securityDTO, String description, String summary);
 
     CaseDetails updateCaseAsCitizen(CcdCaseType ccdCaseType, String caseId, CaseData caseData, EventId eventId,
                                        SecurityDTO securityDTO, String description, String summary);

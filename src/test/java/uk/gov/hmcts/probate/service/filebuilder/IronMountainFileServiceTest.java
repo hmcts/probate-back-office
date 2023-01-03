@@ -19,6 +19,8 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +36,7 @@ class IronMountainFileServiceTest {
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
     private static final String FILE_NAME = "testFile.txt";
-    private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+    private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
 
     @BeforeEach
     public void setup() {

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +101,7 @@ public final class Constants {
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use
     // >, >=, <=, < comparisions etc, converting to numeric
     public static final String LATEST_SCHEMA_VERSION = "2.0.0";
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     public static List<String> getNonTrustPtnrTitleClearingTypes() {
         return new ArrayList<>(asList(
