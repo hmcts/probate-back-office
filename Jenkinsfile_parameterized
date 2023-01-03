@@ -34,7 +34,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 
 withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 'sandbox') {
     loadVaultSecrets(secrets)
-//     after('build') {
+//     afterSuccess('build') {
 //         try {
 //            sh './gradlew pitest'
 //         } finally {
@@ -42,7 +42,7 @@ withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 
 //         }
 //      }
 
-//     after('functionalTest:saat') {
+//     afterSuccess('functionalTest:saat') {
 //         publishHTML target: [
 //                 reportDir            : "target/site/serenity/",
 //                 reportFiles          : "index.html",
@@ -50,11 +50,11 @@ withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 
 //                 alwaysLinkToLastBuild: true
 //         ]
 //     }
-    after('functionalTest:preview') {
+    afterSuccess('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 
-    after('functionalTest:aat') {
+    afterSuccess('functionalTest:aat') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 }
