@@ -3,7 +3,6 @@ const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
-
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateManual/createGrantOfProbateManualConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
@@ -26,7 +25,7 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate';
+const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Non Experience Caseworker';
 Scenario(scenarioName, async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
@@ -113,7 +112,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Case selected for QA';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
 
     nextStepName = 'Fail QA';
     await I.logInfo(scenarioName, nextStepName, caseRef);

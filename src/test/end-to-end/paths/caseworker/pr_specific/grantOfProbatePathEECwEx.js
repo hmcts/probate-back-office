@@ -24,7 +24,7 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate';
+const scenarioName = 'Caseworker Grant of Representation - Personal application - Grant issued - Expected Estate - Experience Caseworker';
 Scenario(scenarioName, async function ({I}) {
     // BO Grant of Representation (Personal): Case created -> Grant issued
 
