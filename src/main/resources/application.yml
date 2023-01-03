@@ -237,10 +237,10 @@ notifications:
     email:
       english:
         personal:
-          applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
-          applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
+          applicationReceived: "6e3f4941-fd11-40fc-8480-8e314e85a985"
+          applicationReceivedNoDocs: "a6da6fb0-61a4-4a26-a324-805d7bcf733e"
           applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
-          documentReceived: "b6b1e1ea-14f8-491e-befb-46f9cc00c00c"
+          documentReceived: "24161fba-65f5-4384-9c4f-ef75f4a5c666"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
           grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
