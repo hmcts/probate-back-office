@@ -154,9 +154,4 @@
         <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
         <cve>CVE-2022-1471</cve>
     </suppress>
-    <suppress>
-    <notes>netty</notes>
-    <cve>CVE-2022-41881</cve>
-    <cve>CVE-2022-41915</cve>
-    </suppress>
 </suppressions>
