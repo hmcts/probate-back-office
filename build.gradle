@@ -232,7 +232,7 @@ dependencyManagement {
       entry 'netty-transport-native-unix-common'
     }
     // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '2.0.52.Final') {
+    dependencySet(group: 'io.netty', version: '2.0.54.Final') {
       entry 'netty-tcnative-classes'
     }
   }
