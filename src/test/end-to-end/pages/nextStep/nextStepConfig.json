@@ -13,7 +13,7 @@
   "manuallyVerifyLev": "'Trigger LEV api lookup",
   "generateGrantPreviewDraft": "Generate grant preview (draft)",
   "findMatch": "Find matches (cases)",
-  "issueGrant": "issue grant",
+  "issueGrant": "Issue grant",
   "findMatchesIssueGrant": "Find matches (Issue grant)",
   "failQa": "Fail QA",
   "resolveStop": "Resolve stop"
