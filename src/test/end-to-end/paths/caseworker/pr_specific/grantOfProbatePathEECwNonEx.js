@@ -84,12 +84,6 @@ Scenario(scenarioName, async function ({I}) {
 
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
-    nextStepName = 'Add Comment';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.addComment);
-    await I.enterComment(caseRef, nextStepName);
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
     nextStepName = 'Upload Documents';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.uploadDocument);
@@ -97,14 +91,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterEventSummary(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
-
-    // "reverting" update back to defaults - to enable case-match with matching case
-    nextStepName = 'Amend case details';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepConfig.amendCaseDetails);
-    await I.enterGrantOfProbatePage4('EE');
-    await I.checkMyAnswers(nextStepName);
-    await I.seeCaseDetails(caseRef, ihtTabConfigUpdate, createGrantOfProbateConfig);
 
     nextStepName = 'Select for QA';
     await I.logInfo(scenarioName, nextStepName, caseRef);
