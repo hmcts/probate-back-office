@@ -19,17 +19,11 @@ public class EvidenceHandledTransformer {
     private static final String INTESTACY_NAME = INTESTACY.getName();
 
     public void updateEvidenceHandled(CaseData data) {
-        if (data.getApplicationType() != null) {
-            String evidenceHandled = null;
-
-            if ((SOLICITOR.equals(data.getApplicationType())
-                    && noDocumentsRequiredBusinessRule.isApplicable(data))
-                    || (PERSONAL.equals(data.getApplicationType())
-                    && INTESTACY_NAME.equals(data.getCaseType())
-                    && YES.equals(data.getPrimaryApplicantNotRequiredToSendDocuments()))) {
-                evidenceHandled = NO;
-            }
-            data.setEvidenceHandled(evidenceHandled);
+        if (data.getApplicationType() != null
+                && ((SOLICITOR.equals(data.getApplicationType()) && noDocumentsRequiredBusinessRule.isApplicable(data))
+                    || (PERSONAL.equals(data.getApplicationType()) && INTESTACY_NAME.equals(data.getCaseType())
+                        && YES.equals(data.getPrimaryApplicantNotRequiredToSendDocuments())))) {
+            data.setEvidenceHandled(NO);
         }
     }
 
