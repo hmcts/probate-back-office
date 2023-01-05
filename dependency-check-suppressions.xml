@@ -108,7 +108,6 @@
         <cve>CVE-2022-38751</cve>
         <cve>CVE-2022-38752</cve>
         <cve>CVE-2022-41854</cve>
-        <cve>CVE-2022-1471</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -145,6 +144,19 @@
         <cve>CVE-2020-29245</cve>
     </suppress>
     <suppress>
-        <cve>CVE-2021-37533</cve>
+    <notes>No update for apache commons yet</notes>
+    <cve>CVE-2021-37533</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: snakeyaml-1.30.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-1471</cve>
+    </suppress>
+    <suppress>
+        <notes>netty</notes>
+        <cve>CVE-2022-41881</cve>
+        <cve>CVE-2022-41915</cve>
     </suppress>
 </suppressions>
