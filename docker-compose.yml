@@ -449,7 +449,7 @@ services:
     build:
       context: .
     environment:
-      JAVA_TOOL_OPTIONS: -agentlib:jdwp=transport=dt_socket,address=*:8001,server=y,suspend=n -Xms128m -Xmx400m
+      JAVA_TOOL_OPTIONS: -Xms128m -Xmx400m
       AUTH_IDAM_CLIENT_BASEURL: http://sidam-api:5000
       S2S_AUTH_URL: http://service-auth-provider-api:8080
       SPRING_DATASOURCE_URL: jdbc:postgresql://shared-database:5432/probate_man
@@ -494,8 +494,11 @@ services:
       - USE_IDAM=true
       - REQUIRE_CCD_CASE_ID=true
       - NODE_ENV=dev
-      - LAUNCHDARKLY_KEY="${LD_SDK_FE_KEY}"
-      - LAUNCHDARKLY_USER_KEY="${LD_FE_USER_KEY}"
+      - LAUNCHDARKLY_KEY=${LD_SDK_FE_KEY}
+      - LAUNCHDARKLY_USER_KEY=${LD_FE_USER_KEY}
+      - REFORM_ENVIRONMENT=local
+      - PROBATE_USER_EMAIL=ProbateSuperuser@gmail.com
+      - PROBATE_USER_PASSWORD=Pa55word11
 
     ports:
       - 3000:3000
