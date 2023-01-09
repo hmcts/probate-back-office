@@ -95,10 +95,6 @@ public class NextStepsController {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-
-            Document coversheet = pdfManagementService
-                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-            Document sentEmail = null;
             caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
@@ -106,38 +102,32 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
+            PaymentResponse paymentResponse = null;
             if (feesResponse.getTotalAmount().doubleValue() > 0) {
 
                 solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
 
                 CreditAccountPayment creditAccountPayment =
                     creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
-                PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
+                paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
                     creditAccountPayment);
                 CallbackResponse creditPaymentResponse =
                     eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
                         paymentResponse, creditAccountPaymentValidationRule);
-                if (creditPaymentResponse.getErrors().isEmpty()) {
-                    if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
-                        notificationService
-                                .startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
-                        sentEmail = notificationService
-                                .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
-                    }
-                    callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, paymentResponse, coversheet, sentEmail);
-                } else {
-                    callbackResponse = creditPaymentResponse;
+                if (!creditPaymentResponse.getErrors().isEmpty()) {
+                    return ResponseEntity.ok(creditPaymentResponse);
                 }
-            } else {
-                if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
-                    notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
-                    sentEmail = notificationService
-                            .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
-                }
-                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                    feesResponse, null, coversheet, sentEmail);
             }
+            Document coversheet = pdfManagementService
+                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            Document sentEmail = null;
+            if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
+                notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+                sentEmail = notificationService
+                        .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
+            }
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                feesResponse, paymentResponse, coversheet, sentEmail);
         }
 
         return ResponseEntity.ok(callbackResponse);
