@@ -10,6 +10,13 @@ import java.io.File;
 public class CftLibConfig implements CFTLibConfigurer {
     @Override
     public void configure(CFTLib lib) throws Exception {
+        lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
+        lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "Caveat", "Pending");
+        lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
+        lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "Caveat", "Pending");
+        lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
+        lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "Caveat", "Pending");
+
         lib.createRoles(
             "caseworker",
             "caseworker-probate",
