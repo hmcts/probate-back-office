@@ -462,7 +462,7 @@ services:
       FEE_API_URL: http://fees-api:8080
       EVIDENCE_MANAGEMENT_HOST: http://dm-store:8080
       CCD_GATEWAY_HOST: http://ccd-api-gateway:3453
-      SEND_LETTER_SERIVCE_BASEURL: http://send-letter-service:8485
+      SEND_LETTER_SERVICE_BASEURL: http://send-letter-service:8485
       SERVICES_CORECASEDATA_BASEURL: http://ccd-data-store-api:4452
       CCD_DATA_STORE_API_HOST: http://ccd-data-store-api:4452
       LAUNCHDARKLY_KEY: "${LD_SDK_BO_KEY}"

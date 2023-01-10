@@ -22,7 +22,7 @@ plugins {
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.509'
 }
 
 apply plugin: 'project-report'
@@ -472,12 +472,17 @@ task buildBackOfficeXlsx(type: Exec) {
 
 bootWithCCD {
   dependsOn buildBackOfficeXlsx
-  authMode = uk.gov.hmcts.rse.AuthMode.Local
   // Request the cftlib create the probate_man database
-  environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
+  doFirst() {
+    project.file('./.aat-env').readLines().each() {
+      def index = it.indexOf("=")
+      def key = it.substring(0, index)
+      def value = it.substring(index + 1)
+      environment key, value
+    }
+  }
 
-  environment 'IDAM_S2S_URL', 'http://localhost:8489'
-  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
+  environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
   environment 'PROBATE_POSTGRESQL_PORT', '6432'
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
