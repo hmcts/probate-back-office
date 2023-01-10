@@ -341,31 +341,6 @@ class NextStepsUnitTest {
     }
 
     @Test
-    void shouldNotSendApplicationReceivedEmailForNoEvidenceHandled() throws NotificationClientException {
-        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
-        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
-        when(ccdDataMock.getFee()).thenReturn(feeMock);
-        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
-                .thenReturn(creditAccountPaymentMock);
-        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
-        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                paymentResponseMock, coversheetMock, null)).thenReturn(callbackResponseMock);
-        when(caseDataMock.getEvidenceHandled()).thenReturn("No");
-        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
-        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
-        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
-                creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
-
-        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
-                bindingResultMock, httpServletRequestMock);
-
-        verify(notificationServiceMock, times(0)).sendEmail(APPLICATION_RECEIVED, caseDetailsMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
-    }
-
-    @Test
     void shouldStartAwaitingDocumentationNotificationPeriodForNullEvidenceHandled() throws NotificationClientException {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);

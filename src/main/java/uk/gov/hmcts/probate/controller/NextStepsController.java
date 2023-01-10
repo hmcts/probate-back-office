@@ -118,14 +118,12 @@ public class NextStepsController {
                     return ResponseEntity.ok(creditPaymentResponse);
                 }
             }
-            Document coversheet = pdfManagementService
-                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-            Document sentEmail = null;
             if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
                 notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
-                sentEmail = notificationService
-                        .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
             }
+            Document coversheet = pdfManagementService
+                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            Document sentEmail =  notificationService.sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                 feesResponse, paymentResponse, coversheet, sentEmail);
         }
