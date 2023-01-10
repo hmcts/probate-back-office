@@ -19,6 +19,7 @@ module.exports = async function (caseRef, documentUploadConfig) {
     }
 
     await I.waitForVisible({css: `${documentUploadConfig.id}_0_Comment`});
+    await I.wait(2);
     await I.fillField({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayShort); // needed in order to be able to switch off auto delay for local dev
