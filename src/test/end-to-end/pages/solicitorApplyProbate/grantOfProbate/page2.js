@@ -20,7 +20,9 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     }
     await I.wait(4);
     await I.scrollTo(dispNoticeLocator);
+    await I.wait(4);
     await I.waitForClickable(dispNoticeLocator);
+    await I.wait(4);
     await I.click(dispNoticeLocator);
    /* if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
@@ -28,7 +30,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
         await I.scrollTo('#titleAndClearingType-TCTNoT');
     }
     */
-
+    await I.wait(4);
     await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
     await I.click({css: '#titleAndClearingType-TCTNoT'});
 
