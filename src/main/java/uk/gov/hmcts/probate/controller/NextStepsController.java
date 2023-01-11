@@ -48,6 +48,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 
 @Slf4j
 @Controller
@@ -118,12 +119,16 @@ public class NextStepsController {
                     return ResponseEntity.ok(creditPaymentResponse);
                 }
             }
+            Document sentEmail = null;
             if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
                 notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+                sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
+            } else {
+                sentEmail = notificationService
+                        .sendEmail(APPLICATION_RECEIVED_NO_DOCS,callbackRequest.getCaseDetails());
             }
             Document coversheet = pdfManagementService
                     .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-            Document sentEmail =  notificationService.sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                 feesResponse, paymentResponse, coversheet, sentEmail);
         }
