@@ -74,6 +74,9 @@ public enum DocumentType {
     @JsonProperty("will")
     WILL("will"),
 
+    @JsonProperty("caveatExtension")
+    CAVEAT_EXTENSION("caveatExtension"),
+
     @JsonProperty("caveatCoversheet")
     CAVEAT_COVERSHEET("caveatCoversheet"),
 
