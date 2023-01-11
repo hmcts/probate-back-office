@@ -22,11 +22,12 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.scrollTo(dispNoticeLocator);
     await I.waitForClickable(dispNoticeLocator);
     await I.click(dispNoticeLocator);
-    if (verifyTrustCorpOpts) {
+   /* if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {
         await I.scrollTo('#titleAndClearingType-TCTNoT');
     }
+    */
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
     await I.click({css: '#titleAndClearingType-TCTNoT'});
