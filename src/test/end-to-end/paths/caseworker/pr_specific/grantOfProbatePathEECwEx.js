@@ -109,7 +109,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.generateGrantPreview);
     await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Examining';
+    endState = 'Ready to issue';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Stop case';
