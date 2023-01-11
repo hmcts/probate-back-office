@@ -472,7 +472,6 @@ task buildBackOfficeXlsx(type: Exec) {
 
 bootWithCCD {
   dependsOn buildBackOfficeXlsx
-  // Request the cftlib create the probate_man database
   doFirst() {
     project.file('./.aat-env').readLines().each() {
       def index = it.indexOf("=")
@@ -482,6 +481,7 @@ bootWithCCD {
     }
   }
 
+  // Request the cftlib create the probate_man database
   environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
   environment 'PROBATE_POSTGRESQL_PORT', '6432'
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
