@@ -86,9 +86,6 @@
         <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-to-slf4j@.*$</packageUrl>
         <cve>CVE-2022-33915</cve>
     </suppress>
-    <suppress until="2023-01-07">
-        <cve>CVE-2022-31569</cve>
-    </suppress>
     <suppress>
         <notes><![CDATA[
    file name: postgresql-42.4.1.jar
@@ -108,6 +105,8 @@
         <cve>CVE-2022-38751</cve>
         <cve>CVE-2022-38752</cve>
         <cve>CVE-2022-41854</cve>
+        <cve>CVE-2021-4235</cve>
+        <cve>CVE-2022-3064</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -158,5 +157,42 @@
         <notes>netty</notes>
         <cve>CVE-2022-41881</cve>
         <cve>CVE-2022-41915</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+            The 'utils_project' is a personal collection of scripts from someones /bin/ directory, not a maven project
+            https://github.com/fredsmith/utils
+       ]]></notes>
+        <packageUrl regex="true">^pkg:maven/.*/.*@.*$</packageUrl>
+        <cve>CVE-2021-4277</cve>
+    </suppress>
+    <suppress until="2023-04-11">
+        <notes><![CDATA[
+        Derives from azure-storage-blob. Latest version doesn't resolve this CVE issue. Low severity. Check back in 3 months.
+     ]]></notes>
+        <packageUrl regex="true">^pkg:maven/io.projectreactor.netty/.*@1.0.23</packageUrl>
+        <cve>CVE-2022-31684</cve>
+    </suppress>
+    <suppress until="2023-04-11">
+        <notes><![CDATA[
+        Address once dependabot is fixed
+     ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org.springframework.security/.*@5.7.3</packageUrl>
+        <cve>CVE-2022-31692</cve>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress until="2023-04-11">
+        <notes><![CDATA[
+        Address once dependabot is fixed
+     ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/.*@9.0.65</packageUrl>
+        <cve>CVE-2022-45143</cve>
+    </suppress>
+    <suppress until="2023-04-11">
+        <notes><![CDATA[
+        Address once dependabot is fixed
+     ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com.fasterxml.woodstox/woodstox-core@6.3.1</packageUrl>
+        <cve>CVE-2022-40152</cve>
     </suppress>
 </suppressions>
