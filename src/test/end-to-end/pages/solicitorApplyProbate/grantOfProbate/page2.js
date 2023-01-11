@@ -18,20 +18,18 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     } else {
         await I.dontSee(grantOfProbateConfig.page2_prev_identified_execs_text);
     }
-    await I.wait(4);
     await I.scrollTo(dispNoticeLocator);
-    await I.wait(4);
     await I.waitForClickable(dispNoticeLocator);
-    await I.wait(4);
     await I.click(dispNoticeLocator);
-   /* if (verifyTrustCorpOpts) {
+    await I.waitForElement('#titleAndClearingType-TCTNoT', 20)
+    if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {
         await I.scrollTo('#titleAndClearingType-TCTNoT');
     }
-    */
-    await I.wait(4);
-    await I.waitForClickable('#titleAndClearingType-TCTNoT');
+
+
+    await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
     await I.click({css: '#titleAndClearingType-TCTNoT'});
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
