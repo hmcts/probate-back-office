@@ -19,10 +19,12 @@ module.exports = async function (optName) {
     const allPowerRes = optName.endsWith('PowerRes');
     const isSuccessorFirm = optName === 'TCTPartSuccPowerRes' || optName === 'TCTSolePrinSucc' || optName === 'TCTPartSuccAllRenouncing' || optName === 'TCTPartSuccOthersRenouncing';
 
+    await I.wait(4);
     const nameOfFirmNamedInWillVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfFirmNamedInWill'})) > 0;
     const nameOfSucceededFirmVisible = (await I.grabNumberOfVisibleElements ({css: '#nameOfSucceededFirm'})) > 0;
     const morePartnersHoldingPowerReservedVisible = (await I.grabNumberOfVisibleElements ({css: '#morePartnersHoldingPowerReserved'})) > 0;
     const anyOtherPartnersApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#anyOtherApplyingPartners_Yes'})) > 0;
+    await I.wait(4);
     const practitionersPosnInTrustVisible = (await I.grabNumberOfVisibleElements ({css: '#probatePractitionersPositionInTrust'})) > 0;
 
     assert(isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
