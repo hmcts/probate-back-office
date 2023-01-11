@@ -31,7 +31,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     }
     */
     await I.wait(4);
-    await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
+    await I.waitForClickable('#titleAndClearingType-TCTNoT');
     await I.click({css: '#titleAndClearingType-TCTNoT'});
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
