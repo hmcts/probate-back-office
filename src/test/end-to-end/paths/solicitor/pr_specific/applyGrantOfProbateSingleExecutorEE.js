@@ -75,6 +75,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.grantOfProbatePage6();
     await I.cyaPage();
 
+
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
 
