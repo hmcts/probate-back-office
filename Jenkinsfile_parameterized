@@ -50,11 +50,11 @@ withParameterizedPipeline('java', 'probate', 'back-office', params.ENVIRONMENT, 
 //                 alwaysLinkToLastBuild: true
 //         ]
 //     }
-    after('functionalTest:preview') {
+    afterSuccess('functionalTest:preview') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 
-    after('functionalTest:aat') {
+    afterSuccess('functionalTest:aat') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     }
 }
