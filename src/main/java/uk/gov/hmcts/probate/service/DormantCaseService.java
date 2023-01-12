@@ -83,15 +83,15 @@ public class DormantCaseService {
     }
 
     private void updateCaseAsCaseworker(String caseId, GrantOfRepresentationData grantOfRepresentationData) {
-            try {
-                ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
-                        grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
-                        securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
-                log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}", caseId);
-            } catch (Exception e) {
-                log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}", caseId,
-                        e.getMessage());
-            }
+        try {
+            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
+                    grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
+                    securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
+                    REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
+            log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}", caseId);
+        } catch (Exception e) {
+            log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}", caseId,
+                    e.getMessage());
         }
+    }
 }
