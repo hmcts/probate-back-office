@@ -144,35 +144,19 @@
         <cve>CVE-2020-29245</cve>
     </suppress>
     <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-codec/commons\-codec@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
+    <notes>No update for apache commons yet</notes>
+    <cve>CVE-2021-37533</cve>
     </suppress>
     <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-collections/commons\-collections@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
+        <notes><![CDATA[
+   file name: snakeyaml-1.30.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
+        <cve>CVE-2022-1471</cve>
     </suppress>
     <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-configuration/commons\-configuration@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
-    </suppress>
-    <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-fileupload/commons\-fileupload@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
-    </suppress>
-    <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-io/commons\-io@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
-    </suppress>
-    <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-lang/commons\-lang@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
-    </suppress>
-    <suppress>
-       <packageUrl regex="true">^pkg:maven/commons\-logging/commons\-logging@.*$</packageUrl>
-       <cve>CVE-2021-37533</cve>
-    </suppress>
-    <suppress>
-       <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-       <cve>CVE-2022-1471</cve>
+        <notes>netty</notes>
+        <cve>CVE-2022-41881</cve>
+        <cve>CVE-2022-41915</cve>
     </suppress>
 </suppressions>
