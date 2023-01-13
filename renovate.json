@@ -2,7 +2,7 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base", ":dependencyDashboard"],
   "enabledManagers": ["helm-requirements","gradle-wrapper", "gradle", "nvm", "npm"],
-  "prConcurrentLimit": 10,
+  "prConcurrentLimit": 6,
   "labels": ["dependencies"],
   "helm-requirements":
   {
