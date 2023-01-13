@@ -360,6 +360,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedHadLateSpouseOrCivilPartner;
     private final String ihtUnusedAllowanceClaimed;
     private final String showIht400421Page;
+    private final String moveToDormantDateTime;
     private final String letterType;
     private final String caseworkerName;
     private final String letterText;

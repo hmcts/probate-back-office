@@ -358,7 +358,7 @@ public class CaseData extends CaseDataParent {
     private final String boExaminationChecklistRequestQA;
     private final String applicationSubmittedDate;
     private final List<CollectionMember<ScannedDocument>> scannedDocuments;
-    private final String evidenceHandled;
+    private String evidenceHandled;
     private final String caseType;
     private final String paperForm;
     private final String languagePreferenceWelsh;
@@ -564,10 +564,12 @@ public class CaseData extends CaseDataParent {
 
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
+    private final String moveToDormantDateTime;
     private final String letterType;
     private final String caseworkerName;
     private final String letterText;
     private final String includeStatementOfTruth;
+    private LocalDate lastEvidenceAddedDate;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

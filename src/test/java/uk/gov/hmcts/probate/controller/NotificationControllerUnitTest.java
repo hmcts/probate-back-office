@@ -9,6 +9,7 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -21,6 +22,7 @@ import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
@@ -32,6 +34,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +43,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -77,6 +81,8 @@ class NotificationControllerUnitTest {
     RedeclarationNotificationService redeclarationNotificationService;
     @Mock
     DocumentsReceivedNotificationService documentsReceivedNotificationService;
+    @Mock
+    EvidenceUploadService evidenceUploadService;
 
     @InjectMocks
     NotificationController notificationController;
@@ -166,17 +172,28 @@ class NotificationControllerUnitTest {
     }
 
 
+    @Test
+    void shouldUpdateEvidenceAddedDate() throws NotificationClientException {
+        setUpMocks(APPLICATION_RECEIVED);
+        HttpServletRequest requestMock = mock(HttpServletRequest.class);
+        BindingResult bindingResultMock = mock(BindingResult.class);
+        ResponseEntity<CallbackResponse> responseEntity =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock, requestMock);
+        assertThat(responseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
     private void setUpMocks(State state, String... errors) throws NotificationClientException {
         CaseDetails caseDetails = new CaseDetails(CaseDataTestBuilder.withDefaults().build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         document = Document.builder()
-            .documentDateAdded(LocalDate.now())
-            .documentFileName("fileName")
-            .documentGeneratedBy("generatedBy")
-            .documentLink(
-                DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary").build())
-            .documentType(DocumentType.DIGITAL_GRANT)
-            .build();
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .build();
         callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
         when(eventValidationService.validateEmailRequest(any(), any())).thenReturn(callbackResponse);
         when(notificationService.sendEmail(any(), any())).thenReturn(document);

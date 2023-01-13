@@ -189,6 +189,7 @@ notifications:
           generalCaveatMessage: "pa-general-caveat-message-welsh"
           exelaData: "pa-exela-data-welsh"
           smeeAndFordData: "pa-smeeFord-data"
+          grantRaised: "pa-grant-raised-welsh"
           grantRaisedPaperFormBulkScan: "pa-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "pa-caveat-raised-welsh"
           caveatRaisedCtsc: "pa-ctsc-caveat-raised-welsh"
@@ -208,6 +209,7 @@ notifications:
           generalCaveatMessage: "sol-general-caveat-message-welsh"
           exelaData: "pa-exela-data-welsh"
           smeeAndFordData: "pa-smeeFord-data"
+          grantRaised: "sol-grant-raised-welsh"
           grantRaisedPaperFormBulkScan: "sol-grant-raised-paper-bulk-scan-welsh"
           caveatRaised: "sols-caveat-raised-welsh"
           caveatRaisedCtsc: "sols-ctsc-caveat-raised-welsh"
@@ -417,6 +419,16 @@ welsh:
 iht-estate:
   switch-date: "2022-01-01"
 
+blobstorage:
+  connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
+
+adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+
+feature:
+  blobstorage:
+    smeeandford:
+      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:false}
+
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:off}
   user:
@@ -440,3 +452,13 @@ document_management:
   fileupload:
     extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
+
+dormancy:
+  period_months: 6
+  start_date: 1900-01-01
+
+make_dormant:
+  add_time_minutes: 5
+
+reactivate_dormant:
+  minus_days: 1

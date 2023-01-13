@@ -38,11 +38,13 @@ public class CaseDataTransformer {
         resetCaseDataTransformer.resetExecutorLists(caseData);
         solicitorApplicationCompletionTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
+        solicitorApplicationCompletionTransformer.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
     }
 
     public void transformCaseDataForValidateAdmon(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         legalStatementExecutorTransformer.formatFields(caseData);
+        solicitorApplicationCompletionTransformer.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
     }
 
 
