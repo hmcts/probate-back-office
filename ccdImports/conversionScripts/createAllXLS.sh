@@ -7,11 +7,16 @@ configFolder=${conversionFolder}/../configFiles
 
 if [ -z "$1" ]
   then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL"
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
+if [ -z "2" ]
+  then
+    export CCD_DEF_AAC_URL=manage-case-assignment:4454
+fi
+
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
 

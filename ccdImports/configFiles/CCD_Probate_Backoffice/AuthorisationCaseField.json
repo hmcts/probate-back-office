@@ -3389,8 +3389,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastEvidenceAddedDate", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-caa", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOrganisationRequestField", "UserRole": "caseworker-caa", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOrganisationRequestField", "UserRole": "[APPLICANTSOLICITOR]", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOrganisationRequestField", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
