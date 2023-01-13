@@ -106,15 +106,15 @@ public class CallbackResponseTransformer {
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
-    private static final String DEFAULT_IHT_FORM_ID = "IHT205";
     private static final String CASE_CREATED = "CaseCreated";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
     private static final String EXAMINING = "BOExamining";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
-    private static final String SOL_AS_EXEC_ID = "solicitor";
     private static final String PBA_PAYMENT_METHOD = "pba";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
+
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -791,8 +791,17 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-        responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
-                callbackRequest.getCaseDetails(), null));
+        if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())) {
+            responseCaseDataBuilder.applicantOrganisationPolicy(
+                    OrganisationPolicy.builder()
+                            .organisation(Organisation.builder()
+                                    .organisationID(null)
+                                    .organisationName(null)
+                                    .build())
+                            .orgPolicyReference(null)
+                            .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                            .build());
+        }
 
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
@@ -1086,32 +1095,24 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
+    OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
         CaseData caseData = caseDetails.getData();
-        String policyRef = null;
-        String orgPolicyCaseAssignedRole = SOLICITOR.equals(caseDetails.getData().getApplicationType())
-                ? "[APPLICANTSOLICITOR]" : null;
-        String orgId = null;
-        String orgName = null;
+        OrganisationEntityResponse organisationEntityResponse = null;
         if (null != authToken) {
-            OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
+            organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
                     caseDetails.getId().toString(), authToken);
-            if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
-                policyRef = caseData.getApplicantOrganisationPolicy().getOrgPolicyReference();
-                orgPolicyCaseAssignedRole = caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole();
-                orgId = organisationEntityResponse.getOrganisationIdentifier();
-                orgName = organisationEntityResponse.getName();
-            }
         }
-
-        return OrganisationPolicy.builder()
-        .organisation(Organisation.builder()
-            .organisationID(orgId)
-            .organisationName(orgName)
-            .build())
-        .orgPolicyReference(policyRef)
-        .orgPolicyCaseAssignedRole(orgPolicyCaseAssignedRole)
-        .build();
+        if (null != organisationEntityResponse && null != caseData.getApplicantOrganisationPolicy()) {
+            return OrganisationPolicy.builder()
+            .organisation(Organisation.builder()
+                .organisationID(organisationEntityResponse.getOrganisationIdentifier())
+                .organisationName(organisationEntityResponse.getName())
+                .build())
+            .orgPolicyReference(caseData.getApplicantOrganisationPolicy().getOrgPolicyReference())
+            .orgPolicyCaseAssignedRole(caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
+            .build();
+        }
+        return null;
     }
 
     private boolean isPaperForm(CaseData caseData) {

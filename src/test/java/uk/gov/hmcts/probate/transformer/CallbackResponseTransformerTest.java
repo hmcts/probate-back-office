@@ -3562,7 +3562,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
+    void shouldGetSolicitorPaperGOPApplicationWithDocumentPaperFormNo() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
@@ -3577,6 +3577,8 @@ class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
+        assertEquals("[APPLICANTSOLICITOR]", callbackResponse.getData().getApplicantOrganisationPolicy()
+                .getOrgPolicyCaseAssignedRole());
         verify(caseDataTransformerMock, times(1))
                 .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
     }
@@ -3604,26 +3606,6 @@ class CallbackResponseTransformerTest {
         assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
         verify(solicitorExecutorTransformerMock, times(1))
                 .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
-    }
-
-    @Test
-    void testBuildOrganisationPolicyForPersonal() {
-        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
-            .thenReturn(new OrganisationEntityResponse());
-
-        when(caseDataMock.getApplicationType()).thenReturn(PERSONAL);
-        OrganisationPolicy organisationPolicy = underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123");
-        assertNull(organisationPolicy.getOrganisation().getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
-    }
-
-    @Test
-    void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
-        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
-        when(caseDataMock.getApplicationType()).thenReturn(PERSONAL);
-        OrganisationPolicy organisationPolicy = underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123");
-        assertNull(organisationPolicy.getOrganisation().getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
