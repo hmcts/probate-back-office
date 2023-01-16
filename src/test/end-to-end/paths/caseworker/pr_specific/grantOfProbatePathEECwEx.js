@@ -115,7 +115,7 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Stop case';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.stopCase);
-    await I.probateStopCase();
+    await I.caseProgressStopEscalateIssueAddCaseStoppedReason();
     await I.enterEventSummary(caseRef, nextStepName);
     endState = 'Stop case';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
