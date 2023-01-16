@@ -12,21 +12,21 @@ dependencies:
     version:  4.0.6
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: ccd
-    version: 8.0.17
+    version: 8.0.21
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     tags:
       - probate-ccd-stack
   - name: xui-webapp
-    version: ~0.2.13
+    version: ~1.0.0
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: xui-webapp.enabled
   - name: idam-pr
-    version: 2.2.7
+    version: 2.3.0
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
 
   - name: postgresql
-    version: 11.6.3
+    version: 12.1.9
     repository: https://charts.bitnami.com/bitnami
     condition: postgresql.enabled
 
