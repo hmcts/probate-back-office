@@ -30,5 +30,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Pending", "Name": "Draft", "Description": "Draft", "DisplayOrder": 26},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BORedecNotificationSent", "Name": "Redeclaration notifications sent", "Description": "Redeclaration notifications sent", "DisplayOrder": 27},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOSotGenerated", "Name": "Legal Statement Generated", "Description": "Legal Statement Generated", "DisplayOrder": 28},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Deleted", "Name": "Deleted", "Description": "Delete application", "DisplayOrder": 29}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Deleted", "Name": "Deleted", "Description": "Delete application", "DisplayOrder": 29},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Dormant", "Name": "Dormant", "Description": "Dormant application", "DisplayOrder": 30}
 ]

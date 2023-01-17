@@ -107,7 +107,7 @@ java:
           alias: spring.security.oauth2.client.provider.homeoffice.authorization-uri
         - name: schedulerCaseWorkerUser
           alias: SCHEDULER_CASEWORKER_USERNAME
-        - name: schedulerCaseWorkerUser
+        - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
         - name: probate-storage-account-primary-connection-string
           alias: PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING
