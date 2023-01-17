@@ -339,7 +339,7 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
-  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
@@ -355,7 +355,7 @@ dependencies {
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   testCaseCreatorImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testCaseCreatorImplementation sourceSets.main.runtimeClasspath
   testCaseCreatorImplementation sourceSets.test.runtimeClasspath
