@@ -19,4 +19,9 @@ public class EvidenceUploadService {
         caseData.setLastEvidenceAddedDate(LocalDate.now());
     }
 
+    public void setDocumentUploadedAfterCaseStopped(CaseDetails caseDetails, String choice) {
+        CaseData caseData = caseDetails.getData();
+        log.info("Setting documentUploadedAfterCaseStopped to {}", choice);
+        caseData.setDocumentUploadedAfterCaseStopped(choice);
+    }
 }
