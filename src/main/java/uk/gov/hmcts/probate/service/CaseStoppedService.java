@@ -25,6 +25,8 @@ public class CaseStoppedService {
     }
 
     public void caseResolved(CaseDetails caseDetails) {
+        log.info("Setting documentUploadedAfterCaseStopped to No");
+        caseDetails.getData().setDocumentUploadedAfterCaseStopped("No");
         log.info("Case resolved: {} ", caseDetails.getId());
 
         addToGrantDelay(caseDetails);
