@@ -1,15 +1,23 @@
 package uk.gov.hmcts.probate;
 
+import java.io.File;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLib;
 import uk.gov.hmcts.rse.ccd.lib.api.CFTLibConfigurer;
 
-import java.io.File;
+
+import static java.lang.Boolean.parseBoolean;
 
 @Component
 public class CftLibConfig implements CFTLibConfigurer {
     @Override
     public void configure(CFTLib lib) throws Exception {
+        if (parseBoolean(System.getenv("USE_DOCKER_WITH_CFTLIB"))) {
+            lib.createIdamUser("testCW@user.com", "caseworker", "caseworker-probate", "caseworker-probate-solicitor");
+            lib.createIdamUser("testAdmin@user.com", "caseworker-probate-caseadmin");
+            lib.createIdamUser("data.store.idam.system.user@gmail.com","caseworker");
+        }
+
         lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
         lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "Caveat", "Pending");
         lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
