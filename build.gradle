@@ -479,6 +479,20 @@ task buildAllXlsx(type: Exec) {
   outputs.dir project.file('jsonToXLS')
 }
 
+task loadEnvSecrets() {
+  doLast {
+    if (!project.file('./.aat-env').exists()) {
+      new ByteArrayOutputStream().withStream { os ->
+        exec {
+          commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'probate-aat', '-o', 'tsv', '--query', 'value', '--name', 'probate-bo-dot-env'
+          standardOutput = os
+        }
+        project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
+      }
+    }
+  }
+}
+
 bootWithCCD {
   // Request the cftlib create the probate_man database
   environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
@@ -492,8 +506,9 @@ bootWithCCD {
     environment 'IDAM_S2S_URL', 'http://localhost:8489'
     environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
   } else {
+    dependsOn(loadEnvSecrets)
+
     doFirst() {
-      print 'Exporting env vars from .aat-env'
       project.file('./.aat-env').readLines().each() {
         def index = it.indexOf("=")
         def key = it.substring(0, index)
