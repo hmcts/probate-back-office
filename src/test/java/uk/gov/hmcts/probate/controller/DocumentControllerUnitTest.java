@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -38,17 +38,19 @@ import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 public class DocumentControllerUnitTest {
@@ -137,7 +139,7 @@ public class DocumentControllerUnitTest {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: too many files");
 
-        MultipartFile file = Mockito.mock(MultipartFile.class);
+        MultipartFile file = mock(MultipartFile.class);
         List<MultipartFile> files = new ArrayList<>();
         for (int i = 1; i <= 11; i++) {
             files.add(file);
@@ -185,7 +187,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldSetLastEvidenceAddedDate() {
+    public void shouldUpdateLastEvidenceAddedDateWhenOngoing() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -193,5 +195,44 @@ public class DocumentControllerUnitTest {
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
         verify(evidenceUploadService).updateLastEvidenceAddedDate(caseDetailsMock);
+    }
+
+    @Test
+    public void shouldSetLastEvidenceAddedDate() {
+        CaseData mockCaseData = CaseData.builder()
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+
+        EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
+        evidenceUploadService1.setLastEvidenceAddedDate(mockCaseDetails);
+        assertEquals(LocalDate.now(), mockCaseDetails.getData().getLastEvidenceAddedDate());
+    }
+
+    @Test
+    public void shouldUpdateLastEvidenceAddedDateWhenStoppedForFirstUpload() {
+        CaseData mockCaseData = CaseData.builder()
+                .grantStoppedDate(LocalDate.of(2022,02,10))
+                .documentUploadedAfterCaseStopped("No")
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+
+        EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
+        evidenceUploadService1.updateLastEvidenceAddedDate(mockCaseDetails);
+        assertEquals(LocalDate.of(2022,02,10), mockCaseDetails.getData().getGrantStoppedDate());
+        assertEquals(LocalDate.now(), mockCaseDetails.getData().getLastEvidenceAddedDate());
+    }
+
+    @Test
+    public void shouldNotUpdateLastEvidenceAddedDateWhenStoppedForSecondUpload() {
+        CaseData mockCaseData = CaseData.builder()
+                .grantStoppedDate(LocalDate.of(2022,02,10))
+                .documentUploadedAfterCaseStopped("Yes")
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+
+        EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
+        evidenceUploadService1.updateLastEvidenceAddedDate(mockCaseDetails);
+        assertEquals(LocalDate.of(2022,02,10), mockCaseDetails.getData().getGrantStoppedDate());
+        assertEquals(null, mockCaseDetails.getData().getLastEvidenceAddedDate());
     }
 }
