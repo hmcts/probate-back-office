@@ -229,7 +229,6 @@ public class DocumentControllerUnitTest {
                 .documentUploadedAfterCaseStopped("Yes")
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
-
         EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
         evidenceUploadService1.updateLastEvidenceAddedDate(mockCaseDetails);
         assertEquals(LocalDate.of(2022,02,10), mockCaseDetails.getData().getGrantStoppedDate());
