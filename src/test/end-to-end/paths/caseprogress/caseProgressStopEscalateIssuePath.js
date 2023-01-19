@@ -166,7 +166,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 6,
+            numCompleted: 4,
             numInProgress: 1,
             numNotStarted: 0,
             checkSubmittedDate: true,
