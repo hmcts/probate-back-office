@@ -17,19 +17,26 @@ public class EvidenceUploadService {
         CaseData caseData = caseDetails.getData();
         if (caseData.getGrantStoppedDate() != null) {
             log.info("Case is stopped.");
-            log.info("getDocumentUploadedAfterCaseStopped has value {}", caseData.getDocumentUploadedAfterCaseStopped());
-            if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("No") || caseData.getDocumentUploadedAfterCaseStopped() == null) {
+            log.info("getDocumentUploadedAfterCaseStopped has value {}",caseData.getDocumentUploadedAfterCaseStopped());
+            if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("No")
+                    || caseData.getDocumentUploadedAfterCaseStopped() == null) {
                 log.info("Setting documentUploadedAfterCaseStopped to Yes");
                 caseData.setDocumentUploadedAfterCaseStopped("Yes");
-                log.info("Updating updateLastEvidenceAddedDate for case {}", caseDetails.getId());
-                caseData.setLastEvidenceAddedDate(LocalDate.now());
+                this.setLastEvidenceAddedDate(caseDetails);
             } else {
-                log.info("A document has already been uploaded since case was stopped so no need to update lastEvidenceAddedDate");
+                log.info("A document has already been uploaded since "
+                        + "case was stopped so no need to update lastEvidenceAddedDate");
             }
         } else {
             log.info("Case is ongoing.");
-            log.info("Updating updateLastEvidenceAddedDate for case {}", caseDetails.getId());
-            caseData.setLastEvidenceAddedDate(LocalDate.now());
+            this.setLastEvidenceAddedDate(caseDetails);
         }
+    }
+
+    public CaseDetails setLastEvidenceAddedDate(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
+        log.info("Updating updateLastEvidenceAddedDate for case {}", caseDetails.getId());
+        caseData.setLastEvidenceAddedDate(LocalDate.now());
+        return caseDetails;
     }
 }
