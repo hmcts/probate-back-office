@@ -18,14 +18,13 @@ public class EvidenceUploadService {
         if (caseData.getGrantStoppedDate() != null) {
             log.info("Case is stopped.");
             log.info("getDocumentUploadedAfterCaseStopped has value {}",caseData.getDocumentUploadedAfterCaseStopped());
-            if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("No")
-                    || caseData.getDocumentUploadedAfterCaseStopped() == null) {
+            if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
+                log.info("A document has already been uploaded since "
+                        + "case was stopped so no need to update lastEvidenceAddedDate");
+            } else {
                 log.info("Setting documentUploadedAfterCaseStopped to Yes");
                 caseData.setDocumentUploadedAfterCaseStopped("Yes");
                 this.setLastEvidenceAddedDate(caseDetails);
-            } else {
-                log.info("A document has already been uploaded since "
-                        + "case was stopped so no need to update lastEvidenceAddedDate");
             }
         } else {
             log.info("Case is ongoing.");
