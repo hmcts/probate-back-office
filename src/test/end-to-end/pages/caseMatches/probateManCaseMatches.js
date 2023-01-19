@@ -20,7 +20,7 @@ module.exports = async function (caseRef, nextStepName) {
         await I.waitForElement('#caseMatches_0_0', testConfig.WaitForTextTimeout);
         await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.WaitForTextTimeout);
     }
-    const legacyApplication = {css: '#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd > ng-component > span'};
+    const legacyApplication = {css: '#caseMatches_%s_%s > fieldset > ccd-field-read:nth-child(2) > div > ccd-field-read-label > div > dl > dd'};
     const legacyApplicationTypeText = 'Legacy LEGACY APPLICATION';
     const removeBtnLocator = {css: '#caseMatches > div > div > div:nth-child(%s) > div > div.float-right > button'};
     const caseMatchesValidYesLocator = {css: '#caseMatches_%s_valid_Yes'};
