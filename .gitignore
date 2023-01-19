@@ -44,3 +44,5 @@ src/test/end-to-end/functional-output/
 /bin/test
 /bin/testFunctional
 /src/main/generated/
+
+.aat-env
