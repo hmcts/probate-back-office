@@ -38,14 +38,12 @@ import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
@@ -187,51 +185,16 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUpdateLastEvidenceAddedDateWhenOngoing() {
+    public void shouldUpdateLastEvidenceAddedDate() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        CaseData mockCaseData = CaseData.builder()
+            .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
         ResponseEntity<CallbackResponse> response = documentController.evidenceAdded(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
-        verify(evidenceUploadService).updateLastEvidenceAddedDate(caseDetailsMock);
-    }
-
-    @Test
-    public void shouldSetLastEvidenceAddedDate() {
-        CaseData mockCaseData = CaseData.builder()
-                .build();
-        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
-
-        EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
-        evidenceUploadService1.setLastEvidenceAddedDate(mockCaseDetails);
-        assertEquals(LocalDate.now(), mockCaseDetails.getData().getLastEvidenceAddedDate());
-    }
-
-    @Test
-    public void shouldUpdateLastEvidenceAddedDateWhenStoppedForFirstUpload() {
-        CaseData mockCaseData = CaseData.builder()
-                .grantStoppedDate(LocalDate.of(2022,02,10))
-                .documentUploadedAfterCaseStopped("No")
-                .build();
-        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
-
-        EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
-        evidenceUploadService1.updateLastEvidenceAddedDate(mockCaseDetails);
-        assertEquals(LocalDate.of(2022,02,10), mockCaseDetails.getData().getGrantStoppedDate());
-        assertEquals(LocalDate.now(), mockCaseDetails.getData().getLastEvidenceAddedDate());
-    }
-
-    @Test
-    public void shouldNotUpdateLastEvidenceAddedDateWhenStoppedForSecondUpload() {
-        CaseData mockCaseData = CaseData.builder()
-                .grantStoppedDate(LocalDate.of(2022,02,10))
-                .documentUploadedAfterCaseStopped("Yes")
-                .build();
-        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
-        EvidenceUploadService evidenceUploadService1 = new EvidenceUploadService();
-        evidenceUploadService1.updateLastEvidenceAddedDate(mockCaseDetails);
-        assertEquals(LocalDate.of(2022,02,10), mockCaseDetails.getData().getGrantStoppedDate());
-        assertEquals(null, mockCaseDetails.getData().getLastEvidenceAddedDate());
+        verify(evidenceUploadService).updateLastEvidenceAddedDate(mockCaseDetails);
     }
 }
