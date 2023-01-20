@@ -15,27 +15,7 @@ public class EvidenceUploadService {
 
     public void updateLastEvidenceAddedDate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        if (caseData.getGrantStoppedDate() != null) {
-            log.info("Case is stopped.");
-            log.info("getDocumentUploadedAfterCaseStopped has value {}",caseData.getDocumentUploadedAfterCaseStopped());
-            if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
-                log.info("A document has already been uploaded since "
-                        + "case was stopped so no need to update lastEvidenceAddedDate");
-            } else {
-                log.info("Setting documentUploadedAfterCaseStopped to Yes");
-                caseData.setDocumentUploadedAfterCaseStopped("Yes");
-                this.setLastEvidenceAddedDate(caseDetails);
-            }
-        } else {
-            log.info("Case is ongoing.");
-            this.setLastEvidenceAddedDate(caseDetails);
-        }
-    }
-
-    public CaseDetails setLastEvidenceAddedDate(CaseDetails caseDetails) {
-        CaseData caseData = caseDetails.getData();
-        log.info("Updating updateLastEvidenceAddedDate for case {}", caseDetails.getId());
+        log.info("Updating lastEvidenceAddedDate for case {}", caseDetails.getId());
         caseData.setLastEvidenceAddedDate(LocalDate.now());
-        return caseDetails;
     }
 }

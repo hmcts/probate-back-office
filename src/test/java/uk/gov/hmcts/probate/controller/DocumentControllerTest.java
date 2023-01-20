@@ -46,9 +46,10 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -715,14 +716,38 @@ class DocumentControllerTest {
     }
 
     @Test
-    void shouldUpdateLastEvidenceAddedDate() throws Exception {
+    void shouldUpdateLastEvidenceAddedDateWhenOngoing() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/evidenceAdded")
                         .content(payload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                    .andReturn();
+                .andReturn();
         verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+
+    @Test
+    void shouldUpdateLastEvidenceAddedDateWhenStoppedForFirstUpload() throws Exception {
+        String payload = testUtils.getStringFromFile("stoppedCaseBeforeUploadingDocuments.json");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+
+    @Test
+    void shouldNotUpdateLastEvidenceAddedDateWhenStoppedForSecondUpload() throws Exception {
+        String payload = testUtils.getStringFromFile("stoppedCaseAfterUploadingDocuments.json");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(evidenceUploadService, times(0))
                 .updateLastEvidenceAddedDate(any(CaseDetails.class));
     }
 

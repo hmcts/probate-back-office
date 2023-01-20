@@ -354,7 +354,23 @@ public class DocumentController {
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
-        evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = caseDetails.getData();
+        if (caseData.getGrantStoppedDate() != null) {
+            log.info("Case is stopped.");
+            log.info("getDocumentUploadedAfterCaseStopped has value {}",caseData.getDocumentUploadedAfterCaseStopped());
+            if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
+                log.info("A document has already been uploaded since "
+                        + "case was stopped so no need to update lastEvidenceAddedDate");
+            } else {
+                log.info("Setting documentUploadedAfterCaseStopped to Yes");
+                caseData.setDocumentUploadedAfterCaseStopped("Yes");
+                evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
+            }
+        } else {
+            log.info("Case is ongoing.");
+            evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
+        }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
