@@ -42,9 +42,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     public void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
             true, true, true);
-        System.out.println("TEST LOGGING BEGIN");
-        System.out.println(response);
-        System.out.println("TEST LOGGING END");
         assertTrue(response.getBody().asPrettyString().contains("(PA17)"));
     }
 
