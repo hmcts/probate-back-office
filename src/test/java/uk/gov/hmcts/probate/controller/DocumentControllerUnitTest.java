@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
@@ -46,9 +46,9 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.mock;
 
 @ExtendWith(SpringExtension.class)
 public class DocumentControllerUnitTest {
@@ -137,7 +137,7 @@ public class DocumentControllerUnitTest {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: too many files");
 
-        MultipartFile file = Mockito.mock(MultipartFile.class);
+        MultipartFile file = mock(MultipartFile.class);
         List<MultipartFile> files = new ArrayList<>();
         for (int i = 1; i <= 11; i++) {
             files.add(file);
@@ -185,13 +185,16 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldSetLastEvidenceAddedDate() {
+    public void shouldUpdateLastEvidenceAddedDate() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        CaseData mockCaseData = CaseData.builder()
+            .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
         ResponseEntity<CallbackResponse> response = documentController.evidenceAdded(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
-        verify(evidenceUploadService).updateLastEvidenceAddedDate(caseDetailsMock);
+        verify(evidenceUploadService).updateLastEvidenceAddedDate(mockCaseDetails);
     }
 }

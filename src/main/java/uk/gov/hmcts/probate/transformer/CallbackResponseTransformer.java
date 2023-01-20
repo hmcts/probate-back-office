@@ -1068,7 +1068,8 @@ public class CallbackResponseTransformer {
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
-            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
+            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
