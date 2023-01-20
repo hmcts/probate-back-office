@@ -249,7 +249,7 @@ services:
       - IDAM_S2S_BASE_URI=http://service-auth-provider-api:8080
       - ENABLE_TTL=false
       - ENABLE_METADATA_MIGRATION=false
-      - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api
+      - S2S_NAMES_WHITELIST=ccd_gw,fpl_case_service,ccd_data,ccd_ps,payment-api,xui_webapp,ccd_case_document_am_api
     depends_on:
       - shared-database
       - service-auth-provider-api
