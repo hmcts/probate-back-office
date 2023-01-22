@@ -11,7 +11,7 @@ module.exports = async function (opts) {
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
-    await I.wait(2);
+    await I.wait(3);
     assert (texts.length === 17);
     assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[1] === 'Add Probate practitioner details');
@@ -20,6 +20,7 @@ module.exports = async function (opts) {
     assert (texts[4] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[5] === 'Review and sign legal statement and submit application');
     assert (texts[6] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
+    await I.wait(3);
     assert (texts[7] === 'Send documents\n');
     assert (texts[8] === 'These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.');
     assert (texts[9] === 'Authenticate documents');
