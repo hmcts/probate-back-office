@@ -481,14 +481,12 @@ task buildAllXlsx(type: Exec) {
 
 task loadEnvSecrets() {
   doLast {
-    if (!project.file('./.aat-env').exists()) {
-      new ByteArrayOutputStream().withStream { os ->
-        exec {
-          commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'probate-aat', '-o', 'tsv', '--query', 'value', '--name', 'probate-bo-dot-env'
-          standardOutput = os
-        }
-        project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
+    new ByteArrayOutputStream().withStream { os ->
+      exec {
+        commandLine 'az', 'keyvault', 'secret', 'show', '--vault-name', 'probate-aat', '-o', 'tsv', '--query', 'value', '--name', 'probate-bo-dot-env'
+        standardOutput = os
       }
+      project.file('./.aat-env').write(new String(os.toString().replace('\n', '').decodeBase64(), java.nio.charset.StandardCharsets.UTF_8))
     }
   }
 }

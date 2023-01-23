@@ -38,6 +38,23 @@ To build the project execute the following command:
 ################################################################################################
 ## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
 details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+
+### Running with/without Docker
+
+##### With Docker:
+
+If you choose to run back-office/CFTlib while pointing to dockerised, local instances of IDAM, CCD data store etc.
+then you must set USE_DOCKER_WITH_CFTLIB environment variable to 'true' in your terminal before running bootWithCcd.
+
+##### Without Docker:
+
+If you choose to run back-office/CFTlib while pointing to AAT services (IDAM, CCD data store etc), do not set 
+USE_DOCKER_WITH_CFTLIB env variable.
+
+Note: Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the 
+AAT endpoints and secrets to call those endpoints. A base64 encoded version of that file is held in the probate-aat 
+vault with the name 'probate-bo-dot-env' - if this secret is changed the content of .aat-env will change. 
+
 ##### Accessing databases
 
 Postgres is started on port 6432 (default) and can be accessed with user `postgres` password `postgres`
