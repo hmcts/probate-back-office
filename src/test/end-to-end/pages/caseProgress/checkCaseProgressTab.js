@@ -7,15 +7,10 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (opts) {
     const I = this;
     // if this hangs, then case progress tab has not been generated / not been generated correctly and test fails
-    await I.waitForText('Case Progress', testConfig.WaitForTextTimeout || 60);
+    await I.waitForText('Send documents\n', testConfig.WaitForTextTimeout || 60);
 
     // Check text on lhs side is all correct.
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
-    const texts2 = await I.grabTextFromAll('markdown  p');
-    console.log('texts');
-    console.log(texts);
-    console.log('texts2');
-    console.log(texts2);
     assert (texts.length === 17);
     assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[1] === 'Add Probate practitioner details');
@@ -24,7 +19,7 @@ module.exports = async function (opts) {
     assert (texts[4] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[5] === 'Review and sign legal statement and submit application');
     assert (texts[6] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
-    assert (texts[7] === 'Send documents');
+    assert (texts[7] === 'Send documents\n');
     assert (texts[8] === 'These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.');
     assert (texts[9] === 'Authenticate documents');
     assert (texts[10] === 'We will authenticate your documents and match them with your application.');
