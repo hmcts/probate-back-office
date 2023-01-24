@@ -19,13 +19,14 @@ module.exports = async function (caseRef, documentUploadConfig) {
     }
 
     await I.waitForVisible({css: `${documentUploadConfig.id}_0_Comment`});
+    await I.wait(2);
     await I.fillField({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
+    await I.wait(1);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayShort); // needed in order to be able to switch off auto delay for local dev
     }
 
     const docLink = {css: `${documentUploadConfig.id}_0_DocumentLink`};
-
     await I.waitForValue({css: `${documentUploadConfig.id}_0_Comment`}, documentUploadConfig.comment);
     await I.waitForVisible({css: `${documentUploadConfig.id}_0_DocumentType`});
     await I.selectOption({css: `${documentUploadConfig.id}_0_DocumentType`}, documentUploadConfig.documentType[0]);
