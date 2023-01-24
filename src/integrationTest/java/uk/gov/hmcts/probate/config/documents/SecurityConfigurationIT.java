@@ -1,4 +1,4 @@
-package uk.gov.hmcts.probate.config;
+package uk.gov.hmcts.probate.config.documents;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,7 +40,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration
 @SpringBootTest(properties = {"s2s.enabled=true"})
-class SecurityConfigurationTest {
+class SecurityConfigurationIT {
 
     private static final String PRINCIPAL = "ccd-datamgmt-api";
 
