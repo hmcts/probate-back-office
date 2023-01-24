@@ -14,7 +14,8 @@ const caveatorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/
 const caveatDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/caveatDetailsTabConfig');
 const notificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/notificationsTabConfig');
 const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/deceasedDetailsTabConfig');
-const paymentDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/paymentDetailsTabConfig');
+const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
+const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
 
 const {
     legacyParse,
@@ -66,6 +67,12 @@ Scenario(scenarioName, async function ({I}) {
     await I.completeCaveatApplicationPage2();
     await I.completeCaveatApplicationPage3();
 
+    await I.logInfo(scenarioName, 'Payment');
+    await I.makeCaveatPaymentPage1(caseRef,serviceRequestTabConfig);
+    await I.reviewPaymentDetails(caseRef,serviceRequestReviewTabConfig);
+    await I.makePaymentPage2(caseRef);
+    await I.viewPaymentStatus(caseRef);
+
     await I.seeEndState(endState);
 
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
@@ -73,7 +80,7 @@ Scenario(scenarioName, async function ({I}) {
     // When emailing the caveator, the Date added for the email document is set to today
     completeApplicationConfig.notification_date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
 
-    await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
+    //await I.seeCaseDetails(caseRef, paymentDetailsTabConfig, completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
     await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
 }).tag('@crossbrowser')
