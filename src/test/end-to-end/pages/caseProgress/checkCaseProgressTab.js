@@ -10,7 +10,9 @@ module.exports = async function (opts) {
     await I.waitForText('Case Progress', testConfig.WaitForTextTimeout || 60);
 
     // Check text on lhs side is all correct.
+    await I.wait(3);
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
+    await I.wait(3);
     assert (texts.length === 17);
     assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
     assert (texts[1] === 'Add Probate practitioner details');
