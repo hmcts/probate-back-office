@@ -91,6 +91,10 @@ Scenario(scenarioName, async function ({I}) {
     await I.completeApplicationPage6();
     await I.completeApplicationPage7();
     await I.completeApplicationPage8();
+    await I.makePaymentPage1(caseRef,serviceRequestTabConfig);
+    await I.reviewPaymentDetails(caseRef,serviceRequestReviewTabConfig);
+    await I.makePaymentPage2(caseRef);
+    await I.viewPaymentStatus(caseRef);
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
