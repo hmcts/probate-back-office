@@ -462,12 +462,12 @@ pact {
 task buildBackOfficeXlsx(type: Exec) {
   environment 'CCD_DEF_CASE_SERVICE_BASE_URL', 'localhost:4104'
 
-  def input = project.file('ccdImports/configFiles/CCD_Probate_Backoffice')
+  def input = project.file('ccdImports/configFiles/CCD_Probate_Legacy_Search')
   commandLine project.file("ccdImports/conversionScripts/convertJsonToXLS.sh")
   args input
   // Register the inputs and outputs so Gradle can skip if up-to-date.
   inputs.dir input
-  outputs.file project.file('jsonToXLS/CCD_Probate_Backoffice.xlsx')
+  outputs.file project.file('jsonToXLS/CCD_Probate_Legacy_Search.xlsx')
 }
 
 bootWithCCD {
