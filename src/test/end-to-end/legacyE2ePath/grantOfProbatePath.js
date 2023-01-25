@@ -6,7 +6,6 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');
 const markForExaminationConfig = require('src/test/end-to-end/pages/markForExamination/markForExaminationConfig');
@@ -18,7 +17,6 @@ const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/gran
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
-const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadTabConfig');
 const examChecklistTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/examChecklistTabConfig');
 const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
@@ -71,7 +69,6 @@ Scenario(scenarioName, async function ({I}) {
     let endState;
 
     // SECOND case - the main test case
-/*
     await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
@@ -95,8 +92,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterGrantOfProbatePage9();
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
-
- */
 
     const caseRef = await I.getCaseRefFromUrl();
 
@@ -157,7 +152,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
 
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
-
 
     nextStepName = 'Mark as ready for examination';
     await I.logInfo(scenarioName, nextStepName, caseRef);
