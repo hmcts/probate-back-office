@@ -81,6 +81,7 @@
       "primaryApplicantHasAlias": "Yes",
       "ihtFormId": "IHT205",
       "ihtGrossValue": "100001",
+      "boWillMessage": "message with Upper Case",
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",

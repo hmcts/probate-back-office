@@ -23,7 +23,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             + "SolAddCo";
     private static final String PA = "Extracted personally";
     private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
-    private static final String WILL_MESSAGE = "with a codicil";
+    private static final String WILL_MESSAGE = "With a codicil";
     private static final String ADMIN_MESSAGE = "admin clause limitation message";
     private static final String LIMITATION_MESSAGE = "limitation message";
     private static final String EXECUTOR_LIMITATION_MESSAGE = "executor limitation message";
