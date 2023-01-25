@@ -45,7 +45,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @TestPropertySource(properties = {"markdown.templatesDirectory=templates/markdown/"})
-class ConfirmationResponseServiceFeatureTest {
+class ConfirmationResponseServiceFeatureIT {
 
     private static final String REASON_MENTALLY_INCAPABLE = "MentallyIncapable";
     private static final String REASON_RENOUNCED = "Renunciation";

@@ -21,7 +21,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class GrantApplicationMapperTest {
+class GrantApplicationMapperIT {
 
     private static final String ID = "12345";
     private static final String LEGACY_TYPE = "Legacy LEGACY APPLICATION";

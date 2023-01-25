@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class CreditAccountPaymentTransformerTest {
+class CreditAccountPaymentTransformerIT {
 
     @Mock
     private CaseDetails caseDetails;

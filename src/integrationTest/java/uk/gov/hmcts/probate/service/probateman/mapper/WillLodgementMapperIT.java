@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class WillLodgementMapperTest {
+class WillLodgementMapperIT {
 
     private static final String ID = "12345";
     private static final String LEGACY_TYPE = "Legacy WILL";

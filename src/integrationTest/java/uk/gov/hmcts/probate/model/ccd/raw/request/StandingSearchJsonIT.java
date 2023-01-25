@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = { SpringBootTest.class })
 @JsonTest
-class StandingSearchJsonTest {
+class StandingSearchJsonIT {
     private String jsonContent;
 
     @Autowired

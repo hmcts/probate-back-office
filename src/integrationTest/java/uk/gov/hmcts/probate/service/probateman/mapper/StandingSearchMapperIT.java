@@ -22,7 +22,7 @@ import java.util.List;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class StandingSearchMapperTest {
+class StandingSearchMapperIT {
 
     @Value("${ccd.gateway.host}")
     private String printServiceHost;

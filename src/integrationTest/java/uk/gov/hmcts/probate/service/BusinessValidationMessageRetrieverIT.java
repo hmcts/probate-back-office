@@ -18,7 +18,7 @@ import static org.hamcrest.Matchers.not;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class BusinessValidationMessageRetrieverTest {
+class BusinessValidationMessageRetrieverIT {
 
     @Autowired
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;

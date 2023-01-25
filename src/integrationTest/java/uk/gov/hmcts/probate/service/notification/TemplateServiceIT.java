@@ -32,7 +32,7 @@ import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class TemplateServiceTest {
+class TemplateServiceIT {
 
     @Autowired
     private TemplateService templateService;

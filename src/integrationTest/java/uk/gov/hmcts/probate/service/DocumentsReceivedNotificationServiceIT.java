@@ -40,7 +40,7 @@ import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class DocumentsReceivedNotificationServiceTest {
+class DocumentsReceivedNotificationServiceIT {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final Long CASE_ID = 12345678987654321L;

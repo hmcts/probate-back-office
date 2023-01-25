@@ -19,7 +19,7 @@ import static java.util.Collections.emptyList;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class LifeEventValidationRuleTest {
+class LifeEventValidationRuleIT {
 
     @Autowired
     private LifeEventValidationRule lifeEventValidationRule;

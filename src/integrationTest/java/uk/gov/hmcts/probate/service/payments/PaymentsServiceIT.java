@@ -38,7 +38,7 @@ import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class PaymentsServiceTest {
+class PaymentsServiceIT {
     @MockBean(name = "restTemplate")
     private RestTemplate restTemplate;
     @MockBean

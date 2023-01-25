@@ -20,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class SentEmailPersonalisationServiceTest {
+class SentEmailPersonalisationServiceIT {
 
     @Autowired
     private SentEmailPersonalisationService sentEmailPersonalisationService;

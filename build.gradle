@@ -461,6 +461,7 @@ test {
 }
 
 check.dependsOn(integration)
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
 
 runAndPublishConsumerPactTests.finalizedBy pactPublish
 

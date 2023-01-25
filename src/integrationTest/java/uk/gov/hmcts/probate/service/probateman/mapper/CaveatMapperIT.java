@@ -23,7 +23,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class CaveatMapperTest {
+class CaveatMapperIT {
 
     @Value("${ccd.gateway.host}")
     private String printServiceHost;

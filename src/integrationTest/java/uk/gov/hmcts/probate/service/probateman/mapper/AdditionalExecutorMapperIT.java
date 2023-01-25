@@ -20,7 +20,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
-class AdditionalExecutorMapperTest {
+class AdditionalExecutorMapperIT {
 
     private static final String GRANTEE1_FORENAMES = "GR1FN1 GR1FN2";
     private static final String GRANTEE1_SURNAME = "GR1SN";
