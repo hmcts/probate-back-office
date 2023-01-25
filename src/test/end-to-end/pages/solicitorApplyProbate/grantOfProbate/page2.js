@@ -18,10 +18,10 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     } else {
         await I.dontSee(grantOfProbateConfig.page2_prev_identified_execs_text);
     }
-
     await I.scrollTo(dispNoticeLocator);
     await I.waitForClickable(dispNoticeLocator);
     await I.click(dispNoticeLocator);
+    await I.waitForElement('#titleAndClearingType-TCTNoT', 40)
     if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {

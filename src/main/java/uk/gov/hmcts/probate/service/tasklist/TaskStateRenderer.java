@@ -105,21 +105,23 @@ public class TaskStateRenderer {
     public String renderByReplace(TaskListState currState, String html, Long caseId,
                                   String willType, String solSOTNeedToUpdate,
                                   LocalDate authDate, LocalDate submitDate, CaseDetails details) {
+
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
-                solSOTNeedToUpdate);
-        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT,
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
 
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
@@ -156,7 +158,7 @@ public class TaskStateRenderer {
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
-                                   String solSOTNeedToUpdate) {
+                                   String solSOTNeedToUpdate, String evidenceHandled, String attachDocuments) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
@@ -166,10 +168,30 @@ public class TaskStateRenderer {
         }
 
         if (currState == renderState) {
-            return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
+            if (renderState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                    && NO.equals(evidenceHandled)) {
+                return TaskState.COMPLETED;
+            } else if (YES.equals(attachDocuments) && renderState == TaskListState.TL_STATE_SEND_DOCUMENTS) {
+                return TaskState.COMPLETED;
+            } else {
+                return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
+            }
         }
         if (currState.compareTo(renderState) > 0) {
             return TaskState.COMPLETED;
+        }
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && renderState == TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS) {
+            if (YES.equals(attachDocuments)) {
+                return TaskState.IN_PROGRESS;
+            } else if (NO.equals(evidenceHandled)) {
+                return TaskState.COMPLETED;
+            }
+        }
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && renderState == TaskListState.TL_STATE_EXAMINE_APPLICATION
+                && NO.equals(evidenceHandled)) {
+            return TaskState.IN_PROGRESS;
         }
         return TaskState.NOT_AVAILABLE;
     }

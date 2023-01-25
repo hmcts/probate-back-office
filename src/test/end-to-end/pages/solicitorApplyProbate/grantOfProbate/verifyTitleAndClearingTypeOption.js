@@ -11,7 +11,7 @@ module.exports = async function (optName) {
     await I.scrollTo(optLocator);
     await I.click(optLocator);
     if (!testConfig.TestAutoDelayEnabled) {
-        await I.wait(testConfig.ManualDelayShort);
+        await I.wait(testConfig.ManualDelayLong);
     }
     const isNa = optName === 'TCTNoT';
     const isTrustOption = optName.startsWith('TCTTrustCorp');
