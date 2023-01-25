@@ -21,7 +21,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.scrollTo(dispNoticeLocator);
     await I.waitForClickable(dispNoticeLocator);
     await I.click(dispNoticeLocator);
-    await I.waitForElement('#titleAndClearingType-TCTNoT', 40)
+    await I.waitForElement('#titleAndClearingType-TCTNoT', 40);
     if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {
