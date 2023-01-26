@@ -25,6 +25,7 @@ module.exports = async function (optName) {
     const anyOtherPartnersApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#anyOtherApplyingPartners_Yes'})) > 0;
     const practitionersPosnInTrustVisible = (await I.grabNumberOfVisibleElements ({css: '#probatePractitionersPositionInTrust'})) > 0;
 
+    await I.wait(2);
     assert(isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
     assert(isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
     assert(allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
