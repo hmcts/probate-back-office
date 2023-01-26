@@ -11,7 +11,6 @@ module.exports = async function (optName) {
     await I.waitForElement(optLocator);
     await I.scrollTo(optLocator);
     await I.wait(2);
-    await I.logInfo(optName, optLocator, "Scrolled down");
     await I.click(optLocator);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayLong);
@@ -33,6 +32,7 @@ module.exports = async function (optName) {
     assert(isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
     assert(allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
     assert(isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
+    await I.logInfo(isTrustOption, practitionersPosnInTrustVisible, "Scrolled down");
     assert(isTrustOption ? practitionersPosnInTrustVisible : !practitionersPosnInTrustVisible);
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {

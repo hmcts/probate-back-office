@@ -62,7 +62,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2(false, true, true);
-    await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.grantOfProbatePage3();
     await I.grantOfProbatePage4();
     await I.grantOfProbatePage5();
