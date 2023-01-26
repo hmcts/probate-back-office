@@ -21,10 +21,12 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.scrollTo(dispNoticeLocator);
     await I.waitForClickable(dispNoticeLocator);
     await I.click(dispNoticeLocator);
-    await I.waitForElement('#titleAndClearingType-TCTNoT', 100);
+    await I.waitForElement('#titleAndClearingType-TCTNoT', 40);
     if (verifyTrustCorpOpts) {
         await I.verifyTitleAndClearingTypeOptions();
     } else {
+        await I.logInfo("In Title page");
+        await I.wait(2);
         await I.scrollTo('#titleAndClearingType-TCTNoT');
     }
 
