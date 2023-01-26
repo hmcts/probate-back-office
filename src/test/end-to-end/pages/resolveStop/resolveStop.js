@@ -6,7 +6,6 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (resolveStop) {
 
     const I = this;
-
     await I.waitForEnabled({css: '#resolveStopState'}, testConfig.WaitForTextTimeout || 60);
     await I.selectOption('#resolveStopState', resolveStop);
     await I.waitForEnabled(commonConfig.submitButton, testConfig.WaitForTextTimeout || 60);
