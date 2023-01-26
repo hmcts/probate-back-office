@@ -29,7 +29,7 @@ module.exports = async function (optName) {
 
     await I.wait(2);
     assert(isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
-    assert(isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
+    assert(isNa || isTrustOption || !isSuccessorFirm ? nameOfSucceededFirmVisible : !nameOfSucceededFirmVisible);
     assert(allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
     assert(isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
     await I.logInfo(optName, isTrustOption, "Scrolled down");
