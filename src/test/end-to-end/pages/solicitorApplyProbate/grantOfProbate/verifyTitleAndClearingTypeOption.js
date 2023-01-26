@@ -10,6 +10,8 @@ module.exports = async function (optName) {
     const optLocator = {css: `#titleAndClearingType-${optName}`};
     await I.waitForElement(optLocator);
     await I.scrollTo(optLocator);
+    await I.wait(2);
+    await I.logInfo(optName, optLocator, "Scrolled down");
     await I.click(optLocator);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayLong);
