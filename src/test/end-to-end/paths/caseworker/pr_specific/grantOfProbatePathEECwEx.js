@@ -121,7 +121,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Resolve stop';
-    const resolveStop = 'Case Matching (Issue grant)';
+    let resolveStop = 'Case Matching (Issue grant)';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.resolveStop);
     await I.chooseResolveStop(resolveStop);

@@ -17,6 +17,7 @@ const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetai
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
+const ihtTabConfigUpdate = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtUpdateTabConfig');
 const nextStepConfig = require('src/test/end-to-end/pages/nextStep/nextStepConfig.json');
 const {
     legacyParse,
@@ -106,7 +107,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
     nextStepName = 'Resolve stop';
-    const resolveStop ='Case selected for QA';
+    let resolveStop ='Case selected for QA'
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepConfig.resolveStop);
     await I.chooseResolveStop(resolveStop);
