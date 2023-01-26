@@ -5,12 +5,9 @@ const testConfig = require('src/test/config.js');
 
 module.exports = async function (optName) {
     const I = this;
-    await I.logInfo("OptName",optName);
-    await I.wait(2);
     const optLocator = {css: `#titleAndClearingType-${optName}`};
     await I.waitForElement(optLocator);
     await I.scrollTo(optLocator);
-    await I.wait(2);
     await I.click(optLocator);
     if (!testConfig.TestAutoDelayEnabled) {
         await I.wait(testConfig.ManualDelayLong);
@@ -27,12 +24,10 @@ module.exports = async function (optName) {
     //const anyOtherPartnersApplyingVisible = (await I.grabNumberOfVisibleElements ({css: '#anyOtherApplyingPartners_Yes'})) > 0;
     //const practitionersPosnInTrustVisible = (await I.grabNumberOfVisibleElements ({css: '#probatePractitionersPositionInTrust'})) > 0;
 
-    await I.wait(2);
     //assert(isNa || isTrustOption ? !nameOfFirmNamedInWillVisible : nameOfFirmNamedInWillVisible);
     //assert(isNa || isTrustOption || !isSuccessorFirm ? nameOfSucceededFirmVisible : !nameOfSucceededFirmVisible);
     //assert(allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
     //assert(isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
-    await I.logInfo(optName, isTrustOption, "Scrolled down");
     //assert(isTrustOption ? !practitionersPosnInTrustVisible : practitionersPosnInTrustVisible);
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
