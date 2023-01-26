@@ -6,6 +6,7 @@ const testConfig = require('src/test/config.js');
 module.exports = async function (optName) {
     const I = this;
 
+    await I.wait(2);
     const optLocator = {css: `#titleAndClearingType-${optName}`};
     await I.waitForElement(optLocator);
     await I.scrollTo(optLocator);
