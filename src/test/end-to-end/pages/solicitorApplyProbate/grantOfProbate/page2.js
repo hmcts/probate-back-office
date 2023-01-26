@@ -42,7 +42,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     await I.logInfo("In Title page5");
     //await I.dontSeeElement({css: '#anyOtherApplyingPartners_Yes'});
     await I.logInfo("In Title page6");
-    //await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
+    await I.dontSeeElement({css: '#otherPartnersApplyingAsExecutors'});
 
     await I.logInfo("In Title page7");
     await I.click({css: '#titleAndClearingType-TCTPartOthersRenouncing'});
