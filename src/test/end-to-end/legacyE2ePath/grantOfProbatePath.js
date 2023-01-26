@@ -69,7 +69,8 @@ Scenario(scenarioName, async function ({I}) {
     let endState;
 
     // SECOND case - the main test case
-   await I.logInfo(scenarioName, nextStepName + ' - second case');
+
+    await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
@@ -92,7 +93,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterGrantOfProbatePage9();
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
-
 
     const caseRef = await I.getCaseRefFromUrl();
 
