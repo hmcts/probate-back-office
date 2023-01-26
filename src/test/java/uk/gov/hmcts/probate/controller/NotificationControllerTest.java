@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 import uk.gov.service.notify.NotificationClientException;
@@ -133,8 +132,6 @@ class NotificationControllerTest {
 
     @MockBean
     private FeatureToggleService featureToggleService;
-    @MockBean
-    CaseDataTransformer caseDataTransformer;
 
     @MockBean
     private EvidenceUploadService evidenceUploadService;
@@ -583,8 +580,7 @@ class NotificationControllerTest {
     @Test
     void shouldReturnSuccessfulResponseForStartGrantDelayNotification() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
-        when(callbackResponseTransformer
-                .transformCaseForAttachScannedDocs(any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.transformCase(any())).thenReturn(successfulResponse);
         mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE).content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -592,9 +588,7 @@ class NotificationControllerTest {
             .andExpect(content().string(containsString("data")));
         verify(notificationService).startGrantDelayNotificationPeriod(any());
         verify(notificationService).resetAwaitingDocumentationNotificationDate(any());
-        verify(caseDataTransformer).transformCaseDataForAttachDocuments(any());
         verify(evidenceUploadService).updateLastEvidenceAddedDate(any());
-        verify(notificationService).sendEmail(any(), any());
     }
 
     @Test

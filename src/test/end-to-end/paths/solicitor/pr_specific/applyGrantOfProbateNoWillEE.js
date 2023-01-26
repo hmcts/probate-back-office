@@ -81,7 +81,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'Applicant', inDtlsAndDcsdDtls);
 
     nextStepName = 'Complete application';
-    endState = 'Awaiting documentation';
+    endState = 'Case created';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1(willType);

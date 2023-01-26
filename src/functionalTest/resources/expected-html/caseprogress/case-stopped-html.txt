@@ -9,7 +9,7 @@
 <p class="govuk-body-s">The case was stopped on <today/> for one of two reasons:</p>
 <ul class="govuk-list govuk-list--bullet">
 <li>an internal review is needed</li>
-<li>further information from the applicant or Probate practitioner is needed</li>
+<li>further information from the applicant or solicitor is needed</li>
 </ul>
 
 <p class="govuk-body-s">You will be notified by email if we need any information from you to progress the case.</p>

@@ -71,7 +71,7 @@ Scenario(scenarioName, async function ({I}) {
     let endState;
 
     // SECOND case - the main test case
-/*
+
     await I.logInfo(scenarioName, nextStepName + ' - second case');
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor);
@@ -95,8 +95,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.enterGrantOfProbatePage9();
     await I.checkMyAnswers(nextStepName);
     endState = 'Case created';
-
- */
 
     const caseRef = await I.getCaseRefFromUrl();
 
@@ -158,6 +156,27 @@ Scenario(scenarioName, async function ({I}) {
 
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
 
+    nextStepName = 'Print the case';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.printCase(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Awaiting documentation';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Add Comment';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.enterComment(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Upload Documents';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.uploadDocument(caseRef, documentUploadConfig);
+    await I.enterEventSummary(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
     nextStepName = 'Mark as ready for examination';
     await I.logInfo(scenarioName, nextStepName, caseRef);

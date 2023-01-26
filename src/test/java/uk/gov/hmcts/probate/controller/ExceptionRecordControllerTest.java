@@ -148,8 +148,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -163,8 +162,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -179,8 +177,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -194,8 +191,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -209,8 +205,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -224,8 +219,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -290,8 +284,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -306,8 +299,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -322,8 +314,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -338,8 +329,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -354,8 +344,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test
@@ -369,8 +358,7 @@ class ExceptionRecordControllerTest {
                 .andExpect(content().string(containsString("\"applicationType\":\"Personal\"")))
                 .andExpect(content().string(containsString("\"caseType\":\"intestacy\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
-                .andExpect(content().string(containsString("\"warnings\":[]")))
-                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
+                .andExpect(content().string(containsString("\"warnings\":[]")));
     }
 
     @Test

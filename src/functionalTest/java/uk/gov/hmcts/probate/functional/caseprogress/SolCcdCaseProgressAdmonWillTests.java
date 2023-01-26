@@ -139,16 +139,4 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL.replaceFirst("<CASE_ID>",
             "1528365719153338");
     }
-
-    @Test
-    public void shouldTransformCaseCorrectlyPACreate() throws IOException {
-        verifyCaseProgressHtmlCwPost("caseprogressadmonwill/13-casePrinted.json", CASE_PA_CREATE,
-                "/admonwill/case-printed-html.txt");
-    }
-
-    @Test
-    public void shouldRenderSendDocumentsAdmonWillCasePrinted() throws IOException {
-        verifyCaseProgressHtmlCwPost("caseprogressadmonwill/13-casePrinted.json", TASKLIST_UPDATE_CASEPRINTED_URL,
-                "/admonwill/case-printed-html.txt");
-    }
 }

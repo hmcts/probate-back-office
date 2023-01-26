@@ -158,7 +158,6 @@ notifications:
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
         solicitor:
           applicationReceived: "sol-application-received"
-          applicationReceivedNoDocs: "sol-application-received-no-docs"
           applicationReceivedPaperFormCaseworker: "sol-application-received-cw"
           documentReceived: "sol-document-received"
           caseStopped: "sol-case-stopped"
@@ -201,7 +200,6 @@ notifications:
           grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
-          applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
           applicationReceivedPaperFormCaseworker: "sol-application-received-cw-welsh"
           documentReceived: "sol-document-received-welsh"
           caseStopped: "sol-case-stopped-welsh"
