@@ -1,1 +1,16 @@
-[]
+[
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "type", "EventElementLabel":  "Type", "FieldDisplayOrder":  1, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "ccdCaseId", "EventElementLabel":  "CCD Case No", "FieldDisplayOrder":  2, "DisplayContext": "READONLY", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\""},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "fullName", "EventElementLabel":  "Full name", "FieldDisplayOrder":  3, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "dob", "EventElementLabel":  "Date of birth", "FieldDisplayOrder":  4, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "dod", "EventElementLabel":  "Date of death", "FieldDisplayOrder":  5, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "aliases", "EventElementLabel":  "Aliases", "FieldDisplayOrder":  6, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "postcode", "EventElementLabel":  "Postcode", "FieldDisplayOrder":  7, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "comment", "EventElementLabel":  "Comment", "FieldDisplayOrder":  8, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "caseLink", "EventElementLabel":  "Reference", "FieldDisplayOrder":  9, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "recordId", "EventElementLabel":  "ProbateMan Id", "FieldDisplayOrder":  10, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "id", "EventElementLabel":  "Id", "FieldDisplayOrder":  11, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "legacyCaseViewUrl", "EventElementLabel":  "Case Url", "FieldDisplayOrder":  12, "DisplayContext": "READONLY"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "valid", "EventElementLabel":  "Is match valid?", "FieldDisplayOrder":  13, "DisplayContext": "OPTIONAL"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "doImport", "EventElementLabel":  "Do import?", "FieldDisplayOrder":  14, "DisplayContext": "OPTIONAL"}
+]
