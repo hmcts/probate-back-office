@@ -5,7 +5,7 @@ const testConfig = require('src/test/config.js');
 
 module.exports = async function (optName) {
     const I = this;
-
+    await I.logInfo("OptName",optName);
     await I.wait(2);
     const optLocator = {css: `#titleAndClearingType-${optName}`};
     await I.waitForElement(optLocator);
@@ -32,8 +32,8 @@ module.exports = async function (optName) {
     assert(isNa || isTrustOption || !isSuccessorFirm ? !nameOfSucceededFirmVisible : nameOfSucceededFirmVisible);
     assert(allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
     assert(isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
-    await I.logInfo(isTrustOption, practitionersPosnInTrustVisible, "Scrolled down");
-    //assert(isTrustOption ? practitionersPosnInTrustVisible : !practitionersPosnInTrustVisible);
+    await I.logInfo(optName, isTrustOption, "Scrolled down");
+    assert(isTrustOption ? practitionersPosnInTrustVisible : !practitionersPosnInTrustVisible);
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
         await I.waitForText('Name of firm named in will');

@@ -27,7 +27,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
     } else {
         await I.logInfo("In Title page");
         await I.wait(2);
-        await I.scrollTo('#titleAndClearingType-TCTNoT');
+        await I.scrollTo({css: '#titleAndClearingType-TCTNoT'});
     }
 
     await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
