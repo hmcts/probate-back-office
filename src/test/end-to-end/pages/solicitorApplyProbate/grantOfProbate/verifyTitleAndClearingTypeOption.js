@@ -33,7 +33,7 @@ module.exports = async function (optName) {
     assert(allPowerRes ? morePartnersHoldingPowerReservedVisible : !morePartnersHoldingPowerReservedVisible);
     assert(isNa || isTrustOption || allRenouncing ? !anyOtherPartnersApplyingVisible : anyOtherPartnersApplyingVisible);
     await I.logInfo(optName, isTrustOption, "Scrolled down");
-    assert(isTrustOption ? practitionersPosnInTrustVisible : !practitionersPosnInTrustVisible);
+    assert(isTrustOption ? !practitionersPosnInTrustVisible : practitionersPosnInTrustVisible);
 
     if (!isNa && !allRenouncing && !isTrustOption && isSuccessorFirm) {
         await I.waitForText('Name of firm named in will');
