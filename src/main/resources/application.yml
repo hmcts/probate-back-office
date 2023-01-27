@@ -41,7 +41,7 @@ auth.provider.client:
   password: ${AUTH_TOKEN_PASSWORD:Pa55word11}
 
 pdf.service:
-  url: ${PDF_SERVICE_URL:http://localhost:5500}
+  url: http://localhost:5500
   pdfApi: /api/v2/pdf-generator/html
   templatesDirectory: templates/pdf/
   defaultDisplayFilename: generated.pdf
@@ -138,7 +138,7 @@ docmosis:
       templateName: FL-PRB-GRP-WEL-00226.doc
 
 fee.api:
-  url: ${FEE_API_URL:http://localhost:4411}
+  url: http://localhost:4411
   api: /fees-register/fees/lookup
   service: probate
   jurisdiction1: family
@@ -202,7 +202,7 @@ spring.jackson.serialization.write_dates_as_timestamps: false
 ####Evidence management Service URL's
 #hard coded to point to docker container ccd-data-store-api CCD_DM_DOMAIN value
 # http://dm-store:8080
-evidence.management.host: ${DOCUMENT_MANAGEMENT_URL:http://localhost:5006}
+evidence.management.host: http://localhost:5006
 evidence.management.upload.file.url: /documents
 
 http.connect.timeout: 60000
