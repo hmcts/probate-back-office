@@ -357,18 +357,15 @@ public class DocumentController {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         if (caseData.getGrantStoppedDate() != null) {
-            log.info("Case is stopped.");
-            log.info("getDocumentUploadedAfterCaseStopped has value {}",caseData.getDocumentUploadedAfterCaseStopped());
+            log.info("Case is stopped: {} ", caseDetails.getId());
             if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
-                log.info("A document has already been uploaded since "
-                        + "case was stopped so no need to update lastEvidenceAddedDate");
+                log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
             } else {
-                log.info("Setting documentUploadedAfterCaseStopped to Yes");
                 caseData.setDocumentUploadedAfterCaseStopped("Yes");
                 evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
             }
         } else {
-            log.info("Case is ongoing.");
+            log.info("Case is ongoing: {} ", caseDetails.getId());
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
