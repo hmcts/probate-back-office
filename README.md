@@ -52,8 +52,7 @@ If you choose to run back-office/CFTlib while pointing to AAT services (IDAM, CC
 USE_DOCKER_WITH_CFTLIB env variable.
 
 Note: Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the 
-AAT endpoints and secrets to call those endpoints. A base64 encoded version of that file is held in the probate-aat 
-vault with the name 'probate-bo-dot-env' - if this secret is changed the content of .aat-env will change. 
+AAT endpoints and secrets to call those endpoints.
 
 ##### Accessing databases
 
