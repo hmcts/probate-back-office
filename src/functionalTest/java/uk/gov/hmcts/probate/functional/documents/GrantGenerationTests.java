@@ -25,8 +25,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
     private static final String WILL_MESSAGE = "With a codicil";
     private static final String ADMIN_MESSAGE = "admin clause limitation message";
-    private static final String LIMITATION_MESSAGE = "limitation message";
-    private static final String EXECUTOR_LIMITATION_MESSAGE = "executor limitation message";
+    private static final String LIMITATION_MESSAGE = "Limitation message";
+    private static final String EXECUTOR_LIMITATION_MESSAGE = "Executor limitation message";
     private static final String POWER_RESERVED = "Power reserved to other Executors";
     private static final String POWER_RESERVED_SINGLE = "Power reserved to another Executor";
     private static final String TITLE = "Captain";
@@ -1074,9 +1074,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
         assertTrue(response.contains(GOP));
-        assertTrue(response.contains(WILL_MESSAGE));
-        assertTrue(response.contains(ADMIN_MESSAGE));
         assertTrue(response.contains(LIMITATION_MESSAGE));
+        assertTrue(response.contains(ADMIN_MESSAGE));
+        assertTrue(response.contains(WILL_MESSAGE));
         assertTrue(response.contains(EXECUTOR_LIMITATION_MESSAGE));
         assertTrue(response.contains(SOLICITOR_INFO1));
         assertTrue(response.contains(SOLICITOR_INFO2));
