@@ -356,7 +356,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        if (caseData.getGrantStoppedDate() != null) {
+        if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
             log.info("Case is stopped: {} ", caseDetails.getId());
             if (caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
                 log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
