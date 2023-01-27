@@ -117,7 +117,7 @@ Scenario(scenarioName, async function ({I}) {
 
     nextStepName = 'Complete application';
     await I.logInfo(scenarioName, nextStepName, caseRef);
-    endState = 'Case created';
+    endState = 'Awaiting documentation';
     await I.chooseNextStep(nextStepName, true);
     await I.logInfo(scenarioName, 'enterGrantOfProbatePage1');
     await I.completeApplicationPage1();

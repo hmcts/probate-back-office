@@ -1,7 +1,7 @@
 {
   "case_details": {
     "case_data": {
-      "resolveStopState": "BOExamining",
+      "resolveStopState": "BOCaseMatchingIssueGrant",
       "solsSolicitorFirmName": "FirmName",
       "solsSolicitorAddress": {
         "AddressLine1": "SolAddLn1",

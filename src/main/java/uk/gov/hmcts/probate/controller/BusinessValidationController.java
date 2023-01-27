@@ -409,6 +409,7 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
 
         notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+        caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
 
         return ResponseEntity.ok(response);
@@ -450,6 +451,7 @@ public class BusinessValidationController {
                 .sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails(),Optional.of(CaseOrigin.CASEWORKER));
         }
 
+        caseDataTransformer.transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequest);
         // validate the new trust corps (if we're on the new schema, not bulk scan / paper form yes)
         // note - we are assuming here that bulk scan imports set paper form = yes
         if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())
@@ -469,6 +471,15 @@ public class BusinessValidationController {
         }
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/pa-create", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> paCreate(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+        validateForPayloadErrors(callbackRequest, bindingResult);
+        caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
     @PostMapping(path = "/redeclarationComplete", consumes = APPLICATION_JSON_VALUE, produces = {
