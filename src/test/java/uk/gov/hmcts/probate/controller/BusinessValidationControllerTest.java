@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 
 import java.math.BigDecimal;
@@ -147,6 +148,7 @@ class BusinessValidationControllerTest {
     private static final String DEFAULT_SOLS_NEXT_STEPS = "/case/default-sols-next-steps";
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
     private static final String REACTIVATE_CASE = "/case/reactivate-case";
+    private static final String PA_CREATE_URL = "/case/pa-create";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
@@ -190,6 +192,8 @@ class BusinessValidationControllerTest {
 
     @MockBean
     private NotificationService notificationService;
+    @MockBean
+    private CaseDataTransformer caseDataTransformer;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -865,12 +869,12 @@ class BusinessValidationControllerTest {
     }
 
     @Test
-    void shouldSetStateToCaseCreatedAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForCaseCreated.json");
+    void shouldSetStateToBOCaseQAAfterResolveStateChoice() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForBOCaseQA.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("CaseCreated"))
+            .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
@@ -891,11 +895,11 @@ class BusinessValidationControllerTest {
     @Test
     void shouldSetStateToReaddyForExaminationAfterResolveStateChoice() throws Exception {
         String solicitorPayload =
-                testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForExamination.json");
+                testUtils.getStringFromFile("solicitorPayloadResolveStopReadyForReadyToIssue.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("BOReadyForExamination"))
+            .andExpect(jsonPath("$.data.state").value("BOReadyToIssue"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
@@ -903,11 +907,12 @@ class BusinessValidationControllerTest {
 
     @Test
     void shouldSetStateToExaminingAfterResolveStateChoice() throws Exception {
-        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadResolveStopForExamining.json");
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadResolveStopForCaseMatchingIssueGrant.json");
 
         mockMvc.perform(post(RESOLVE_STOP_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.data.state").value("BOExamining"))
+            .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
@@ -1086,6 +1091,18 @@ class BusinessValidationControllerTest {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("The executor address line 1 cannot be empty"));
         verify(notificationService, never()).sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class));
+    }
+
+    @Test
+    void shouldTransformCaseDataForEvidenceHandledPACreateCaseOK() throws Exception {
+        String caseDetails = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(PA_CREATE_URL)
+                        .header("Authorization", AUTH_TOKEN)
+                        .content(caseDetails)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any(CallbackRequest.class));
     }
 
     @Test

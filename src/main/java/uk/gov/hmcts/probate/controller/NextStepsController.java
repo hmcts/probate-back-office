@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
@@ -35,14 +36,19 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 
 @Slf4j
 @Controller
@@ -54,6 +60,7 @@ public class NextStepsController {
     private final CCDDataTransformer ccdBeanTransformer;
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
@@ -63,6 +70,7 @@ public class NextStepsController {
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     private final PDFManagementService pdfManagementService;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final NotificationService notificationService;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -72,7 +80,7 @@ public class NextStepsController {
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
-        HttpServletRequest request) {
+        HttpServletRequest request) throws NotificationClientException {
 
         logRequest(request.getRequestURI(), callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
@@ -88,37 +96,41 @@ public class NextStepsController {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-
-            Document coversheet = pdfManagementService
-                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-
+            caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
+            PaymentResponse paymentResponse = null;
             if (feesResponse.getTotalAmount().doubleValue() > 0) {
 
                 solicitorPaymentMethodValidationRule.validate(callbackRequest.getCaseDetails());
 
                 CreditAccountPayment creditAccountPayment =
                     creditAccountPaymentTransformer.transform(callbackRequest.getCaseDetails(), feesResponse);
-                PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
+                paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
                     creditAccountPayment);
                 CallbackResponse creditPaymentResponse =
                     eventValidationService.validatePaymentResponse(callbackRequest.getCaseDetails(),
                         paymentResponse, creditAccountPaymentValidationRule);
-                if (creditPaymentResponse.getErrors().isEmpty()) {
-                    callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, paymentResponse, coversheet);
-                } else {
-                    callbackResponse = creditPaymentResponse;
+                if (!creditPaymentResponse.getErrors().isEmpty()) {
+                    return ResponseEntity.ok(creditPaymentResponse);
                 }
-            } else {
-                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                    feesResponse, null, coversheet);
             }
+            Document sentEmail = null;
+            if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
+                notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+                sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
+            } else {
+                sentEmail = notificationService
+                        .sendEmail(APPLICATION_RECEIVED_NO_DOCS,callbackRequest.getCaseDetails());
+            }
+            Document coversheet = pdfManagementService
+                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                feesResponse, paymentResponse, coversheet, sentEmail);
         }
 
         return ResponseEntity.ok(callbackResponse);

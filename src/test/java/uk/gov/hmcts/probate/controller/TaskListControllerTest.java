@@ -13,10 +13,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
 import static org.hamcrest.CoreMatchers.containsString;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -38,6 +41,9 @@ class TaskListControllerTest {
     @MockBean
     private CoreCaseDataApi coreCaseDataApi;
 
+    @MockBean
+    private CaseDataTransformer caseDataTransformer;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -58,4 +64,16 @@ class TaskListControllerTest {
                 .andExpect(content().string(containsString("data")));
     }
 
+    @Test
+    void taskListUpdateCasePrintedShouldTransformEvidenceHandled() throws Exception {
+
+        String taskListPayload = testUtils.getStringFromFile("standingSearchPayload.json");
+
+        mockMvc.perform(post("/tasklist/updateCasePrinted")
+                        .content(taskListPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+        verify(caseDataTransformer).transformCaseDataForEvidenceHandled(any());
+    }
 }

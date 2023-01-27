@@ -39,7 +39,7 @@ class StoppedTaskListRendererTest {
             + "<p class=\"govuk-body-s\">The case was stopped on 01 Jan 2020 for one of two reasons:</p>\n"
             + "<ul class=\"govuk-list govuk-list--bullet\">\n"
             + "<li>an internal review is needed</li>\n"
-            + "<li>further information from the applicant or solicitor is needed</li>\n"
+            + "<li>further information from the applicant or Probate practitioner is needed</li>\n"
             + "</ul>\n\n"
             + "<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to "
             + "progress the case.</p>\n"

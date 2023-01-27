@@ -140,4 +140,16 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY.replaceFirst("<CASE_ID>",
             "1528365719153338");
     }
+
+    @Test
+    public void shouldTransformCaseCreatedStateCorrectlyPACreate() throws IOException {
+        verifyCaseProgressHtmlCwPost("caseprogressintestacy/13-casePrinted.json", CASE_PA_CREATE,
+                "/intestacy/case-printed-html.txt");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsIntestacyCasePrinted() throws IOException {
+        verifyCaseProgressHtmlCwPost("caseprogressintestacy/13-casePrinted.json", TASKLIST_UPDATE_CASEPRINTED_URL,
+                "/intestacy/case-printed-html.txt");
+    }
 }
