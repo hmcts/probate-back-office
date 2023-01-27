@@ -457,7 +457,7 @@ idam:
     microservice: probate_backend
 
 send-letter:
-  url: ${SEND_LETTER_SERVICE_BASEURL:http://localhost:8486}
+  url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8486}
 
 auth.idam.client.baseUrl: ${IDAM_SERVICE_HOST:http://localhost:5000}
 
