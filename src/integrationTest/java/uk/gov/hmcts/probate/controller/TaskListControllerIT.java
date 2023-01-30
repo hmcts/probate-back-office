@@ -27,7 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class TaskListControllerTest {
+class TaskListControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
