@@ -84,6 +84,7 @@ import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
+import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -272,10 +273,10 @@ class CallbackResponseTransformerTest {
     private static final String DECEASED_ANY_CHILDREN = NO;
     private static final String DECEASED_HAS_ASSETS_OUTSIDE_UK = YES;
     private static final DocumentLink SOT = DocumentLink.builder().documentFilename("SOT.pdf").build();
-    private static final String CASE_CREATED = "CaseCreated";
+    public static final String QA_CASE_STATE = "BOCaseQA";
     private static final String CASE_PRINTED = "CasePrinted";
-    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
-    private static final String EXAMINING = "BOExamining";
+    private static final String READY_FOR_ISSUE = "BOReadyToIssue";
+    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
     private static final LocalDate VALID_ORIGINAL_WILL_SIGNED_DATE = LocalDate.now().minusDays(1);
@@ -286,6 +287,7 @@ class CallbackResponseTransformerTest {
             BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
+    private static final Document SENTEMAIL = Document.builder().documentType(SENT_EMAIL).build();
 
     public static final String ORGANISATION_NAME = "OrganisationName";
     public static final String ORG_ID = "OrgID";
@@ -871,7 +873,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock, coversheetMock);
+                paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -892,7 +894,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock, coversheetMock);
+                paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -916,7 +918,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock, coversheetMock);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -943,7 +945,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, coversheetMock);
+                feesResponse, paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
@@ -957,7 +959,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         paymentResponseMock = null;
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock, coversheetMock);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -979,7 +981,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock, coversheetMock);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfBirth());
     }
@@ -991,7 +993,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-            paymentResponseMock, coversheetMock);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertEquals(null, callbackResponse.getData().getDeceasedDateOfDeath());
     }
@@ -1003,7 +1005,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock, coversheetMock);
+                paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1022,15 +1024,15 @@ class CallbackResponseTransformerTest {
     void shouldAddCoversheet() {
         when(coversheetMock.getDocumentLink()).thenReturn(documentLinkMock);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, coversheetMock);
+                feesResponse, paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertEquals(documentLinkMock, callbackResponse.getData().getSolsCoversheetDocument());
     }
 
     @Test
-    void shouldBeNullSafe() {
+    void shouldBeNullSafeForCoversheet() {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, null);
+                feesResponse, paymentResponseMock, null, SENTEMAIL);
 
         assertEquals(null, callbackResponse.getData().getSolsCoversheetDocument());
     }
@@ -2306,14 +2308,14 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldResolveStopCaseCreated() {
+    void shouldResolveStopCaseQA() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .resolveStopState(CASE_CREATED);
+            .resolveStopState(QA_CASE_STATE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
-        assertEquals(CASE_CREATED, callbackResponse.getData().getState());
+        assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
     @Test
@@ -2328,25 +2330,25 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldResolveStopCaseReadyForExamining() {
+    void shouldResolveStopCaseReadyToIssue() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .resolveStopState(READY_FOR_EXAMINATION);
+            .resolveStopState(READY_FOR_ISSUE);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
-        assertEquals(READY_FOR_EXAMINATION, callbackResponse.getData().getState());
+        assertEquals(READY_FOR_ISSUE, callbackResponse.getData().getState());
     }
 
     @Test
-    void shouldResolveStopCaseExamining() {
+    void shouldResolveStopCaseCaseMatchingIssueGrant() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .resolveStopState(EXAMINING);
+            .resolveStopState(CASE_MATCHING_ISSUE_GRANT);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.resolveStop(callbackRequestMock);
-        assertEquals(EXAMINING, callbackResponse.getData().getState());
+        assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
     }
 
     @Test
@@ -3508,6 +3510,8 @@ class CallbackResponseTransformerTest {
         assertEquals(TRUE, grantOfRepresentationData.getGrantDelayedNotificationSent());
         assertEquals(GRANT_DELAYED_DATE, grantOfRepresentationData.getGrantDelayedNotificationDate());
         assertEquals(GRANT_STOPPED_DATE, grantOfRepresentationData.getGrantStoppedDate());
+
+        assertEquals(Boolean.FALSE, grantOfRepresentationData.getEvidenceHandled());
     }
 
     @Test
@@ -3675,4 +3679,69 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getCodicilAddedDateList());
     }
 
+    @Test
+    void shouldAddSentEmail() {
+        Document sentEmail = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
+                feesResponse, paymentResponseMock, coversheetMock, sentEmail);
+
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(sentEmail,
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(SENT_EMAIL.getTemplateName(),
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
+    }
+
+    @Test
+    void shouldBeNullSafeForSentEmail() {
+        CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
+                feesResponse, paymentResponseMock, coversheetMock, null);
+
+        assertThat(callbackResponse.getData().getProbateNotificationsGenerated(), is(empty()));
+    }
+
+    @Test
+    void shouldTransformCaseForAttachScannedDocsWithSentEmail() {
+
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        Document sentEmail = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock, sentEmail);
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+        assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
+        assertEquals(sentEmail,
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+        assertEquals(SENT_EMAIL.getTemplateName(),
+                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
+    }
+
+    @Test
+    void shouldTransformCaseForAttachScannedDocsWithoutSentEmail() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        caseDataBuilder.scannedDocuments(SCANNED_DOCUMENTS_LIST);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock, null);
+        assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
+        assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
+        assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
+    }
 }

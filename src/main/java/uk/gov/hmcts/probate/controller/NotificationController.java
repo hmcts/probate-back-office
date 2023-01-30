@@ -36,6 +36,7 @@ import uk.gov.hmcts.probate.service.RedeclarationNotificationService;
 import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapperService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
@@ -55,6 +56,9 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
+import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
 @RequiredArgsConstructor
 @RequestMapping(value = "/notify", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
@@ -81,6 +85,7 @@ public class NotificationController {
     private final RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
     private final ObjectMapper objectMapper;
     private final GrantNotificationService grantNotificationService;
+    private final CaseDataTransformer caseDataTransformer;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     @PostMapping(path = "/application-received")
@@ -96,9 +101,11 @@ public class NotificationController {
                 eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
             if (response.getErrors().isEmpty()) {
                 Document sentEmailAsDocument;
-                if (YES.equals(caseData.getPrimaryApplicantNotRequiredToSendDocuments())) {
+                if (YES.equals(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
+                        && INTESTACY_NAME.equals(caseData.getCaseType())) {
                     sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetails);
                 } else {
+                    notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
                     sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
                 }
                 return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
@@ -205,6 +212,7 @@ public class NotificationController {
     @PostMapping(path = "/grant-received")
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
@@ -214,13 +222,23 @@ public class NotificationController {
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
-        HttpServletRequest request) {
+        HttpServletRequest request) throws NotificationClientException {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("start-delayed-notify-period started");
         notificationService.startGrantDelayNotificationPeriod(callbackRequest.getCaseDetails());
         notificationService.resetAwaitingDocumentationNotificationDate(callbackRequest.getCaseDetails());
+        caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        Document document = null;
+        if (isAnEmailAddressPresent(caseData)
+            && eventValidationService
+                .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules).getErrors().isEmpty()
+            && (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState()))) {
+            document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        }
+        CallbackResponse response = callbackResponseTransformer
+                .transformCaseForAttachScannedDocs(callbackRequest, document);
         return ResponseEntity.ok(response);
     }
 

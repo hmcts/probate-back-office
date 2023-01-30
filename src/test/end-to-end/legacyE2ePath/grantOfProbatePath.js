@@ -6,7 +6,6 @@ const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCas
 
 const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfig');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig');
-const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');
 const markForExaminationConfig = require('src/test/end-to-end/pages/markForExamination/markForExaminationConfig');
@@ -18,7 +17,6 @@ const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/gran
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfig');
 const docNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/docNotificationsTabConfig');
-const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadTabConfig');
 const examChecklistTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/examChecklistTabConfig');
 const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
@@ -155,28 +153,6 @@ Scenario(scenarioName, async function ({I}) {
     await I.dontSeeCaseDetails(caseDetailsUpdateTabConfig.fieldsNotPresent);
 
     //    await I.seeCaseDetails(caseRef, applicantDetailsUpdateTabConfig, createGrantOfProbateConfig);
-
-    nextStepName = 'Print the case';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
-    await I.printCase(caseRef);
-    await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Awaiting documentation';
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Add Comment';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
-    await I.enterComment(caseRef, nextStepName);
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-
-    nextStepName = 'Upload Documents';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
-    await I.chooseNextStep(nextStepName);
-    await I.uploadDocument(caseRef, documentUploadConfig);
-    await I.enterEventSummary(caseRef, nextStepName);
-    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, documentUploadTabConfig, documentUploadConfig);
 
     nextStepName = 'Mark as ready for examination';
     await I.logInfo(scenarioName, nextStepName, caseRef);
