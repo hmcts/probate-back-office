@@ -355,6 +355,8 @@ public class DocumentController {
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        log.info(caseDetails.getState());
+        log.info("---------------------------------------------");
         CaseData caseData = caseDetails.getData();
         if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
             log.info("Case is stopped: {} ", caseDetails.getId());

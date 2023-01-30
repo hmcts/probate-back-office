@@ -236,6 +236,7 @@
     },
     "last_modified": null,
     "id": 1542380211044655,
-    "grantSignatureBase64": null
+    "grantSignatureBase64": null,
+    "state": "BOCaseStopped"
   }
 }

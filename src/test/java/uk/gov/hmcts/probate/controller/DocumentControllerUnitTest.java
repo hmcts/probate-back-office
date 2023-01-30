@@ -190,7 +190,7 @@ public class DocumentControllerUnitTest {
         CaseData mockCaseData = CaseData.builder()
             .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
-
+        mockCaseDetails.setState("SolAppCreatedDeceasedDtls");
         when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
         ResponseEntity<CallbackResponse> response = documentController.evidenceAdded(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
