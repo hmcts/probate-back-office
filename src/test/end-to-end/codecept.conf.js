@@ -7,6 +7,7 @@ exports.config = {
         'Puppeteer': {
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
+            'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {

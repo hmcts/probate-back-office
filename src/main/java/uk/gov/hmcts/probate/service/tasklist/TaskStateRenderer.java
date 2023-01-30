@@ -28,7 +28,6 @@ import uk.gov.hmcts.probate.model.htmltemplate.StatusTagHtmlTemplate;
 import uk.gov.hmcts.probate.service.SendDocumentsRenderer;
 import uk.gov.hmcts.probate.service.solicitorexecutor.NotApplyingExecutorsMapper;
 
-import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -69,7 +68,6 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.DECEASED_DETA
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUBMIT_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
-import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_SERVICE_REQUEST_URL_TEMPLATE;
 
 // Renders links / text and also the status tag - i.e. details varying by state
 @Slf4j
@@ -80,10 +78,6 @@ public class TaskStateRenderer {
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
-    private static final String MAKE_PAYMENT_TEXT = "Make payment";
-    private static final String NO_PAYMENT_REQUIRED_TEXT = "</p><p><secText>No payment is required.</secText>";
-    private static final String PAYMENT_HINT_TEXT = "</p><p><secText>Once payment is made, "
-        + "you'll need to refresh the page or  re-enter the case for the payment status to update.</secText>";
     static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String EXAMINE_APP_TEXT = "Examine application";
@@ -92,7 +86,6 @@ public class TaskStateRenderer {
     private static final String IHT_400421 = "IHT400421";
     private static final String LIST_ITEM_START = "<li>";
     private static final String LIST_ITEM_END = "</li>";
-    private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
@@ -112,22 +105,23 @@ public class TaskStateRenderer {
     public String renderByReplace(TaskListState currState, String html, Long caseId,
                                   String willType, String solSOTNeedToUpdate,
                                   LocalDate authDate, LocalDate submitDate, CaseDetails details) {
+
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
-                solSOTNeedToUpdate);
-        final TaskState paymentState = getPaymentTaskState(currState, TaskListState.TL_STATE_PAYMENT_ATTEMPTED);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
-                solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
         final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
-                solSOTNeedToUpdate);
-        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT, solSOTNeedToUpdate);
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+        final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT,
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
 
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
@@ -147,10 +141,6 @@ public class TaskStateRenderer {
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
-                .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, currState, caseIdStr,
-                        willType))
-                .replaceFirst("<paymentHintText/>", renderPaymentHintText(currState, details))
-                .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
@@ -167,44 +157,8 @@ public class TaskStateRenderer {
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
     }
 
-    private TaskState getPaymentTaskState(TaskListState currState, TaskListState renderState) {
-        TaskState taskState;
-        if (currState == TaskListState.TL_STATE_MAKE_PAYMENT) {
-            taskState = TaskState.NOT_STARTED;
-        } else if (currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED) {
-            taskState =  TaskState.IN_PROGRESS;
-        } else if (currState.compareTo(renderState) > 0) {
-            taskState =  TaskState.COMPLETED;
-        } else {
-            taskState = TaskState.NOT_AVAILABLE;
-        }
-        return taskState;
-    }
-
-    private String renderPaymentLinkOrText(TaskState currTaskState, TaskListState currState, String caseId,
-                                           String willType) {
-        String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
-        return linkUrlTemplate != null
-                && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
-                    || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED)
-                && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
-                ? LinkRenderer.render(MAKE_PAYMENT_TEXT, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId))
-                : MAKE_PAYMENT_TEXT;
-    }
-
-    private String renderPaymentHintText(TaskListState currState, CaseDetails details) {
-        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
-                && details.getData().getServiceRequestReference() == null
-                && (details.getData().getTotalFee() == null
-                || details.getData().getTotalFee().compareTo(BigDecimal.ZERO) == 0)) {
-            return NO_PAYMENT_REQUIRED_TEXT;
-        }
-        return currState == TaskListState.TL_STATE_MAKE_PAYMENT
-                || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED ? PAYMENT_HINT_TEXT : "";
-    }
-
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
-                                   String solSOTNeedToUpdate) {
+                                   String solSOTNeedToUpdate, String evidenceHandled, String attachDocuments) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
@@ -214,10 +168,30 @@ public class TaskStateRenderer {
         }
 
         if (currState == renderState) {
-            return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
+            if (renderState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                    && NO.equals(evidenceHandled)) {
+                return TaskState.COMPLETED;
+            } else if (YES.equals(attachDocuments) && renderState == TaskListState.TL_STATE_SEND_DOCUMENTS) {
+                return TaskState.COMPLETED;
+            } else {
+                return currState.isMultiState ? TaskState.IN_PROGRESS : TaskState.NOT_STARTED;
+            }
         }
         if (currState.compareTo(renderState) > 0) {
             return TaskState.COMPLETED;
+        }
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && renderState == TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS) {
+            if (YES.equals(attachDocuments)) {
+                return TaskState.IN_PROGRESS;
+            } else if (NO.equals(evidenceHandled)) {
+                return TaskState.COMPLETED;
+            }
+        }
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && renderState == TaskListState.TL_STATE_EXAMINE_APPLICATION
+                && NO.equals(evidenceHandled)) {
+            return TaskState.IN_PROGRESS;
         }
         return TaskState.NOT_AVAILABLE;
     }
@@ -269,13 +243,13 @@ public class TaskStateRenderer {
 
         if (linkUrlTemplate != null && currState == taskListState
             && (currState == TaskListState.TL_STATE_SEND_DOCUMENTS)) {
-            return LinkRenderer.renderOutside(linkText, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId)
+            return LinkRenderer.renderOutside(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)
                 .replaceFirst("<DOCUMENT_LINK>", coversheetUrl));
         }
 
         return linkUrlTemplate != null && currState == taskListState
                 && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
-                ? LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId)) : linkText;
+                ? LinkRenderer.render(linkText, linkUrlTemplate.replaceFirst("<CASE_ID>", caseId)) : linkText;
     }
 
     private static String renderAuthenticatedDate(LocalDate authDate) {
@@ -317,10 +291,6 @@ public class TaskStateRenderer {
                 return REVIEW_OR_SUBMIT_URL_TEMPLATE;
             case TL_STATE_SEND_DOCUMENTS:
                 return TL_COVERSHEET_URL_TEMPLATE;
-            case TL_STATE_MAKE_PAYMENT:
-                return TL_SERVICE_REQUEST_URL_TEMPLATE;
-            case TL_STATE_PAYMENT_ATTEMPTED:
-                return TL_SERVICE_REQUEST_URL_TEMPLATE;
             default:
                 return null;
         }

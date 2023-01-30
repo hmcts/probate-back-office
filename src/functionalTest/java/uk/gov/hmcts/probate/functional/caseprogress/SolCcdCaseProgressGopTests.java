@@ -150,4 +150,16 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
         return UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>",
                 "1528365719153338");
     }
+
+    @Test
+    public void shouldTransformCaseCorrectlyPACreate() throws IOException {
+        verifyCaseProgressHtmlCwPost("caseprogress/13-casePrinted.json", CASE_PA_CREATE,
+                "/gop/case-printed-html.txt");
+    }
+
+    @Test
+    public void shouldRenderSendDocumentsWithCodicilsCasePrinted() throws IOException {
+        verifyCaseProgressHtmlCwPost("caseprogress/13-casePrinted.json", TASKLIST_UPDATE_CASEPRINTED_URL,
+                "/gop/case-printed-html.txt");
+    }
 }

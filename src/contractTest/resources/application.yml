@@ -241,6 +241,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
           applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
+          applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
           applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
           documentReceived: "e618dce9-405e-45a5-86e8-06d792336f2f"
           caseStopped: "9e93a9c8-0246-4a95-b792-1c02da4bed4e"
@@ -288,6 +289,7 @@ notifications:
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
           applicationReceived: "2f282002-6799-47d0-92dd-726960b91c98"
+          applicationReceivedNoDocs: "60eab724-adec-4d5d-a0a1-aef73ed7da4d"
           applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
           documentReceived: "83f93f41-58a1-44f2-a9c4-d20d545b7528"
           caseStopped: "a767a0bd-4acc-413e-b510-5a71d24daf85"

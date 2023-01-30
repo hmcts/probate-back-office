@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -26,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -105,10 +107,9 @@ public class CallbackResponseTransformer {
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
-    private static final String CASE_CREATED = "CaseCreated";
+    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
     private static final String CASE_PRINTED = "CasePrinted";
-    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
-    private static final String EXAMINING = "BOExamining";
+    private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
     private static final String SOL_AS_EXEC_ID = "solicitor";
@@ -421,24 +422,24 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
-            case CASE_CREATED:
-                responseCaseDataBuilder.state(CASE_CREATED);
+            case CASE_MATCHING_ISSUE_GRANT:
+                responseCaseDataBuilder.state(CASE_MATCHING_ISSUE_GRANT);
                 break;
-            case CASE_PRINTED:
-                responseCaseDataBuilder.state(CASE_PRINTED);
+            case QA_CASE_STATE:
+                responseCaseDataBuilder.state(QA_CASE_STATE);
                 break;
-            case READY_FOR_EXAMINATION:
-                responseCaseDataBuilder.state(READY_FOR_EXAMINATION);
+            case READY_FOR_ISSUE:
+                responseCaseDataBuilder.state(READY_FOR_ISSUE);
                 break;
             default:
-                responseCaseDataBuilder.state(EXAMINING);
+                responseCaseDataBuilder.state(CASE_PRINTED);
                 break;
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          String serviceRequestReference, Document coversheet) {
+                                      PaymentResponse paymentResponse, Document coversheet, Document sentEmail) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -447,9 +448,29 @@ public class CallbackResponseTransformer {
 
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
+        caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        caseDataTransformer
-                .transformCaseDataForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
+        List<CollectionMember<Payment>> paymentsList = null;
+        if (caseData.getPayments() != null) {
+            paymentsList = new ArrayList<>();
+            paymentsList.addAll(caseData.getPayments());
+        }
+
+        if (paymentResponse != null) {
+            if (paymentsList == null) {
+                paymentsList = new ArrayList<>();
+            }
+            Payment payment = Payment.builder()
+                .reference(paymentResponse.getReference())
+                .status(paymentResponse.getStatus())
+                .method(PBA_PAYMENT_METHOD)
+                .build();
+            paymentsList.add(new CollectionMember<Payment>(payment));
+        }
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -461,6 +482,7 @@ public class CallbackResponseTransformer {
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
+            .payments(paymentsList)
             .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
             .build();
 
@@ -543,6 +565,18 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document) {
+        boolean transform = doTransform(callbackRequest);
+        if (document != null) {
+            documentTransformer.addDocument(callbackRequest, document, false);
+        }
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+        responseCaseDataBuilder.probateNotificationsGenerated(
+                callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
@@ -1046,9 +1080,6 @@ public class CallbackResponseTransformer {
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
-            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
-            .serviceRequestReference(caseData.getServiceRequestReference())
-            .paymentTaken(caseData.getPaymentTaken())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
 
@@ -1604,6 +1635,10 @@ public class CallbackResponseTransformer {
 
         if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
             grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
+        }
+
+        if (grantOfRepresentationData.getEvidenceHandled() == null) {
+            grantOfRepresentationData.setEvidenceHandled(false);
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
