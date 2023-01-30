@@ -65,7 +65,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class BusinessValidationControllerIT {
+class BusinessValidationControllerTest {
 
     private static final LocalDate DOB = LocalDate.of(1990, 4, 4);
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);

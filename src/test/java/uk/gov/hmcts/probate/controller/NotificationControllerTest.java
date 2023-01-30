@@ -73,7 +73,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class NotificationControllerIT {
+class NotificationControllerTest {
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";

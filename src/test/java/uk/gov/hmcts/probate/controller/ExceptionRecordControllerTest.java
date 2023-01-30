@@ -37,7 +37,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-class ExceptionRecordControllerIT {
+class ExceptionRecordControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
