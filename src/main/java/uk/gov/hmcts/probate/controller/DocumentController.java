@@ -358,7 +358,8 @@ public class DocumentController {
         CaseData caseData = caseDetails.getData();
         if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
             log.info("Case is stopped: {} ", caseDetails.getId());
-            if (caseData.getDocumentUploadedAfterCaseStopped() != null && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
+            if (caseData.getDocumentUploadedAfterCaseStopped() != null
+                    && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
                 log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
             } else {
                 caseData.setDocumentUploadedAfterCaseStopped("Yes");
