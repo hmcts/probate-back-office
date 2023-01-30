@@ -18,6 +18,7 @@ public class CaseStoppedService {
 
     public void caseStopped(CaseDetails caseDetails) {
         caseDetails.getData().setGrantStoppedDate(LocalDate.now());
+        caseDetails.getData().setDocumentUploadedAfterCaseStopped("No");
     }
 
     public void setEvidenceHandledNo(CaseDetails caseDetails) {
@@ -25,7 +26,6 @@ public class CaseStoppedService {
     }
 
     public void caseResolved(CaseDetails caseDetails) {
-        caseDetails.getData().setDocumentUploadedAfterCaseStopped("No");
         log.info("Case resolved: {} ", caseDetails.getId());
 
         addToGrantDelay(caseDetails);
