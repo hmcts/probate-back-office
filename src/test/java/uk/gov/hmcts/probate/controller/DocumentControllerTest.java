@@ -751,6 +751,19 @@ class DocumentControllerTest {
                 .updateLastEvidenceAddedDate(any(CaseDetails.class));
     }
 
+    @Test
+    void shouldUpdateLastEvidenceAddedDateWhenStoppedWithNullFlag() throws Exception {
+        String payload = testUtils.getStringFromFile("stoppedCaseNullDocumentUploadedAfterCaseStopped.json");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+
+
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));
     }
