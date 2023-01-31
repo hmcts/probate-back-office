@@ -337,18 +337,17 @@ class CallbackResponseTransformerTest {
 
     private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember
         <uk.gov.hmcts.reform.probate.model.ScannedDocument>> BSP_SCANNED_DOCUMENTS_LIST = Arrays.asList(
-        new
-            uk.gov.hmcts.reform.probate.model.cases
+            new uk.gov.hmcts.reform.probate.model.cases
                 .CollectionMember<uk.gov.hmcts.reform.probate.model.ScannedDocument>(
-            "id",
-            uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
-                .fileName("scanneddocument.pdf")
-                .controlNumber("1234")
-                .scannedDate(scannedDate)
-                .type("other")
-                .subtype("will")
-                .url(BSP_SCANNED_DOCUMENT_URL)
-                .build()));
+                "id",
+                uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
+                    .fileName("scanneddocument.pdf")
+                    .controlNumber("1234")
+                    .scannedDate(scannedDate)
+                    .type("other")
+                    .subtype("will")
+                    .url(BSP_SCANNED_DOCUMENT_URL)
+                    .build()));
 
     private static final List<CollectionMember<ExecutorsApplyingNotification>> EXECEUTORS_APPLYING_NOTIFICATION =
         Arrays.asList(

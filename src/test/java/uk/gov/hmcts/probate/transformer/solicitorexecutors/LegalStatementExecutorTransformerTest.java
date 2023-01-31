@@ -304,7 +304,7 @@ class LegalStatementExecutorTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
             any(CaseData.class), anyString())).thenReturn(
-            new CollectionMember<>("12345", EXECUTOR_APPLYING));
+                new CollectionMember<>("12345", EXECUTOR_APPLYING));
 
         List<CollectionMember<AdditionalExecutorApplying>> execsApplying = new ArrayList<>();
         execsApplying.add(new CollectionMember<>(SOLICITOR_ID, EXECUTOR_APPLYING));
