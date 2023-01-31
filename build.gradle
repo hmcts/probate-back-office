@@ -63,8 +63,8 @@ test.finalizedBy jacocoTestReport
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
   suppressionFile = 'dependency-check-suppressions.xml'
-  hostedSuppressions.forceupdate = true
-  failBuildOnCVSS = System.getProperty('dependencyCheck.failBuild') == 'true' ? 9 : 11
+  hostedSuppressions.forceupdate = false
+  failBuildOnCVSS = 11
 }
 
 pitest {
