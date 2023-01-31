@@ -146,13 +146,7 @@ ccd:
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
     persistence:
       enabled: false
-    ingress:
-      enabled: true
-      annotations:
-        kubernetes.io/ingress.class: traefik
-      path: /
-      hosts:
-        - es-${SERVICE_FQDN}
+
   logstash:
     image:
       repository: hmctspublic.azurecr.io/ccd/logstash
