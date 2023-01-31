@@ -27,52 +27,51 @@ public interface IdamApi {
     /**
      * User Authenticate method.
      *
-     * @deprecated
-     * IDAM oauth2/authorize endpoint is deprecated
+     * @deprecated IDAM oauth2/authorize endpoint is deprecated
      */
     @Deprecated
     @PostMapping(
-            value = "/oauth2/authorize",
-            headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+        value = "/oauth2/authorize",
+        headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     AuthenticateUserResponse authenticateUser(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation,
-            @RequestParam("response_type") final String responseType,
-            @RequestParam("client_id") final String clientId,
-            @RequestParam("redirect_uri") final String redirectUri
+        @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation,
+        @RequestParam("response_type") final String responseType,
+        @RequestParam("client_id") final String clientId,
+        @RequestParam("redirect_uri") final String redirectUri
     );
 
     @PostMapping(
-            value = "/oauth2/token",
-            headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+        value = "/oauth2/token",
+        headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     TokenExchangeResponse exchangeCode(
-            @RequestParam("code") final String code,
-            @RequestParam("grant_type") final String grantType,
-            @RequestParam("redirect_uri") final String redirectUri,
-            @RequestParam("client_id") final String clientId,
-            @RequestParam("client_secret") final String clientSecret
+        @RequestParam("code") final String code,
+        @RequestParam("grant_type") final String grantType,
+        @RequestParam("redirect_uri") final String redirectUri,
+        @RequestParam("client_id") final String clientId,
+        @RequestParam("client_secret") final String clientSecret
     );
 
     @GetMapping(
-            value = "/details",
-            headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+        value = "/details",
+        headers = CONTENT_TYPE + "=" + APPLICATION_FORM_URLENCODED_VALUE,
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     ResponseEntity<Map<String, Object>> getUserDetails(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation
+        @RequestHeader(HttpHeaders.AUTHORIZATION) final String authorisation
     );
 
     @GetMapping("/o/userinfo")
     UserInfo retrieveUserInfo(
-            @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation
+        @RequestHeader(HttpHeaders.AUTHORIZATION) String authorisation
     );
 
     @PostMapping(
-            value = "/o/token",
-            consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
+        value = "/o/token",
+        consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE
     )
     TokenResponse generateOpenIdToken(@RequestBody TokenRequest tokenRequest);
 
