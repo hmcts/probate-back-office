@@ -11,4 +11,10 @@ public class StopReason {
 
     @JsonProperty(value = "caseStopReason")
     private final String caseStopReason;
+
+    @JsonProperty(value = "caseStopSubReasonDocRequired")
+    private final String caseStopSubReasonDocRequired;
+
+    @JsonProperty(value = "caseStopSubReasonMyStopReason")
+    private final String caseStopSubReasonMyStopReason;
 }
