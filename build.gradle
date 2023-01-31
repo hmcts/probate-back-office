@@ -58,6 +58,7 @@ sonarqube {
 
 test.finalizedBy jacocoTestReport
 
+
 // https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
   suppressionFile = 'dependency-check-suppressions.xml'
