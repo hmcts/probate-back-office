@@ -352,4 +352,18 @@
         <packageUrl regex="true">^pkg:npm/ua\-parser\-js@.*$</packageUrl>
         <vulnerabilityName>1088696</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: validator:10.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/validator@.*$</packageUrl>
+        <vulnerabilityName>1085867</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: yargs-parser:7.0.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/yargs\-parser@.*$</packageUrl>
+        <vulnerabilityName>1088811</vulnerabilityName>
+    </suppress>
 </suppressions>
