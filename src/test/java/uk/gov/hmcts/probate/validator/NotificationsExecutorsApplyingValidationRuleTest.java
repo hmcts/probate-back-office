@@ -123,8 +123,8 @@ class NotificationsExecutorsApplyingValidationRuleTest {
             new CaseDetails(caseDataNotificationNoSingle, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationSingleNo);
-        })
+                notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationSingleNo);
+            })
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("No applicant selected to send notification for case id 12345678987654321");
     }
@@ -135,8 +135,8 @@ class NotificationsExecutorsApplyingValidationRuleTest {
             new CaseDetails(caseDataNotificationNoMultiple, LAST_MODIFIED, CASE_ID);
 
         Assertions.assertThatThrownBy(() -> {
-            notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationMultipleNo);
-        })
+                notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationMultipleNo);
+            })
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("No applicant selected to send notification for case id 12345678987654321");
     }
