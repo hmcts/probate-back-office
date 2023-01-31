@@ -268,4 +268,88 @@
         <cve>CVE-2022-31692</cve>
         <cve>CVE-2022-31690</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-client-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-client@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-client-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-client@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-core-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-core@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-core-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-core@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-jose-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-jose@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-jose-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-jose@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: ua-parser-js:1.0.32
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/ua\-parser\-js@.*$</packageUrl>
+        <vulnerabilityName>1088696</vulnerabilityName>
+    </suppress>
 </suppressions>
