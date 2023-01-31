@@ -352,6 +352,7 @@
         <packageUrl regex="true">^pkg:npm/ua\-parser\-js@.*$</packageUrl>
         <vulnerabilityName>1088696</vulnerabilityName>
     </suppress>
+<<<<<<< HEAD
     <suppress>
         <notes><![CDATA[
    file name: validator:10.11.0
@@ -401,4 +402,6 @@
         <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
         <vulnerabilityName>1090146</vulnerabilityName>
     </suppress>
+=======
+>>>>>>> 3fe357ecf (DTSPB-3321 more CVEs)
 </suppressions>
