@@ -366,4 +366,32 @@
         <packageUrl regex="true">^pkg:npm/yargs\-parser@.*$</packageUrl>
         <vulnerabilityName>1088811</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lodash:3.10.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
+        <vulnerabilityName>1090101</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lodash:3.10.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
+        <vulnerabilityName>1089550</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: merge:1.2.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/merge@.*$</packageUrl>
+        <vulnerabilityName>1089985</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: validator:10.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/validator@.*$</packageUrl>
+        <vulnerabilityName>1089600</vulnerabilityName>
+    </suppress>
 </suppressions>
