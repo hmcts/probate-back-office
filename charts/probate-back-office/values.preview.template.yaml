@@ -79,7 +79,7 @@ ccd:
     java:
       imagePullPolicy: Always
       devcpuRequests: 1
-      devmemoryRequests: 1Gi
+      devmemoryRequests: 2Gi
       devcpuLimits: 2
       devmemoryLimits: 2Gi
       environment:
