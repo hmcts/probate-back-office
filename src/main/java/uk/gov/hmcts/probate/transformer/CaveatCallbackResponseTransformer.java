@@ -49,7 +49,7 @@ public class CaveatCallbackResponseTransformer {
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
-    private final SolicitorPaymentReferenceDefaulter solicitorPBADefaulter;
+    private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
@@ -321,8 +321,8 @@ public class CaveatCallbackResponseTransformer {
     public CaveatCallbackResponse transformCaseForSolicitorPayment(CaveatCallbackRequest caveatCallbackRequest) {
         ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        solicitorPBADefaulter.defaultCaveatSolicitorReference(caveatCallbackRequest.getCaseDetails().getData(),
-            responseCaseDataBuilder);
+        solicitorPaymentReferenceDefaulter.defaultCaveatSolicitorReference(
+                caveatCallbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

@@ -103,14 +103,11 @@ public class CallbackResponseTransformer {
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
-    private static final String DEFAULT_IHT_FORM_ID = "IHT205";
     private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
-    private static final String SOL_AS_EXEC_ID = "solicitor";
-    private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -121,7 +118,7 @@ public class CallbackResponseTransformer {
     private final TaskListUpdateService taskListUpdateService;
     private final CaseDataTransformer caseDataTransformer;
     private final OrganisationsRetrievalService organisationsRetrievalService;
-    private final SolicitorPaymentReferenceDefaulter solicitorPBADefaulter;
+    private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
 
@@ -731,7 +728,7 @@ public class CallbackResponseTransformer {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             doTransform);
-        solicitorPBADefaulter.defaultSolicitorReference(callbackRequest.getCaseDetails().getData(),
+        solicitorPaymentReferenceDefaulter.defaultSolicitorReference(callbackRequest.getCaseDetails().getData(),
                 responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());

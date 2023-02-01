@@ -20,20 +20,22 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Test
-    public void shouldValidateDefaultPBAs() throws IOException {
-        validatePostRequestSuccessForPBAs("/case/default-sols-payments",
-            "solicitorPDFPayloadProbate.json",
-            "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}",
-            "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}",
-            "\"solsNeedsPBAPayment\":\"Yes\"");
-    }
-
-    @Test
     public void shouldValidateDefaultPBAPaymentsNoFee() throws IOException {
         String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-payments",
             "solicitorPDFPayloadProbateNoPaymentFee.json",
             "\"solsNeedsPBAPayment\":\"No\"");
         assertFalse(responseBody.contains("\"payments\": ["));
+    }
+
+    @Test
+    public void shouldValidateForGrantPaymentCallback() throws IOException {
+        //500 here because we dont have a case that will exist in this state
+        validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/gor-payment-request-update", 500);
+    }
+
+    @Test
+    public void shouldValidateForCaveatCallback() throws IOException {
+        validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/caveat-payment-request-update", 500);
     }
 
     private String validatePostRequestSuccessForPBAs(String path, String fileName, String... expectedValues)
