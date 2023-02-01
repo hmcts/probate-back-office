@@ -276,7 +276,7 @@ class CallbackResponseTransformerTest {
     public static final String QA_CASE_STATE = "BOCaseQA";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
-    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
+    private static final String CASE_MATCHING_ISSUE_GRANT = "BOCaseMatchingIssueGrant";
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
     private static final LocalDate VALID_ORIGINAL_WILL_SIGNED_DATE = LocalDate.now().minusDays(1);
@@ -284,7 +284,7 @@ class CallbackResponseTransformerTest {
         Arrays.asList(new CollectionMember<>(CodicilAddedDate.builder().dateCodicilAdded(VALID_CODICIL_DATE).build()));
     private static final String NO_ACCESS_WILL_REASON = "I lost it";
     private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<BulkScanEnvelope>>
-            BULK_SCAN_ENVELOPES = new ArrayList<>();
+        BULK_SCAN_ENVELOPES = new ArrayList<>();
 
     private static final Document SOT_DOC = Document.builder().documentType(STATEMENT_OF_TRUTH).build();
     private static final Document SENTEMAIL = Document.builder().documentType(SENT_EMAIL).build();
@@ -337,11 +337,10 @@ class CallbackResponseTransformerTest {
 
     private static final List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember
         <uk.gov.hmcts.reform.probate.model.ScannedDocument>> BSP_SCANNED_DOCUMENTS_LIST = Arrays.asList(
-        new
-            uk.gov.hmcts.reform.probate.model.cases
+            new uk.gov.hmcts.reform.probate.model.cases
                 .CollectionMember<uk.gov.hmcts.reform.probate.model.ScannedDocument>(
                 "id",
-                    uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
+                uk.gov.hmcts.reform.probate.model.ScannedDocument.builder()
                     .fileName("scanneddocument.pdf")
                     .controlNumber("1234")
                     .scannedDate(scannedDate)
@@ -785,8 +784,8 @@ class CallbackResponseTransformerTest {
         when(feesResponse.getTotalAmount()).thenReturn(totalFee);
 
         when(taskListUpdateService.generateTaskList(any(CaseDetails.class),
-                any(ResponseCaseData.ResponseCaseDataBuilder.class)))
-                .thenAnswer(invocation -> invocation.getArgument(1));
+            any(ResponseCaseData.ResponseCaseDataBuilder.class)))
+            .thenAnswer(invocation -> invocation.getArgument(1));
     }
 
     @Test
@@ -873,7 +872,7 @@ class CallbackResponseTransformerTest {
         when(paymentResponseMock.getReference()).thenReturn("RC-1234");
         when(paymentResponseMock.getStatus()).thenReturn("Success");
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock, coversheetMock, SENTEMAIL);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -887,14 +886,14 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldConvertRequestToDataBeanForPaymentWithFeeAccountAndLegalStatementUpload() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
-                .solsFeeAccountNumber(FEE_ACCT_NUMBER)
-                .solsLegalStatementUpload(legalStatementUploadMock)
-                .boDocumentsUploaded(new ArrayList<CollectionMember<UploadDocument>>())
-                .build();
+            .solsFeeAccountNumber(FEE_ACCT_NUMBER)
+            .solsLegalStatementUpload(legalStatementUploadMock)
+            .boDocumentsUploaded(new ArrayList<CollectionMember<UploadDocument>>())
+            .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock, coversheetMock, SENTEMAIL);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -945,7 +944,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, coversheetMock, SENTEMAIL);
+            feesResponse, paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertEquals("2.0.0", callbackResponse.getData().getSchemaVersion());
     }
@@ -1001,11 +1000,11 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldConvertRequestToDataBeanForPaymentWithCheque() throws JsonProcessingException {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_CHEQUE)
-                .build();
+            .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock, feesResponse,
-                paymentResponseMock, coversheetMock, SENTEMAIL);
+            paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1024,7 +1023,7 @@ class CallbackResponseTransformerTest {
     void shouldAddCoversheet() {
         when(coversheetMock.getDocumentLink()).thenReturn(documentLinkMock);
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, coversheetMock, SENTEMAIL);
+            feesResponse, paymentResponseMock, coversheetMock, SENTEMAIL);
 
         assertEquals(documentLinkMock, callbackResponse.getData().getSolsCoversheetDocument());
     }
@@ -1032,7 +1031,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldBeNullSafeForCoversheet() {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, null, SENTEMAIL);
+            feesResponse, paymentResponseMock, null, SENTEMAIL);
 
         assertEquals(null, callbackResponse.getData().getSolsCoversheetDocument());
     }
@@ -1167,7 +1166,7 @@ class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
         assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals("abc123", callbackResponse.getData()
-                .getBulkPrintId().get(0).getValue().getSendLetterId());
+            .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1191,7 +1190,7 @@ class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData()
-                .getBulkPrintId().get(0).getValue().getSendLetterId());
+            .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(INTESTACY_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1215,7 +1214,7 @@ class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData()
-                .getBulkPrintId().get(0).getValue().getSendLetterId());
+            .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(WELSH_DIGITAL_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1238,7 +1237,7 @@ class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData()
-                .getBulkPrintId().get(0).getValue().getSendLetterId());
+            .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(WELSH_INTESTACY_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1261,7 +1260,7 @@ class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("abc123", callbackResponse.getData()
-                .getBulkPrintId().get(0).getValue().getSendLetterId());
+            .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(WELSH_ADMON_WILL_GRANT_REISSUE.getTemplateName(),
             callbackResponse.getData().getBulkPrintId().get(0).getValue().getTemplateName());
         assertEquals(1, callbackResponse.getData().getProbateDocumentsGenerated().size());
@@ -1317,7 +1316,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
 
         CallbackResponse callbackResponse = underTest
-                .addDocuments(callbackRequestMock, documents, null, null);
+            .addDocuments(callbackRequestMock, documents, null, null);
 
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
@@ -1391,14 +1390,14 @@ class CallbackResponseTransformerTest {
         underTest.transformCase(callbackRequestMock);
 
         verify(resetResponseCaseDataTransformer, times(1))
-                .resetTitleAndClearingFields(any(), any());
+            .resetTitleAndClearingFields(any(), any());
     }
 
     @Test
     void verifyExecutorListsAreSet() {
         caseDataBuilder
-                .additionalExecutorsApplying(additionalExecutorsApplyingMock)
-                .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
+            .additionalExecutorsApplying(additionalExecutorsApplyingMock)
+            .additionalExecutorsNotApplying(additionalExecutorsNotApplyingMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -1407,7 +1406,7 @@ class CallbackResponseTransformerTest {
 
         assertEquals(additionalExecutorsApplyingMock, callbackResponse.getData().getAdditionalExecutorsApplying());
         assertEquals(additionalExecutorsNotApplyingMock,
-                callbackResponse.getData().getAdditionalExecutorsNotApplying());
+            callbackResponse.getData().getAdditionalExecutorsNotApplying());
     }
 
     @Test
@@ -2255,7 +2254,7 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("SOT.pdf", callbackResponse
-                .getData().getStatementOfTruthDocument().getDocumentFilename());
+            .getData().getStatementOfTruthDocument().getDocumentFilename());
     }
 
     @Test
@@ -2424,7 +2423,7 @@ class CallbackResponseTransformerTest {
             DynamicList.builder().value(DynamicListItem.builder().code("reprintDocument").build()).build();
         DynamicList solsAmendLegalStatmentSelect =
             DynamicList.builder().value(DynamicListItem.builder()
-                    .code("solsAmendLegalStatmentSelect").build()).build();
+                .code("solsAmendLegalStatmentSelect").build()).build();
 
         caseDataBuilder
             .primaryApplicantForenames("PAFN")
@@ -2459,10 +2458,10 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldApplySolicitorInfoAttributes() {
         caseDataBuilder
-                .solsForenames("Solicitor Forename")
-                .solsSurname("Solicitor Surname")
-                .solsSolicitorWillSignSOT("Yes")
-                .build();
+            .solsForenames("Solicitor Forename")
+            .solsSurname("Solicitor Surname")
+            .solsSolicitorWillSignSOT("Yes")
+            .build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2477,22 +2476,22 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldApplyTrustCorpAttributes() {
         CollectionMember<AdditionalExecutorTrustCorps> additionalExecutorTrustCorp = new CollectionMember<>(
-                new AdditionalExecutorTrustCorps(
-                        "Executor forename",
-                        "Executor surname",
-                        "Solicitor"
-                ));
+            new AdditionalExecutorTrustCorps(
+                "Executor forename",
+                "Executor surname",
+                "Solicitor"
+            ));
         List<CollectionMember<AdditionalExecutorTrustCorps>> additionalExecutorsTrustCorpList = new ArrayList<>();
         additionalExecutorsTrustCorpList.add(additionalExecutorTrustCorp);
 
         SolsAddress trustCorpAddress = new SolsAddress(
-                "Address Line 1",
-                "",
-                "",
-                "",
-                "",
-                "POSTCODE",
-                "");
+            "Address Line 1",
+            "",
+            "",
+            "",
+            "",
+            "POSTCODE",
+            "");
 
         SolsAddress addressOfSucceededFirm = new SolsAddress(
             "Address Line 1",
@@ -2513,17 +2512,17 @@ class CallbackResponseTransformerTest {
             "");
 
         caseDataBuilder
-                .dispenseWithNotice(YES)
-                .titleAndClearingType("TCTTrustCorpResWithApp")
-                .trustCorpName("Trust corp name")
-                .trustCorpAddress(trustCorpAddress)
-                .addressOfSucceededFirm(addressOfSucceededFirm)
-                .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
-                .furtherEvidenceForApplication("Further evidence")
-                .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
-                .lodgementAddress("London")
-                .isSolThePrimaryApplicant("Yes")
-                .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
+            .dispenseWithNotice(YES)
+            .titleAndClearingType("TCTTrustCorpResWithApp")
+            .trustCorpName("Trust corp name")
+            .trustCorpAddress(trustCorpAddress)
+            .addressOfSucceededFirm(addressOfSucceededFirm)
+            .addressOfFirmNamedInWill(addressOfFirmNamedInWill)
+            .furtherEvidenceForApplication("Further evidence")
+            .additionalExecutorsTrustCorpList(additionalExecutorsTrustCorpList)
+            .lodgementAddress("London")
+            .isSolThePrimaryApplicant("Yes")
+            .lodgementDate(LocalDate.parse("2020-01-01", dateTimeFormatter));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2539,7 +2538,7 @@ class CallbackResponseTransformerTest {
         assertEquals(addressOfFirmNamedInWill, callbackResponse.getData().getAddressOfFirmNamedInWill());
         assertEquals("Further evidence", callbackResponse.getData().getFurtherEvidenceForApplication());
         assertEquals(additionalExecutorsTrustCorpList, callbackResponse.getData()
-                .getAdditionalExecutorsTrustCorpList());
+            .getAdditionalExecutorsTrustCorpList());
         assertEquals("London", callbackResponse.getData().getLodgementAddress());
         assertEquals("2020-01-01", callbackResponse.getData().getLodgementDate());
 
@@ -3099,7 +3098,7 @@ class CallbackResponseTransformerTest {
         assertEquals(SOLICITOR_FIRM_EMAIL, callbackResponse.getData().getSolsSolicitorEmail());
         assertEquals(SOLICITOR_FIRM_PHONE, callbackResponse.getData().getSolsSolicitorPhoneNumber());
         assertEquals(SOLICITOR_SOT_FORENAME + " " + SOLICITOR_SOT_SURNAME,
-                callbackResponse.getData().getSolsSOTName());
+            callbackResponse.getData().getSolsSOTName());
         assertEquals(SOLICITOR_SOT_JOB_TITLE, callbackResponse.getData().getSolsSOTJobTitle());
         assertEquals(APP_REF, callbackResponse.getData().getSolsSolicitorAppReference());
 
@@ -3174,7 +3173,7 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
         assertEquals(YES, callbackResponse.getData().getBoRequestInfoSendToBulkPrintRequested());
         assertEquals(EXECEUTORS_APPLYING_NOTIFICATION, callbackResponse
-                .getData().getExecutorsApplyingNotifications());
+            .getData().getExecutorsApplyingNotifications());
         assertEquals(APPLICANT_SIBLINGS, callbackResponse.getData().getSolsApplicantSiblings());
         assertEquals(DIED_OR_NOT_APPLYING, callbackResponse.getData().getSolsDiedOrNotApplying());
         assertEquals(ENTITLED_MINORITY, callbackResponse.getData().getSolsEntitledMinority());
@@ -3363,15 +3362,15 @@ class CallbackResponseTransformerTest {
         assertCommon(callbackResponse);
 
         assertEquals("123-456", callbackResponse
-                .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+            .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails gorCreationDetails) {
         uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData
             grantOfRepresentationData =
             (uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData)
-                    gorCreationDetails
-                        .getCaseData();
+                gorCreationDetails
+                    .getCaseData();
         assertEquals(GOR_EXCEPTION_RECORD_EVENT_ID, gorCreationDetails.getEventId());
         assertEquals(GOR_EXCEPTION_RECORD_CASE_TYPE_ID, gorCreationDetails.getCaseTypeId());
         assertEquals(BULK_SCAN_REGISTRY_LOCATION.name(), grantOfRepresentationData.getRegistryLocation().name());
@@ -3540,7 +3539,7 @@ class CallbackResponseTransformerTest {
 
         assertEquals(VALID_ORIGINAL_WILL_SIGNED_DATE, callbackResponse.getData().getOriginalWillSignedDate());
         assertEquals(VALID_CODICIL_DATE, callbackResponse.getData().getCodicilAddedDateList()
-                .get(0).getValue().getDateCodicilAdded());
+            .get(0).getValue().getDateCodicilAdded());
     }
 
     @Test
@@ -3580,24 +3579,24 @@ class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
         verify(caseDataTransformerMock, times(1))
-                .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
+            .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
     }
 
     @Test
     void shouldTransformForDeceasedDetails() {
         caseDataBuilder.applicationType(SOLICITOR)
-                .caseType(GRANT_OF_PROBATE_NAME)
-                .solsWillType(WILL_TYPE_PROBATE)
-                .solsSOTForenames("Fred")
-                .solsSOTSurname("Bassett")
-                .solsSOTName("Fred Bassett")
-                .solsSolicitorIsExec("Yes")
-                .solsSolicitorIsApplying("Yes");
+            .caseType(GRANT_OF_PROBATE_NAME)
+            .solsWillType(WILL_TYPE_PROBATE)
+            .solsSOTForenames("Fred")
+            .solsSOTSurname("Bassett")
+            .solsSOTName("Fred Bassett")
+            .solsSolicitorIsExec("Yes")
+            .solsSolicitorIsApplying("Yes");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse =
-                underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
+            underTest.transformForDeceasedDetails(callbackRequestMock, CHANGED_STATE);
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -3605,7 +3604,7 @@ class CallbackResponseTransformerTest {
         assertTrue(CHANGED_STATE.isPresent());
         assertEquals(CHANGED_STATE.get(), callbackResponse.getData().getState());
         verify(solicitorExecutorTransformerMock, times(1))
-                .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
+            .mapSolicitorExecutorFieldsToExecutorNamesLists(any(), any());
     }
 
     @Test
@@ -3682,27 +3681,27 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldAddSentEmail() {
         Document sentEmail = Document.builder()
-                .documentLink(documentLinkMock)
-                .documentType(SENT_EMAIL)
-                .documentFileName(SENT_EMAIL.getTemplateName())
-                .build();
+            .documentLink(documentLinkMock)
+            .documentType(SENT_EMAIL)
+            .documentFileName(SENT_EMAIL.getTemplateName())
+            .build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, coversheetMock, sentEmail);
+            feesResponse, paymentResponseMock, coversheetMock, sentEmail);
 
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(sentEmail,
-                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+            callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(SENT_EMAIL.getTemplateName(),
-                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
+            callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
     }
 
     @Test
     void shouldBeNullSafeForSentEmail() {
         CallbackResponse callbackResponse = underTest.transformForSolicitorComplete(callbackRequestMock,
-                feesResponse, paymentResponseMock, coversheetMock, null);
+            feesResponse, paymentResponseMock, coversheetMock, null);
 
         assertThat(callbackResponse.getData().getProbateNotificationsGenerated(), is(empty()));
     }
@@ -3716,19 +3715,19 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         Document sentEmail = Document.builder()
-                .documentLink(documentLinkMock)
-                .documentType(SENT_EMAIL)
-                .documentFileName(SENT_EMAIL.getTemplateName())
-                .build();
+            .documentLink(documentLinkMock)
+            .documentType(SENT_EMAIL)
+            .documentFileName(SENT_EMAIL.getTemplateName())
+            .build();
 
         CallbackResponse callbackResponse = underTest.transformCaseForAttachScannedDocs(callbackRequestMock, sentEmail);
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(1, callbackResponse.getData().getProbateNotificationsGenerated().size());
         assertEquals(sentEmail,
-                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
+            callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue());
         assertEquals(SENT_EMAIL.getTemplateName(),
-                callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
+            callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
     }
 
     @Test
