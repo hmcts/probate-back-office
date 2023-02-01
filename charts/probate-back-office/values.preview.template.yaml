@@ -79,6 +79,8 @@ ccd:
     java:
       imagePullPolicy: Always
       devcpuRequests: 1
+      autoscaling:
+        maxReplicas: 2
       devmemoryRequests: 2Gi
       devcpuLimits: 2
       devmemoryLimits: 2Gi
