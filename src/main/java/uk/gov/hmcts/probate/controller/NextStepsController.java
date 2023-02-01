@@ -31,9 +31,11 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -51,6 +53,7 @@ public class NextStepsController {
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ServiceRequestTransformer serviceRequestTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
@@ -67,7 +70,7 @@ public class NextStepsController {
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
-        HttpServletRequest request) {
+        HttpServletRequest request) throws NotificationClientException {
 
         logRequest(request.getRequestURI(), callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
@@ -83,6 +86,7 @@ public class NextStepsController {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
+            caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
 
             serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
 

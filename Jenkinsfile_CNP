@@ -185,6 +185,15 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "back-office Code Coverage Report"
     ]
+
+    publishHTML target: [
+                    allowMissing         : true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : "build/reports/tests/integration",
+                    reportFiles          : "index.html",
+                    reportName           : "probate-back-office integrationTest Report"
+            ]
   }
 
   after('functionalTest:preview') {
@@ -259,7 +268,7 @@ withPipeline("java", product, component) {
 
     sh """
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-      ./bin/add-roles.sh
+      ./bin/add-ccd-roles.sh
     """
     archiveCoreCaseDataDefinitions('preview')
     uploadCoreCaseDataDefinitions('preview')

@@ -1,0 +1,20 @@
+{
+  "addComment": "Add Comment",
+  "uploadDocument": "Upload Documents",
+  "generateGrantPreview": "Generate grant preview",
+  "selectForQa": "Select for QA",
+  "attachScanDocs": "Attach scanned docs",
+  "handleSupEvidence": "Handle supplementary evidence",
+  "withdrawApplication": "Withdraw application",
+  "amendCaseDetails": "Amend case details",
+  "stopCase": "Stop case",
+  "rePrintCase": "Reprint document",
+  "selectMultipleRecords": "Select from multiple records",
+  "manuallyVerifyLev": "'Trigger LEV api lookup",
+  "generateGrantPreviewDraft": "Generate grant preview (draft)",
+  "findMatch": "Find matches (cases)",
+  "issueGrant": "Issue grant",
+  "findMatchesIssueGrant": "Find matches (Issue grant)",
+  "failQa": "Fail QA",
+  "resolveStop": "Resolve stop"
+}

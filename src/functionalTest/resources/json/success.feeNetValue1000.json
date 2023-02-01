@@ -32,6 +32,7 @@
         ]
       },
       "solsPBAPaymentReference": "appref-PAY1",
+      "applicationType": "Solicitor",
       "solsSOTName": "Solicitor_fn Solicitor_ln",
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",

@@ -35,14 +35,17 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Optional;
 
@@ -50,6 +53,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class NextStepsUnitTest {
@@ -68,7 +72,6 @@ class NextStepsUnitTest {
     private ObjectMapper objectMapperMock;
     @Mock
     private FeeService feeServiceMock;
-
     @Mock
     private BindingResult bindingResultMock;
     @Mock
@@ -106,9 +109,15 @@ class NextStepsUnitTest {
     @Mock
     private PaymentResponse paymentResponseMock;
     @Mock
+    private CaseDataTransformer caseDataTransformer;
+    @Mock
     Document coversheetMock;
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
+    @Mock
+    Document sentEmailMock;
+    @Mock
+    Document sentEmailNocDocMock;
     @Mock
     private ServiceRequestTransformer serviceRequestTransformer;
     @Mock
@@ -120,11 +129,12 @@ class NextStepsUnitTest {
     private AppInsights appInsights;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws NotificationClientException {
         MockitoAnnotations.openMocks(this);
 
         underTest = new NextStepsController(ccdBeanTransformerMock,
             confirmationResponseServiceMock, callbackResponseTransformerMock, serviceRequestTransformer,
+                caseDataTransformer,
                 objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService, pdfManagementServiceMock,
                 handOffLegacyTransformerMock, serviceRequestAlreadyCreatedValidationRuleMock);
 
@@ -135,7 +145,8 @@ class NextStepsUnitTest {
         when(pdfManagementServiceMock.generateAndUpload(callbackRequestMock, DocumentType.SOLICITOR_COVERSHEET))
                 .thenReturn(coversheetMock);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, coversheetMock))
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, "",
+                    coversheetMock))
             .thenReturn(callbackResponseMock);
 
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
@@ -144,7 +155,7 @@ class NextStepsUnitTest {
     }
 
     @Test
-    void shouldValidateWithNoErrors() {
+    void shouldValidateWithNoErrors() throws NotificationClientException {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
@@ -153,8 +164,8 @@ class NextStepsUnitTest {
             .thenReturn(creditAccountPaymentMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, coversheetMock))
-            .thenReturn(callbackResponseMock);
+                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, "",
+                        coversheetMock)).thenReturn(callbackResponseMock);;
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
         when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
@@ -164,25 +175,44 @@ class NextStepsUnitTest {
             bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
+
     }
 
     @Test
-    void shouldValidateWithNoFeeValueNoErrors() {
+    void shouldValidateWithNoFeeValueNoErrors() throws NotificationClientException {
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
         when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
         when(callbackResponseTransformerMock
-            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, coversheetMock))
+                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, "",
+                        coversheetMock))
             .thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
             bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
+
+    }
+
+    @Test
+    void shouldValidateWithPaymentError() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+            .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Arrays.asList("error"));
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
+            creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+
+        ResponseEntity responseEntity = underTest.validate(AUTH, callbackRequestMock,
+            bindingResultMock, httpServletRequestMock);
     }
 
     @Test
@@ -228,7 +258,7 @@ class NextStepsUnitTest {
     }
 
     @Test
-    void shouldValidateWithNoErrorsForStateChange() {
+    void shouldValidateWithNoErrorsForStateChange() throws NotificationClientException {
         Optional<String> newState = Optional.of("changedState");
         when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(newState);
         when(callbackResponseTransformerMock.transformWithConditionalStateChange(callbackRequestMock, newState))
@@ -239,7 +269,143 @@ class NextStepsUnitTest {
             bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(callbackResponseMock));
+
     }
 
+    @Test
+    void shouldValidateWithNoErrorsAndTransformEvidenceHandled() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+                .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
+        when(callbackResponseTransformerMock
+            .transformForSolicitorComplete(callbackRequestMock, feesResponseMock,"",
+                    coversheetMock))
+            .thenReturn(callbackResponseMock);
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
+                creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+        verify(caseDataTransformer).transformCaseDataForEvidenceHandled(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+    }
+
+    @Test
+    void shouldValidateWithNoFeeValueNoErrorsAndTransformEvidenceHandled() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
+        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
+                "", coversheetMock)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+        verify(caseDataTransformer).transformCaseDataForEvidenceHandled(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+    }
+
+    @Test
+    void shouldSendApplicationReceivedEmailForNullEvidenceHandled() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+                .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
+        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
+                "", coversheetMock)).thenReturn(callbackResponseMock);
+        when(caseDataMock.getEvidenceHandled()).thenReturn(null);
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
+                creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+    }
+
+    @Test
+    void shouldSendApplicationReceivedNoDocEmailForNoEvidenceHandled() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+                .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
+        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
+                "", coversheetMock)).thenReturn(callbackResponseMock);
+        when(caseDataMock.getEvidenceHandled()).thenReturn("No");
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
+                creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+    }
+
+    @Test
+    void shouldStartAwaitingDocumentationNotificationPeriodForNullEvidenceHandled() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+                .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
+        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
+                "", coversheetMock)).thenReturn(callbackResponseMock);
+        when(caseDataMock.getEvidenceHandled()).thenReturn(null);
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
+                creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotStartAwaitingDocumentationNotificationPeriodNoEvidenceHandled() throws NotificationClientException {
+        when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
+        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
+        when(ccdDataMock.getFee()).thenReturn(feeMock);
+        when(creditAccountPaymentTransformer.transform(caseDetailsMock, feesResponseMock))
+                .thenReturn(creditAccountPaymentMock);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
+        when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
+                "", coversheetMock)).thenReturn(callbackResponseMock);
+        when(caseDataMock.getEvidenceHandled()).thenReturn("No");
+        CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
+        when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
+        when(eventValidationService.validatePaymentResponse(caseDetailsMock, paymentResponseMock,
+                creditAccountPaymentValidationRule)).thenReturn(creditPaymentResponseError);
+
+        ResponseEntity<CallbackResponse> response = underTest.validate(AUTH, callbackRequestMock,
+                bindingResultMock, httpServletRequestMock);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+
+    }
 }

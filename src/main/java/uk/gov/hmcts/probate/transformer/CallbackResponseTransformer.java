@@ -105,10 +105,9 @@ public class CallbackResponseTransformer {
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String DEFAULT_IHT_FORM_ID = "IHT205";
-    private static final String CASE_CREATED = "CaseCreated";
+    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
     private static final String CASE_PRINTED = "CasePrinted";
-    private static final String READY_FOR_EXAMINATION = "BOReadyForExamination";
-    private static final String EXAMINING = "BOExamining";
+    private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
     private static final String SOL_AS_EXEC_ID = "solicitor";
@@ -421,17 +420,17 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
-            case CASE_CREATED:
-                responseCaseDataBuilder.state(CASE_CREATED);
+            case CASE_MATCHING_ISSUE_GRANT:
+                responseCaseDataBuilder.state(CASE_MATCHING_ISSUE_GRANT);
                 break;
-            case CASE_PRINTED:
-                responseCaseDataBuilder.state(CASE_PRINTED);
+            case QA_CASE_STATE:
+                responseCaseDataBuilder.state(QA_CASE_STATE);
                 break;
-            case READY_FOR_EXAMINATION:
-                responseCaseDataBuilder.state(READY_FOR_EXAMINATION);
+            case READY_FOR_ISSUE:
+                responseCaseDataBuilder.state(READY_FOR_ISSUE);
                 break;
             default:
-                responseCaseDataBuilder.state(EXAMINING);
+                responseCaseDataBuilder.state(CASE_PRINTED);
                 break;
         }
         return transformResponse(responseCaseDataBuilder.build());
@@ -543,6 +542,18 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCaseForAttachScannedDocs(CallbackRequest callbackRequest, Document document) {
+        boolean transform = doTransform(callbackRequest);
+        if (document != null) {
+            documentTransformer.addDocument(callbackRequest, document, false);
+        }
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+        responseCaseDataBuilder.probateNotificationsGenerated(
+                callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
@@ -1604,6 +1615,10 @@ public class CallbackResponseTransformer {
 
         if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
             grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
+        }
+
+        if (grantOfRepresentationData.getEvidenceHandled() == null) {
+            grantOfRepresentationData.setEvidenceHandled(false);
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>

@@ -112,6 +112,14 @@ sourceSets {
     }
     resources.srcDir file('src/contractTest/resources')
   }
+  integrationTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/integrationTest/java')
+    }
+    resources.srcDir file('src/integrationTest/resources')
+  }
 }
 
 test {
@@ -144,6 +152,14 @@ task caseCreator(type: Test) {
   testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
   classpath = sourceSets.testCaseCreator.runtimeClasspath
   finalizedBy aggregate
+}
+
+task integration(type: Test) {
+  description = "Runs integration tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+  useJUnitPlatform()
 }
 
 gitProperties {
@@ -180,7 +196,7 @@ def versions = [
 ]
 
 jacocoTestReport {
-  executionData(test)
+  executionData(test,integration)
   reports {
     xml.required = true
     csv.required = false
@@ -383,6 +399,9 @@ dependencies {
 
   // Provides fast-reload of the probate service upon edit & compile during local development
   cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+
+  integrationTestImplementation sourceSets.main.runtimeClasspath
+  integrationTestImplementation sourceSets.test.runtimeClasspath
 }
 
 tasks.withType(JavaCompile) {
@@ -441,7 +460,11 @@ test {
   useJUnitPlatform()
 }
 
+check.dependsOn(integration)
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
 runAndPublishConsumerPactTests.finalizedBy pactPublish
+
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
