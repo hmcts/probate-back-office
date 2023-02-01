@@ -185,6 +185,15 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "back-office Code Coverage Report"
     ]
+
+    publishHTML target: [
+                    allowMissing         : true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : "build/reports/tests/integration",
+                    reportFiles          : "index.html",
+                    reportName           : "probate-back-office integrationTest Report"
+            ]
   }
 
   after('functionalTest:preview') {
