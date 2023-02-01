@@ -47,7 +47,8 @@ public class CaseDataTransformer {
 
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
         solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
-        solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseData, serviceRequestReference);
+        solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(callbackRequest.getCaseDetails(),
+                serviceRequestReference);
     }
 
 

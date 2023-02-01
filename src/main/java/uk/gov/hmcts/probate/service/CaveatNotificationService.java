@@ -54,7 +54,7 @@ public class CaveatNotificationService {
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
@@ -109,13 +109,22 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId, null);
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
         }
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest,
-                                                  String serviceRequestReference)
+    public CaveatCallbackResponse solsCaveatComplete(CaveatCallbackRequest caveatCallbackRequest,
+                                                     String serviceRequestReference)
+            throws NotificationClientException {
+
+        CaveatCallbackResponse caveatCallbackResponse =
+                caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
+                        serviceRequestReference);
+        return caveatCallbackResponse;
+    }
+
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
         Document document;
@@ -126,13 +135,7 @@ public class CaveatNotificationService {
         document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
         documents.add(document);
         CaveatCallbackResponse caveatCallbackResponse =
-            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
-
-        if (caveatCallbackResponse.getErrors().isEmpty()) {
-            caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null,
-                        serviceRequestReference);
-        }
+            caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
         return caveatCallbackResponse;
     }
 

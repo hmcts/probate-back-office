@@ -50,12 +50,8 @@ pdf.service:
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
 payment:
-  url: ${PAYMENT_URL:http://localhost:8991}
-  api: /credit-account-payments
-  currency: GBP
   pba:
     siteId: ABA6
-  service: PROBATE
   serviceRequest:
     url: ${PAYMENT_URL:http://localhost:8080}
     api: /service-request
@@ -63,12 +59,6 @@ payment:
     baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
     GrantOfRepresentationCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/gor-payment-request-update
     CaveatCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/caveat-payment-request-update
-
-pba:
-  retrieval:
-    url: ${PRD_API_URL:http://localhost:8991}
-    health.url: ${pba.retrieval.url}/health
-    api: /refdata/external/v1/organisations/pbas
 
 prd:
   organisations:

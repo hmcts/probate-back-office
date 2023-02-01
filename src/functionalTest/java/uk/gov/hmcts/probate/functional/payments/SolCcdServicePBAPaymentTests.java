@@ -21,7 +21,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Test
     public void shouldValidateDefaultPBAs() throws IOException {
-        validatePostRequestSuccessForPBAs("/case/default-sols-pba",
+        validatePostRequestSuccessForPBAs("/case/default-sols-payments",
             "solicitorPDFPayloadProbate.json",
             "{\"code\":\"PBA0083372\",\"label\":\"PBA0083372\"}",
             "{\"code\":\"PBA0082126\",\"label\":\"PBA0082126\"}",
@@ -30,7 +30,7 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Test
     public void shouldValidateDefaultPBAPaymentsNoFee() throws IOException {
-        String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-pba",
+        String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-payments",
             "solicitorPDFPayloadProbateNoPaymentFee.json",
             "\"solsNeedsPBAPayment\":\"No\"");
         assertFalse(responseBody.contains("\"payments\": ["));

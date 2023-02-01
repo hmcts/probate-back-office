@@ -34,7 +34,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
     private static final String CAVEAT_SOLICITOR_CREATED = "/caveat/sols-created";
     private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
-    private static final String CAVEAT_VALIDATE = "/caveat/validate";
+    private static final String CAVEAT_VALIDATE = "/caveat/sols-complete-application";
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
     private static final String CAVEAT_SOLS_CREATED = "/caveat/solsCreate";

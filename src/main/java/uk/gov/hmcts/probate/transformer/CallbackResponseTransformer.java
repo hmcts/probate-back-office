@@ -31,7 +31,6 @@ import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -121,10 +120,8 @@ public class CallbackResponseTransformer {
     private final ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
     private final TaskListUpdateService taskListUpdateService;
     private final CaseDataTransformer caseDataTransformer;
-    private final PDFManagementService pdfManagementService;
     private final OrganisationsRetrievalService organisationsRetrievalService;
-    private final SolicitorPBADefaulter solicitorPBADefaulter;
-    private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
+    private final SolicitorPaymentReferenceDefaulter solicitorPBADefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
 
@@ -437,7 +434,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          String serviceRequestReference, Document coversheet) {
+                                      String serviceRequestReference) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -446,7 +443,6 @@ public class CallbackResponseTransformer {
 
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-
         caseDataTransformer
                 .transformCaseDataForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
 
@@ -460,8 +456,8 @@ public class CallbackResponseTransformer {
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
-            .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
             .build();
+
 
         return transformResponse(responseCaseData);
     }
@@ -731,25 +727,12 @@ public class CallbackResponseTransformer {
         return executorNames;
     }
 
-    public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
+    public CallbackResponse transformCaseForSolicitorPayment(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             doTransform);
-        solicitorPBADefaulter.defaultFeeAccounts(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder,
-            authToken);
-
-        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
-            responseCaseDataBuilder);
-
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
-    public CallbackResponse transformCaseForSolicitorPBATotalPayment(CallbackRequest callbackRequest) {
-        boolean doTransform = doTransform(callbackRequest);
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
-            doTransform);
-        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
-            responseCaseDataBuilder);
+        solicitorPBADefaulter.defaultSolicitorReference(callbackRequest.getCaseDetails().getData(),
+                responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

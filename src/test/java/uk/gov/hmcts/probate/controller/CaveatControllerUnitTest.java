@@ -60,7 +60,6 @@ class CaveatControllerUnitTest {
     @Mock
     private FeeService feeService;
 
-    private static final String AUTH = "Auth";
     private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
 
     @Mock
@@ -99,9 +98,9 @@ class CaveatControllerUnitTest {
                 .thenReturn(serviceRequestDtoMock);
         when(paymentsService.createServiceRequest(serviceRequestDtoMock))
             .thenReturn(SERVICE_REQUEST_REFERENCE);
-        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, SERVICE_REQUEST_REFERENCE))
+        when(caveatNotificationService.solsCaveatComplete(caveatCallbackRequest, SERVICE_REQUEST_REFERENCE))
             .thenReturn(caveatCallbackResponse);
-        ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
+        ResponseEntity<CaveatCallbackResponse> response = underTest.solsCompleteApplication(caveatCallbackRequest,
             bindingResultMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -114,16 +113,16 @@ class CaveatControllerUnitTest {
             when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
             doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
                     .validate(caveatDetailsMock);
-            underTest.validate(AUTH, caveatCallbackRequest, bindingResultMock);
+            underTest.solsCompleteApplication(caveatCallbackRequest, bindingResultMock);
         });
     }
 
     @Test
     void shouldDefaultSolsPBA() {
-        when(caveatCallbackResponseTransformer.transformCaseForSolicitorPBANumbers(caveatCallbackRequest, AUTH))
+        when(caveatCallbackResponseTransformer.transformCaseForSolicitorPayment(caveatCallbackRequest))
             .thenReturn(caveatCallbackResponse);
-        ResponseEntity<CaveatCallbackResponse> response = underTest.defaulsSolicitorNextStepsForPBANumbers(AUTH,
-            caveatCallbackRequest);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.defaultSolicitorNextStepsForPayment(
+                caveatCallbackRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));

@@ -10,16 +10,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -28,7 +25,6 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -58,7 +54,6 @@ public class NextStepsController {
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
-    private final PDFManagementService pdfManagementService;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
@@ -66,7 +61,6 @@ public class NextStepsController {
 
     @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validate(
-        @RequestHeader(value = "Authorization") String authToken,
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -90,9 +84,6 @@ public class NextStepsController {
 
             serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
 
-            Document coversheet = pdfManagementService
-                    .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
@@ -104,10 +95,10 @@ public class NextStepsController {
                         .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
 
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, serviceRequestReference, coversheet);
+                        feesResponse, serviceRequestReference);
             } else {
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, null, coversheet);
+                        feesResponse, null);
             }
         }
 
