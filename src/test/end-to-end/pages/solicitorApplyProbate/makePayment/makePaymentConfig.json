@@ -10,5 +10,7 @@
   "page2_paymentReference": "E2E PBA Payment Reference",
   "paymentStatusConfirmText": "Payment successful",
   "serviceRequestLink": "View service request",
-  "paymentStatus": "Paid"
+  "paymentStatus": "Paid",
+  "mainTab": "Case Progress",
+  "waitForText": "Manage Cases"
 }
