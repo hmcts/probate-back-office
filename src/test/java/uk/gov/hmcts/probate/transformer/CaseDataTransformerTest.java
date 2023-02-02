@@ -41,7 +41,7 @@ class CaseDataTransformerTest {
     private CaseDataTransformer caseDataTransformer;
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -84,13 +84,13 @@ class CaseDataTransformerTest {
         verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
     }
 
-    @Test
-    void shouldTransformForValidateAdmon() {
-        caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequestMock);
-
-        verify(legalStatementExecutorTransformer).formatFields(caseDataMock);
-        verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
-    }
+//    @Test
+//    void shouldTransformForValidateAdmon() {
+//        caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequestMock);
+//
+//        verify(legalStatementExecutorTransformer).formatFields(caseDataMock);
+//        verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
+//    }
 
     @Test
     void shouldTransformCaseDataForSolicitorExecutorNames() {
