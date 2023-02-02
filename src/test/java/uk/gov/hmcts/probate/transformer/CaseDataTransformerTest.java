@@ -88,7 +88,7 @@ class CaseDataTransformerTest {
     void shouldTransformForValidateAdmon() {
         caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequestMock);
 
-        verify(solicitorApplicationCompletionTransformer).formatFields(caseDataMock);
+        verify(legalStatementExecutorTransformer).formatFields(caseDataMock);
         verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
     }
 
