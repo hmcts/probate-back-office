@@ -127,4 +127,5 @@ class CaveatControllerUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));
     }
+
 }

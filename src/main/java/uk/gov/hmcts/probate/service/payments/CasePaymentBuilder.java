@@ -51,7 +51,7 @@ public class CasePaymentBuilder {
                 response.getServiceRequestReference(),
                 getCasePaymentMethod(response),
                 "" + (response.getServiceRequesAmount().longValue() * 100));
-        allPayments.add(new CollectionMember(null, casePayment));
+        allPayments.add(new CollectionMember<>(null, casePayment));
 
         return allPayments;
     }

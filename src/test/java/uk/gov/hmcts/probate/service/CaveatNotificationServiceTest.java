@@ -775,5 +775,15 @@ class CaveatNotificationServiceTest {
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
     }
-}
 
+    @Test
+    void shouldSolsCaveatComplete() {
+        when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
+                "SRRef")).thenReturn(caveatCallbackResponse);
+        CaveatCallbackResponse response =
+                caveatNotificationService.solsCaveatComplete(caveatCallbackRequest, "SRRef");
+
+        assertEquals(caveatCallbackResponse, response);
+    }
+
+}

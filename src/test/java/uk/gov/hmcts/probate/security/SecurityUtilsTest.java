@@ -17,7 +17,6 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -197,6 +196,9 @@ class SecurityUtilsTest {
         when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
                 .thenReturn(tokenResponse);
 
-        securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+        SecurityDTO securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+        assertEquals("12344", securityDTO.getUserId());
+        assertEquals("Bearer " + USER_TOKEN, securityDTO.getAuthorisation());
+        assertEquals("Test", securityDTO.getServiceAuthorisation());
     }
 }
