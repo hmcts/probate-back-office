@@ -112,6 +112,8 @@ ccd:
             - role-assignment-service-LD-SDK-KEY
   ccd-definition-store-api:
     java:
+      autoscaling:
+        maxReplicas: 2
       imagePullPolicy: Always
       environment:
         DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
