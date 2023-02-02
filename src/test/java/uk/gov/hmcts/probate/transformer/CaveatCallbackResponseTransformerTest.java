@@ -491,20 +491,20 @@ class CaveatCallbackResponseTransformerTest {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
         when(caveatDetailsMock.getData()).thenReturn(CaveatData.builder().build());
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyReturnNullForNoAuth() {
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, null));
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, null));
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
@@ -522,7 +522,7 @@ class CaveatCallbackResponseTransformerTest {
 
         CaveatData caveatData = CaveatData.builder().applicantOrganisationPolicy(organisationPolicy).build();
         when(caveatDetailsMock.getData()).thenReturn(caveatData);
-        OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
+        OrganisationPolicy actualBuildOrganisationPolicyResult = underTest
             .buildOrganisationPolicy(caveatDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
@@ -530,7 +530,7 @@ class CaveatCallbackResponseTransformerTest {
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
     }
@@ -553,6 +553,31 @@ class CaveatCallbackResponseTransformerTest {
 
         String extendedDate = "2020-08-01";
         assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
+    }
+
+    @Test
+    void shouldTransformResponseWithNoChanges() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse = underTest
+                .transformResponseWithNoChanges(caveatCallbackRequestMock);
+
+        assertCommonSolsCaveats(caveatCallbackResponse);
+    }
+
+    @Test
+    void shouldTransformResponseWithServiceRequest() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "SRref");
+
+        assertCommonSolsCaveats(caveatCallbackResponse);
+        assertEquals(caveatCallbackResponse.getCaveatData().getServiceRequestReference(), "SRref");
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {

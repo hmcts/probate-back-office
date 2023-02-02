@@ -441,7 +441,7 @@ public class CallbackResponseTransformer {
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
-                .transformCaseDataForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
+                .transformForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -749,7 +749,7 @@ public class CallbackResponseTransformer {
                 // We have currently applied this change to both paperform Yes and paperform No
                 // && NO.equals(cd.getPaperForm())
                 && GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())) {
-            caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
+            caseDataTransformer.transformForSolicitorApplicationCompletion(callbackRequest);
         }
         if (document != null) {
             documentTransformer.addDocument(callbackRequest, document, false);

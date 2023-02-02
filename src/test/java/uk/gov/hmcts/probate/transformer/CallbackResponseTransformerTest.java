@@ -914,7 +914,7 @@ class CallbackResponseTransformerTest {
 
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_FEE, callbackResponse.getData().getSolsPaymentMethods());
-        verify(caseDataTransformerMock).transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock,
+        verify(caseDataTransformerMock).transformForSolicitorApplicationCompletion(callbackRequestMock,
                 "");
     }
 
@@ -3547,7 +3547,7 @@ class CallbackResponseTransformerTest {
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
         verify(caseDataTransformerMock, times(1))
-            .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
+            .transformForSolicitorApplicationCompletion(callbackRequestMock);
     }
 
     @Test

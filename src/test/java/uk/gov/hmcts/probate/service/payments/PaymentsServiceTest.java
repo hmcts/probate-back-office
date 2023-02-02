@@ -46,6 +46,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.STANDING_SEARCH;
 
 class PaymentsServiceTest {
     @InjectMocks
@@ -71,12 +72,12 @@ class PaymentsServiceTest {
     private CaveatNotificationService caveatNotificationService;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void shouldCreateServiceRequest() {
+    void shouldCreateServiceRequest() {
         ServiceRequestDto serviceDto = ServiceRequestDto.builder().build();
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .userId("userId")
@@ -92,7 +93,7 @@ class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldRetrieveAndUpdateGrantDataWithPaymentResponse() throws NotificationClientException {
+    void shouldRetrieveAndUpdateGrantDataWithPaymentResponse() throws NotificationClientException {
         setupIdamUserResponse();
 
         HashMap<String, Object> caseData = new HashMap();
@@ -123,7 +124,7 @@ class PaymentsServiceTest {
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
                         .build()));
-        when(casePaymentBuilder.getAllPayments(any(), any())).thenReturn(payments);
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
@@ -134,7 +135,7 @@ class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldRetrieveAndUpdateGrantDataWithPaymentResponseEvidenecHandled()
+    void shouldRetrieveAndUpdateGrantDataWithPaymentResponseEvidenecHandled()
             throws NotificationClientException {
         setupIdamUserResponse();
 
@@ -167,7 +168,7 @@ class PaymentsServiceTest {
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
                         .build()));
-        when(casePaymentBuilder.getAllPayments(any(), any())).thenReturn(payments);
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
@@ -178,7 +179,7 @@ class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldRetrieveAndUpdateCaveatDataWithPaymentResponse() throws NotificationClientException {
+    void shouldRetrieveAndUpdateCaveatDataWithPaymentResponse() throws NotificationClientException {
         setupIdamUserResponse();
 
         HashMap<String, Object> caseData = new HashMap();
@@ -204,7 +205,7 @@ class PaymentsServiceTest {
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
                         .build()));
-        when(casePaymentBuilder.getAllPayments(any(), any())).thenReturn(payments);
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
         paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
@@ -214,7 +215,7 @@ class PaymentsServiceTest {
     }
 
     @Test
-    public void shouldNotUpdateCaveatDataWhenNotificationFailure() {
+    void shouldNotUpdateCaveatDataWhenNotificationFailure() {
         assertThrows(RuntimeException.class, () -> {
             setupIdamUserResponse();
 
@@ -228,11 +229,6 @@ class PaymentsServiceTest {
                     .data(caseData)
                     .build();
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
-            CaveatCallbackResponse response = CaveatCallbackResponse.builder()
-                    .caveatData(ResponseCaveatData.builder()
-                            .notificationsGenerated(new ArrayList<>())
-                            .build())
-                    .build();
             when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
             when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
                     .thenReturn(PaymentStatus.SUCCESS);
@@ -241,9 +237,42 @@ class PaymentsServiceTest {
                     CasePayment.builder()
                             .status(PaymentStatus.SUCCESS)
                             .build()));
-            when(casePaymentBuilder.getAllPayments(any(), any())).thenReturn(payments);
+            when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
             ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
             paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
+
+            verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(),
+                    any(), any(),
+                    any(), any(), any());
+        });
+    }
+
+    @Test
+    void shouldNotUpdateCaveatDataWhenInvalidCaseType() {
+        assertThrows(IllegalArgumentException.class, () -> {
+            setupIdamUserResponse();
+
+            HashMap<String, Object> caseData = new HashMap();
+            caseData.put("registryLocation", "ctsc");
+            caseData.put("languagePreferenceWelsh", "No");
+            caseData.put("applicationType", "Solicitor");
+            caseData.put("caveatorEmailAddress", "solsSolicitorEmail@probate-test.com");
+            uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = CaseDetails.builder()
+                    .id(0L)
+                    .data(caseData)
+                    .build();
+            when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+            when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
+            when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
+                    .thenReturn(PaymentStatus.SUCCESS);
+            when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+            List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
+                    CasePayment.builder()
+                            .status(PaymentStatus.SUCCESS)
+                            .build()));
+            when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
+            ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
+            paymentsService.updateCaseFromServiceRequest(responseDto, STANDING_SEARCH);
 
             verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(),
                     any(), any(),

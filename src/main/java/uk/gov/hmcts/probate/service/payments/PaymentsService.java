@@ -125,11 +125,10 @@ public class PaymentsService {
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
         Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
         String userId = result.get("id").toString().toLowerCase();
-        SecurityDTO securityDTO = SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
+        return SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
                 .serviceAuthorisation(securityUtils.generateServiceToken())
                 .userId(userId)
                 .build();
-        return securityDTO;
     }
 
     private GrantOfRepresentationData buildGrantDataWithNotifications(
@@ -166,14 +165,14 @@ public class PaymentsService {
 
         documentTransformer.addDocument(callbackRequest, sentEmail, false);
 
-        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.getAllPayments(
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
                 caseDetails.getData().getPayments(), response);
 
         Document coversheet = pdfManagementService
                 .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
         PaymentStatus paymentStatus =
                 casePaymentBuilder.getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus());
-        GrantOfRepresentationData grantCaseData = GrantOfRepresentationData.builder()
+        return GrantOfRepresentationData.builder()
                 .grantAwaitingDocumentationNotificationDate(caseDetails.getData()
                         .getGrantAwaitingDocumentationNotificationDate())
                 .solsCoversheetDocument(getCoversheet(coversheet))
@@ -182,20 +181,17 @@ public class PaymentsService {
                 .payments(allPayments)
                 .paymentTaken(paymentStatus == SUCCESS ? YES : NO)
                 .build();
-        return grantCaseData;
     }
 
     private uk.gov.hmcts.reform.probate.model.cases.DocumentLink getCoversheet(Document coversheet) {
         if (coversheet == null) {
             return null;
         } else {
-            uk.gov.hmcts.reform.probate.model.cases.DocumentLink docLink =
-                    uk.gov.hmcts.reform.probate.model.cases.DocumentLink.builder()
+            return uk.gov.hmcts.reform.probate.model.cases.DocumentLink.builder()
                             .documentUrl(coversheet.getDocumentLink().getDocumentUrl())
                             .documentBinaryUrl(coversheet.getDocumentLink().getDocumentBinaryUrl())
                             .documentFilename(coversheet.getDocumentLink().getDocumentFilename())
                             .build();
-            return docLink;
         }
     }
 
@@ -218,9 +214,9 @@ public class PaymentsService {
                     casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
             LocalDate expiryDate =
                     casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getExpiryDate());
-            List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.getAllPayments(
+            List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
                     caveatDetails.getData().getPayments(), response);
-            CaveatData caveatDataToSave = CaveatData.builder()
+            return CaveatData.builder()
                     .payments(allPayments)
                     .paymentTaken(paymentStatus == SUCCESS ? YES : NO)
                     .applicationSubmittedDate(appSubmittedDate)
@@ -228,7 +224,6 @@ public class PaymentsService {
                             .getNotificationsGenerated()))
                     .expiryDate(expiryDate)
                     .build();
-            return caveatDataToSave;
         } catch (NotificationClientException e) {
             throw new RuntimeException(e.getMessage());
         }
@@ -236,10 +231,11 @@ public class PaymentsService {
 
     private List<CollectionMember<ProbateDocument>> asNotificationsGenerated(
             List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<Document>> probateNotificationsGenerated) {
-        List<CollectionMember<ProbateDocument>> probateDocsGenerated = new ArrayList();
+        List<CollectionMember<ProbateDocument>> probateDocsGenerated =
+                new ArrayList<>();
         for (uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<Document> doc : probateNotificationsGenerated) {
             ProbateDocument probateDoc = doc.getValue().asProbateDocument();
-            probateDocsGenerated.add(new CollectionMember(doc.getId(), probateDoc));
+            probateDocsGenerated.add(new CollectionMember<>(doc.getId(), probateDoc));
         }
         return probateDocsGenerated;
     }

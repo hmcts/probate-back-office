@@ -5,14 +5,20 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
+
+import javax.servlet.http.HttpServletRequest;
+
+import java.util.Collections;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -39,14 +45,49 @@ class SecurityUtilsTest {
     private static final String REDIRECT = "http://redirect";
     private static final String BEARER = "Bearer ";
 
-    @Mock
-    private IdamApi idamApi;
-
     @InjectMocks
     private SecurityUtils securityUtils;
+
+    @Mock
+    private IdamApi idamApi;
     @Mock
     private AuthTokenGenerator authTokenGenerator;
 
+    @Mock
+    private HttpServletRequest httpServletRequestMock;
+
+    @Test
+    void shouldGetSecurityDTO() {
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH");
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn("USER");
+
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        assertEquals("AUTH", securityDTO.getAuthorisation());
+    }
+
+    @Test
+    void shouldGetUserAndServiceSecurityDTO() {
+        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
+                Collections.EMPTY_LIST, "servicename");
+        TestSecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
+        when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH");
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn("USER");
+
+        SecurityDTO securityDTO = securityUtils.getUserAndServiceSecurityDTO();
+        assertEquals("AUTH", securityDTO.getAuthorisation());
+        assertEquals("username", securityDTO.getUserId());
+    }
+
+    @Test
+    void shouldGetUserId() {
+        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
+                Collections.EMPTY_LIST, "servicename");
+        TestSecurityContextHolder.getContext().setAuthentication(
+                new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
+        String id = securityUtils.getUserId();
+        assertEquals("username", id);
+    }
 
     @Test
     void shouldGetAuthorisation() {

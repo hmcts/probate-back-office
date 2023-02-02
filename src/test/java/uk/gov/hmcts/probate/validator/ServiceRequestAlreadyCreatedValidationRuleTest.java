@@ -37,9 +37,6 @@ class ServiceRequestAlreadyCreatedValidationRuleTest {
     private CaseDetails caseDetails;
 
     private CaveatDetails caveatDetails;
-    @Mock
-    private CaveatData caveatDataMock;
-
 
     @BeforeEach
     public void setup() {

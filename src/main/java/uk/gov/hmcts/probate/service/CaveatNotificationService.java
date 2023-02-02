@@ -115,13 +115,10 @@ public class CaveatNotificationService {
     }
 
     public CaveatCallbackResponse solsCaveatComplete(CaveatCallbackRequest caveatCallbackRequest,
-                                                     String serviceRequestReference)
-            throws NotificationClientException {
+                                                     String serviceRequestReference) {
 
-        CaveatCallbackResponse caveatCallbackResponse =
-                caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
+        return caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
                         serviceRequestReference);
-        return caveatCallbackResponse;
     }
 
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
@@ -134,9 +131,7 @@ public class CaveatNotificationService {
 
         document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
         documents.add(document);
-        CaveatCallbackResponse caveatCallbackResponse =
-            caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
-        return caveatCallbackResponse;
+        return caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
     }
 
     public CaveatCallbackResponse caveatExtend(CaveatCallbackRequest caveatCallbackRequest)

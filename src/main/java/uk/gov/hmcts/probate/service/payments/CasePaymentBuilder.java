@@ -40,7 +40,7 @@ public class CasePaymentBuilder {
     @Value("${payment.pba.siteId}")
     private String siteId;
 
-    public List<CollectionMember<CasePayment>> getAllPayments(
+    public List<CollectionMember<CasePayment>> addPaymentFromServiceRequestResponse(
             List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<Payment>> payments,
             ServiceRequestUpdateResponseDto response) {
         List<CollectionMember<CasePayment>> allPayments = buildCurrentPayments(payments);
