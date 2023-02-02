@@ -186,7 +186,7 @@ class SecurityUtilsTest {
     void shouldReturnSchedulerToken() {
         ReflectionTestUtils.setField(securityUtils, "schedulerUserName", SCHEDULER_USER_NAME);
         ReflectionTestUtils.setField(securityUtils, "schedulerPassword", SCHEDULER_PASSWORD);
-        UserInfo userInfo = UserInfo.builder().sub("ProbateSchedulerDEMO@gmail.com")
+        UserInfo userInfo = UserInfo.builder().sub("ProbateSchedulerDEMO@probate-test.com")
                 .uid("12344").build();
         when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
 
@@ -200,5 +200,25 @@ class SecurityUtilsTest {
         assertEquals("12344", securityDTO.getUserId());
         assertEquals("Bearer " + USER_TOKEN, securityDTO.getAuthorisation());
         assertEquals("Test", securityDTO.getServiceAuthorisation());
+    }
+
+    @Test
+    void shouldetUserByCaseworkerTokenAndServiceSecurityDTO() {
+        ReflectionTestUtils.setField(securityUtils, "caseworkerUserName", SCHEDULER_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "caseworkerPassword", SCHEDULER_PASSWORD);
+        UserInfo userInfo = UserInfo.builder().sub("CWTest@probate-test.com")
+                .uid("12344").build();
+        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
+
+        when(authTokenGenerator.generate()).thenReturn("CWTest");
+
+        TokenResponse tokenResponse = new TokenResponse("CW_TOKEN","360000","CW_TOKEN_ID",null,null,null);
+        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
+                .thenReturn(tokenResponse);
+
+        SecurityDTO securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
+        assertEquals("12344", securityDTO.getUserId());
+        assertEquals("Bearer CW_TOKEN", securityDTO.getAuthorisation());
+        assertEquals("CWTest", securityDTO.getServiceAuthorisation());
     }
 }
