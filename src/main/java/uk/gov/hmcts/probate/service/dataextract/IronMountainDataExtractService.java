@@ -29,7 +29,7 @@ public class IronMountainDataExtractService {
             date);
         log.info("Cases found for Iron Mountain: {}", cases.size());
 
-        log.info("preparing for c file upload");
+        log.info("preparing for Iron Mountain file upload");
         int response = fileTransferService.uploadFile(ironMountainFileService.createIronMountainFile(
             cases, buildFileName(date)));
 
