@@ -84,14 +84,6 @@ class CaseDataTransformerTest {
         verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
     }
 
-//    @Test
-//    void shouldTransformForValidateAdmon() {
-//        caseDataTransformer.transformCaseDataForValidateAdmon(callbackRequestMock);
-//
-//        verify(legalStatementExecutorTransformer).formatFields(caseDataMock);
-//        verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
-//    }
-
     @Test
     void shouldTransformCaseDataForSolicitorExecutorNames() {
         caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequestMock);
