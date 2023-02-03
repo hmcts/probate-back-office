@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -66,9 +65,6 @@ class CaveatCallbackResponseTransformerTest {
 
     @Mock
     private OrganisationsRetrievalService organisationsRetrievalService;
-
-    @MockBean
-    private SolicitorPBADefaulter solicitorPBADefaulter;
 
     private static final DateTimeFormatter dateTimeFormatter = CaveatCallbackResponseTransformer.dateTimeFormatter;
 
@@ -136,7 +132,6 @@ class CaveatCallbackResponseTransformerTest {
     private static final String CAV_NOT_INCLUDED_EXPLANATION = "helpWithFeesApplying";
     private static final String CAV_FEE_ACCOUNT_NUMBER = "Free Text for fee account number";
     private static final String CAV_FEE_ACCOUNT_REFERENCE = "Free Text for account reference";
-    private static final String CAV_SERVICE_REQUEST_REFERENCE = "Service Request Ref";
     private static final String CAV_PAYMENT_TAKEN = "Yes";
 
     @InjectMocks
@@ -158,7 +153,7 @@ class CaveatCallbackResponseTransformerTest {
     private CaveatDetails caveatDetailsMock;
 
     @Mock
-    private SolicitorPBADefaulter solicitorPBADefaulterMock;
+    private SolicitorPaymentReferenceDefaulter solicitorPBADefaulterMock;
 
     @Spy
     private DocumentTransformer documentTransformer;
@@ -273,14 +268,12 @@ class CaveatCallbackResponseTransformerTest {
         String letterId = "123-456";
 
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, CAV_SERVICE_REQUEST_REFERENCE);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
         assertPaperForm(caveatCallbackResponse, YES);
 
-        assertEquals(CAV_SERVICE_REQUEST_REFERENCE,
-            caveatCallbackResponse.getCaveatData().getServiceRequestReference());
         assertEquals(CAV_PAYMENT_TAKEN, caveatCallbackResponse.getCaveatData().getPaymentTaken());
     }
 
@@ -295,7 +288,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -314,7 +307,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = null;
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -334,7 +327,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId, null);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -498,20 +491,20 @@ class CaveatCallbackResponseTransformerTest {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
         when(caveatDetailsMock.getData()).thenReturn(CaveatData.builder().build());
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyReturnNullForNoAuth() {
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, null));
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, null));
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
@@ -529,7 +522,7 @@ class CaveatCallbackResponseTransformerTest {
 
         CaveatData caveatData = CaveatData.builder().applicantOrganisationPolicy(organisationPolicy).build();
         when(caveatDetailsMock.getData()).thenReturn(caveatData);
-        OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
+        OrganisationPolicy actualBuildOrganisationPolicyResult = underTest
             .buildOrganisationPolicy(caveatDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
@@ -537,7 +530,7 @@ class CaveatCallbackResponseTransformerTest {
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
     }
@@ -546,10 +539,10 @@ class CaveatCallbackResponseTransformerTest {
     void shouldCovertSolsPBANumbers() {
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
+            underTest.transformCaseForSolicitorPayment(caveatCallbackRequestMock);
 
         assertCommon(caveatCallbackResponse);
-        verify(solicitorPBADefaulterMock).defaultCaveatFeeAccounts(any(), any(), any());
+        verify(solicitorPBADefaulterMock).defaultCaveatSolicitorReference(any(), any());
     }
 
     @Test
@@ -560,6 +553,31 @@ class CaveatCallbackResponseTransformerTest {
 
         String extendedDate = "2020-08-01";
         assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
+    }
+
+    @Test
+    void shouldTransformResponseWithNoChanges() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse = underTest
+                .transformResponseWithNoChanges(caveatCallbackRequestMock);
+
+        assertCommonSolsCaveats(caveatCallbackResponse);
+    }
+
+    @Test
+    void shouldTransformResponseWithServiceRequest() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "SRref");
+
+        assertCommonSolsCaveats(caveatCallbackResponse);
+        assertEquals(caveatCallbackResponse.getCaveatData().getServiceRequestReference(), "SRref");
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {

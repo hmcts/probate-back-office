@@ -5,11 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import net.thucydides.core.annotations.Pending;
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -20,7 +17,6 @@ import java.util.HashMap;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.notNullValue;
 
@@ -91,28 +87,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false);
     }
 
-    @Ignore
-    @Test
-    public void shouldValidatePaymentAccountDeleted() throws IOException {
-        validatePostRequestFailureForPBAs(1, "solicitorPDFPayloadProbateAccountDeleted.json",
-            "Your account is deleted");
-    }
-
-    @Ignore
-    @Test
-    public void shouldValidatePaymentInsufficientFunds() throws IOException {
-        validatePostRequestFailureForPBAs(1000, "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
-            "have insufficient funds available");
-    }
-
-    @Pending
-    @Test
-    public void shouldValidatePaymentAccountOnHold() throws IOException {
-        //this test cannot be automated on a deployed env - leaving it for local checking
-        validatePostRequestFailureForPBAsForSolicitor2(1, "solicitorPDFPayloadProbateAccountOnHold.json",
-            "Your account is on hold");
-    }
-
     @Test
     public void verifyIncorrectJsonReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.fee.json", "Invalid Request");
@@ -170,29 +144,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             .when().post("/nextsteps/validate").then()
             .statusCode(400)
             .and().body(containsString(errorMessage));
-    }
-
-    private Response validatePostRequestFailureForPBAs(int copiesMultiplier, String fileName,
-                                                       String... expectedValues) throws IOException {
-
-        int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
-        int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
-        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
-        for (String expectedValue : expectedValues) {
-            assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
-        }
-        return response;
-    }
-
-    private void validatePostRequestFailureForPBAsForSolicitor2(int copiesMultiplier, String fileName,
-                                                                String... expectedValues) throws IOException {
-        int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
-        int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
-        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitor2User());
-
-        for (String expectedValue : expectedValues) {
-            assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
-        }
     }
 
 }

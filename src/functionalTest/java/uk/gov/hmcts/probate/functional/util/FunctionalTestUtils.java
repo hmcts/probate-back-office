@@ -164,6 +164,12 @@ public class FunctionalTestUtils {
     }
 
     public Response getDocumentResponseFromId(String documentId, Headers headers) {
+        try {
+            //@TODO maybe this can help with intermittent FT failures?
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         Response jsonResponse = RestAssured.given()
             .baseUri(caseDocumentManagermentUrl)
             .relaxedHTTPSValidation()
@@ -256,6 +262,12 @@ public class FunctionalTestUtils {
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
             new Header("Authorization", authorizationToken));
+    }
+
+    public Headers getHeadersNoUser() {
+        return Headers.headers(
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()));
     }
 
     public Headers getHeadersWithSolicitorUser() {

@@ -9,7 +9,6 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONException;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,17 +17,12 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
 import uk.gov.hmcts.probate.security.SecurityUtils;
-import uk.gov.hmcts.probate.service.payments.pba.PBARetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.mockito.Mockito.when;
 
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -47,8 +41,6 @@ public class PBARetrievalConsumerTest {
 
     @Autowired
     ObjectMapper objectMapper;
-    @Autowired
-    PBARetrievalService pbaRetrievalService;
     @MockBean
     SecurityUtils securityUtils;
     @MockBean
@@ -68,16 +60,6 @@ public class PBARetrievalConsumerTest {
             .headers(getHeadersMap())
             .body(buildOrganisationalResponsePactDsl())
             .toPact();
-    }
-
-    @Test
-    @PactTestFor(pactMethod = "generatePbaRetrievalPactFragment")
-    public void verifyPbaRetrievePact() {
-
-        when(securityUtils.getEmail(SOME_AUTHORIZATION_TOKEN)).thenReturn(ORGANISATION_EMAIL);
-        when(authTokenGenerator.generate()).thenReturn(SOME_SERVICE_AUTHORIZATION_TOKEN);
-        List<String> pbas = pbaRetrievalService.getPBAs(SOME_AUTHORIZATION_TOKEN);
-        assertThat(pbas.get(0), equalTo("paymentAccountA1"));
     }
 
     private DslPart buildOrganisationalResponsePactDsl() {

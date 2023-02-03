@@ -5,11 +5,13 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Component
@@ -54,11 +56,12 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         }
     }
 
-    public void setFieldsOnServiceRequest(CaseData caseData, String serviceRequestReference) {
+    public void setFieldsOnServiceRequest(CaseDetails caseDetails, String serviceRequestReference) {
         if (serviceRequestReference != null) {
-            caseData.setServiceRequestReference(serviceRequestReference);
+            caseDetails.getData().setServiceRequestReference(serviceRequestReference);
         } else {
-            caseData.setPaymentTaken(NOT_APPLICABLE);
+            caseDetails.getData().setPaymentTaken(NOT_APPLICABLE);
+            caseDetails.setState(CASE_PRINTED.getId());
         }
     }
 }

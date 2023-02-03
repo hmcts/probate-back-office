@@ -47,23 +47,20 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
-    private static final String PBA_PAYMENT_METHOD = "pba";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
-    private final SolicitorPBADefaulter solicitorPBADefaulter;
+    private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
-                                               List<Document> documents, String letterId,
-                                               String serviceRequestReference) {
+                                               List<Document> documents, String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
-        responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
-                                 .serviceRequestReference(serviceRequestReference);
+        responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
 
         if (null == caveatData.getPaperForm()) {
             responseCaveatDataBuilder.paperForm(YES);
@@ -206,6 +203,15 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CaveatCallbackResponse transformResponseWithServiceRequest(CaveatCallbackRequest caveatCallbackRequest,
+                                                                      String serviceRequestReference) {
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+        responseCaseDataBuilder.serviceRequestReference(serviceRequestReference);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
         return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
     }
@@ -312,12 +318,11 @@ public class CaveatCallbackResponseTransformer {
             eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
-    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest,
-                                                                      String authToken) {
+    public CaveatCallbackResponse transformCaseForSolicitorPayment(CaveatCallbackRequest caveatCallbackRequest) {
         ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(),
-            responseCaseDataBuilder, authToken);
+        solicitorPaymentReferenceDefaulter.defaultCaveatSolicitorReference(
+                caveatCallbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

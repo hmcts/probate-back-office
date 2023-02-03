@@ -82,13 +82,13 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
-    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CaveatCallbackResponse> defaulsSolicitorNextStepsForPBANumbers(
-        @RequestHeader(value = "Authorization") String authToken,
+    @PostMapping(path = "/default-sols-payments", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> defaultSolicitorNextStepsForPayment(
         @RequestBody CaveatCallbackRequest callbackRequest) {
 
         return ResponseEntity.ok(caveatCallbackResponseTransformer
-            .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
+            .transformCaseForSolicitorPayment(callbackRequest));
     }
 
     @PostMapping(path = "/general-message")
@@ -142,9 +142,9 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
-    @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CaveatCallbackResponse> validate(
-        @RequestHeader(value = "Authorization") String authToken,
+    @PostMapping(path = "/sols-complete-application", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> solsCompleteApplication(
         @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
         BindingResult bindingResult)
@@ -163,8 +163,8 @@ public class CaveatController {
         String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                 .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
 
-        caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest,
-                serviceRequestReference);
+        caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
+                caveatCallbackRequest, serviceRequestReference);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

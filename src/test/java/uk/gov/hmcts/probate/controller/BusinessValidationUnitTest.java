@@ -691,9 +691,9 @@ class BusinessValidationUnitTest {
     @Test
     void shouldDefaultPBAs() {
         ResponseEntity<CallbackResponse> response =
-            underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+            underTest.defaultSolicitorNextStepsForPayment(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
-            .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+            .transformCaseForSolicitorPayment(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -797,7 +797,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequestMock);
     }
-    
+
     @Test
     void shouldValidateFurtherEvidenceForApplication() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

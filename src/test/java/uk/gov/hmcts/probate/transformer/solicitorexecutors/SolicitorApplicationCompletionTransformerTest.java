@@ -226,7 +226,8 @@ class SolicitorApplicationCompletionTransformerTest {
     void shouldSetServiceRequest() {
         String serviceRequestReference = "Service Request";
         CaseData caseData = caseDataBuilder.build();
-        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseData, serviceRequestReference);
+        CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, serviceRequestReference);
 
         assertEquals(serviceRequestReference, caseData.getServiceRequestReference());
         assertNull(caseData.getPaymentTaken());
@@ -236,7 +237,8 @@ class SolicitorApplicationCompletionTransformerTest {
     void shouldSetPaymentTakenNotApplicableWhenNoServiceRequest() {
         String serviceRequestReference = null;
         CaseData caseData = caseDataBuilder.build();
-        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseData, serviceRequestReference);
+        CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, serviceRequestReference);
 
         assertNull(caseData.getServiceRequestReference());
         assertEquals(NOT_APPLICABLE, caseData.getPaymentTaken());
