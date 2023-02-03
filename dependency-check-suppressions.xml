@@ -401,4 +401,18 @@
         <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
         <vulnerabilityName>1090146</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: degenerator:2.2.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/degenerator@.*$</packageUrl>
+        <vulnerabilityName>1090403</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: pac-resolver:4.2.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/pac\-resolver@.*$</packageUrl>
+        <vulnerabilityName>1090384</vulnerabilityName>
+    </suppress>
 </suppressions>
