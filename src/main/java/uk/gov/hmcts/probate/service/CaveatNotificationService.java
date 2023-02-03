@@ -114,13 +114,6 @@ public class CaveatNotificationService {
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse solsCaveatComplete(CaveatCallbackRequest caveatCallbackRequest,
-                                                     String serviceRequestReference) {
-
-        return caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
-                        serviceRequestReference);
-    }
-
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 

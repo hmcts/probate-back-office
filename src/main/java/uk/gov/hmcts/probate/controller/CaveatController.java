@@ -163,8 +163,8 @@ public class CaveatController {
         String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                 .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
 
-        caveatCallbackResponse = caveatNotificationService.solsCaveatComplete(caveatCallbackRequest,
-                serviceRequestReference);
+        caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
+                caveatCallbackRequest, serviceRequestReference);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

@@ -476,8 +476,6 @@ class CaveatNotificationServiceTest {
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
-        when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest, null))
-            .thenReturn(caveatCallbackResponse);
         when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null))
             .thenReturn(caveatCallbackResponse);
 
@@ -774,16 +772,6 @@ class CaveatNotificationServiceTest {
 
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
-    }
-
-    @Test
-    void shouldSolsCaveatComplete() {
-        when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
-                "SRRef")).thenReturn(caveatCallbackResponse);
-        CaveatCallbackResponse response =
-                caveatNotificationService.solsCaveatComplete(caveatCallbackRequest, "SRRef");
-
-        assertEquals(caveatCallbackResponse, response);
     }
 
 }

@@ -98,8 +98,8 @@ class CaveatControllerUnitTest {
                 .thenReturn(serviceRequestDtoMock);
         when(paymentsService.createServiceRequest(serviceRequestDtoMock))
             .thenReturn(SERVICE_REQUEST_REFERENCE);
-        when(caveatNotificationService.solsCaveatComplete(caveatCallbackRequest, SERVICE_REQUEST_REFERENCE))
-            .thenReturn(caveatCallbackResponse);
+        when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
+                SERVICE_REQUEST_REFERENCE)).thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.solsCompleteApplication(caveatCallbackRequest,
             bindingResultMock);
 
