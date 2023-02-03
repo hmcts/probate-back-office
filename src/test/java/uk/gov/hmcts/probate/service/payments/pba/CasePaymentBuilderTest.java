@@ -46,7 +46,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Paid");
-        when(serviceRequestUpdateResponseDtoMock.getServiceRequesAmount()).thenReturn(BigDecimal.valueOf(999));
+        when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
 
@@ -71,7 +71,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Not paid");
-        when(serviceRequestUpdateResponseDtoMock.getServiceRequesAmount()).thenReturn(BigDecimal.valueOf(999));
+        when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
 
@@ -96,7 +96,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Partially paid");
-        when(serviceRequestUpdateResponseDtoMock.getServiceRequesAmount()).thenReturn(BigDecimal.valueOf(999));
+        when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
 
@@ -121,7 +121,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Paid");
-        when(serviceRequestUpdateResponseDtoMock.getServiceRequesAmount()).thenReturn(BigDecimal.valueOf(999));
+        when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("card");
 
@@ -146,7 +146,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Paid");
-        when(serviceRequestUpdateResponseDtoMock.getServiceRequesAmount()).thenReturn(BigDecimal.valueOf(999));
+        when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("other");
 
@@ -162,7 +162,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Paid");
-        when(serviceRequestUpdateResponseDtoMock.getServiceRequesAmount()).thenReturn(BigDecimal.valueOf(999));
+        when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
 

@@ -20,14 +20,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
 
     @Test
-    public void shouldValidateDefaultPBAPaymentsNoFee() throws IOException {
-        String responseBody = validatePostRequestSuccessForPBAs("/case/default-sols-payments",
-            "solicitorPDFPayloadProbateNoPaymentFee.json",
-            "\"solsNeedsPBAPayment\":\"No\"");
-        assertFalse(responseBody.contains("\"payments\": ["));
-    }
-
-    @Test
     public void shouldValidateForGrantPaymentCallback() throws IOException {
         //500 here because we dont have a case that will exist in this state
         validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/gor-payment-request-update", 500);

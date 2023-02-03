@@ -28,7 +28,6 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.DocumentTransformer;
-import uk.gov.hmcts.reform.probate.model.PaymentStatus;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CasePayment;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
@@ -170,7 +169,7 @@ public class PaymentsService {
 
         Document coversheet = pdfManagementService
                 .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-        PaymentStatus paymentStatus =
+        String paymentStatus =
                 casePaymentBuilder.getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus());
         return GrantOfRepresentationData.builder()
                 .grantAwaitingDocumentationNotificationDate(caseDetails.getData()
@@ -179,7 +178,7 @@ public class PaymentsService {
                 .probateNotificationsGenerated(asNotificationsGenerated(callbackRequest.getCaseDetails().getData()
                         .getProbateNotificationsGenerated()))
                 .payments(allPayments)
-                .paymentTaken(paymentStatus == SUCCESS ? YES : NO)
+                .paymentTaken(SUCCESS.getName().equals(paymentStatus) ? YES : NO)
                 .build();
     }
 
@@ -208,7 +207,7 @@ public class PaymentsService {
         CaveatCallbackResponse caveatCallbackResponse = null;
         try {
             caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
-            PaymentStatus paymentStatus =
+            String paymentStatus =
                     casePaymentBuilder.getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus());
             LocalDate appSubmittedDate =
                     casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
@@ -218,7 +217,7 @@ public class PaymentsService {
                     caveatDetails.getData().getPayments(), response);
             return CaveatData.builder()
                     .payments(allPayments)
-                    .paymentTaken(paymentStatus == SUCCESS ? YES : NO)
+                    .paymentTaken(SUCCESS.getName().equals(paymentStatus) ? YES : NO)
                     .applicationSubmittedDate(appSubmittedDate)
                     .notificationsGenerated(asNotificationsGenerated(caveatCallbackResponse.getCaveatData()
                             .getNotificationsGenerated()))

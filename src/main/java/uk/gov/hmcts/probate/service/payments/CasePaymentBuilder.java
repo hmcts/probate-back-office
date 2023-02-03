@@ -45,12 +45,12 @@ public class CasePaymentBuilder {
             ServiceRequestUpdateResponseDto response) {
         List<CollectionMember<CasePayment>> allPayments = buildCurrentPayments(payments);
         CasePayment casePayment = buildCasePayment(
-                getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()).getName(),
-                response.getServiceRequestReference(),
+                getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()),
+                response.getServiceRequestReference(), //@TODO - this may be wrong
                 siteId,
-                response.getServiceRequestReference(),
+                response.getServiceRequestReference(), //@TODO - this may be wrong - check with business
                 getCasePaymentMethod(response),
-                "" + (response.getServiceRequesAmount().longValue() * 100));
+                "" + (response.getServiceRequestAmount().longValue() * 100));
         allPayments.add(new CollectionMember<>(null, casePayment));
 
         return allPayments;
@@ -133,16 +133,21 @@ public class CasePaymentBuilder {
                 + " for case:" + response.getCcdCaseNumber());
     }
 
-    protected PaymentStatus getPaymentStatusByServiceRequestStatus(String serviceRequestStatus) {
+    protected String getPaymentStatusByServiceRequestStatus(String serviceRequestStatus) {
+        PaymentStatus paymentStatus = null;
         if (SRP_STATUS_PAID.equals(serviceRequestStatus)) {
-            return SUCCESS;
+            paymentStatus = SUCCESS;
         } else if (SRP_STATUS_NOT_PAID.equals(serviceRequestStatus)) {
-            return FAILED;
+            paymentStatus = FAILED;
         } else if (SRP_STATUS_PARTIALLY_PAID.equals(serviceRequestStatus)) {
-            return INITIATED;
+            paymentStatus = INITIATED;
         }
 
-        throw new IllegalArgumentException("Invalid serviceRequestStatus:" + serviceRequestStatus);
+        if (paymentStatus == null) {
+            throw new IllegalArgumentException("Invalid serviceRequestStatus:" + serviceRequestStatus);
+        }
+
+        return paymentStatus.getName();
     }
 
 

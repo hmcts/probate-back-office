@@ -14,7 +14,7 @@ public class ServiceRequestUpdateResponseDto {
     @JsonProperty(value = "ccd_case_number")
     private String ccdCaseNumber;
     @JsonProperty(value = "service_request_amount")
-    private BigDecimal serviceRequesAmount;
+    private BigDecimal serviceRequestAmount;
     @JsonProperty(value = "service_request_status")
     private String serviceRequestStatus;
     @JsonProperty(value = "payment")

@@ -118,7 +118,7 @@ class PaymentsServiceTest {
         when(pdfManagementService
                 .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
         when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                .thenReturn(PaymentStatus.SUCCESS);
+                .thenReturn(PaymentStatus.SUCCESS.getName());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
@@ -162,7 +162,7 @@ class PaymentsServiceTest {
         when(pdfManagementService
                 .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
         when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                .thenReturn(PaymentStatus.SUCCESS);
+                .thenReturn(PaymentStatus.SUCCESS.getName());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
@@ -199,7 +199,7 @@ class PaymentsServiceTest {
                 .build();
         when(caveatNotificationService.solsCaveatRaise(any())).thenReturn(response);
         when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                .thenReturn(PaymentStatus.SUCCESS);
+                .thenReturn(PaymentStatus.SUCCESS.getName());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
@@ -231,7 +231,7 @@ class PaymentsServiceTest {
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
             when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
             when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                    .thenReturn(PaymentStatus.SUCCESS);
+                    .thenReturn(PaymentStatus.SUCCESS.getName());
             when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
             List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                     CasePayment.builder()
@@ -264,7 +264,7 @@ class PaymentsServiceTest {
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
             when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
             when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                    .thenReturn(PaymentStatus.SUCCESS);
+                    .thenReturn(PaymentStatus.SUCCESS.getName());
             when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
             List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                     CasePayment.builder()
@@ -291,7 +291,7 @@ class PaymentsServiceTest {
         ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
                 .serviceRequestReference("2020-1599477846961")
                 .ccdCaseNumber("1661448513999408")
-                .serviceRequesAmount(BigDecimal.valueOf(50.00))
+                .serviceRequestAmount(BigDecimal.valueOf(50.00))
                 .serviceRequestStatus("Paid")
                 .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
                         .paymentAmount(BigDecimal.valueOf(50.00))
