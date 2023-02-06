@@ -519,11 +519,13 @@ bootWithCCD {
       "sh bin/variables/load-local-environment-variables.sh".execute()
     }
 
-    project.file('./.aat-env').readLines().each() {
-      def index = it.indexOf("=")
-      def key = it.substring(0, index)
-      def value = it.substring(index + 1)
-      environment key, value
+    if (project.file('./.aat-env').exists()) {
+      project.file('./.aat-env').readLines().each() {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
     }
 
     dependsOn buildAllXlsx
