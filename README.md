@@ -35,9 +35,42 @@ To build the project execute the following command:
 ```bash
   ./gradlew build
 ```
-################################################################################################
-## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
-details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+## Local development environment (using CFT lib):
+Details of CFT lib here: https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+
+You can run your local development environment (LDE) in two ways:
+1. AAT support services: You will be utilising AAT instances of support services.
+2. Local support services. You will be running a local dockerised instance of each of the support services.
+
+### Getting started:
+
+### - Option 1: AAT support services
+
+#### Steps:
+
+1. `$ unset USE_LOCAL_SUPPORT_SERVICES`
+2. Ensure your VPN is on.
+3. Run `$ ./gradlew bootWithCcd`
+4. Wait until tasks have stopped running in the terminal.
+
+#### Using the setup:
+
+- Go to localhost:3000 for manage-cases and localhost:3001 for manage-org. 
+  Use the same login details you would use for AAT XUI services to login.
+
+#### Notes:
+
+- Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the
+AAT endpoints and secrets to call those endpoints. This file should never been push to the remote repository.
+
+- Running end-to-end (e2e) tests using this setup is WIP so continue to use the 'With Docker' setup if you want
+to run e2e tests locally. See DTSPB-3332.
+
+### - Option 2: Local support services
+
+Start by executing the following in your terminal:
+`$ export USE_LOCAL_SUPPORT_SERVICES=true`
+
 ##### Accessing databases
 
 Postgres is started on port 6432 (default) and can be accessed with user `postgres` password `postgres`
@@ -118,6 +151,7 @@ Because the probate back office relies on CCD callbacks it must be run inside th
 
 Build the jar with:
 
+```
 ```
 ./gradlew assemble
 docker-compose build
