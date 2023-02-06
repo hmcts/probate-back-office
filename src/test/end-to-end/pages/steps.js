@@ -71,6 +71,8 @@ module.exports = function () {
         caseProgressStopEscalateIssueDeceasedDetailsCheck: steps.caseProgressStopEscalateIssue.deceasedDetailsCheck,
         caseProgressStopEscalateIssueStoppedTabCheck: steps.caseProgressStopEscalateIssue.stoppedTabCheck,
         caseProgressStopEscalateIssueAddCaseStoppedReason: steps.caseProgressStopEscalateIssue.addCaseStoppedReason,
+        caseProgressStopEscalateIssueCaseStopAgainReason: steps.caseProgressStopEscalateIssue.addCaseStoppedAgainReason,
+        caseProgressStopEscalateIssueAddCaseResolveStop: steps.caseProgressStopEscalateIssue.addResolveStopDetails,
         caseProgressStopEscalateIssueEscalatedTabCheck: steps.caseProgressStopEscalateIssue.escalatedTabCheck,
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
@@ -100,8 +102,8 @@ module.exports = function () {
         deceasedDetailsPage4: steps.solicitorApplyProbate.deceasedDetails.page4,
         grantOfProbatePage1: steps.solicitorApplyProbate.grantOfProbate.page1,
         grantOfProbatePage2: steps.solicitorApplyProbate.grantOfProbate.page2,
-        verifyTitleAndClearingTypeOption: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
-        verifyTitleAndClearingTypeOptions: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
+        verifyTitleAndClearingTypeOptionPage: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
+        verifyTitleAndClearingTypeOptionsPage: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
         grantOfProbatePage4: steps.solicitorApplyProbate.grantOfProbate.page4,
         grantOfProbatePage5: steps.solicitorApplyProbate.grantOfProbate.page5,
@@ -140,6 +142,8 @@ module.exports = function () {
         authenticateUserShareCase: steps.IDAM.signInShareCase,
         verifyShareCase: steps.shareCase.verifyShareCase,
         shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
-        shareCaseDelete: steps.shareCase.shareCaseDelete
+        shareCaseDelete: steps.shareCase.shareCaseDelete,
+        chooseResolveStop: steps.resolveStop.resolveStop,
+        probateStopCase: steps.stopCaseProbate.stopCaseProbate
     });
 };

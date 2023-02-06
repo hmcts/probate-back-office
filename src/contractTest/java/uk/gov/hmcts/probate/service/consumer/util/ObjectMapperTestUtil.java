@@ -6,7 +6,7 @@ public class ObjectMapperTestUtil {
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-    private ObjectMapperTestUtil(){
+    private ObjectMapperTestUtil() {
     }
 
     public static <T> T convertStringToObject(String data, Class<T> type) {

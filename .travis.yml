@@ -20,7 +20,7 @@ before_install:
 
 script:
   - ./gradlew test
-  #- ./gradlew integration
+  - ./gradlew integration
   - ./gradlew check
   - ./gradlew jacocoTestReport
 

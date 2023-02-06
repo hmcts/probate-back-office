@@ -165,7 +165,7 @@ withPipeline("java", product, component) {
   enableHighLevelDataSetup()
   syncBranchesWithMaster(branchesToSync)
 
-  after('test') {
+  afterSuccess('test') {
     junit 'build/test-results/test/**/*.xml'
     archiveArtifacts 'build/reports/tests/test/index.html'
     publishHTML target: [
@@ -185,9 +185,18 @@ withPipeline("java", product, component) {
             reportFiles          : "index.html",
             reportName           : "back-office Code Coverage Report"
     ]
+
+    publishHTML target: [
+                    allowMissing         : true,
+                    alwaysLinkToLastBuild: true,
+                    keepAll              : true,
+                    reportDir            : "build/reports/tests/integration",
+                    reportFiles          : "index.html",
+                    reportName           : "probate-back-office integrationTest Report"
+            ]
   }
 
-  after('functionalTest:preview') {
+  afterSuccess('functionalTest:preview') {
     if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
       env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
       sh 'yarn install'
@@ -204,7 +213,7 @@ withPipeline("java", product, component) {
     ]
   }
 
-  after('functionalTest:aat') {
+  afterSuccess('functionalTest:aat') {
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [
             allowMissing         : true,
@@ -218,7 +227,7 @@ withPipeline("java", product, component) {
     // all the AAT tasks in the master pipeline finished, so we update the env variable to promote to prod tasks
   }
 
-  after('highleveldatasetup') {
+  afterSuccess('highleveldatasetup') {
     if (env.ENV != 'preview') {
       // For Preview the setup is performed before the smoke test since the environment could be not bootstrapped yet (if the first build or removed the PR helm release)
       echo "CCD definition upload for environment: ${env.ENV}"
@@ -259,7 +268,7 @@ withPipeline("java", product, component) {
 
     sh """
       eval \$(./bin/variables/load-preview-environment-variables.sh ${CHANGE_ID})
-      ./bin/add-roles.sh
+      ./bin/add-ccd-roles.sh
     """
     archiveCoreCaseDataDefinitions('preview')
     uploadCoreCaseDataDefinitions('preview')
