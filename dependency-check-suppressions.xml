@@ -182,4 +182,237 @@
         <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
         <cve>CVE-2022-3064</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cookiejar:2.1.3
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/cookiejar@.*$</packageUrl>
+        <vulnerabilityName>1088659</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: degenerator:2.2.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/degenerator@.*$</packageUrl>
+        <vulnerabilityName>1087993</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: flat:4.1.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/flat@.*$</packageUrl>
+        <vulnerabilityName>1089152</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lodash:3.10.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
+        <vulnerabilityName>1085631</vulnerabilityName>
+        <vulnerabilityName>1085805</vulnerabilityName>
+        <vulnerabilityName>1087627</vulnerabilityName>
+        <vulnerabilityName>1089056</vulnerabilityName>
+        <vulnerabilityName>1085674</vulnerabilityName>
+        <vulnerabilityName>1089058</vulnerabilityName>
+        <vulnerabilityName>1087663</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: mem:1.1.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/mem@.*$</packageUrl>
+        <vulnerabilityName>1085685</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: merge:1.2.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/merge@.*$</packageUrl>
+        <vulnerabilityName>1086354</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: minimatch:3.0.4
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
+        <vulnerabilityName>1088664</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: nanoid:3.1.20
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/nanoid@.*$</packageUrl>
+        <vulnerabilityName>1089011</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: pac-resolver:4.2.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/pac\-resolver@.*$</packageUrl>
+        <vulnerabilityName>1087977</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-config-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-config@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_security</cpe>
+        <cve>CVE-2022-31692</cve>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-core-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-core@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_security</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-crypto-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-crypto@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-client-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-client@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-client-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-client@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-core-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-core@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-core-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-core@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-jose-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-jose@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-oauth2-jose-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-oauth2\-jose@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
+        <cve>CVE-2022-31692</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.security/spring\-security\-web@.*$</packageUrl>
+        <cve>CVE-2022-31690</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: ua-parser-js:1.0.32
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/ua\-parser\-js@.*$</packageUrl>
+        <vulnerabilityName>1088696</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: validator:10.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/validator@.*$</packageUrl>
+        <vulnerabilityName>1085867</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: yargs-parser:7.0.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/yargs\-parser@.*$</packageUrl>
+        <vulnerabilityName>1088811</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lodash:3.10.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
+        <vulnerabilityName>1090101</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lodash:3.10.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
+        <vulnerabilityName>1089550</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: merge:1.2.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/merge@.*$</packageUrl>
+        <vulnerabilityName>1089985</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: validator:10.11.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/validator@.*$</packageUrl>
+        <vulnerabilityName>1089600</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: http-cache-semantics:4.1.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+        <vulnerabilityName>1090146</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: degenerator:2.2.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/degenerator@.*$</packageUrl>
+        <vulnerabilityName>1090403</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: pac-resolver:4.2.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/pac\-resolver@.*$</packageUrl>
+        <vulnerabilityName>1090384</vulnerabilityName>
+    </suppress>
 </suppressions>
