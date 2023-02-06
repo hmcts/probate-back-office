@@ -51,8 +51,13 @@ then you must set USE_DOCKER_WITH_CFTLIB environment variable to 'true' in your 
 If you choose to run back-office/CFTlib while pointing to AAT services (IDAM, CCD data store etc), do not set 
 USE_DOCKER_WITH_CFTLIB env variable.
 
-Note: Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the 
+Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the 
 AAT endpoints and secrets to call those endpoints.
+
+Testing: Running end-to-end (e2e) tests using this setup is WIP so continue to use the 'With Docker' setup if you want 
+to run e2e tests locally.
+
+### More information
 
 ##### Accessing databases
 
