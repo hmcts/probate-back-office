@@ -509,7 +509,7 @@ bootWithCCD {
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
 
-  if (new Boolean(System.getenv('USE_DOCKER_WITH_CFTLIB'))) {
+  if (new Boolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
     dependsOn buildBackOfficeXlsx
     authMode = uk.gov.hmcts.rse.AuthMode.Local
     environment 'IDAM_S2S_URL', 'http://localhost:8489'

@@ -35,29 +35,40 @@ To build the project execute the following command:
 ```bash
   ./gradlew build
 ```
-################################################################################################
-## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
-details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+## Local development environment (using CFT lib):
+Details of CFT lib here: https://github.com/hmcts/rse-cft-lib/blob/main/README.md
 
-### Running with/without Docker
+You can run your local development environment (LDE) in two ways:
+1. AAT support services: You will be utilising AAT instances of support services.
+2. Local support services. You will be running a local dockerised instance of each of the support services.
 
-##### With Docker:
+### Getting started:
 
-If you choose to run back-office/CFTlib while pointing to dockerised, local instances of IDAM, CCD data store etc.
-then you must set USE_DOCKER_WITH_CFTLIB environment variable to 'true' in your terminal before running bootWithCcd.
+### - Option 1: AAT support services
 
-##### Without Docker:
+#### Steps:
 
-If you choose to run back-office/CFTlib while pointing to AAT services (IDAM, CCD data store etc), do not set 
-USE_DOCKER_WITH_CFTLIB env variable.
+1. `$ unset USE_LOCAL_SUPPORT_SERVICES`
+2. Ensure your VPN is on.
+3. Run `$ ./gradlew bootWithCcd`
+4. Wait until tasks have stopped running in the terminal.
 
-Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the 
-AAT endpoints and secrets to call those endpoints.
+#### Using the setup:
 
-Testing: Running end-to-end (e2e) tests using this setup is WIP so continue to use the 'With Docker' setup if you want 
-to run e2e tests locally.
+INFO
 
-### More information
+#### Notes:
+
+- Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the
+AAT endpoints and secrets to call those endpoints. This file should never been push to the remote repository.
+
+- Running end-to-end (e2e) tests using this setup is WIP so continue to use the 'With Docker' setup if you want
+to run e2e tests locally. See DTSPB-3332.
+
+### - Option 2: Local support services
+
+Start by executing the following in your terminal:
+`$ export USE_LOCAL_SUPPORT_SERVICES=true`
 
 ##### Accessing databases
 
@@ -139,6 +150,7 @@ Because the probate back office relies on CCD callbacks it must be run inside th
 
 Build the jar with:
 
+```
 ```
 ./gradlew assemble
 docker-compose build

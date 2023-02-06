@@ -12,7 +12,7 @@ import static java.lang.Boolean.parseBoolean;
 public class CftLibConfig implements CFTLibConfigurer {
     @Override
     public void configure(CFTLib lib) throws Exception {
-        if (parseBoolean(System.getenv("USE_DOCKER_WITH_CFTLIB"))) {
+        if (parseBoolean(System.getenv("USE_LOCAL_SUPPORT_SERVICES"))) {
             lib.createIdamUser("testCW@user.com", "caseworker", "caseworker-probate", "caseworker-probate-solicitor");
             lib.createIdamUser("testAdmin@user.com", "caseworker-probate-caseadmin");
             lib.createIdamUser("data.store.idam.system.user@gmail.com","caseworker");
