@@ -64,25 +64,26 @@ class NotificationsExecutorsApplyingValidationRuleTest {
                     .notification(NO)
                     .build()));
     private static final List<CollectionMember<ExecutorsApplyingNotification>>
-        EXECEUTORS_APPLYING_NOTIFICATION_NO_MULTIPLE = Arrays.asList(
-        new CollectionMember<>("id",
-            ExecutorsApplyingNotification.builder()
-                .name("Name")
-                .email("executor1@probate-test.com")
-                .notification(NO)
-                .build()),
-        new CollectionMember<>("id",
-            ExecutorsApplyingNotification.builder()
-                .name("Name")
-                .email("executor1@probate-test.com")
-                .notification(NO)
-                .build()),
-        new CollectionMember<>("id",
-            ExecutorsApplyingNotification.builder()
-                .name("Name")
-                .email("executor1@probate-test.com")
-                .notification(NO)
-                .build()));
+        EXECEUTORS_APPLYING_NOTIFICATION_NO_MULTIPLE =
+        Arrays.asList(
+            new CollectionMember<>("id",
+                ExecutorsApplyingNotification.builder()
+                    .name("Name")
+                    .email("executor1@probate-test.com")
+                    .notification(NO)
+                    .build()),
+            new CollectionMember<>("id",
+                ExecutorsApplyingNotification.builder()
+                    .name("Name")
+                    .email("executor1@probate-test.com")
+                    .notification(NO)
+                    .build()),
+            new CollectionMember<>("id",
+                ExecutorsApplyingNotification.builder()
+                    .name("Name")
+                    .email("executor1@probate-test.com")
+                    .notification(NO)
+                    .build()));
     @InjectMocks
     private NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
     @Mock
@@ -122,9 +123,10 @@ class NotificationsExecutorsApplyingValidationRuleTest {
         CaseDetails caseDetailsNotificationSingleNo =
             new CaseDetails(caseDataNotificationNoSingle, LAST_MODIFIED, CASE_ID);
 
-        Assertions.assertThatThrownBy(() -> {
-            notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationSingleNo);
-        })
+        Assertions.assertThatThrownBy(
+            () -> {
+                notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationSingleNo);
+            })
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("No applicant selected to send notification for case id 12345678987654321");
     }
@@ -134,9 +136,10 @@ class NotificationsExecutorsApplyingValidationRuleTest {
         CaseDetails caseDetailsNotificationMultipleNo =
             new CaseDetails(caseDataNotificationNoMultiple, LAST_MODIFIED, CASE_ID);
 
-        Assertions.assertThatThrownBy(() -> {
-            notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationMultipleNo);
-        })
+        Assertions.assertThatThrownBy(
+            () -> {
+                notificationExecutorsApplyingValidationRule.validate(caseDetailsNotificationMultipleNo);
+            })
             .isInstanceOf(BusinessValidationException.class)
             .hasMessage("No applicant selected to send notification for case id 12345678987654321");
     }
