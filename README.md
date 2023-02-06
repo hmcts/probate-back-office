@@ -55,7 +55,8 @@ You can run your local development environment (LDE) in two ways:
 
 #### Using the setup:
 
-INFO
+- Go to localhost:3000 for manage-cases and localhost:3001 for manage-org. 
+  Use the same login details you would use for AAT XUI services to login.
 
 #### Notes:
 

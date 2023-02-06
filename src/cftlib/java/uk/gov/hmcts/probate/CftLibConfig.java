@@ -39,11 +39,16 @@ public class CftLibConfig implements CFTLibConfigurer {
             "citizen",
             "caseworker-caa"
         );
-        lib.importDefinition(new File("jsonToXLS/CCD_Probate_Backoffice.xlsx"));
-        lib.importDefinition(new File("jsonToXLS/CCD_Probate_Caveat.xlsx"));
-        lib.importDefinition(new File("jsonToXLS/CCD_Probate_Legacy_Cases.xlsx"));
-        lib.importDefinition(new File("jsonToXLS/CCD_Probate_Legacy_Search.xlsx"));
-        lib.importDefinition(new File("jsonToXLS/CCD_Probate_Will_Lodgement.xlsx"));
-        lib.importDefinition(new File("jsonToXLS/CCD_Probate_Standing_Search.xlsx"));
+
+        try {
+            lib.importDefinition(new File("jsonToXLS/CCD_Probate_Backoffice.xlsx"));
+            lib.importDefinition(new File("jsonToXLS/CCD_Probate_Caveat.xlsx"));
+            lib.importDefinition(new File("jsonToXLS/CCD_Probate_Legacy_Cases.xlsx"));
+            lib.importDefinition(new File("jsonToXLS/CCD_Probate_Legacy_Search.xlsx"));
+            lib.importDefinition(new File("jsonToXLS/CCD_Probate_Will_Lodgement.xlsx"));
+            lib.importDefinition(new File("jsonToXLS/CCD_Probate_Standing_Search.xlsx"));
+        } catch (RuntimeException re) {
+            System.out.println("Ensure that your VPN is on.");
+        }
     }
 }
