@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.DocumentOrderingService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
@@ -70,6 +71,7 @@ public class NotificationController {
     private static final String INVALID_PAYLOAD = "Invalid payload";
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
+    private final DocumentOrderingService documentOrderingService;
     private final DocumentsReceivedNotificationService documentsReceivedNotificationService;
     private final NotificationService notificationService;
     private final EvidenceUploadService evidenceUploadService;
@@ -213,6 +215,9 @@ public class NotificationController {
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
+        if (callbackRequest.getCaseDetails().getData().getScannedDocuments() != null) {
+            documentOrderingService.orderScannedDocuments(callbackRequest);
+        }
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
@@ -230,6 +235,9 @@ public class NotificationController {
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (caseData.getScannedDocuments() != null) {
+            documentOrderingService.orderScannedDocuments(callbackRequest);
+        }
         Document document = null;
         if (isAnEmailAddressPresent(caseData)
             && eventValidationService

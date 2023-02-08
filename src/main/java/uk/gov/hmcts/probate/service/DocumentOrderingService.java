@@ -3,19 +3,9 @@ package uk.gov.hmcts.probate.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Slf4j
 @AllArgsConstructor
@@ -24,9 +14,10 @@ public class DocumentOrderingService {
     public void orderScannedDocuments(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        callbackRequest.getCaseDetails().getData().getScannedDocuments()
+        caseData.getScannedDocuments()
             .sort((o1,o2) -> {
-                String[] orderOfDocs = new String[]{"coversheet", "form", "will", "forensic_sheets", "supporting_documents", "iht", "pps_legal_statement", "cherished", "other"};
+                String[] orderOfDocs = new String[]{"coversheet", "form", "will", "forensic_sheets",
+                    "supporting_documents", "iht", "pps_legal_statement", "cherished", "other"};
                 int compare1 = 0;
                 int compare2 = 0;
                 for (int i = 0; i < orderOfDocs.length; i++) {
@@ -37,7 +28,7 @@ public class DocumentOrderingService {
                         compare2 = i;
                     }
                 }
-                return compare1-compare2;
+                return compare1 - compare2;
             });
     }
 }
