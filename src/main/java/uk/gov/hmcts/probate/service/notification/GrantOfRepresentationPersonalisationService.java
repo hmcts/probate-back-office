@@ -18,7 +18,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -127,8 +129,10 @@ public class GrantOfRepresentationPersonalisationService {
 
     private String getWillReferenceNumber(CaseData data) {
         for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-            if (document.getValue().getSubtype() != null && document.getValue().getSubtype()
-                .equalsIgnoreCase(DOC_SUBTYPE_WILL)) {
+            if (document.getValue().getSubtype() != null
+                    && ((document.getValue().getType().equalsIgnoreCase(DOC_TYPE_OTHER)
+                        && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL))
+                        || document.getValue().getType().equalsIgnoreCase(DOC_TYPE_WILL))) {
                 return document.getValue().getControlNumber();
             }
         }

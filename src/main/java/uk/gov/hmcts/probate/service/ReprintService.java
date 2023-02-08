@@ -27,7 +27,8 @@ public class ReprintService {
     public static final String LABEL_REISSUED_GRANT = "ReissuedGrant";
     public static final String LABEL_WILL = "Will";
     public static final String LABEL_SOT = "SOT";
-    public static final String WILL_DOC_TYPE = "Other";
+    public static final String WILL_DOC_TYPE = "will";
+    public static final String OTHER_DOC_TYPE = "other";
     public static final String WILL_DOC_SUB_TYPE = "Will";
     @Autowired
     private final BulkPrintService bulkPrintService;
