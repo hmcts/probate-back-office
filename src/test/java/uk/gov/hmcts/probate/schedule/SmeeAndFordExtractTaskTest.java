@@ -19,10 +19,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 
 @ExtendWith(SpringExtension.class)
 class SmeeAndFordExtractTaskTest {
@@ -77,7 +76,7 @@ class SmeeAndFordExtractTaskTest {
     @Test
     void shouldThrowFeignExceptionForSmeeAndFordExtract() {
         String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
-        when(smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(date, date)).thenThrow(FeignException
+        doThrow(FeignException
                 .errorStatus("performSmeeAndFordExtractForDateRange", Response.builder()
                         .status(404)
                         .reason("message error")
@@ -89,7 +88,8 @@ class SmeeAndFordExtractTaskTest {
                                 null,
                                 null))
                         .body(new byte[0])
-                        .build()));
+                        .build())).when(smeeAndFordDataExtractService).performSmeeAndFordExtractForDateRange(date,
+                date);
         smeeAndFordExtractTask.run();
         verify(dataExtractDateValidator).dateValidator(date,date);
         verify(smeeAndFordDataExtractService).performSmeeAndFordExtractForDateRange(date, date);

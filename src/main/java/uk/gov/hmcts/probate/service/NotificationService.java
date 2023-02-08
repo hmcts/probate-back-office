@@ -223,8 +223,9 @@ public class NotificationService {
         return getGeneratedSentEmailDocument(response, emailAddresses.getExcelaEmail(), SENT_EMAIL);
     }
 
-    public Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate, String toDate) throws
-        NotificationClientException {
+    public SendEmailResponse sendSmeeAndFordEmail(List<ReturnedCaseDetails> caseDetails, String fromDate,
+                                                  String toDate) throws NotificationClientException {
+        log.info("sending Smee And Ford email");
         String templateId = notificationTemplates.getEmail().get(LanguagePreference.ENGLISH)
             .get(caseDetails.get(0).getData().getApplicationType())
             .getSmeeAndFordData();
@@ -237,7 +238,7 @@ public class NotificationService {
                 personalisation, reference);
         log.info("Smee And Ford email reference response: {}", response.getReference());
 
-        return getGeneratedSentEmailDocument(response, emailAddresses.getSmeeAndFordEmail(), SENT_EMAIL);
+        return response;
     }
 
     public Document sendEmailWithDocumentAttached(CaseDetails caseDetails, ExecutorsApplyingNotification executor,
