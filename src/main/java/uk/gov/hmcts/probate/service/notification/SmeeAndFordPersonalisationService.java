@@ -65,7 +65,6 @@ public class SmeeAndFordPersonalisationService {
 
         personalisation.put(PERSONALISATION_SMEE_AND_FORD_NAME, getSubject(fromDate, toDate));
         personalisation.put(PERSONALISATION_CASE_DATA, removeLastNewLine(data.toString()));
-
         return personalisation;
     }
 
@@ -154,9 +153,11 @@ public class SmeeAndFordPersonalisationService {
     private String getWillFileName(CaseData data) {
         if (data.getScannedDocuments() != null) {
             for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-                if ((DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
-                        && DOC_SUBTYPE_WILL.equals(document.getValue().getSubtype())
-                    || DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType()))) {
+                if (DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
+                    return document.getValue().getFileName();
+                }
+                if (DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType())) {
                     return document.getValue().getFileName();
                 }
             }

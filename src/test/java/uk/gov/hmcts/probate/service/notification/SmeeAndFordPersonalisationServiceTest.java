@@ -30,7 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.core.Is.is;
+import static org.hamcrest.core.IsNot.not;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -49,6 +51,7 @@ class SmeeAndFordPersonalisationServiceTest {
 
     private ReturnedCaseDetails returnedCaseDetailsPersonal;
     private ReturnedCaseDetails returnedCaseDetailsSolicitor;
+    private ReturnedCaseDetails returnedCaseDetailsTypeWill;
 
     private static final Long ID = 1234567812345678L;
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
@@ -77,7 +80,7 @@ class SmeeAndFordPersonalisationServiceTest {
     }
 
     private CaseData.CaseDataBuilder getCaseDataBuilder(ApplicationType applicationType,
-                                                        int numExecs, boolean hasScanned,
+                                                        int numExecs, String hasScanned,
                                                         boolean hasGrant, boolean hasCodicils,
                                                         boolean hasDeceasedAlias, boolean hasSolsDeceasedAlias,
                                                         boolean hasDOD, boolean isWelsh) {
@@ -127,7 +130,7 @@ class SmeeAndFordPersonalisationServiceTest {
             .solsSolicitorFirmName(applicationType == SOLICITOR ? "SolFirmName" : "")
             .solsSolicitorAddress(applicationType == SOLICITOR ? buildAddress("Sol") : null)
             .solsSolicitorAppReference(applicationType == SOLICITOR ? "SolAppRef" : null)
-            .scannedDocuments(hasScanned ? buildScannedDocs() : null)
+            .scannedDocuments(buildScannedDocs(hasScanned))
             .registryLocation("Cardiff")
             .willHasCodicils(hasCodicils ? YES : NO)
             .probateDocumentsGenerated(hasGrant ? buildGeneratedDocs() : new ArrayList<CollectionMember<Document>>());
@@ -175,13 +178,21 @@ class SmeeAndFordPersonalisationServiceTest {
         return docs;
     }
 
-    private List<CollectionMember<ScannedDocument>> buildScannedDocs() {
+    private List<CollectionMember<ScannedDocument>> buildScannedDocs(String withTypeWill) {
         List<CollectionMember<ScannedDocument>> docs = new ArrayList<>();
-        docs.add(new CollectionMember<>(ScannedDocument.builder()
-            .type(OTHER.name())
-            .subtype(Constants.DOC_SUBTYPE_WILL)
-            .fileName("ScannedWillFileName.pdf")
-            .build()));
+        if (withTypeWill.equals("YesWithoutTypeWill")) {
+            docs.add(new CollectionMember<>(ScannedDocument.builder()
+                    .type(OTHER.name())
+                    .subtype(Constants.DOC_SUBTYPE_WILL)
+                    .fileName("ScannedSubtypeWillFileName.pdf")
+                    .build()));
+        } else if (withTypeWill.equals("YesWithTypeWill")) {
+            docs.add(new CollectionMember<>(ScannedDocument.builder()
+                    .type(Constants.DOC_TYPE_WILL)
+                    .subtype("Original Will")
+                    .fileName("ScannedTypeWillFileName.pdf")
+                    .build()));
+        }
         docs.add(new CollectionMember<>(ScannedDocument.builder()
             .type(DocumentType.EDGE_CASE.name())
             .fileName("ScannedEdgeFileName")
@@ -191,7 +202,9 @@ class SmeeAndFordPersonalisationServiceTest {
             .subtype("somthingElse")
             .fileName("ScannedOtherFileName")
             .build()));
-
+        if (withTypeWill.equals("No")) {
+            docs = null;
+        }
         return docs;
     }
 
@@ -210,9 +223,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldMapAllAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
+                "YesWithoutTypeWill", true, true, true,
             false, true, false).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
+                "YesWithoutTypeWill", true, false,
             false, true, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -229,9 +244,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldMapAllAttributesWithDelimetersInContents() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
+                "YesWithoutTypeWill", true, true, true,
             false, true, true).primaryApplicantSurname("PrimarySN1 |PrimarySN2").build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
+                "YesWithoutTypeWill", true, false,
             false, false, true, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -248,9 +265,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldMapAllAttributesWithoutAdditionalExecs() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, -1,
+                "YesWithoutTypeWill", true, true, true,
             false, true, false).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0, true, true, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 0,
+                "YesWithoutTypeWill", true, false,
             false, false, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -267,9 +286,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldMapAllAttributesWithExtraAdditionalExecs() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 3,
+                "YesWithoutTypeWill", true, true, true,
             false, true, true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4, true, true, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 4,
+                "YesWithoutTypeWill", true, false,
             false, false, true, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -286,9 +307,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldMapForNoScannedOrNoGrantAttributes() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, false, true, false,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
+                "No", true, false,
             true, false, true, false).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, false, true,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
+                "YesWithoutTypeWill", false, true,
             false, true, true, true).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -305,9 +328,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldMapAllAttributesWithNullDODCausingException() throws IOException {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
+                "YesWithoutTypeWill", true, true, true,
             false, false, true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
+                "YesWithoutTypeWill", true, false,
             false, true, false, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -324,9 +349,11 @@ class SmeeAndFordPersonalisationServiceTest {
 
     @Test
     void shouldGetSmeeAndFordByteArray() {
-        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2, true, true, true, true,
+        returnedCaseDetailsPersonal = new ReturnedCaseDetails(getCaseDataBuilder(PERSONAL, 2,
+                "YesWithoutTypeWill", true, true, true,
                 false, false, true).build(), LAST_MODIFIED, ID);
-        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2, true, true, false,
+        returnedCaseDetailsSolicitor = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
+                "YesWithoutTypeWill", true, false,
                 false, true, false, false).build(), LAST_MODIFIED, ID);
 
         List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
@@ -335,5 +362,66 @@ class SmeeAndFordPersonalisationServiceTest {
         byte[] actual = smeeAndFordPersonalisationService.getSmeeAndFordByteArray(cases);
 
         assertThat(1497, is(actual.length));
+    }
+
+    @Test
+    void shouldGetWillDocuments() throws IOException {
+        returnedCaseDetailsTypeWill = new ReturnedCaseDetails(getCaseDataBuilder(SOLICITOR, 2,
+                "YesWithTypeWill", true, false,
+                false, true, true, true).build(), LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsTypeWill);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+                "fromDate", "toDate");
+
+        assertThat(personalisation.get("caseData"), containsString("ScannedTypeWillFileName.pdf"));
+    }
+
+    @Test
+    void shouldNotGetOtherNonWillCase() {
+        List<CollectionMember<ScannedDocument>> docs = new ArrayList<>();
+        docs.add(new CollectionMember<>(ScannedDocument.builder()
+                .type(OTHER.name())
+                .subtype("somthingElse")
+                .fileName("ScannedOtherFileName")
+                .build()));
+        CaseData caseData = CaseData.builder()
+                .scannedDocuments(docs)
+                .registryLocation("Registry Address")
+                .grantIssuedDate("2021-12-31")
+                .deceasedForenames("Jack")
+                .deceasedSurname("Michelson")
+                .boDeceasedHonours("OBE")
+                .deceasedAliasNameList(null)
+                .solsDeceasedAliasNamesList(null)
+                .caseType("gop")
+                .applicationType(PERSONAL)
+                .deceasedDateOfDeath(LocalDate.of(2020, 12, 31))
+                .deceasedAddress(buildAddress("Dec"))
+                .additionalExecutorsApplying(null)
+                .primaryApplicantForenames("PrimaryFN")
+                .primaryApplicantSurname("PrimarySN1 PrimarySN2")
+                .primaryApplicantAlias("PrimaryAlias")
+                .primaryApplicantAddress(buildAddress("Prim"))
+                .ihtGrossValue(GROSS)
+                .ihtNetValue(NET)
+                .deceasedDateOfBirth(LocalDate.of(2000, 12, 1))
+                .solsSolicitorFirmName("")
+                .solsSolicitorAddress(null)
+                .solsSolicitorAppReference(null)
+                .registryLocation("Cardiff")
+                .willHasCodicils(NO)
+                .probateDocumentsGenerated(new ArrayList<CollectionMember<Document>>())
+                .build();
+
+        ReturnedCaseDetails returnedCaseDetailsTypeOtherNoWill = new ReturnedCaseDetails(caseData, LAST_MODIFIED, ID);
+
+        List<ReturnedCaseDetails> cases = new ArrayList<ReturnedCaseDetails>();
+        cases.add(returnedCaseDetailsTypeOtherNoWill);
+        Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
+                "fromDate", "toDate");
+
+        assertThat(personalisation.get("caseData"), not(containsString("ScannedOtherFileName")));
     }
 }
