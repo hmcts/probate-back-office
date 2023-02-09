@@ -400,6 +400,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
         <vulnerabilityName>1090146</vulnerabilityName>
+        <vulnerabilityName>1090532</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
