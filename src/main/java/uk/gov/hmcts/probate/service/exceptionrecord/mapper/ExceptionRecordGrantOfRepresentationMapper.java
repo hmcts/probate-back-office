@@ -30,6 +30,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.YES;
+
 import io.micrometer.core.instrument.util.StringUtils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.mapstruct.AfterMapping;
@@ -426,6 +428,14 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             caseData.setApplyingAsAnAttorney(Boolean.TRUE);
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);
+        }
+    }
+
+    @AfterMapping
+    default void setHandOffToLegacySiteBoolean(@MappingTarget GrantOfRepresentationData caseData,
+                                               ExceptionRecordOCRFields ocrField) {
+        if (YES.equals(ocrField.getSolsSolicitorIsApplying())) {
+            caseData.setCaseHandedOffToLegacySite(Boolean.TRUE);
         }
     }
 

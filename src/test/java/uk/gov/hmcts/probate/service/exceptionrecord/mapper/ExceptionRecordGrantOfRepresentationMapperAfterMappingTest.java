@@ -460,6 +460,17 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         assertNull(response.getIhtUnusedAllowanceClaimed());
     }
 
+    @Test
+    void testSolicitorGetsHandedOffToLegacySiteSetYes() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .solsSolicitorIsApplying("Yes")
+            .build();
+        
+        GrantOfRepresentationData response =
+            exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertTrue(response.getCaseHandedOffToLegacySite());
+    }
+
     @Configuration
     public static class Config {
 
