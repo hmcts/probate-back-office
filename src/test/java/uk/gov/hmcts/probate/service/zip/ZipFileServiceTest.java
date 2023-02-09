@@ -116,7 +116,7 @@ class ZipFileServiceTest {
 
         ScannedDocument scannedSubtypeWillDocument = ScannedDocument.builder()
                 .type(DocumentType.OTHER.getTemplateName())
-                .subtype(DocumentType.WILL.getTemplateName())
+                .subtype("will")
                 .url(link)
                 .build();
         ScannedDocument scannedTypeWillDocument = ScannedDocument.builder().type(DocumentType.WILL.getTemplateName())

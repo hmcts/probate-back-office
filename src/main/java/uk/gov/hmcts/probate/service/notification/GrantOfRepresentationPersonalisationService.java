@@ -129,10 +129,9 @@ public class GrantOfRepresentationPersonalisationService {
 
     private String getWillReferenceNumber(CaseData data) {
         for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-            if (document.getValue().getSubtype() != null
-                    && ((document.getValue().getType().equalsIgnoreCase(DOC_TYPE_OTHER)
-                        && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL))
-                        || document.getValue().getType().equalsIgnoreCase(DOC_TYPE_WILL))) {
+            if ((DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype()))
+                        || DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType())) {
                 return document.getValue().getControlNumber();
             }
         }

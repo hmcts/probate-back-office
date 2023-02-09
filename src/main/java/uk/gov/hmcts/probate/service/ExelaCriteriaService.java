@@ -38,10 +38,9 @@ public class ExelaCriteriaService {
 
     private void scannedDocumentsFilter(ReturnedCaseDetails caseItem) {
         for (CollectionMember<ScannedDocument> document : caseItem.getData().getScannedDocuments()) {
-            if (document.getValue().getSubtype() != null
-                    && ((document.getValue().getType().equalsIgnoreCase(DOC_TYPE_OTHER)
-                        && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL))
-                    || document.getValue().getType().equalsIgnoreCase(DOC_TYPE_WILL))
+            if (((DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype()))
+                    || DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType()))
                     && document.getValue().getScannedDate().isAfter(EARLIEST_DATE)) {
                 filteredCases.add(caseItem);
                 break;

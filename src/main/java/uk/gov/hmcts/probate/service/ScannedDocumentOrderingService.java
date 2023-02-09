@@ -3,14 +3,20 @@ package uk.gov.hmcts.probate.service;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
+
 @Slf4j
 @AllArgsConstructor
 @Service
-public class DocumentOrderingService {
+public class ScannedDocumentOrderingService {
     public void orderScannedDocuments(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
@@ -31,4 +37,5 @@ public class DocumentOrderingService {
                 return compare1 - compare2;
             });
     }
+
 }

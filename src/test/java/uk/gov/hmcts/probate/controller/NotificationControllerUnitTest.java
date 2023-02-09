@@ -20,7 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentOrderingService;
+import uk.gov.hmcts.probate.service.ScannedDocumentOrderingService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
@@ -90,7 +90,7 @@ class NotificationControllerUnitTest {
     @Mock
     CaseDataTransformer caseDataTransformer;
     @Mock
-    DocumentOrderingService documentOrderingService;
+    ScannedDocumentOrderingService scannedDocumentOrderingService;
     @Mock
     RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
     @Mock
@@ -253,7 +253,7 @@ class NotificationControllerUnitTest {
         CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
         ResponseEntity<CallbackResponse> callbackResponse =
                 notificationController.sendGrantReceivedNotification(callbackRequest);
-        verify(documentOrderingService).orderScannedDocuments(callbackRequest);
+        verify(scannedDocumentOrderingService).orderScannedDocuments(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -267,7 +267,7 @@ class NotificationControllerUnitTest {
         ResponseEntity<CallbackResponse> callbackResponse =
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
-        verify(documentOrderingService).orderScannedDocuments(callbackRequest);
+        verify(scannedDocumentOrderingService).orderScannedDocuments(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
