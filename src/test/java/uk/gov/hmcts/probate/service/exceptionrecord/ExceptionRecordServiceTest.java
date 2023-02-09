@@ -127,7 +127,8 @@ class ExceptionRecordServiceTest {
 
         erRequestGrantOfProbate = getObjectMapper().readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
 
-        erRequestGrantOfProbateSols = getObjectMapper().readValue(exceptionRecordPayloadPA1PSols, ExceptionRecordRequest.class);
+        erRequestGrantOfProbateSols = getObjectMapper()
+            .readValue(exceptionRecordPayloadPA1PSols, ExceptionRecordRequest.class);
 
         warnings = new ArrayList<String>();
         caveatData = new CaveatData();
