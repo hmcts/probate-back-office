@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.schedule;
 import feign.FeignException;
 import feign.Request;
 import feign.Response;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,6 +11,7 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -36,6 +38,11 @@ class SmeeAndFordExtractTaskTest {
     private SmeeAndFordExtractTask smeeAndFordExtractTask;
 
     private static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @BeforeEach
+    public void setUp() throws Exception {
+        ReflectionTestUtils.setField(smeeAndFordExtractTask, "shcedulerTimerShutdownDelayMinutes", "1");
+    }
 
     @Test
     void shouldInitiateSmeeAndFordExtractDateRange() {

@@ -48,6 +48,13 @@ public class SmeeAndFordExtractTask implements Runnable {
             smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(date, date);
             log.info("Perform Smee And Ford data extract from date finished");
 
+        } catch (ApiClientException e) {
+            log.error(e.getMessage());
+        } catch (FeignException e) {
+            log.error("Error on calling BackOfficeAPI {}", e.getMessage());
+        } catch (Exception e) {
+            log.error("Error on SmeeAndFordExtractTask Scheduler {}", e.getMessage());
+        } finally {
             ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
             executorService.schedule(new TimerTask() {
                 @Override
@@ -56,13 +63,6 @@ public class SmeeAndFordExtractTask implements Runnable {
                 }
             }, Integer.parseInt(shcedulerTimerShutdownDelayMinutes), TimeUnit.MINUTES);
             executorService.shutdown();
-
-        } catch (ApiClientException e) {
-            log.error(e.getMessage());
-        } catch (FeignException e) {
-            log.error("Error on calling BackOfficeAPI {}", e.getMessage());
-        } catch (Exception e) {
-            log.error("Error on SmeeAndFordExtractTask Scheduler {}", e.getMessage());
         }
     }
 
