@@ -118,6 +118,7 @@ module.exports = function () {
         completeApplicationPage8: steps.solicitorApplyProbate.completeApplication.page8,
         makePaymentPage1: steps.solicitorApplyProbate.makePayment.paymentPage1,
         reviewPaymentDetails: steps.solicitorApplyProbate.makePayment.reviewPaymentPage,
+        postPaymentReviewDetails: steps.solicitorApplyProbate.makePayment.postPaymentReviewPage,
         makePaymentPage2: steps.solicitorApplyProbate.makePayment.paymentPage2,
         viewPaymentStatus: steps.solicitorApplyProbate.makePayment.viewPaymentStatusPage,
         makeCaveatPaymentPage1: steps.solicitorApplyProbate.makePayment.caveatPaymentPage1,

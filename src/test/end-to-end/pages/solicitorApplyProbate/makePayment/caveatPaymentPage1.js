@@ -16,6 +16,6 @@ module.exports = async function (caseRef,serviceRequestTabConfig) {
         }
     }
 
-    await I.waitForText(makePaymentConfig.reviewLinkText);
+    await I.waitForText(makePaymentConfig.reviewLinkText, testConfig.WaitForTextTimeout);
     await I.click(makePaymentConfig.reviewLinkText);
 };

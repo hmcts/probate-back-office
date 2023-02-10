@@ -108,11 +108,9 @@ Scenario(scenarioName, async function ({I}) {
         await I.viewPaymentStatus(caseRef);
 
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 4,
-            numInProgress: 0,
-            numNotStarted: 1,
-            linkText: 'Make payment',
-            linkUrl: '#Service%20Request',
+            numCompleted: 5,
+            numInProgress: 1,
+            numNotStarted: 0,
             signOut: true});
 
         await I.logInfo(scenarioName, 'Select for QA', caseRef);
@@ -127,7 +125,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 6,
+            numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -144,7 +142,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 6,
+            numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -162,7 +160,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 7,
+            numCompleted: 8,
             numInProgress: 1,
             numNotStarted: 0,
             checkSubmittedDate: true,
@@ -181,7 +179,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 8,
+            numCompleted: 9,
             numInProgress: 0,
             numNotStarted: 0,
             checkSubmittedDate: true,

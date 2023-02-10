@@ -1,10 +1,10 @@
 {
-  "paymentLinkText":"Make payment",
-  "paymentTab":"Service Request",
-  "payNowLinkText":"Pay now",
-  "reviewLinkText":"Review",
-  "backToPaymentLinkText":"Back",
-  "page2_waitForText":"Amount to pay",
+  "paymentLinkText": "Make payment",
+  "paymentTab": "Service Request",
+  "payNowLinkText": "Pay now",
+  "reviewLinkText": "Review",
+  "backToPaymentLinkText": "Back",
+  "page2_waitForText": "Amount to pay",
   "page2_paymentType": "Pay fee using Payment by Account (PBA)",
   "page2_pBAANumber": "PBA0082126",
   "page2_paymentReference": "E2E PBA Payment Reference",
@@ -12,5 +12,6 @@
   "serviceRequestLink": "View service request",
   "paymentStatus": "Paid",
   "mainTab": "Case Progress",
-  "waitForText": "Manage Cases"
+  "waitForText": "Manage Cases",
+  "paymentOptionLabel": "Enter a reference for your PBA account statements"
 }
