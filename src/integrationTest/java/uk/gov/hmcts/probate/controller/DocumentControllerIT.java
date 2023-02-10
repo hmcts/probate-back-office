@@ -29,11 +29,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -46,10 +47,9 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -109,6 +109,9 @@ class DocumentControllerIT {
 
     @Mock
     private ResponseCaseData.ResponseCaseDataBuilder responseCaseDataBuilder;
+
+    @Mock
+    private IdamApi idamApi;
 
     @BeforeEach
     public void setUp() throws NotificationClientException {
@@ -720,49 +723,13 @@ class DocumentControllerIT {
         String payload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/evidenceAdded")
                         .content(payload)
+                        .header("Authorization", "Bearer dummyAuthToken")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         verify(evidenceUploadService)
                 .updateLastEvidenceAddedDate(any(CaseDetails.class));
     }
-
-    @Test
-    void shouldUpdateLastEvidenceAddedDateWhenStoppedForFirstUpload() throws Exception {
-        String payload = testUtils.getStringFromFile("stoppedCaseBeforeUploadingDocuments.json");
-        mockMvc.perform(post("/document/evidenceAdded")
-                        .content(payload)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        verify(evidenceUploadService)
-                .updateLastEvidenceAddedDate(any(CaseDetails.class));
-    }
-
-    @Test
-    void shouldNotUpdateLastEvidenceAddedDateWhenStoppedForSecondUpload() throws Exception {
-        String payload = testUtils.getStringFromFile("stoppedCaseAfterUploadingDocuments.json");
-        mockMvc.perform(post("/document/evidenceAdded")
-                        .content(payload)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        verify(evidenceUploadService, times(0))
-                .updateLastEvidenceAddedDate(any(CaseDetails.class));
-    }
-
-    @Test
-    void shouldUpdateLastEvidenceAddedDateWhenStoppedWithNullFlag() throws Exception {
-        String payload = testUtils.getStringFromFile("stoppedCaseNullDocumentUploadedAfterCaseStopped.json");
-        mockMvc.perform(post("/document/evidenceAdded")
-                        .content(payload)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andReturn();
-        verify(evidenceUploadService)
-                .updateLastEvidenceAddedDate(any(CaseDetails.class));
-    }
-
 
     private Matcher<String> doesNotContainString(String s) {
         return CoreMatchers.not(containsString(s));

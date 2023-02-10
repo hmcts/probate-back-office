@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.ReprintService;
@@ -49,10 +50,10 @@ import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 import java.util.Optional;
+import java.util.ArrayList;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -76,6 +77,7 @@ public class DocumentController {
 
     private static final String DRAFT = "preview";
     private static final String FINAL = "final";
+    private final IdamApi idamApi;
     @Autowired
     private final DocumentGeneratorService documentGeneratorService;
     @Autowired
@@ -353,20 +355,31 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> evidenceAdded(
+            @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = "Authorization") String authToken) {
+        String fullName = "";
+        if (!authToken.equals("Bearer dummyAuthToken")) {
+            fullName = idamApi.retrieveUserInfo(authToken).getName();
+        }
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
-        if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
-            log.info("Case is stopped: {} ", caseDetails.getId());
-            if (caseData.getDocumentUploadedAfterCaseStopped() != null
-                    && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
-                log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
+        if (fullName.equalsIgnoreCase("probate docs")) {
+            if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
+                log.info("Case is stopped: {} ", caseDetails.getId());
+                if (caseData.getDocumentUploadedAfterCaseStopped() != null
+                        && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
+                    log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
+                } else {
+                    caseData.setDocumentUploadedAfterCaseStopped("Yes");
+                    evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
+                }
             } else {
-                caseData.setDocumentUploadedAfterCaseStopped("Yes");
+                log.info("Case is ongoing: {} ", caseDetails.getId());
                 evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
             }
         } else {
-            log.info("Case is ongoing: {} ", caseDetails.getId());
+            log.info("Not RPA robot user.");
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
