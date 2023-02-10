@@ -253,7 +253,7 @@ class NextStepsUnitTest {
     @Test
     void shouldValidateWithErrorsNegativeCopiesOfGrant() {
         assertThrows(BadRequestException.class, () -> {
-            when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+            when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
             when(caseDataMock.getExtraCopiesOfGrant()).thenReturn(Long.valueOf("-1"));
             when(caseDataMock.getOutsideUKGrantCopies()).thenReturn(Long.valueOf("-1"));
             when(bindingResultMock.hasErrors()).thenReturn(true);
