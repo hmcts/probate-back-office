@@ -251,6 +251,20 @@ class NextStepsUnitTest {
     }
 
     @Test
+    void shouldValidateWithErrorsNegativeCopiesOfGrant() {
+        assertThrows(BadRequestException.class, () -> {
+            when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+            when(caseDataMock.getExtraCopiesOfGrant()).thenReturn(Long.valueOf("-1"));
+            when(caseDataMock.getOutsideUKGrantCopies()).thenReturn(Long.valueOf("-1"));
+            when(bindingResultMock.hasErrors()).thenReturn(true);
+            when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
+
+            underTest.validate(AUTH, callbackRequestMock,
+                    bindingResultMock, httpServletRequestMock);
+        });
+    }
+
+    @Test
     void shouldValidateWithErrorAndLogRequest() throws JsonProcessingException {
         assertThrows(BadRequestException.class, () -> {
             when(caseDetailsMock.getData()).thenReturn(caseDataMock);
