@@ -216,7 +216,8 @@ public class NotificationController {
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
         if (callbackRequest.getCaseDetails().getData().getScannedDocuments() != null) {
-            scannedDocumentOrderingService.orderScannedDocuments(callbackRequest);
+            scannedDocumentOrderingService
+                    .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
         }
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         return ResponseEntity
@@ -236,7 +237,7 @@ public class NotificationController {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (caseData.getScannedDocuments() != null) {
-            scannedDocumentOrderingService.orderScannedDocuments(callbackRequest);
+            scannedDocumentOrderingService.orderScannedDocuments(caseData.getScannedDocuments());
         }
         Document document = null;
         if (isAnEmailAddressPresent(caseData)

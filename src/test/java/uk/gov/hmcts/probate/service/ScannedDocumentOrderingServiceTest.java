@@ -82,12 +82,14 @@ class ScannedDocumentOrderingServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         assertNotEquals(unorderedScannedDocuments, expectedOrderedScannedDocuments);
 
-        scannedDocumentOrderingService.orderScannedDocuments(callbackRequest);
+        scannedDocumentOrderingService
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
         List<CollectionMember<ScannedDocument>> afterOrderingScannedDocuments
                 = callbackRequest.getCaseDetails().getData().getScannedDocuments();
         assertEquals(afterOrderingScannedDocuments, expectedOrderedScannedDocuments);
 
-        scannedDocumentOrderingService.orderScannedDocuments(callbackRequest);
+        scannedDocumentOrderingService
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
         afterOrderingScannedDocuments
                 = callbackRequest.getCaseDetails().getData().getScannedDocuments();
         assertEquals(afterOrderingScannedDocuments, expectedOrderedScannedDocuments);
@@ -105,7 +107,8 @@ class ScannedDocumentOrderingServiceTest {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         assertEquals(orderedScannedDocuments, expectedOrderedScannedDocuments);
 
-        scannedDocumentOrderingService.orderScannedDocuments(callbackRequest);
+        scannedDocumentOrderingService
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
         assertEquals(orderedScannedDocuments, expectedOrderedScannedDocuments);
     }
 }
