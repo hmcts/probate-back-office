@@ -364,22 +364,22 @@ public class DocumentController {
         }
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
+        Boolean update = true;
         if (fullName.equalsIgnoreCase("probate docs")) {
             if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
                 log.info("Case is stopped: {} ", caseDetails.getId());
                 if (caseData.getDocumentUploadedAfterCaseStopped() != null
                         && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
                     log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
+                    update = false;
                 } else {
                     caseData.setDocumentUploadedAfterCaseStopped("Yes");
-                    evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
                 }
             } else {
                 log.info("Case is ongoing: {} ", caseDetails.getId());
-                evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
             }
-        } else {
-            log.info("Not RPA robot user.");
+        }
+        if (update == true) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
