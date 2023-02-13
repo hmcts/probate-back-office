@@ -428,6 +428,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/cacheable\-request@.*$</packageUrl>
         <vulnerabilityName>1091050</vulnerabilityName>
+        <vulnerabilityName>1091062</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
