@@ -161,7 +161,10 @@ public class PaymentsService {
             log.info("Payment service NotificationClientException: " + e.getMessage());
             throw new RuntimeException(e.getMessage());
         }
-
+        if (sentEmail != null && null == sentEmail.getDocumentGeneratedBy()
+                && null != caseDetails.getData().getApplicationSubmittedBy()) {
+            sentEmail.setDocumentGeneratedBy(caseDetails.getData().getApplicationSubmittedBy());
+        }
         documentTransformer.addDocument(callbackRequest, sentEmail, false);
 
         List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(

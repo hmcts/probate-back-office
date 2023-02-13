@@ -90,15 +90,16 @@ public class NextStepsController {
                 ccdData.getIht().getNetValueInPounds(),
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
+            String userId = request.getHeader("user-id");
             if (feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) > 0) {
                 String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                         .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
 
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, serviceRequestReference);
+                        feesResponse, serviceRequestReference, userId);
             } else {
                 callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, null);
+                        feesResponse, null, userId);
             }
         }
 

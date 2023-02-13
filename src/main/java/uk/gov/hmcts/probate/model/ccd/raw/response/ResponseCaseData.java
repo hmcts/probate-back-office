@@ -365,4 +365,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String caseworkerName;
     private final String letterText;
     private final String includeStatementOfTruth;
+    private final String applicationSubmittedBy;
 }

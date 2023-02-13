@@ -574,10 +574,11 @@ class CaveatCallbackResponseTransformerTest {
         caveatDataBuilder.registryLocation("ctsc");
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
-                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "SRref");
+                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "SRref", "User-id");
 
         assertCommonSolsCaveats(caveatCallbackResponse);
         assertEquals(caveatCallbackResponse.getCaveatData().getServiceRequestReference(), "SRref");
+        assertEquals(caveatCallbackResponse.getCaveatData().getApplicationSubmittedBy(), "User-id");
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {
