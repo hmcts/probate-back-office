@@ -5,8 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.Constants;
 
 import java.util.List;
 
@@ -14,18 +13,16 @@ import java.util.List;
 @AllArgsConstructor
 @Service
 public class ScannedDocumentOrderingService {
-    private static String[] orderOfDocs = new String[]{"coversheet", "form", "will", "forensic_sheets",
-            "supporting_documents", "iht", "pps_legal_statement", "cherished", "other"};
     public void orderScannedDocuments(List<CollectionMember<ScannedDocument>> scannedDocs) {
         scannedDocs
             .sort((o1,o2) -> {
                 int compare1 = 0;
                 int compare2 = 0;
-                for (int i = 0; i < orderOfDocs.length; i++) {
-                    if (o1.getValue().getType().equals(orderOfDocs[i])) {
+                for (int i = 0; i < Constants.orderOfDocs.size(); i++) {
+                    if (o1.getValue().getType().equals(Constants.orderOfDocs.get(i))) {
                         compare1 = i;
                     }
-                    if (o2.getValue().getType().equals(orderOfDocs[i])) {
+                    if (o2.getValue().getType().equals(Constants.orderOfDocs.get(i))) {
                         compare2 = i;
                     }
                 }

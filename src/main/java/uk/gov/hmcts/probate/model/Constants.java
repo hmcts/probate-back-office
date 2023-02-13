@@ -21,7 +21,14 @@ public final class Constants {
     public static final String EXTRACT_ADMON_WILL = "ADMON/WILL";
     public static final String PRINCIPAL_REGISTRY = "Principal Registry";
     public static final String DOC_SUBTYPE_WILL = "will";
+    public static final String DOC_TYPE_COVERSHEET = "coversheet";
+    public static final String DOC_TYPE_FORM = "form";
     public static final String DOC_TYPE_WILL = "will";
+    public static final String DOC_TYPE_FORENSIC_SHEETS = "forensic_sheets";
+    public static final String DOC_TYPE_SUPPORTING_DOCUMENTS = "supporting_documents";
+    public static final String DOC_TYPE_IHT = "iht";
+    public static final String DOC_TYPE_PPS_LEGAL_STATEMENT = "pps_legal_statement";
+    public static final String DOC_TYPE_CHERISHED = "cherished";
     public static final String DOC_TYPE_OTHER = "other";
     public static final String DATE_OF_DEATH_TYPE_DEFAULT = "diedOn";
     public static final String CASE_TYPE_DEFAULT = "gop";
@@ -143,6 +150,17 @@ public final class Constants {
 
     public static final String EMAIL_REGEX = "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30})"
         + "{0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?";
+
+    public static final List<String> orderOfDocs = new ArrayList<>(asList(
+            DOC_TYPE_COVERSHEET,
+            DOC_TYPE_FORM,
+            DOC_TYPE_WILL,
+            DOC_TYPE_FORENSIC_SHEETS,
+            DOC_TYPE_SUPPORTING_DOCUMENTS,
+            DOC_TYPE_IHT,
+            DOC_TYPE_PPS_LEGAL_STATEMENT,
+            DOC_TYPE_CHERISHED,
+            DOC_TYPE_OTHER));
 
     private Constants() {
     }
