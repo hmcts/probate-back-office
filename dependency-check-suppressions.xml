@@ -415,4 +415,11 @@
         <packageUrl regex="true">^pkg:npm/pac\-resolver@.*$</packageUrl>
         <vulnerabilityName>1090384</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: http-cache-semantics:4.1.0
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
+        <vulnerabilityName>1090532</vulnerabilityName>
+     </suppress>
 </suppressions>
