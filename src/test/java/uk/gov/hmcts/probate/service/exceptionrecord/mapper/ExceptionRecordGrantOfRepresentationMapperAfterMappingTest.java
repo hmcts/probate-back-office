@@ -463,9 +463,9 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSolicitorGetsHandedOffToLegacySiteSetYes() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsSolicitorIsApplying("Yes")
+            .solsSolicitorIsApplying("True")
             .build();
-        
+
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertTrue(response.getCaseHandedOffToLegacySite());

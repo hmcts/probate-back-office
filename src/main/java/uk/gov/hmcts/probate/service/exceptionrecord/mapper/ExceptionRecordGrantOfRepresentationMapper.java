@@ -1,5 +1,13 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
+import io.micrometer.core.instrument.util.StringUtils;
+import org.apache.commons.lang3.BooleanUtils;
+import org.mapstruct.AfterMapping;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.ReportingPolicy;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsApplying;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAdditionalExecutorsNotApplying;
@@ -29,17 +37,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 
 import java.util.List;
-
-import static uk.gov.hmcts.probate.model.Constants.YES;
-
-import io.micrometer.core.instrument.util.StringUtils;
-import org.apache.commons.lang3.BooleanUtils;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.NullValueCheckStrategy;
-import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring",
     imports = {StringUtils.class, ApplicationType.class},
@@ -233,14 +230,14 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "ihtFormEstate", source = "ocrFields", qualifiedBy = {ToIHTFormEstate.class})
     @Mapping(target = "ihtEstateGrossValue", source = "ocrFields.ihtEstateGrossValue", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtEstateNetValue", source = "ocrFields.ihtEstateNetValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtEstateNetQualifyingValue", 
+    @Mapping(target = "ihtEstateNetQualifyingValue",
         source = "ocrFields.ihtEstateNetQualifyingValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", 
+    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner",
         source = "ocrFields", qualifiedBy = {
             ToDeceasedHadLateSpouseOrCivilPartner.class})
     @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
         ToYesOrNo.class})
-    @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields", 
+    @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
 
@@ -434,7 +431,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void setHandOffToLegacySiteBoolean(@MappingTarget GrantOfRepresentationData caseData,
                                                ExceptionRecordOCRFields ocrField) {
-        if (YES.equals(ocrField.getSolsSolicitorIsApplying())) {
+        if ("True".equalsIgnoreCase(ocrField.getSolsSolicitorIsApplying())) {
             caseData.setCaseHandedOffToLegacySite(Boolean.TRUE);
         }
     }

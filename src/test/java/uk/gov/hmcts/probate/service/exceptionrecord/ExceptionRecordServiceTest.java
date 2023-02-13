@@ -149,6 +149,7 @@ class ExceptionRecordServiceTest {
         grantOfRepresentationDataSols.setApplicationType(ApplicationType.SOLICITORS);
         grantOfRepresentationDataSols.setGrantType(GrantType.GRANT_OF_PROBATE);
         grantOfRepresentationDataSols.setSolsSolicitorFirmName("FirmName");
+        grantOfRepresentationDataSols.setCaseHandedOffToLegacySite(true);
         grantOfProbateCaseDetailsResponse =
             CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
                 .caseData(grantOfRepresentationData)
@@ -326,5 +327,6 @@ class ExceptionRecordServiceTest {
         assertEquals(ApplicationType.SOLICITORS, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("FirmName", grantOfRepresentationDataResponse.getSolsSolicitorFirmName());
+        assertEquals(Boolean.TRUE, grantOfRepresentationDataResponse.getCaseHandedOffToLegacySite());
     }
 }
