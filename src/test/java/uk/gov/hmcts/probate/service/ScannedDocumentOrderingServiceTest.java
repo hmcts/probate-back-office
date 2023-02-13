@@ -37,7 +37,8 @@ class ScannedDocumentOrderingServiceTest {
     @Mock
     private CaseDetails caseDetails;
 
-    private List<CollectionMember<ScannedDocument>> createScannedDocumentListFromJsonFile(String fileName) throws IOException {
+    private List<CollectionMember<ScannedDocument>> createScannedDocumentListFromJsonFile(String fileName)
+            throws IOException {
         TestUtils testUtils = new TestUtils();
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>();
         String scannedDocsString = testUtils.getStringFromFile(fileName);
