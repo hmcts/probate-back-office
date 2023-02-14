@@ -117,12 +117,16 @@ public class CaveatNotificationService {
     public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
         throws NotificationClientException {
 
-        Document document;
-        List<Document> documents = new ArrayList<>();
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         setCaveatExpiryDate(caveatDetails.getData());
 
+        Document document;
         document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
+        if (document != null && null == document.getDocumentGeneratedBy()
+                && null != caveatDetails.getData().getApplicationSubmittedBy()) {
+            document.setDocumentGeneratedBy(caveatDetails.getData().getApplicationSubmittedBy());
+        }
+        List<Document> documents = new ArrayList<>();
         documents.add(document);
         return caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
     }

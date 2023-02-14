@@ -99,4 +99,5 @@ public class ResponseCaveatData {
     private final OrganisationPolicy applicantOrganisationPolicy;
     private final String serviceRequestReference;
     private final String paymentTaken;
+    private final String applicationSubmittedBy;
 }

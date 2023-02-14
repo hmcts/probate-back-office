@@ -72,5 +72,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicantOrganisationPolicy", "Label": "Applicant Solicitor Details", "FieldType": "OrganisationPolicy", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestReference", "Label": "Service request reference", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationSubmittedBy", "Label": "Application Submitted By", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

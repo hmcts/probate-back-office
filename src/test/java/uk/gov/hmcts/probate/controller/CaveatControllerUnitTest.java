@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -61,6 +62,7 @@ class CaveatControllerUnitTest {
     private FeeService feeService;
 
     private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
+    private static final String USER_ID = "User-ID";
 
     @Mock
     private CaveatCallbackRequest caveatCallbackRequest;
@@ -78,6 +80,8 @@ class CaveatControllerUnitTest {
     private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
     @Mock
     private ServiceRequestDto serviceRequestDtoMock;
+    @Mock
+    private HttpServletRequest httpServletRequestMock;
 
     @BeforeEach
     public void setUp() {
@@ -98,10 +102,11 @@ class CaveatControllerUnitTest {
                 .thenReturn(serviceRequestDtoMock);
         when(paymentsService.createServiceRequest(serviceRequestDtoMock))
             .thenReturn(SERVICE_REQUEST_REFERENCE);
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(USER_ID);
         when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
-                SERVICE_REQUEST_REFERENCE)).thenReturn(caveatCallbackResponse);
+                SERVICE_REQUEST_REFERENCE, USER_ID)).thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.solsCompleteApplication(caveatCallbackRequest,
-            bindingResultMock);
+            bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));
@@ -113,7 +118,7 @@ class CaveatControllerUnitTest {
             when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
             doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
                     .validate(caveatDetailsMock);
-            underTest.solsCompleteApplication(caveatCallbackRequest, bindingResultMock);
+            underTest.solsCompleteApplication(caveatCallbackRequest, bindingResultMock, httpServletRequestMock);
         });
     }
 

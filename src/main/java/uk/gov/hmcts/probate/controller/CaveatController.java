@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -145,9 +146,10 @@ public class CaveatController {
     @PostMapping(path = "/sols-complete-application", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CaveatCallbackResponse> solsCompleteApplication(
-        @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
+            @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
-        BindingResult bindingResult)
+            BindingResult bindingResult,
+            HttpServletRequest request)
         throws NotificationClientException {
 
         if (bindingResult.hasErrors()) {
@@ -162,9 +164,9 @@ public class CaveatController {
         FeeResponse feeResponse = feeService.getCaveatFeesData();
         String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
                 .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
-
+        String userId = request.getHeader("user-id");
         caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
-                caveatCallbackRequest, serviceRequestReference);
+                caveatCallbackRequest, serviceRequestReference, userId);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

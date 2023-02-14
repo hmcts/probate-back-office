@@ -204,11 +204,11 @@ public class CaveatCallbackResponseTransformer {
     }
 
     public CaveatCallbackResponse transformResponseWithServiceRequest(CaveatCallbackRequest caveatCallbackRequest,
-                                                                      String serviceRequestReference) {
+                                                                      String serviceRequestReference, String userId) {
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
                 getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        responseCaseDataBuilder.serviceRequestReference(serviceRequestReference);
-
+        responseCaseDataBuilder.serviceRequestReference(serviceRequestReference)
+                .applicationSubmittedBy(userId);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
