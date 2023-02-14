@@ -27,6 +27,7 @@ import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_ORIGINAL_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -157,7 +158,8 @@ public class SmeeAndFordPersonalisationService {
                         && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
                     return document.getValue().getFileName();
                 }
-                if (DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType())) {
+                if (DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_ORIGINAL_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
                     return document.getValue().getFileName();
                 }
             }

@@ -26,6 +26,11 @@ public class ScannedDocumentOrderingService {
                         compare2 = i;
                     }
                 }
+                if (compare1 == compare2
+                        && o1.getValue().getSubtype() != null
+                        && o2.getValue().getSubtype() != null) {
+                    return (o1.getValue().getSubtype().compareToIgnoreCase(o2.getValue().getSubtype()));
+                }
                 return compare1 - compare2;
             });
     }

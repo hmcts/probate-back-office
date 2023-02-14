@@ -189,8 +189,8 @@ class SmeeAndFordPersonalisationServiceTest {
         } else if (withTypeWill.equals("YesWithTypeWill")) {
             docs.add(new CollectionMember<>(ScannedDocument.builder()
                     .type(Constants.DOC_TYPE_WILL)
-                    .subtype("Original Will")
-                    .fileName("ScannedTypeWillFileName.pdf")
+                    .subtype(Constants.DOC_SUBTYPE_ORIGINAL_WILL)
+                    .fileName("ScannedOriginalWillFileName.pdf")
                     .build()));
         }
         docs.add(new CollectionMember<>(ScannedDocument.builder()
@@ -375,7 +375,7 @@ class SmeeAndFordPersonalisationServiceTest {
         Map<String, String> personalisation = smeeAndFordPersonalisationService.getSmeeAndFordPersonalisation(cases,
                 "fromDate", "toDate");
 
-        assertThat(personalisation.get("caseData"), containsString("ScannedTypeWillFileName.pdf"));
+        assertThat(personalisation.get("caseData"), containsString("ScannedOriginalWillFileName.pdf"));
     }
 
     @Test
@@ -383,8 +383,13 @@ class SmeeAndFordPersonalisationServiceTest {
         List<CollectionMember<ScannedDocument>> docs = new ArrayList<>();
         docs.add(new CollectionMember<>(ScannedDocument.builder()
                 .type(OTHER.name())
-                .subtype("somthingElse")
+                .subtype("somethingElse")
                 .fileName("ScannedOtherFileName")
+                .build()));
+        docs.add(new CollectionMember<>(ScannedDocument.builder()
+                .type(Constants.DOC_TYPE_WILL)
+                .subtype(Constants.DOC_SUBTYPE_COPY_WILL)
+                .fileName("ScannedCopyWillFileName.pdf")
                 .build()));
         CaseData caseData = CaseData.builder()
                 .scannedDocuments(docs)
@@ -423,5 +428,6 @@ class SmeeAndFordPersonalisationServiceTest {
                 "fromDate", "toDate");
 
         assertThat(personalisation.get("caseData"), not(containsString("ScannedOtherFileName")));
+        assertThat(personalisation.get("caseData"), not(containsString("ScannedCopyWillFileName")));
     }
 }

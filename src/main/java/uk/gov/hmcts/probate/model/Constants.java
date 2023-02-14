@@ -24,6 +24,8 @@ public final class Constants {
     public static final String DOC_TYPE_COVERSHEET = "coversheet";
     public static final String DOC_TYPE_FORM = "form";
     public static final String DOC_TYPE_WILL = "will";
+    public static final String DOC_SUBTYPE_ORIGINAL_WILL = "Original Will";
+    public static final String DOC_SUBTYPE_COPY_WILL = "Copy Will";
     public static final String DOC_TYPE_FORENSIC_SHEETS = "forensic_sheets";
     public static final String DOC_TYPE_SUPPORTING_DOCUMENTS = "supporting_documents";
     public static final String DOC_TYPE_IHT = "iht";
