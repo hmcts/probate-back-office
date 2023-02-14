@@ -37,11 +37,9 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
-import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.io.IOException;
 import java.util.List;
-//import java.util.;
 import java.util.ArrayList;
 import java.util.Collections;
 

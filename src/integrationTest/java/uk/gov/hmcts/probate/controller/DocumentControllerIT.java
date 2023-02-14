@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
-import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -730,17 +729,12 @@ class DocumentControllerIT {
         verify(evidenceUploadService)
                 .updateLastEvidenceAddedDate(any(CaseDetails.class));
     }
+
     @Test
     void shouldUpdateLastEvidenceAddedDateRobotOngoing() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
-        UserInfo userInfo = UserInfo.builder()
-                .sub("solicitor@probate-test.com")
-                .name("probate docs")
-                .build();
-        when(idamApi.retrieveUserInfo("Bearer dummyAuthToken")).thenReturn(userInfo);
         mockMvc.perform(post("/document/evidenceAddedRPARobot")
                         .content(payload)
-                        .header("Authorization", "Bearer dummyAuthToken")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
