@@ -230,11 +230,13 @@ public class DocumentControllerUnitTest {
 
         ResponseEntity<CallbackResponse> response = documentController
                 .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+        assertThat(mockCaseData.getDocumentUploadedAfterCaseStopped(), equalTo("Yes"));
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+
         ResponseEntity<CallbackResponse> response2 = documentController
                 .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
-
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
+
         verify(evidenceUploadService, times(1))
                 .updateLastEvidenceAddedDate(mockCaseDetails);
     }

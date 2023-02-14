@@ -68,6 +68,7 @@ import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED_INTESTACY;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.EDGE_CASE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
+import static uk.gov.hmcts.probate.model.StateConstants.STATE_BO_CASE_STOPPED;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -358,15 +359,12 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> evidenceAdded(
             @RequestBody CallbackRequest callbackRequest,
             @RequestHeader(value = "Authorization") String authToken) {
-        String fullName = "";
-        if (!authToken.equals("Bearer dummyAuthToken")) {
-            fullName = idamApi.retrieveUserInfo(authToken).getName();
-        }
+        String fullName = idamApi.retrieveUserInfo(authToken).getName();
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         Boolean update = true;
         if (fullName.equalsIgnoreCase("probate docs")) {
-            if (caseDetails.getState().equalsIgnoreCase("BOCaseStopped")) {
+            if (caseDetails.getState().equalsIgnoreCase(STATE_BO_CASE_STOPPED)) {
                 log.info("Case is stopped: {} ", caseDetails.getId());
                 if (caseData.getDocumentUploadedAfterCaseStopped() != null
                         && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
@@ -379,7 +377,7 @@ public class DocumentController {
                 log.info("Case is ongoing: {} ", caseDetails.getId());
             }
         }
-        if (update == true) {
+        if (Boolean.TRUE.equals(update)) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
