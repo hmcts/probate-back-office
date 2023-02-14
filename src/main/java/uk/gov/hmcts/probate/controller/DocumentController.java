@@ -356,26 +356,29 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> evidenceAdded(
-            @RequestBody CallbackRequest callbackRequest,
-            @RequestHeader(value = "Authorization") String authToken) {
-        String fullName = idamApi.retrieveUserInfo(authToken).getName();
+    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+        evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/evidenceAddedRPARobot", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> evidenceAddedRPARobot(
+            @RequestBody CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         Boolean update = true;
-        if (fullName.equalsIgnoreCase("probate docs")) {
-            if (caseDetails.getState().equalsIgnoreCase(STATE_BO_CASE_STOPPED)) {
-                log.info("Case is stopped: {} ", caseDetails.getId());
-                if (caseData.getDocumentUploadedAfterCaseStopped() != null
-                        && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
-                    log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
-                    update = false;
-                } else {
-                    caseData.setDocumentUploadedAfterCaseStopped("Yes");
-                }
+        if (caseDetails.getState().equalsIgnoreCase(STATE_BO_CASE_STOPPED)) {
+            log.info("Case is stopped: {} ", caseDetails.getId());
+            if (caseData.getDocumentUploadedAfterCaseStopped() != null
+                    && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
+                log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
+                update = false;
             } else {
-                log.info("Case is ongoing: {} ", caseDetails.getId());
+                caseData.setDocumentUploadedAfterCaseStopped("Yes");
             }
+        } else {
+            log.info("Case is ongoing: {} ", caseDetails.getId());
         }
         if (Boolean.TRUE.equals(update)) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);

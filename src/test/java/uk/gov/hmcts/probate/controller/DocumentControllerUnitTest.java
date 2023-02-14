@@ -196,17 +196,12 @@ public class DocumentControllerUnitTest {
             .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOCaseStopped");
-        UserInfo userInfo = UserInfo.builder()
-                .sub("solicitor@probate-test.com")
-                .name("probate caseworker")
-                .build();
-        when(idamApi.retrieveUserInfo(DUMMY_OAUTH_2_TOKEN)).thenReturn(userInfo);
         when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
 
         ResponseEntity<CallbackResponse> response = documentController
-                .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+                .evidenceAdded(callbackRequest);
         ResponseEntity<CallbackResponse> response2 = documentController
-                .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+                .evidenceAdded(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
 
@@ -221,20 +216,15 @@ public class DocumentControllerUnitTest {
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOCaseStopped");
-        UserInfo userInfo = UserInfo.builder()
-                .sub("solicitor@probate-test.com")
-                .name("probate docs")
-                .build();
         when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
-        when(idamApi.retrieveUserInfo(DUMMY_OAUTH_2_TOKEN)).thenReturn(userInfo);
 
         ResponseEntity<CallbackResponse> response = documentController
-                .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+                .evidenceAddedRPARobot(callbackRequest);
         assertThat(mockCaseData.getDocumentUploadedAfterCaseStopped(), equalTo("Yes"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
         ResponseEntity<CallbackResponse> response2 = documentController
-                .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+                .evidenceAddedRPARobot(callbackRequest);
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
 
         verify(evidenceUploadService, times(1))
@@ -248,17 +238,12 @@ public class DocumentControllerUnitTest {
                 .build();
         CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
         mockCaseDetails.setState("BOExamining");
-        UserInfo userInfo = UserInfo.builder()
-                .sub("solicitor@probate-test.com")
-                .name("probate docs")
-                .build();
         when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
-        when(idamApi.retrieveUserInfo(DUMMY_OAUTH_2_TOKEN)).thenReturn(userInfo);
 
         ResponseEntity<CallbackResponse> response = documentController
-                .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+                .evidenceAddedRPARobot(callbackRequest);
         ResponseEntity<CallbackResponse> response2 = documentController
-                .evidenceAdded(callbackRequest, DUMMY_OAUTH_2_TOKEN);
+                .evidenceAddedRPARobot(callbackRequest);
 
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));

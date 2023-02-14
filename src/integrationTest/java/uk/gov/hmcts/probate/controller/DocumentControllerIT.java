@@ -720,14 +720,25 @@ class DocumentControllerIT {
     }
 
     @Test
-    void shouldUpdateLastEvidenceAddedDateWhenOngoing() throws Exception {
+    void shouldUpdateLastEvidenceAddedDateCaseworker() throws Exception {
+        String payload = testUtils.getStringFromFile("digitalCase.json");
+        mockMvc.perform(post("/document/evidenceAdded")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        verify(evidenceUploadService)
+                .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+    @Test
+    void shouldUpdateLastEvidenceAddedDateRobotOngoing() throws Exception {
         String payload = testUtils.getStringFromFile("digitalCase.json");
         UserInfo userInfo = UserInfo.builder()
                 .sub("solicitor@probate-test.com")
                 .name("probate docs")
                 .build();
         when(idamApi.retrieveUserInfo("Bearer dummyAuthToken")).thenReturn(userInfo);
-        mockMvc.perform(post("/document/evidenceAdded")
+        mockMvc.perform(post("/document/evidenceAddedRPARobot")
                         .content(payload)
                         .header("Authorization", "Bearer dummyAuthToken")
                         .contentType(MediaType.APPLICATION_JSON))
