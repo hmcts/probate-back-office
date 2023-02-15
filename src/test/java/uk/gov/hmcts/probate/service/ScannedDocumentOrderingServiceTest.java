@@ -72,22 +72,22 @@ class ScannedDocumentOrderingServiceTest {
     public void shouldOrderScannedDocuments() throws IOException {
         MockitoAnnotations.openMocks(this);
         List<CollectionMember<ScannedDocument>> unorderedScannedDocuments
-                = createScannedDocumentListFromJsonFile("unorderedScannedDocuments.json");
+                = createScannedDocumentListFromJsonFile("scannedDocuments/unorderedScannedDocuments.json");
         List<CollectionMember<ScannedDocument>> expectedOrderedScannedDocuments
-                = createScannedDocumentListFromJsonFile("expectedOrderedScannedDocuments.json");
+                = createScannedDocumentListFromJsonFile("scannedDocuments/expectedOrderedScannedDocuments.json");
         when(caseData.getScannedDocuments()).thenReturn(unorderedScannedDocuments);
         when(caseDetails.getData()).thenReturn(caseData);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         assertNotEquals(unorderedScannedDocuments, expectedOrderedScannedDocuments);
 
         scannedDocumentOrderingService
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         List<CollectionMember<ScannedDocument>> afterOrderingScannedDocuments
                 = callbackRequest.getCaseDetails().getData().getScannedDocuments();
         assertEquals(afterOrderingScannedDocuments, expectedOrderedScannedDocuments);
 
         scannedDocumentOrderingService
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         afterOrderingScannedDocuments
                 = callbackRequest.getCaseDetails().getData().getScannedDocuments();
         assertEquals(afterOrderingScannedDocuments, expectedOrderedScannedDocuments);
@@ -97,16 +97,16 @@ class ScannedDocumentOrderingServiceTest {
     public void shouldNotChangeOrderedScannedDocuments() throws IOException {
         MockitoAnnotations.openMocks(this);
         List<CollectionMember<ScannedDocument>> orderedScannedDocuments
-                = createScannedDocumentListFromJsonFile("orderedScannedDocuments.json");
+                = createScannedDocumentListFromJsonFile("scannedDocuments/orderedScannedDocuments.json");
         List<CollectionMember<ScannedDocument>> expectedOrderedScannedDocuments
-                = createScannedDocumentListFromJsonFile("expectedOrderedScannedDocuments.json");
+                = createScannedDocumentListFromJsonFile("scannedDocuments/expectedOrderedScannedDocuments.json");
         when(caseData.getScannedDocuments()).thenReturn(orderedScannedDocuments);
         when(caseDetails.getData()).thenReturn(caseData);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         assertEquals(orderedScannedDocuments, expectedOrderedScannedDocuments);
 
         scannedDocumentOrderingService
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         assertEquals(orderedScannedDocuments, expectedOrderedScannedDocuments);
     }
 
@@ -114,22 +114,22 @@ class ScannedDocumentOrderingServiceTest {
     public void shouldOrderSubtypesAlphabetically() throws IOException {
         MockitoAnnotations.openMocks(this);
         List<CollectionMember<ScannedDocument>> unorderedScannedSupportingDocs
-                = createScannedDocumentListFromJsonFile("unorderedScannedSupportingDocs.json");
+                = createScannedDocumentListFromJsonFile("scannedDocuments/unorderedScannedSupportingDocs.json");
         List<CollectionMember<ScannedDocument>> expectedScannedSupportingDocs
-                = createScannedDocumentListFromJsonFile("expectedScannedSupportingDocs.json");
+                = createScannedDocumentListFromJsonFile("scannedDocuments/expectedScannedSupportingDocs.json");
         when(caseData.getScannedDocuments()).thenReturn(unorderedScannedSupportingDocs);
         when(caseDetails.getData()).thenReturn(caseData);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         assertNotEquals(unorderedScannedSupportingDocs, expectedScannedSupportingDocs);
 
         scannedDocumentOrderingService
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         List<CollectionMember<ScannedDocument>> afterOrderingScannedDocuments
                 = callbackRequest.getCaseDetails().getData().getScannedDocuments();
         assertEquals(afterOrderingScannedDocuments, expectedScannedSupportingDocs);
 
         scannedDocumentOrderingService
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         afterOrderingScannedDocuments
                 = callbackRequest.getCaseDetails().getData().getScannedDocuments();
         assertEquals(afterOrderingScannedDocuments, expectedScannedSupportingDocs);

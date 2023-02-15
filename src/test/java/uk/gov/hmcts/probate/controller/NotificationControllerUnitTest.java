@@ -254,7 +254,7 @@ class NotificationControllerUnitTest {
         ResponseEntity<CallbackResponse> callbackResponse =
                 notificationController.sendGrantReceivedNotification(callbackRequest);
         verify(scannedDocumentOrderingService)
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -269,7 +269,7 @@ class NotificationControllerUnitTest {
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(scannedDocumentOrderingService)
-                .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 

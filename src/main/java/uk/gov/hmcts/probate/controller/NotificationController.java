@@ -215,10 +215,8 @@ public class NotificationController {
     public ResponseEntity<CallbackResponse> sendGrantReceivedNotification(
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
         caseDataTransformer.transformCaseDataForEvidenceHandledForCreateBulkscan(callbackRequest);
-        if (callbackRequest.getCaseDetails().getData().getScannedDocuments() != null) {
-            scannedDocumentOrderingService
-                    .orderScannedDocuments(callbackRequest.getCaseDetails().getData().getScannedDocuments());
-        }
+        scannedDocumentOrderingService
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         return ResponseEntity
             .ok(raiseGrantOfRepresentationNotificationService.handleGrantReceivedNotification(callbackRequest));
@@ -236,9 +234,7 @@ public class NotificationController {
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequest);
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        if (caseData.getScannedDocuments() != null) {
-            scannedDocumentOrderingService.orderScannedDocuments(caseData.getScannedDocuments());
-        }
+        scannedDocumentOrderingService.orderScannedDocuments(caseData);
         Document document = null;
         if (isAnEmailAddressPresent(caseData)
             && eventValidationService

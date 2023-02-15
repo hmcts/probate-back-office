@@ -153,7 +153,7 @@ public final class Constants {
     public static final String EMAIL_REGEX = "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30})"
         + "{0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?";
 
-    public static final List<String> orderOfDocs = new ArrayList<>(asList(
+    public static final List<String> SCANNED_DOCS_ORDER = new ArrayList<>(asList(
             DOC_TYPE_COVERSHEET,
             DOC_TYPE_FORM,
             DOC_TYPE_WILL,
