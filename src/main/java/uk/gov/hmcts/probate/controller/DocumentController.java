@@ -62,6 +62,7 @@ import static uk.gov.hmcts.probate.model.Constants.NEWCASTLE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentCaseType.INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
@@ -371,11 +372,11 @@ public class DocumentController {
         if (caseDetails.getState().equalsIgnoreCase(STATE_BO_CASE_STOPPED)) {
             log.info("Case is stopped: {} ", caseDetails.getId());
             if (caseData.getDocumentUploadedAfterCaseStopped() != null
-                    && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase("Yes")) {
+                    && caseData.getDocumentUploadedAfterCaseStopped().equalsIgnoreCase(YES)) {
                 log.info("lastEvidenceAddedDate not updated for case: {} ", caseDetails.getId());
                 update = false;
             } else {
-                caseData.setDocumentUploadedAfterCaseStopped("Yes");
+                caseData.setDocumentUploadedAfterCaseStopped(YES);
             }
         } else {
             log.info("Case is ongoing: {} ", caseDetails.getId());
