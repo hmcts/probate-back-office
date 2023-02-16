@@ -42,7 +42,7 @@
         {
           "id": "714db563-8dba-4a8f-ac58-ce6bb54dc3d8",
           "value": {
-            "decision": "refulsal",
+            "decision": "refusal",
             "addedDateTime": "2023-02-16T10:45:16.573996406",
             "furtherInformation": "dddddd"
           }
@@ -50,7 +50,7 @@
         {
           "id": "1824a3fa-2d30-4765-955f-2e90ecc2551f",
           "value": {
-            "decision": "refulsal",
+            "decision": "refusal",
             "addedDateTime": "2023-02-16T10:47:14.479068153"
           }
         },
@@ -62,6 +62,9 @@
           }
         }
       ],
+      "registrarDirectionToAdd": {
+        "addedDateTime": "2023-02-16T17:45:16.573996406"
+      },
       "executorsNotApplying": [],
       "deceasedAnyOtherNames": "No",
       "languagePreferenceWelsh": "No",
