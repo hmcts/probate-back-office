@@ -17,7 +17,6 @@ export CW_USER_EMAIL=${CW_USER_EMAIL}
 export CW_USER_PASSWORD=${CW_USER_PASSWORD}
 
 # Paths
-export E2E_TEST_PATH='./paths/**/*.js'
 export E2E_OUTPUT_DIR='./functional-output'
 
 yarn test:functional
