@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.List;
 
 @Slf4j
@@ -21,13 +22,12 @@ public class RegistrarDirectionService {
         List<CollectionMember<RegistrarDirection>>
                 caseDirections = caseData.getRegistrarDirections();
         caseDirections.add(new CollectionMember<>(null, caseData.getRegistrarDirectionToAdd()));
-        if (caseDirections != null) {
-            caseDirections.sort((m1, m2) -> {
-                LocalDateTime dt1 = m1.getValue().getAddedDateTime();
-                LocalDateTime dt2 = m2.getValue().getAddedDateTime();
-                return -dt1.compareTo(dt2);
-            });
-        }
+        caseDirections.sort((m1, m2) -> {
+            LocalDateTime dt1 = m1.getValue().getAddedDateTime();
+            LocalDateTime dt2 = m2.getValue().getAddedDateTime();
+            return dt1.compareTo(dt2);
+        });
+        Collections.reverse(caseDirections);
 
         caseData.setRegistrarDirectionToAdd(null);
     }

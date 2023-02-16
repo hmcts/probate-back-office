@@ -26,7 +26,7 @@ class RegistrarDirectionServiceTest {
     }
 
     @Test
-    void handleRedeclarationNotificationShouldBeSuccessful() {
+    void shouldAddAndOrderDirections() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
         List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList();
