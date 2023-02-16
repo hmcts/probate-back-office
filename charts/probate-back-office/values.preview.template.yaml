@@ -237,6 +237,7 @@ java:
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
     CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
+    NODE_TLS_REJECT_UNAUTHORIZED: 0
 
   keyVaults:
     probate:
