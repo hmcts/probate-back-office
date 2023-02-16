@@ -15,6 +15,7 @@ public class RegistrarBusinessValidationTests extends IntegrationTestBase {
 
     private static final String DEFAULT_REGISTRARS_DECISION = "/case/default-registrars-decision";
     private static final String REGISTRARS_DECISION = "/case/registrars-decision";
+    private static final String PAYLOAD = "registrardecision/success.registrarDecision.json";
 
 
     @Autowired
@@ -27,7 +28,7 @@ public class RegistrarBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void shouldPostForRegistrarEvents() throws IOException {
-        validatePostSuccess("success.registrarDecision.json", DEFAULT_REGISTRARS_DECISION);
-        validatePostSuccess("success.registrarDecision.json", REGISTRARS_DECISION);
+        validatePostSuccess(PAYLOAD, DEFAULT_REGISTRARS_DECISION);
+        validatePostSuccess(PAYLOAD, REGISTRARS_DECISION);
     }
 }
