@@ -57,6 +57,7 @@ public class PaymentsService {
     private static final String SERVICE_REQUEST_REFERENCE_KEY = "service_request_reference";
     private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
     private static final String PAYMENT_COMMENT = "Service request payment status ";
+    private static final String SRP_STATUS_PAID = "Paid";
     private final ServiceRequestClient serviceRequestClient;
     private final SecurityUtils securityUtils;
     private final CcdClientApi ccdClientApi;
@@ -90,15 +91,14 @@ public class PaymentsService {
             String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
-                    caseData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
+                    caseData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else if (CAVEAT == ccdCaseType) {
             CaveatData caveatData = buildCaveatDataWithNotifications(retrievedCaseDetails, response);
             String paymentStatus = caveatData.getPayments().get(caveatData.getPayments().size() - 1)
                     .getValue().getStatus().getName();
-
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
-                    caveatData, EventId.SERVICE_REQUEST_PAYMENT_UPDATE,
+                    caveatData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else {
             throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType:"
@@ -242,4 +242,8 @@ public class PaymentsService {
         return probateDocsGenerated;
     }
 
+    private EventId getEventIdByServiceRequestStatus(String serviceRequestStatus) {
+        return SRP_STATUS_PAID.equals(serviceRequestStatus)
+                ? EventId.SERVICE_REQUEST_PAYMENT_SUCCESS : EventId.SERVICE_REQUEST_PAYMENT_FAILED;
+    }
 }

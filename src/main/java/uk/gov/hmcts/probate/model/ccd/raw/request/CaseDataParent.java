@@ -89,6 +89,7 @@ public class CaseDataParent {
     private final OrganisationPolicy applicantOrganisationPolicy;
     private String serviceRequestReference;
     private String paymentTaken;
+    private String applicationSubmittedBy;
 
     private final String reissueDate;
     private final String grantIssuedDate;
