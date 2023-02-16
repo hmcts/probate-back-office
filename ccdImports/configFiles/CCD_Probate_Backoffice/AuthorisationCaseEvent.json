@@ -275,6 +275,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boGenerateGrantPreviewDraft", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCasesForCases", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyForGrant", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-probate-caseofficer", "CRUD": "R"},
@@ -412,6 +413,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boGenerateGrantPreviewDraft", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCasesForCases", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyForGrant", "UserRole": "caseworker-probate-registrar", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-probate-registrar", "CRUD": "R"},
@@ -549,6 +551,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boGenerateGrantPreviewDraft", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCasesForCases", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-registrar", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyForGrant", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseFromBulkScan", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
@@ -688,6 +691,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "manuallyVerifyDeathRecord", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boGenerateGrantPreviewDraft", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCasesForCases", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "makeCaseDormant", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
@@ -836,6 +840,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "makeCaseDormant", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyForGrant", "UserRole": "citizen", "CRUD": "C"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
@@ -853,5 +858,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "makeCaseDormant", "UserRole": "citizen", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "citizen", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "citizen", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "citizen", "CRUD": "R"}
 ]

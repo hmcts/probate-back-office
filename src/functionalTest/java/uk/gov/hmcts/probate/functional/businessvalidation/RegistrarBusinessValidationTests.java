@@ -26,7 +26,7 @@ public class RegistrarBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() throws IOException {
+    public void shouldPostForRegistrarEvents() throws IOException {
         validatePostSuccess("success.registrarDecision.json", DEFAULT_REGISTRARS_DECISION);
         validatePostSuccess("success.registrarDecision.json", REGISTRARS_DECISION);
     }

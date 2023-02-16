@@ -69,5 +69,6 @@ class RegistrarDirectionServiceTest {
         assertEquals(registrarDirection2, caseData.getRegistrarDirections().get(1));
         assertEquals(registrarDirection1, caseData.getRegistrarDirections().get(2));
         assertEquals(registrarDirection3, caseData.getRegistrarDirections().get(3));
+        assertEquals("Yes", caseData.getEvidenceHandled());
     }
 }
