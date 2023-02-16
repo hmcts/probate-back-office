@@ -530,8 +530,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
-    @PostMapping(path = "/default-registrars-decision", consumes = APPLICATION_JSON_VALUE, produces =
-            {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/default-registrars-decision",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> setupRegistrarsDecision(
             @RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseWithRegistrarDirection(callbackRequest));

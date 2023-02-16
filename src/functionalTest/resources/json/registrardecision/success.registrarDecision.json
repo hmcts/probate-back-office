@@ -1,0 +1,116 @@
+{
+  "case_details": {
+    "id": 1512040945638398,
+    "jurisdiction": "PROBATE",
+    "state": "CasePrinted",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": null,
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "caseType": "gop",
+      "taskList": "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n<h2 class=\"govuk-heading-l\">1. Enter application details</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add Probate practitioner details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add deceased details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Add application details</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">2. Sign legal statement and submit application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are to be completed by the Probate practitioner.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Review and sign legal statement and submit application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on 01 Jan 2023</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Send documents<br/><details class=\"govuk-details\" data-module=\"govuk-details\">\n  <summary class=\"govuk-details__summary\">\n    <span class=\"govuk-details__summary-text\">\n      View the documents needed by HM Courts and Tribunal Service\n    </span>\n  </summary>\n  <div class=\"govuk-details__text\">\n    You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1676540745177234 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li><li>the original will</li><li>the inheritance tax form IHT 207</li></ul>\n  </div>\n</details></p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<br/>\n<h2 class=\"govuk-heading-l\">3. Review application</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Authenticate documents</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We will authenticate your documents and match them with your application.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Examine application</p></div><div class=\"govuk-grid-column-one-third\"><p><img align=\"right\" width=\"114px\" height=\"31px\" src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">Your application will update through any of these case states as it is reviewed by our team:</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<ul class=\"govuk-list govuk-list--bullet\">\n<li>Examining</li>\n<li>Case Matching</li>\n<li>Case selected for Quality Assurance</li>\n<li>Ready to issue</li>\n</ul><hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<h2 class=\"govuk-heading-l\">4. Grant of representation</h2>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">This step is completed by HM Courts and Tribunals Service staff.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">Issue grant of representation</p></div><div class=\"govuk-grid-column-one-third\"></div></div>\n<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\"><font color=\"#505a5f\">The grant will be delivered in the post a few days after issuing.</font></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n\n</div>\n</div>\n",
+      "paperForm": "No",
+      "willExists": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "ihtNetValue": "39000000",
+      "ihtFormEstate": "IHT207",
+      "ihtGrossValue": "40000000",
+      "applicationType": "Personal",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "SW11 1PD",
+        "PostTown": "London",
+        "AddressLine1": "1 Rse Way",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedSurname": "deadsn",
+      "evidenceHandled": "No",
+      "paragraphDetails": [],
+      "registryLocation": "Oxford",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "deadfn",
+      "executorsApplying": [],
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedDateOfDeath": "2023-01-01",
+      "otherExecutorExists": "No",
+      "registrarDirections": [
+        {
+          "id": "714db563-8dba-4a8f-ac58-ce6bb54dc3d8",
+          "value": {
+            "decision": "refulsal",
+            "addedDateTime": "2023-02-16T10:45:16.573996406",
+            "furtherInformation": "dddddd"
+          }
+        },
+        {
+          "id": "1824a3fa-2d30-4765-955f-2e90ecc2551f",
+          "value": {
+            "decision": "refulsal",
+            "addedDateTime": "2023-02-16T10:47:14.479068153"
+          }
+        },
+        {
+          "id": "37146d64-a49b-4a11-944d-46a73f1c7858",
+          "value": {
+            "decision": "lostWill",
+            "addedDateTime": "2023-02-16T10:47:26.725707963"
+          }
+        }
+      ],
+      "executorsNotApplying": [],
+      "deceasedAnyOtherNames": "No",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "SW11 1PD",
+        "PostTown": "London",
+        "AddressLine1": "1 Rse Way",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "primaryApplicantSurname": "app1",
+      "applicationSubmittedDate": "2023-01-01",
+      "primaryApplicantHasAlias": "No",
+      "caseHandedOffToLegacySite": "No",
+      "primaryApplicantForenames": "app1",
+      "probateDocumentsGenerated": [],
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "solsDeceasedAliasNamesList": [],
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "ihtFormEstateValuesCompleted": "Yes",
+      "primaryApplicantEmailAddress": "sanjay.parekh@hmcts.net",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [
+        {
+          "id": "6dbc8692-fc4e-4302-82b2-c9792dd1ddd5",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/bad49bb4-c1f8-47a8-8c16-d5b105253170",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/bad49bb4-c1f8-47a8-8c16-d5b105253170/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "2f79fedc-9d79-4e0b-9dfa-8fe6297c4912.pdf",
+            "DocumentDateAdded": "2023-02-16",
+            "DocumentGeneratedBy": "5927"
+          }
+        }
+      ],
+      "boEmailGrantIssuedNotification": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "Yes",
+      "boEmailGrantReissuedNotification": "Yes"
+    }
+  }
+}
