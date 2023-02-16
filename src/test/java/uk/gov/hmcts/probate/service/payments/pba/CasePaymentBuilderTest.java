@@ -49,6 +49,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
+        when(serviceRequestPaymentResponseDtoMock.getPaymentReference()).thenReturn("RC-1675-8668-2226-3220");
 
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<CasePayment>> allCasePayments =
                 casePaymentBuilder.addPaymentFromServiceRequestResponse(paymentsList,
@@ -61,7 +62,7 @@ class CasePaymentBuilderTest {
 
         assertPayment(allCasePayments.get(1).getValue(),
                 LocalDate.now().toDateTimeAtStartOfDay().toDate(),
-                99900, "pba", "newServiceRequestRef", "newServiceRequestRef", "Success");
+                99900, "pba", "RC-1675-8668-2226-3220", "newServiceRequestRef", "Success");
     }
 
     @Test
@@ -74,6 +75,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
+        when(serviceRequestPaymentResponseDtoMock.getPaymentReference()).thenReturn("RC-1675-8668-2226-3220");
 
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<CasePayment>> allCasePayments =
                 casePaymentBuilder.addPaymentFromServiceRequestResponse(paymentsList,
@@ -86,7 +88,7 @@ class CasePaymentBuilderTest {
 
         assertPayment(allCasePayments.get(1).getValue(),
                 LocalDate.now().toDateTimeAtStartOfDay().toDate(),
-                99900, "pba", "newServiceRequestRef", "newServiceRequestRef", "Failed");
+                99900, "pba", "RC-1675-8668-2226-3220", "newServiceRequestRef", "Failed");
     }
 
     @Test
@@ -99,6 +101,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
+        when(serviceRequestPaymentResponseDtoMock.getPaymentReference()).thenReturn("RC-1675-8668-2226-3220");
 
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<CasePayment>> allCasePayments =
                 casePaymentBuilder.addPaymentFromServiceRequestResponse(paymentsList,
@@ -111,7 +114,7 @@ class CasePaymentBuilderTest {
 
         assertPayment(allCasePayments.get(1).getValue(),
                 LocalDate.now().toDateTimeAtStartOfDay().toDate(),
-                99900, "pba", "newServiceRequestRef", "newServiceRequestRef", "Initiated");
+                99900, "pba", "RC-1675-8668-2226-3220", "newServiceRequestRef", "Initiated");
     }
 
     @Test
@@ -124,6 +127,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("card");
+        when(serviceRequestPaymentResponseDtoMock.getPaymentReference()).thenReturn("RC-1675-8668-2226-3220");
 
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<CasePayment>> allCasePayments =
                 casePaymentBuilder.addPaymentFromServiceRequestResponse(paymentsList,
@@ -136,7 +140,7 @@ class CasePaymentBuilderTest {
 
         assertPayment(allCasePayments.get(1).getValue(),
                 LocalDate.now().toDateTimeAtStartOfDay().toDate(),
-                99900, "card", "newServiceRequestRef", "newServiceRequestRef", "Success");
+                99900, "card", "RC-1675-8668-2226-3220", "newServiceRequestRef", "Success");
     }
 
     @Test
@@ -165,6 +169,7 @@ class CasePaymentBuilderTest {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestAmount()).thenReturn(BigDecimal.valueOf(999));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestReference()).thenReturn("newServiceRequestRef");
         when(serviceRequestPaymentResponseDtoMock.getPaymentMethod()).thenReturn("payment by account");
+        when(serviceRequestPaymentResponseDtoMock.getPaymentReference()).thenReturn("RC-1675-8668-2226-3220");
 
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<CasePayment>> allCasePayments =
                 casePaymentBuilder.addPaymentFromServiceRequestResponse(null,
@@ -173,7 +178,7 @@ class CasePaymentBuilderTest {
         assertEquals(1, allCasePayments.size());
         assertPayment(allCasePayments.get(0).getValue(),
                 LocalDate.now().toDateTimeAtStartOfDay().toDate(),
-                99900, "pba", "newServiceRequestRef", "newServiceRequestRef", "Success");
+                99900, "pba", "RC-1675-8668-2226-3220", "newServiceRequestRef", "Success");
     }
 
     private void assertPayment(CasePayment casePayment, Date date, int amount, String method, String ref,
