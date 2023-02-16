@@ -367,6 +367,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String letterText;
     private final String includeStatementOfTruth;
     private final List<CollectionMember<RegistrarDirection>> registrarDirections;
-    private transient RegistrarDirection registrarDirectionToAdd;
+    private final RegistrarDirection registrarDirectionToAdd;
 
 }

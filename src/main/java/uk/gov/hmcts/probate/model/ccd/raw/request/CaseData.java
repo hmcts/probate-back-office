@@ -575,7 +575,7 @@ public class CaseData extends CaseDataParent {
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
-    private transient RegistrarDirection registrarDirectionToAdd;
+    private final RegistrarDirection registrarDirectionToAdd;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
