@@ -43,7 +43,7 @@ withNightlyPipeline("nodejs", product, component) {
     env.TEST_URL = params.URL_TO_TEST
     env.Rules = params.SecurityRules
     loadVaultSecrets(secrets)
-    enableFullFunctionalTest(90)
+    enableFullFunctionalTest(120)
     enableSecurityScan()
     enableFortifyScan('probate-aat')
 

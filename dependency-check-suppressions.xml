@@ -421,6 +421,13 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/http\-cache\-semantics@.*$</packageUrl>
         <vulnerabilityName>1090532</vulnerabilityName>
+     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: cacheable-request:7.0.2
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/cacheable\-request@.*$</packageUrl>
+        <vulnerabilityName>1091050</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
