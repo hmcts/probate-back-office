@@ -13,4 +13,4 @@ echo "export CCD_IDAM_REDIRECT_URL=https://ccd-case-management-web-aat.service.c
 echo "export CCD_DEFINITION_STORE_API_BASE_URL=https://ccd-definition-store-probate-back-office-pr-${pr}.preview.platform.hmcts.net"
 
 # definition placeholders
-echo "export CCD_DEF_CASE_SERVICE_BASE_URL=http://probate-back-office-pr-${pr}.service.core-compute-preview.internal"
+echo "export CCD_DEF_CASE_SERVICE_BASE_URL=http://probate-back-office-pr-${pr}.preview.platform.hmcts.net"
