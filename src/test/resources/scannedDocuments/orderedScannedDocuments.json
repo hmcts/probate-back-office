@@ -21,6 +21,24 @@
         "controlNumber": "43654546545656565",
         "fileName": "FileName111222",
         "type": "form",
+        "subtype": "PA1A",
+        "scannedDate": "2019-05-05T05:05:05",
+        "url": {
+          "document_url": "http://dm-store-aat.service.core-compute-aat.internal:443/documents/8bee0f95-cbac-4cd2-8a03-4a97e89c21f0",
+          "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal:443/documents/8bee0f95-cbac-4cd2-8a03-4a97e89c21f0/binary",
+          "document_filename": "1MB PDF SAMPLE.PDF"
+        },
+        "exceptionRecordReference": "1566386228104573",
+        "deliveryDate": null
+      },
+      "id": "547197c4-70f4-4282-ae3a-a7652d223dce"
+    },
+    {
+      "value": {
+        "controlNumber": "43654546545656565",
+        "fileName": "FileName111222",
+        "type": "form",
+        "subtype": "PA1P",
         "scannedDate": "2019-05-05T05:05:05",
         "url": {
           "document_url": "http://dm-store-aat.service.core-compute-aat.internal:443/documents/8bee0f95-cbac-4cd2-8a03-4a97e89c21f0",
