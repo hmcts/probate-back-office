@@ -89,4 +89,5 @@ public class ResponseCaseDataParent {
     protected LocalDate lastEvidenceAddedDate;
     protected String serviceRequestReference;
     protected String paymentTaken;
+    protected String applicationSubmittedBy;
 }

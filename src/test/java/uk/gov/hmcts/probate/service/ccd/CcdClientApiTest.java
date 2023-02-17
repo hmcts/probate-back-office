@@ -262,7 +262,7 @@ class CcdClientApiTest {
 
         CaseDetails caseDetails = Mockito.mock(CaseDetails.class);
         StartEventResponse startEventResponse = StartEventResponse.builder().build();
-        EventId eventId = EventId.SERVICE_REQUEST_PAYMENT_UPDATE;
+        EventId eventId = EventId.SERVICE_REQUEST_PAYMENT_SUCCESS;
 
         when(coreCaseDataApi.startEventForCaseWorker(
                 eq(AUTHORISATION),

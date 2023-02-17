@@ -46,9 +46,9 @@ public class CasePaymentBuilder {
         List<CollectionMember<CasePayment>> allPayments = buildCurrentPayments(payments);
         CasePayment casePayment = buildCasePayment(
                 getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus()),
-                response.getServiceRequestReference(), //@TODO - this may be wrong
+                response.getServiceRequestReference(),
                 siteId,
-                response.getServiceRequestReference(), //@TODO - this may be wrong - check with business
+                response.getServiceRequestPaymentResponseDto().getPaymentReference(),
                 getCasePaymentMethod(response),
                 "" + (response.getServiceRequestAmount().longValue() * 100));
         allPayments.add(new CollectionMember<>(null, casePayment));
