@@ -11,7 +11,8 @@
   "paymentStatusConfirmText": "Payment successful",
   "serviceRequestLink": "View service request",
   "paymentStatus": "Paid",
-  "mainTab": "Case Progress",
+  "eventHistoryTab": "Event History",
   "waitForText": "Manage Cases",
-  "paymentOptionLabel": "Enter a reference for your PBA account statements"
+  "paymentOptionLabel": "Enter a reference for your PBA account statements",
+  "statusText": "ServiceRequest payment success"
 }

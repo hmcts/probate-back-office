@@ -61,7 +61,6 @@ Scenario(scenarioName, async function ({I}) {
 
     nextStepName = 'Complete application';
     endState = 'Caveat raised';
-    const applicationType = 'Caveat';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeCaveatApplicationPage1();
@@ -72,7 +71,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.makeCaveatPaymentPage1(caseRef,serviceRequestTabConfig);
     await I.reviewPaymentDetails(caseRef,serviceRequestReviewTabConfig);
     await I.makePaymentPage2(caseRef);
-    await I.viewPaymentStatus(caseRef, applicationType);
+    await I.viewPaymentStatus(caseRef);
 
     await I.seeEndState(endState);
 
