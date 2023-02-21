@@ -12,6 +12,7 @@
   "serviceRequestLink": "View service request",
   "paymentStatus": "Paid",
   "eventHistoryTab": "Event History",
+  "caseProgressTab": "Case Progress",
   "waitForText": "Manage Cases",
   "paymentOptionLabel": "Enter a reference for your PBA account statements",
   "statusText": "ServiceRequest payment success"

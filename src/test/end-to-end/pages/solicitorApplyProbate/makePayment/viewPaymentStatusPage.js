@@ -3,9 +3,10 @@
 const testConfig = require('src/test/config.js');
 const makePaymentConfig = require('./makePaymentConfig');
 
-module.exports = async function (caseRef) {
+module.exports = async function (caseRef, appType) {
     const I = this;
     const tabXPath = `//div[contains(text(),"${makePaymentConfig.eventHistoryTab}")]`;
+    const caseProgressTabXPath = `//div[contains(text(),"${makePaymentConfig.caseProgressTab}")]`;
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.paymentStatusConfirmText, testConfig.WaitForTextTimeout);
@@ -15,8 +16,6 @@ module.exports = async function (caseRef) {
     await I.waitForText(makePaymentConfig.paymentStatus, testConfig.WaitForTextTimeout);
     await I.dontSee(makePaymentConfig.payNowLinkText);
     await I.postPaymentReviewDetails(caseRef);
-    //await I.wait(60);
-    //await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     // Tabs are hidden when there are more tabs
     for (let i = 0; i <= 6; i++) {
         await I.waitForElement(tabXPath, 60);
@@ -27,5 +26,10 @@ module.exports = async function (caseRef) {
             break;
         }
         await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    }
+    if(appType !== "Caveat"){
+        await I.waitForElement(caseProgressTabXPath, 60);
+        await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
+        await I.clickTab(makePaymentConfig.caseProgressTab);
     }
 };
