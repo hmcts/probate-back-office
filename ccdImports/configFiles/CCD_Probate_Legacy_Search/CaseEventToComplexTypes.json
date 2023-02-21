@@ -1,6 +1,5 @@
 [
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "legacySearch", "CaseFieldID": "legacySearchResultRows", "ListElementCode": "type", "EventElementLabel":  "Type", "FieldDisplayOrder":  1, "DisplayContext": "READONLY"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "legacySearch", "CaseFieldID": "legacySearchResultRows", "ListElementCode": "ccdCaseId", "EventElementLabel":  "CCD Case No", "FieldDisplayOrder":  2, "DisplayContext": "READONLY", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\""},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "legacySearch", "CaseFieldID": "legacySearchResultRows", "ListElementCode": "fullName", "EventElementLabel":  "Full name", "FieldDisplayOrder":  3, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "legacySearch", "CaseFieldID": "legacySearchResultRows", "ListElementCode": "dob", "EventElementLabel":  "Date of birth", "FieldDisplayOrder":  4, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "legacySearch", "CaseFieldID": "legacySearchResultRows", "ListElementCode": "dod", "EventElementLabel":  "Date of death", "FieldDisplayOrder":  5, "DisplayContext": "READONLY"},

@@ -1,6 +1,5 @@
 [
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "type", "EventElementLabel":  "Type", "FieldDisplayOrder":  1, "DisplayContext": "READONLY"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "ccdCaseId", "EventElementLabel":  "CCD Case No", "FieldDisplayOrder":  2, "DisplayContext": "READONLY", "FieldShowCondition": "legacyCaseViewUrl=\"NeverShowThisField\""},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "fullName", "EventElementLabel":  "Full name", "FieldDisplayOrder":  3, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "dob", "EventElementLabel":  "Date of birth", "FieldDisplayOrder":  4, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "dod", "EventElementLabel":  "Date of death", "FieldDisplayOrder":  5, "DisplayContext": "READONLY"},
