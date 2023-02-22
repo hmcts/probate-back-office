@@ -198,7 +198,7 @@ withPipeline("java", product, component) {
 
   afterSuccess('functionalTest:preview') {
     if (checkForEnableNightlyLabel(env.BRANCH_NAME)) {
-      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       sh 'yarn install'
       sh 'yarn test:fullfunctional-pr'
     }
@@ -275,11 +275,11 @@ withPipeline("java", product, component) {
 
     env.IDAM_API_URL="https://idam-api.aat.platform.hmcts.net"
     env.S2S_API_URL="http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
-    env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_PRO_URL="https://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
-    env.CCD_DAT_URL="https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.CCD_DEF_URL="https://ccd-definition-store-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+    env.CCD_PRO_URL="https://ccd-user-profile-api-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+    env.CCD_DAT_URL="https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
 
-    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.service.core-compute-preview.internal"
+    env.URL="https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
     env.IMPORTER_USERNAME="ccd.probate.default@hmcts.net"
     env.CURL_OPTS="--insecure --retry 3 "
     env.CCD_IDAM_REDIRECT_URL="https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect"
