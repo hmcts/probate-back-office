@@ -8,7 +8,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 
@@ -18,7 +17,6 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @RequiredArgsConstructor
 @Component
 public class RegistrarDirectionService {
-    public final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public void addAndOrderDirections(CaseData caseData) {
         RegistrarDirection registrarDirectionToAdd = buildWithTime(caseData.getRegistrarDirectionToAdd());
