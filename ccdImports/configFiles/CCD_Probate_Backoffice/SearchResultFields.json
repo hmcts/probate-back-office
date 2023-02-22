@@ -6,11 +6,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedForenames", "Label": "First name(s) of deceased", "DisplayOrder": 5},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "Label": "Last name(s) of deceased", "DisplayOrder": 6},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedDateOfDeath", "Label": "Date of death", "DisplayOrder": 7},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "casePrinted", "Label": "Case printed", "DisplayOrder": 8},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[STATE]", "Label": "State", "DisplayOrder": 9},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "Label": "Application completed date", "DisplayOrder": 10},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 11},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastEvidenceAddedDate", "Label": "Date last evidence added", "DisplayOrder": 12},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "Label": "Grant issued date", "DisplayOrder": 13},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[LAST_STATE_MODIFIED_DATE]", "Label": "Last State Modified Date", "DisplayOrder": 14}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[STATE]", "Label": "State", "DisplayOrder": 8},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "Label": "Application completed date", "DisplayOrder": 9},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "evidenceHandled", "Label": "Supplementary evidence handled", "DisplayOrder": 10},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "grantIssuedDate", "Label": "Grant issued date", "DisplayOrder": 11},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "[LAST_STATE_MODIFIED_DATE]", "Label": "Last State Modified Date", "DisplayOrder": 12}
 ]
