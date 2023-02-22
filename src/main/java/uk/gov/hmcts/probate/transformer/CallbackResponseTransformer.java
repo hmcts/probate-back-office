@@ -43,7 +43,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -572,7 +571,6 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCaseWithRegistrarDirection(CallbackRequest callbackRequest) {
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
                 .registrarDirectionToAdd(RegistrarDirection.builder()
-                        .addedDateTime(LocalDateTime.now())
                         .build())
                 .build();
 

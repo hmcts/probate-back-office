@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -196,6 +197,8 @@ class BusinessValidationControllerIT {
     private NotificationService notificationService;
     @MockBean
     private CaseDataTransformer caseDataTransformer;
+    @MockBean
+    private RegistrarDirectionService registrarDirectionService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;

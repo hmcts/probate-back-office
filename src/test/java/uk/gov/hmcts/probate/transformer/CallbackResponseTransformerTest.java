@@ -88,6 +88,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -3769,7 +3770,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCaseWithRegistrarDirection(callbackRequestMock);
         assertEquals(2, callbackResponse.getData().getRegistrarDirections().size());
         assertEquals("2023-01-01T23:45:45.890Z", format(formatter, callbackResponse.getData(), 0));
         assertEquals("Decision 1", callbackResponse.getData().getRegistrarDirections().get(0).getValue().getDecision());
@@ -3778,6 +3779,11 @@ class CallbackResponseTransformerTest {
         assertEquals("2023-01-02T23:45:45.890Z", format(formatter, callbackResponse.getData(), 1));
         assertEquals("Decision 2", callbackResponse.getData().getRegistrarDirections().get(1).getValue().getDecision());
         assertNull(callbackResponse.getData().getRegistrarDirections().get(1).getValue().getFurtherInformation());
+
+        assertNotNull(callbackResponse.getData().getRegistrarDirectionToAdd());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getAddedDateTime());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getDecision());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getFurtherInformation());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

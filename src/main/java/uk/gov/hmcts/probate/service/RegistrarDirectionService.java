@@ -21,9 +21,10 @@ public class RegistrarDirectionService {
     public final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public void addAndOrderDirections(CaseData caseData) {
+        RegistrarDirection registrarDirectionToAdd = buildWithTime(caseData.getRegistrarDirectionToAdd());
         List<CollectionMember<RegistrarDirection>>
                 caseDirections = caseData.getRegistrarDirections();
-        caseDirections.add(new CollectionMember<>(null, caseData.getRegistrarDirectionToAdd()));
+        caseDirections.add(new CollectionMember<>(null, registrarDirectionToAdd));
         caseDirections.sort((m1, m2) -> {
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
@@ -33,5 +34,13 @@ public class RegistrarDirectionService {
 
         caseData.setRegistrarDirectionToAdd(null);
         caseData.setEvidenceHandled(YES);
+    }
+
+    private RegistrarDirection buildWithTime(RegistrarDirection registrarDirectionToAdd) {
+        return RegistrarDirection.builder()
+                .addedDateTime(LocalDateTime.now())
+                .decision(registrarDirectionToAdd.getDecision())
+                .furtherInformation(registrarDirectionToAdd.getFurtherInformation())
+                .build();
     }
 }

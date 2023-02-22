@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class RegistrarDirectionServiceTest {
 
@@ -49,7 +50,6 @@ class RegistrarDirectionServiceTest {
                 .build());
         RegistrarDirection registrarDirectionToAdd = RegistrarDirection
                 .builder()
-                .addedDateTime(LocalDateTime.now())
                 .decision("otherOrder")
                 .furtherInformation("futher info 4")
                 .build();
@@ -65,7 +65,12 @@ class RegistrarDirectionServiceTest {
         underTest.addAndOrderDirections(caseData);
 
         assertEquals(4, caseData.getRegistrarDirections().size());
-        assertEquals(registrarDirectionToAdd, caseData.getRegistrarDirections().get(0).getValue());
+        assertEquals(registrarDirectionToAdd.getDecision(), caseData.getRegistrarDirections().get(0).getValue()
+                .getDecision());
+        assertEquals(registrarDirectionToAdd.getFurtherInformation(), caseData.getRegistrarDirections().get(0)
+                .getValue()
+                .getFurtherInformation());
+        assertNotNull(caseData.getRegistrarDirections().get(0).getValue().getAddedDateTime());
         assertEquals(registrarDirection2, caseData.getRegistrarDirections().get(1));
         assertEquals(registrarDirection1, caseData.getRegistrarDirections().get(2));
         assertEquals(registrarDirection3, caseData.getRegistrarDirections().get(3));
