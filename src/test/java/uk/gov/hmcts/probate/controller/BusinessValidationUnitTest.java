@@ -836,7 +836,7 @@ class BusinessValidationUnitTest {
 
         ResponseEntity<CallbackResponse> response =
                 underTest.registrarsDecision(callbackRequestMock);
-        verify(registrarDirectionServiceMock, times(1)).addAndOrderDirections(caseDataMock);
+        verify(registrarDirectionServiceMock, times(1)).addAndOrderDirectionsToGrant(caseDataMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

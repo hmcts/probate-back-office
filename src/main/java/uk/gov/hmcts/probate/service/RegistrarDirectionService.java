@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,20 +19,29 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Component
 public class RegistrarDirectionService {
 
-    public void addAndOrderDirections(CaseData caseData) {
-        RegistrarDirection registrarDirectionToAdd = buildWithTime(caseData.getRegistrarDirectionToAdd());
-        List<CollectionMember<RegistrarDirection>>
-                caseDirections = caseData.getRegistrarDirections();
-        caseDirections.add(new CollectionMember<>(null, registrarDirectionToAdd));
+    public void addAndOrderDirectionsToGrant(CaseData caseData) {
+        addAndOrderDirections(caseData.getRegistrarDirections(), caseData.getRegistrarDirectionToAdd());
+
+        caseData.setRegistrarDirectionToAdd(null);
+        caseData.setEvidenceHandled(YES);
+    }
+
+    public void addAndOrderDirectionsToCaveat(CaveatData caseData) {
+        addAndOrderDirections(caseData.getRegistrarDirections(), caseData.getRegistrarDirectionToAdd());
+
+        caseData.setRegistrarDirectionToAdd(null);
+    }
+
+    private void addAndOrderDirections(List<CollectionMember<RegistrarDirection>>
+                                               caseDirections, RegistrarDirection registrarDirectionToAdd) {
+        RegistrarDirection registrarDirectionToAddWithTime = buildWithTime(registrarDirectionToAdd);
+        caseDirections.add(new CollectionMember<>(null, registrarDirectionToAddWithTime));
         caseDirections.sort((m1, m2) -> {
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt1.compareTo(dt2);
         });
         Collections.reverse(caseDirections);
-
-        caseData.setRegistrarDirectionToAdd(null);
-        caseData.setEvidenceHandled(YES);
     }
 
     private RegistrarDirection buildWithTime(RegistrarDirection registrarDirectionToAdd) {
