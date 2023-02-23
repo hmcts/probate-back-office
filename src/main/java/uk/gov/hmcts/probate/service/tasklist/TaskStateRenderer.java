@@ -86,7 +86,8 @@ public class TaskStateRenderer {
     private static final String IHT_400421 = "IHT400421";
     private static final String LIST_ITEM_START = "<li>";
     private static final String LIST_ITEM_END = "</li>";
-    private static final String SEND_DOCS_GRID = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+    private static final String SEND_DOCS_GRID = "<div class=\"govuk-grid-row\">"
+            + "<div class=\"govuk-grid-column-two-thirds\">"
             + "<p class=\"govuk-body-s\">Send documents<br/><sendDocsLink/></p>"
             + "</div><div class=\"govuk-grid-column-one-third\">"
             + "<status-sendDocuments/>"
@@ -212,13 +213,14 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
-    String renderSendDoc(TaskState sendDocsState, String caseId, CaseDetails details, String grid){
+    String renderSendDoc(TaskState sendDocsState, String caseId, CaseDetails details, String grid) {
         if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
             return "";
         }
-       return grid.replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseId, details))
+        return grid.replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseId, details))
                .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState));
     }
+
     String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
 
         if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
