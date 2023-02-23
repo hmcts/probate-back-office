@@ -47,7 +47,6 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
-import static uk.gov.hmcts.reform.probate.model.PaymentStatus.SUCCESS;
 
 @Service
 @RequiredArgsConstructor
@@ -87,14 +86,14 @@ public class PaymentsService {
 
         SecurityDTO securityDTO = getCaseworkerSecurityDTO();
         if (GRANT_OF_REPRESENTATION == ccdCaseType) {
-            GrantOfRepresentationData caseData = buildGrantDataWithNotifications(retrievedCaseDetails, response);
+            GrantOfRepresentationData caseData = buildGrantData(retrievedCaseDetails, response);
             String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
                     caseData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else if (CAVEAT == ccdCaseType) {
-            CaveatData caveatData = buildCaveatDataWithNotifications(retrievedCaseDetails, response);
+            CaveatData caveatData = buildCaveatData(retrievedCaseDetails, response);
             String paymentStatus = caveatData.getPayments().get(caveatData.getPayments().size() - 1)
                     .getValue().getStatus().getName();
             ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
@@ -130,7 +129,7 @@ public class PaymentsService {
                 .build();
     }
 
-    private GrantOfRepresentationData buildGrantDataWithNotifications(
+    private GrantOfRepresentationData buildGrantData(
             uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
             ServiceRequestUpdateResponseDto response) {
 
@@ -141,14 +140,15 @@ public class PaymentsService {
         CaseDetails caseDetails = new CaseDetails(caseData, null, retrievedCaseDetails.getId());
         caseDetails.setState(retrievedCaseDetails.getState());
 
-        return buildGrantForSolicitorPaid(caseDetails, response);
+        return isSuccessfulPayment(response.getServiceRequestStatus())
+                ? buildGrantPaid(caseDetails, response) : buildGrantNotPaid(caseDetails, response);
     }
 
-    private GrantOfRepresentationData buildGrantForSolicitorPaid(CaseDetails caseDetails,
+    private GrantOfRepresentationData buildGrantPaid(CaseDetails caseDetails,
                                                                  ServiceRequestUpdateResponseDto response) {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        Document sentEmail = null;
+        Document sentEmail;
         try {
             if (!NO.equals(caseDetails.getData().getEvidenceHandled())) {
                 notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
@@ -172,8 +172,7 @@ public class PaymentsService {
 
         Document coversheet = pdfManagementService
                 .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
-        String paymentStatus =
-                casePaymentBuilder.getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus());
+
         return GrantOfRepresentationData.builder()
                 .grantAwaitingDocumentationNotificationDate(caseDetails.getData()
                         .getGrantAwaitingDocumentationNotificationDate())
@@ -181,7 +180,19 @@ public class PaymentsService {
                 .probateNotificationsGenerated(asNotificationsGenerated(callbackRequest.getCaseDetails().getData()
                         .getProbateNotificationsGenerated()))
                 .payments(allPayments)
-                .paymentTaken(SUCCESS.getName().equals(paymentStatus) ? YES : NO)
+                .paymentTaken(getPaymentTakenStatus(caseDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
+                .build();
+    }
+
+    private GrantOfRepresentationData buildGrantNotPaid(CaseDetails caseDetails,
+                                                                 ServiceRequestUpdateResponseDto response) {
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                caseDetails.getData().getPayments(), response);
+        return GrantOfRepresentationData.builder()
+                .payments(allPayments)
+                .paymentTaken(getPaymentTakenStatus(caseDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
                 .build();
     }
 
@@ -197,7 +208,7 @@ public class PaymentsService {
         }
     }
 
-    private CaveatData buildCaveatDataWithNotifications(
+    private CaveatData buildCaveatData(
             uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
             ServiceRequestUpdateResponseDto response) {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -205,13 +216,15 @@ public class PaymentsService {
         uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = mapper.convertValue(placeholders,
                 uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class);
         CaveatDetails caveatDetails = new CaveatDetails(caveatData, null, retrievedCaseDetails.getId());
-        CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        return isSuccessfulPayment(response.getServiceRequestStatus())
+                ? buildCaveatDataPaid(caveatDetails, response) : buildCaveatDataNotPaid(caveatDetails, response);
+    }
 
-        CaveatCallbackResponse caveatCallbackResponse = null;
+    private CaveatData buildCaveatDataPaid(CaveatDetails caveatDetails, ServiceRequestUpdateResponseDto response) {
+        CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse;
         try {
             caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
-            String paymentStatus =
-                    casePaymentBuilder.getPaymentStatusByServiceRequestStatus(response.getServiceRequestStatus());
             LocalDate appSubmittedDate =
                     casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
             LocalDate expiryDate =
@@ -220,7 +233,8 @@ public class PaymentsService {
                     caveatDetails.getData().getPayments(), response);
             return CaveatData.builder()
                     .payments(allPayments)
-                    .paymentTaken(SUCCESS.getName().equals(paymentStatus) ? YES : NO)
+                    .paymentTaken(getPaymentTakenStatus(caveatDetails.getData().getPaymentTaken(),
+                            response.getServiceRequestStatus()))
                     .applicationSubmittedDate(appSubmittedDate)
                     .notificationsGenerated(asNotificationsGenerated(caveatCallbackResponse.getCaveatData()
                             .getNotificationsGenerated()))
@@ -229,6 +243,16 @@ public class PaymentsService {
         } catch (NotificationClientException e) {
             throw new RuntimeException(e.getMessage());
         }
+    }
+
+    private CaveatData buildCaveatDataNotPaid(CaveatDetails caveatDetails, ServiceRequestUpdateResponseDto response) {
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                caveatDetails.getData().getPayments(), response);
+        return CaveatData.builder()
+                .payments(allPayments)
+                .paymentTaken(getPaymentTakenStatus(caveatDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
+                .build();
     }
 
     private List<CollectionMember<ProbateDocument>> asNotificationsGenerated(
@@ -243,7 +267,15 @@ public class PaymentsService {
     }
 
     private EventId getEventIdByServiceRequestStatus(String serviceRequestStatus) {
-        return SRP_STATUS_PAID.equals(serviceRequestStatus)
+        return isSuccessfulPayment(serviceRequestStatus)
                 ? EventId.SERVICE_REQUEST_PAYMENT_SUCCESS : EventId.SERVICE_REQUEST_PAYMENT_FAILED;
+    }
+
+    private boolean isSuccessfulPayment(String serviceRequestStatus) {
+        return SRP_STATUS_PAID.equals(serviceRequestStatus);
+    }
+
+    private String getPaymentTakenStatus(String paymentTaken, String serviceRequestStatus) {
+        return YES.equals(paymentTaken) ? YES : isSuccessfulPayment(serviceRequestStatus) ? YES : NO;
     }
 }

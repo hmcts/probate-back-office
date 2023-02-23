@@ -93,7 +93,7 @@ class PaymentsServiceTest {
     }
 
     @Test
-    void shouldRetrieveAndUpdateGrantDataWithPaymentResponse() throws NotificationClientException {
+    void shouldRetrieveAndUpdateGrantDataWithSuccessPaymentResponse() throws NotificationClientException {
         setupIdamUserResponse();
 
         HashMap<String, Object> caseData = new HashMap();
@@ -117,15 +117,13 @@ class PaymentsServiceTest {
                 .build();
         when(pdfManagementService
                 .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
-        when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                .thenReturn(PaymentStatus.SUCCESS.getName());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
                         .build()));
         when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
-        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
@@ -135,7 +133,7 @@ class PaymentsServiceTest {
     }
 
     @Test
-    void shouldRetrieveAndUpdateGrantDataWithPaymentResponseEvidenecHandled()
+    void shouldRetrieveAndUpdateGrantDataWithPaymentResponseEvidenceHandled()
             throws NotificationClientException {
         setupIdamUserResponse();
 
@@ -161,15 +159,13 @@ class PaymentsServiceTest {
                 .build();
         when(pdfManagementService
                 .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
-        when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                .thenReturn(PaymentStatus.SUCCESS.getName());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
                         .build()));
         when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
-        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
@@ -179,7 +175,36 @@ class PaymentsServiceTest {
     }
 
     @Test
-    void shouldRetrieveAndUpdateCaveatDataWithPaymentResponse() throws NotificationClientException {
+    void shouldRetrieveAndUpdateGrantDataWithFailedPaymentResponse() {
+        setupIdamUserResponse();
+
+        HashMap<String, Object> caseData = new HashMap();
+        caseData.put("registryLocation", "ctsc");
+        caseData.put("languagePreferenceWelsh", "No");
+        caseData.put("applicationType", "Solicitor");
+        caseData.put("solsSolicitorEmail", "solsSolicitorEmail@probate-test.com");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = CaseDetails.builder()
+                .id(0L)
+                .data(caseData)
+                .build();
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+        when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
+                CasePayment.builder()
+                        .status(PaymentStatus.FAILED)
+                        .build()));
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoFailedPayment();
+        paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
+
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+                any(), any(),
+                any(), any(), any());
+        verify(documentTransformer, times(0)).addDocument(any(), any(), any());
+    }
+
+    @Test
+    void shouldRetrieveAndUpdateCaveatDataWithSuccessPaymentResponse() throws NotificationClientException {
         setupIdamUserResponse();
 
         HashMap<String, Object> caseData = new HashMap();
@@ -198,20 +223,47 @@ class PaymentsServiceTest {
                         .build())
                 .build();
         when(caveatNotificationService.solsCaveatRaise(any())).thenReturn(response);
-        when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                .thenReturn(PaymentStatus.SUCCESS.getName());
         when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
         List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                 CasePayment.builder()
                         .status(PaymentStatus.SUCCESS)
                         .build()));
         when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
-        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
         verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
                 any(), any(),
                 any(), any(), any());
+    }
+
+    @Test
+    void shouldRetrieveAndUpdateCaveatDataWithFailedPaymentResponse() throws NotificationClientException {
+        setupIdamUserResponse();
+
+        HashMap<String, Object> caseData = new HashMap();
+        caseData.put("registryLocation", "ctsc");
+        caseData.put("languagePreferenceWelsh", "No");
+        caseData.put("applicationType", "Solicitor");
+        caseData.put("caveatorEmailAddress", "solsSolicitorEmail@probate-test.com");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = CaseDetails.builder()
+                .id(0L)
+                .data(caseData)
+                .build();
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+        when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
+                CasePayment.builder()
+                        .status(PaymentStatus.FAILED)
+                        .build()));
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoFailedPayment();
+        paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
+
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+                any(), any(),
+                any(), any(), any());
+        verify(caveatNotificationService, times(0)).solsCaveatRaise(any());
     }
 
     @Test
@@ -230,15 +282,13 @@ class PaymentsServiceTest {
                     .build();
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
             when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
-            when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                    .thenReturn(PaymentStatus.SUCCESS.getName());
             when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
             List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                     CasePayment.builder()
                             .status(PaymentStatus.SUCCESS)
                             .build()));
             when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
-            ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
+            ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
             paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
             verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(),
@@ -263,15 +313,13 @@ class PaymentsServiceTest {
                     .build();
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
             when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
-            when(casePaymentBuilder.getPaymentStatusByServiceRequestStatus("paymentStatus"))
-                    .thenReturn(PaymentStatus.SUCCESS.getName());
             when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
             List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                     CasePayment.builder()
                             .status(PaymentStatus.SUCCESS)
                             .build()));
             when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
-            ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDto();
+            ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
             paymentsService.updateCaseFromServiceRequest(responseDto, STANDING_SEARCH);
 
             verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(),
@@ -287,7 +335,7 @@ class PaymentsServiceTest {
         when(idamApi.getUserDetails(any())).thenReturn(responseEntity);
     }
 
-    private ServiceRequestUpdateResponseDto getServiceRequestUpdateResponseDto() {
+    private ServiceRequestUpdateResponseDto getServiceRequestUpdateResponseDtoSuccessPayment() {
         ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
                 .serviceRequestReference("2020-1599477846961")
                 .ccdCaseNumber("1661448513999408")
@@ -299,6 +347,23 @@ class PaymentsServiceTest {
                         .paymentMethod("payment by account")
                         .caseReference("example of case ref")
                         .accountNumber("PBA123")
+                        .build())
+                .build();
+        return responseDto;
+    }
+
+    private ServiceRequestUpdateResponseDto getServiceRequestUpdateResponseDtoFailedPayment() {
+        ServiceRequestUpdateResponseDto responseDto = ServiceRequestUpdateResponseDto.builder()
+                .serviceRequestReference("2020-1599477846961")
+                .ccdCaseNumber("1661448513999408")
+                .serviceRequestAmount(BigDecimal.valueOf(50.00))
+                .serviceRequestStatus("Not paid")
+                .serviceRequestPaymentResponseDto(ServiceRequestPaymentResponseDto.builder()
+                        .paymentAmount(BigDecimal.valueOf(50.00))
+                        .paymentReference("RC-1234")
+                        .paymentMethod("card")
+                        .caseReference("example of case ref")
+                        .accountNumber("")
                         .build())
                 .build();
         return responseDto;
