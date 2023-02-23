@@ -66,34 +66,35 @@
           }
         ]
       },
-      "solsPBAPaymentReference": "appref-PAY1"
-    },
-    "registrarDirections": [
-      {
-        "id": "714db563-8dba-4a8f-ac58-ce6bb54dc3d8",
-        "value": {
-          "decision": "refusal",
-          "addedDateTime": "2023-02-16T10:45:16.573996406",
-          "furtherInformation": "dddddd"
+      "solsPBAPaymentReference": "appref-PAY1",
+      "registrarDirections": [
+        {
+          "id": "714db563-8dba-4a8f-ac58-ce6bb54dc3d8",
+          "value": {
+            "addedDateTime": "2023-02-16T10:45:16.573996406",
+            "decision": "probateRefused",
+            "furtherInformation": "dddddd"
+          }
+        },
+        {
+          "id": "1824a3fa-2d30-4765-955f-2e90ecc2551f",
+          "value": {
+            "addedDateTime": "2023-02-16T10:47:14.479068153",
+            "decision": "refusal"
+          }
+        },
+        {
+          "id": "37146d64-a49b-4a11-944d-46a73f1c7858",
+          "value": {
+            "addedDateTime": "2023-02-16T10:47:26.725707963",
+            "decision": "lostWill"
+          }
         }
-      },
-      {
-        "id": "1824a3fa-2d30-4765-955f-2e90ecc2551f",
-        "value": {
-          "decision": "refusal",
-          "addedDateTime": "2023-02-16T10:47:14.479068153"
-        }
-      },
-      {
-        "id": "37146d64-a49b-4a11-944d-46a73f1c7858",
-        "value": {
-          "decision": "lostWill",
-          "addedDateTime": "2023-02-16T10:47:26.725707963"
-        }
+      ],
+      "registrarDirectionToAdd": {
+        "decision": "otherOrder",
+        "furtherInformation": "eeeee"
       }
-    ],
-    "registrarDirectionToAdd": {
-      "addedDateTime": "2023-02-16T17:45:16.573996406"
     }
   }
 }
