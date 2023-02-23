@@ -67,6 +67,15 @@ Scenario(scenarioName, async function ({I}) {
 
     const caseRef = await I.getCaseRefFromUrl();
 
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, deceasedTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, caseDetailsTabConfig, createGrantOfProbateConfig);
+    await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
+    await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
+    await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
+
     nextStepName = 'Registrar\'s decision';
     await I.logInfo(scenarioName, nextStepConfig, caseRef);
     await I.chooseNextStep(nextStepName);
