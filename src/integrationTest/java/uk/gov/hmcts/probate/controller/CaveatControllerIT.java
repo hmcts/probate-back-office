@@ -27,7 +27,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -293,4 +292,5 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
     }
+    
 }
