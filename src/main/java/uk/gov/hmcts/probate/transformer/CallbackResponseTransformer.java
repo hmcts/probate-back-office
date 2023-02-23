@@ -1092,7 +1092,7 @@ public class CallbackResponseTransformer {
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
-            .registrarDirections(getForEmptyCollection(caseData.getRegistrarDirections()));
+            .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()));
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1657,11 +1657,11 @@ public class CallbackResponseTransformer {
                 .caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
-    private List getForEmptyCollection(List collectionMembers) {
+    private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
+            List<CollectionMember<RegistrarDirection>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
         }
-
         return collectionMembers;
     }
 }

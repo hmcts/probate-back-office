@@ -305,7 +305,7 @@ public class CaveatCallbackResponseTransformer {
             .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
             .dxNumber(caveatData.getDxNumber())
             .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
-            .registrarDirections(caveatData.getRegistrarDirections());
+            .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()));
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -376,4 +376,13 @@ public class CaveatCallbackResponseTransformer {
             .templateName(templateName)
             .build());
     }
+
+    private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
+            List<CollectionMember<RegistrarDirection>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
+
 }
