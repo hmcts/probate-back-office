@@ -86,6 +86,12 @@ public class TaskStateRenderer {
     private static final String IHT_400421 = "IHT400421";
     private static final String LIST_ITEM_START = "<li>";
     private static final String LIST_ITEM_END = "</li>";
+    private static final String SEND_DOCS_GRID = "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+            + "<p class=\"govuk-body-s\">Send documents<br/><sendDocsLink/></p>"
+            + "</div><div class=\"govuk-grid-column-one-third\">"
+            + "<status-sendDocuments/>"
+            + "</div></div>\n"
+            + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
     private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
@@ -126,6 +132,7 @@ public class TaskStateRenderer {
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
 
+
         return html == null ? null : html
                 .replaceFirst("<addSolicitorLink/>",
                     renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
@@ -141,8 +148,7 @@ public class TaskStateRenderer {
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
-                .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
-                .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
+                .replaceFirst("<sendDocs/>", renderSendDoc(sendDocsState, caseIdStr, details, SEND_DOCS_GRID))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
@@ -206,7 +212,15 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgTitle/>", taskState.displayText);
     }
 
+    String renderSendDoc(TaskState sendDocsState, String caseId, CaseDetails details, String grid){
+        if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
+            return "";
+        }
+       return grid.replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseId, details))
+               .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState));
+    }
     String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
+
         if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
             return DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE,"");
         }
