@@ -41,6 +41,6 @@ echo "XUI_SYSTEM_USER_PASSWORD=$(az keyvault secret show --vault-name rpx-aat -o
 echo "XUI_LD_ID=$(az keyvault secret show --vault-name rpx-aat -o tsv --query value --name launch-darkly-client-id)" >> .aat-env
 
 #ccd exports
-echo "API_GATEWAY_IDAM_SECRET= $(az keyvault secret show --vault-name ccd-aat -o tsv --query value --name ccd-api-gateway-oauth2-client-secret)" >> .aat-env
+echo "API_GATEWAY_IDAM_SECRET=$(az keyvault secret show --vault-name ccd-aat -o tsv --query value --name ccd-api-gateway-oauth2-client-secret)" >> .aat-env
 echo "CCD_IDAM_REDIRECT_URL=https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect" >> .aat-env
 echo "CCD_DEFINITION_STORE_API_BASE_URL=http://ccd-definition-store-api-aat.service.core-compute-aat.internal" >> .aat-env

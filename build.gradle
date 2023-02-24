@@ -501,7 +501,7 @@ task buildAllXlsx(type: Exec) {
   outputs.dir project.file('jsonToXLS')
 }
 
-// Build the all excel files.
+//import all excel files.
 task importAllXlsx(type: Exec) {
   doFirst() {
     "sh bin/variables/load-local-environment-variables.sh".execute()
@@ -517,8 +517,6 @@ task importAllXlsx(type: Exec) {
   }
 
   commandLine project.file("ccdImports/conversionScripts/importAllXLS.sh")
-
-  dependsOn buildAllXlsx
 }
 
 bootWithCCD {
