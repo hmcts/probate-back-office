@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.exception.ConcurrentDataUpdateException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.JurisdictionId;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.reform.ccd.client.model.Event;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CaseData;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -63,7 +65,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getUserId(),
                 JurisdictionId.PROBATE.name(),
                 caseType,
-                ImmutableMap.of("case.legacyId", legacyId.toString()));
+                java.util.Map.of("case.legacyId", legacyId.toString()));
         if (caseDetails == null || caseDetails.isEmpty()) {
             return Optional.empty();
         }
@@ -74,7 +76,8 @@ public class CcdClientApi implements CoreCaseDataService {
     }
 
     @Override
-    public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, CaseData caseData, EventId eventId,
+    public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, LocalDateTime lastModified,
+                                              CaseData caseData, EventId eventId,
                                               SecurityDTO securityDTO, String description, String summary) {
         log.info("Update case as for caseType: {}, caseId: {}, eventId: {}",
                 caseType.getName(), caseId, eventId.getName());
@@ -89,6 +92,11 @@ public class CcdClientApi implements CoreCaseDataService {
                 caseId,
                 eventId.getName()
         );
+        //check case not updated in-between DTSPB-3367
+        if (startEventResponse.getCaseDetails().getLastModified().isAfter(lastModified)) {
+            throw new ConcurrentDataUpdateException(
+                String.format("caseId: %s not updated as working with out of date case details", caseId));
+        }
         CaseDataContent caseDataContent = createCaseDataContent(caseData, eventId, startEventResponse,
                 description, summary);
         log.info("Submit event to CCD for Caseworker, caseType: {}, caseId: {}",
