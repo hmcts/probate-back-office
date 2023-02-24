@@ -1,11 +1,5 @@
 #!/bin/sh
 
-#IMPORTER_USERNAME=${IMPORTER_USERNAME:-servicesatcdm+probate@gmail.com}
-#IMPORTER_PASSWORD=${IMPORTER_PASSWORD:-Probate20}
-#IDAM_URI=${IDAM_API_URL:-https://idam-api.aat.platform.hmcts.net}
-#REDIRECT_URI=${CCD_IDAM_REDIRECT_URL:-https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect}
-#CLIENT_SECRET=${API_GATEWAY_IDAM_SECRET:-vUstam6brAsT38ranuwRut65rakec4u6}
-
 IMPORTER_USERNAME=${IMPORTER_USERNAME:-ccd.docker.default@hmcts.net}
 IMPORTER_PASSWORD=${IMPORTER_PASSWORD:-Pa55word11}
 IDAM_URI=${IDAM_API_URL:-http://localhost:5000}
