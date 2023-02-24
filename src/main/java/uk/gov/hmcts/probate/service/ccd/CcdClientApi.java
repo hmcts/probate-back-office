@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service.ccd;
 
-import com.google.common.collect.ImmutableMap;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

@@ -317,8 +317,6 @@ class CcdClientApiTest {
         LocalDateTime timeNewer = timeLastModified.plusNanos(1);
         StartEventResponse startEventResponse = Mockito.mock(StartEventResponse.class);
 
-        EventId eventId = EventId.DEATH_RECORD_VERIFIED;
-
         when(coreCaseDataApi.startEventForCaseWorker(
             eq(AUTHORISATION),
             eq(SERVICE_AUTHORISATION),
@@ -351,7 +349,7 @@ class CcdClientApiTest {
             .userId(USER_ID)
             .build();
 
-
+        EventId eventId = EventId.DEATH_RECORD_VERIFIED;
         assertThrows(ConcurrentDataUpdateException.class,
             () -> {
                 ccdClientApi.updateCaseAsCaseworker(
