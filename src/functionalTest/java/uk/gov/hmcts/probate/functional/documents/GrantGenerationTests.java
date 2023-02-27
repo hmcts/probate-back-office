@@ -32,6 +32,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String TITLE = "Captain";
     private static final String HONOURS = "OBE";
     private static final String ADD_EXEC_ONE = "Add Ex First Name 1 Add Ex Last Name 1";
+    private static final String ADD_EXEC_ONE_FIRST_NAME = "Add Executor First1";
+    private static final String ADD_EXEC_ONE_LAST_NAME = "Add Executor Last1";
+    private static final String ADD_EXEC_TWO_FIRST_NAME = "Add Executor First2";
+    private static final String ADD_EXEC_TWO_LAST_NAME = "Add Executor Last2";
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_TWO = "Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
@@ -891,6 +895,28 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
+    public void verifySuccessForGetDigitalGrantWithMultipleExecutorsFirstLastName() throws IOException {
+        final String response =
+                getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutorsFLName.json",
+                GENERATE_GRANT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(ADD_EXEC_ONE_FIRST_NAME));
+        assertTrue(response.contains(ADD_EXEC_ONE_LAST_NAME));
+        assertTrue(response.contains(ADD_EXEC_TWO_FIRST_NAME));
+        assertTrue(response.contains(ADD_EXEC_TWO_LAST_NAME));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON_OR_ABOUT));
+
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(LIMITATION_MESSAGE));
+        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertTrue(!response.contains(PA));
+    }
+
+    @Test
     public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() throws IOException {
         final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
             GENERATE_GRANT);
@@ -1020,6 +1046,29 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(!response.contains(PA));
         assertTrue(!response.contains(POWER_RESERVED));
         assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertTrue(!response.contains(TITLE));
+        assertTrue(!response.contains(HONOURS));
+
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsFirstLastName() throws IOException {
+        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutorsFLName.json",
+                GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(PRIMARY_APPLICANT));
+        assertTrue(response.contains(ADD_EXEC_ONE_FIRST_NAME));
+        assertTrue(response.contains(ADD_EXEC_ONE_LAST_NAME));
+        assertTrue(response.contains(ADD_EXEC_TWO_FIRST_NAME));
+        assertTrue(response.contains(ADD_EXEC_TWO_LAST_NAME));
+        assertTrue(response.contains(SOLICITOR_INFO1));
+        assertTrue(response.contains(SOLICITOR_INFO2));
+        assertTrue(response.contains(DIED_ON_OR_ABOUT));
+
+        assertTrue(!response.contains(WILL_MESSAGE));
+        assertTrue(!response.contains(PA));
         assertTrue(!response.contains(TITLE));
         assertTrue(!response.contains(HONOURS));
 
