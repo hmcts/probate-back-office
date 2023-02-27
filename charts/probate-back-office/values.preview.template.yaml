@@ -231,7 +231,6 @@ java:
     PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-v11-aat.postgres.database.azure.com
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     PROBATE_POSTGRESQL_PORT: 5432
-    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
