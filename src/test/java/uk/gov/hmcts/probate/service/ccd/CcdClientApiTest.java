@@ -159,11 +159,12 @@ class CcdClientApiTest {
 
     @Test
     void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
+
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
         CaseDetails caseDetails1 = CaseDetails.builder().build();
         CaseDetails caseDetails2 = CaseDetails.builder().build();
-
+        assertThrows(IllegalStateException.class, () -> {
         when(coreCaseDataApi.searchForCaseworker(
             any(String.class),
             any(String.class),
@@ -178,7 +179,6 @@ class CcdClientApiTest {
             .userId(USER_ID)
             .build();
 
-        assertThrows(IllegalStateException.class, () -> {
             ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
         });
     }
