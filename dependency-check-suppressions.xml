@@ -438,13 +438,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-core-2.13.4.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
-        <cve>CVE-2022-45688</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: json-20210307.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
@@ -452,7 +445,7 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: json-path-2.7.0.jar
+   file name: json-path-2.6.0.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.jayway\.jsonpath/json\-path@.*$</packageUrl>
         <cpe>cpe:/a:json-java_project:json-java</cpe>
@@ -462,6 +455,13 @@
    file name: json-smart-2.4.8.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/net\.minidev/json\-smart@.*$</packageUrl>
+        <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: jackson-core-2.13.2.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
         <cve>CVE-2022-45688</cve>
     </suppress>
 </suppressions>
