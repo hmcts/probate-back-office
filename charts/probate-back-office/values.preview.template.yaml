@@ -227,10 +227,10 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   environment:
-    PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-v11-aat
-    PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-v11-aat.postgres.database.azure.com
-    PROBATE_POSTGRESQL_DATABASE: probatemandb
-    PROBATE_POSTGRESQL_PORT: 5432
+    PROBATE_POSTGRESQL_USER: "hmcts"
+    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
+    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
+    PROBATE_POSTGRESQL_DATABASE: probate
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
@@ -293,6 +293,4 @@ java:
           alias: spring.security.oauth2.client.provider.homeoffice.authorization-uri
         - name: probate-storage-account-primary-connection-string
           alias: PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING
-        - name: probatemandb-POSTGRES-PASS
-          alias: spring.datasource.password
 
