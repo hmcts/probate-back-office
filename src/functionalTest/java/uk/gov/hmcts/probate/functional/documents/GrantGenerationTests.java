@@ -1053,7 +1053,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftWithMultipleExecutorsFirstLastName() throws IOException {
-        final String response = getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutorsFLName.json",
+        final String response =
+                getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExecutorsFLName.json",
                 GENERATE_GRANT_DRAFT);
 
         assertTrue(response.contains(REGISTRY_ADDRESS));
