@@ -47,18 +47,18 @@ You can run your local development environment (LDE) in two ways:
 ### - Option 1: AAT support services
 
 #### Steps:
+If this is your first run, stop (or clean out) existing Docker containers.
 
 1. `$ unset USE_LOCAL_SUPPORT_SERVICES`
 2. Ensure your VPN is on.
-3. Stop (or clean out) existing Docker containers. 
-4. Run:
+3. Run (you will probably not need to do this every time):
 ```bash
 az login
 az acr login --name hmctspublic --subscription DCD-CNP-Prod
 az acr login --name hmctsprivate --subscription DCD-CNP-Prod
 ```
-5. Run `$ ./gradlew bootWithCcd`
-6. Wait until tasks have stopped running in the terminal.
+4. Run `$ ./gradlew bootWithCcd`
+5. Wait until tasks have stopped running in the terminal.
 
 #### Using the setup:
 
