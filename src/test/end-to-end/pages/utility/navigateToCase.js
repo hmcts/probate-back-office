@@ -89,7 +89,7 @@ module.exports = async function (caseRef) {
     // await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
-    await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     await I.wait(testConfig.ManualDelayMedium);
     await I.rejectCookies();
 };
