@@ -33,7 +33,6 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
             return "";
         }
         final CaseData caseData = details.getData();
-        final String caseIdStr = details.getId() == null ? "" : details.getId().toString();
         final String submitDate = caseData.getApplicationSubmittedDate();
         final LocalDate submitLocalDate =
                 submitDate == null || submitDate.equals("") ? null : LocalDate.parse(submitDate);
