@@ -22,6 +22,8 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -107,6 +109,7 @@ class CcdClientApiTest {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
         CaseDetails caseDetails = CaseDetails.builder().build();
+        List<CaseDetails> caseDetailsList = Arrays.asList(caseDetails);
 
         when(coreCaseDataApi.searchForCaseworker(
             any(String.class),
@@ -114,7 +117,7 @@ class CcdClientApiTest {
             any(String.class),
             any(String.class),
             any(String.class),
-            any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails));
+            any(Map.class))).thenReturn(caseDetailsList);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation(AUTHORISATION)
@@ -126,7 +129,6 @@ class CcdClientApiTest {
             ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
 
         assertThat(actualCaseDetails.get(), equalTo(caseDetails));
-
 
     }
 
@@ -141,7 +143,7 @@ class CcdClientApiTest {
             any(String.class),
             any(String.class),
             any(String.class),
-            any(ImmutableMap.class))).thenReturn(Collections.EMPTY_LIST);
+            any(Map.class))).thenReturn(Collections.EMPTY_LIST);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation(AUTHORISATION)
@@ -159,27 +161,25 @@ class CcdClientApiTest {
 
     @Test
     void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
-
-        CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
         CaseDetails caseDetails1 = CaseDetails.builder().build();
         CaseDetails caseDetails2 = CaseDetails.builder().build();
+
+        when(coreCaseDataApi.searchForCaseworker(
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(Map.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation(AUTHORISATION)
+            .serviceAuthorisation(SERVICE_AUTHORISATION)
+            .userId(USER_ID)
+            .build();
         assertThrows(IllegalStateException.class, () -> {
-            when(coreCaseDataApi.searchForCaseworker(
-                any(String.class),
-                any(String.class),
-                any(String.class),
-                any(String.class),
-                any(String.class),
-                any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
-
-            SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation(AUTHORISATION)
-                .serviceAuthorisation(SERVICE_AUTHORISATION)
-                .userId(USER_ID)
-                .build();
-
-            ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+            ccdClientApi.retrieveCaseByLegacyId(CcdCaseType.GRANT_OF_REPRESENTATION.getName(), legacyId, securityDTO);
         });
     }
 

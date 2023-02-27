@@ -18,6 +18,7 @@ import uk.gov.hmcts.reform.probate.model.cases.CaseData;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.reform.probate.model.cases.JurisdictionId.PROBATE;
@@ -64,7 +65,7 @@ public class CcdClientApi implements CoreCaseDataService {
                 securityDTO.getUserId(),
                 JurisdictionId.PROBATE.name(),
                 caseType,
-                java.util.Map.of("case.legacyId", legacyId.toString()));
+                Map.of("case.legacyId", legacyId.toString()));
         if (caseDetails == null || caseDetails.isEmpty()) {
             return Optional.empty();
         }
