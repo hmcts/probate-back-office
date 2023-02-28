@@ -565,6 +565,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
+    public void verifySuccessForGenerateGrantReissueForMutipleExecutorFName() throws IOException {
+        final String response =
+                generateGrantDocument("solicitorPayloadNotificationsMultipleExecutorsFLName.json",
+                "/document/generate-grant-reissue");
+        assertTrue(response.contains("Add Executor First1"));
+    }
+
+
+    @Test
     public void verifySuccessForGetIntestacyGrantForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = getFirstProbateDocumentsText(DEFAULT_INTESTACY_CARDIFF_PAYLOAD, GENERATE_GRANT);
