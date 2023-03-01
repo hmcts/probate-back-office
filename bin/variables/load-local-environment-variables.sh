@@ -7,8 +7,12 @@ set -eu
 
 # Safe urls
 echo "EVIDENCE_MANAGEMENT_HOST=http://dm-store-aat.service.core-compute-aat.internal" >> .aat-env
+echo "EVIDENCE_MANAGEMENT_URL=http://dm-store-aat.service.core-compute-aat.internal" >> .aat-env
+echo "CASE_DOCUMENT_AM_URL=http://ccd-case-document-am-api-aat.service.core-compute-aat.internal" >> .aat-env
 echo "FEE_API_URL=http://fees-register-api-aat.service.core-compute-aat.internal" >> .aat-env
 echo "S2S_AUTH_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal" >> .aat-env
+echo "SERVICE_AUTH_PROVIDER_BASE_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal" >> .aat-env
+echo "USER_AUTH_PROVIDER_OAUTH2_URL=https://idam-api.aat.platform.hmcts.net" >> .aat-env
 echo "PDF_SERVICE_URL=http://cmc-pdf-service-aat.service.core-compute-aat.internal" >> .aat-env
 echo "SEND_LETTER_SERIVCE_BASEURL=http://rpe-send-letter-service-aat.service.core-compute-aat.internal" >> .aat-env
 echo "CCD_DRAFT_STORE_URL=http://draft-store-service-aat.service.core-compute-aat.internal" >> .aat-env
@@ -30,6 +34,15 @@ echo "AUTH_TOKEN_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv
 echo "AUTH_TOKEN_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name authTokenPassword)" >> .aat-env
 echo "IDAM_SECRET=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name idam-secret-probate)" >> .aat-env
 echo "S2S_AUTH_TOTP_SECRET=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name s2sAuthTotpSecret)" >> .aat-env
+echo "CW_USER_ID=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name cwUserId)" >> .aat-env
+echo "CW_USER_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name cwUserEmail)" >> .aat-env
+echo "CW_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name cwUserPass)" >> .aat-env
+echo "SCHEDULER_CASEWORKER_USERNAME=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name schedulerCaseWorkerUser)" >> .aat-env
+echo "SCHEDULER_CASEWORKER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name schedulerCaseWorkerPass)" >> .aat-env
+echo "SOL_USER_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitorUserEmail)" >> .aat-env
+echo "SOL_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitorUserPass)" >> .aat-env
+echo "SOL2_USER_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitor2UserEmail)" >> .aat-env
+echo "SOL2_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name solicitor2UserPass)" >> .aat-env
 
 # xui variables fetched from rpx-aat vault:
 echo "XUI_SYSTEM_USER_NAME=$(az keyvault secret show --vault-name rpx-aat -o tsv --query value --name system-user-name)" >> .aat-env

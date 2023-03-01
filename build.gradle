@@ -138,6 +138,24 @@ task smoke(type: Test) {
 }
 
 task functional(type: Test) {
+  //uncomment to get local FTs working
+  //***
+  if (System.getenv("PACT_BRANCH_NAME") == null) {
+    doFirst() {
+      "sh bin/variables/load-local-environment-variables.sh".execute()
+    }
+    if (project.file('./.aat-env').exists()) {
+      project.file('./.aat-env').readLines().each() {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+        println key +":"+ value
+      }
+    }
+  }
+  //***
+
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
@@ -397,7 +415,7 @@ dependencies {
   contractTestAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
   // Provides fast-reload of the probate service upon edit & compile during local development
-  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+  // cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 
   integrationTestImplementation sourceSets.main.runtimeClasspath
   integrationTestImplementation sourceSets.test.runtimeClasspath
@@ -528,6 +546,12 @@ bootWithCCD {
     }
 
     dependsOn buildAllXlsx
+  }
+}
+
+task reloadLocalEnvVars(type: Test) {
+  doFirst() {
+    "sh bin/variables/load-local-environment-variables.sh".execute()
   }
 }
 
