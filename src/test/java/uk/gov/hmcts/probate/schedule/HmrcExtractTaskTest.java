@@ -30,12 +30,12 @@ class HmrcExtractTaskTest {
 
     @InjectMocks
     private HmrcExtractTask hmrcExtractTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
+    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(0L));
     private String adhocDate = "2022-09-05";
     private String adhocToDate = "2022-09-10";
 
     @Test
-    void shouldReactivateDormantCasesDateRange() {
+    void shouldPerformHmrcExtractDateRange() {
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform hmrc data extract from date finished");
         hmrcExtractTask.run();
@@ -46,7 +46,7 @@ class HmrcExtractTaskTest {
     }
 
     @Test
-    void shouldReactivateDormantCasesForAdhocDate() {
+    void shouldPerformHmrcExtractForAdhocDate() {
         hmrcExtractTask.adHocJobFromDate = "2022-09-05";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform hmrc data extract from date finished");
@@ -58,7 +58,7 @@ class HmrcExtractTaskTest {
     }
 
     @Test
-    void shouldReactivateDormantCasesForAdhocDateRange() {
+    void shouldPerformHmrcExtractForAdhocDateRange() {
         hmrcExtractTask.adHocJobFromDate = "2022-09-05";
         hmrcExtractTask.adHocJobToDate = "2022-09-10";
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
@@ -71,7 +71,7 @@ class HmrcExtractTaskTest {
     }
 
     @Test
-    void shouldThrowClientExceptionWithBadRequestForReactivateDormantCasesWithIncorrectDateFormat() {
+    void shouldThrowClientExceptionWithBadRequestForHmrcExtractWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(dataExtractDateValidator)
                 .dateValidator(date, date);
         hmrcExtractTask.run();
@@ -80,7 +80,7 @@ class HmrcExtractTaskTest {
     }
 
     @Test
-    void shouldThrowExceptionForReactivateDormantCases() {
+    void shouldThrowExceptionForHmrcExtract() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
                 .dateValidator(date, date);
         hmrcExtractTask.run();
