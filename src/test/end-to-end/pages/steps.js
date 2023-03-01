@@ -65,17 +65,15 @@ module.exports = function () {
         caseProgressClickSubmitAndSignOut: steps.caseProgress.clickSubmitAndSignOut,
         caseProgressFeePayment: steps.caseProgress.feePayment,
         caseProgressContinueWithoutChangingAnything: steps.caseProgress.continueWithoutChangingAnything,
-
         caseProgressAppStoppedDetails: steps.caseProgressAppStopped.appStoppedDetails,
         caseProgressAppStoppedTabCheck: steps.caseProgressAppStopped.appStoppedTabCheck,
-
         caseProgressStandardDeceasedDetailsCheck: steps.caseProgressStandard.deceasedDetailsCheck,
-
         caseProgressStopEscalateIssueDeceasedDetailsCheck: steps.caseProgressStopEscalateIssue.deceasedDetailsCheck,
         caseProgressStopEscalateIssueStoppedTabCheck: steps.caseProgressStopEscalateIssue.stoppedTabCheck,
         caseProgressStopEscalateIssueAddCaseStoppedReason: steps.caseProgressStopEscalateIssue.addCaseStoppedReason,
+        caseProgressStopEscalateIssueCaseStopAgainReason: steps.caseProgressStopEscalateIssue.addCaseStoppedAgainReason,
+        caseProgressStopEscalateIssueAddCaseResolveStop: steps.caseProgressStopEscalateIssue.addResolveStopDetails,
         caseProgressStopEscalateIssueEscalatedTabCheck: steps.caseProgressStopEscalateIssue.escalatedTabCheck,
-
         checkMyAnswers: steps.checkYourAnswers.checkYourAnswers,
         seeCaseDetails: steps.caseDetails.caseDetails,
         dontSeeCaseDetails: steps.caseDetails.checkCaseDetailsDoNotAppear,
@@ -104,8 +102,8 @@ module.exports = function () {
         deceasedDetailsPage4: steps.solicitorApplyProbate.deceasedDetails.page4,
         grantOfProbatePage1: steps.solicitorApplyProbate.grantOfProbate.page1,
         grantOfProbatePage2: steps.solicitorApplyProbate.grantOfProbate.page2,
-        verifyTitleAndClearingTypeOption: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
-        verifyTitleAndClearingTypeOptions: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
+        verifyTitleAndClearingTypeOptionPage: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOption,
+        verifyTitleAndClearingTypeOptionsPage: steps.solicitorApplyProbate.grantOfProbate.verifyTitleAndClearingTypeOptions,
         grantOfProbatePage3: steps.solicitorApplyProbate.grantOfProbate.page3,
         grantOfProbatePage4: steps.solicitorApplyProbate.grantOfProbate.page4,
         grantOfProbatePage5: steps.solicitorApplyProbate.grantOfProbate.page5,
@@ -139,6 +137,13 @@ module.exports = function () {
         navigateToCase: steps.utility.navigateToCase,
         rejectCookies: steps.utility.rejectCookies,
         checkAmendApplicantDetailsForSolCreatedApp: steps.createGrantOfProbate.checkAmendApplicantDetailsForSolCreatedApp,
-        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp
+        checkAmendDomAndAssetsForSolCreatedApp: steps.createGrantOfProbate.checkAmendDomAndAssetsForSolCreatedApp,
+        shareCaseSelection: steps.shareCase.shareCaseSelection,
+        authenticateUserShareCase: steps.IDAM.signInShareCase,
+        verifyShareCase: steps.shareCase.verifyShareCase,
+        shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
+        shareCaseDelete: steps.shareCase.shareCaseDelete,
+        chooseResolveStop: steps.resolveStop.resolveStop,
+        probateStopCase: steps.stopCaseProbate.stopCaseProbate
     });
 };

@@ -72,15 +72,19 @@ public class ZipFileService {
         log.info("generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
-        try (FileOutputStream fos = new FileOutputStream(tempFile);
+        try (final FileOutputStream fos = new FileOutputStream(tempFile);
             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
+                log.info("Starting for case {}", returnedCaseDetails.getId());
                 getWillDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
             }
             getSmeeAndFordCaseData(zipOut, cases, fromDate);
             generateManifestFile(zipOut, manifestDataList);
+            zipOut.closeEntry();
+            zipOut.close();
+            fos.close();
             blobUpload.uploadFile(tempFile);
         } catch (IOException e) {
             log.error("Exception occurred while generating zip file ", e);
@@ -237,8 +241,8 @@ public class ZipFileService {
     }
 
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
-        return collectionMember.getValue().getType().equalsIgnoreCase(OTHER.getTemplateName())
-                && collectionMember.getValue().getSubtype().equalsIgnoreCase(WILL.getTemplateName());
+        return OTHER.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getType())
+                && WILL.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getSubtype());
     }
 
     private boolean filterUploadedDocs(CollectionMember<UploadDocument> collectionMember) {

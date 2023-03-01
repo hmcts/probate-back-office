@@ -20,7 +20,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+
 import java.io.IOException;
+
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -29,7 +31,7 @@ import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
 @PactTestFor(providerName = "acc_manageCaseAssignment", port = "8893")
 @PactFolder("pacts")
 @SpringBootTest({
-        "aca.api.url : localhost:8893"
+    "aca.api.url : localhost:8893"
 })
 public class AssignCaseServiceConsumerTest {
 
@@ -58,20 +60,20 @@ public class AssignCaseServiceConsumerTest {
 
     @Pact(provider = "acc_manageCaseAssignment", consumer = "probate_backOffice")
     public RequestResponsePact generatePactFragmentForAssign(PactDslWithProvider builder)
-            throws JSONException, IOException {
+        throws JSONException, IOException {
         // @formatter:off
         return builder
-                .given("Assign a user to a case")
-                .uponReceiving("A request for that case to be assigned")
-                .method("POST")
-                .headers(SERVICE_AUTHORIZATION_HEADER, SERVICE_AUTH_TOKEN, AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN)
-                .body(createJsonObject(buildAssignCaseAccessRequest()))
-                .query("use_user_token=true")
-                .path("/case-assignments")
-                .willRespondWith()
-                .body(buildAssignCasesResponseDsl())
-                .status(HttpStatus.SC_CREATED)
-                .toPact();
+            .given("Assign a user to a case")
+            .uponReceiving("A request for that case to be assigned")
+            .method("POST")
+            .headers(SERVICE_AUTHORIZATION_HEADER, SERVICE_AUTH_TOKEN, AUTHORIZATION_HEADER, AUTHORIZATION_TOKEN)
+            .body(createJsonObject(buildAssignCaseAccessRequest()))
+            .query("use_user_token=true")
+            .path("/case-assignments")
+            .willRespondWith()
+            .body(buildAssignCasesResponseDsl())
+            .status(HttpStatus.SC_CREATED)
+            .toPact();
     }
 
     @Test
@@ -79,14 +81,14 @@ public class AssignCaseServiceConsumerTest {
     public void verifyAssignAccessToCase() {
 
         assignCaseAccessClient.assignCaseAccess(AUTHORIZATION_TOKEN, SERVICE_AUTH_TOKEN, Boolean.TRUE,
-                buildAssignCaseAccessRequest());
+            buildAssignCaseAccessRequest());
 
     }
 
     private DslPart buildAssignCasesResponseDsl() {
         return newJsonBody((o) -> {
             o.stringType("status_message",
-                    "Roles Role1,Role2 from the organisation policies successfully assigned to the assignee.");
+                "Roles Role1,Role2 from the organisation policies successfully assigned to the assignee.");
         }).build();
     }
 
@@ -96,10 +98,10 @@ public class AssignCaseServiceConsumerTest {
 
     private AssignCaseAccessRequest buildAssignCaseAccessRequest() {
         return AssignCaseAccessRequest
-                .builder()
-                .caseId(Long.toString(CASE_ID))
-                .assigneeId("0a5874a4-3f38-4bbd-ba4c")
-                .caseTypeId("PROBATE")
-                .build();
+            .builder()
+            .caseId(Long.toString(CASE_ID))
+            .assigneeId("0a5874a4-3f38-4bbd-ba4c")
+            .caseTypeId("PROBATE")
+            .build();
     }
 }

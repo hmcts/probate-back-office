@@ -4,7 +4,6 @@
 The Probate Back Office handles callbacks from the CCD data store to implement business logic for the Probate case type.
 
 ## Overview
-
 <p align="center">
 <a href="https://github.com/hmcts/probate-frontend">probate-frontend</a> • <a href="https://github.com/hmcts/probate-caveats-frontend">probate-caveats-frontend</a> • <b><a href="https://github.com/hmcts/probate-back-office">probate-back-office</a></b> • <a href="https://github.com/hmcts/probate-orchestrator-service">probate-orchestrator-service</a> • <a href="https://github.com/hmcts/probate-business-service">probate-business-service</a> • <a href="https://github.com/hmcts/probate-submit-service">probate-submit-service</a> • <a href="https://github.com/hmcts/probate-persistence-service">probate-persistence-service</a>
 </p>
@@ -36,9 +35,49 @@ To build the project execute the following command:
 ```bash
   ./gradlew build
 ```
-################################################################################################
-## NEW: CFT Lib environment with cftlib Docker as well as running IDAM simulator and CCD on JVM
-details in https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+## Local development environment (using CFT lib):
+Details of CFT lib here: https://github.com/hmcts/rse-cft-lib/blob/main/README.md
+
+You can run your local development environment (LDE) in two ways:
+1. AAT support services: You will be utilising AAT instances of support services.
+2. Local support services. You will be running a local dockerised instance of each of the support services.
+
+### Getting started:
+
+### - Option 1: AAT support services
+
+#### Steps:
+If this is your first run, stop (or clean out) existing Docker containers.
+
+1. `$ unset USE_LOCAL_SUPPORT_SERVICES`
+2. Ensure your VPN is on.
+3. Run (you will probably not need to do this every time):
+```bash
+az login
+az acr login --name hmctspublic --subscription DCD-CNP-Prod
+az acr login --name hmctsprivate --subscription DCD-CNP-Prod
+```
+4. Run `$ ./gradlew bootWithCcd`
+5. Wait until tasks have stopped running in the terminal.
+
+#### Using the setup:
+
+- Go to localhost:3000 for manage-cases and localhost:3001 for manage-org. 
+  Use the same login details you would use for AAT XUI services to login.
+
+#### Notes:
+
+- Upon running bootWithCcd, an env file (.aat-env) will be created/overwritten which contains all the
+AAT endpoints and secrets to call those endpoints. This file should never been push to the remote repository.
+
+- Running end-to-end (e2e) tests using this setup is WIP so continue to use the 'With Docker' setup if you want
+to run e2e tests locally. See DTSPB-3332.
+
+### - Option 2: Local support services
+
+Start by executing the following in your terminal:
+`$ export USE_LOCAL_SUPPORT_SERVICES=true`
+
 ##### Accessing databases
 
 Postgres is started on port 6432 (default) and can be accessed with user `postgres` password `postgres`
@@ -108,7 +147,6 @@ kill -9 PID_JUST_FOUND
 Also needs back office docker to bring up all services:
 ./bin/dev-cft-setup.sh
 ./bin/dev-cft-start.sh
-
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
 ## END: NEW ############################################################################################################
 ########################################################################################################################
@@ -119,6 +157,7 @@ Because the probate back office relies on CCD callbacks it must be run inside th
 
 Build the jar with:
 
+```
 ```
 ./gradlew assemble
 docker-compose build
@@ -632,7 +671,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE.md) f
 # PR XUI testing
 A sample xui url for BO testing on the deployed env is:
 
-https://xui-probate-back-office-pr-1809.service.core-compute-preview.internal
+https://xui-probate-back-office-pr-1809.preview.platform.hmcts.net
 
 # e2e Testing
 To run Probate Practitioner tests on ExUI locally do the following:

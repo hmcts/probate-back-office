@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:base", ":dependencyDashboard"],
+  "enabledManagers": ["helm-requirements","gradle-wrapper", "gradle", "nvm", "npm"],
+  "prConcurrentLimit": 6,
+  "labels": ["dependencies"],
+  "helm-requirements":
+  {
+    "fileMatch": ["\\Chart.yaml$"],
+    "aliases": {
+      "hmctspublic": "https://hmctspublic.azurecr.io/helm/v1/repo/"
+    }
+  },
+  "separateMajorMinor": false,
+  "packageRules": [
+    {
+      "matchPackageNames": ["ansi-regex"],
+      "allowedVersions": "<=5"
+    },
+    {
+      "matchPackageNames": ["redis"],
+      "allowedVersions": "<=3"
+    }
+  ],
+  "lockFileMaintenance": {
+    "enabled": false
+  },
+  "schedule": ["before 4pm"]
+}

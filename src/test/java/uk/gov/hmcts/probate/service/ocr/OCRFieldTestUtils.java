@@ -219,6 +219,10 @@ public class OCRFieldTestUtils {
 
     public List<OCRField> addAllMandatoryCaveatCitizenFields() {
         List<OCRField> ocrFields = new ArrayList<>();
+        OCRField field0 = OCRField.builder()
+            .name("legalRepresentative")
+            .value("false")
+            .description("Legal Representative").build();
         OCRField field1 = OCRField.builder()
             .name("deceasedForenames")
             .value("John")
@@ -248,6 +252,7 @@ public class OCRFieldTestUtils {
             .value("NW1 5LE")
             .description("Caveator address postcode").build();
 
+        ocrFields.add(field0);
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
@@ -262,6 +267,10 @@ public class OCRFieldTestUtils {
     public List<OCRField> addAllMandatoryCaveatSolicitorFields() {
         List<OCRField> ocrFields = new ArrayList<>();
         ocrFields.addAll(addAllMandatoryCaveatCitizenFields());
+        OCRField field0 = OCRField.builder()
+            .name("legalRepresentative")
+            .value("true")
+            .description("Legal Representative").build();
         OCRField field1 = OCRField.builder()
             .name("solsSolicitorRepresentativeName")
             .value("Mark Jones")
@@ -271,27 +280,19 @@ public class OCRFieldTestUtils {
             .value("MJ Solicitors")
             .description("Solicitor Firm Name").build();
         OCRField field3 = OCRField.builder()
-            .name("solsSolicitorAppReference")
-            .value("SOLS123456")
-            .description("Solicitor App Reference").build();
-        OCRField field4 = OCRField.builder()
             .name("solsSolicitorAddressLine1")
             .value("22 Palmer Street")
             .description("Solicitor address building and street").build();
-        OCRField field5 = OCRField.builder()
+        OCRField field4 = OCRField.builder()
             .name("solsSolicitorAddressPostCode")
             .value("NW1 5LA")
             .description("Solicitor address postcode").build();
-        OCRField field6 = OCRField.builder()
-            .name("solsSolicitorEmail")
-            .value("solicitor@probate-test.com")
-            .description("Solicitor Email Address").build();
+
+        ocrFields.add(field0);
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
         ocrFields.add(field4);
-        ocrFields.add(field5);
-        ocrFields.add(field6);
 
         return ocrFields;
     }
@@ -325,9 +326,7 @@ public class OCRFieldTestUtils {
 
     public HashMap<String, String> addAllFields(List<OCRField> ocrFields) {
         HashMap<String, String> ocrFieldValues = new HashMap<>();
-        ocrFields.forEach(ocrField -> {
-            ocrFieldValues.put(ocrField.getName(), ocrField.getValue());
-        });
+        ocrFields.forEach(ocrField -> ocrFieldValues.put(ocrField.getName(), ocrField.getValue()));
         return ocrFieldValues;
     }
 

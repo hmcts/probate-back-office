@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.6.10'
+    springBootVersion = '2.7.4'
   }
   repositories {
     jcenter()
@@ -14,15 +14,15 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.6.10'
-  id 'uk.gov.hmcts.java' version '0.12.2'
+  id 'org.springframework.boot' version '2.7.4'
+  id 'uk.gov.hmcts.java' version '0.12.39'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.538'
 }
 
 apply plugin: 'project-report'
@@ -112,6 +112,14 @@ sourceSets {
     }
     resources.srcDir file('src/contractTest/resources')
   }
+  integrationTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/integrationTest/java')
+    }
+    resources.srcDir file('src/integrationTest/resources')
+  }
 }
 
 test {
@@ -146,6 +154,14 @@ task caseCreator(type: Test) {
   finalizedBy aggregate
 }
 
+task integration(type: Test) {
+  description = "Runs integration tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+  useJUnitPlatform()
+}
+
 gitProperties {
   gitPropertiesDir = new File("${project.rootDir}/src/main/resources/uk/gov/hmcts/probate/sol")
   keys = ['git.commit.id','git.commit.time']
@@ -157,8 +173,8 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.6.10',
-        springBootStarterHateoas        : '2.6.3',
+        springBootVersion               : '2.7.4',
+        springBootStarterHateoas        : '2.7.4',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.13.2',
@@ -167,8 +183,8 @@ def versions = [
         restAssured                     : '4.4.0',
         lombok                          : '1.18.16',
         springDocOpenUi                 : '1.6.6',
-        springSecurityVersion           : '5.6.1',
-        probateCommonsVersion           : '1.4.4',
+        springSecurityVersion           : '5.7.3',
+        probateCommonsVersion           : '1.4.8',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
@@ -180,7 +196,7 @@ def versions = [
 ]
 
 jacocoTestReport {
-  executionData(test)
+  executionData(test,integration)
   reports {
     xml.required = true
     csv.required = false
@@ -191,7 +207,6 @@ jacocoTestReport {
 repositories {
   mavenLocal()
   mavenCentral()
-  jcenter()
   maven { url "https://repo.maven.apache.org/maven2" }
   maven { url "https://jitpack.io" }
 }
@@ -208,13 +223,6 @@ dependencyManagement {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.1"
   }
   dependencies {
-    //CVE-2021-22112
-    dependencySet(group: 'org.springframework.security', version: '5.6.1') {
-      entry 'spring-security-config'
-      entry 'spring-security-core'
-      entry 'spring-security-crypto'
-      entry 'spring-security-web'
-    }
     // CVE-2022-24823
     dependencySet(group: 'io.netty', version: '4.1.77.Final') {
       entry 'netty-buffer'
@@ -239,7 +247,7 @@ dependencyManagement {
       entry 'netty-transport-native-unix-common'
     }
     // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '2.0.52.Final') {
+    dependencySet(group: 'io.netty', version: '2.0.56.Final') {
       entry 'netty-tcnative-classes'
     }
   }
@@ -284,7 +292,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
-  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.9'
+  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
@@ -305,7 +313,7 @@ dependencies {
 
   implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
+  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.3.2'
   implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
@@ -346,7 +354,7 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
-  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
@@ -362,7 +370,7 @@ dependencies {
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   testCaseCreatorImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   testCaseCreatorImplementation sourceSets.main.runtimeClasspath
   testCaseCreatorImplementation sourceSets.test.runtimeClasspath
@@ -390,6 +398,9 @@ dependencies {
 
   // Provides fast-reload of the probate service upon edit & compile during local development
   cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+
+  integrationTestImplementation sourceSets.main.runtimeClasspath
+  integrationTestImplementation sourceSets.test.runtimeClasspath
 }
 
 tasks.withType(JavaCompile) {
@@ -448,7 +459,11 @@ test {
   useJUnitPlatform()
 }
 
+check.dependsOn(integration)
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
 runAndPublishConsumerPactTests.finalizedBy pactPublish
+
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
@@ -477,17 +492,43 @@ task buildBackOfficeXlsx(type: Exec) {
   outputs.file project.file('jsonToXLS/CCD_Probate_Backoffice.xlsx')
 }
 
+// Build the all excel files.
+task buildAllXlsx(type: Exec) {
+  def input = 'localhost:4104'
+  commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
+  args input
+  // Register the inputs and outputs so Gradle can skip if up-to-date.
+  outputs.dir project.file('jsonToXLS')
+}
+
 bootWithCCD {
-  dependsOn buildBackOfficeXlsx
-  authMode = uk.gov.hmcts.rse.AuthMode.Local
   // Request the cftlib create the probate_man database
   environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
-
-  environment 'IDAM_S2S_URL', 'http://localhost:8489'
-  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
   environment 'PROBATE_POSTGRESQL_PORT', '6432'
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
+
+  if (new Boolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
+    dependsOn buildBackOfficeXlsx
+    authMode = uk.gov.hmcts.rse.AuthMode.Local
+    environment 'IDAM_S2S_URL', 'http://localhost:8489'
+    environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
+  } else {
+    doFirst() {
+      "sh bin/variables/load-local-environment-variables.sh".execute()
+    }
+
+    if (project.file('./.aat-env').exists()) {
+      project.file('./.aat-env').readLines().each() {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
+    }
+
+    dependsOn buildAllXlsx
+  }
 }
 
 bootJar {
