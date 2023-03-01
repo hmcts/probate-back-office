@@ -138,8 +138,6 @@ task smoke(type: Test) {
 }
 
 task functional(type: Test) {
-  //uncomment to get local FTs working
-  //***
   if (System.getenv("PACT_BRANCH_NAME") == null) {
     doFirst() {
       "sh bin/variables/load-local-environment-variables.sh".execute()
@@ -154,7 +152,6 @@ task functional(type: Test) {
       }
     }
   }
-  //***
 
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs

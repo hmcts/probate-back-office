@@ -147,8 +147,30 @@ kill -9 PID_JUST_FOUND
 Also needs back office docker to bring up all services:
 ./bin/dev-cft-setup.sh
 ./bin/dev-cft-start.sh
+
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
-## END: NEW ############################################################################################################
+## END: NEW 
+```
+
+### On a running local cftlib setup
+#### Running FTs on local setup
+This line from build.gradle should be commented out before you bootWithCCD
+```
+cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+```
+Then do 
+```
+./gradlew bootWithCCD
+```
+
+Reload envVars for aat to local to be sure you have the latest ones with
+```
+./gradlew reloadLocalEnvVars
+```
+
+then run FTs as any other normal test
+
+########################################################################################################################
 ########################################################################################################################
 ## Original docker environment:
 ## Docker environment
@@ -157,7 +179,6 @@ Because the probate back office relies on CCD callbacks it must be run inside th
 
 Build the jar with:
 
-```
 ```
 ./gradlew assemble
 docker-compose build
