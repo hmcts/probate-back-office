@@ -240,8 +240,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     @Test
     public void verifyRequestWithoutSolicitorPostcodeReturnsError() throws IOException {
-        validatePostFailure("failure.missingSolicitorPostcode.json",
-                "Enter your firm's postcode, for example, 'SW1H 9AJ'", 200, CASE_CREATE_VALIDATE_URL);
+        validatePostFailureForSolicitorPostcode("failure.missingPostcodeSolicitorCreate.json",
+                "Enter your firm's postcode, for example, 'SW1H 9AJ'");
     }
 
     @Test
@@ -1055,6 +1055,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private void validatePostFailureForSolicitorExecutorDetails(String jsonFileName, String errorMessage)
         throws IOException {
         validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_URL);
+    }
+
+    private void validatePostFailureForSolicitorPostcode(String jsonFileName, String errorMessage)
+            throws IOException {
+        validatePostFailure(jsonFileName, errorMessage, 200, CASE_CREATE_VALIDATE_URL);
     }
 
     private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) throws IOException {
