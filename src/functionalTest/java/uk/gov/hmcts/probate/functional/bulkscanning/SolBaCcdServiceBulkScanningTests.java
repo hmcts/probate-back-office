@@ -40,6 +40,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private static final String VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE = "/forms/XZY/validate-ocr";
     private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-scanned-data";
     private static final String UPDATE_CASE_FROM_EXCEPTON_RECORD = "/update-case";
+    private static final String UNAUTHORISED_SERVICE_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9" +
+            ".eyJzdWIiOiJuZmQiLCJleHAiOjE2Nzc3OTA1MTB9" +
+            ".Y9xMHCN4TePPMdQcILEM12V2zFQMzYm35F3nxkCavSbOnPLJXx9rGoLq7OA8onXeUaZUsEwrMl0YZJkhM83_KA";
     private static final DateTimeFormatter CCD_DATE_FORMAT = CaveatCallbackResponseTransformer.dateTimeFormatter;
     private String jsonRequest;
     private String jsonResponse;
@@ -617,7 +620,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders("dummyServiceToken"))
+            .headers(utils.getHeaders(UNAUTHORISED_SERVICE_TOKEN))
             .body(bodyText)
             .when().post(TRANSFORM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(403);
@@ -628,7 +631,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders("dummyServiceToken"))
+            .headers(utils.getHeaders(UNAUTHORISED_SERVICE_TOKEN))
             .body(bodyText)
             .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(403);
