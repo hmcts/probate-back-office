@@ -148,7 +148,27 @@ Also needs back office docker to bring up all services:
 ./bin/dev-cft-setup.sh
 ./bin/dev-cft-start.sh
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
-## END: NEW ############################################################################################################
+## END: NEW 
+```
+
+### On a running local cftlib setup
+#### Regenerate all xls after changing .json
+```
+./gradlew forceBuildAllXlsx
+```
+
+#### Import all xls
+```
+./gradlew importAllXlsx
+```
+
+#### Regnerate AND Import all xls
+```
+./gradlew buildAndImport
+```
+then sign out / sign in
+
+########################################################################################################################
 ########################################################################################################################
 ## Original docker environment:
 ## Docker environment
@@ -157,7 +177,6 @@ Because the probate back office relies on CCD callbacks it must be run inside th
 
 Build the jar with:
 
-```
 ```
 ./gradlew assemble
 docker-compose build
