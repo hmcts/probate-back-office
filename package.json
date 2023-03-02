@@ -13,7 +13,7 @@
     "eslint-test": "NODE_PATH=. eslint ./src/test",
     "test-e2e": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run -c ./src/test/end-to-end/ --steps",
     "test-crossbrowser-e2e": "NODE_PATH=. codeceptjs run-multiple ${BROWSER_GROUP:-'--all'} -c src/test/end-to-end/saucelabs.conf.js --plugins retryFailedStep --steps --grep '@crossbrowser' --reporter mocha-multi",
-    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 3 -c ./src/test/end-to-end/",
+    "test:functional": "NODE_PATH=. node ./node_modules/codeceptjs/bin/codecept.js run-workers 2 -c ./src/test/end-to-end/",
     "test:fullfunctional-pr": "E2E_TEST_PATH='./paths/**/pr_specific/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional": "E2E_TEST_PATH='./paths/**/*.js' ./bin/run-e2e-tests.sh",
     "test:fullfunctional-cw": "E2E_TEST_PATH='./paths/caseworker/*.js' ./bin/run-e2e-tests.sh",
