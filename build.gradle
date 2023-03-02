@@ -148,7 +148,6 @@ task functional(type: Test) {
         def key = it.substring(0, index)
         def value = it.substring(index + 1)
         environment key, value
-        println key +":"+ value
       }
     }
   }

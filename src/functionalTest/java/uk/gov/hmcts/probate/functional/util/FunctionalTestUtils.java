@@ -37,9 +37,9 @@ import uk.gov.hmcts.probate.functional.TestContextConfiguration;
 @Slf4j
 public class FunctionalTestUtils {
     public static final String TOKEN_PARM = "TOKEN_PARM";
-    public static final String UNAUTHORISED_SERVICE_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9" +
-            ".eyJzdWIiOiJuZmQiLCJleHAiOjE2Nzc3OTA1MTB9" +
-            ".Y9xMHCN4TePPMdQcILEM12V2zFQMzYm35F3nxkCavSbOnPLJXx9rGoLq7OA8onXeUaZUsEwrMl0YZJkhM83_KA";
+    public static final String UNAUTHORISED_SERVICE_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9"
+            + ".eyJzdWIiOiJuZmQiLCJleHAiOjE2Nzc3OTA1MTB9"
+            + ".Y9xMHCN4TePPMdQcILEM12V2zFQMzYm35F3nxkCavSbOnPLJXx9rGoLq7OA8onXeUaZUsEwrMl0YZJkhM83_KA";
 
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -128,18 +128,30 @@ public class FunctionalTestUtils {
         }
     }
 
-    public Headers getHeaders() {
-        return getHeaders(serviceToken);
-    }
-
     public Headers getHeadersForUnauthorisedService() {
         return getHeaders(UNAUTHORISED_SERVICE_TOKEN);
     }
 
+    public Headers getHeaders() {
+        return getHeaders(serviceToken);
+    }
+
     public Headers getHeaders(String serviceToken) {
         return Headers.headers(
-            new Header("ServiceAuthorization", serviceToken),
-            new Header("Content-Type", ContentType.JSON.toString()));
+                new Header("ServiceAuthorization", serviceToken),
+                new Header("Content-Type", ContentType.JSON.toString()));
+    }
+
+    public Headers getHeaders(String userName, String password, Integer id) {
+        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator
+                .generateClientToken(userName, password);
+        final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
+
+        return Headers.headers(
+                new Header("ServiceAuthorization", genServiceToken),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization", genAuthorizationToken),
+                new Header("user-id", id.toString()));
     }
 
     public Headers getHeadersForUnauthorisedServiceAndUser() {
@@ -150,18 +162,6 @@ public class FunctionalTestUtils {
                 new Header("Content-Type", ContentType.JSON.toString()),
                 new Header("Authorization", authorizationToken),
                 new Header("user-id", "123"));
-    }
-
-    public Headers getHeaders(String userName, String password, Integer id) {
-        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator
-            .generateClientToken(userName, password);
-        final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
-
-        return Headers.headers(
-            new Header("ServiceAuthorization", genServiceToken),
-            new Header("Content-Type", ContentType.JSON.toString()),
-            new Header("Authorization", genAuthorizationToken),
-            new Header("user-id", id.toString()));
     }
 
     public Headers getHeadersWithUserId() {
