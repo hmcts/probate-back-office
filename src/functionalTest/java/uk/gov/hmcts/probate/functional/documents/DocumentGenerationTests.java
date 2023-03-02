@@ -162,7 +162,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
+            .headers(utils.getHeadersForUnauthorisedServiceAndUser())
             .body(getJsonFromFile("/document/rePrint.json"))
             .when().post(RE_PRINT)
             .andReturn();

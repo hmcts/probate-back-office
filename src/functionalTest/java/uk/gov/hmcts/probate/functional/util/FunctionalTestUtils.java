@@ -37,6 +37,9 @@ import uk.gov.hmcts.probate.functional.TestContextConfiguration;
 @Slf4j
 public class FunctionalTestUtils {
     public static final String TOKEN_PARM = "TOKEN_PARM";
+    public static final String UNAUTHORISED_SERVICE_TOKEN = "Bearer eyJhbGciOiJIUzUxMiJ9" +
+            ".eyJzdWIiOiJuZmQiLCJleHAiOjE2Nzc3OTA1MTB9" +
+            ".Y9xMHCN4TePPMdQcILEM12V2zFQMzYm35F3nxkCavSbOnPLJXx9rGoLq7OA8onXeUaZUsEwrMl0YZJkhM83_KA";
 
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
@@ -97,7 +100,6 @@ public class FunctionalTestUtils {
         replace = replace.substring(0, 16);
         String replacement = caseData.replaceAll("\"id\": [0-9]{16}",
             "\"id\": " + replace);
-        System.out.println("replacement: " + replacement);
         return replacement;
     }
 
@@ -130,10 +132,24 @@ public class FunctionalTestUtils {
         return getHeaders(serviceToken);
     }
 
+    public Headers getHeadersForUnauthorisedService() {
+        return getHeaders(UNAUTHORISED_SERVICE_TOKEN);
+    }
+
     public Headers getHeaders(String serviceToken) {
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()));
+    }
+
+    public Headers getHeadersForUnauthorisedServiceAndUser() {
+        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
+                caseworkerPassword);
+        return Headers.headers(
+                new Header("ServiceAuthorization", UNAUTHORISED_SERVICE_TOKEN),
+                new Header("Content-Type", ContentType.JSON.toString()),
+                new Header("Authorization", authorizationToken),
+                new Header("user-id", "123"));
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
@@ -154,8 +170,6 @@ public class FunctionalTestUtils {
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
         String auth = "Bearer " + serviceAuthTokenGenerator.generateAuthorisation(caseworkerEmail, caseworkerPassword);
-        System.out.println("serviceToken:" + serviceToken);
-        System.out.println("auth:" + auth);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -261,8 +275,6 @@ public class FunctionalTestUtils {
     public Headers getHeadersWithSolicitorUser() {
         String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(solicitorEmail,
             solicitorPassword);
-        System.out.println("serviceToken:" + serviceToken);
-        System.out.println("auth:" + authorizationToken);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
