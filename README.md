@@ -153,12 +153,28 @@ Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave 
 ```
 
 ### On a running local cftlib setup
+#### Regenerate all xls after changing .json
+```
+./gradlew forceBuildAllXlsx
+```
+
+#### Import all xls
+```
+./gradlew importAllXlsx
+```
+
+#### Regnerate AND Import all xls
+```
+./gradlew buildAndImport
+```
+then sign out / sign in
+
 #### Running FTs on local setup
 This line from build.gradle should be commented out before you bootWithCCD
 ```
 cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
 ```
-Then do 
+Then do
 ```
 ./gradlew bootWithCCD
 ```

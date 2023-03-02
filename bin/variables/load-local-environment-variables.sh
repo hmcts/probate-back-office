@@ -28,12 +28,16 @@ echo "S2S_AUTHORISED_SERVICES=ccd_definition,ccd_data,xui_webapp,nfdiv_case_api,
 echo "CCD_S2S_AUTHORISED_SERVICES_CASE_USER_ROLES=probate_backend" >> .aat-env
 echo "ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES=ccd_gw,am_role_assignment_service,am_org_role_mapping_service,xui_webapp,aac_manage_case_assignment,ccd_data,probate_backend" >> .aat-env
 echo "DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api,am_role_assignment_service,aac_manage_case_assignment,xui_mo_webapp,probate_backend" >> .aat-env
+echo "IDAM_API_URL=https://idam-api.aat.platform.hmcts.net" >> .aat-env
+echo "S2S_API_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal" >> .aat-env
 
 # Probate variables fetched from probate-aat vault
 echo "AUTH_TOKEN_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name authTokenEmail)" >> .aat-env
 echo "AUTH_TOKEN_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name authTokenPassword)" >> .aat-env
 echo "IDAM_SECRET=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name idam-secret-probate)" >> .aat-env
 echo "S2S_AUTH_TOTP_SECRET=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name s2sAuthTotpSecret)" >> .aat-env
+echo "IMPORTER_USERNAME=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name definition-importer-username)" >> .aat-env
+echo "IMPORTER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name definition-importer-password)" >> .aat-env
 echo "CW_USER_ID=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name cwUserId)" >> .aat-env
 echo "CW_USER_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name cwUserEmail)" >> .aat-env
 echo "CW_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name cwUserPass)" >> .aat-env
@@ -48,3 +52,6 @@ echo "SOL2_USER_PASSWORD=$(az keyvault secret show --vault-name probate-aat -o t
 echo "XUI_SYSTEM_USER_NAME=$(az keyvault secret show --vault-name rpx-aat -o tsv --query value --name system-user-name)" >> .aat-env
 echo "XUI_SYSTEM_USER_PASSWORD=$(az keyvault secret show --vault-name rpx-aat -o tsv --query value --name system-user-password)" >> .aat-env
 echo "XUI_LD_ID=$(az keyvault secret show --vault-name rpx-aat -o tsv --query value --name launch-darkly-client-id)" >> .aat-env
+
+#ccd exports
+echo "API_GATEWAY_IDAM_SECRET=$(az keyvault secret show --vault-name ccd-aat -o tsv --query value --name ccd-api-gateway-oauth2-client-secret)" >> .aat-env

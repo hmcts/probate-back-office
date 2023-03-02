@@ -516,6 +516,50 @@ task buildAllXlsx(type: Exec) {
   outputs.dir project.file('jsonToXLS')
 }
 
+// Force Build the all excel files.
+task forceBuildAllXlsx(type: Exec) {
+  def input = 'localhost:4104'
+  commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
+  args input
+}
+
+//import all excel files.
+task importAllXlsx(type: Exec) {
+  doFirst() {
+    "sh bin/variables/load-local-environment-variables.sh".execute()
+  }
+
+  if (project.file('./.aat-env').exists()) {
+    project.file('./.aat-env').readLines().each() {
+      def index = it.indexOf("=")
+      def key = it.substring(0, index)
+      def value = it.substring(index + 1)
+      environment key, value
+    }
+  }
+
+  commandLine project.file("ccdImports/conversionScripts/importAllXLS.sh")
+}
+
+task buildAndImport(type: Exec) {
+  dependsOn forceBuildAllXlsx
+
+  doFirst() {
+    "sh bin/variables/load-local-environment-variables.sh".execute()
+  }
+
+  if (project.file('./.aat-env').exists()) {
+    project.file('./.aat-env').readLines().each() {
+      def index = it.indexOf("=")
+      def key = it.substring(0, index)
+      def value = it.substring(index + 1)
+      environment key, value
+    }
+  }
+
+  commandLine project.file("ccdImports/conversionScripts/importAllXLS.sh")
+}
+
 bootWithCCD {
   // Request the cftlib create the probate_man database
   environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
@@ -546,7 +590,7 @@ bootWithCCD {
   }
 }
 
-task reloadLocalEnvVars(type: Test) {
+task reloadLocalEnvVars() {
   doFirst() {
     "sh bin/variables/load-local-environment-variables.sh".execute()
   }
