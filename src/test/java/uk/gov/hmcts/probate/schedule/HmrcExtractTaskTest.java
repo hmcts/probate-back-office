@@ -30,7 +30,7 @@ class HmrcExtractTaskTest {
 
     @InjectMocks
     private HmrcExtractTask hmrcExtractTask;
-    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(0L));
+    private static final String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
     private String adhocDate = "2022-09-05";
     private String adhocToDate = "2022-09-10";
 
