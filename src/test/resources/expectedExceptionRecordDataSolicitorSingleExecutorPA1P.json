@@ -1,7 +1,7 @@
 {
   "exception_record_id": "1002",
   "exception_record_case_type_id": "PROBATE_ExceptionRecord",
-  "po_box": "12626",
+  "po_box": "12624",
   "envelope_id": "qwertyuio",
   "is_automated_process": false,
   "po_box_jurisdiction": "PROBATE",
@@ -168,6 +168,8 @@
     { "name": "ihtReferenceNumber", "value": "ONLINE-123434" },
     { "name": "ihtFormId", "value": "" },
     { "name": "ihtGrossValue", "value": "160,000" },
-    { "name": "ihtNetValue", "value": "140,000" }
+    { "name": "ihtNetValue", "value": "140,000" },
+    { "name": "solsSolicitorFirmName", "value": "FirmName" },
+    { "name": "solsSolicitorIsApplying", "value": "true" }
   ]
 }
