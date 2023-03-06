@@ -165,7 +165,7 @@ Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave 
 
 #### Regnerate AND Import all xls
 ```
-./gradlew buildAndImport
+./gradlew buildAndImportAllXlsx
 ```
 then sign out / sign in
 
