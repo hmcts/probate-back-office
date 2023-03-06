@@ -138,6 +138,7 @@ task smoke(type: Test) {
 }
 
 task functional(type: Test) {
+  // PACT_BRANCH_NAME is only set in non-dev environments
   if (System.getenv("PACT_BRANCH_NAME") == null) {
     doFirst() {
       "sh bin/variables/load-local-environment-variables.sh".execute()

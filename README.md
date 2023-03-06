@@ -163,13 +163,12 @@ Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave 
 ./gradlew importAllXlsx
 ```
 
-#### Regnerate AND Import all xls
-```
-./gradlew buildAndImportAllXlsx
-```
-then sign out / sign in
-
 #### Running FTs on local setup
+Reload envVars for aat to local to be sure you have the latest ones with
+```
+./gradlew reloadLocalEnvVars
+```
+
 This line from build.gradle should be commented out before you bootWithCCD
 ```
 cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
@@ -179,12 +178,14 @@ Then do
 ./gradlew bootWithCCD
 ```
 
-Reload envVars for aat to local to be sure you have the latest ones with
-```
-./gradlew reloadLocalEnvVars
-```
-
 then run FTs as any other normal test
+
+#### Regenerate and import all xls
+The following can be executed when the BO server is running:
+```
+./gradlew buildAndImportAllXlsx
+```
+then sign out / sign in
 
 ########################################################################################################################
 ########################################################################################################################
