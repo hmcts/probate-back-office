@@ -56,11 +56,11 @@ public class ExceptionRecordController {
     ExceptionRecordService erService;
 
     @Operation(summary = "Transforms OCR data to case data",
-            description = "Will return errors if the transformation is unsuccessful.")
+        description = "Will return errors if the transformation is unsuccessful.")
     @ApiResponses({
         @ApiResponse(responseCode = "200",
-                content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
-                description = "Validation executed successfully"),
+            content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
+            description = "Validation executed successfully"),
         @ApiResponse(responseCode = "400", description = "Request failed due to malformed syntax"),
         @ApiResponse(responseCode = "401", description = "Unauthorised"),
         @ApiResponse(responseCode = "403", description = "S2S token is not authorized, missing or invalid")
@@ -115,15 +115,15 @@ public class ExceptionRecordController {
     @Operation(summary = "Transforms OCR data to case data", description = "Will return "
         + "errors if the transformation is unsuccessful.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
-                    description = "Validation executed successfully"),
-            @ApiResponse(responseCode = "400", description = "Request failed due to malformed syntax"),
-            @ApiResponse(responseCode = "401", description = "Unauthorised"),
-            @ApiResponse(responseCode = "403", description = "S2S token is not authorized, missing or invalid")
+        @ApiResponse(responseCode = "200",
+            content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
+            description = "Validation executed successfully"),
+        @ApiResponse(responseCode = "400", description = "Request failed due to malformed syntax"),
+        @ApiResponse(responseCode = "401", description = "Unauthorised"),
+        @ApiResponse(responseCode = "403", description = "S2S token is not authorized, missing or invalid")
     })
     @PostMapping(path = "/transform-exception-record",
-            consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
+        consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     public ResponseEntity<SuccessfulTransformationResponse> transformCaseNonAutomation(
         @Valid @RequestBody ExceptionRecordRequest erRequest) {
         return transformCase(erRequest);
@@ -132,13 +132,13 @@ public class ExceptionRecordController {
     @Operation(summary = "Updates a case based on availability of OCR data and documents", description = "Will return "
         + "errors if unsuccessful or no new documents found.")
     @ApiResponses({
-            @ApiResponse(responseCode = "200",
-                    content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
-                    description = "Validation executed successfully"),
-            @ApiResponse(responseCode = "400", description = "Request failed due to malformed syntax"),
-            @ApiResponse(responseCode = "401", description = "Unauthorised"),
-            @ApiResponse(responseCode = "403", description = "S2S token is not authorized, missing or invalid"),
-            @ApiResponse(responseCode = "404", description = "Form type not found")
+        @ApiResponse(responseCode = "200",
+            content = @Content(schema = @Schema(implementation = ValidationResponse.class)),
+            description = "Validation executed successfully"),
+        @ApiResponse(responseCode = "400", description = "Request failed due to malformed syntax"),
+        @ApiResponse(responseCode = "401", description = "Unauthorised"),
+        @ApiResponse(responseCode = "403", description = "S2S token is not authorized, missing or invalid"),
+        @ApiResponse(responseCode = "404", description = "Form type not found")
     })
     @PostMapping(path = "/update-case",
         consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)

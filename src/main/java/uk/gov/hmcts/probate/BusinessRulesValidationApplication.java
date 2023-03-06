@@ -24,8 +24,8 @@ import java.util.List;
 import java.util.function.Function;
 
 @SpringBootApplication(exclude = {CoreCaseDataClientAutoConfiguration.class})
-@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.idam","uk.gov.hmcts.reform.ccd",
-        "uk.gov.hmcts.reform.sendletter",
+@EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.idam", "uk.gov.hmcts.reform.ccd",
+    "uk.gov.hmcts.reform.sendletter",
     "uk.gov.hmcts.probate.service"})
 @EnableScheduling
 public class BusinessRulesValidationApplication implements CommandLineRunner {

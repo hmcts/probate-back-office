@@ -1,7 +1,7 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:base", ":dependencyDashboard"],
-  "enabledManagers": ["helm-requirements","gradle-wrapper", "gradle", "nvm", "npm"],
+  "enabledManagers": ["helm-requirements","gradle-wrapper", "gradle", "nvm", "npm", "terraform"],
   "prConcurrentLimit": 6,
   "labels": ["dependencies"],
   "helm-requirements":
@@ -25,5 +25,5 @@
   "lockFileMaintenance": {
     "enabled": false
   },
-  "schedule": ["before 4pm"]
+  "schedule": ["before 6am"]
 }
