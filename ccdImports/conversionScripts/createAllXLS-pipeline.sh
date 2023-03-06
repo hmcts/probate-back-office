@@ -13,7 +13,7 @@ if [ -z "$1" ]
 fi
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-export CCD_DEF_AAC_URL=$CCD_DEF_AAC_MANAGER_CASE_URL
+export CCD_DEF_AAC_URL=http://aac-manage-case-assignment-aat.service.core-compute-aat.internal
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
