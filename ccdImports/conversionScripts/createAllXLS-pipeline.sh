@@ -13,9 +13,9 @@ if [ -z "$1" ]
 fi
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-export CCD_DEF_AAC_URL=$2
+export CCD_DEF_AAC_URL=$CCD_DEF_AAC_MANAGER_CASE_URL
 
-echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,CCD_DEF_AAC_URL
+echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
 ${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Backoffice/ ${environment}
 ${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Caveat/ ${environment}
