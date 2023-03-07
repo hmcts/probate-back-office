@@ -9,4 +9,4 @@ if [[ ${environment} != "prod" && ${environment} != "aat" && ${environment} != "
   exit 1
 fi
 
-.././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-${1}.service.core-compute-${1}.internal ${1}
+.././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-${1}.service.core-compute-${1}.internal http://aac-manage-case-assignment-${1}.service.core-compute-${1}.internal ${1}
