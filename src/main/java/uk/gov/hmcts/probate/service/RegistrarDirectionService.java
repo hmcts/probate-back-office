@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -23,7 +23,7 @@ public class RegistrarDirectionService {
         addAndOrderDirections(caseData.getRegistrarDirections(), caseData.getRegistrarDirectionToAdd());
 
         caseData.setRegistrarDirectionToAdd(null);
-        caseData.setEvidenceHandled(YES);
+        caseData.setEvidenceHandled(NO);
     }
 
     public void addAndOrderDirectionsToCaveat(CaveatData caseData) {

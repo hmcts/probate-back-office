@@ -53,7 +53,7 @@ class RegistrarDirectionServiceTest {
         assertEquals("lostWill", caseData.getRegistrarDirections().get(1).getValue().getDecision());
         assertEquals("probateRefused", caseData.getRegistrarDirections().get(2).getValue().getDecision());
         assertEquals("otherOrder", caseData.getRegistrarDirections().get(3).getValue().getDecision());
-        assertEquals("Yes", caseData.getEvidenceHandled());
+        assertEquals("No", caseData.getEvidenceHandled());
     }
 
     @Test
