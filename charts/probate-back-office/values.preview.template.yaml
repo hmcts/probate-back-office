@@ -272,7 +272,7 @@ aac-manage-case-assignment:
       IDAM_NOC_APPROVER_PASSWORD: UGVzWnZxcmI3OA==
       NOTIFY_MCA_API_KEY: ${PROBATE_BO_NOTIFY_KEY}
       NOTIFY_EMAIL_TEMPLATE_ID: 85f22924-7b45-4fc6-9954-c08a8833f6a0
-      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
     autoscaling:
       enabled: false
 
