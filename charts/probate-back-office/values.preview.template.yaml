@@ -197,7 +197,7 @@ xui-webapp:
       SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
       SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
-      SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-manage-case-assignment-aat.service.core-compute-aat.internal
+      SERVICES_CCD_CASE_ASSIGNMENT_API: http://${SERVICE_NAME}-aac-manage-case-assignment
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
       SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
       SERVICES_S2S: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
@@ -222,6 +222,36 @@ xui-webapp:
           - mc-idam-client-secret
           - system-user-name
           - system-user-password
+
+aac-manage-case-assignment:
+  enabled: true
+  java:
+    disableKeyVaults: true
+    imagePullPolicy: Always
+    releaseNameOverride: ${SERVICE_NAME}-aac-manage-case-assignment
+    image: hmctspublic.azurecr.io/aac/manage-case-assignment:latest
+    ingressHost: aac-${SERVICE_FQDN}
+    environment:
+      IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
+      IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
+      OIDC_ISSUER: https://forgerock-am.service.core-compute-idam-aat.internal:8443/openam/oauth2/hmcts
+      S2S_URL: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
+      MCA_DS_PROXY_URLS_ALLOWED_LIST: /searchCases.*,/internal/searchCases.*,/internal/cases.*
+      MCA_DEF_STORE_PROXY_URLS_ALLOWED_LIST: /api/display/challenge-questions.*
+      MANAGE_CASE_S2S_AUTHORISED_SERVICES: xui_webapp,ccd_data,fpl_case_service,divorce_frontend,divorce_ccd_submission,finrem_case_orchestration,probate_backend
+      CCD_DATA_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-data-store-api
+      CCD_DEFINITION_STORE_API_BASE_URL: http://${SERVICE_NAME}-ccd-definition-store
+      PRD_HOST: http://rd-professional-api-aat.service.core-compute-aat.internal
+      IDAM_CAA_USERNAME: mca.system.idam.acc@gmail.com
+      IDAM_CAA_PASSWORD: muJ~H']Z9YErnetx
+      IDAM_CLIENT_SECRET: QmQzNHJlZFN6Vl03QDI=
+      MANAGE_CASE_S2S_KEY: AV36TNMU5DCKLOQR
+      IDAM_NOC_APPROVER_USERNAME: mca.noc.approver@gmail.com
+      IDAM_NOC_APPROVER_PASSWORD: UGVzWnZxcmI3OA==
+      NOTIFY_MCA_API_KEY: ${PROBATE_BO_NOTIFY_KEY}
+      NOTIFY_EMAIL_TEMPLATE_ID: 85f22924-7b45-4fc6-9954-c08a8833f6a0
+    autoscaling:
+      enabled: false
 
 java:
   image: ${IMAGE_NAME}
