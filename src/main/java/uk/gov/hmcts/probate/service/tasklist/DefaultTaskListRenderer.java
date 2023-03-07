@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.businessrule.NoDocumentsRequiredBusinessRule;
 import uk.gov.hmcts.probate.htmlrendering.GridRenderer;
 import uk.gov.hmcts.probate.htmlrendering.HeadingRenderer;
 import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
@@ -18,6 +19,13 @@ import java.time.LocalDate;
 @RequiredArgsConstructor
 public class DefaultTaskListRenderer extends BaseTaskListRenderer {
     private final TaskStateRenderer taskStateRenderer;
+    private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
+    private static final String SEND_DOCS = "<gridRow><gridCol-two-thirds>"
+            + "<p>Send documents<br/><sendDocsLink/></p>"
+            + "</gridCol-two-thirds><gridCol-one-third>"
+            + "<status-sendDocuments/>"
+            + "</gridCol-one-third></gridRow>\n"
+            + "<gridRowSeparator/>\n";
 
     public String renderHtml(CaseDetails details) {
         final TaskListState tlState = TaskListState.mapCaseState(details.getState());
@@ -42,8 +50,15 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
                     GridRenderer.renderByReplace(
                         SecondaryTextRenderer.renderByReplace(
                             HeadingRenderer.renderByReplace(
-                                UnorderedListRenderer.renderByReplace(CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE))))),
+                                UnorderedListRenderer.renderByReplace(renderSendDoc(details)))))),
                                     details.getId(), willType, caseData.getSolsSOTNeedToUpdate(),
                                         authDate, submitLocalDate, details);
+    }
+
+    String renderSendDoc(CaseDetails details) {
+        if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
+            return CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE.replaceFirst("<sendDocs/>", "");
+        }
+        return CaseTaskListHtmlTemplate.TASK_LIST_TEMPLATE.replaceFirst("<sendDocs/>", SEND_DOCS);
     }
 }
