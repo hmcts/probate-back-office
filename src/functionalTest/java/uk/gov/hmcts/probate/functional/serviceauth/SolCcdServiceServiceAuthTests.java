@@ -35,7 +35,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders("InvalidToken"))
+            .headers(utils.getHeadersForUnauthorisedService())
             .body(utils.getJsonFromFile("success.solicitorCreate.json"))
             .post("/nextsteps/validate")
             .then().assertThat().statusCode(403);
@@ -46,7 +46,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
         given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders(""))
+            .headers(utils.getHeadersForUnauthorisedService())
             .body(utils.getJsonFromFile("success.solicitorCreate.json"))
             .post("/nextsteps/validate")
             .then().assertThat().statusCode(403);

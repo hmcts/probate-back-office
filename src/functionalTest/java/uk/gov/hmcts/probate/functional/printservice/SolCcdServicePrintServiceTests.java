@@ -121,7 +121,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId("serviceToken", "userId"))
+            .headers(utils.getHeadersForUnauthorisedServiceAndUser())
             .when().get("/template/probateManLegacyCase");
 
         assertThat(response.statusCode(), is(equalTo(403)));

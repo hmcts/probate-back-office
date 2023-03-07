@@ -60,12 +60,7 @@ public class CaseTaskListHtmlTemplate {
         + "<status-paymentMade/>"
         + CLOSE_GRID_ROW
         + SEPARATOR
-        + OPEN_ROW
-        + "<p>Send documents<br/><sendDocsLink/></p>"
-        + CLOSE_COL1_OPEN_COL2
-        + "<status-sendDocuments/>"
-        + CLOSE_GRID_ROW
-        + SEPARATOR
+        + "<sendDocs/>"
         + "<br/>\n"
         + "<h>3. Review application</h>\n"
         + OPEN_ROW
