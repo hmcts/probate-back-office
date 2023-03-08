@@ -86,7 +86,7 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Handle supplementary evidence';
     await I.logInfo(scenarioName, nextStepConfig, caseRef);
     await I.chooseNextStep(nextStepConfig.handleSupEvidence);
-    await I.handleEvidence(caseRef, "Yes");
+    await I.handleEvidence(caseRef);
     await I.enterEventSummary(caseRef, nextStepName);
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
 
