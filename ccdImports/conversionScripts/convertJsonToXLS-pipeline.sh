@@ -34,7 +34,7 @@ definition_tmp_out_file="${definition_tmp_out_dir}/${ccd_definition_json_output_
 
 echo definition_tmp_out_file = $definition_tmp_out_file
 echo definition_tmp_dir = $definition_tmp_dir
-echo CCD_DEF_AAC_URL={CCD_DEF_AAC_URL}
+echo CCD_DEF_AAC_URL=${CCD_DEF_AAC_URL}
 
 docker run --rm --name json2xlsx \
     -v ${definition_tmp_dir}:/tmp/ccd-definition \
