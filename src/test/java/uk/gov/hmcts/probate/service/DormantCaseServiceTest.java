@@ -75,7 +75,7 @@ class DormantCaseServiceTest {
         when(caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10")).thenReturn(caseList);
         dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
         verify(ccdClientApi, times(1))
-                .updateCaseAsCaseworker(any(), any(), any(),
+                .updateCaseAsCaseworker(any(), any(), any(), any(),
                  any(), any(), any(), any());
         assertEquals(1, caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10").size());
     }
@@ -103,7 +103,7 @@ class DormantCaseServiceTest {
         when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList1);
         dormantCaseService.reactivateDormantCases("2022-01-01");
         verify(ccdClientApi, times(1))
-                .updateCaseAsCaseworker(any(), any(), any(),
+                .updateCaseAsCaseworker(any(), any(), any(), any(),
                  any(), any(), any(), any());
         assertEquals(1, caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01").size());
     }
@@ -130,11 +130,11 @@ class DormantCaseServiceTest {
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10")).thenReturn(caseList);
         doThrow(new NullPointerException()).when(ccdClientApi)
-                .updateCaseAsCaseworker(any(), any(), any(),
+                .updateCaseAsCaseworker(any(), any(), any(), any(),
                         any(), any(), any(), any());
         dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
         verify(ccdClientApi, times(1))
-                .updateCaseAsCaseworker(any(), any(), any(),
+                .updateCaseAsCaseworker(any(), any(), any(), any(),
                         any(), any(), any(), any());
         verifyNoInteractions(coreCaseDataApi);
     }
@@ -148,11 +148,11 @@ class DormantCaseServiceTest {
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(caseQueryService.findCaseToBeReactivatedFromDormant("2022-01-01")).thenReturn(caseList1);
         doThrow(new NullPointerException()).when(ccdClientApi)
-                .updateCaseAsCaseworker(any(), any(), any(),
+                .updateCaseAsCaseworker(any(), any(), any(), any(),
                         any(), any(), any(), any());
         dormantCaseService.reactivateDormantCases("2022-01-01");
         verify(ccdClientApi, times(1))
-                .updateCaseAsCaseworker(any(), any(), any(),
+                .updateCaseAsCaseworker(any(), any(), any(), any(),
                         any(), any(), any(), any());
         verifyNoInteractions(coreCaseDataApi);
     }
