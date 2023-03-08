@@ -143,7 +143,7 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolAdmonCreated", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CaseCreated", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Stopped", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePrinted", "UserRole": "caseworker-caa", "CRUD": "R"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePrinted", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOReadyForExamination", "UserRole": "caseworker-caa", "CRUD": "R"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOExamining", "UserRole": "caseworker-caa", "CRUD": "R"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseStopped", "UserRole": "caseworker-caa", "CRUD": "R"},
