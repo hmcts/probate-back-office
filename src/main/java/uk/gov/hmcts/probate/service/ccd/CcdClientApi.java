@@ -75,12 +75,6 @@ public class CcdClientApi implements CoreCaseDataService {
         return Optional.of(caseDetails.get(0));
     }
 
-    public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, CaseData caseData, EventId eventId,
-                                              SecurityDTO securityDTO) {
-        return updateCaseAsCaseworker(caseType, caseId, caseData, eventId, securityDTO, PROBATE_APPLICATION,
-                PROBATE_APPLICATION);
-    }
-
     @Override
     public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, LocalDateTime lastModified,
                                               CaseData caseData, EventId eventId,

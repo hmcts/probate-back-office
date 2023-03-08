@@ -126,7 +126,7 @@ class PaymentsServiceTest {
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
                 any(), any(),
                 any(), any(), any());
         verify(documentTransformer).addDocument(any(), any(), any());
@@ -168,7 +168,7 @@ class PaymentsServiceTest {
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
                 any(), any(),
                 any(), any(), any());
         verify(documentTransformer).addDocument(any(), any(), any());
@@ -197,7 +197,7 @@ class PaymentsServiceTest {
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoFailedPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
 
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
                 any(), any(),
                 any(), any(), any());
         verify(documentTransformer, times(0)).addDocument(any(), any(), any());
@@ -232,7 +232,7 @@ class PaymentsServiceTest {
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
                 any(), any(),
                 any(), any(), any());
     }
@@ -260,7 +260,7 @@ class PaymentsServiceTest {
         ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoFailedPayment();
         paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
-        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(),
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
                 any(), any(),
                 any(), any(), any());
         verify(caveatNotificationService, times(0)).solsCaveatRaise(any());
@@ -291,7 +291,7 @@ class PaymentsServiceTest {
             ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
             paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
-            verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(),
+            verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
                     any(), any(),
                     any(), any(), any());
         });
@@ -322,7 +322,7 @@ class PaymentsServiceTest {
             ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
             paymentsService.updateCaseFromServiceRequest(responseDto, STANDING_SEARCH);
 
-            verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(),
+            verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
                     any(), any(),
                     any(), any(), any());
         });

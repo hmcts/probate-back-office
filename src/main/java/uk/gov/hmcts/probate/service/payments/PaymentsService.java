@@ -89,14 +89,14 @@ public class PaymentsService {
             GrantOfRepresentationData caseData = buildGrantData(retrievedCaseDetails, response);
             String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
                     .getValue().getStatus().getName();
-            ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
+            ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
                     caseData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else if (CAVEAT == ccdCaseType) {
             CaveatData caveatData = buildCaveatData(retrievedCaseDetails, response);
             String paymentStatus = caveatData.getPayments().get(caveatData.getPayments().size() - 1)
                     .getValue().getStatus().getName();
-            ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId,
+            ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
                     caveatData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
                     securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else {
