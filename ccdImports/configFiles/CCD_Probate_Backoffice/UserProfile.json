@@ -34,5 +34,7 @@
   {"UserIDAMId": "probatebackoffice@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "CaseCreated"},
   {"UserIDAMId": "ProbateCharity@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "BOGrantIssued"},
   {"UserIDAMId": "probatesolicitortestorgman3@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "BOGrantIssued"},
-  {"UserIDAMId": "caa-caseworker@mailnesia.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "BOGrantIssued"}
+  {"UserIDAMId": "caa-caseworker@mailnesia.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "BOGrantIssued"},
+  {"UserIDAMId": "mca.system.idam.acc@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "BOGrantIssued"},
+  {"UserIDAMId": "mca.noc.approver@gmail.com", "WorkBasketDefaultJurisdiction": "PROBATE", "WorkBasketDefaultCaseType": "GrantOfRepresentation", "WorkBasketDefaultState": "BOGrantIssued"}
 ]
