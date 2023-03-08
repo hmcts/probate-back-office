@@ -1,12 +1,12 @@
 package uk.gov.hmcts.probate.service.ccd;
 
-import com.google.common.collect.ImmutableMap;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import uk.gov.hmcts.probate.exception.ConcurrentDataUpdateException;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.JurisdictionId;
@@ -18,8 +18,11 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.ccd.client.model.StartEventResponse;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -105,6 +108,7 @@ class CcdClientApiTest {
         CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
         Long legacyId = 1L;
         CaseDetails caseDetails = CaseDetails.builder().build();
+        List<CaseDetails> caseDetailsList = Arrays.asList(caseDetails);
 
         when(coreCaseDataApi.searchForCaseworker(
             any(String.class),
@@ -112,7 +116,7 @@ class CcdClientApiTest {
             any(String.class),
             any(String.class),
             any(String.class),
-            any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails));
+            any(Map.class))).thenReturn(caseDetailsList);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation(AUTHORISATION)
@@ -124,7 +128,6 @@ class CcdClientApiTest {
             ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
 
         assertThat(actualCaseDetails.get(), equalTo(caseDetails));
-
 
     }
 
@@ -139,7 +142,7 @@ class CcdClientApiTest {
             any(String.class),
             any(String.class),
             any(String.class),
-            any(ImmutableMap.class))).thenReturn(Collections.EMPTY_LIST);
+            any(Map.class))).thenReturn(Collections.EMPTY_LIST);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation(AUTHORISATION)
@@ -157,28 +160,25 @@ class CcdClientApiTest {
 
     @Test
     void shouldThrowExceptionWhenMorethan1CaseFoundForRetrieveCase() {
+        Long legacyId = 1L;
+        CaseDetails caseDetails1 = CaseDetails.builder().build();
+        CaseDetails caseDetails2 = CaseDetails.builder().build();
+
+        when(coreCaseDataApi.searchForCaseworker(
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(String.class),
+            any(Map.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation(AUTHORISATION)
+            .serviceAuthorisation(SERVICE_AUTHORISATION)
+            .userId(USER_ID)
+            .build();
         assertThrows(IllegalStateException.class, () -> {
-            CcdCaseType ccdCaseType = CcdCaseType.GRANT_OF_REPRESENTATION;
-            Long legacyId = 1L;
-            CaseDetails caseDetails1 = CaseDetails.builder().build();
-            CaseDetails caseDetails2 = CaseDetails.builder().build();
-
-            when(coreCaseDataApi.searchForCaseworker(
-                    any(String.class),
-                    any(String.class),
-                    any(String.class),
-                    any(String.class),
-                    any(String.class),
-                    any(ImmutableMap.class))).thenReturn(Arrays.asList(caseDetails1, caseDetails2));
-
-            SecurityDTO securityDTO = SecurityDTO.builder()
-                    .authorisation(AUTHORISATION)
-                    .serviceAuthorisation(SERVICE_AUTHORISATION)
-                    .userId(USER_ID)
-                    .build();
-
-            Optional<CaseDetails> actualCaseDetails =
-                    ccdClientApi.retrieveCaseByLegacyId(ccdCaseType.getName(), legacyId, securityDTO);
+            ccdClientApi.retrieveCaseByLegacyId(CcdCaseType.GRANT_OF_REPRESENTATION.getName(), legacyId, securityDTO);
         });
     }
 
@@ -216,43 +216,151 @@ class CcdClientApiTest {
         EventId eventId = EventId.DEATH_RECORD_VERIFIED;
 
         when(coreCaseDataApi.startEventForCitizen(
-                eq(AUTHORISATION),
-                eq(SERVICE_AUTHORISATION),
-                eq(USER_ID),
-                eq(JurisdictionId.PROBATE.name()),
-                eq(ccdCaseType.getName()),
-                any(),
-                any())).thenReturn(startEventResponse);
+            eq(AUTHORISATION),
+            eq(SERVICE_AUTHORISATION),
+            eq(USER_ID),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(ccdCaseType.getName()),
+            any(),
+            any())).thenReturn(startEventResponse);
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                .build();
+            .build();
 
         when(coreCaseDataApi.submitEventForCitizen(
-                eq(AUTHORISATION),
-                eq(SERVICE_AUTHORISATION),
-                eq(USER_ID),
-                eq(JurisdictionId.PROBATE.name()),
-                eq(ccdCaseType.getName()),
-                eq("1"),
-                eq(false),
-                any(CaseDataContent.class))).thenReturn(caseDetails);
+            eq(AUTHORISATION),
+            eq(SERVICE_AUTHORISATION),
+            eq(USER_ID),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(ccdCaseType.getName()),
+            eq("1"),
+            eq(false),
+            any(CaseDataContent.class))).thenReturn(caseDetails);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation(AUTHORISATION)
-                .serviceAuthorisation(SERVICE_AUTHORISATION)
-                .userId(USER_ID)
-                .build();
+            .authorisation(AUTHORISATION)
+            .serviceAuthorisation(SERVICE_AUTHORISATION)
+            .userId(USER_ID)
+            .build();
 
 
         CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCitizen(
-                CcdCaseType.GRANT_OF_REPRESENTATION,
-                "1",
-                grantOfRepresentationData,
-                eventId,
-                securityDTO,
-                "Description",
-                "Summary");
+            CcdCaseType.GRANT_OF_REPRESENTATION,
+            "1",
+            grantOfRepresentationData,
+            eventId,
+            securityDTO,
+            "Description",
+            "Summary");
 
         assertThat(actualCaseDetails, equalTo(caseDetails));
+    }
+
+    @Test
+    void updateCaseAsCaseworker() {
+
+        LocalDateTime timeLastModified = LocalDateTime.of(2022, 1, 8, 10, 10, 0, 0);
+        StartEventResponse startEventResponse = Mockito.mock(StartEventResponse.class);
+
+        EventId eventId = EventId.DEATH_RECORD_VERIFIED;
+
+        when(coreCaseDataApi.startEventForCaseWorker(
+            eq(AUTHORISATION),
+            eq(SERVICE_AUTHORISATION),
+            eq(USER_ID),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
+            any(),
+            any())).thenReturn(startEventResponse);
+
+        CaseDetails responseCaseDetails = Mockito.mock(CaseDetails.class);
+        when(startEventResponse.getCaseDetails()).thenReturn(responseCaseDetails);
+        when(responseCaseDetails.getLastModified()).thenReturn(timeLastModified);
+
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+            .build();
+
+        when(coreCaseDataApi.submitEventForCaseWorker(
+            eq(AUTHORISATION),
+            eq(SERVICE_AUTHORISATION),
+            eq(USER_ID),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
+            eq("1"),
+            eq(false),
+            any(CaseDataContent.class))).thenReturn(responseCaseDetails);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation(AUTHORISATION)
+            .serviceAuthorisation(SERVICE_AUTHORISATION)
+            .userId(USER_ID)
+            .build();
+
+
+        CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCaseworker(
+            CcdCaseType.GRANT_OF_REPRESENTATION,
+            "1",
+            timeLastModified,
+            grantOfRepresentationData,
+            eventId,
+            securityDTO,
+            "Description",
+            "Summary");
+
+        assertThat(actualCaseDetails, equalTo(responseCaseDetails));
+    }
+
+    @Test
+    void updateCaseAsCaseworkerException() throws ConcurrentDataUpdateException {
+        LocalDateTime timeLastModified = LocalDateTime.of(2022, 1, 8, 10, 10, 0, 0);
+        LocalDateTime timeNewer = timeLastModified.plusNanos(1);
+        StartEventResponse startEventResponse = Mockito.mock(StartEventResponse.class);
+
+        when(coreCaseDataApi.startEventForCaseWorker(
+            eq(AUTHORISATION),
+            eq(SERVICE_AUTHORISATION),
+            eq(USER_ID),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
+            any(),
+            any())).thenReturn(startEventResponse);
+
+        CaseDetails responseCaseDetails = Mockito.mock(CaseDetails.class);
+        when(startEventResponse.getCaseDetails()).thenReturn(responseCaseDetails);
+        when(responseCaseDetails.getLastModified()).thenReturn(timeNewer);
+
+        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+            .build();
+
+        when(coreCaseDataApi.submitEventForCaseWorker(
+            eq(AUTHORISATION),
+            eq(SERVICE_AUTHORISATION),
+            eq(USER_ID),
+            eq(JurisdictionId.PROBATE.name()),
+            eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
+            eq("1"),
+            eq(false),
+            any(CaseDataContent.class))).thenReturn(responseCaseDetails);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+            .authorisation(AUTHORISATION)
+            .serviceAuthorisation(SERVICE_AUTHORISATION)
+            .userId(USER_ID)
+            .build();
+
+        EventId eventId = EventId.DEATH_RECORD_VERIFIED;
+        assertThrows(ConcurrentDataUpdateException.class,
+            () -> {
+                ccdClientApi.updateCaseAsCaseworker(
+                    CcdCaseType.GRANT_OF_REPRESENTATION,
+                    "1",
+                    timeLastModified,
+                    grantOfRepresentationData,
+                    eventId,
+                    securityDTO,
+                    "Description",
+                    "Summary");
+
+            });
     }
 }
