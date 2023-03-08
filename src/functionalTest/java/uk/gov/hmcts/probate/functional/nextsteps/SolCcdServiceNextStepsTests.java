@@ -65,7 +65,6 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     @Test
     public void shouldIncludePA15Link() throws IOException {
         final String response = transformCase("solicitorValidateProbateExecutorsPA15.json", VALIDATE_URL);
-        System.out.println("shouldIncludePA15Link.response:" +  response);
         assertTrue(response.contains("(PA15)"));
     }
 
@@ -202,7 +201,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
     private Response validatePostRequestSuccessForLegalStatement(List<String> validationStrings) throws IOException {
         return validatePostRequestSuccessForLegalStatement("success.nextsteps.json", validationStrings);
     }
-    
+
     private Response validatePostRequestSuccessForLegalStatement(String file, String... validationString)
         throws IOException {
         final var vars = new ArrayList<String>();
@@ -211,7 +210,7 @@ public class SolCcdServiceNextStepsTests extends IntegrationTestBase {
         }
         return validatePostRequestSuccessForLegalStatement(file, vars);
     }
-    
+
     private Response validatePostRequestSuccessForLegalStatement(String file, List<String> validationString)
         throws IOException {
         String jsonBody = utils.getJsonFromFile(file);
