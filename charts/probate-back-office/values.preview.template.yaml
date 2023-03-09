@@ -130,7 +130,7 @@ ccd:
         APPLICATION_LOGGING_LEVEL: INFO
         BYPASS_ORG_DROOL_RULE: true
         LAUNCH_DARKLY_ENV: pr
-        ENABLE_DB_MIGRATE: true
+        ENABLE_DB_MIGRATE: false
 
   ccd-definition-store-api:
     java:
