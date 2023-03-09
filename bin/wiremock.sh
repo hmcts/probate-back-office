@@ -598,6 +598,85 @@ curl -X POST \
         }' \
 http://localhost:8991/__admin/mappings/new
 
+#Users no roles
+curl -X POST \
+--data '{
+          "request": {
+            "method": "GET",
+            "urlPath": "/refdata/external/v1/organisations/users",
+            "queryParameters": {
+              "status": {
+                "equalTo": "active"
+              },
+              "returnRoles": {
+                  "equalTo": "false"
+                }
+            }
+          },
+          "response": {
+            "status": 200,
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "jsonBody": {
+              "organisationIdentifier": "XXXXX",
+              "name": "Probate Test Org",
+              "users": [
+                  {
+                    "userIdentifier": "'${probatesolicitortestorgtestman}'",
+                    "firstName": "PBA",
+                    "lastName": "TestOrg3",
+                    "email": "probatesolicitortestorgman3@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager",
+                      "pui-organisation-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "'${probatesolicitortestorgtest1}'",
+                    "firstName": "PBA",
+                    "lastName": "TestUser",
+                    "email": "probatesolicitortestorgtest1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  },
+                  {
+                    "userIdentifier": "'${probatesolicitortestorg2test1}'",
+                    "firstName": "PBA",
+                    "lastName": "TestUser2",
+                    "email": "probatesolicitortestorg2test1@gmail.com",
+                    "roles": [
+                      "caseworker",
+                      "caseworker-probate",
+                      "caseworker-probate-solicitor",
+                      "pui-user-manager",
+                      "pui-case-manager"
+                    ],
+                    "idamStatus": "ACTIVE",
+                    "idamStatusCode": "200",
+                    "idamMessage": "11 OK"
+                  }
+                ]
+            }
+          }
+        }' \
+http://localhost:8991/__admin/mappings/new
+
 #Users with roles
 curl -X POST \
 --data '{
