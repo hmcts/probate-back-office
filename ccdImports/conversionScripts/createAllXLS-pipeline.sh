@@ -13,7 +13,7 @@ if [ -z "$1" ]
 fi
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-export CCD_DEF_AAC_URL=probate-back-office-pr-2218-aac-manage-case-assignment
+export CCD_DEF_AAC_URL=probate-back-office-pr-2221-aac-manage-case-assignment
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
