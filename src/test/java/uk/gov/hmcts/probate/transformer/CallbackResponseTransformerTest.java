@@ -3580,8 +3580,6 @@ class CallbackResponseTransformerTest {
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
-        assertEquals("[APPLICANTSOLICITOR]", callbackResponse.getData().getApplicantOrganisationPolicy()
-                .getOrgPolicyCaseAssignedRole());
         verify(caseDataTransformerMock, times(1))
             .transformCaseDataForSolicitorApplicationCompletion(callbackRequestMock);
     }

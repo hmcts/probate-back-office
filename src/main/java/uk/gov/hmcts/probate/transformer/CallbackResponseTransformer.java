@@ -143,6 +143,21 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse transformForNoc(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        responseCaseDataBuilder.applicantOrganisationPolicy(
+                OrganisationPolicy.builder()
+                        .organisation(Organisation.builder()
+                                .organisationID(null)
+                                .organisationName(null)
+                                .build())
+                        .orgPolicyReference(null)
+                        .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                        .build());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
         return transformResponse(builder.build());
@@ -804,15 +819,6 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-        responseCaseDataBuilder.applicantOrganisationPolicy(
-                OrganisationPolicy.builder()
-                        .organisation(Organisation.builder()
-                                .organisationID(null)
-                                .organisationName(null)
-                                .build())
-                        .orgPolicyReference(null)
-                        .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
-                        .build());
 
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
