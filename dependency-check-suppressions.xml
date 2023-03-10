@@ -215,6 +215,10 @@
         <vulnerabilityName>1085674</vulnerabilityName>
         <vulnerabilityName>1089058</vulnerabilityName>
         <vulnerabilityName>1087663</vulnerabilityName>
+        <vulnerabilityName>1090101</vulnerabilityName>
+        <vulnerabilityName>1089550</vulnerabilityName>
+        <vulnerabilityName>1091185</vulnerabilityName>
+        <vulnerabilityName>1091307</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -236,6 +240,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/minimatch@.*$</packageUrl>
         <vulnerabilityName>1088664</vulnerabilityName>
+        <vulnerabilityName>1091174</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -368,20 +373,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: lodash:3.10.1
-   ]]></notes>
-        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
-        <vulnerabilityName>1090101</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: lodash:3.10.1
-   ]]></notes>
-        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
-        <vulnerabilityName>1089550</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: merge:1.2.1
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/merge@.*$</packageUrl>
@@ -463,5 +454,12 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
         <cve>CVE-2022-45688</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: commons-fileupload-1.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/commons\-fileupload/commons\-fileupload@.*$</packageUrl>
+        <cve>CVE-2023-24998</cve>
     </suppress>
 </suppressions>

@@ -88,17 +88,23 @@ class ExceptionRecordServiceTest {
 
     private ExceptionRecordRequest erRequestGrantOfProbate;
 
+    private ExceptionRecordRequest erRequestGrantOfProbateSols;
+
     private CaveatCaseUpdateRequest caveatCaseUpdateRequest;
 
     private String exceptionRecordPayloadPA8A;
 
     private String exceptionRecordPayloadPA1P;
 
+    private String exceptionRecordPayloadPA1PSols;
+
     private List<String> warnings;
 
     private CaveatData caveatData;
 
     private GrantOfRepresentationData grantOfRepresentationData;
+
+    private GrantOfRepresentationData grantOfRepresentationDataSols;
 
     private CaseCreationDetails caveatCaseDetailsResponse;
 
@@ -114,9 +120,15 @@ class ExceptionRecordServiceTest {
         exceptionRecordPayloadPA1P =
             testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
 
+        exceptionRecordPayloadPA1PSols =
+            testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1P.json");
+
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
 
         erRequestGrantOfProbate = getObjectMapper().readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
+
+        erRequestGrantOfProbateSols = getObjectMapper()
+            .readValue(exceptionRecordPayloadPA1PSols, ExceptionRecordRequest.class);
 
         warnings = new ArrayList<String>();
         caveatData = new CaveatData();
@@ -132,6 +144,12 @@ class ExceptionRecordServiceTest {
         grantOfRepresentationData.setPrimaryApplicantSurname("Smith");
         grantOfRepresentationData.setApplicationType(ApplicationType.PERSONAL);
         grantOfRepresentationData.setGrantType(GrantType.GRANT_OF_PROBATE);
+
+        grantOfRepresentationDataSols = new GrantOfRepresentationData();
+        grantOfRepresentationDataSols.setApplicationType(ApplicationType.SOLICITORS);
+        grantOfRepresentationDataSols.setGrantType(GrantType.GRANT_OF_PROBATE);
+        grantOfRepresentationDataSols.setSolsSolicitorFirmName("FirmName");
+        grantOfRepresentationDataSols.setCaseHandedOffToLegacySite(true);
         grantOfProbateCaseDetailsResponse =
             CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
                 .caseData(grantOfRepresentationData)
@@ -288,5 +306,27 @@ class ExceptionRecordServiceTest {
         javaTimeModule.addSerializer(new LocalDateTimeSerializer());
         objectMapper.registerModule(javaTimeModule);
         return objectMapper;
+    }
+
+    @Test
+    void createGrantOfProbateCaseSolicitorFromExceptionRecord() {
+        when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSols);
+        grantOfProbateCaseDetailsResponse =
+            CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
+                .caseData(grantOfRepresentationDataSols)
+                .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
+        when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
+            .thenReturn(grantOfProbateCaseDetailsResponse);
+        SuccessfulTransformationResponse response =
+            erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateSols,
+                    GrantType.GRANT_OF_PROBATE,
+                    warnings);
+        GrantOfRepresentationData grantOfRepresentationDataResponse
+            = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
+
+        assertEquals(ApplicationType.SOLICITORS, grantOfRepresentationDataResponse.getApplicationType());
+        assertEquals(GrantType.GRANT_OF_PROBATE, grantOfRepresentationDataResponse.getGrantType());
+        assertEquals("FirmName", grantOfRepresentationDataResponse.getSolsSolicitorFirmName());
+        assertEquals(Boolean.TRUE, grantOfRepresentationDataResponse.getCaseHandedOffToLegacySite());
     }
 }
