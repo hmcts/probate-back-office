@@ -16,12 +16,12 @@ postgresql:
       enabled: false
     initdb:
       scripts:
-         create.sql: |
-           CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+        create.sql: |
+          CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+          CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
 
 idam-pr:
   enabled: true
@@ -108,13 +108,32 @@ ccd:
 
   am-role-assignment-service:
     java:
-      disableKeyVaults: true
-      keyVaults:
-        am:
-          secrets:
-            - role-assignment-service-LD-SDK-KEY
+      image: 'hmctspublic.azurecr.io/am/role-assignment-service:latest'
+      imagePullPolicy: Always
+      ingressHost: ""
+      releaseNameOverride: ${SERVICE_NAME}-am-role-assignment-service
+      readinessDelay: 240
+      livenessDelay: 240
       environment:
-        - CCD_DATA_STORE_URL: "http://${SERVICE_NAME}-ccd-data-store-api"
+        ROLE_ASSIGNMENT_DB_HOST: ${SERVICE_NAME}-postgresql
+        ROLE_ASSIGNMENT_DB_NAME: "role_assignment"
+        ROLE_ASSIGNMENT_DB_USERNAME: "hmcts"
+        ROLE_ASSIGNMENT_DB_PASSWORD: "hmcts"
+        ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
+        AM_ROLE_ASSIGNMENT_SERVICE_SECRET: AAAAAAAAAAAAAAAA
+        IDAM_USER_URL: "https://idam-web-public.aat.platform.hmcts.net"
+        IDAM_S2S_URL: "http://rpe-service-auth-provider-aat.service.core-compute-aat.internal"
+        OPEN_ID_API_BASE_URI: "https://idam-web-public.{{ .Values.global.environment }}.platform.hmcts.net/o"
+        CCD_DATA_STORE_URL: "http://${SERVICE_NAME}-ccd-data-store-api"
+        ROLE_ASSIGNMENT_IDAM_ADMIN_USERID: ras-validation-system@hmcts.net
+        SPRING_CLOUD_PROPERTIESVOLUME_PATHS: "/mnt/secrets/am,/mnt/secrets/sscs"
+        APPLICATION_LOGGING_LEVEL: INFO
+        BYPASS_ORG_DROOL_RULE: true
+        LAUNCH_DARKLY_ENV: pr
+        ENABLE_DB_MIGRATE: true
+        ENABLE_FEIGN_HYSTRIX: false
+        MICROSERVICE_NAME: am_role_assignment_service
+        ROLE_ASSIGNMENT_IDAM_CLIENT_ID: am_role_assignment
 
   ccd-definition-store-api:
     java:
