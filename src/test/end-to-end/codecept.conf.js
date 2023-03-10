@@ -5,12 +5,9 @@ exports.config = {
     'output': testConfig.TestOutputDir,
     'helpers': {
         'Puppeteer': {
-            'restart': false,
-            'keepBrowserState': false,
-            'keepCookies': false,
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
-            'waitForAction': 500,
+            'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
             'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {
@@ -53,12 +50,6 @@ exports.config = {
         screenshotOnFail: {
             enabled: true,
             fullPageScreenshots: 'true'
-        }
-    },
-    'multiple': {
-        'parallel': {
-            // Splits tests into 2 chunks
-            'chunks': 2
         }
     },
     'mocha': {
