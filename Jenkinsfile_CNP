@@ -98,12 +98,18 @@ def checkForEnableNightlyLabel(branch_name) {
 
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
+    if("preview" == env){
+      shutterOption = "true"
+    } else {
+      shutterOption = "false"
+    }
+
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID}"
+      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
     }
 
       else {
-      sh "./build-release-ccd-definitions.sh ${env}"
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
     }
   }
 
