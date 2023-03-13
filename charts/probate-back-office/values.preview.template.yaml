@@ -102,7 +102,7 @@ ccd:
         DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&ssl=disable&gssEncMode=disable"
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
         CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
-        ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+        ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
 
@@ -258,7 +258,7 @@ aac-manage-case-assignment:
       IDAM_NOC_APPROVER_PASSWORD: ${BEFTA_IDAM_NOC_APPROVER_PASSWORD}
       NOTIFY_MCA_API_KEY: ${PROBATE_BO_NOTIFY_KEY}
       NOTIFY_EMAIL_TEMPLATE_ID: 85f22924-7b45-4fc6-9954-c08a8833f6a0
-      ROLE_ASSIGNMENT_URL: http://am-role-assignment-service-aat.service.core-compute-aat.internal
+      ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
     autoscaling:
       enabled: false
 
