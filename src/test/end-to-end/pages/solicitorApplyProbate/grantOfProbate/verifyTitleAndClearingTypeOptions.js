@@ -6,6 +6,6 @@ module.exports = async function () {
         'TCTPartAllRenouncing', 'TCTTrustCorpResWithSDJ', 'TCTTrustCorpResWithApp', 'TCTPartSuccOthersRenouncing', 'TCTPartOthersRenouncing', 'TCTNoT'];
     for (let i = 0; i < opts.length; i++) {
         // eslint-disable-next-line no-await-in-loop
-        await I.verifyTitleAndClearingTypeOption(opts[i]);
+        await I.verifyTitleAndClearingTypeOptionPage(opts[i]);
     }
 };

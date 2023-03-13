@@ -15,14 +15,14 @@ plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
   id 'org.springframework.boot' version '2.7.4'
-  id 'uk.gov.hmcts.java' version '0.12.2'
+  id 'uk.gov.hmcts.java' version '0.12.39'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.15.133'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.538'
 }
 
 apply plugin: 'project-report'
@@ -112,6 +112,14 @@ sourceSets {
     }
     resources.srcDir file('src/contractTest/resources')
   }
+  integrationTest {
+    java {
+      compileClasspath += main.output
+      runtimeClasspath += main.output
+      srcDir file('src/integrationTest/java')
+    }
+    resources.srcDir file('src/integrationTest/resources')
+  }
 }
 
 test {
@@ -130,6 +138,21 @@ task smoke(type: Test) {
 }
 
 task functional(type: Test) {
+  // PACT_BRANCH_NAME is only set in non-dev environments
+  if (System.getenv("PACT_BRANCH_NAME") == null) {
+    doFirst() {
+      "sh bin/variables/load-local-environment-variables.sh".execute()
+    }
+    if (project.file('./.aat-env').exists()) {
+      project.file('./.aat-env').readLines().each() {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
+    }
+  }
+
   description = "Runs functional Tests"
   testClassesDirs = sourceSets.testFunctional.output.classesDirs
   classpath = sourceSets.testFunctional.runtimeClasspath
@@ -144,6 +167,14 @@ task caseCreator(type: Test) {
   testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
   classpath = sourceSets.testCaseCreator.runtimeClasspath
   finalizedBy aggregate
+}
+
+task integration(type: Test) {
+  description = "Runs integration tests"
+  group = "Verification"
+  testClassesDirs = sourceSets.integrationTest.output.classesDirs
+  classpath = sourceSets.integrationTest.runtimeClasspath
+  useJUnitPlatform()
 }
 
 gitProperties {
@@ -180,7 +211,7 @@ def versions = [
 ]
 
 jacocoTestReport {
-  executionData(test)
+  executionData(test,integration)
   reports {
     xml.required = true
     csv.required = false
@@ -191,7 +222,6 @@ jacocoTestReport {
 repositories {
   mavenLocal()
   mavenCentral()
-  jcenter()
   maven { url "https://repo.maven.apache.org/maven2" }
   maven { url "https://jitpack.io" }
 }
@@ -277,7 +307,7 @@ dependencies {
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   implementation group: 'uk.gov.hmcts.reform', name: 'send-letter-client', version: '2.5.0'
-  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.10'
+  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
@@ -382,7 +412,10 @@ dependencies {
   contractTestAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
   // Provides fast-reload of the probate service upon edit & compile during local development
-  cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+  // cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+
+  integrationTestImplementation sourceSets.main.runtimeClasspath
+  integrationTestImplementation sourceSets.test.runtimeClasspath
 }
 
 tasks.withType(JavaCompile) {
@@ -441,7 +474,11 @@ test {
   useJUnitPlatform()
 }
 
+check.dependsOn(integration)
+tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
+
 runAndPublishConsumerPactTests.finalizedBy pactPublish
+
 
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
@@ -470,17 +507,93 @@ task buildBackOfficeXlsx(type: Exec) {
   outputs.file project.file('jsonToXLS/CCD_Probate_Backoffice.xlsx')
 }
 
+// Build the all excel files.
+task buildAllXlsx(type: Exec) {
+  def input = 'localhost:4104'
+  commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
+  args input
+  // Register the inputs and outputs so Gradle can skip if up-to-date.
+  outputs.dir project.file('jsonToXLS')
+}
+
+// Force Build the all excel files.
+task forceBuildAllXlsx(type: Exec) {
+  def input = 'localhost:4104'
+  commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
+  args input
+}
+
+//import all excel files.
+task importAllXlsx(type: Exec) {
+  doFirst() {
+    "sh bin/variables/load-local-environment-variables.sh".execute()
+  }
+
+  if (project.file('./.aat-env').exists()) {
+    project.file('./.aat-env').readLines().each() {
+      def index = it.indexOf("=")
+      def key = it.substring(0, index)
+      def value = it.substring(index + 1)
+      environment key, value
+    }
+  }
+
+  commandLine project.file("ccdImports/conversionScripts/importAllXLS.sh")
+}
+
+task buildAndImportAllXlsx(type: Exec) {
+  dependsOn forceBuildAllXlsx
+
+  doFirst() {
+    "sh bin/variables/load-local-environment-variables.sh".execute()
+  }
+
+  if (project.file('./.aat-env').exists()) {
+    project.file('./.aat-env').readLines().each() {
+      def index = it.indexOf("=")
+      def key = it.substring(0, index)
+      def value = it.substring(index + 1)
+      environment key, value
+    }
+  }
+
+  commandLine project.file("ccdImports/conversionScripts/importAllXLS.sh")
+}
+
 bootWithCCD {
-  dependsOn buildBackOfficeXlsx
-  authMode = uk.gov.hmcts.rse.AuthMode.Local
   // Request the cftlib create the probate_man database
   environment 'RSE_LIB_ADDITIONAL_DATABASES', 'probate_man'
-
-  environment 'IDAM_S2S_URL', 'http://localhost:8489'
-  environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
   environment 'PROBATE_POSTGRESQL_PORT', '6432'
   environment 'PROBATE_POSTGRESQL_USER', 'postgres'
   environment 'PROBATE_POSTGRESQL_PASSWORD', 'postgres'
+
+  if (new Boolean(System.getenv('USE_LOCAL_SUPPORT_SERVICES'))) {
+    dependsOn buildBackOfficeXlsx
+    authMode = uk.gov.hmcts.rse.AuthMode.Local
+    environment 'IDAM_S2S_URL', 'http://localhost:8489'
+    environment 'IDAM_SERVICE_HOST', 'http://localhost:5000'
+  } else {
+    doFirst() {
+      "sh bin/variables/load-local-environment-variables.sh".execute()
+    }
+
+    if (project.file('./.aat-env').exists()) {
+      project.file('./.aat-env').readLines().each() {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
+    }
+
+    dependsOn buildAllXlsx
+  }
+}
+
+task reloadLocalEnvVars() {
+  doFirst() {
+    "sh bin/variables/load-local-environment-variables.sh".execute()
+  }
 }
 
 bootJar {

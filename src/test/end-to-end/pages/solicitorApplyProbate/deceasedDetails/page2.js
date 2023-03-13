@@ -5,7 +5,6 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
 module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFormsCompleted) {
     const I = this;
-
     await I.runAccessibilityTest();
 
     if (applicationType === 'EE') {
