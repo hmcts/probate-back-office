@@ -3730,4 +3730,12 @@ class CallbackResponseTransformerTest {
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
     }
+
+    @Test
+    void shouldTransformForNoc() {
+        CallbackResponse callbackResponse = underTest.transformForNoc(callbackRequestMock);
+
+        assertEquals(callbackResponse.getData().getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole(),
+                "[APPLICANTSOLICITOR]");
+    }
 }

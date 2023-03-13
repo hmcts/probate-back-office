@@ -151,6 +151,7 @@ class BusinessValidationControllerIT {
     private static final String PA_CREATE_URL = "/case/pa-create";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -1124,6 +1125,16 @@ class BusinessValidationControllerIT {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldPrepareCaseForNoc() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(PREPARE_FOR_NOC).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 
