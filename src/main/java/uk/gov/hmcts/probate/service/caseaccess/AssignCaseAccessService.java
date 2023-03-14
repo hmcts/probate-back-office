@@ -31,12 +31,12 @@ public class AssignCaseAccessService {
         String serviceToken = authTokenGenerator.generate();
         log.info("SAC: attempting assignCaseAccess for CaseId {} of type {} to user {}", caseId, caseTypeId, userId);
         try {
-            assignCaseAccessClient.assignCaseAccess(
-                    authorisationToken,
-                    serviceToken,
-                    true,
-                    buildAssignCaseAccessRequest(caseId, userId, caseTypeId)
-            );
+//            assignCaseAccessClient.assignCaseAccess(
+//                    authorisationToken,
+//                    serviceToken,
+//                    true,
+//                    buildAssignCaseAccessRequest(caseId, userId, caseTypeId)
+//            );
 
             log.info("SAC: assignCaseAccess completed for CaseId {} of type {} to user {}", caseId, caseTypeId, userId);
             ccdDataStoreService.removeCreatorRole(caseId, authorisationToken);

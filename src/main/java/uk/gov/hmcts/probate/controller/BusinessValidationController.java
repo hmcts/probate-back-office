@@ -34,21 +34,22 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
-import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -63,6 +64,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -71,7 +73,6 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.ADMON_WILL_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 @Slf4j
 @Controller
@@ -107,6 +108,7 @@ public class BusinessValidationController {
     private final AssignCaseAccessService assignCaseAccessService;
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final CcdDataStoreService ccdDataStoreService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -533,6 +535,14 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(callbackResponseTransformer.transformForNoc(callbackRequest));
+    }
+
+    @PostMapping(path = "/remove-access")
+    public ResponseEntity removeAccess(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest request) {
+        ccdDataStoreService.removeCreatorRole(request.getCaseDetails().getId().toString(), authToken);
+        return ResponseEntity.ok("completed remove access");
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
