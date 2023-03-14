@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -154,6 +155,8 @@ class BusinessValidationUnitTest {
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformer;
+    @Mock
+    private CcdDataStoreService ccdDataStoreService;
 
     private BusinessValidationController underTest;
 
@@ -186,7 +189,8 @@ class BusinessValidationUnitTest {
             solicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
-            handOffLegacyTransformer);
+            handOffLegacyTransformer,
+            ccdDataStoreService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -817,10 +821,12 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDetailsMock.getId()).thenReturn(99L);
         when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
-                underTest.prepareCaseForNoc(callbackRequestMock);
+                underTest.prepareCaseForNoc("Auth", callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(ccdDataStoreService).removeCreatorRole("99", "Auth");
     }
 }

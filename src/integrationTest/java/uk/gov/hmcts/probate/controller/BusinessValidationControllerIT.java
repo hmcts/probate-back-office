@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -195,6 +196,8 @@ class BusinessValidationControllerIT {
     private NotificationService notificationService;
     @MockBean
     private CaseDataTransformer caseDataTransformer;
+    @MockBean
+    private CcdDataStoreService ccdDataStoreService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -1133,7 +1136,8 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(PREPARE_FOR_NOC).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PREPARE_FOR_NOC).content(json).header("Authorization", AUTH_TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }
