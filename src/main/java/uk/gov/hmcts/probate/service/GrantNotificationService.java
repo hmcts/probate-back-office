@@ -155,7 +155,8 @@ public class GrantNotificationService {
             .build();
 
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED,
+            foundCase.getLastModified(), grantOfRepresentationData,
+            EventId.SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED,
             securityUtils.getUserAndServiceSecurityDTO(), PROBATE_APPLICATION, PROBATE_APPLICATION);
 
     }
@@ -172,10 +173,17 @@ public class GrantNotificationService {
             .probateNotificationsGenerated(
                 getProbateDocuments(emailDocument, foundCase.getData().getProbateNotificationsGenerated()))
             .build();
-        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
-            grantOfRepresentationData, sentEvent, securityUtils.getUserAndServiceSecurityDTO(),
+
+        try {
+            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),
+                foundCase.getLastModified(), grantOfRepresentationData, sentEvent,
+                securityUtils.getUserAndServiceSecurityDTO(),
                 PROBATE_APPLICATION, PROBATE_APPLICATION);
-        log.info("Updated found case:{}", foundCase.getId());
+            log.info("Updated found case:{}", foundCase.getId());
+        } catch (Exception e) {
+            log.error("UpdateFoundCase error:",
+                e.getMessage());
+        }
 
     }
 
@@ -185,7 +193,7 @@ public class GrantNotificationService {
         List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>> probateDocuments =
             new ArrayList<>();
         for (CollectionMember<Document> documentCollectionMember : probateDocumentsGenerated) {
-            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<ProbateDocument>(
+            probateDocuments.add(new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(
                 documentCollectionMember.getId(),
                 getProbateDocument(documentCollectionMember.getValue())));
         }

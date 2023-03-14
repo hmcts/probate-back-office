@@ -210,6 +210,7 @@ class ExceptionRecordControllerIT {
                 .andExpect(content().string(containsString("\"caseType\":\"gop\"")))
                 .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
                 .andExpect(content().string(containsString("\"warnings\":[]")))
+                .andExpect(content().string(containsString("\"caseHandedOffToLegacySite\":\"Yes\"")))
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
     }
 
