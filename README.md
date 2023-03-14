@@ -47,11 +47,18 @@ You can run your local development environment (LDE) in two ways:
 ### - Option 1: AAT support services
 
 #### Steps:
+If this is your first run, stop (or clean out) existing Docker containers.
 
 1. `$ unset USE_LOCAL_SUPPORT_SERVICES`
 2. Ensure your VPN is on.
-3. Run `$ ./gradlew bootWithCcd`
-4. Wait until tasks have stopped running in the terminal.
+3. Run (you will probably not need to do this every time):
+```bash
+az login
+az acr login --name hmctspublic --subscription DCD-CNP-Prod
+az acr login --name hmctsprivate --subscription DCD-CNP-Prod
+```
+4. Run `$ ./gradlew bootWithCcd`
+5. Wait until tasks have stopped running in the terminal.
 
 #### Using the setup:
 
@@ -142,7 +149,45 @@ Also needs back office docker to bring up all services:
 ./bin/dev-cft-start.sh
 
 Login to XUI at localhost:3000 with testCW@user.com or testAdmin@user.com leave password empty
-## END: NEW ############################################################################################################
+## END: NEW 
+```
+
+### On a running local cftlib setup
+#### Regenerate all xls after changing .json
+```
+./gradlew forceBuildAllXlsx
+```
+
+#### Import all xls
+```
+./gradlew importAllXlsx
+```
+
+#### Running FTs on local setup
+Reload envVars for aat to local to be sure you have the latest ones with
+```
+./gradlew reloadLocalEnvVars
+```
+
+This line from build.gradle should be commented out before you bootWithCCD
+```
+cftlibImplementation 'org.springframework.boot:spring-boot-devtools'
+```
+Then do
+```
+./gradlew bootWithCCD
+```
+
+then run FTs as any other normal test
+
+#### Regenerate and import all xls
+The following can be executed when the BO server is running:
+```
+./gradlew buildAndImportAllXlsx
+```
+then sign out / sign in
+
+########################################################################################################################
 ########################################################################################################################
 ## Original docker environment:
 ## Docker environment
@@ -151,7 +196,6 @@ Because the probate back office relies on CCD callbacks it must be run inside th
 
 Build the jar with:
 
-```
 ```
 ./gradlew assemble
 docker-compose build
