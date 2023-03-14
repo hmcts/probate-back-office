@@ -179,8 +179,8 @@ public class FunctionalTestUtils {
 
     public Response getDocumentResponseFromId(String documentId, Headers headers) {
         try {
-            //@TODO maybe this can help with intermittent FT failures?
-            Thread.sleep(2000);
+            //@TODO maybe this can help with intermittent FT failures, but it will take longer time
+            Thread.sleep(1000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
