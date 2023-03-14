@@ -107,7 +107,7 @@ def archiveCoreCaseDataDefinitions(env) {
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
     } else if("prod" == env){
-      //DO NOT CHANGE THIS, YOU WILL SHUTTER PROBATE IN PROD EXUI
+      //WARNING, CHANGING THIS WILL SHUTTER PROD
       shutterOption = "false"
     } else {
       shutterOption = "false"
