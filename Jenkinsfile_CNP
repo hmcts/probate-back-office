@@ -100,6 +100,12 @@ def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     if("preview" == env){
       shutterOption = "true"
+    } else if("demo" == env){
+      shutterOption = "true"
+    } else if("aat" == env){
+      shutterOption = "false"
+    } else if("prod" == env){
+      shutterOption = "false"
     } else {
       shutterOption = "false"
     }
