@@ -99,7 +99,7 @@ def checkForEnableNightlyLabel(branch_name) {
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
     if("preview" == env){
-      shutterOption = "true"
+      shutterOption = "false"
     } else if("demo" == env){
       shutterOption = "true"
     } else if("aat" == env){
