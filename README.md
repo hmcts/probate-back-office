@@ -657,7 +657,7 @@ http://probate-orchestrator-service-pr-334.service.core-compute-preview.internal
 http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
 http://probate-submit-service-pr-334.service.core-compute-preview.internal/health
 http://probate-business-service-pr-334.service.core-compute-preview.internal/health
-http://probate-back-office-pr-1101.service.core-compute-preview.internal/health
+https://probate-back-office-pr-2224.preview.platform.hmcts.net/health
 ```
 
 

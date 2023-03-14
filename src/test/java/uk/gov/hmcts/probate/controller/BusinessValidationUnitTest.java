@@ -29,7 +29,6 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
-import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -155,8 +154,6 @@ class BusinessValidationUnitTest {
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformer;
-    @Mock
-    private CcdDataStoreService ccdDataStoreService;
 
     private BusinessValidationController underTest;
 
@@ -189,8 +186,7 @@ class BusinessValidationUnitTest {
             solicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
-            handOffLegacyTransformer,
-            ccdDataStoreService);
+            handOffLegacyTransformer);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -839,6 +835,5 @@ class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response =
                 underTest.removeAccess("Auth", callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        verify(ccdDataStoreService).removeCreatorRole("99", "Auth");
     }
 }

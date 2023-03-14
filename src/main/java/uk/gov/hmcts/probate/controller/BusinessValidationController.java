@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
-import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -108,7 +107,6 @@ public class BusinessValidationController {
     private final AssignCaseAccessService assignCaseAccessService;
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
-    private final CcdDataStoreService ccdDataStoreService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -541,7 +539,8 @@ public class BusinessValidationController {
     public ResponseEntity removeAccess(
             @RequestHeader(value = "Authorization") String authToken,
             @RequestBody CallbackRequest request) {
-        ccdDataStoreService.removeCreatorRole(request.getCaseDetails().getId().toString(), authToken);
+        assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(),
+                "GrantOfRepresentation");
         return ResponseEntity.ok("completed remove access");
     }
 
