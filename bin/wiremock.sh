@@ -13,6 +13,9 @@ orgUserToken=$(${binFolder}/idam-lease-user-token.sh probatesolicitortestorgman3
 probatesolicitortestorgtestman=$(curl -X GET "http://localhost:5000/details" -H  "accept: application/json" -H  "authorization: ${orgUserToken}" | jq -r .id)
 echo probatesolicitortestorgtestman=$probatesolicitortestorgtestman
 
+Solicitor1Token=$(${binFolder}/idam-lease-user-token.sh ProbateSolicitor1@gmail.com Pa55word11)
+probateSolicitor1=$(curl -X GET "http://localhost:5000/details" -H  "accept: application/json" -H  "authorization: ${Solicitor1Token}" | jq -r .id)
+echo probateSolicitor1=$probateSolicitor1
 
 # clear all existing
 echo clearing all wiremock setup
@@ -421,6 +424,80 @@ curl -X POST \
 ' \
 http://localhost:8991/__admin/mappings/new
 
+#OrganisationAddress
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/refdata/external/v1/organisations",
+    "queryParameters": {
+      "id": {
+        "equalTo": "YYYYY"
+      }
+    }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "contactInformation": [
+        {
+          "addressLine1": "Line 1",
+          "addressLine2": "Line 2",
+          "addressLine3": "Line 3",
+          "county": "Kent",
+          "townCity": "London",
+          "country": "UK",
+          "postCode": "DA15 7LN"
+        }
+      ],
+      "organisationIdentifier": "YYYYY",
+      "name": "Probate Test Org YYYYY"
+    }
+  }
+}
+' \
+http://localhost:8991/__admin/mappings/new
+
+#OrganisationAddress by ProbateSolicitor1@gmail.com
+curl -X POST \
+--data '{
+  "request": {
+    "method": "GET",
+    "urlPath": "/refdata/external/v1/organisations",
+    "headers": {
+      "UserEmail": {
+        "Authorization": "'${probateSolicitor1}'"
+      }
+     }
+  },
+  "response": {
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "jsonBody": {
+      "contactInformation": [
+        {
+          "addressLine1": "Line 1",
+          "addressLine2": "Line 2",
+          "addressLine3": "Line 3",
+          "county": "Kent",
+          "townCity": "London",
+          "country": "UK",
+          "postCode": "DA15 7LN"
+        }
+      ],
+      "organisationIdentifier": "YYYYY",
+      "name": "Probate Test Org YYYYY"
+    }
+  }
+}
+' \
+http://localhost:8991/__admin/mappings/new
+
 curl -X POST \
 --data '{
   "request": {
@@ -620,7 +697,7 @@ curl -X POST \
             },
             "jsonBody": {
               "organisationIdentifier": "XXXXX",
-              "name": "Probate Test Org",
+              "name": "Probate Test OrgXY",
               "users": [
                   {
                     "userIdentifier": "'${probatesolicitortestorgtestman}'",

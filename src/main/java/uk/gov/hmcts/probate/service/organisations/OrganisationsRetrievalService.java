@@ -64,6 +64,7 @@ public class OrganisationsRetrievalService {
         headers.add("Authorization", authToken);
         headers.add("Content-Type", "application/json");
         headers.add("ServiceAuthorization", s2s);
+        log.info("SAC: get OrganisationEntityResponse for Authorization.authToken {} ServiceAuthorization {}", authToken, s2s);
         return new HttpEntity<>(headers);
     }
 

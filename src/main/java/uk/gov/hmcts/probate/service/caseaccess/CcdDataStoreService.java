@@ -30,7 +30,6 @@ public class CcdDataStoreService {
         String userId = result.get("id").toString().toLowerCase();
 
         log.info("CaseID: {} removing [CREATOR] case roles from user {}", caseId, userId);
-
         caseRoleClient.removeCaseRoles(
             authorisationToken,
             authTokenGenerator.generate(),

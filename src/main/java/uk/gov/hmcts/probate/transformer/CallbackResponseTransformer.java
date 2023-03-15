@@ -643,7 +643,15 @@ public class CallbackResponseTransformer {
                 .transformLegalStatmentAmendStates(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         transformCaseForSolicitorConfirmText(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
-
+        /*responseCaseDataBuilder.applicantOrganisationPolicy(
+                OrganisationPolicy.builder()
+                        .organisation(Organisation.builder()
+                                .organisationID(null)
+                                .organisationName(null)
+                                .build())
+                        .orgPolicyReference(null)
+                        .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                        .build());*/
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -806,7 +814,7 @@ public class CallbackResponseTransformer {
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
 
         final String ccdVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-        if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())) {
+        //if (SOLICITOR.equals(callbackRequest.getCaseDetails().getData().getApplicationType())) {
             responseCaseDataBuilder.applicantOrganisationPolicy(
                     OrganisationPolicy.builder()
                             .organisation(Organisation.builder()
@@ -816,7 +824,7 @@ public class CallbackResponseTransformer {
                             .orgPolicyReference(null)
                             .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                             .build());
-        }
+        //}
 
         return transformResponse(responseCaseDataBuilder
                 .schemaVersion(ccdVersion)
@@ -1101,6 +1109,16 @@ public class CallbackResponseTransformer {
         } else {
             updateCaseBuilder(caseData, builder);
         }
+
+        builder.applicantOrganisationPolicy(
+                OrganisationPolicy.builder()
+                        .organisation(Organisation.builder()
+                                .organisationID(null)
+                                .organisationName(null)
+                                .build())
+                        .orgPolicyReference(null)
+                        .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                        .build());
 
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
