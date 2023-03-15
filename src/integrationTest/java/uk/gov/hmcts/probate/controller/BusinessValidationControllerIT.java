@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -152,6 +153,7 @@ class BusinessValidationControllerIT {
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
+    private static final String CITIZEN_REMOVE_ACCESS = "/case/citizen-remove-access";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -195,6 +197,8 @@ class BusinessValidationControllerIT {
     private NotificationService notificationService;
     @MockBean
     private CaseDataTransformer caseDataTransformer;
+    @MockBean
+    private CcdDataStoreService ccdDataStoreService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -1133,7 +1137,19 @@ class BusinessValidationControllerIT {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(PREPARE_FOR_NOC).content(json).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PREPARE_FOR_NOC).content(json).header("Authorization", AUTH_TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRemoveCitizenAccess() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(CITIZEN_REMOVE_ACCESS).content(json).header("Authorization", AUTH_TOKEN)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }

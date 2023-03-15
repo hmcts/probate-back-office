@@ -84,6 +84,9 @@ def secrets = [
                 secret('idam-noc-approver-username', 'BEFTA_IDAM_NOC_APPROVER_USERNAME'),
                 secret('idam-noc-approver-password', 'BEFTA_IDAM_NOC_APPROVER_PASSWORD'),
                 secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY')
+        ],
+        'am-${env}': [
+                secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_AM_KEY')
         ]
 
 ]
