@@ -367,7 +367,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             DECEASED_DOMICILE_IN_ENG_WALES_YES, DECEASED_DOMICILE_IN_ENG_WALES_NO);
 
         String expectedText = replaceAllInString(DECEASED_DOMICILED_IN_ENG_WALES_TEXT,
-            THE_UNITED_KINGDOM, "England and Wales");
+            THE_UNITED_KINGDOM, ENGLAND_AND_WALES);
 
         String response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT_DRAFT);
         assertTrue(response.contains(expectedText));
@@ -723,15 +723,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(DIED_ON_OR_SINCE));
 
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -744,14 +744,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(PRESUMED_DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
 
     }
 
@@ -889,15 +889,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(DIED_ON_OR_ABOUT));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -913,13 +913,13 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -935,13 +935,13 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
 
     }
 
@@ -964,9 +964,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(HONOURS));
         assertTrue(response.contains(DIED_ON));
 
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(PA));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(PA));
 
     }
 
@@ -981,14 +981,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(DIED_ON_OR_SINCE));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -1001,14 +1001,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(PRESUMED_DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
 
     }
 
@@ -1027,15 +1027,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(DIED_ON_OR_ABOUT));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
 
     }
 
@@ -1052,13 +1052,13 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -1074,13 +1074,13 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(SOLICITOR_INFO2));
         assertTrue(response.contains(DIED_ON));
 
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -1102,9 +1102,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(HONOURS));
         assertTrue(response.contains(DIED_ON));
 
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(PA));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(PA));
     }
 
     @Test
@@ -1187,7 +1187,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
                 GENERATE_GRANT_DRAFT);
 
-        assertTrue(!response.contains(PRIMARY_APPLICANT));
+        assertFalse(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(DIED_ON_OR_BEFORE));
@@ -1203,7 +1203,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
                 GENERATE_GRANT);
 
-        assertTrue(!response.contains(PRIMARY_APPLICANT));
+        assertFalse(response.contains(PRIMARY_APPLICANT));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
@@ -1220,8 +1220,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
                 "solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT_DRAFT);
 
-        assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(POWER_RESERVED));
+        assertFalse(response.contains(PRIMARY_APPLICANT));
+        assertFalse(response.contains(POWER_RESERVED));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
@@ -1237,8 +1237,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplyingPowerReserved.json",
                 GENERATE_GRANT);
 
-        assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(POWER_RESERVED));
+        assertFalse(response.contains(PRIMARY_APPLICANT));
+        assertFalse(response.contains(POWER_RESERVED));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
@@ -1255,8 +1255,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT_DRAFT);
 
-        assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(PRIMARY_APPLICANT));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
@@ -1272,8 +1272,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPANotApplyingPowerReservedMultiple.json",
                 GENERATE_GRANT);
 
-        assertTrue(!response.contains(PRIMARY_APPLICANT));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(PRIMARY_APPLICANT));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
 
         assertTrue(response.contains(ADD_EXEC_ONE));
         assertTrue(response.contains(ADD_EXEC_ONE_PRIMARY_APPLICANT));
@@ -1294,15 +1294,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(PRIMARY_APPLICANT));
         assertTrue(response.contains(DIED_ON_OR_SINCE));
 
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
@@ -1318,15 +1318,15 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(UK));
         assertTrue(response.contains(ENGLAND_AND_WALES));
 
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
 
@@ -1343,16 +1343,16 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ENGLAND_AND_WALES));
         assertTrue(response.contains(SPAIN));
 
-        assertTrue(!response.contains(UK));
-        assertTrue(!response.contains(PA));
-        assertTrue(!response.contains(WILL_MESSAGE));
-        assertTrue(!response.contains(ADMIN_MESSAGE));
-        assertTrue(!response.contains(LIMITATION_MESSAGE));
-        assertTrue(!response.contains(EXECUTOR_LIMITATION_MESSAGE));
-        assertTrue(!response.contains(POWER_RESERVED));
-        assertTrue(!response.contains(POWER_RESERVED_SINGLE));
-        assertTrue(!response.contains(TITLE));
-        assertTrue(!response.contains(HONOURS));
+        assertFalse(response.contains(UK));
+        assertFalse(response.contains(PA));
+        assertFalse(response.contains(WILL_MESSAGE));
+        assertFalse(response.contains(ADMIN_MESSAGE));
+        assertFalse(response.contains(LIMITATION_MESSAGE));
+        assertFalse(response.contains(EXECUTOR_LIMITATION_MESSAGE));
+        assertFalse(response.contains(POWER_RESERVED));
+        assertFalse(response.contains(POWER_RESERVED_SINGLE));
+        assertFalse(response.contains(TITLE));
+        assertFalse(response.contains(HONOURS));
     }
 
     @Test
