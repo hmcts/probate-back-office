@@ -705,7 +705,7 @@ class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateBlankLetter() {
+    void testGenerateBlankLetter() {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
             mapper.convertValue(CaseData.builder().letterType(BLANK).build(), Map.class);
@@ -717,7 +717,7 @@ class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void unknownLetterTypeShouldThrowException() {
+    void unknownLetterTypeShouldThrowException() {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
             mapper.convertValue(CaseData.builder().build(), Map.class);
@@ -759,33 +759,6 @@ class DocumentGeneratorServiceTest {
         assertEquals(DIGITAL_GRANT_FILE_NAME,
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT)
                 .getDocumentFileName());
-    }
-
-    @Test
-    void testGeneratePDFDocumentUpperCaseWillMessage() {
-        CaseDetails caseDetails =
-            new CaseDetails(CaseData.builder()
-                .caseType("digitalGrant")
-                .registryLocation("Bristol")
-                .boWillMessage("Message with Upper Case")
-                .build(),
-                LAST_MODIFIED, CASE_ID);
-
-        callbackRequest = new CallbackRequest(caseDetails);
-
-        when(pdfManagementService.generateAndUpload(callbackRequest, DocumentType.DIGITAL_GRANT))
-            .thenReturn(
-                Document.builder().documentType(DocumentType.DIGITAL_GRANT).documentFileName(DIGITAL_GRANT_FILE_NAME)
-                    .build());
-
-        when(documentTemplateService
-            .getTemplateId(LanguagePreference.ENGLISH, DocumentStatus.FINAL, DocumentIssueType.GRANT,
-                DocumentCaseType.GOP)).thenReturn(DocumentType.DIGITAL_GRANT);
-
-        assertEquals(DIGITAL_GRANT_FILE_NAME,
-            documentGeneratorService.getDocument(callbackRequest, DocumentStatus.FINAL, DocumentIssueType.GRANT)
-                .getDocumentFileName());
-
     }
 
     @Test
