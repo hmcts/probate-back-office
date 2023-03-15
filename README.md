@@ -726,7 +726,11 @@ To run Caseworker tests on XUI locally do the following:
     
 
 #DTSPB-3312 notes
-###PP -> PP
+#####REMEMBER: 
+This branch contains all the code changes from DTSPB-1172 SPIKE. You may want to discard some of that setup
+https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-case-auto-assignment-on-bulkScan
+###Scenario 1: PP -> PP
+
 1. Goto https://xui-probate-back-office-pr-2224.preview.platform.hmcts.net
 2. Login as PP1 = as probatesolicitortestorgtest1@gmail.com
 3. Create/Complete a PP case 
@@ -738,7 +742,7 @@ To run Caseworker tests on XUI locally do the following:
 9. PP2 can now see the case
 10. As an added check logout. Longin as CW. Progress case to Grant Issued
 
-###Cit -> PP
+###Scenario 2: Cit -> PP
 1. Goto https://probate-frontend-pr-1822.service.core-compute-preview.internal
 2. login as citizen. Create/complete case 
 3. Use postman to simulate Citizen NOC by removing their access
