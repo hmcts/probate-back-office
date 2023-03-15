@@ -724,6 +724,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "uploadDocumentsDormantCase", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "stopDormantCase", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCase", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyForGrant", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "solicitorCreateApplication", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},

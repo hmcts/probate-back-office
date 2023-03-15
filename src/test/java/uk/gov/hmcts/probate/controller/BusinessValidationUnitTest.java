@@ -739,6 +739,15 @@ class BusinessValidationUnitTest {
     }
 
     @Test
+    void shouldValidateSolPostCodeDefaultIht() {
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreateDefaultIhtEstate(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldValidateMissingSolPostCode() {
         List<String> errors = new ArrayList<>();
         errors.add("some error");
@@ -746,6 +755,17 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldValidateMissingSolPostCodeDefaultIht() {
+        List<String> errors = new ArrayList<>();
+        errors.add("some error");
+        when(callbackResponseMock.getErrors()).thenReturn(errors);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreateDefaultIhtEstate(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(0)).defaultIhtEstateFromDateOfDeath(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
