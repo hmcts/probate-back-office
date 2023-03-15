@@ -47,6 +47,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
+    private static final String CASE_CREATE_VALIDATE_URL = "/case/sols-create-validate";
     private static final String REDECLARATION_SOT = "/case/redeclarationSot";
     private static final String DEFAULT_SOLS_NEXT_STEP = "/case/default-sols-next-steps";
     private static final String SOLS_VALIDATE_IHT_ESTATE = "/case/validate-iht-estate";
@@ -235,6 +236,17 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestWithoutExecutorPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorPostcode.json",
             "The executor postcode cannot be empty");
+    }
+
+    @Test
+    public void verifyRequestWithoutSolicitorPostcodeReturnsError() throws IOException {
+        validatePostFailureForSolicitorPostcode("failure.missingPostcodeSolicitorCreate.json",
+                "Enter your firm's postcode, for example, 'SW1H 9AJ'");
+    }
+
+    @Test
+    public void verifyRequestWithSolicitorPostcodeReturnsSuccess() throws IOException {
+        validatePostSuccess("success.solicitorCreate.json", CASE_CREATE_VALIDATE_URL);
     }
 
     @Test
@@ -1043,6 +1055,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private void validatePostFailureForSolicitorExecutorDetails(String jsonFileName, String errorMessage)
         throws IOException {
         validatePostFailure(jsonFileName, errorMessage, 200, VALIDATE_URL);
+    }
+
+    private void validatePostFailureForSolicitorPostcode(String jsonFileName, String errorMessage)
+            throws IOException {
+        validatePostFailure(jsonFileName, errorMessage, 200, CASE_CREATE_VALIDATE_URL);
     }
 
     private void validatePostFailureForCaseAmend(String jsonFileName, String errorMessage) throws IOException {
