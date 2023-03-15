@@ -178,12 +178,6 @@ public class FunctionalTestUtils {
     }
 
     public Response getDocumentResponseFromId(String documentId, Headers headers) {
-        try {
-            //@TODO maybe this can help with intermittent FT failures, but it will take longer time
-            Thread.sleep(1000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
         Response jsonResponse = RestAssured.given()
             .baseUri(caseDocumentManagermentUrl)
             .relaxedHTTPSValidation()
