@@ -724,3 +724,41 @@ To run Caseworker tests on XUI locally do the following:
         TestEnvUser - ProbateSolCW1@gmail.com
         TestEnvPassword - Pa55word11
     
+
+#DTSPB-3312 notes
+###PP -> PP
+1. Goto https://xui-probate-back-office-pr-2224.preview.platform.hmcts.net
+2. Login as PP1 = as probatesolicitortestorgtest1@gmail.com
+3. Create/Complete a PP case 
+4. Logout. Login as CW probatecaseworker@gmail.com 
+5. Invoke 'Prepare for Noc' event : this simulates PP1 'releasing' the case, ready for NOC 
+6. Logout. Login as PP2 = probatesolicitortestorg2test1@gmail.com 
+7. got to /noc pages 
+8. enter case ref, answer challenge question, confirm
+9. PP2 can now see the case
+10. As an added check logout. Longin as CW. Progress case to Grant Issued
+
+###Cit -> PP
+1. Goto https://probate-frontend-pr-1822.service.core-compute-preview.internal
+2. login as citizen. Create/complete case 
+3. Use postman to simulate Citizen NOC by removing their access
+   1. Use https://probate-back-office-pr-2224.preview.platform.hmcts.net/case/citizen-remove-access
+   2. headers: s2s=probate_backend, auth=Citizen auth token
+   3. payload body = ```{
+    "case_details": {
+    "id": 1678890688805368,
+    "jurisdiction": "PROBATE",
+    "state": "CasePrinted",
+    "case_type_id": "GrantOfRepresentation"
+    }
+    }```
+4. citizen view of the case should now disappear
+5. Go to  https://xui-probate-back-office-pr-2224.preview.platform.hmcts.net
+6. Login as CW probatecaseworker@gmail.com
+7. Invoke 'Prepare for Noc' event
+8. Logout. Login as PP2 = probatesolicitortestorg2test1@gmail.com
+9. got to /noc pages
+10. enter case ref, answer challenge question, confirm
+11. PP2 can now see the case
+12. As an added check logout. Longin as CW. Progress case to Grant Issued
+
