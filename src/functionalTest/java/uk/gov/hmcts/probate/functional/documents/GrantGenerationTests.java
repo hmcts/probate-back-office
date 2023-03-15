@@ -408,7 +408,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
             DECEASED_DOMICILE_IN_ENG_WALES_YES, DECEASED_DOMICILE_IN_ENG_WALES_NO);
 
         String expectedText = replaceAllInString(DECEASED_DOMICILED_IN_ENG_WALES_TEXT,
-            THE_UNITED_KINGDOM, "England and Wales");
+            THE_UNITED_KINGDOM, ENGLAND_AND_WALES);
 
         String response = generateGrantDocumentFromPayload(intestacyPayloadIssue, GENERATE_GRANT_DRAFT);
         assertTrue(response.contains(expectedText));
