@@ -417,13 +417,13 @@ class CaseDataTest {
     }
 
     @Test
-    void isBoEmailGrantIssuedNotificationFromDefaultFalse() {
+    void isBoEmailGrantIssuedNotificationFromDefaultTrueWithBlankEmail() {
         final CaseData caseData = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .primaryApplicantEmailAddress(null)
             .build();
 
-        assertEquals(false, caseData.isGrantIssuedEmailNotificationRequested());
+        assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
     }
 
     @Test
