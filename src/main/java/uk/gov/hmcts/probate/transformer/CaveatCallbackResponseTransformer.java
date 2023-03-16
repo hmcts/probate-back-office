@@ -282,7 +282,8 @@ public class CaveatCallbackResponseTransformer {
             .dxNumber(caveatData.getDxNumber())
             .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
             .serviceRequestReference(caveatData.getServiceRequestReference())
-            .paymentTaken(caveatData.getPaymentTaken());
+            .paymentTaken(caveatData.getPaymentTaken())
+            .applicationSubmittedBy(caveatData.getApplicationSubmittedBy());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(

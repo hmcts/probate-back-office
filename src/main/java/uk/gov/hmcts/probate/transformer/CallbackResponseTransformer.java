@@ -1042,7 +1042,7 @@ public class CallbackResponseTransformer {
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
-            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
+            .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

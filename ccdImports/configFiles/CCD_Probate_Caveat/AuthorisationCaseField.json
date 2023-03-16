@@ -63,7 +63,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "serviceRequestReference", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "paymentTaken", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "paymentTaken", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "serviceRequestWaysToPay", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationSubmittedBy", "UserRole": "caseworker-probate-issuer", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
