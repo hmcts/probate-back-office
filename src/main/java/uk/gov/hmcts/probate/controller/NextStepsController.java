@@ -80,7 +80,6 @@ public class NextStepsController {
                 log.error(CASE_ID_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
-            caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
 
             serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
 
