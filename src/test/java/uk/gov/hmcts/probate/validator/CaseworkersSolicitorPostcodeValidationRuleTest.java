@@ -16,10 +16,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
-class SolicitorPostcodeValidationRuleTest {
+class CaseworkersSolicitorPostcodeValidationRuleTest {
     @InjectMocks
-    private SolicitorPostcodeValidationRule underTest;
+    private CaseworkersSolicitorPostcodeValidationRule underTest;
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageServiceMock;
@@ -36,6 +37,7 @@ class SolicitorPostcodeValidationRuleTest {
         SolsAddress solAddress = SolsAddress.builder().build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);
+        when(ccdDataMock.getApplicationType()).thenReturn(String.valueOf(SOLICITOR));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().code("somecode").build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
                 .thenReturn(fieldErrorResponse);
@@ -52,6 +54,7 @@ class SolicitorPostcodeValidationRuleTest {
         SolsAddress solAddress = SolsAddress.builder().postCode("SOME PC").build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);
+        when(ccdDataMock.getApplicationType()).thenReturn(String.valueOf(SOLICITOR));
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
                 .thenReturn(fieldErrorResponse);
