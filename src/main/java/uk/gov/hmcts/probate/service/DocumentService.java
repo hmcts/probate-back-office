@@ -38,4 +38,14 @@ public class DocumentService {
         );
 
     }
+
+    public void delete(Document document, String caseId) {
+        try {
+            documentManagementService.delete(document);
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+            log.warn("Unable to delete document: {} for case id: {}", document.getDocumentLink(), caseId);
+        }
+
+    }
 }

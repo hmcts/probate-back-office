@@ -430,4 +430,9 @@ public class DocumentController {
         return result;
     }
 
+    @PostMapping(path = "/remove", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> remove(@RequestBody CallbackRequest callbackRequest) {
+        documentGeneratorService.removeDocuments(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
+    }
 }

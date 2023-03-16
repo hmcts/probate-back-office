@@ -77,4 +77,13 @@ class DocumentServiceTest {
 
         verify(document).getDocumentLink();
     }
+
+    @Test
+    void shouldDeleteDocument() throws JsonProcessingException {
+        Document document = Document.builder().build();
+
+        documentService.delete(document, "99");
+
+        verify(documentManagementService).delete(document);
+    }
 }

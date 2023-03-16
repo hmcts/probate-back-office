@@ -248,4 +248,15 @@ public class DocumentControllerUnitTest {
         verify(evidenceUploadService, times(2))
                 .updateLastEvidenceAddedDate(mockCaseDetails);
     }
+
+    @Test
+    public void shouldRemoveDocument() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        ResponseEntity<CallbackResponse> response = documentController.remove(callbackRequest);
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+
+        verify(documentGeneratorService).removeDocuments(callbackRequest);
+    }
 }
