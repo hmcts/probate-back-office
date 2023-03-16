@@ -135,13 +135,11 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }
 
-    @PostMapping(path = "/sols-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateSolsCreateDefaultIhtEstate(
-            @Validated({ApplicationCreatedGroup.class}) @RequestBody
-                    CallbackRequest callbackRequest) {
+            @RequestBody CallbackRequest callbackRequest) {
 
         final List<ValidationRule> solPcValidation = Arrays.asList(solicitorPostcodeValidationRule);
-
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
         if (response.getErrors().isEmpty()) {
             return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(callbackRequest));

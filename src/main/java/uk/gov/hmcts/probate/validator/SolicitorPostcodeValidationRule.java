@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
@@ -36,7 +37,8 @@ public class SolicitorPostcodeValidationRule implements ValidationRule {
     private List<String> getErrorCodeForSolicitorPostCodeMissing(CCDData ccdData) {
         List<String> allErrorCodes = new ArrayList<>();
         SolsAddress solicitorAddress = ccdData.getSolicitor().getFirmAddress();
-        if (StringUtils.isEmpty(solicitorAddress.getPostCode())) {
+        if (SOLICITOR.toString().equals(ccdData.getApplicationType())
+                && StringUtils.isEmpty(solicitorAddress.getPostCode())) {
             allErrorCodes.add(SOLICITOR_ADDRESS_MISSING_POST_CODE);
         }
 
