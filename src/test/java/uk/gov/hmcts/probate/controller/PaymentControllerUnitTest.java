@@ -16,8 +16,10 @@ import uk.gov.hmcts.probate.model.payments.PaymentStatusReponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -31,6 +33,9 @@ class PaymentControllerUnitTest {
 
     @Mock
     private ServiceRequestUpdateResponseDto serviceRequestUpdateResponseDtoMock;
+
+    @Mock
+    private CaseDataTransformer caseDataTransformerMock;
 
     @Mock
     private CallbackRequest request;
@@ -72,8 +77,10 @@ class PaymentControllerUnitTest {
     @Test
     void shouldUpdateTaskList() {
         when(callbackResponseTransformerMock.updateTaskList(request)).thenReturn(callbackResponse);
+        doNothing().when(caseDataTransformerMock).transformCaseDataForEvidenceHandled(request);
         ResponseEntity<CallbackResponse> response = underTest.updateTaskList(request);
 
+        verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(callbackResponse, response.getBody());
     }

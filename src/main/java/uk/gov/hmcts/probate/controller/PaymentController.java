@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateRe
 import uk.gov.hmcts.probate.model.payments.PaymentStatusReponse;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -26,6 +27,7 @@ public class PaymentController {
 
     private final PaymentsService paymentsService;
     private final CallbackResponseTransformer callbackResponseTransformer;
+    private final CaseDataTransformer caseDataTransformer;
     public static final String SUCCESSFUL_UPDATE = "success";
 
     @PutMapping(path = "/gor-payment-request-update", consumes = APPLICATION_JSON_VALUE,
@@ -50,6 +52,7 @@ public class PaymentController {
         produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateTaskList(
         @RequestBody CallbackRequest request) {
+        caseDataTransformer.transformCaseDataForEvidenceHandled(request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 }

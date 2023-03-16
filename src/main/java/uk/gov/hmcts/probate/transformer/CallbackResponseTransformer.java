@@ -442,6 +442,7 @@ public class CallbackResponseTransformer {
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
                 .transformForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
+        caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
