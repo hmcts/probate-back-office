@@ -2062,6 +2062,18 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldDefaultYesToEmailGrantIssuedNotification() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailGrantIssuedNotification());
+    }
+
+    @Test
     void shouldDefaultSolicitorsInfoToNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
