@@ -36,6 +36,7 @@ class SolicitorPostcodeValidationRuleTest {
         SolsAddress solAddress = SolsAddress.builder().build();
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);
+        when(ccdDataMock.getApplicationType()).thenReturn("Solicitor");
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().code("somecode").build();
         when(businessValidationMessageServiceMock.generateError(any(String.class), any(String.class)))
                 .thenReturn(fieldErrorResponse);
@@ -50,6 +51,7 @@ class SolicitorPostcodeValidationRuleTest {
     @Test
     void shouldNotErrorIfSolicitorHasPostCode() {
         SolsAddress solAddress = SolsAddress.builder().postCode("SOME PC").build();
+        when(ccdDataMock.getApplicationType()).thenReturn("Solicitor");
         Solicitor solicitor = Solicitor.builder().firmAddress(solAddress).build();
         when(ccdDataMock.getSolicitor()).thenReturn(solicitor);
         FieldErrorResponse fieldErrorResponse = FieldErrorResponse.builder().build();
