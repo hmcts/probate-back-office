@@ -6,25 +6,21 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -36,13 +32,17 @@ import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -783,4 +783,23 @@ class DocumentGeneratorServiceTest {
                 documentGeneratorService.generateSoT(callbackRequestTrustCorpSolsGop));
     }
 
+    @Test
+    void shouldRemoveDocuments() {
+        List<CollectionMember<Document>> generatedList = new ArrayList<>();
+        Document doc = Document.builder().build();
+        generatedList.add(new CollectionMember<Document>(null, doc));
+        List<CollectionMember<UploadDocument>> uploadedList = new ArrayList<>();
+        UploadDocument uploadDocument = UploadDocument.builder().build();
+        uploadedList.add(new CollectionMember<UploadDocument>(null, uploadDocument));
+        CaseDetails caseDetails =
+                new CaseDetails(CaseData.builder()
+                        .probateDocumentsGenerated(generatedList)
+                        .boDocumentsUploaded(uploadedList)
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+
+        documentGeneratorService.removeDocuments(callbackRequest);
+        verify(documentService, times(2)).delete(doc, CASE_ID.toString());
+    }
 }

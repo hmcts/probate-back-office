@@ -1,18 +1,34 @@
 package uk.gov.hmcts.probate.service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
+import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
@@ -29,17 +45,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
-import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
-import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
-import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 
 @Slf4j
@@ -250,6 +255,22 @@ public class DocumentGeneratorService {
             WELSH_INTESTACY_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
+        }
+    }
+
+    public void removeDocuments(CallbackRequest callbackRequest) {
+        log.info("removing documents");
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        for (CollectionMember<Document> documentCollectionMember : caseData.getProbateDocumentsGenerated()) {
+            documentService.delete(documentCollectionMember.getValue(), caseRef);
+        }
+        for (CollectionMember<UploadDocument> documentCollectionMember : caseData.getBoDocumentsUploaded()) {
+            Document document = Document.builder()
+                    .documentLink(documentCollectionMember.getValue().getDocumentLink())
+                    .documentType(documentCollectionMember.getValue().getDocumentType())
+                    .build();
+            documentService.delete(document, caseRef);
         }
     }
 
