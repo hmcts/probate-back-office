@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -149,6 +150,8 @@ class BusinessValidationUnitTest {
     @Mock
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     @Mock
+    private CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
+    @Mock
     private AssignCaseAccessService assignCaseAccessService;
     @Mock
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
@@ -184,6 +187,7 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             ihtValidationRule,
             solicitorPostcodeValidationRule,
+            caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
             handOffLegacyTransformer);
@@ -739,7 +743,7 @@ class BusinessValidationUnitTest {
     }
 
     @Test
-    void shouldValidateSolPostCodeDefaultIht() {
+    void shouldValidateSolPostCodeCaseworker() {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreateDefaultIhtEstate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
@@ -759,7 +763,7 @@ class BusinessValidationUnitTest {
     }
 
     @Test
-    void shouldValidateMissingSolPostCodeDefaultIht() {
+    void shouldValidateMissingSolPostCodeCaseworker() {
         List<String> errors = new ArrayList<>();
         errors.add("some error");
         when(callbackResponseMock.getErrors()).thenReturn(errors);
