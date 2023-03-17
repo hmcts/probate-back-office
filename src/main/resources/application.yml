@@ -529,6 +529,7 @@ blobstorage:
   connection: ${PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING:dummy}
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
+adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
 
 feature:
   blobstorage:
