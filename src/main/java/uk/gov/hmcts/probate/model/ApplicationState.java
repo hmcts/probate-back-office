@@ -2,6 +2,9 @@ package uk.gov.hmcts.probate.model;
 
 import lombok.Getter;
 
+import java.util.Optional;
+import java.util.stream.Stream;
+
 @Getter
 public enum ApplicationState {
     APP_CREATED("PAAppCreated", "PA application created"),
@@ -47,4 +50,9 @@ public enum ApplicationState {
         this.id = id;
         this.name = name;
     }
+
+    public static Optional<ApplicationState> getByState(String state) {
+        return Stream.of(values()).filter(e -> e.id.equals(state)).findFirst();
+    }
+
 }

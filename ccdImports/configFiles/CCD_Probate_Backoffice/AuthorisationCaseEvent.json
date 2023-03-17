@@ -853,5 +853,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "makeCaseDormant", "UserRole": "citizen", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "citizen", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "citizen", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "changeCaseState", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]

@@ -455,6 +455,7 @@ public class CaseData extends CaseDataParent {
     private final String bulkPrintPdfSize;
     private final String dateOfDeathType;
     private final String resolveStopState;
+    private final String transferToState;
     private final String orderNeeded;
     private final List<CollectionMember<Reissue>> reissueReason;
     private final String reissueReasonNotation;

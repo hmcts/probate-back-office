@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.model.ApplicationState;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -144,7 +145,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
+        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE).state("HelloKitty");
         return transformResponse(builder.build());
     }
 
@@ -164,6 +165,10 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse setApplicationStateName(String applicationState) {
+        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().currentApplicationStateName(ApplicationState.getByState(applicationState).get().getName());
+        return transformResponse(builder.build());
+    }
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState) {
         final CaseDetails cd = callbackRequest.getCaseDetails();
@@ -422,6 +427,25 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
+            case CASE_MATCHING_ISSUE_GRANT:
+                responseCaseDataBuilder.state(CASE_MATCHING_ISSUE_GRANT);
+                break;
+            case QA_CASE_STATE:
+                responseCaseDataBuilder.state(QA_CASE_STATE);
+                break;
+            case READY_FOR_ISSUE:
+                responseCaseDataBuilder.state(READY_FOR_ISSUE);
+                break;
+            default:
+                responseCaseDataBuilder.state(CASE_PRINTED);
+                break;
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+    public CallbackResponse transferToState(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        switch (callbackRequest.getCaseDetails().getData().getTransferToState()) {
             case CASE_MATCHING_ISSUE_GRANT:
                 responseCaseDataBuilder.state(CASE_MATCHING_ISSUE_GRANT);
                 break;

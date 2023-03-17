@@ -350,5 +350,9 @@
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "waterDamage", "ListElement": "Water damage"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"},
   {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "blank", "ListElement": "Blank letter", "DisplayOrder": 1},
-  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2}
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseMatchingIssueGrant", "ListElement": "Case Matching (Issue grant)"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA"}
 ]

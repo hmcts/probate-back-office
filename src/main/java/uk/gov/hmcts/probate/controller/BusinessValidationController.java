@@ -388,6 +388,27 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/changeCaseState", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> changeCaseState(@RequestBody CallbackRequest callbackRequest,
+                                                             HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/prepareChangeCaseState", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> prepareChangeCaseState(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult) {
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+        log.info("prepareChangeCaseState.getCaseDetails().getState():\n\n"+callbackRequest.getCaseDetails().getState());
+        CallbackResponse response = callbackResponseTransformer.setApplicationStateName(callbackRequest.getCaseDetails().getState());
+
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
