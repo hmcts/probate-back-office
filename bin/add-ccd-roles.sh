@@ -26,3 +26,4 @@ ${dir}/ccd-add-role.sh caseworker-probate-scheduler
 ${dir}/ccd-add-role.sh caseworker-probate-charity
 ${dir}/ccd-add-role.sh caseworker-probate-bulkscan
 ${dir}/ccd-add-role.sh caseworker-caa
+${dir}/ccd-add-role.sh caseworker-approver

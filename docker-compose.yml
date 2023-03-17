@@ -33,7 +33,7 @@ services:
       DEFINITION_STORE_DB_PASSWORD: "${DB_PASSWORD}"
       DEFINITION_STORE_DB_USE_SSL: "false"
       DEFINITION_STORE_IDAM_KEY: AAAAAAAAAAAAAAAA
-      DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,probate_backend
+      DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,probate_backend,aac_manage_case_assignment
       USER_PROFILE_HOST: http://ccd-user-profile-api:4453
       IDAM_USER_URL: http://sidam-api:5000
       IDAM_API_BASE_URL: http://sidam-api:5000
@@ -651,7 +651,7 @@ services:
       IDAM_CLIENT_REDIRECT_URL: http://localhost:3501/oauth2/callback
       IDAM_CAA_USERNAME: "caa-caseworker@mailnesia.com"
       IDAM_CAA_PASSWORD: "Password12"
-      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker@mailnesia.com"
+      IDAM_NOC_APPROVER_USERNAME: "caa-caseworker2@mailnesia.com"
       IDAM_NOC_APPROVER_PASSWORD: "Password12"
       IDAM_SYSTEM_USER_USERNAME: "caa-caseworker@mailnesia.com"
       IDAM_SYSTEM_USER_PASSWORD: "Password12"
