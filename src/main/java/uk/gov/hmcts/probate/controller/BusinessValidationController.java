@@ -42,6 +42,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -104,6 +105,7 @@ public class BusinessValidationController {
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
+    private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
@@ -135,12 +137,11 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }
 
-    @PostMapping(path = "/sols-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateSolsCreateDefaultIhtEstate(
             @RequestBody CallbackRequest callbackRequest) {
 
-        final List<ValidationRule> solPcValidation = Arrays.asList(solicitorPostcodeValidationRule);
-
+        final List<ValidationRule> solPcValidation = Arrays.asList(caseworkersSolicitorPostcodeValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
         if (response.getErrors().isEmpty()) {
             return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(callbackRequest));

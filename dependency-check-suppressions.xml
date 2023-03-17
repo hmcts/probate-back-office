@@ -198,6 +198,13 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: request:2.88.2
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
+        <vulnerabilityName>1091410</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: flat:4.1.1
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/flat@.*$</packageUrl>
@@ -461,12 +468,5 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/commons\-fileupload/commons\-fileupload@.*$</packageUrl>
         <cve>CVE-2023-24998</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: request:2.88.2
-   ]]></notes>
-        <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
-        <vulnerabilityName>1091410</vulnerabilityName>
     </suppress>
 </suppressions>
