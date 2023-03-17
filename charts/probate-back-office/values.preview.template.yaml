@@ -101,7 +101,7 @@ ccd:
         DATA_STORE_DB_MAX_POOL_SIZE: 80
         DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&ssl=disable&gssEncMode=disable"
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
-        CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+        CASE_DOCUMENT_AM_URL: https://ccd-case-document-am-api-pr-643.service.core-compute-preview.internal
       keyVaults: []
       ingressHost: ccd-data-store-api-${SERVICE_FQDN}
   am-role-assignment-service:
@@ -217,7 +217,7 @@ xui-webapp:
       HEALTH_TERMS_AND_CONDITIONS_API: http://xui-terms-and-conditions-${SERVICE_FQDN}/health
       SERVICES_CCD_COMPONENT_API: http://${SERVICE_NAME}-ccd-api-gw
       SERVICES_CCD_DATA_STORE_API: http://${SERVICE_NAME}-ccd-data-store-api
-      SERVICES_DOCUMENTS_API_V2: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+      SERVICES_DOCUMENTS_API_V2: https://ccd-case-document-am-api-pr-643.service.core-compute-preview.internal
       SERVICES_CCD_CASE_ASSIGNMENT_API: http://aac-${SERVICE_FQDN}
       SERVICES_TERMS_AND_CONDITIONS: http://xui-terms-and-conditions-${SERVICE_FQDN}
       SERVICES_IDAM_API_URL: https://idam-api.aat.platform.hmcts.net
@@ -256,7 +256,7 @@ java:
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
-    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+    CASE_DOCUMENT_AM_URL: https://ccd-case-document-am-api-pr-643.service.core-compute-preview.internal
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
 
   keyVaults:
