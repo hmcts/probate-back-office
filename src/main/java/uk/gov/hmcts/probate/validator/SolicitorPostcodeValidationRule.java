@@ -36,11 +36,10 @@ public class SolicitorPostcodeValidationRule implements ValidationRule {
     private List<String> getErrorCodeForSolicitorPostCodeMissing(CCDData ccdData) {
         List<String> allErrorCodes = new ArrayList<>();
         SolsAddress solicitorAddress = ccdData.getSolicitor().getFirmAddress();
-        if ("Solicitor".equals(ccdData.getApplicationType())) {
-            if (StringUtils.isEmpty(solicitorAddress.getPostCode())) {
-                allErrorCodes.add(SOLICITOR_ADDRESS_MISSING_POST_CODE);
-            }
+        if (StringUtils.isEmpty(solicitorAddress.getPostCode())) {
+            allErrorCodes.add(SOLICITOR_ADDRESS_MISSING_POST_CODE);
         }
+
         return allErrorCodes;
     }
 }
