@@ -37,7 +37,7 @@ public class CCDDataTransformer {
     private CCDData buildCCDData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        return CCDData.builder()
+        CCDData.CCDDataBuilder dataBuilder =  CCDData.builder()
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails()))
@@ -66,7 +66,14 @@ public class CCDDataTransformer {
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .englishWill(caseData.getEnglishWill())
             .dispenseWithNotice(caseData.getDispenseWithNotice())
-            .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
+            .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs());
+
+        if (caseData.getApplicationType() != null) {
+            dataBuilder
+                .applicationType(caseData.getApplicationType().toString());
+        }
+
+        return dataBuilder
             .build();
     }
 
