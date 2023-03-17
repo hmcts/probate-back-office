@@ -4,6 +4,9 @@ tags:
 idam-pr:
   enabled: false
 
+aac-manage-case-assignment:
+  enabled: false
+
 xui-webapp:
   enabled: false
 

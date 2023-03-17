@@ -16,7 +16,7 @@ curl -XPUT \
   ${IDAM_URI}/services/ccd_gateway/roles \
  -H "Authorization: AdminApiAuthToken ${authToken}" \
  -H "Content-Type: application/json" \
- -d '["ccd-import", "caseworker", "caseworker-probate", "caseworker-probate", "caseworker-probate-issuer", "caseworker-probate-solicitor", "caseworker-probate-authoriser", "caseworker-probate-systemupdate", "caseworker-probate-caseofficer", "caseworker-probate-caseadmin", "caseworker-probate-registrar", "caseworker-probate-superuser", "caseworker-probate-charity", "caseworker-probate-scheduler", "payment", "caseworker-caa"]'
+ -d '["ccd-import", "caseworker", "caseworker-probate", "caseworker-probate", "caseworker-probate-issuer", "caseworker-probate-solicitor", "caseworker-probate-authoriser", "caseworker-probate-systemupdate", "caseworker-probate-caseofficer", "caseworker-probate-caseadmin", "caseworker-probate-registrar", "caseworker-probate-superuser", "caseworker-probate-charity", "caseworker-probate-scheduler", "payment", "caseworker-caa", "caseworker-approver"]'
 
 # Assign roles to the xui_webapp client
 curl -XPUT \
@@ -26,6 +26,7 @@ curl -XPUT \
  -d '["ccd-import", "caseworker", "caseworker-probate", "caseworker-probate-solicitor", "caseworker-probate-superuser", "pui-case-manager", "pui-user-manager", "caseworker-caa"]'
 
 (${binFolder}/idam-create-caseworker.sh caseworker,caseworker-caa,pui-case-manager,pui-user-manager caa-caseworker@mailnesia.com "Password12" "caa" "caseworker")
+(${binFolder}/idam-create-caseworker.sh caseworker,caseworker-approver,pui-case-manager,pui-user-manager caa-caseworker2@mailnesia.com "Password12" "approver" "caseworker")
 
 (${binFolder}/idam-create-service.sh "aac_manage_case_assignment" "aac_manage_case_assignment" "AAAAAAAAAAAAAAAA" "https://manage-case-assignment/oauth2redirect" "false" "profile openid roles manage-user")
 (${binFolder}/idam-create-service.sh "xui_mo_webapp" "xui_mo_webapp" "AAAAAAAAAAAAAAAA" "http://localhost:3001/oauth2/callback" "false" "profile openid roles manage-user create-user manage-roles")

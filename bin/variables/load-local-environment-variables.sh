@@ -30,6 +30,7 @@ echo "ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES=ccd_gw,am_role_assignment_service,
 echo "DATA_STORE_S2S_AUTHORISED_SERVICES=ccd_gw,fpl_case_service,ccd_data,ccd_ps,probate_backend,payment-api,xui_webapp,ccd_case_document_am_api,am_role_assignment_service,aac_manage_case_assignment,xui_mo_webapp,probate_backend" >> .aat-env
 echo "IDAM_API_URL=https://idam-api.aat.platform.hmcts.net" >> .aat-env
 echo "S2S_API_URL=http://rpe-service-auth-provider-aat.service.core-compute-aat.internal" >> .aat-env
+echo "CCD_IDAM_REDIRECT_URL=https://ccd-case-management-web-aat.service.core-compute-aat.internal/oauth2redirect" >> .aat-env
 
 # Probate variables fetched from probate-aat vault
 echo "AUTH_TOKEN_EMAIL=$(az keyvault secret show --vault-name probate-aat -o tsv --query value --name authTokenEmail)" >> .aat-env

@@ -26,13 +26,14 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
@@ -43,8 +44,8 @@ import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
-import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -157,6 +158,8 @@ class BusinessValidationUnitTest {
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformer;
+    @Mock
+    private CcdDataStoreService ccdDataStoreService;
 
     private BusinessValidationController underTest;
 
@@ -190,7 +193,8 @@ class BusinessValidationUnitTest {
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
-            handOffLegacyTransformer);
+            handOffLegacyTransformer,
+            ccdDataStoreService);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -821,7 +825,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequestMock);
     }
-    
+
     @Test
     void shouldValidateFurtherEvidenceForApplication() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -834,5 +838,31 @@ class BusinessValidationUnitTest {
         verify(furtherEvidenceForApplicationValidationRule, times(1))
                 .validate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldPrepareCaseForNoc() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.prepareCaseForNoc(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldRemoveCaseAccessForNoc() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDetailsMock.getId()).thenReturn(99L);
+        when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.citizenRemoveAccess("Auth", callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(ccdDataStoreService).removeCreatorRole("99", "Auth");
     }
 }
