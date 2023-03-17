@@ -3,6 +3,8 @@ tags:
 
 postgresql:
   enabled: true
+  environment:
+    VARREBUILD: build-1
   image:
     tag: '11.3.0'
   resources:
