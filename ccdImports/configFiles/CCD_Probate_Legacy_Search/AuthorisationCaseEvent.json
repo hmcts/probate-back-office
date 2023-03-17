@@ -2,5 +2,8 @@
   {"CaseTypeID": "LegacySearch", "CaseEventID": "createDummy", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "LegacySearch", "CaseEventID": "createDummy", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"}
+  {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseEventID": "createDummy", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseEventID": "legacySearch", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "LegacySearch", "CaseEventID": "resendData", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]

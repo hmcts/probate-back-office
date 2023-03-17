@@ -22,6 +22,12 @@ public class CftLibConfig implements CFTLibConfigurer {
         lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "Caveat", "Pending");
         lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
         lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "Caveat", "Pending");
+        lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "LegacySearch", "Pending");
+        lib.createProfile("probatesolicitortestorgtest1@gmail.com", "PROBATE", "Caveat", "Pending");
+        lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "GrantOfRepresentation", "Pending");
+        lib.createProfile("probatecaseworker@gmail.com", "PROBATE", "Caveat", "Pending");
+        lib.createProfile("probatebackoffice@gmail.com", "PROBATE", "LegacySearch", "Pending");
+
 
         lib.createRoles(
             "caseworker",
