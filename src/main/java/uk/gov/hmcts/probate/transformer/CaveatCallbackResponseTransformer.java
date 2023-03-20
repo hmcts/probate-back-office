@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -281,6 +282,7 @@ public class CaveatCallbackResponseTransformer {
             .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
             .dxNumber(caveatData.getDxNumber())
             .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
+            .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()))
             .serviceRequestReference(caveatData.getServiceRequestReference())
             .paymentTaken(caveatData.getPaymentTaken())
             .applicationSubmittedBy(caveatData.getApplicationSubmittedBy());
@@ -328,6 +330,15 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CaveatCallbackResponse transformCaseWithRegistrarDirection(CaveatCallbackRequest callbackRequest) {
+        ResponseCaveatData responseCaseData = getResponseCaveatData(callbackRequest.getCaseDetails())
+                .registrarDirectionToAdd(RegistrarDirection.builder()
+                        .build())
+                .build();
+
+        return transformResponse(responseCaseData);
+    }
+
     private String transformToString(LocalDate dateValue) {
         return ofNullable(dateValue)
             .map(String::valueOf)
@@ -344,4 +355,13 @@ public class CaveatCallbackResponseTransformer {
             .templateName(templateName)
             .build());
     }
+
+    private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
+            List<CollectionMember<RegistrarDirection>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
+
 }

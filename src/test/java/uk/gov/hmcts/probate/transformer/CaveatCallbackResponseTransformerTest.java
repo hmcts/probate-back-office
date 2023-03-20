@@ -20,11 +20,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -37,6 +39,7 @@ import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFee;
 import uk.gov.hmcts.reform.probate.model.cases.caveat.ProbateFeeNotIncludedReason;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -44,6 +47,7 @@ import java.util.List;
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -553,6 +557,53 @@ class CaveatCallbackResponseTransformerTest {
 
         String extendedDate = "2020-08-01";
         assertEquals(extendedDate, caveatCallbackResponse.getCaveatData().getExpiryDate());
+    }
+
+    @Test
+    void shouldTransformCaseWithRegistrarDirections() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        List<CollectionMember<RegistrarDirection>> directions = new ArrayList<>();
+        CollectionMember<RegistrarDirection> registrarDirectionCollectionMember1 = new CollectionMember<>(null,
+                RegistrarDirection.builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-01T23:45:45.890Z", formatter))
+                        .decision("Decision 1")
+                        .furtherInformation("Further information 1")
+                        .build());
+        CollectionMember<RegistrarDirection> registrarDirectionCollectionMember2 = new CollectionMember<>(null,
+                RegistrarDirection.builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-02T23:45:45.890Z", formatter))
+                        .decision("Decision 2")
+                        .build());
+
+        directions.add(registrarDirectionCollectionMember1);
+        directions.add(registrarDirectionCollectionMember2);
+
+        caveatDataBuilder.registrarDirections(directions);
+
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+
+        CaveatCallbackResponse callbackResponse =
+                underTest.transformCaseWithRegistrarDirection(caveatCallbackRequestMock);
+
+        ResponseCaveatData responseCaveatData = callbackResponse.getCaveatData();
+        assertEquals(2, responseCaveatData.getRegistrarDirections().size());
+        assertEquals("2023-01-01T23:45:45.890Z", format(formatter, responseCaveatData, 0));
+        assertEquals("Decision 1", responseCaveatData.getRegistrarDirections().get(0).getValue().getDecision());
+        assertEquals("Further information 1", responseCaveatData.getRegistrarDirections().get(0).getValue()
+                .getFurtherInformation());
+        assertEquals("2023-01-02T23:45:45.890Z", format(formatter, responseCaveatData, 1));
+        assertEquals("Decision 2", responseCaveatData.getRegistrarDirections().get(1).getValue().getDecision());
+        assertNull(responseCaveatData.getRegistrarDirections().get(1).getValue().getFurtherInformation());
+
+        assertNotNull(responseCaveatData.getRegistrarDirectionToAdd());
+        assertNull(responseCaveatData.getRegistrarDirectionToAdd().getAddedDateTime());
+        assertNull(responseCaveatData.getRegistrarDirectionToAdd().getDecision());
+        assertNull(responseCaveatData.getRegistrarDirectionToAdd().getFurtherInformation());
+    }
+
+    private String format(DateTimeFormatter formatter, ResponseCaveatData caseData, int ind) {
+        return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
 
     @Test

@@ -21,6 +21,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -167,6 +168,10 @@ public class CaveatData {
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
 
     private List<CollectionMember<Payment>> payments;
+
+    @Builder.Default
+    private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
+    private RegistrarDirection registrarDirectionToAdd;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);

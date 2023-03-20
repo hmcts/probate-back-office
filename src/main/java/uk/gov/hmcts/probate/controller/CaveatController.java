@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -60,6 +61,7 @@ public class CaveatController {
     private final ConfirmationResponseService confirmationResponseService;
     private final PaymentsService paymentsService;
     private final FeeService feeService;
+    private final RegistrarDirectionService registrarDirectionService;
     private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
@@ -220,4 +222,21 @@ public class CaveatController {
 
         return ResponseEntity.ok(response);
     }
+
+    @PostMapping(path = "/default-registrars-decision",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> setupRegistrarsDecision(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        return ResponseEntity.ok(caveatCallbackResponseTransformer
+                .transformCaseWithRegistrarDirection(callbackRequest));
+    }
+
+    @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> registrarsDecision(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        registrarDirectionService.addAndOrderDirectionsToCaveat(callbackRequest.getCaseDetails().getData());
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
 }
