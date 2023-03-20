@@ -24,7 +24,7 @@ public enum ApplicationState {
     EXAMINING("BOExamining","Examining"),
 
     BO_CASE_STOPPED("BOCaseStopped","Case stopped"),
-    CAVEAT_PERMENANT("BOCaveatPermenant", "Caveat permenent"),
+    CAVEAT_PERMENANT("BOCaveatPermenant", "Caveat permenant"),
     REGISTRAR_ESCALATION("BORegistrarEscalation", "Registrar escalation"),
 
     READY_TO_ISSUE("BOReadyToIssue", "Ready to issue"),
@@ -41,7 +41,7 @@ public enum ApplicationState {
     EXAMINING_REISSUE("BOExaminingReissue","Examining (reissue)"),
     CASE_MATCHING_REISSUE("BOCaseMatchingReissue","Case Matching (Reissue grant)"),
     CASE_STOPPED_REISSUE("BOCaseStoppedReissue","Case stopped (reissue)"),
-    CASE_STOPPED_AWAIT_REDEC("CaseCreated","Awaiting redeclaration"),
+    CASE_STOPPED_AWAIT_REDEC("BOCaseStoppedAwaitRedec","Awaiting redeclaration"),
 
     PENDING("Pending","Draft"),
     REDECLARATION_NOTIFICATION_SENT("BORedecNotificationSent","Redeclaration notifications sent"),
