@@ -1551,6 +1551,23 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformCaseForSolsEmailIsSet() {
+        caseDataBuilder.solsSolicitorEmail("");
+        caseDataBuilder.applicationType(SOLICITOR);
+        caseDataBuilder.solsSolicitorEmail(SOLICITOR_FIRM_EMAIL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotification());
+    }
+
+    @Test
     void shouldTransformCaseForPAEmailEmpty() {
         caseDataBuilder.primaryApplicantEmailAddress("");
         caseDataBuilder.applicationType(PERSONAL);
@@ -2059,18 +2076,6 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrintRequested());
         assertEquals("Yes", callbackResponse.getData().getBoSendToBulkPrint());
-    }
-
-    @Test
-    void shouldDefaultYesToEmailGrantIssuedNotification() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        Document document = Document.builder().documentType(DIGITAL_GRANT).build();
-        CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
-        assertEquals("Yes", callbackResponse.getData().getBoEmailGrantIssuedNotification());
     }
 
     @Test
