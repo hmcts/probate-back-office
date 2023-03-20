@@ -1354,7 +1354,7 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if(caseData.getApplicationType().equals(SOLICITOR)) {
+        if( caseData.getApplicationType() != null && caseData.getApplicationType().equals(SOLICITOR)) {
             if (isSolsEmailSet(caseData)) {
                 builder
                         .boEmailDocsReceivedNotification(ANSWER_YES)
@@ -1370,7 +1370,7 @@ public class CallbackResponseTransformer {
             }
         }
 
-        else if (caseData.getApplicationType().equals(PERSONAL)) {
+        else if (caseData.getApplicationType() != null && caseData.getApplicationType().equals(PERSONAL)) {
             if (isPAEmailSet(caseData)) {
                 builder
                         .boEmailDocsReceivedNotification(ANSWER_YES)
