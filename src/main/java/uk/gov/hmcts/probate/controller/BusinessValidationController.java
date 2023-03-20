@@ -41,7 +41,21 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-import uk.gov.hmcts.probate.validator.*;
+import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
+import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
+import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
+import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
+import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.IHTValidationRule;
+import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
+import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
+import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -385,13 +399,15 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/prepareChangeCaseState", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/prepareChangeCaseState", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> prepareChangeCaseState(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-        CallbackResponse response = callbackResponseTransformer.setApplicationStateName(callbackRequest.getCaseDetails().getState());
+        CallbackResponse response =
+                callbackResponseTransformer.setApplicationStateName(callbackRequest.getCaseDetails().getState());
 
         return ResponseEntity.ok(response);
     }

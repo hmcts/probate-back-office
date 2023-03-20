@@ -145,7 +145,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE).state("HelloKitty");
+        ResponseCaseDataBuilder<?, ?> builder =
+                ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE).state("HelloKitty");
         return transformResponse(builder.build());
     }
 
@@ -166,9 +167,11 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse setApplicationStateName(String applicationState) {
-        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().currentApplicationStateName(ApplicationState.getByState(applicationState).get().getName());
+        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
+                .currentApplicationStateName(ApplicationState.getByState(applicationState).get().getName());
         return transformResponse(builder.build());
     }
+
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,
                                                                 Optional<String> newState) {
         final CaseDetails cd = callbackRequest.getCaseDetails();
@@ -442,6 +445,7 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
+
     public CallbackResponse transferToState(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);

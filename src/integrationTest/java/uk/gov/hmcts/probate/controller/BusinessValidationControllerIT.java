@@ -142,6 +142,7 @@ class BusinessValidationControllerIT {
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String CHANGE_CASE_STATE_URL = "/case//changeCaseState";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
@@ -916,6 +917,19 @@ class BusinessValidationControllerIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseMatchingIssueGrantAfterChangeCaseState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+        //verify(caseStoppedService).caseResolved(any(CaseDetails.class));
     }
 
     @Test

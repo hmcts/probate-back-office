@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecuto
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
+import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
@@ -153,6 +154,8 @@ class BusinessValidationUnitTest {
     @Mock
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     @Mock
+    private ChangeToSameStateValidationRule changeToSameStateValidationRule;
+    @Mock
     private HandOffLegacyTransformer handOffLegacyTransformer;
 
     private BusinessValidationController underTest;
@@ -186,6 +189,7 @@ class BusinessValidationUnitTest {
             solicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
+            changeToSameStateValidationRule,
             handOffLegacyTransformer);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
