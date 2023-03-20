@@ -26,25 +26,27 @@ import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
-import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
-import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -150,6 +152,8 @@ class BusinessValidationUnitTest {
     @Mock
     private SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     @Mock
+    private CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
+    @Mock
     private AssignCaseAccessService assignCaseAccessService;
     @Mock
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
@@ -157,6 +161,8 @@ class BusinessValidationUnitTest {
     private ChangeToSameStateValidationRule changeToSameStateValidationRule;
     @Mock
     private HandOffLegacyTransformer handOffLegacyTransformer;
+    @Mock
+    private RegistrarDirectionService registrarDirectionServiceMock;
 
     private BusinessValidationController underTest;
 
@@ -187,8 +193,10 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             ihtValidationRule,
             solicitorPostcodeValidationRule,
+            caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
+            registrarDirectionServiceMock,
             changeToSameStateValidationRule,
             handOffLegacyTransformer);
 
@@ -743,6 +751,15 @@ class BusinessValidationUnitTest {
     }
 
     @Test
+    void shouldValidateSolPostCodeCaseworker() {
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreateDefaultIhtEstate(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .defaultIhtEstateFromDateOfDeath(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldValidateMissingSolPostCode() {
         List<String> errors = new ArrayList<>();
         errors.add("some error");
@@ -750,6 +767,17 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreate(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldValidateMissingSolPostCodeCaseworker() {
+        List<String> errors = new ArrayList<>();
+        errors.add("some error");
+        when(callbackResponseMock.getErrors()).thenReturn(errors);
+        when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =  underTest.validateSolsCreateDefaultIhtEstate(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(0)).defaultIhtEstateFromDateOfDeath(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -801,7 +829,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandledForManualCreateByCW(callbackRequestMock);
     }
-    
+
     @Test
     void shouldValidateFurtherEvidenceForApplication() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -813,6 +841,30 @@ class BusinessValidationUnitTest {
                 underTest.solsValidateAdmon(callbackRequestMock, bindingResultMock, httpServletRequest);
         verify(furtherEvidenceForApplicationValidationRule, times(1))
                 .validate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetupRegistrarsDecision() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.setupRegistrarsDecision(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCaseWithRegistrarDirection(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldInvokeRegistrarsDecision() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        ResponseEntity<CallbackResponse> response =
+                underTest.registrarsDecision(callbackRequestMock);
+        verify(registrarDirectionServiceMock, times(1)).addAndOrderDirectionsToGrant(caseDataMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

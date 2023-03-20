@@ -18,6 +18,8 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfP
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
 const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
 const nextStepConfig = require('src/test/end-to-end/pages/nextStep/nextStepConfig.json');
+const registrarsDecisionConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/registrarsDecisionConfig');
+const registrarsDecisionTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/registrarsDecisionTabConfig');
 const {
     legacyParse,
     convertTokens
@@ -73,6 +75,13 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
+
+    nextStepName = 'Registrar\'s decision';
+    await I.logInfo(scenarioName, nextStepConfig, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.registrarsDecision(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, registrarsDecisionTabConfig, registrarsDecisionConfig);
 
     nextStepName = 'Handle supplementary evidence';
     await I.logInfo(scenarioName, nextStepConfig, caseRef);
