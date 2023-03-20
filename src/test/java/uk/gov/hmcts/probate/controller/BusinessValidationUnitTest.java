@@ -196,9 +196,10 @@ class BusinessValidationUnitTest {
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
-            registrarDirectionServiceMock,
             changeToSameStateValidationRule,
-            handOffLegacyTransformer);
+            handOffLegacyTransformer,
+            registrarDirectionServiceMock
+            );
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
