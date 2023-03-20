@@ -389,7 +389,7 @@ class CaseDataTest {
     }
 
     @Test
-    void isBoEmailGrantIssuedNotificationDefaultToTrue() {
+    void isBoEmailGrantIssuedNotificationTrue() {
         final CaseData caseData = CaseData.builder()
             .boEmailGrantIssuedNotification(YES)
             .build();
