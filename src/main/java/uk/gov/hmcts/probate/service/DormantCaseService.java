@@ -45,6 +45,7 @@ public class DormantCaseService {
             try {
                 ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION,
                             returnedCaseDetails.getId().toString(),
+                            returnedCaseDetails.getLastModified(),
                             grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
                             securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), DORMANT_SUMMARY,
                         DORMANT_SUMMARY);
@@ -69,10 +70,12 @@ public class DormantCaseService {
                     if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
                         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                                 .evidenceHandled(false)
+
                                 .build();
                         log.info("Updating case to Stopped from Dormant in CCD by scheduler for case id : {}",
                                 returnedCaseDetails.getId());
-                        updateCaseAsCaseworker(returnedCaseDetails.getId().toString(), grantOfRepresentationData);
+                        updateCaseAsCaseworker(returnedCaseDetails.getId().toString(), grantOfRepresentationData,
+                            returnedCaseDetails.getLastModified());
                     }
                 }
             }
@@ -82,10 +85,11 @@ public class DormantCaseService {
         }
     }
 
-    private void updateCaseAsCaseworker(String caseId, GrantOfRepresentationData grantOfRepresentationData) {
+    private void updateCaseAsCaseworker(String caseId, GrantOfRepresentationData grantOfRepresentationData,
+                                        LocalDateTime lastModifiedDate) {
         try {
             ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
-                    grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
+                lastModifiedDate, grantOfRepresentationData, EventId.REACTIVATE_DORMANT_CASE,
                     securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                     REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
             log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}", caseId);
