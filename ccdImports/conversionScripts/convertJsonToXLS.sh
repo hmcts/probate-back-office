@@ -14,6 +14,7 @@ source ${0%/*}/setHostAndPort.sh
 ccd_definition_json_output_dir_absolute_path=$(to-abs-path "$1")
 ccd_definition_json_output_dir_name=$(echo ${ccd_definition_json_output_dir_absolute_path##*/})
 ccd_definition_excel_output_file=$(to-abs-path "${excel_output_directory}/${ccd_definition_json_output_dir_name}.xlsx")
+additionalParameters=${2-}
 
 echo $ccd_definition_excel_output_file
 
@@ -26,4 +27,4 @@ docker run --rm --name json2xlsx \
     -v ${ccd_definition_excel_output_file}:/tmp/ccd-definition.xlsx \
     -e CCD_DEF_CASE_SERVICE_BASE_URL \
     hmcts/ccd-definition-processor:latest \
-    json2xlsx -D /tmp/ccd-definition -o /tmp/ccd-definition.xlsx
+    json2xlsx -D /tmp/ccd-definition -o /tmp/ccd-definition.xlsx ${additionalParameters}
