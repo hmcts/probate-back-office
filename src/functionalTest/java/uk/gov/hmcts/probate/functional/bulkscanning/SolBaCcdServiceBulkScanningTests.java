@@ -617,7 +617,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders("dummyServiceToken"))
+            .headers(utils.getHeadersForUnauthorisedService())
             .body(bodyText)
             .when().post(TRANSFORM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(403);
@@ -628,7 +628,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
-            .headers(utils.getHeaders("dummyServiceToken"))
+            .headers(utils.getHeadersForUnauthorisedService())
             .body(bodyText)
             .when().post(UPDATE_CASE_FROM_EXCEPTON_RECORD)
             .then().assertThat().statusCode(403);

@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.cases.CaseData;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface CoreCaseDataService {
@@ -14,7 +15,8 @@ public interface CoreCaseDataService {
 
     Optional<CaseDetails> retrieveCaseByLegacyId(String caseType, Long legacyId, SecurityDTO securityDTO);
 
-    CaseDetails updateCaseAsCaseworker(CcdCaseType ccdCaseType, String caseId, CaseData caseData, EventId eventId,
+    CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId, LocalDateTime lastModified,
+                                       CaseData caseData, EventId eventId,
                                        SecurityDTO securityDTO, String description, String summary);
 
     CaseDetails updateCaseAsCitizen(CcdCaseType ccdCaseType, String caseId, CaseData caseData, EventId eventId,

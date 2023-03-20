@@ -14,7 +14,7 @@ module.exports = async function () {
         caseUrl = caseUrl.replace(/http(s?):\/\/.*?\/print/, testConfig.TestBackOfficeUrl + '/print');
     }
 
-    await I.amOnLoadedPage(caseUrl);
+    I.amOnLoadedPage(caseUrl);
     await I.wait(testConfig.ManualDelayMedium);
     await I.waitForText('Grant Application', 600);
     const ccdCaseNoTextXpath = {xpath: '/html/body/pre/table/tbody/tr[3]/td[1]'}; // //td[text()='Ccd Case No:']
