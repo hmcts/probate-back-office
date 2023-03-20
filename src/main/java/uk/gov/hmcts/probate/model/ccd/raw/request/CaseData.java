@@ -249,7 +249,6 @@ public class CaseData extends CaseDataParent {
 
     private final String boEmailGrantIssuedNotificationRequested;
 
-    @Builder.Default
     private final String boEmailGrantIssuedNotification;
 
     @Builder.Default

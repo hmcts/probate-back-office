@@ -417,13 +417,13 @@ class CaseDataTest {
     }
 
     @Test
-    void isBoEmailGrantIssuedNotificationFromDefaultTrueSolsEmailSet() {
+    void isBoEmailGrantIssuedNotificationFromDefaultFalse() {
         final CaseData caseData = CaseData.builder()
-            .applicationType(ApplicationType.SOLICITOR)
-                .solsSolicitorEmail("primary@probate-test.com")
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantEmailAddress(null)
             .build();
 
-        assertEquals(true, caseData.isGrantIssuedEmailNotificationRequested());
+        assertEquals(false, caseData.isGrantIssuedEmailNotificationRequested());
     }
 
     @Test
