@@ -352,7 +352,25 @@
   {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "blank", "ListElement": "Blank letter", "DisplayOrder": 1},
   {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "CasePrinted", "ListElement": "Awaiting documentation"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStoppedAwaitRedec", "ListElement": "Awaiting redeclaration"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseClosed", "ListElement": "Case closed"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseClosed", "ListElement": "Case created"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseImported", "ListElement": "Case imported"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseMatchingExamining", "ListElement": "Case Matching (Examining)"},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseMatchingIssueGrant", "ListElement": "Case Matching (Issue grant)"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseMatchingReissue", "ListElement": "Case Matching (Reissue grant)"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "CasePaymentFailed", "ListElement": "Case payment failed"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStopped", "ListElement": "Case stopped"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStoppedReissue", "ListElement": "Case stopped (reissue)"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaveatPermenant", "ListElement": "Caveat permenant"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "Dormant", "ListElement": "Dormant"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining (reissue)"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOGrantIssued", "ListElement": "Grant issue"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOSotGenerated", "ListElement": "Legal Statement Generated"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "PAAppCreated", "ListElement": "PA application created"},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue"},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA"}
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORedecNotificationSent", "ListElement": "Redeclaration notifications sent"},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar escalation"}
+
 ]

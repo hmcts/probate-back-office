@@ -41,20 +41,7 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
-import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
-import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
-import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
-import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
-import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
-import uk.gov.hmcts.probate.validator.IHTValidationRule;
-import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
-import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
-import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
-import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.*;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -106,6 +93,7 @@ public class BusinessValidationController {
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
+    private final ChangeToSameStateValidationRule changeToSameStateValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
 
     @PostMapping(path = "/update-task-list")
@@ -392,7 +380,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> changeCaseState(@RequestBody CallbackRequest callbackRequest,
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-
+        changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest);
         return ResponseEntity.ok(response);
     }
@@ -403,7 +391,6 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
-        log.info("prepareChangeCaseState.getCaseDetails().getState():\n\n"+callbackRequest.getCaseDetails().getState());
         CallbackResponse response = callbackResponseTransformer.setApplicationStateName(callbackRequest.getCaseDetails().getState());
 
         return ResponseEntity.ok(response);

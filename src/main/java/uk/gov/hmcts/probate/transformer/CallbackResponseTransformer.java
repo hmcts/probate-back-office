@@ -445,20 +445,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse transferToState(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        switch (callbackRequest.getCaseDetails().getData().getTransferToState()) {
-            case CASE_MATCHING_ISSUE_GRANT:
-                responseCaseDataBuilder.state(CASE_MATCHING_ISSUE_GRANT);
-                break;
-            case QA_CASE_STATE:
-                responseCaseDataBuilder.state(QA_CASE_STATE);
-                break;
-            case READY_FOR_ISSUE:
-                responseCaseDataBuilder.state(READY_FOR_ISSUE);
-                break;
-            default:
-                responseCaseDataBuilder.state(CASE_PRINTED);
-                break;
-        }
+        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getTransferToState());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
