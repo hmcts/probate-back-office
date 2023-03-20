@@ -1371,7 +1371,7 @@ public class CallbackResponseTransformer {
         }
 
         else if (caseData.getApplicationType() != null && caseData.getApplicationType().equals(PERSONAL)) {
-            if (isPAEmailSet(caseData)) {
+            if (isPAEmailSet(case)) { //just to fix jenkins
                 builder
                         .boEmailDocsReceivedNotification(ANSWER_YES)
                         .boEmailRequestInfoNotification(ANSWER_YES)
