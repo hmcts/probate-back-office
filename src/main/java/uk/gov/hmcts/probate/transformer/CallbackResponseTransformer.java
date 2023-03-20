@@ -1354,7 +1354,7 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if(caseData.getApplicationType() != null && caseData.getApplicationType().equals(SOLICITOR)) {
+        if (caseData.getApplicationType() != null && caseData.getApplicationType().equals(SOLICITOR)) {
             if (isSolsEmailSet(caseData)) {
                 builder
                         .boEmailDocsReceivedNotification(ANSWER_YES)
