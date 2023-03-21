@@ -57,7 +57,7 @@ public enum ApplicationState {
         this.name = name;
     }
 
-    public static Optional<ApplicationState> getByState(String state) {
+    public static Optional<ApplicationState> getByStateId(String state) {
         return Stream.of(values()).filter(e -> e.id.equals(state)).findFirst();
     }
 

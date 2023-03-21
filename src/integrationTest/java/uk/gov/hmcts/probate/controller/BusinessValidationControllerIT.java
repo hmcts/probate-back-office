@@ -143,7 +143,8 @@ class BusinessValidationControllerIT {
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
-    private static final String CHANGE_CASE_STATE_URL = "/case//changeCaseState";
+    private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
+    private static final String PREPARE_CHANGE_CASE_STATE_URL = "/case/prepareChangeCaseState";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
@@ -933,8 +934,18 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
 
-        //verify(caseStoppedService).caseResolved(any(CaseDetails.class));
+    @Test
+    void shouldSetSurrentApplicationStateNameAfterPrepareChangeCaseState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        mockMvc.perform(post(PREPARE_CHANGE_CASE_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.currentApplicationStateName",
+                        is("Application updated")))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

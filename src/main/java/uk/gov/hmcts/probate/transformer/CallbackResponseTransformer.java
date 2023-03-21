@@ -169,7 +169,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse setApplicationStateName(String applicationState) {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
-                .currentApplicationStateName(ApplicationState.getByState(applicationState).get().getName());
+                .currentApplicationStateName(ApplicationState.getByStateId(applicationState).get().getName());
         return transformResponse(builder.build());
     }
 

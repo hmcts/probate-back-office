@@ -99,6 +99,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -2600,6 +2601,12 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
         assertEquals(CASE_REDEC_ESCALATION_STATE, callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldSetApplicationStateNameForBORegistrarEscalation() {
+        CallbackResponse callbackResponse = underTest.setApplicationStateName(REGISTRAR_ESCALATION.getId());
+        assertEquals(REGISTRAR_ESCALATION.getName(), callbackResponse.getData().getCurrentApplicationStateName());
     }
 
     @Test
