@@ -467,6 +467,7 @@ public class CaseData extends CaseDataParent {
     private final String legacyId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
+    private final String resendDate;
     private final String boCaveatStopNotificationRequested;
     private final String boCaveatStopNotification;
     private final String boCaseStopCaveatId;

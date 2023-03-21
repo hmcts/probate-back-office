@@ -17,17 +17,26 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
+import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -80,26 +89,18 @@ public class DataExtractController {
 
     @Operation(summary = "Initiate IronMountain data extract with date",
         description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
-    @PostMapping(path = "/resend-iron-mountain")
-    public ResponseEntity initiateIronMountainExtract(
-       // @RequestHeader(value = "Authorization") String authToken,
-        @RequestBody CallbackRequest callbackRequest,
-        BindingResult bindingResult,
-        HttpServletRequest request) throws NotificationClientException {
-        logRequest(request.getRequestURI(), callbackRequest);
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
+    @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity<AfterSubmitCallbackResponse> initiateIronMountainExtract(
+        @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
 
-    /*    dataExtractDateValidator.dateValidator(date);
+        String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
+        dataExtractDateValidator.dateValidator(resendDate);
 
-        log.info("Calling perform Iron Mountain data extract from date...");
+        log.info("Calling resend perform Iron Mountain data extract from date...");
         ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> {
-            ironMountainDataExtractService.performIronMountainExtractForDate(date);
-        });
-        log.info("Perform Iron Mountain data extract from date finished");
-*/
-
-        return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
+        executor.submit(() -> ironMountainDataExtractService.performIronMountainExtractForDate(resendDate));
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
+        return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
 
@@ -137,14 +138,4 @@ public class DataExtractController {
         return ResponseEntity.accepted().body(null);
     }
 
-    private void logRequest(String uri, CallbackRequest callbackRequest) {
-        try {
-            log.info("POST: {} Case Id: {} ", uri, callbackRequest.getCaseDetails().getId().toString());
-            if (log.isDebugEnabled()) {
-                log.debug("POST: {} {}", uri, objectMapper.writeValueAsString(callbackRequest));
-            }
-        } catch (JsonProcessingException e) {
-            log.error("POST: {}", uri, e);
-        }
-    }
 }
