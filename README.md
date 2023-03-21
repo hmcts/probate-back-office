@@ -723,4 +723,20 @@ To run Caseworker tests on XUI locally do the following:
         TestBackOfficeUrl -  http://localhost:3455
         TestEnvUser - ProbateSolCW1@gmail.com
         TestEnvPassword - Pa55word11
-    
+
+
+
+# Shuttering
+To shutter Probate jurisdiction through pipeline, change the shutterOption in Jenkinsfile_CNP
+of environments to be shuttered from false to true
+````
+shutterOption = "true"
+````
+Change it back to false to unshutter
+````
+shutterOption = "false"
+````
+Generate a shuttered CCD config xlsx in local
+````
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 true
+````

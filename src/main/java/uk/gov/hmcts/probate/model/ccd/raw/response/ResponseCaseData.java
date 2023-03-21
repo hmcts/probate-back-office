@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -365,4 +366,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String caseworkerName;
     private final String letterText;
     private final String includeStatementOfTruth;
+    private final List<CollectionMember<RegistrarDirection>> registrarDirections;
+    private final RegistrarDirection registrarDirectionToAdd;
+
 }

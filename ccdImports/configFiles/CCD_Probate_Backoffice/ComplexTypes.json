@@ -185,5 +185,8 @@
   {"LiveFrom": "01/01/2017", "ID": "Damage", "ListElementCode": "damageTypesList", "FieldType": "MultiSelectList", "FieldTypeParameter": "damageTypes", "ElementLabel": "Damage type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Damage", "ListElementCode": "otherDamageDescription", "FieldType": "TextArea", "ElementLabel": "Other", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "firstName", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "lastName", "FieldType": "Text", "ElementLabel": "Last name", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "lastName", "FieldType": "Text", "ElementLabel": "Last name", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Direction added", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "decision", "FieldType": "FixedRadioList", "FieldTypeParameter": "registrarsDecisionType", "ElementLabel": "Registrar decision", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "furtherInformation", "FieldType": "TextArea", "ElementLabel": "Further information", "SecurityClassification": "Public"}
 ]
