@@ -225,7 +225,7 @@ xui-webapp:
 
 java:
   image: ${IMAGE_NAME}
-  ingressHost: ${SERVICE_FQDN}
+  ingressHost: ${SERVICE_NAME}.preview.platform.hmcts.net
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
