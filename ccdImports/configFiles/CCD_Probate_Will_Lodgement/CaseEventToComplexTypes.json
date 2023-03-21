@@ -12,6 +12,6 @@
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "recordId", "EventElementLabel":  "ProbateMan Id", "FieldDisplayOrder":  11, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "id", "EventElementLabel":  "Id", "FieldDisplayOrder":  12, "DisplayContext": "READONLY"},
   {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "legacyCaseViewUrl", "EventElementLabel":  "Legacy case Url", "FieldDisplayOrder":  13, "DisplayContext": "READONLY"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "valid", "EventElementLabel":  "Is match valid?", "FieldDisplayOrder":  14, "DisplayContext": "MANDATORY"},
-  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "doImport", "EventElementLabel":  "Do import?", "FieldDisplayOrder":  15, "DisplayContext": "MANDATORY"}
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "valid", "EventElementLabel":  "Is match valid?", "FieldDisplayOrder":  14, "DisplayContext": "OPTIONAL"},
+  {"LiveFrom": "01/01/2017", "ID": "CaseMatch", "CaseEventID":  "matchApplication", "CaseFieldID": "caseMatches", "ListElementCode": "doImport", "EventElementLabel":  "Do import?", "FieldDisplayOrder":  15, "DisplayContext": "OPTIONAL"}
 ]
