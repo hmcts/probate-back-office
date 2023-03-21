@@ -941,7 +941,8 @@ class BusinessValidationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile(
                 "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
 
-        mockMvc.perform(post(PREPARE_CHANGE_CASE_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(PREPARE_CHANGE_CASE_STATE_URL).content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.data.currentApplicationStateName",
                         is("Application updated")))
