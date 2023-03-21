@@ -168,8 +168,11 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse setApplicationStateName(String applicationState) {
+        Optional<ApplicationState> applicationStateOptional = ApplicationState.getByStateId(applicationState);
+
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
-                .currentApplicationStateName(ApplicationState.getByStateId(applicationState).get().getName());
+                .currentApplicationStateName(
+                        applicationStateOptional.isPresent() ? applicationStateOptional.get().getName() : "null");
         return transformResponse(builder.build());
     }
 
