@@ -27,6 +27,9 @@ const caveatDetailsTabUpdateConfig = require('src/test/end-to-end/pages/caseDeta
 const documentsTabEmailCaveatorConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabEmailCaveatorConfig');
 const documentsTabUploadDocumentConfig = require('src/test/end-to-end/pages/caseDetails/caveat/documentsTabUploadDocumentConfig');
 
+const registrarsDecisionConfig = require('src/test/end-to-end/pages/caseDetails/caveat/registrarsDecisionConfig');
+const registrarsDecisionTabConfig = require('src/test/end-to-end/pages/caseDetails/caveat/registrarsDecisionTabConfig');
+
 const {
     legacyParse,
     convertTokens
@@ -78,6 +81,13 @@ Scenario(scenarioName, async function ({I}) {
     // When raising a caveat, Caveat Expiry Date is automatically set to today + 6 months
     createCaveatConfig.caveat_expiry_date = dateFns.format(legacyParse(dateFns.addMonths(new Date(), 6)), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, createCaveatConfig);
+
+    nextStepName = 'Registrar\'s decision';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepName);
+    await I.registrarsDecision(caseRef);
+    await I.enterEventSummary(caseRef, nextStepName);
+    await I.seeCaseDetails(caseRef, registrarsDecisionTabConfig, registrarsDecisionConfig);
 
     nextStepName = 'Email caveator'; // When in state 'Caveat raised'
     await I.logInfo(scenarioName, nextStepName, caseRef);
