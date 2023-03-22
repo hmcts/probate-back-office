@@ -52,7 +52,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String state;
     private final ApplicationType applicationType;
     private final String registryLocation;
-    private final String currentApplicationStateName;
 
     private final String deceasedDateOfDeath;
     private final String deceasedDateOfBirth;
