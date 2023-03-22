@@ -1365,35 +1365,23 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (caseData.getApplicationType() != null && caseData.getApplicationType().equals(SOLICITOR)) {
-            if (isSolsEmailSet(caseData)) {
-                builder
-                        .boEmailDocsReceivedNotification(ANSWER_YES)
-                        .boEmailRequestInfoNotification(ANSWER_YES)
-                        .boEmailGrantIssuedNotification(ANSWER_YES)
-                        .boEmailGrantReissuedNotification(ANSWER_YES);
-            } else {
-                builder
-                        .boEmailDocsReceivedNotification(ANSWER_NO)
-                        .boEmailRequestInfoNotification(ANSWER_NO)
-                        .boEmailGrantIssuedNotification(ANSWER_NO)
-                        .boEmailGrantReissuedNotification(ANSWER_NO);
-            }
-        } else if (caseData.getApplicationType() != null && caseData.getApplicationType().equals(PERSONAL)) {
-            if (isPAEmailSet(caseData)) {
-                builder
-                        .boEmailDocsReceivedNotification(ANSWER_YES)
-                        .boEmailRequestInfoNotification(ANSWER_YES)
-                        .boEmailGrantIssuedNotification(ANSWER_YES)
-                        .boEmailGrantReissuedNotification(ANSWER_YES);
-            } else {
-                builder
-                        .boEmailDocsReceivedNotification(ANSWER_NO)
-                        .boEmailRequestInfoNotification(ANSWER_NO)
-                        .boEmailGrantIssuedNotification(ANSWER_NO)
-                        .boEmailGrantReissuedNotification(ANSWER_NO);
-            }
+        if (SOLICITOR.equals(caseData.getApplicationType())) {
+            String answer = isSolsEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
+            builder
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
+
+        if (PERSONAL.equals(caseData.getApplicationType())) {
+            String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
+                builder
+                        .boEmailDocsReceivedNotification(answer)
+                        .boEmailRequestInfoNotification(answer)
+                        .boEmailGrantIssuedNotification(answer)
+                        .boEmailGrantReissuedNotification(answer);
+            }
 
         if (!isCodicil(caseData)) {
             builder
