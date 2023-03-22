@@ -1381,7 +1381,7 @@ public class CallbackResponseTransformer {
                     .boEmailRequestInfoNotification(answer)
                     .boEmailGrantIssuedNotification(answer)
                     .boEmailGrantReissuedNotification(answer);
-            }
+        }
 
         if (!isCodicil(caseData)) {
             builder
