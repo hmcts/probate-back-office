@@ -15,8 +15,7 @@ public class EvidenceUploadService {
 
     public void updateLastEvidenceAddedDate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        log.info("Updating updateLastEvidenceAddedDate for case {}", caseDetails.getId());
+        log.info("Updating lastEvidenceAddedDate for case {}", caseDetails.getId());
         caseData.setLastEvidenceAddedDate(LocalDate.now());
     }
-
 }

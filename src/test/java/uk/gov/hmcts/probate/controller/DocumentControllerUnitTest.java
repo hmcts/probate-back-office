@@ -5,7 +5,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +15,18 @@ import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistryDetailsService;
-import uk.gov.hmcts.probate.service.ReprintService;
+import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -38,17 +39,18 @@ import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.times;
 
 @ExtendWith(SpringExtension.class)
 public class DocumentControllerUnitTest {
@@ -89,7 +91,8 @@ public class DocumentControllerUnitTest {
     private DocumentManagementService documentManagementService;
     @Mock
     private EvidenceUploadService evidenceUploadService;
-
+    @Mock
+    private IdamApi idamApi;
     private DocumentController documentController;
 
     private static final String DUMMY_OAUTH_2_TOKEN = "oauth2Token";
@@ -105,7 +108,7 @@ public class DocumentControllerUnitTest {
         ReflectionTestUtils.setField(documentValidation,
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
-        documentController = new DocumentController(documentGeneratorService, registryDetailsService,
+        documentController = new DocumentController(idamApi, documentGeneratorService, registryDetailsService,
             pdfManagementService, callbackResponseTransformer, caseDataTransformer,
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
@@ -137,7 +140,7 @@ public class DocumentControllerUnitTest {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: too many files");
 
-        MultipartFile file = Mockito.mock(MultipartFile.class);
+        MultipartFile file = mock(MultipartFile.class);
         List<MultipartFile> files = new ArrayList<>();
         for (int i = 1; i <= 11; i++) {
             files.add(file);
@@ -185,13 +188,64 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldSetLastEvidenceAddedDate() {
+    public void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
-        ResponseEntity<CallbackResponse> response = documentController.evidenceAdded(callbackRequest);
+        CaseData mockCaseData = CaseData.builder()
+            .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOCaseStopped");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAdded(callbackRequest);
+        ResponseEntity<CallbackResponse> response2 = documentController
+                .evidenceAdded(callbackRequest);
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
+
+        verify(evidenceUploadService, times(2))
+                .updateLastEvidenceAddedDate(mockCaseDetails);
+    }
+
+    @Test
+    public void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder()
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOCaseStopped");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAddedRPARobot(callbackRequest);
+        assertThat(mockCaseData.getDocumentUploadedAfterCaseStopped(), equalTo("Yes"));
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
-        verify(evidenceUploadService).updateLastEvidenceAddedDate(caseDetailsMock);
+        ResponseEntity<CallbackResponse> response2 = documentController
+                .evidenceAddedRPARobot(callbackRequest);
+        assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
+
+        verify(evidenceUploadService, times(1))
+                .updateLastEvidenceAddedDate(mockCaseDetails);
+    }
+
+    @Test
+    public void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseData mockCaseData = CaseData.builder()
+                .build();
+        CaseDetails mockCaseDetails = new CaseDetails(mockCaseData,null, 0L);
+        mockCaseDetails.setState("BOExamining");
+        when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
+
+        ResponseEntity<CallbackResponse> response = documentController
+                .evidenceAddedRPARobot(callbackRequest);
+        ResponseEntity<CallbackResponse> response2 = documentController
+                .evidenceAddedRPARobot(callbackRequest);
+
+        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
+        assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
+        verify(evidenceUploadService, times(2))
+                .updateLastEvidenceAddedDate(mockCaseDetails);
     }
 }
