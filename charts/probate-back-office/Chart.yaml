@@ -14,6 +14,7 @@ dependencies:
   - name: ccd
     version: 8.0.27
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: ccd.enabled
     tags:
       - probate-ccd-stack
   - name: xui-webapp
