@@ -12,6 +12,7 @@ module.exports = function () {
         selectNewCase: steps.newCase.newCase,
         selectCaseTypeOptions: steps.createCase.createCase,
         handleEvidence: steps.handleEvidence.handleEvidence,
+        registrarsDecision: steps.registrarsDecision.registrarsDecision,
         enterWillLodgementPage1: steps.createWillLodgement.page1,
         enterWillLodgementPage2: steps.createWillLodgement.page2,
         enterWillLodgementPage3: steps.createWillLodgement.page3,

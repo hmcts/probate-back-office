@@ -17,9 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpHeaders;
 import org.springframework.test.context.TestPropertySource;
-import uk.gov.hmcts.reform.sendletter.api.SendLetterApi;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.Document;
 import uk.gov.hmcts.reform.sendletter.api.model.v3.LetterV3;
+import uk.gov.hmcts.reform.sendletter.api.proxy.SendLetterApiProxy;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -33,7 +33,7 @@ import java.util.Map;
 
 @ExtendWith(PactConsumerTestExt.class)
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@PactTestFor(providerName = "rpePdfService_PDFGenerationEndpointV2", port = "8486")
+@PactTestFor(providerName = "rpeSendLetterService_SendLetterController", port = "8486")
 @PactFolder("pacts")
 @SpringBootTest
 @TestPropertySource(locations = {"/application.properties"})
@@ -47,7 +47,7 @@ public class SendLetterServiceConsumerTest {
     @Autowired
     ObjectMapper objectMapper;
     @Autowired
-    private SendLetterApi sendLetterApi;
+    private SendLetterApiProxy sendLetterApiProxy;
 
     @Pact(provider = "rpeSendLetterService_SendLetterController", consumer = "probate_backOffice")
     public RequestResponsePact createSendLetterServiceFragment(PactDslWithProvider builder)
@@ -56,6 +56,7 @@ public class SendLetterServiceConsumerTest {
             .given("A valid send letter request is received")
             .uponReceiving("a request to send that letter")
             .path("/letters")
+            .query("isAsync=false")
             .method("POST")
             .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
             .body(createJsonObject(buildLetter()), "application/vnd.uk.gov.hmcts.letter-service.in.letter.v3+json")
@@ -70,7 +71,7 @@ public class SendLetterServiceConsumerTest {
     @Test
     @PactTestFor(pactMethod = "createSendLetterServiceFragment")
     public void verifySendLetterPact() throws IOException, JSONException, URISyntaxException {
-        sendLetterApi.sendLetter(someServiceAuthToken, buildLetter());
+        sendLetterApiProxy.sendLetter(someServiceAuthToken, "false", buildLetter());
     }
 
     private LetterV3 buildLetter() throws IOException, URISyntaxException {

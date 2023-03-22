@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -149,6 +150,8 @@ class BusinessValidationControllerIT {
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
     private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String PA_CREATE_URL = "/case/pa-create";
+    private static final String DEFAULT_REGISTRARS_DECISION = "/case/default-registrars-decision";
+    private static final String REGISTRARS_DECISION = "/case/registrars-decision";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
@@ -194,6 +197,8 @@ class BusinessValidationControllerIT {
     private NotificationService notificationService;
     @MockBean
     private CaseDataTransformer caseDataTransformer;
+    @MockBean
+    private RegistrarDirectionService registrarDirectionService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -1124,6 +1129,26 @@ class BusinessValidationControllerIT {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDefaultRegistrarsDecision() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(DEFAULT_REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRegistrarsDecision() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 
