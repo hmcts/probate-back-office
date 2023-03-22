@@ -2,9 +2,6 @@ package uk.gov.hmcts.probate.model;
 
 import lombok.Getter;
 
-import java.util.Optional;
-import java.util.stream.Stream;
-
 @Getter
 public enum ApplicationState {
     APP_CREATED("PAAppCreated", "PA application created"),
@@ -41,13 +38,7 @@ public enum ApplicationState {
     EXAMINING_REISSUE("BOExaminingReissue","Examining (reissue)"),
     CASE_MATCHING_REISSUE("BOCaseMatchingReissue","Case Matching (Reissue grant)"),
     CASE_STOPPED_REISSUE("BOCaseStoppedReissue","Case stopped (reissue)"),
-    CASE_STOPPED_AWAIT_REDEC("BOCaseStoppedAwaitRedec","Awaiting redeclaration"),
-
-    PENDING("Pending","Draft"),
-    REDECLARATION_NOTIFICATION_SENT("BORedecNotificationSent","Redeclaration notifications sent"),
-    LEGAL_STATEMENT_GENERATED("BOSotGenerated","Legal Statement Generated"),
-    DELETED("Deleted","Deleted"),
-    DORMANT("Dormant","Dormant");
+    CASE_STOPPED_AWAIT_REDEC("BOCaseStoppedAwaitRedec","Awaiting redeclaration");
 
     private String id;
     private String name;
@@ -56,9 +47,4 @@ public enum ApplicationState {
         this.id = id;
         this.name = name;
     }
-
-    public static Optional<ApplicationState> getByStateId(String stateId) {
-        return Stream.of(values()).filter(e -> e.id.equals(stateId)).findFirst();
-    }
-
 }

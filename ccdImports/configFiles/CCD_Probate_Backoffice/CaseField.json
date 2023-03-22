@@ -464,6 +464,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "lastEvidenceAddedDate", "Label": "When was the last scanned or uploaded doc added?", "HintText": "For example, 31 03 2020", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirections", "Label": "Registrar directions", "FieldType": "Collection", "FieldTypeParameter": "RegistrarDirection", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirectionToAdd", "Label": "Registrar direction", "FieldType": "RegistrarDirection", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "transferToState", "Label": "State to transfer case to", "FieldType": "FixedList", "FieldTypeParameter": "transferToStateFixedList", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "currentApplicationStateName", "Label": "Current State", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "transferToState", "Label": "State to transfer case to", "FieldType": "FixedList", "FieldTypeParameter": "transferToStateFixedList", "SecurityClassification": "Public"}
 ]

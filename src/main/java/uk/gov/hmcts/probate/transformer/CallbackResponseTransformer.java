@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.transformer;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.model.ApplicationState;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -146,8 +145,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> builder =
-                ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE).state("HelloKitty");
+        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
         return transformResponse(builder.build());
     }
 
@@ -165,15 +163,6 @@ public class CallbackResponseTransformer {
         iht400421Defaulter.defaultPageFlowForIht400421(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
-    }
-
-    public CallbackResponse setApplicationStateName(String applicationState) {
-        Optional<ApplicationState> applicationStateOptional = ApplicationState.getByStateId(applicationState);
-
-        ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
-                .currentApplicationStateName(
-                        applicationStateOptional.isPresent() ? applicationStateOptional.get().getName() : "null");
-        return transformResponse(builder.build());
     }
 
     public CallbackResponse transformWithConditionalStateChange(CallbackRequest callbackRequest,

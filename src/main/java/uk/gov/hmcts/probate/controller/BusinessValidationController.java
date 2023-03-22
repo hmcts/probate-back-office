@@ -415,19 +415,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/prepareChangeCaseState", consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> prepareChangeCaseState(
-            @RequestBody CallbackRequest callbackRequest,
-            BindingResult bindingResult) {
-
-        validateForPayloadErrors(callbackRequest, bindingResult);
-        CallbackResponse response =
-                callbackResponseTransformer.setApplicationStateName(callbackRequest.getCaseDetails().getState());
-
-        return ResponseEntity.ok(response);
-    }
-
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody

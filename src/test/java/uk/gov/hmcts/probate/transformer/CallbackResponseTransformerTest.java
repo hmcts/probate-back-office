@@ -99,7 +99,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -281,23 +280,6 @@ class CallbackResponseTransformerTest {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String CASE_MATCHING_ISSUE_GRANT = "BOCaseMatchingIssueGrant";
-    private static final String CASE_AWAITING_REDEC_STATE = "BOCaseStoppedAwaitRedec";
-    private static final String CASE_CLOSED_STATE = "BOCaseClosed";
-    private static final String CASE_CREATED_STATE = "CaseCreated";
-    private static final String CASE_IMPORTED_STATE = "BOCaseImported";
-    private static final String CASE_MATCHING_EXAMINING_STATE = "BOCaseMatchingExamining";
-    private static final String CASE_MATCHING_REISSUE_STATE = "BOCaseMatchingReissue";
-    private static final String CASE_PAYMENT_FAILED_STATE = "CasePaymentFailed";
-    private static final String CASE_STOPPERD_STATE = "BOCaseStopped";
-    private static final String CASE_STOPPERD_REISSUE_STATE = "BOCaseStoppedReissue";
-    private static final String CAVEAT_PERMENANT_STATE = "BOCaveatPermenant";
-    private static final String DORMANT_STATE = "Dormant";
-    private static final String EXAMINING_REISSUE_STATE = "BOExaminingReissue";
-    private static final String CASE_GRANT_ISSUEED_STATE = "BOGrantIssued";
-    private static final String CASE_SOT_GENERATED_STATE = "BOSotGenerated";
-    private static final String PA_APP_CREATED_STATE = "PAAppCreated";
-    private static final String CASE_REDEC_NOTIC_SENT_STATE = "BORedecNotificationSent";
-    private static final String CASE_REDEC_ESCALATION_STATE = "BORegistrarEscalation";
 
     private static final String BULK_SCAN_REFERENCE = "BulkScanRef";
     private static final LocalDate VALID_CODICIL_DATE = LocalDate.now().minusDays(1);
@@ -2414,177 +2396,6 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
         assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseStoppedAwaitRedec() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_AWAITING_REDEC_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_AWAITING_REDEC_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseClosed() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_CLOSED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_CLOSED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseImported() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_IMPORTED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_IMPORTED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseMatchingReissue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_MATCHING_REISSUE_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_MATCHING_REISSUE_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateCasePaymentFailed() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_PAYMENT_FAILED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_PAYMENT_FAILED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseStopped() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_STOPPERD_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_STOPPERD_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseStoppedReissue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_STOPPERD_REISSUE_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_STOPPERD_REISSUE_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaveatPermenant() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CAVEAT_PERMENANT_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CAVEAT_PERMENANT_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateDormant() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(DORMANT_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(DORMANT_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOExaminingReissue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(EXAMINING_REISSUE_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(EXAMINING_REISSUE_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOGrantIssued() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_GRANT_ISSUEED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_GRANT_ISSUEED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOSotGenerated() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_SOT_GENERATED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_SOT_GENERATED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStatePAAppCreated() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(PA_APP_CREATED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(PA_APP_CREATED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBORedecNotificationSent() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_REDEC_NOTIC_SENT_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_REDEC_NOTIC_SENT_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBORegistrarEscalation() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_REDEC_ESCALATION_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_REDEC_ESCALATION_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldSetApplicationStateNameForBORegistrarEscalation() {
-        CallbackResponse callbackResponse = underTest.setApplicationStateName(REGISTRAR_ESCALATION.getId());
-        assertEquals(REGISTRAR_ESCALATION.getName(), callbackResponse.getData().getCurrentApplicationStateName());
     }
 
     @Test
