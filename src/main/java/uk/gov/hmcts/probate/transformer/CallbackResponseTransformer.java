@@ -1376,11 +1376,11 @@ public class CallbackResponseTransformer {
 
         if (PERSONAL.equals(caseData.getApplicationType())) {
             String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
-                builder
-                        .boEmailDocsReceivedNotification(answer)
-                        .boEmailRequestInfoNotification(answer)
-                        .boEmailGrantIssuedNotification(answer)
-                        .boEmailGrantReissuedNotification(answer);
+            builder
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
             }
 
         if (!isCodicil(caseData)) {
