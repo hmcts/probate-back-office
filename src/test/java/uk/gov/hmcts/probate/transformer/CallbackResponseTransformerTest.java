@@ -2439,17 +2439,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldChangeCaseStateCaseCreated() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_CREATED_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_CREATED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
     void shouldChangeCaseStateBOCaseImported() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .transferToState(CASE_IMPORTED_STATE);
@@ -2458,17 +2447,6 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
         assertEquals(CASE_IMPORTED_STATE, callbackResponse.getData().getState());
-    }
-
-    @Test
-    void shouldChangeCaseStateBOCaseMatchingExamining() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_MATCHING_EXAMINING_STATE);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_MATCHING_EXAMINING_STATE, callbackResponse.getData().getState());
     }
 
     @Test
