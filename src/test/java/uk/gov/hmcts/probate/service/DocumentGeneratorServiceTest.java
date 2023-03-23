@@ -799,7 +799,7 @@ class DocumentGeneratorServiceTest {
                         LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);
 
-        documentGeneratorService.removeDocuments(callbackRequest);
+        documentGeneratorService.permanentlyDeleteRemovedDocuments(callbackRequest);
         verify(documentService, times(2)).delete(doc, CASE_ID.toString());
     }
 }

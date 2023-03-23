@@ -148,6 +148,15 @@ public class CallbackResponseTransformer {
         return transformResponse(builder.build());
     }
 
+    public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        responseCaseDataBuilder.originalDocsGenerated(caseData.getProbateDocumentsGenerated());
+        responseCaseDataBuilder.originalDocsScanned(caseData.getScannedDocuments());
+        responseCaseDataBuilder.originalDocsUploaded(caseData.getBoDocumentsUploaded());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             true);
