@@ -20,6 +20,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
@@ -284,6 +286,17 @@ public class DocumentGeneratorService {
                 caseData.getDocumentsGenerated(),
                 caseData.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
                 caseData.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                caseRef);
+    }
+
+    public void permanentlyDeleteRemovedDocumentsForStandingSearch(StandingSearchCallbackRequest callbackRequest) {
+        log.info("permanently deleting documents on case: {}", callbackRequest.getCaseDetails().getId());
+        StandingSearchData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+
+        permanentlyDeleteRemovedDocuments(null,null,
+                caseData.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                null, null,
                 caseRef);
     }
 

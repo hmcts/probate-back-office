@@ -152,5 +152,6 @@
   {"CaseTypeID": "StandingSearch", "CaseEventID": "uploadDocumentForStandingSearchCompleted", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "addComment", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "StandingSearch", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"}
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
+  {"CaseTypeID": "StandingSearch", "CaseEventID": "removeDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]
