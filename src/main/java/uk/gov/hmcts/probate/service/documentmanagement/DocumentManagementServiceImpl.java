@@ -83,6 +83,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String s2s = securityDTO.getServiceAuthorisation();
         String selfHref = document.getDocumentLink().getDocumentUrl();
         UUID docId = UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
+        log.info("Deleting document wth id:{}", docId.toString());
         caseDocumentClient.deleteDocument(auth, s2s, docId, DELETE_PERMANENT);
     }
 

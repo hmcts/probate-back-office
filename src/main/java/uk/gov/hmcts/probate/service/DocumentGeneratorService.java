@@ -10,8 +10,11 @@ import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -24,7 +27,9 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -258,19 +263,76 @@ public class DocumentGeneratorService {
         }
     }
 
-    public void removeDocuments(CallbackRequest callbackRequest) {
-        log.info("removing documents");
+    public void permanentlyDeleteRemovedDocumentsForGrant(CallbackRequest callbackRequest) {
+        log.info("permanently deleting documents on case: {}", callbackRequest.getCaseDetails().getId());
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         String caseRef = callbackRequest.getCaseDetails().getId().toString();
-        for (CollectionMember<Document> documentCollectionMember : caseData.getProbateDocumentsGenerated()) {
-            documentService.delete(documentCollectionMember.getValue(), caseRef);
+
+        permanentlyDeleteRemovedDocuments(caseData.getOriginalDocsGenerated(),
+                caseData.getProbateDocumentsGenerated(),
+                caseData.getOriginalDocsUploaded(), caseData.getBoDocumentsUploaded(),
+                caseData.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                caseRef);
+    }
+
+    public void permanentlyDeleteRemovedDocumentsForCaveat(CaveatCallbackRequest callbackRequest) {
+        log.info("permanently deleting documents on case: {}", callbackRequest.getCaseDetails().getId());
+        CaveatData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+
+        permanentlyDeleteRemovedDocuments(caseData.getOriginalDocsGenerated(),
+                caseData.getDocumentsGenerated(),
+                caseData.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                caseData.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                caseRef);
+    }
+
+    private void permanentlyDeleteRemovedDocuments(List<CollectionMember<Document>> originalGenerated,
+                                                  List<CollectionMember<Document>> remainingGenerated,
+                                                  List<CollectionMember<UploadDocument>> originalUploaded,
+                                                  List<CollectionMember<UploadDocument>> remainingUploaded,
+                                                  List<CollectionMember<ScannedDocument>> originalScanned,
+                                                  List<CollectionMember<ScannedDocument>> remainingScanned,
+                                                  String caseId
+                                                  ) {
+        log.info("permanently deleting documents on case: {}", caseId);
+
+        List<Document> documentsToDelete = new ArrayList<>();
+        if (originalGenerated != null) {
+            for (CollectionMember<Document> documentCollectionMember : originalGenerated) {
+                if (!remainingGenerated.contains(documentCollectionMember)) {
+                    log.info("permanently removing generated document: {}", documentCollectionMember.getId());
+                    documentsToDelete.add(documentCollectionMember.getValue());
+                }
+            }
         }
-        for (CollectionMember<UploadDocument> documentCollectionMember : caseData.getBoDocumentsUploaded()) {
-            Document document = Document.builder()
-                    .documentLink(documentCollectionMember.getValue().getDocumentLink())
-                    .documentType(documentCollectionMember.getValue().getDocumentType())
-                    .build();
-            documentService.delete(document, caseRef);
+        if (originalUploaded != null) {
+            for (CollectionMember<UploadDocument> documentCollectionMember : originalUploaded) {
+                if (!remainingUploaded.contains(documentCollectionMember)) {
+                    Document document = Document.builder()
+                            .documentLink(documentCollectionMember.getValue().getDocumentLink())
+                            .documentType(documentCollectionMember.getValue().getDocumentType())
+                            .build();
+                    log.info("permanently removing uploaded document: {}", documentCollectionMember.getId());
+                    documentsToDelete.add(document);
+                }
+            }
+        }
+        if (originalScanned != null) {
+            for (CollectionMember<ScannedDocument> documentCollectionMember : originalScanned) {
+                if (!remainingScanned.contains(documentCollectionMember)) {
+                    Document document = Document.builder()
+                            .documentLink(documentCollectionMember.getValue().getUrl())
+                            .documentType(DocumentType.valueOf(documentCollectionMember.getValue().getType()))
+                            .build();
+                    log.info("permanently removing scanned document: {}", documentCollectionMember.getId());
+                    documentsToDelete.add(document);
+                }
+            }
+        }
+
+        for (Document document : documentsToDelete) {
+            documentService.delete(document, caseId);
         }
     }
 

@@ -368,4 +368,10 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String includeStatementOfTruth;
     private final List<CollectionMember<RegistrarDirection>> registrarDirections;
     private final RegistrarDirection registrarDirectionToAdd;
+
+    //transient in-event vars
+    private List<CollectionMember<Document>> originalDocsGenerated;
+    private List<CollectionMember<ScannedDocument>> originalDocsScanned;
+    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
+
 }

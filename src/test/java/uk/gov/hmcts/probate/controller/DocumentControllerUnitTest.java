@@ -250,13 +250,13 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldRemoveDocument() {
+    public void shouldRemoveDocumentsForGrant() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
-        ResponseEntity<CallbackResponse> response = documentController.remove(callbackRequest);
+        ResponseEntity<CallbackResponse> response = documentController.permanentlyDeleteRemovedGrant(callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
 
-        verify(documentGeneratorService).removeDocuments(callbackRequest);
+        verify(documentGeneratorService).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
     }
 }

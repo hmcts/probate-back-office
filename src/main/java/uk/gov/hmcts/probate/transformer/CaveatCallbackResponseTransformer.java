@@ -18,6 +18,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
@@ -359,6 +363,17 @@ public class CaveatCallbackResponseTransformer {
 
         return transformResponse(responseCaseData);
     }
+
+    public CaveatCallbackResponse setupOriginalDocumentsForRemoval(CaveatCallbackRequest callbackRequest) {
+        CaveatData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(callbackRequest.getCaseDetails());
+        responseCaseDataBuilder.originalDocsGenerated(caseData.getDocumentsGenerated());
+        responseCaseDataBuilder.originalDocsScanned(caseData.getScannedDocuments());
+        responseCaseDataBuilder.originalDocsUploaded(caseData.getDocumentsUploaded());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
 
     private String transformToString(LocalDate dateValue) {
         return ofNullable(dateValue)
