@@ -370,7 +370,6 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-
     private String transformToString(LocalDate dateValue) {
         return ofNullable(dateValue)
             .map(String::valueOf)

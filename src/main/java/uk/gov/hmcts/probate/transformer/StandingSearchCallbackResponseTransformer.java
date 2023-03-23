@@ -68,6 +68,17 @@ public class StandingSearchCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public StandingSearchCallbackResponse setupOriginalDocumentsForRemoval(
+            StandingSearchCallbackRequest callbackRequest) {
+        StandingSearchData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseStandingSearchDataBuilder responseCaseDataBuilder =
+                getResponseStandingSearchData(callbackRequest.getCaseDetails());
+
+        responseCaseDataBuilder.originalDocsUploaded(caseData.getDocumentsUploaded());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
     private StandingSearchCallbackResponse transformResponse(ResponseStandingSearchData responseStandingSearchData) {
         return StandingSearchCallbackResponse.builder().responseStandingSearchData(responseStandingSearchData).build();
     }

@@ -58,4 +58,25 @@ class StandingSearchControllerIT {
                 .andExpect(content().string(containsString("data")));
     }
 
+    @Test
+    void standingSetupForDocRemoval() throws Exception {
+
+        String standingSearchPayload = testUtils.getStringFromFile("standingSearchPayload.json");
+
+        mockMvc.perform(post("/standing-search/setup-for-permanent-removal")
+                        .content(standingSearchPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void standingDeleteDocuments() throws Exception {
+
+        String standingSearchPayload = testUtils.getStringFromFile("standingSearchPayload.json");
+
+        mockMvc.perform(post("/standing-search/permanently-delete-removed")
+                        .content(standingSearchPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
 }

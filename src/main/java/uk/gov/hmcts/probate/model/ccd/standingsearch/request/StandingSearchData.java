@@ -71,6 +71,8 @@ public class StandingSearchData {
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
+    //transient in-event vars
+    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
 
     // EVENT = misc
 

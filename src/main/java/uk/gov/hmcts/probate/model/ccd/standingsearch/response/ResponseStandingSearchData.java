@@ -46,4 +46,6 @@ public class ResponseStandingSearchData {
     private final String legacyType;
     private final String legacyCaseViewUrl;
 
+    //transient in-event vars
+    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
 }
