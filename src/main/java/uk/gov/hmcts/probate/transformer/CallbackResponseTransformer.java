@@ -112,7 +112,6 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
-
     private static final String SOL_AS_EXEC_ID = "solicitor";
     private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
@@ -1092,7 +1091,8 @@ public class CallbackResponseTransformer {
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
-            .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()));
+            .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
