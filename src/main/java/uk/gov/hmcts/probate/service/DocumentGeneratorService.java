@@ -293,8 +293,7 @@ public class DocumentGeneratorService {
                                                   List<CollectionMember<UploadDocument>> remainingUploaded,
                                                   List<CollectionMember<ScannedDocument>> originalScanned,
                                                   List<CollectionMember<ScannedDocument>> remainingScanned,
-                                                  String caseId
-                                                  ) {
+                                                  String caseId) {
         log.info("permanently deleting documents on case: {}", caseId);
 
         List<Document> documentsToDelete = new ArrayList<>();

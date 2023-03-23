@@ -2,7 +2,6 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -21,9 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -256,12 +253,14 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/setup-for-permanent-removal", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaveatCallbackResponse> setupForPermanentRemovalCaveat(@RequestBody CaveatCallbackRequest callbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> setupForPermanentRemovalCaveat(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
         return ResponseEntity.ok(caveatCallbackResponseTransformer.setupOriginalDocumentsForRemoval(callbackRequest));
     }
 
     @PostMapping(path = "/permanently-delete-removed", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaveatCallbackResponse> permanentlyDeleteRemovedCaveat(@RequestBody CaveatCallbackRequest callbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> permanentlyDeleteRemovedCaveat(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(callbackRequest);
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }

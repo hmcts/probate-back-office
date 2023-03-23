@@ -431,12 +431,14 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/setup-for-permanent-removal", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> setupForPermanentRemovalGrant(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> setupForPermanentRemovalGrant(
+            @RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(callbackResponseTransformer.setupOriginalDocumentsForRemoval(callbackRequest));
     }
 
     @PostMapping(path = "/permanently-delete-removed", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> permanentlyDeleteRemovedGrant(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> permanentlyDeleteRemovedGrant(
+            @RequestBody CallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
     }

@@ -170,4 +170,9 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
 
     }
 
+    @Test
+    public void shouldPostForDocumentRemovals() throws IOException {
+        validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/setup-for-permanent-removal");
+        validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/permanently-delete-removed");
+    }
 }

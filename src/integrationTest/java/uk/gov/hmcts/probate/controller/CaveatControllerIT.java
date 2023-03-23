@@ -47,6 +47,8 @@ class CaveatControllerIT {
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String DEFAULT_REGISTRARS_DECISION = "/caveat/default-registrars-decision";
     private static final String REGISTRARS_DECISION = "/caveat/registrars-decision";
+    private static final String SETUP_FOR_REMOVAL = "/caveat/setup-for-permanent-removal";
+    private static final String DELETE_REMOVED = "/caveat/permanently-delete-removed";
 
     @Autowired
     private MockMvc mockMvc;
@@ -312,6 +314,20 @@ class CaveatControllerIT {
     void shouldRegistrarsDecision() throws Exception {
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
         mockMvc.perform(post(REGISTRARS_DECISION).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldSetupForPermanentRemovalCaveat() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        mockMvc.perform(post(SETUP_FOR_REMOVAL).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDeleteRemovedDocuments() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        mockMvc.perform(post(DELETE_REMOVED).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }
