@@ -873,6 +873,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerified", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "deathRecordVerificationFailed", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "makeCaseDormant", "UserRole": "citizen", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "citizen", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "registrarsDecision", "UserRole": "citizen", "CRUD": "R"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRobotUploadDocuments", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRedeclarationComplete", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"}
 ]

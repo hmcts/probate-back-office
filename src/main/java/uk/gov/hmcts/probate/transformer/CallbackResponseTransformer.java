@@ -1050,6 +1050,8 @@ public class CallbackResponseTransformer {
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
+            .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
