@@ -743,7 +743,7 @@ class DocumentControllerIT {
     }
 
     @Test
-    void shouldSetupForPermanentRemovalCaveat() throws Exception {
+    void shouldSetupForPermanentRemovalGrant() throws Exception {
         String caveatPayload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/setup-for-permanent-removal")
                         .content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
@@ -751,10 +751,26 @@ class DocumentControllerIT {
     }
 
     @Test
-    void shouldDeleteRemovedDocuments() throws Exception {
+    void shouldDeleteRemovedDocumentsGrant() throws Exception {
         String caveatPayload = testUtils.getStringFromFile("digitalCase.json");
         mockMvc.perform(post("/document/permanently-delete-removed")
                         .content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldSetupForPermanentRemovalWillLodgement() throws Exception {
+        String willPayload = testUtils.getStringFromFile("willLodgementPayloadNotifications.json");
+        mockMvc.perform(post("/document/setup-for-permanent-removal-will")
+                        .content(willPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDeleteRemovedDocumentsWillLodgement() throws Exception {
+        String willPayload = testUtils.getStringFromFile("willLodgementPayloadNotifications.json");
+        mockMvc.perform(post("/document/permanently-delete-removed-will")
+                        .content(willPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 
