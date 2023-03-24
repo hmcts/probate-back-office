@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
@@ -287,8 +288,9 @@ class WillLodgementCallbackResponseTransformerTest {
 
         WillLodgementCallbackResponse response = underTest
                 .setupOriginalDocumentsForRemoval(willLodgementCallbackRequestMock);
-        assertEquals("1", response.getResponseWillLodgementData().getOriginalDocsGenerated().get(0).getId());
-        assertEquals("3", response.getResponseWillLodgementData().getOriginalDocsUploaded().get(0).getId());
+        OriginalDocuments originalDocuments = response.getResponseWillLodgementData().getOriginalDocuments();;
+        assertEquals("1", originalDocuments.getOriginalDocsGenerated().get(0).getId());
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
     }
 
 

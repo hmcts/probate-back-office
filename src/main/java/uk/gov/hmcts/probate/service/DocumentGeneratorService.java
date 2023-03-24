@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -273,30 +274,33 @@ public class DocumentGeneratorService {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         String caseRef = callbackRequest.getCaseDetails().getId().toString();
 
-        permanentlyDeleteRemovedDocuments(caseData.getOriginalDocsGenerated(),
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
+        permanentlyDeleteRemovedDocuments(originalDocuments.getOriginalDocsGenerated(),
                 caseData.getProbateDocumentsGenerated(),
-                caseData.getOriginalDocsUploaded(), caseData.getBoDocumentsUploaded(),
-                caseData.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getBoDocumentsUploaded(),
+                originalDocuments.getOriginalDocsScanned(), caseData.getScannedDocuments(),
                 caseRef);
     }
 
     public void permanentlyDeleteRemovedDocumentsForCaveat(CaveatCallbackRequest callbackRequest) {
         CaveatData caseData = callbackRequest.getCaseDetails().getData();
         String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
 
-        permanentlyDeleteRemovedDocuments(caseData.getOriginalDocsGenerated(),
+        permanentlyDeleteRemovedDocuments(originalDocuments.getOriginalDocsGenerated(),
                 caseData.getDocumentsGenerated(),
-                caseData.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
-                caseData.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                originalDocuments.getOriginalDocsScanned(), caseData.getScannedDocuments(),
                 caseRef);
     }
 
     public void permanentlyDeleteRemovedDocumentsForStandingSearch(StandingSearchCallbackRequest callbackRequest) {
         StandingSearchData caseData = callbackRequest.getCaseDetails().getData();
         String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
 
         permanentlyDeleteRemovedDocuments(null,null,
-                caseData.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
                 null, null,
                 caseRef);
     }
@@ -304,10 +308,11 @@ public class DocumentGeneratorService {
     public void permanentlyDeleteRemovedDocumentsForWillLodgement(WillLodgementCallbackRequest callbackRequest) {
         WillLodgementData caseData = callbackRequest.getCaseDetails().getData();
         String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
 
-        permanentlyDeleteRemovedDocuments(caseData.getOriginalDocsGenerated(),
+        permanentlyDeleteRemovedDocuments(originalDocuments.getOriginalDocsGenerated(),
                 caseData.getDocumentsGenerated(),
-                caseData.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
                 null, null,
                 caseRef);
     }

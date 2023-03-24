@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -151,9 +152,12 @@ public class CallbackResponseTransformer {
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
-        responseCaseDataBuilder.originalDocsGenerated(caseData.getProbateDocumentsGenerated());
-        responseCaseDataBuilder.originalDocsScanned(caseData.getScannedDocuments());
-        responseCaseDataBuilder.originalDocsUploaded(caseData.getBoDocumentsUploaded());
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(caseData.getProbateDocumentsGenerated())
+                .originalDocsScanned(caseData.getScannedDocuments())
+                .originalDocsUploaded(caseData.getBoDocumentsUploaded())
+                .build();
+        responseCaseDataBuilder.originalDocuments(originalDocuments);
         return transformResponse(responseCaseDataBuilder.build());
     }
 

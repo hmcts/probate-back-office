@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
@@ -73,8 +74,11 @@ public class StandingSearchCallbackResponseTransformer {
         StandingSearchData caseData = callbackRequest.getCaseDetails().getData();
         ResponseStandingSearchDataBuilder responseCaseDataBuilder =
                 getResponseStandingSearchData(callbackRequest.getCaseDetails());
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsUploaded(caseData.getDocumentsUploaded())
+                .build();
 
-        responseCaseDataBuilder.originalDocsUploaded(caseData.getDocumentsUploaded());
+        responseCaseDataBuilder.originalDocuments(originalDocuments);
         return transformResponse(responseCaseDataBuilder.build());
     }
 

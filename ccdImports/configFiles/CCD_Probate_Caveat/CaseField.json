@@ -72,7 +72,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicantOrganisationPolicy", "Label": "Applicant Solicitor Details", "FieldType": "OrganisationPolicy", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "registrarDirections", "Label": "Registrar directions", "FieldType": "Collection", "FieldTypeParameter": "RegistrarDirection", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "registrarDirectionToAdd", "Label": "Registrar direction", "FieldType": "RegistrarDirection", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "originalDocsGenerated", "Label": "Documents generated", "FieldType": "Collection", "FieldTypeParameter": "cavProbateDocument", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "originalDocsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "cavDocumentUpload", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "originalDocsScanned", "Label": "Documents scanned", "FieldType": "Collection", "FieldTypeParameter": "ScannedDocument", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "originalDocuments", "Label": "All original Documents", "FieldType": "OriginalDocuments", "FieldTypeParameter": "OriginalDocument", "SecurityClassification": "Public"}
 ]

@@ -768,7 +768,7 @@ class DocumentControllerIT {
 
     @Test
     void shouldDeleteRemovedDocumentsWillLodgement() throws Exception {
-        String willPayload = testUtils.getStringFromFile("willLodgementPayloadNotifications.json");
+        String willPayload = testUtils.getStringFromFile("willLodgementDocumentsPayloadNotifications.json");
         mockMvc.perform(post("/document/permanently-delete-removed-will")
                         .content(willPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

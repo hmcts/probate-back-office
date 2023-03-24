@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -705,9 +706,10 @@ class CaveatCallbackResponseTransformerTest {
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
 
         CaveatCallbackResponse response = underTest.setupOriginalDocumentsForRemoval(caveatCallbackRequestMock);
-        assertEquals("1", response.getCaveatData().getOriginalDocsGenerated().get(0).getId());
-        assertEquals("2", response.getCaveatData().getOriginalDocsScanned().get(0).getId());
-        assertEquals("3", response.getCaveatData().getOriginalDocsUploaded().get(0).getId());
+        OriginalDocuments originalDocuments = response.getCaveatData().getOriginalDocuments();
+        assertEquals("1", originalDocuments.getOriginalDocsGenerated().get(0).getId());
+        assertEquals("2", originalDocuments.getOriginalDocsScanned().get(0).getId());
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {

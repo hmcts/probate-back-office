@@ -130,5 +130,5 @@
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyType", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrl", "UserRole": "caseworker-probate-superuser", "CRUD": "CR"},
   {"CaseTypeID": "StandingSearch", "CaseFieldID": "legacyCaseViewUrlLink", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
-  {"CaseTypeID": "StandingSearch", "CaseFieldID": "originalDocsUploaded", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
+  {"CaseTypeID": "StandingSearch", "CaseFieldID": "originalDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]
