@@ -73,7 +73,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "registrarDirections", "Label": "Registrar directions", "FieldType": "Collection", "FieldTypeParameter": "RegistrarDirection", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "registrarDirectionToAdd", "Label": "Registrar direction", "FieldType": "RegistrarDirection", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestReference", "Label": "Service request reference", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "FixedList", "FieldTypeParameter": "paymentTaken", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationSubmittedBy", "Label": "Application Submitted By", "FieldType": "Text", "SecurityClassification": "Public"}
 ]
