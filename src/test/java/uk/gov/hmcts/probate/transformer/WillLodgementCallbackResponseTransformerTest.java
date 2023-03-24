@@ -271,5 +271,26 @@ class WillLodgementCallbackResponseTransformerTest {
         assertEquals(1, willLodgementCallbackResponse.getResponseWillLodgementData().getDocumentsGenerated().size());
     }
 
+    @Test
+    void shouldSetupDocumentsForRemoval() {
+
+        List<CollectionMember<Document>> generated = Arrays.asList(new CollectionMember("1",
+                Document.builder().build()));
+        List<CollectionMember<UploadDocument>> uploaded = Arrays.asList(new CollectionMember("3",
+                UploadDocument.builder().build()));
+
+        willLodgementDataBuilder.documentsGenerated(generated);
+        willLodgementDataBuilder.documentsUploaded(uploaded);
+
+        when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetailsMock);
+        when(willLodgementDetailsMock.getData()).thenReturn(willLodgementDataBuilder.build());
+
+        WillLodgementCallbackResponse response = underTest
+                .setupOriginalDocumentsForRemoval(willLodgementCallbackRequestMock);
+        assertEquals("1", response.getResponseWillLodgementData().getOriginalDocsGenerated().get(0).getId());
+        assertEquals("3", response.getResponseWillLodgementData().getOriginalDocsUploaded().get(0).getId());
+    }
+
+
 
 }

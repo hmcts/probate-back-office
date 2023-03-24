@@ -82,6 +82,7 @@ public class WillLodgementData {
 
     private final String withdrawalReason;
 
+    @Builder.Default
     private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
     private final List<CollectionMember<UploadDocument>> documentsUploaded;
@@ -106,6 +107,10 @@ public class WillLodgementData {
     private final String recordId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
+
+    //transient in-event vars
+    private List<CollectionMember<Document>> originalDocsGenerated;
+    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
 
     private String convertDate(LocalDate date) {
         DateFormat orgFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

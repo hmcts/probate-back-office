@@ -127,4 +127,14 @@ public class WillLodgementCallbackResponseTransformer {
             .map(String::valueOf)
             .orElse(null);
     }
+
+    public WillLodgementCallbackResponse setupOriginalDocumentsForRemoval(
+            WillLodgementCallbackRequest callbackRequest) {
+        WillLodgementData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseWillLodgementData.ResponseWillLodgementDataBuilder responseWillLodgementDataBuilder =
+                getResponseWillLodgementData(callbackRequest.getCaseDetails());
+        responseWillLodgementDataBuilder.originalDocsGenerated(caseData.getDocumentsGenerated());
+        responseWillLodgementDataBuilder.originalDocsUploaded(caseData.getDocumentsUploaded());
+        return transformResponse(responseWillLodgementDataBuilder.build());
+    }
 }
