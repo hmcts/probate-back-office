@@ -440,7 +440,7 @@ public class DocumentController {
     public ResponseEntity<CallbackResponse> permanentlyDeleteRemovedGrant(
             @RequestBody CallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest));
     }
 
     @PostMapping(path = "/setup-for-permanent-removal-will", consumes = MediaType.APPLICATION_JSON_VALUE)

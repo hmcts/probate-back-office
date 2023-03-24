@@ -37,6 +37,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
@@ -320,37 +322,32 @@ public class DocumentGeneratorService {
         log.info("attempting to permanently delete removed documents on case: {}", caseId);
 
         List<Document> documentsToDelete = new ArrayList<>();
-        if (originalGenerated != null) {
-            for (CollectionMember<Document> documentCollectionMember : originalGenerated) {
-                if (!remainingGenerated.contains(documentCollectionMember)) {
-                    log.info("permanently removing generated document: {}", documentCollectionMember.getId());
-                    documentsToDelete.add(documentCollectionMember.getValue());
-                }
+        for (CollectionMember<Document> documentCollectionMember : ofNullable(originalGenerated).orElse(emptyList())) {
+            if (!remainingGenerated.contains(documentCollectionMember)) {
+                log.info("permanently removing generated document: {}", documentCollectionMember.getId());
+                documentsToDelete.add(documentCollectionMember.getValue());
             }
         }
-        if (originalUploaded != null) {
-            log.info("originalUploaded:{}", originalUploaded.size());
-            for (CollectionMember<UploadDocument> documentCollectionMember : originalUploaded) {
-                if (!remainingUploaded.contains(documentCollectionMember)) {
-                    Document document = Document.builder()
-                            .documentLink(documentCollectionMember.getValue().getDocumentLink())
-                            .documentType(documentCollectionMember.getValue().getDocumentType())
-                            .build();
-                    log.info("permanently removing uploaded document: {}", documentCollectionMember.getId());
-                    documentsToDelete.add(document);
-                }
+        for (CollectionMember<UploadDocument> documentCollectionMember :
+                ofNullable(originalUploaded).orElse(emptyList())) {
+            if (!remainingUploaded.contains(documentCollectionMember)) {
+                Document document = Document.builder()
+                        .documentLink(documentCollectionMember.getValue().getDocumentLink())
+                        .documentType(documentCollectionMember.getValue().getDocumentType())
+                        .build();
+                log.info("permanently removing uploaded document: {}", documentCollectionMember.getId());
+                documentsToDelete.add(document);
             }
         }
-        if (originalScanned != null) {
-            for (CollectionMember<ScannedDocument> documentCollectionMember : originalScanned) {
-                if (!remainingScanned.contains(documentCollectionMember)) {
-                    Document document = Document.builder()
-                            .documentLink(documentCollectionMember.getValue().getUrl())
-                            .documentType(DocumentType.valueOf(documentCollectionMember.getValue().getType()))
-                            .build();
-                    log.info("permanently removing scanned document: {}", documentCollectionMember.getId());
-                    documentsToDelete.add(document);
-                }
+        for (CollectionMember<ScannedDocument> documentCollectionMember :
+                ofNullable(originalScanned).orElse(emptyList())) {
+            if (!remainingScanned.contains(documentCollectionMember)) {
+                Document document = Document.builder()
+                        .documentLink(documentCollectionMember.getValue().getUrl())
+                        .documentType(DocumentType.valueOf(documentCollectionMember.getValue().getType()))
+                        .build();
+                log.info("permanently removing scanned document: {}", documentCollectionMember.getId());
+                documentsToDelete.add(document);
             }
         }
 

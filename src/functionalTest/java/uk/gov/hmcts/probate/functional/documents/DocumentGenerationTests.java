@@ -17,8 +17,8 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class DocumentGenerationTests extends DocumentGenerationTestBase {
@@ -171,8 +171,13 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void shouldPostForDocumentRemovals() throws IOException {
+    public void shouldPostForDocumentRemovalsGrant() throws IOException {
         validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/setup-for-permanent-removal");
         validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/permanently-delete-removed");
+    }
+    @Test
+    public void shouldPostForDocumentRemovalsWill() throws IOException {
+        validatePostSuccess("willLodgementPayload.json", "/document/setup-for-permanent-removal-will");
+        validatePostSuccess("willLodgementPayload.json", "/document/permanently-delete-removed-will");
     }
 }

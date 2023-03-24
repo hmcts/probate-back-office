@@ -19,6 +19,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
@@ -252,18 +255,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldRemoveDocumentsForGrant() {
-        CallbackRequest callbackRequest = mock(CallbackRequest.class);
-        CaseDetails caseDetailsMock = mock(CaseDetails.class);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
-        ResponseEntity<CallbackResponse> response = documentController.permanentlyDeleteRemovedGrant(callbackRequest);
-        assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
-
-        verify(documentGeneratorService).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
-    }
-
-    @Test
-    void shouldSetupDeleteDocuments() {
+    void shouldSetupDeleteDocumentsForGrant() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -275,7 +267,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    void shouldDeleteDocuments() {
+    void shouldDeleteDocumentsForGrant() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseDetails caseDetailsMock = mock(CaseDetails.class);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -283,6 +275,32 @@ public class DocumentControllerUnitTest {
         ResponseEntity<CallbackResponse> response =
                 documentController.permanentlyDeleteRemovedGrant(callbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
+        verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetupDeleteDocumentsForWillLodgement() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+        WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<WillLodgementCallbackResponse> response =
+                documentController.setupForPermanentRemovalWillLodgement(callbackRequest);
+        verify(willLodgementCallbackResponseTransformer, times(1)).setupOriginalDocumentsForRemoval(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldDeleteDocumentsForWillLodgement() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+        WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<WillLodgementCallbackResponse> response =
+                documentController.permanentlyDeleteRemovedWillLodgement(callbackRequest);
+        verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
+        verify(willLodgementCallbackResponseTransformer, times(1)).transform(callbackRequest);
         MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
