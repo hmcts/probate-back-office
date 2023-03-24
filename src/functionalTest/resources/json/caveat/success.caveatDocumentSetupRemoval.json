@@ -109,7 +109,25 @@
           "scanned_date": "2019-07-15T12:34:56.789Z",
           "delivery_date": "2019-07-18T12:00:00.000Z"
         }
-      ]
+      ],
+      "originalDocuments": {
+        "originalDocsGenerated": [
+          {
+            "id": "161186cd-24ee-4e37-8793-b388ebc94443",
+            "value": {
+              "DocumentLink": {
+                "document_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093",
+                "document_filename": "digitalGrantDraft.pdf",
+                "document_binary_url": "http://localhost:8080/documents/b533ddf6-3695-45a8-8546-aab63ff16093/binary"
+              },
+              "DocumentType": "digitalGrantDraft",
+              "DocumentFileName": null,
+              "DocumentDateAdded": "2018-08-03",
+              "DocumentGeneratedBy": "30"
+            }
+          }
+        ]
+      }
     }
   }
 }

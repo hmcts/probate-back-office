@@ -41,6 +41,7 @@ public class DocumentService {
 
     public void delete(Document document, String caseId) {
         try {
+            log.info("permanently removing scanned document: {} for caseId: {}", document.getDocumentLink(), caseId);
             documentManagementService.delete(document);
         } catch (Exception e) {
             log.warn(e.getMessage());

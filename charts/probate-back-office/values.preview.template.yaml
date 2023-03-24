@@ -3,8 +3,6 @@ tags:
 
 postgresql:
   enabled: true
-  environment:
-    VARREBUILD: build-2
   image:
     tag: '11.3.0'
   resources:
@@ -19,7 +17,7 @@ postgresql:
     initdb:
       scripts:
          create.sql: |
-           CREATE DATABASE probatemandb WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+           CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
            CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
            CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
            CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
@@ -149,14 +147,15 @@ ccd:
       - name: cluster.initial_master_nodes
         value: ""
       - name: action.auto_create_index
-        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
+        value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
     persistence:
       enabled: false
 
   logstash:
-    image: hmctspublic.azurecr.io/imported/logstash/logstash
-    imageTag: 8.5.1
-    imagePullPolicy: "IfNotPresent"
+    image:
+      repository: hmctspublic.azurecr.io/ccd/logstash
+      tag: ccd-probate-logstash-latest
+      pullPolicy: Always
     logstashJavaOpts: -Xmx1g -Xms512M
     persistence:
       enabled: false
@@ -231,12 +230,12 @@ java:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
-    PROBATE_POSTGRESQL_DATABASE: probatemandb
+    PROBATE_POSTGRESQL_DATABASE: probate
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
-    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
+    CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
 
   keyVaults:
