@@ -152,9 +152,9 @@ ccd:
       enabled: false
 
   logstash:
-    image: hmctspublic.azurecr.io/ccd/logstash
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
     imageTag: 8.5.1
-    imagePullPolicy: Always
+    imagePullPolicy: "IfNotPresent"
     logstashJavaOpts: -Xmx1g -Xms512M
     persistence:
       enabled: false
