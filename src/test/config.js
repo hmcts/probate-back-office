@@ -12,6 +12,8 @@ module.exports = {
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
     TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
     TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
+    TestEnvCwSuperUser: process.env.CW_SUPERUSER_EMAIL || 'ProbateSuperuser@gmail.com',
+    TestEnvCwSuperPassword: process.env.CW_SUPERUSER_PASSWORD || 'Pa55word11',
     //  TestEnvProfUser2 User for share case e2e only
     //  For Local Environment please use below credential for User2 to run shareCase, you should be able to share that case with the other PP user
     //  probatesolicitortestorg2test1@gmail.com   Pass- Probate123

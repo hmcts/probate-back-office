@@ -152,4 +152,17 @@ Scenario(scenarioName, async function ({I}) {
     issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
 
+    // Superuser Change  state
+    await I.signOut();
+    await I.logInfo(scenarioName, 'Login as Superuser Caseworker');
+    await I.authenticateSuperUserCW();
+    nextStepName = 'Change state';
+    const transferToState = 'Case Matching (Issue grant)';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.changeState);
+    await I.chooseChangeState(transferToState);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Case Matching (Issue grant)';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    // Superuser Change state end
 });
