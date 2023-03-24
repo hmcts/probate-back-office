@@ -4,9 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -26,7 +28,8 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 
 @Slf4j
-class DocumentServiceTest {
+@RunWith(MockitoJUnitRunner.class)
+public class DocumentServiceTest {
 
     @InjectMocks
     private DocumentService documentService;
@@ -61,7 +64,7 @@ class DocumentServiceTest {
     }
 
     @Test
-    void shouldExpiryDocument() throws JsonProcessingException {
+    void shouldExpireDocument() throws JsonProcessingException {
         doNothing().when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
@@ -85,5 +88,13 @@ class DocumentServiceTest {
         documentService.delete(document, "99");
 
         verify(documentManagementService).delete(document);
+    }
+
+    @Test
+    void shouldNotDeleteDocumentWhenThrowingException() throws JsonProcessingException {
+        Document document = Document.builder().build();
+
+        doThrow(new RuntimeException("")).when(documentManagementService).delete(document);
+        documentService.delete(document, "99");
     }
 }

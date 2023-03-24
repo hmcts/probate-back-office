@@ -442,4 +442,18 @@ public class DocumentController {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseForReprint(callbackRequest));
     }
+
+    @PostMapping(path = "/setup-for-permanent-removal-will", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WillLodgementCallbackResponse> setupForPermanentRemovalWillLodgement(
+            @RequestBody WillLodgementCallbackRequest callbackRequest) {
+        return ResponseEntity.ok(willLodgementCallbackResponseTransformer
+                .setupOriginalDocumentsForRemoval(callbackRequest));
+    }
+
+    @PostMapping(path = "/permanently-delete-removed-will", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<WillLodgementCallbackResponse> permanentlyDeleteRemovedWillLodgement(
+            @RequestBody WillLodgementCallbackRequest callbackRequest) {
+        documentGeneratorService.permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
+        return ResponseEntity.ok(willLodgementCallbackResponseTransformer.transform(callbackRequest));
+    }
 }

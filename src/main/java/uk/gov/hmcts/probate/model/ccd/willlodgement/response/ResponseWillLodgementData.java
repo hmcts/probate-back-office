@@ -59,4 +59,7 @@ public class ResponseWillLodgementData {
     private final String legacyType;
     private final String legacyCaseViewUrl;
 
+    //transient in-event vars
+    private List<CollectionMember<Document>> originalDocsGenerated;
+    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
 }
