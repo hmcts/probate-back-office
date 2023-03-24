@@ -72,6 +72,7 @@ public class StandingSearchData {
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
+
     //transient in-event vars
     private OriginalDocuments originalDocuments;
 

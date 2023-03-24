@@ -1,0 +1,89 @@
+{
+  "case_details": {
+    "id": 1544096696107175,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "StandingSearch",
+    "state": "StandingSearchCreated",
+    "created_date": "2018-11-20T11:44:56.118",
+    "last_modified": [
+      2018,
+      11,
+      30,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "registryLocation": "Manchester",
+      "applicationType": "Solicitor",
+      "deceasedDateOfDeath": "2017-11-11",
+      "deceasedAnyOtherNames": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "PostTown": "",
+        "County": "",
+        "PostCode": "",
+        "Country": ""
+      },
+      "applicantSurname": "cl name 2",
+      "applicantAddress": {
+        "AddressLine1": "22",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "PostTown": "",
+        "County": "",
+        "PostCode": "",
+        "Country": ""
+      },
+      "applicantForenames": "cf name 2",
+      "applicantEmailAddress": "primary@probate-test.com",
+      "deceasedDateOfBirth": "1990-11-11",
+      "deceasedForenames": "df name 2",
+      "numberOfCopies": "2",
+      "deceasedSurname": "dl name 2",
+      "deceasedFullAliasNameList": [
+        {
+          "value": {
+            "FullAliasName": "d alais name 2"
+          },
+          "id": "f330a879-3ddb-4a95-a51b-945b90de44f2"
+        }
+      ],
+      "documentsUploaded": [
+        {
+          "id": "f5a87162-361b-4637-b568-4975c855b996",
+          "value": {
+            "Comment": null,
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/8367c8ee-c15e-43e3-8f30-cc6d334af0c2",
+              "document_filename": "LegalStatementUploaded.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/8367c8ee-c15e-43e3-8f30-cc6d334af0c2/binary"
+            },
+            "DocumentType": "uploadedLegalStatement"
+          }
+        }
+      ],
+      "originalDocuments": {
+        "originalDocsUploaded": [
+          {
+            "id": "f5a87162-361b-4637-b568-4975c855b996",
+            "value": {
+              "Comment": null,
+              "DocumentLink": {
+                "document_url": "http://dm-store:8080/documents/8367c8ee-c15e-43e3-8f30-cc6d334af0c2",
+                "document_filename": "LegalStatementUploaded.pdf",
+                "document_binary_url": "http://dm-store:8080/documents/8367c8ee-c15e-43e3-8f30-cc6d334af0c2/binary"
+              },
+              "DocumentType": "uploadedLegalStatement"
+            }
+          }
+        ]
+      }
+
+    }
+  }
+}

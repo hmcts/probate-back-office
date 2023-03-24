@@ -169,12 +169,12 @@ public class CaveatData {
 
     private List<CollectionMember<Payment>> payments;
 
-    //transient in-event vars
-    private OriginalDocuments originalDocuments;
-
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
     private RegistrarDirection registrarDirectionToAdd;
+
+    //transient in-event vars
+    private OriginalDocuments originalDocuments;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
