@@ -136,7 +136,7 @@ ccd:
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
-    imageTag: "7.17.0"
+    imageTag: "7.17.3"
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
@@ -148,6 +148,8 @@ ccd:
         value: ""
       - name: action.auto_create_index
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
+    tests:
+      enabled: false
     persistence:
       enabled: false
 
@@ -162,16 +164,17 @@ ccd:
       - name: pipeline
         mountPath: /usr/share/logstash/files
     elasticsearch:
-      host: ${SERVICE_NAME}-es-master
+      host: "{{ .Release.Name }}-es-master"
       port: 9200
     configTpl:
       xpack.monitoring.enabled: "false"
-      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      db.url: "jdbc:postgresql://{{ .Release.Name }}-postgresql:5432/data-store?stringtype=unspecified"
       db.user: hmcts
       db.pwd: hmcts
-      es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
+      es.data.nodes.url: "http://{{ .Release.Name }}-es-master:9200"
     livenessProbe:
       initialDelaySeconds: 90
+
   ccd-user-profile-importer:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
