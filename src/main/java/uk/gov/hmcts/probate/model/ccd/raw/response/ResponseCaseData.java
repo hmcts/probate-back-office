@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -370,8 +371,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final RegistrarDirection registrarDirectionToAdd;
 
     //transient in-event vars
-    private List<CollectionMember<Document>> originalDocsGenerated;
-    private List<CollectionMember<ScannedDocument>> originalDocsScanned;
-    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
-
+    private final OriginalDocuments originalDocuments;
 }

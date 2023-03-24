@@ -3803,9 +3803,9 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse response = underTest.setupOriginalDocumentsForRemoval(callbackRequestMock);
-        assertEquals("1", response.getData().getOriginalDocsGenerated().get(0).getId());
-        assertEquals("2", response.getData().getOriginalDocsScanned().get(0).getId());
-        assertEquals("3", response.getData().getOriginalDocsUploaded().get(0).getId());
+        assertEquals("1", response.getData().getOriginalDocuments().getOriginalDocsGenerated().get(0).getId());
+        assertEquals("2", response.getData().getOriginalDocuments().getOriginalDocsScanned().get(0).getId());
+        assertEquals("3", response.getData().getOriginalDocuments().getOriginalDocsUploaded().get(0).getId());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

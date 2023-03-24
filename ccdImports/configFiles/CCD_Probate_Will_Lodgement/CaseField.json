@@ -34,6 +34,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyType", "Label": "Legacy case type", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyCaseViewUrl", "Label": "Legacy case link", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "legacyCaseViewUrlLink", "Label": "[Click here to open legacy case](${legacyCaseViewUrl})", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "originalDocsGenerated", "Label": "Documents generated", "FieldType": "Collection", "FieldTypeParameter": "wlDocument", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "originalDocsUploaded", "Label": "Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "wlDocumentUpload", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "WillLodgement", "ID": "originalDocuments", "Label": "All original Documents", "FieldType": "OriginalDocuments", "FieldTypeParameter": "OriginalDocument", "SecurityClassification": "Public"}
 ]

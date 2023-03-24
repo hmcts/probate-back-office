@@ -72,7 +72,7 @@ class StandingSearchControllerIT {
     @Test
     void standingDeleteDocuments() throws Exception {
 
-        String standingSearchPayload = testUtils.getStringFromFile("standingSearchPayload.json");
+        String standingSearchPayload = testUtils.getStringFromFile("standingSearchDocumentsPayload.json");
 
         mockMvc.perform(post("/standing-search/permanently-delete-removed")
                         .content(standingSearchPayload)

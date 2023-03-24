@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.util.List;
@@ -47,5 +48,5 @@ public class ResponseStandingSearchData {
     private final String legacyCaseViewUrl;
 
     //transient in-event vars
-    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
+    private final OriginalDocuments originalDocuments;
 }

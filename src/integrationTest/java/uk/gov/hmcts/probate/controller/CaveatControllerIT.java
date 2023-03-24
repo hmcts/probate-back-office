@@ -326,7 +326,7 @@ class CaveatControllerIT {
 
     @Test
     void shouldDeleteRemovedDocuments() throws Exception {
-        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        String caveatPayload = testUtils.getStringFromFile("caveatDocumentsPayloadNotifications.json");
         mockMvc.perform(post(DELETE_REMOVED).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }

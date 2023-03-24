@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
@@ -364,9 +365,13 @@ public class CaveatCallbackResponseTransformer {
         CaveatData caseData = callbackRequest.getCaseDetails().getData();
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
                 getResponseCaveatData(callbackRequest.getCaseDetails());
-        responseCaseDataBuilder.originalDocsGenerated(caseData.getDocumentsGenerated());
-        responseCaseDataBuilder.originalDocsScanned(caseData.getScannedDocuments());
-        responseCaseDataBuilder.originalDocsUploaded(caseData.getDocumentsUploaded());
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(caseData.getDocumentsGenerated())
+                .originalDocsScanned(caseData.getScannedDocuments())
+                .originalDocsUploaded(caseData.getDocumentsUploaded())
+                .build();
+
+        responseCaseDataBuilder.originalDocuments(originalDocuments);
         return transformResponse(responseCaseDataBuilder.build());
     }
 

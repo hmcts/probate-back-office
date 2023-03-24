@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -811,14 +812,17 @@ class DocumentGeneratorServiceTest {
         originalScannedList.add(new CollectionMember<ScannedDocument>("5", scannedDocument1));
         originalScannedList.add(new CollectionMember<ScannedDocument>("6", scannedDocument2));
 
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(originalGeneratedList)
+                .originalDocsUploaded(originalUploadedList)
+                .originalDocsScanned(originalScannedList)
+                .build();
         CaseDetails caseDetails =
                 new CaseDetails(CaseData.builder()
                         .probateDocumentsGenerated(generatedList)
                         .boDocumentsUploaded(uploadedList)
                         .scannedDocuments(scannedList)
-                        .originalDocsGenerated(originalGeneratedList)
-                        .originalDocsUploaded(originalUploadedList)
-                        .originalDocsScanned(originalScannedList)
+                        .originalDocuments(originalDocuments)
                         .build(),
                         LAST_MODIFIED, CASE_ID);
         callbackRequest = new CallbackRequest(caseDetails);

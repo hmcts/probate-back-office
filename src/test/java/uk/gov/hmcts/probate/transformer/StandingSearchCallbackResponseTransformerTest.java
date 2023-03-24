@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
@@ -168,7 +169,8 @@ class StandingSearchCallbackResponseTransformerTest {
 
         StandingSearchCallbackResponse response = underTest
                 .setupOriginalDocumentsForRemoval(standingSearchCallbackRequestMock);
-        assertEquals("3", response.getResponseStandingSearchData().getOriginalDocsUploaded().get(0).getId());
+        OriginalDocuments originalDocuments = response.getResponseStandingSearchData().getOriginalDocuments();;
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
     }
 
     private void assertCommon(StandingSearchCallbackResponse standingSearchCallbackResponse) {

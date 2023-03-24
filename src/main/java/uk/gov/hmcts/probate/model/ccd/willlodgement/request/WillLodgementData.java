@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.text.DateFormat;
@@ -109,8 +110,7 @@ public class WillLodgementData {
     private final String legacyCaseViewUrl;
 
     //transient in-event vars
-    private List<CollectionMember<Document>> originalDocsGenerated;
-    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
+    private final OriginalDocuments originalDocuments;
 
     private String convertDate(LocalDate date) {
         DateFormat orgFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);

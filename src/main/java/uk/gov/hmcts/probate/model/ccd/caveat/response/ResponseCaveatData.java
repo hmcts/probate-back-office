@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -103,7 +104,5 @@ public class ResponseCaveatData {
     private final RegistrarDirection registrarDirectionToAdd;
 
     //transient in-event vars
-    private List<CollectionMember<Document>> originalDocsGenerated;
-    private List<CollectionMember<ScannedDocument>> originalDocsScanned;
-    private List<CollectionMember<UploadDocument>> originalDocsUploaded;
+    private final OriginalDocuments originalDocuments;
 }

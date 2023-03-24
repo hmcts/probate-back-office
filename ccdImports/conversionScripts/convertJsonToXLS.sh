@@ -22,7 +22,7 @@ if [[ ! -e ${ccd_definition_excel_output_file} ]]; then
    touch ${ccd_definition_excel_output_file}
 fi
 
-docker run --user $UID --rm --name json2xlsx \
+docker run --rm --name json2xlsx \
     -v ${ccd_definition_json_output_dir_absolute_path}:/tmp/ccd-definition \
     -v ${ccd_definition_excel_output_file}:/tmp/ccd-definition.xlsx \
     -e CCD_DEF_CASE_SERVICE_BASE_URL \
