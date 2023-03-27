@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const makePaymentConfig = require('./makePaymentConfig');
 
-module.exports = async function (caseRef,serviceRequestTabConfig) {
+module.exports = async function (caseRef, serviceRequestTabConfig) {
     const I = this;
     const tabXPath = `//div[contains(text(),"${makePaymentConfig.paymentTab}")]`;
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);

@@ -27,7 +27,7 @@ module.exports = async function (caseRef, appType) {
         }
         await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
     }
-    if(appType !== "Caveat"){
+    if (appType !== 'Caveat') {
         await I.waitForElement(caseProgressTabXPath, 60);
         await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
         await I.clickTab(makePaymentConfig.caseProgressTab);
