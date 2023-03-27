@@ -157,12 +157,14 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'Login as Superuser Caseworker');
     await I.authenticateSuperUserCW();
     nextStepName = 'Change state';
-    const transferToState = 'Case Matching (Issue grant)';
+    const transferToState = 'Awaiting documentation';
     await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.navigateToCase(caseRef);
     await I.chooseNextStep(nextStepConfig.changeState);
     await I.chooseChangeState(transferToState);
     await I.enterEventSummary(caseRef, nextStepName);
-    endState = 'Case Matching (Issue grant)';
+    endState = 'Awaiting documentation';
     await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
     // Superuser Change state end
+    
 });
