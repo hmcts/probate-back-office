@@ -98,8 +98,8 @@ Died on
 {% endmacro %}
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
-<p>The Last Will and Testament <strong><span class="lowerCase">
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</span></strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+<p>The Last Will and Testament <strong>
+    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 

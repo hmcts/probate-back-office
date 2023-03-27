@@ -202,6 +202,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
         <vulnerabilityName>1091410</vulnerabilityName>
+        <vulnerabilityName>1091459</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
