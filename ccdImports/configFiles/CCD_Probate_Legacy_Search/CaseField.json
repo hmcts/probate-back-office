@@ -8,5 +8,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "deceasedDateOfDeath", "Label": "Date of death", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "legacySearchResultRows", "Label": "Results", "FieldType": "Collection", "FieldTypeParameter": "CaseMatch", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "LegacySearch", "ID": "doNotSaveCase", "Label": "### Your legacy cases have been imported\r\n### Only one dummy case needs to be created for the purpose of searching legacy data\r\n### DO NOT continue and save this case", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "16/03/2023", "CaseTypeID": "LegacySearch", "ID": "resendDate", "Label": "Date to Resend", "FieldType": "Date", "SecurityClassification": "Public"}
+  {"LiveFrom": "16/03/2023", "CaseTypeID": "LegacySearch", "ID": "resendDateText", "Label": "Enter the date you select into the event summary, so you can easily refer back to it in the event history", "FieldType": "Label", "SecurityClassification": "Public"},
+  {"LiveFrom": "16/03/2023", "CaseTypeID": "LegacySearch", "ID": "resendDate", "Label": "Date to Resend", "FieldType": "Date", "SecurityClassification": "Public","ShowSummary": "Y"}
 ]
