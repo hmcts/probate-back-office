@@ -527,13 +527,13 @@ public class BusinessValidationController {
             .ok(callbackResponseTransformer.transformCaseForSolicitorLegalStatementRegeneration(callbackRequest));
     }
 
-    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> defaultSolicitorNextStepsForPBANumbers(
-        @RequestHeader(value = "Authorization") String authToken,
+    @PostMapping(path = "/default-sols-payments", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> defaultSolicitorNextStepsForPayment(
         @RequestBody CallbackRequest callbackRequest) {
 
         return ResponseEntity.ok(callbackResponseTransformer
-            .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
+            .transformCaseForSolicitorPayment(callbackRequest));
     }
 
     @PostMapping(path = "/reactivate-case", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})

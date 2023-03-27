@@ -699,9 +699,9 @@ class BusinessValidationUnitTest {
     @Test
     void shouldDefaultPBAs() {
         ResponseEntity<CallbackResponse> response =
-            underTest.defaultSolicitorNextStepsForPBANumbers("Auth", callbackRequestMock);
+            underTest.defaultSolicitorNextStepsForPayment(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(1))
-            .transformCaseForSolicitorPBANumbers(callbackRequestMock, "Auth");
+            .transformCaseForSolicitorPayment(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

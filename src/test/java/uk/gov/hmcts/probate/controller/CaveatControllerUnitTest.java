@@ -13,31 +13,28 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
-import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
-import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
-import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
+import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
-import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
+import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.util.Arrays;
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -67,12 +64,9 @@ class CaveatControllerUnitTest {
     private PaymentsService paymentsService;
     @Mock
     private FeeService feeService;
-    @Mock
-    private CreditAccountPaymentTransformer creditAccountPaymentTransformer;
-    @Mock
-    private CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
 
-    private static final String AUTH = "Auth";
+    private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
+    private static final String USER_ID = "User-ID";
 
     @Mock
     private CaveatCallbackRequest caveatCallbackRequest;
@@ -87,23 +81,24 @@ class CaveatControllerUnitTest {
     @Mock
     private BindingResult bindingResultMock;
     @Mock
-    private CreditAccountPayment creditAccountPaymentMock;
+    private ServiceRequestTransformer serviceRequestTransformer;
     @Mock
-    private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRuleMock;
+    private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
     @Mock
-    private PaymentResponse paymentResponseMock;
+    private ServiceRequestDto serviceRequestDtoMock;
     @Mock
     private RegistrarDirectionService registrarDirectionService;
+    @Mock
+    private HttpServletRequest httpServletRequestMock;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
-            caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
-            confirmationResponseService, paymentsService, feeService, creditAccountPaymentTransformer,
-            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock,
-            registrarDirectionService);
+            caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
+            caveatNotificationService, confirmationResponseService, paymentsService, feeService,
+            registrarDirectionService, serviceRequestAlreadyCreatedValidationRuleMock);
 
     }
 
@@ -111,56 +106,36 @@ class CaveatControllerUnitTest {
     void shouldValidateWithNoErrors() throws NotificationClientException {
         when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
         when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
-            .thenReturn(creditAccountPaymentMock);
-        when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
-            .thenReturn(paymentResponseMock);
-        when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
-            .thenReturn(caveatCallbackResponse);
-        when(caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, paymentResponseMock))
-            .thenReturn(caveatCallbackResponse);
-        ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
-            bindingResultMock);
+        when(serviceRequestTransformer.buildServiceRequest(caveatDetailsMock, feeResponseMock))
+                .thenReturn(serviceRequestDtoMock);
+        when(paymentsService.createServiceRequest(serviceRequestDtoMock))
+            .thenReturn(SERVICE_REQUEST_REFERENCE);
+        when(httpServletRequestMock.getHeader("user-id")).thenReturn(USER_ID);
+        when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
+                SERVICE_REQUEST_REFERENCE, USER_ID)).thenReturn(caveatCallbackResponse);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.solsCompleteApplication(caveatCallbackRequest,
+            bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));
     }
 
     @Test
-    void shouldValidateWithPaymentMethodErrors() throws NotificationClientException {
+    void shouldValidateWithServiceRequestAlreadyCreatedErrors() {
         assertThrows(BusinessValidationException.class, () -> {
             when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-            doThrow(BusinessValidationException.class).when(solicitorPaymentMethodValidationRuleMock)
+            doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
                     .validate(caveatDetailsMock);
-            underTest.validate(AUTH, caveatCallbackRequest, bindingResultMock);
+            underTest.solsCompleteApplication(caveatCallbackRequest, bindingResultMock, httpServletRequestMock);
         });
     }
 
     @Test
-    void shouldValidateWithPaymentErrors() throws NotificationClientException {
-        when(feeService.getCaveatFeesData()).thenReturn(feeResponseMock);
-        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-        when(creditAccountPaymentTransformer.transform(caveatDetailsMock, feeResponseMock))
-            .thenReturn(creditAccountPaymentMock);
-        when(paymentsService.getCreditAccountPaymentResponse(AUTH, creditAccountPaymentMock))
-            .thenReturn(paymentResponseMock);
-        when(eventValidationService.validateCaveatPaymentResponse(any(), any(), any()))
-            .thenReturn(caveatCallbackResponse);
-        when(caveatCallbackResponse.getErrors()).thenReturn(Arrays.asList("Error"));
-        ResponseEntity<CaveatCallbackResponse> response = underTest.validate(AUTH, caveatCallbackRequest,
-            bindingResultMock);
-
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        assertThat(response.getBody(), is(caveatCallbackResponse));
-        assertThat(response.getBody().getErrors().size(), is(1));
-    }
-
-    @Test
     void shouldDefaultSolsPBA() {
-        when(caveatCallbackResponseTransformer.transformCaseForSolicitorPBANumbers(caveatCallbackRequest, AUTH))
+        when(caveatCallbackResponseTransformer.transformCaseForSolicitorPayment(caveatCallbackRequest))
             .thenReturn(caveatCallbackResponse);
-        ResponseEntity<CaveatCallbackResponse> response = underTest.defaulsSolicitorNextStepsForPBANumbers(AUTH,
-            caveatCallbackRequest);
+        ResponseEntity<CaveatCallbackResponse> response = underTest.defaultSolicitorNextStepsForPayment(
+                caveatCallbackRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));

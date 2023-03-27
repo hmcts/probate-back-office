@@ -101,4 +101,7 @@ public class ResponseCaveatData {
 
     private final List<CollectionMember<RegistrarDirection>> registrarDirections;
     private final RegistrarDirection registrarDirectionToAdd;
+    private final String serviceRequestReference;
+    private final String paymentTaken;
+    private final String applicationSubmittedBy;
 }

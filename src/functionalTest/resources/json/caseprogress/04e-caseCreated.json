@@ -151,7 +151,9 @@
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
       "solsSOTJobTitle": "job title",
-      "titleAndClearingType": "TCTTrustCorpResWithApp"
+      "titleAndClearingType": "TCTTrustCorpResWithApp",
+      "paymentTaken": "Yes",
+      "serviceRequestReference": "2000-1234567890"
     }
   }
 }

@@ -18,6 +18,8 @@ const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetai
 const sotTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/sotTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/copiesTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
+const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
+const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
 
 Feature('Solicitor - Apply Grant of probate Admon Will Excepted Estates').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Apply Grant of probate - Admon Will Excepted Estates (Will left annexed)';
@@ -95,6 +97,12 @@ Scenario(scenarioName, async function ({I}) {
     await I.completeApplicationPage6();
     await I.completeApplicationPage7();
     await I.completeApplicationPage8();
+
+    await I.logInfo(scenarioName, 'Payment');
+    await I.makePaymentPage1(caseRef,serviceRequestTabConfig);
+    await I.reviewPaymentDetails(caseRef,serviceRequestReviewTabConfig);
+    await I.makePaymentPage2(caseRef);
+    await I.viewPaymentStatus(caseRef);
 
     await I.seeEndState(endState);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);

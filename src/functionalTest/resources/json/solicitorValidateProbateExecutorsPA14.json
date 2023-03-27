@@ -1,6 +1,6 @@
 {
   "case_details": {
-    "id": 15283657191533558,
+    "id": 1528365719153355,
     "jurisdiction": "PROBATE",
     "state": "CaseCreated",
     "case_type_id": "GrantOfRepresentation",
@@ -196,7 +196,8 @@
       "registryLocation": "Birmingham",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title"
+      "solsSOTJobTitle": "job title",
+      "paymentTaken": "Yes"
     }
   }
 }

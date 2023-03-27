@@ -8,7 +8,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
@@ -27,7 +26,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
@@ -71,9 +69,6 @@ class CaveatCallbackResponseTransformerTest {
 
     @Mock
     private OrganisationsRetrievalService organisationsRetrievalService;
-
-    @MockBean
-    private SolicitorPBADefaulter solicitorPBADefaulter;
 
     private static final DateTimeFormatter dateTimeFormatter = CaveatCallbackResponseTransformer.dateTimeFormatter;
 
@@ -141,6 +136,7 @@ class CaveatCallbackResponseTransformerTest {
     private static final String CAV_NOT_INCLUDED_EXPLANATION = "helpWithFeesApplying";
     private static final String CAV_FEE_ACCOUNT_NUMBER = "Free Text for fee account number";
     private static final String CAV_FEE_ACCOUNT_REFERENCE = "Free Text for account reference";
+    private static final String CAV_PAYMENT_TAKEN = "Yes";
 
     @InjectMocks
     private CaveatCallbackResponseTransformer underTest;
@@ -161,7 +157,7 @@ class CaveatCallbackResponseTransformerTest {
     private CaveatDetails caveatDetailsMock;
 
     @Mock
-    private SolicitorPBADefaulter solicitorPBADefaulterMock;
+    private SolicitorPaymentReferenceDefaulter solicitorPBADefaulterMock;
 
     @Spy
     private DocumentTransformer documentTransformer;
@@ -209,7 +205,8 @@ class CaveatCallbackResponseTransformerTest {
             .probateFeeNotIncludedReason(CAV_PROBATE_FEE_NOT_INCLUDED_REASON)
             .probateFeeNotIncludedExplanation(CAV_NOT_INCLUDED_EXPLANATION)
             .probateFeeAccountNumber(CAV_FEE_ACCOUNT_NUMBER)
-            .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE);
+            .probateFeeAccountReference(CAV_FEE_ACCOUNT_REFERENCE)
+            .paymentTaken(CAV_PAYMENT_TAKEN);
 
 
         bulkScanCaveatData = uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData.builder()
@@ -262,7 +259,7 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithPayment() {
+    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithServiceRequest() {
         setupMocks();
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -270,55 +267,18 @@ class CaveatCallbackResponseTransformerTest {
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
         documents.add(0, document);
-        when(paymentResponseMock.getReference()).thenReturn("ref");
         caveatDataBuilder.applicationType(SOLICITOR);
         when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         String letterId = "123-456";
 
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
         assertPaperForm(caveatCallbackResponse, YES);
 
-        assertEquals("pba",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
-    }
-
-    @Test
-    void shouldConvertRequestToDataBeanWithCaveatEntryDateChangeWithMultiplePayments() {
-        setupMocks();
-        List<Document> documents = new ArrayList<>();
-        Document document = Document.builder()
-            .documentLink(documentLinkMock)
-            .documentType(DocumentType.CAVEAT_RAISED)
-            .build();
-        documents.add(0, document);
-        when(paymentResponseMock.getReference()).thenReturn("RC2");
-        List<CollectionMember<Payment>> payments = new ArrayList<>();
-        Payment payment = Payment.builder().reference("RC1").method("something").build();
-        payments.add(new CollectionMember<Payment>(payment));
-        caveatDataBuilder.applicationType(SOLICITOR);
-        caveatDataBuilder.payments(payments);
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
-        String letterId = "123-456";
-
-        CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
-
-        assertCommonDetails(caveatCallbackResponse);
-        assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE_SOLS);
-        assertPaperForm(caveatCallbackResponse, YES);
-
-        assertEquals("RC1",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getReference());
-        assertEquals("something",
-            caveatCallbackResponse.getCaveatData().getPayments().get(0).getValue().getMethod());
-        assertEquals("RC2",
-            caveatCallbackResponse.getCaveatData().getPayments().get(1).getValue().getReference());
-        assertEquals("pba",
-            caveatCallbackResponse.getCaveatData().getPayments().get(1).getValue().getMethod());
+        assertEquals(CAV_PAYMENT_TAKEN, caveatCallbackResponse.getCaveatData().getPaymentTaken());
     }
 
     @Test
@@ -332,7 +292,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -351,7 +311,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = null;
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -371,7 +331,7 @@ class CaveatCallbackResponseTransformerTest {
         documents.add(0, document);
         String letterId = "123-456";
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.caveatRaised(caveatCallbackRequestMock, paymentResponseMock, documents, letterId);
+            underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
 
         assertCommon(caveatCallbackResponse);
 
@@ -535,20 +495,20 @@ class CaveatCallbackResponseTransformerTest {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
             .thenReturn(new OrganisationEntityResponse());
         when(caveatDetailsMock.getData()).thenReturn(CaveatData.builder().build());
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
     void testBuildOrganisationPolicyReturnNullForNoAuth() {
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, null));
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, null));
     }
 
     @Test
     void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        assertNull(underTest.buildOrganisationPolicy(caveatDetailsMock, "ABC123"));
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
     }
 
     @Test
@@ -566,7 +526,7 @@ class CaveatCallbackResponseTransformerTest {
 
         CaveatData caveatData = CaveatData.builder().applicantOrganisationPolicy(organisationPolicy).build();
         when(caveatDetailsMock.getData()).thenReturn(caveatData);
-        OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest
+        OrganisationPolicy actualBuildOrganisationPolicyResult = underTest
             .buildOrganisationPolicy(caveatDetailsMock, "ABC123");
         assertEquals("Org Policy Case Assigned Role",
             actualBuildOrganisationPolicyResult.getOrgPolicyCaseAssignedRole());
@@ -574,7 +534,7 @@ class CaveatCallbackResponseTransformerTest {
         Organisation organisationResult = actualBuildOrganisationPolicyResult.getOrganisation();
         assertEquals(ORGANISATION_NAME, organisationResult.getOrganisationName());
         assertEquals(ORG_ID, organisationResult.getOrganisationID());
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
+        verify(organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
         verify(organisationPolicy).getOrgPolicyCaseAssignedRole();
         verify(organisationPolicy).getOrgPolicyReference();
     }
@@ -583,10 +543,10 @@ class CaveatCallbackResponseTransformerTest {
     void shouldCovertSolsPBANumbers() {
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
-            underTest.transformCaseForSolicitorPBANumbers(caveatCallbackRequestMock, "Auth");
+            underTest.transformCaseForSolicitorPayment(caveatCallbackRequestMock);
 
         assertCommon(caveatCallbackResponse);
-        verify(solicitorPBADefaulterMock).defaultCaveatFeeAccounts(any(), any(), any());
+        verify(solicitorPBADefaulterMock).defaultCaveatSolicitorReference(any(), any());
     }
 
     @Test
@@ -644,6 +604,32 @@ class CaveatCallbackResponseTransformerTest {
 
     private String format(DateTimeFormatter formatter, ResponseCaveatData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
+    }
+
+    @Test
+    void shouldTransformResponseWithNoChanges() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse = underTest
+                .transformResponseWithNoChanges(caveatCallbackRequestMock);
+
+        assertCommonSolsCaveats(caveatCallbackResponse);
+    }
+
+    @Test
+    void shouldTransformResponseWithServiceRequest() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "SRref", "User-id");
+
+        assertCommonSolsCaveats(caveatCallbackResponse);
+        assertEquals(caveatCallbackResponse.getCaveatData().getServiceRequestReference(), "SRref");
+        assertEquals(caveatCallbackResponse.getCaveatData().getApplicationSubmittedBy(), "User-id");
     }
 
     private void assertBulkScanCaseCreationDetails(CaseCreationDetails caveatCreationDetails) {

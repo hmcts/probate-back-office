@@ -154,7 +154,9 @@
       "solsLifeInterest": "null",
       "solsResiduary": "null",
       "solsEntitledMinority": "null",
-      "solsDiedOrNotApplying": "null"
+      "solsDiedOrNotApplying": "null",
+      "paymentTaken": "Yes",
+      "serviceRequestReference": "2000-1234567890"
     }
   }
 }
