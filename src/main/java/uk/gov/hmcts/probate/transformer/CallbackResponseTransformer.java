@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
@@ -27,11 +28,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCaseDataBuilder;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
@@ -104,11 +107,13 @@ public class CallbackResponseTransformer {
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
+    private static final String DEFAULT_IHT_FORM_ID = "IHT205";
     private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
-
+    private static final String SOL_AS_EXEC_ID = "solicitor";
+    private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -118,8 +123,10 @@ public class CallbackResponseTransformer {
     private final ResetResponseCaseDataTransformer resetResponseCaseDataTransformer;
     private final TaskListUpdateService taskListUpdateService;
     private final CaseDataTransformer caseDataTransformer;
+    private final PDFManagementService pdfManagementService;
     private final OrganisationsRetrievalService organisationsRetrievalService;
-    private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
+    private final SolicitorPBADefaulter solicitorPBADefaulter;
+    private final SolicitorPBAPaymentDefaulter solicitorPBAPaymentDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
 
@@ -432,7 +439,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                      String serviceRequestReference, String userId) {
+                                      PaymentResponse paymentResponse, Document coversheet, Document sentEmail) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -441,9 +448,29 @@ public class CallbackResponseTransformer {
 
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
-        caseDataTransformer
-                .transformForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
-        caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
+        caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        List<CollectionMember<Payment>> paymentsList = null;
+        if (caseData.getPayments() != null) {
+            paymentsList = new ArrayList<>();
+            paymentsList.addAll(caseData.getPayments());
+        }
+
+        if (paymentResponse != null) {
+            if (paymentsList == null) {
+                paymentsList = new ArrayList<>();
+            }
+            Payment payment = Payment.builder()
+                .reference(paymentResponse.getReference())
+                .status(paymentResponse.getStatus())
+                .method(PBA_PAYMENT_METHOD)
+                .build();
+            paymentsList.add(new CollectionMember<Payment>(payment));
+        }
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -455,9 +482,9 @@ public class CallbackResponseTransformer {
             .totalFee(totalFee)
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
-            .applicationSubmittedBy(userId)
+            .payments(paymentsList)
+            .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
             .build();
-
 
         return transformResponse(responseCaseData);
     }
@@ -736,12 +763,25 @@ public class CallbackResponseTransformer {
         return executorNames;
     }
 
-    public CallbackResponse transformCaseForSolicitorPayment(CallbackRequest callbackRequest) {
+    public CallbackResponse transformCaseForSolicitorPBANumbers(CallbackRequest callbackRequest, String authToken) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
             doTransform);
-        solicitorPaymentReferenceDefaulter.defaultSolicitorReference(callbackRequest.getCaseDetails().getData(),
-                responseCaseDataBuilder);
+        solicitorPBADefaulter.defaultFeeAccounts(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder,
+            authToken);
+
+        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCaseForSolicitorPBATotalPayment(CallbackRequest callbackRequest) {
+        boolean doTransform = doTransform(callbackRequest);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+            doTransform);
+        solicitorPBAPaymentDefaulter.defaultPageFlowForPayments(callbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -761,7 +801,7 @@ public class CallbackResponseTransformer {
                 // We have currently applied this change to both paperform Yes and paperform No
                 // && NO.equals(cd.getPaperForm())
                 && GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())) {
-            caseDataTransformer.transformForSolicitorApplicationCompletion(callbackRequest);
+            caseDataTransformer.transformCaseDataForSolicitorApplicationCompletion(callbackRequest);
         }
         if (document != null) {
             documentTransformer.addDocument(callbackRequest, document, false);
@@ -1049,14 +1089,10 @@ public class CallbackResponseTransformer {
             .codicilsDamageDate(caseData.getCodicilsDamageDate())
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
+            .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
-            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
-            .serviceRequestReference(caseData.getServiceRequestReference())
-            .paymentTaken(caseData.getPaymentTaken())
-            .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
-            .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
-            .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

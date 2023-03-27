@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.GrantNotificationService;
+import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.InformationRequestService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RaiseGrantOfRepresentationNotificationService;
@@ -36,10 +37,11 @@ import uk.gov.hmcts.probate.service.docmosis.GrantOfRepresentationDocmosisMapper
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -106,7 +108,7 @@ public class NotificationController {
                     notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
                     sentEmailAsDocument = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
                 }
-                return ResponseEntity.ok(sentEmailAsDocument.asProbateDocument());
+                return ResponseEntity.ok(buildProbateDocument(sentEmailAsDocument));
             }
         }
 
@@ -263,6 +265,22 @@ public class NotificationController {
 
     }
 
+    private ProbateDocument buildProbateDocument(Document boDocument) {
+        ProbateDocumentLink probateDocumentLink = ProbateDocumentLink.builder()
+            .documentBinaryUrl(boDocument.getDocumentLink().getDocumentBinaryUrl())
+            .documentFilename(boDocument.getDocumentLink().getDocumentFilename())
+            .documentUrl(boDocument.getDocumentLink().getDocumentUrl())
+            .build();
+        ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(boDocument.getDocumentType().name());
+        return ProbateDocument.builder()
+            .documentDateAdded(boDocument.getDocumentDateAdded())
+            .documentFileName(boDocument.getDocumentFileName())
+            .documentGeneratedBy(boDocument.getDocumentGeneratedBy())
+            .documentLink(probateDocumentLink)
+            .documentType(probateDocumentType)
+            .build();
+
+    }
 
     private boolean isAnEmailAddressPresent(CaseData caseData) {
         return caseData.isDocsReceivedEmailNotificationRequested();

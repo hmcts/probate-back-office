@@ -15,6 +15,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseType", "Label": "Case type", "DisplayOrder": 14},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "latestGrantReissueDate", "Label": "Last grant reissue date", "DisplayOrder": 15},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseHandedOffToLegacySite", "Label": "Case handed off to legacy site", "DisplayOrder": 16},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boCaseStopReasonList", "Label": "Case stop reason", "DisplayOrder": 17},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "Label": "Payment taken", "DisplayOrder": 18}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boCaseStopReasonList", "Label": "Case stop reason", "DisplayOrder": 17}
 ]

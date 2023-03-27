@@ -2,7 +2,7 @@
   "case_details": {
     "id": 1528365719153338,
     "jurisdiction": "PROBATE",
-    "state": "BOGrantIssued",
+    "state": "BOReadyToIssue",
     "case_type_id": "GrantOfRepresentation",
     "created_date": [
       2018,
@@ -119,9 +119,7 @@
       "solsSOTJobTitle": "job title",
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA" : "yes",
-      "paymentTaken": "Yes",
-      "serviceRequestReference": "2000-1234567890"
+      "boExaminationChecklistRequestQA" : "yes"
     }
   }
 }

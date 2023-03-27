@@ -85,15 +85,6 @@ public class SecurityUtils {
                 .build();
     }
 
-    public SecurityDTO getUserByCaseworkerTokenAndServiceSecurityDTO() {
-        String token = getCaseworkerToken();
-        return SecurityDTO.builder()
-                .authorisation(token)
-                .serviceAuthorisation(generateServiceToken())
-                .userId(getUserId(token))
-                .build();
-    }
-
     public String getUserId(String authToken) {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         return Objects.requireNonNull(userInfo.getUid());

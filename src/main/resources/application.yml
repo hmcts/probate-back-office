@@ -25,7 +25,7 @@ springdoc:
   packagesToScan: uk.gov.hmcts.probate.controller
   pathsToMatch: /**
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator,payment_app
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
 auth.provider.service.client:
   key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
   baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
@@ -50,15 +50,18 @@ pdf.service:
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
 payment:
+  url: ${PAYMENT_URL:http://localhost:8991}
+  api: /credit-account-payments
+  currency: GBP
   pba:
     siteId: ABA6
-  serviceRequest:
-    url: ${PAYMENT_URL:http://localhost:8080}
-    api: /service-request
-    hmctsOrgId: ABA6
-    baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
-    GrantOfRepresentationCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/gor-payment-request-update
-    CaveatCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/caveat-payment-request-update
+  service: PROBATE
+
+pba:
+  retrieval:
+    url: ${PRD_API_URL:http://localhost:8991}
+    health.url: ${pba.retrieval.url}/health
+    api: /refdata/external/v1/organisations/pbas
 
 prd:
   organisations:

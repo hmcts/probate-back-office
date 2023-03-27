@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.service.documentmanagement;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -32,11 +32,11 @@ import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 
+@RunWith(MockitoJUnitRunner.class)
 public class DocumentManagementServiceImplTest {
     @InjectMocks
     private DocumentManagementServiceImpl documentManagementService;
@@ -58,11 +58,6 @@ public class DocumentManagementServiceImplTest {
     @Mock
     private InputStream inputStreamMock;
 
-    @BeforeEach
-    public void setup() {
-        MockitoAnnotations.openMocks(this);
-    }
-
     @Test
     public void shouldStoreFile() {
         EvidenceManagementFileUpload evidenceManagementFileUpload =
@@ -81,32 +76,6 @@ public class DocumentManagementServiceImplTest {
         when(caseDocumentClient.uploadDocuments("Bearer AUTH", "S2S", "GrantOfRepresentation", "PROBATE",
             Collections.emptyList(), Classification.PRIVATE))
             .thenReturn(uploadResponseMock);
-        UploadResponse uploadResponse = documentManagementService.upload(evidenceManagementFileUpload, DIGITAL_GRANT);
-
-        assertEquals(uploadResponseMock, uploadResponse);
-    }
-
-    @Test
-    public void shouldStoreFileWithCaseworkerAuthorisation() {
-        EvidenceManagementFileUpload evidenceManagementFileUpload =
-                new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
-
-        SecurityDTO securityDTOUser = SecurityDTO.builder()
-                .build();
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTOUser);
-        SecurityDTO securityDTOCaseworker = SecurityDTO.builder()
-                .authorisation("CWAUTH")
-                .serviceAuthorisation("S2S")
-                .build();
-        when(securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO()).thenReturn(securityDTOCaseworker);
-        when(documentUploadRequestMock.getCaseTypeId()).thenReturn("GrantOfRepresentation");
-        when(documentUploadRequestMock.getFiles()).thenReturn(Collections.emptyList());
-        when(documentUploadRequestMock.getJurisdictionId()).thenReturn("PROBATE");
-        when(documentManagementRequestBuilder.perpareDocumentUploadRequest(evidenceManagementFileUpload, DIGITAL_GRANT))
-                .thenReturn(documentUploadRequestMock);
-        when(caseDocumentClient.uploadDocuments("Bearer CWAUTH", "S2S", "GrantOfRepresentation", "PROBATE",
-                Collections.emptyList(), Classification.PRIVATE))
-                .thenReturn(uploadResponseMock);
         UploadResponse uploadResponse = documentManagementService.upload(evidenceManagementFileUpload, DIGITAL_GRANT);
 
         assertEquals(uploadResponseMock, uploadResponse);
@@ -168,19 +137,16 @@ public class DocumentManagementServiceImplTest {
         assertTrue(bytes.length > 0);
     }
 
-    @Test
+    @Test(expected = ClientException.class)
     public void shoulThrowExceptionForNoBodyGetDocument() throws IOException {
-        assertThrows(ClientException.class, () -> {
-            when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
-            when(securityUtils.generateServiceToken()).thenReturn("S2S");
-            when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString()))
-                    .thenReturn(getResponseMock);
-            documentManagementService.getDocument(Document.builder()
-                    .documentLink(DocumentLink.builder()
-                            .documentBinaryUrl("binary-c387262a-c8a6-44eb-9aea-a740460f9302")
-                            .documentUrl("url-c387262a-c8a6-44eb-9aea-a740460f9302")
-                            .build())
-                    .build());
-        });
+        when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
+        when(securityUtils.generateServiceToken()).thenReturn("S2S");
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
+        documentManagementService.getDocument(Document.builder()
+            .documentLink(DocumentLink.builder()
+                .documentBinaryUrl("binary-c387262a-c8a6-44eb-9aea-a740460f9302")
+                .documentUrl("url-c387262a-c8a6-44eb-9aea-a740460f9302")
+                .build())
+            .build());
     }
 }

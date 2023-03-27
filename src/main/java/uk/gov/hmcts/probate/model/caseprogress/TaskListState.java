@@ -11,8 +11,6 @@ public enum TaskListState {
     TL_STATE_ADD_DECEASED_DETAILS(false),
     TL_STATE_ADD_APPLICATION_DETAILS(false),
     TL_STATE_REVIEW_AND_SUBMIT(false),
-    TL_STATE_MAKE_PAYMENT(false),
-    TL_STATE_PAYMENT_ATTEMPTED(false),
     TL_STATE_SEND_DOCUMENTS(true),
     TL_STATE_AUTHENTICATE_DOCUMENTS(true),
     TL_STATE_EXAMINE_APPLICATION(true),
@@ -26,7 +24,7 @@ public enum TaskListState {
     }
 
     // returns the current in progress state
-    public static TaskListState mapCaseState(String caseState, String paymentTaken) {
+    public static TaskListState mapCaseState(String caseState) {
         if (caseState == null) {
             return TL_STATE_ADD_SOLICITOR_DETAILS;
         }
@@ -56,13 +54,7 @@ public enum TaskListState {
                 return TL_STATE_REVIEW_AND_SUBMIT;
 
             case StateConstants.STATE_CASE_CREATED:
-                if ("Yes".equalsIgnoreCase(paymentTaken) || "NotApplicable".equalsIgnoreCase(paymentTaken)) {
-                    return TL_STATE_SEND_DOCUMENTS;
-                } else if ("No".equalsIgnoreCase(paymentTaken)) {
-                    return TL_STATE_PAYMENT_ATTEMPTED;
-                } else {
-                    return TL_STATE_MAKE_PAYMENT;
-                }
+                return TL_STATE_SEND_DOCUMENTS;
 
             case StateConstants.STATE_CASE_PRINTED:
                 return TL_STATE_SEND_DOCUMENTS;

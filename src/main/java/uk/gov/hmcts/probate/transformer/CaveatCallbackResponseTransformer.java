@@ -16,14 +16,17 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -48,24 +51,53 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
+    private static final String PBA_PAYMENT_METHOD = "pba";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
-    private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
+    private final SolicitorPBADefaulter solicitorPBADefaulter;
     private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public CaveatCallbackResponse caveatRaised(CaveatCallbackRequest caveatCallbackRequest,
-                                               List<Document> documents, String letterId) {
+                                               PaymentResponse paymentResponse, List<Document> documents,
+                                               String letterId) {
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         CaveatData caveatData = caveatDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
-        responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+
+        List<CollectionMember<Payment>> paymentsList = null;
+        if (caveatData.getPayments() != null) {
+            paymentsList = new ArrayList<>();
+            paymentsList.addAll(caveatData.getPayments());
+        }
+
+        if (caveatData.getApplicationType() != null) {
+            if (SOLICITOR.equals(caveatData.getApplicationType()) && paymentResponse != null) {
+                if (paymentsList == null) {
+                    paymentsList = new ArrayList<>();
+                }
+                Payment payment = Payment.builder()
+                    .reference(paymentResponse.getReference())
+                    .status(paymentResponse.getStatus())
+                    .method(PBA_PAYMENT_METHOD)
+                    .build();
+                paymentsList.add(new CollectionMember<>(payment));
+            }
+
+            responseCaveatDataBuilder
+                .payments(paymentsList)
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        } else {
+            responseCaveatDataBuilder
+                .applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        }
 
         if (null == caveatData.getPaperForm()) {
             responseCaveatDataBuilder.paperForm(YES);
         }
+
         return transformResponse(responseCaveatDataBuilder.build());
     }
 
@@ -204,15 +236,6 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CaveatCallbackResponse transformResponseWithServiceRequest(CaveatCallbackRequest caveatCallbackRequest,
-                                                                      String serviceRequestReference, String userId) {
-        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
-                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        responseCaseDataBuilder.serviceRequestReference(serviceRequestReference)
-                .applicationSubmittedBy(userId);
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
         return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
     }
@@ -282,10 +305,7 @@ public class CaveatCallbackResponseTransformer {
             .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
             .dxNumber(caveatData.getDxNumber())
             .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
-            .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()))
-            .serviceRequestReference(caveatData.getServiceRequestReference())
-            .paymentTaken(caveatData.getPaymentTaken())
-            .applicationSubmittedBy(caveatData.getApplicationSubmittedBy());
+            .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()));
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -321,11 +341,12 @@ public class CaveatCallbackResponseTransformer {
             eventId(EXCEPTION_RECORD_EVENT_ID).caseData(caveatData).caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
     }
 
-    public CaveatCallbackResponse transformCaseForSolicitorPayment(CaveatCallbackRequest caveatCallbackRequest) {
+    public CaveatCallbackResponse transformCaseForSolicitorPBANumbers(CaveatCallbackRequest caveatCallbackRequest,
+                                                                      String authToken) {
         ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
-        solicitorPaymentReferenceDefaulter.defaultCaveatSolicitorReference(
-                caveatCallbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
+        solicitorPBADefaulter.defaultCaveatFeeAccounts(caveatCallbackRequest.getCaseDetails().getData(),
+            responseCaseDataBuilder, authToken);
 
         return transformResponse(responseCaseDataBuilder.build());
     }

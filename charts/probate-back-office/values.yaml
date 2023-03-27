@@ -48,7 +48,6 @@ java:
     PROBATE_POSTGRESQL_PORT: 5432
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: false
     ADHOC_JOB_DATE:
-    BACK_OFFICE_BASEURL: https://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   keyVaults:
     probate:
       secrets:

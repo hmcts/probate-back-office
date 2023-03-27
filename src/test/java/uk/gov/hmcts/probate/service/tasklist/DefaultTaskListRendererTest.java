@@ -42,6 +42,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.IHT_FORM;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.NET;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.OTHER_EXEC_EXISTS;
+import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PAYMENT_METHOD;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_ADDRESS;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_APPLICANT_APPLYING;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.PRIMARY_APPLICANT_HAS_ALIAS;
@@ -82,8 +83,6 @@ class DefaultTaskListRendererTest {
     private static final String SOLICITOR_SURNAME = "Crouch";
     private static final String SOLICITOR_JOB_TITLE = "Lawyer";
     private static final String SOLS_NOT_APPLYING_REASON = "Power reserved";
-
-    private static final String SERVICE_REQUEST_REFERENCE = "Service Request Ref";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
             new CollectionMember<>(null,
@@ -397,6 +396,7 @@ class DefaultTaskListRendererTest {
                 .solsSolicitorIsApplying(YES)
                 .solsSolicitorNotApplyingReason(SOLS_NOT_APPLYING_REASON)
                 .solsSOTJobTitle(SOLICITOR_JOB_TITLE)
+                .solsPaymentMethods(PAYMENT_METHOD)
                 .applicationFee(APPLICATION_FEE)
                 .feeForUkCopies(FEE_FOR_UK_COPIES)
                 .feeForNonUkCopies(FEE_FOR_NON_UK_COPIES)
@@ -448,12 +448,6 @@ class DefaultTaskListRendererTest {
                 + " class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, "
                 + "change any details, then sign and submit your application.</font></p></div><div "
                 + "class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
-                + "\n"
-                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-                + "<paymentTabLink/></p><p class=\"govuk-body-s\"><font color=\"#505a5f\"><paymentHintText/></font></p>"
-                + "</div><div class=\"govuk-grid-column-one-third\"><status-paymentMade/></div>"
-                + "</div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
                 + "\n"
                 + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p "
@@ -561,11 +555,6 @@ class DefaultTaskListRendererTest {
                 + " class=\"govuk-body-s\"><font color=\"#505a5f\">The legal statement is generated. You can review, "
                 + "change any details, then sign and submit your application.</font></p></div><div "
                 + "class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-                + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
-                + "\n"
-                + "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p class=\"govuk-body-s\">"
-                + "<paymentTabLink/></p><p class=\"govuk-body-s\"><font color=\"#505a5f\"><paymentHintText/></font></p>"
-                + "</div><div class=\"govuk-grid-column-one-third\"><status-paymentMade/></div></div>\n"
                 + "<hr class=\"govuk-section-break govuk-section-break--m govuk-section-break--visible\">\n"
                 + "\n"
                 + "<br/>\n"
