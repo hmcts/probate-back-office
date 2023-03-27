@@ -11,7 +11,7 @@ module.exports = async function (caseRef, serviceRequestReviewTabConfig) {
     await I.runAccessibilityTest();
     for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
         if (serviceRequestReviewTabConfig.fields[i] && serviceRequestReviewTabConfig.fields[i] !== '') {
-            await I.see(serviceRequestReviewTabConfig.fields[i]);
+            await I.see(serviceRequestReviewTabConfig.fields[i]); // eslint-disable-line no-await-in-loop
         }
     }
 
