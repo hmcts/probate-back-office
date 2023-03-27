@@ -898,7 +898,7 @@ class ConfirmationResponseServiceTest {
         assertEquals("", nextStepsValues.get("{{feeForNonUkCopies}}"));
         assertConfirmationValues(nextStepsValues);
         assertIHT207(nextStepsValues);
-        //assertEquals("No payment needed", nextStepsValues.get("{{paymentMethod}}"));
+        assertEquals("No payment needed", nextStepsValues.get("{{paymentMethod}}"));
         assertEquals("0.00", nextStepsValues.get("{{paymentAmount}}"));
     }
 
@@ -958,6 +958,7 @@ class ConfirmationResponseServiceTest {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
         assertEquals("3.00", nextStepsValues.get("{{applicationFee}}"));
         assertEquals("Sol Pay Ref", nextStepsValues.get("{{paymentReferenceNumber}}"));
+        assertEquals("SelectePBA", nextStepsValues.get("{{selectedPBA}}"));
     }
 
     private CCDData getCcdDataForConfirmation() {

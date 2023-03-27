@@ -48,10 +48,6 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String auth = securityDTO.getAuthorisation();
-        if (auth == null) {
-            securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
-            auth = securityDTO.getAuthorisation();
-        }
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }

@@ -21,24 +21,26 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
+import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
+import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
-import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
+import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -54,15 +56,17 @@ public class CaveatController {
     private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
     private final CaveatDataTransformer caveatDataTransformer;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
-    private final ServiceRequestTransformer serviceRequestTransformer;
+
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final CaveatNotificationService caveatNotificationService;
     private final ConfirmationResponseService confirmationResponseService;
     private final PaymentsService paymentsService;
     private final FeeService feeService;
+    private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
+    private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
+    private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     private final RegistrarDirectionService registrarDirectionService;
-    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -85,13 +89,13 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
-    @PostMapping(path = "/default-sols-payments", consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CaveatCallbackResponse> defaultSolicitorNextStepsForPayment(
+    @PostMapping(path = "/default-sols-pba", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> defaulsSolicitorNextStepsForPBANumbers(
+        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CaveatCallbackRequest callbackRequest) {
 
         return ResponseEntity.ok(caveatCallbackResponseTransformer
-            .transformCaseForSolicitorPayment(callbackRequest));
+            .transformCaseForSolicitorPBANumbers(callbackRequest, authToken));
     }
 
     @PostMapping(path = "/general-message")
@@ -145,13 +149,12 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponse);
     }
 
-    @PostMapping(path = "/sols-complete-application", consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CaveatCallbackResponse> solsCompleteApplication(
-            @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class})
+    @PostMapping(path = "/validate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> validate(
+        @RequestHeader(value = "Authorization") String authToken,
+        @Validated({CaveatCreatedGroup.class, CaveatUpdatedGroup.class, CaveatCompletedGroup.class})
         @RequestBody CaveatCallbackRequest caveatCallbackRequest,
-            BindingResult bindingResult,
-            HttpServletRequest request)
+        BindingResult bindingResult)
         throws NotificationClientException {
 
         if (bindingResult.hasErrors()) {
@@ -159,16 +162,23 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        serviceRequestAlreadyCreatedValidationRule.validate(caveatCallbackRequest.getCaseDetails());
-
         CaveatCallbackResponse caveatCallbackResponse;
 
+        solicitorPaymentMethodValidationRule.validate(caveatCallbackRequest.getCaseDetails());
+
         FeeResponse feeResponse = feeService.getCaveatFeesData();
-        String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
-                .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
-        String userId = request.getHeader("user-id");
-        caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
-                caveatCallbackRequest, serviceRequestReference, userId);
+        CreditAccountPayment creditAccountPayment =
+            creditAccountPaymentTransformer.transform(caveatCallbackRequest.getCaseDetails(), feeResponse);
+        PaymentResponse paymentResponse = paymentsService.getCreditAccountPaymentResponse(authToken,
+            creditAccountPayment);
+        CaveatCallbackResponse creditPaymentResponse =
+            eventValidationService.validateCaveatPaymentResponse(caveatCallbackRequest.getCaseDetails(),
+                paymentResponse, creditAccountPaymentValidationRule);
+        if (creditPaymentResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, paymentResponse);
+        } else {
+            caveatCallbackResponse = creditPaymentResponse;
+        }
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }

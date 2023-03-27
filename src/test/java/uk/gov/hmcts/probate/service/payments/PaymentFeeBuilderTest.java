@@ -46,22 +46,4 @@ class PaymentFeeBuilderTest {
 
     }
 
-    @Test
-    void shouldBuildCopiesPaymentFee() {
-        BigDecimal feeAmount = new BigDecimal(1.50).setScale(2);
-        String code = "code";
-        String description = "description";
-        String version = "version";
-        BigDecimal volume = BigDecimal.valueOf(1);
-        PaymentFee paymentFee = paymentFeeBuilder.buildCopiesPaymentFee(feeAmount, code, description, version, volume);
-        assertEquals("code", paymentFee.getCode());
-        assertEquals("description", paymentFee.getDescription());
-        assertEquals("feeJurisdiction1", paymentFee.getJurisdiction1());
-        assertEquals("feeJurisdiction2", paymentFee.getJurisdiction2());
-        assertEquals("version", paymentFee.getVersion());
-        assertEquals("1.50", "" + paymentFee.getCalculatedAmount());
-        assertEquals("1.50", "" + paymentFee.getFeeAmount());
-        assertEquals("1", "" + paymentFee.getVolume());
-
-    }
 }

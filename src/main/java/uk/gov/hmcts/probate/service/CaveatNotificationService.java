@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.docmosis.CaveatDocmosisService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -54,7 +55,7 @@ public class CaveatNotificationService {
         CaveatData caveatDetails = caveatCallbackRequest.getCaseDetails().getData();
         if (caveatDetails.getApplicationType() == ApplicationType.SOLICITOR) {
             if (StringUtils.isNotBlank(caveatDetails.getCaveatorEmailAddress())) {
-                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest);
+                caveatCallbackResponse = solsCaveatRaise(caveatCallbackRequest, null);
             } else {
                 // Bulk scan may not include caveator email for solicitor.
                 setCaveatExpiryDate(caveatDetails);
@@ -109,26 +110,30 @@ public class CaveatNotificationService {
 
         if (caveatCallbackResponse.getErrors().isEmpty()) {
             caveatCallbackResponse =
-                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, letterId);
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, null, documents, letterId);
         }
         return caveatCallbackResponse;
     }
 
-    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest)
+    public CaveatCallbackResponse solsCaveatRaise(CaveatCallbackRequest caveatCallbackRequest,
+                                                  PaymentResponse paymentResponse)
         throws NotificationClientException {
 
+        Document document;
+        List<Document> documents = new ArrayList<>();
         CaveatDetails caveatDetails = caveatCallbackRequest.getCaseDetails();
         setCaveatExpiryDate(caveatDetails.getData());
 
-        Document document;
         document = notificationService.sendCaveatEmail(CAVEAT_RAISED_SOLS, caveatDetails);
-        if (document != null && null == document.getDocumentGeneratedBy()
-                && null != caveatDetails.getData().getApplicationSubmittedBy()) {
-            document.setDocumentGeneratedBy(caveatDetails.getData().getApplicationSubmittedBy());
-        }
-        List<Document> documents = new ArrayList<>();
         documents.add(document);
-        return caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
+        CaveatCallbackResponse caveatCallbackResponse =
+            CaveatCallbackResponse.builder().errors(new ArrayList<>()).build();
+
+        if (caveatCallbackResponse.getErrors().isEmpty()) {
+            caveatCallbackResponse =
+                caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null);
+        }
+        return caveatCallbackResponse;
     }
 
     public CaveatCallbackResponse caveatExtend(CaveatCallbackRequest caveatCallbackRequest)

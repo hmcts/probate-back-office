@@ -1,0 +1,165 @@
+{
+  "case_details": {
+    "id": 1594226214833023,
+    "jurisdiction": "PROBATE",
+    "state": "CaseCreated",
+    "case_type_id": "GrantOfRepresentation",
+    "created_date": [
+      2018,
+      6,
+      7,
+      10,
+      1,
+      59,
+      151000000
+    ],
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "case_data": {
+      "solsPaymentMethods": "fee account",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
+      "solsSolicitorFirmName": "Firm Name",
+      "solsSolicitorAddress": {
+        "AddressLine1": "1",
+        "AddressLine2": "TEST CLOSE",
+        "AddressLine3": "",
+        "County": "TEST",
+        "PostTown": "TEST",
+        "PostCode": "W1 1AB",
+        "Country": "United Kingdom"
+      },
+      "solsSolicitorAppReference": "12345",
+      "solsSolicitorEmail": "solicitor@probate-test.com",
+      "solsSolicitorPhoneNumber": "12345",
+      "solsSolicitorIsExec": "No",
+      "willDispose": "Yes",
+      "englishWill": "Yes",
+      "appointExec": "Yes",
+      "applicationGrounds": "Grounds",
+      "deceasedForenames": "De",
+      "deceasedSurname": "Ceased",
+      "deceasedDateOfDeath": "2020-01-23",
+      "deceasedDateOfBirth": "1997-01-23",
+      "deceasedDomicileInEngWales": "Yes",
+      "deceasedAddress": {
+        "AddressLine1": "1 Test Road",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "Test County",
+        "PostTown": "Test Town",
+        "PostCode": "W1 2AB",
+        "Country": "United Kingdom"
+      },
+      "deceasedAnyOtherNames": "No",
+      "ihtFormId": "IHT207",
+      "ihtNetValue": 500000,
+      "ihtGrossValue": 500100,
+      "copiesUK": 0,
+      "copiesOverseas": 0,
+      "solsWillType": "WillLeft",
+      "willAccessOriginal": "Yes",
+      "willHasCodicils": "No",
+      "primaryApplicantForenames": "FirstName",
+      "primaryApplicantSurname": "LastName",
+      "primaryApplicantHasAlias": "No",
+      "primaryApplicantIsApplying": "Yes",
+      "primaryApplicantAddress": {
+        "AddressLine1": "123 Street",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "Town",
+        "PostCode": "Postcode",
+        "Country": ""
+      },
+      "otherExecutorExists": "No",
+      "solsAdditionalExecutorList": [ ],
+      "willExists": "Yes",
+      "executorsApplying": [
+        {
+          "id": null,
+          "value": {
+            "applyingExecutorName": "FirstName",
+            "applyingExecutorFirstName": "LastName",
+            "applyingExecutorLastName": "LastName",
+            "applyingExecutorPhoneNumber": "234567",
+            "applyingExecutorEmail": "asetrdyfguhkilj",
+            "additionalApplying": "Yes",
+            "applyingExecutorAddress": {
+              "AddressLine1": "123 Street",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "Town",
+              "PostCode": "Postcode",
+              "Country": "UK"
+            },
+            "applyingExecutorOtherNames": "gksdajgj",
+            "applyingExecutorOtherNamesReason": "fsdnkvdv",
+            "applyingExecutorOtherReason": "gksdajgj"
+          }
+        }
+      ],
+      "executorsNotApplying": [ ],
+      "applicationType": "Solicitor",
+      "registryLocation": "ctsc",
+      "caseType": "gop",
+      "paperForm": "No",
+      "dateOfDeathType": "diedOn",
+      "currentDate": "2020-07-08",
+      "currentDateFormatted": "8th July 2020",
+      "deceasedDateOfDeathFormatted": "23rd January 2020",
+      "boEmailDocsReceivedNotification": "No",
+      "boEmailGrantIssuedNotification": "No",
+      "boSendToBulkPrint": "Yes",
+      "probateDocumentsGenerated": [ ],
+      "probateNotificationsGenerated": [ ],
+      "caseMatches": [ ],
+      "boCaveatStopEmailNotification": "No",
+      "boEmailGrantReissuedNotification": "Yes",
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateSotDocumentsGenerated": [ ],
+      "boEmailRequestInfoNotification": "No",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "primaryApplicantApplying": true,
+      "primaryApplicantFullName": "Ex Ecutor",
+      "languagePreference": "ENGLISH",
+      "defaultValueForCaveatStopEmailNotification": "No",
+      "sendForBulkPrintingRequestedGrantReIssued": true,
+      "caveatStopNotificationRequested": false,
+      "caveatStopEmailNotificationRequested": false,
+      "caveatStopSendToBulkPrintRequested": true,
+      "docsReceivedEmailNotificationRequested": false,
+      "sendForBulkPrintingRequested": true,
+      "grantIssuedEmailNotificationRequested": false,
+      "grantReissuedEmailNotificationRequested": true,
+      "deceasedFullName": "De Ceased",
+      "defaultValueForEmailNotifications": "Yes"
+    }
+  }
+}

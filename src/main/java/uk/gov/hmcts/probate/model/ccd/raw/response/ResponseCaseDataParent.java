@@ -88,7 +88,4 @@ public class ResponseCaseDataParent {
     protected OrganisationPolicy applicantOrganisationPolicy;
     protected LocalDate lastEvidenceAddedDate;
     protected String documentUploadedAfterCaseStopped;
-    protected String serviceRequestReference;
-    protected String paymentTaken;
-    protected String applicationSubmittedBy;
 }

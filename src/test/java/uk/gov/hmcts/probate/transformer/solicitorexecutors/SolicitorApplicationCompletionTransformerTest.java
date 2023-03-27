@@ -66,7 +66,6 @@ class SolicitorApplicationCompletionTransformerTest {
     private List<CollectionMember<AdditionalExecutorTrustCorps>> trustCorpsExecutorList;
     private List<CollectionMember<AdditionalExecutorPartners>> partnerExecutorList;
     private List<CollectionMember<AdditionalExecutorNotApplyingPowerReserved>> dispenseWithNoticeExecList;
-    private static final String NOT_APPLICABLE = "NotApplicable";
 
     @BeforeEach
     public void setUp() {
@@ -220,27 +219,5 @@ class SolicitorApplicationCompletionTransformerTest {
 
         assertNull(caseData.getCodicilAddedDateList());
         assertNull(caseData.getCodicilAddedFormattedDateList());
-    }
-
-    @Test
-    void shouldSetServiceRequest() {
-        String serviceRequestReference = "Service Request";
-        CaseData caseData = caseDataBuilder.build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
-        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, serviceRequestReference);
-
-        assertEquals(serviceRequestReference, caseData.getServiceRequestReference());
-        assertNull(caseData.getPaymentTaken());
-    }
-
-    @Test
-    void shouldSetPaymentTakenNotApplicableWhenNoServiceRequest() {
-        String serviceRequestReference = null;
-        CaseData caseData = caseDataBuilder.build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
-        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, serviceRequestReference);
-
-        assertNull(caseData.getServiceRequestReference());
-        assertEquals(NOT_APPLICABLE, caseData.getPaymentTaken());
     }
 }

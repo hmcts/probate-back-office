@@ -237,7 +237,6 @@ java:
     CCD_UI_BASE_URL: https://case-management-web-${SERVICE_FQDN}
     CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
-    BACK_OFFICE_BASEURL: https://${SERVICE_NAME}.preview.platform.hmcts.net
 
   keyVaults:
     probate:

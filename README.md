@@ -234,7 +234,7 @@ npx @hmcts/probate-dev-env --start
 ```
 
 #### Then wait upto 5 mins for the images to spin up - check the SIDAM and CCD and probate-backoffice ones have started fully
-#### To enable sharing a case run this after startup of everything
+#### To enable PBA payments for solicitors and sharing a case run this after startup of everything
 ```
 ./bin/wiremock.sh
 ```

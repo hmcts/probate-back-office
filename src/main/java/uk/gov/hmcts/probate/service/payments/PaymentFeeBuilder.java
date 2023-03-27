@@ -28,17 +28,4 @@ public class PaymentFeeBuilder {
             .build();
     }
 
-    public PaymentFee buildCopiesPaymentFee(BigDecimal feeAmount, String code, String description, String version,
-                                            BigDecimal volume) {
-        return PaymentFee.builder()
-                .calculatedAmount(feeAmount)
-                .code(code)
-                .description(description)
-                .feeAmount(feeAmount)
-                .jurisdiction1(feeServiceConfiguration.getJurisdiction1())
-                .jurisdiction2(feeServiceConfiguration.getJurisdiction2())
-                .version(version)
-                .volume(volume)
-                .build();
-    }
 }

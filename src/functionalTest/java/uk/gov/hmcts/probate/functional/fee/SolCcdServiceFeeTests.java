@@ -5,6 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.thucydides.core.annotations.Pending;
+import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,8 +19,9 @@ import java.util.HashMap;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static junit.framework.TestCase.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.equalTo;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -38,13 +41,13 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     @Test
     public void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
-            true, true);
+            true, true, true);
         assertTrue(response.getBody().asPrettyString().contains("(PA17)"));
     }
 
     @Test
     public void shouldTransformSolicitorExecutorFields() throws IOException {
-        Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true,
+        Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true, true,
             true);
 
         final JsonPath jsonPath = JsonPath.from(response.getBody().asPrettyString());
@@ -74,17 +77,37 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     @Test
     public void verifyAllFeesAboveThreshold() throws IOException {
-        validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true);
+        validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true, true);
     }
 
     @Test
     public void verifyAllFeesBelowThreshold() throws IOException {
-        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, true);
+        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, true, true);
     }
 
     @Test
     public void shouldValidatePBAPaymentNoFees() throws IOException {
-        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false);
+        validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false, false);
+    }
+
+    @Test
+    public void shouldValidatePaymentAccountDeleted() throws IOException {
+        validatePostRequestFailureForPBAs(1, "solicitorPDFPayloadProbateAccountDeleted.json",
+            "Your account is deleted");
+    }
+
+    @Test
+    public void shouldValidatePaymentInsufficientFunds() throws IOException {
+        validatePostRequestFailureForPBAs(1000, "solicitorPDFPayloadProbateCopiesForInsufficientFunds.json",
+            "have insufficient funds available");
+    }
+
+    @Pending
+    @Test
+    public void shouldValidatePaymentAountOnHold() throws IOException {
+        //this test cannot be automated on a deployed env - leaving it for local checking
+        validatePostRequestFailureForPBAsForSolicitor2(1, "solicitorPDFPayloadProbateAccountOnHold.json",
+            "Your account is on hold");
     }
 
     @Test
@@ -108,19 +131,31 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             + "negative");
     }
 
-    private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication,
-                                                      boolean hasCopies) throws IOException {
-        int rndUkCopies = 0;
-        int rndNonUkCopies = 0;
-        if (hasCopies) {
-            rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) + 1);
-            rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
-        }
+    private Response validatePostRequestSuccessForFee(String fileName, boolean hasApplication, boolean hasFees,
+                                                      boolean hasPayments) throws IOException {
+        int rndUkCopies = (int) (Math.random() * MAX_UK_COPIES) + 1;
+        int rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
+        int applicationFee = hasApplication ? APP_FEE : 0;
+        int ukFee = rndUkCopies * COPIES_FEE;
+        int nonUkFee = rndNonUkCopies * COPIES_FEE;
+        int totalFee = applicationFee + ukFee + nonUkFee;
+
         Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
+
         response.then().assertThat().statusCode(200);
-        if (hasApplication || hasCopies) {
-            response.then().assertThat().body("data.serviceRequestReference", notNullValue());
+        if (hasApplication) {
+            response.then().assertThat().body("data.applicationFee", equalTo("" + applicationFee));
         }
+        if (hasFees) {
+            response.then().assertThat().body("data.feeForUkCopies", equalTo("" + ukFee));
+            response.then().assertThat().body("data.feeForNonUkCopies", equalTo("" + nonUkFee));
+            response.then().assertThat().body("data.totalFee", equalTo("" + totalFee));
+        }
+        if (hasPayments) {
+            response.then().assertThat().body("data.payments[0].value.status", equalTo("Success"));
+            response.then().assertThat().body("data.payments[0].value.reference", containsString("RC-"));
+        }
+
         return response;
     }
 
@@ -144,6 +179,29 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
             .when().post("/nextsteps/validate").then()
             .statusCode(400)
             .and().body(containsString(errorMessage));
+    }
+
+    private Response validatePostRequestFailureForPBAs(int copiesMultiplier, String fileName,
+                                                       String... expectedValues) throws IOException {
+
+        int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
+        int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
+        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
+        for (String expectedValue : expectedValues) {
+            assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
+        }
+        return response;
+    }
+
+    private void validatePostRequestFailureForPBAsForSolicitor2(int copiesMultiplier, String fileName,
+                                                                String... expectedValues) throws IOException {
+        int rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) * copiesMultiplier) + 1;
+        int rndNonUkCopies = (int) ((Math.random() * MAX_NON_UK_COPIES) * copiesMultiplier) + 1;
+        Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitor2User());
+
+        for (String expectedValue : expectedValues) {
+            assertThat(response.getBody().asString(), CoreMatchers.containsString(expectedValue));
+        }
     }
 
 }

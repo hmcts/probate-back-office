@@ -9,8 +9,6 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStopEscalateIssue/caseProgressConfig');
 const solicitorDetailsHtmlCheck = require('src/test/end-to-end/pages/caseProgressStopEscalateIssue/solicitorDetailsHtmlCheck');
 const solCheckAnswersHtmlCheck = require('src/test/end-to-end/pages/caseProgressStopEscalateIssue/solCheckAnswersHtmlCheck');
-const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
-const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Case Progress - stop/escalate/issue';
@@ -99,26 +97,15 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         // extra copies
         await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 
+        await I.logInfo(scenarioName, 'Payment');
+        await I.caseProgressFeePayment(caseProgressConfig);
+        await I.caseProgressCompleteApplication();
+
         await I.logInfo(scenarioName, 'Submit confirmation');
-        await I.completeApplicationPage6();
-        await I.completeApplicationPage7();
         await I.caseProgressSubmittedConfirmation();
 
         const caseRef = await I.caseProgressCheckCaseProgressTab({
             numCompleted: 4,
-            numInProgress: 0,
-            numNotStarted: 1,
-            linkText: 'Make payment',
-            linkUrl: '#Service%20Request'});
-
-        await I.logInfo(scenarioName, 'Payment');
-        await I.makePaymentPage1(caseRef, serviceRequestTabConfig);
-        await I.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
-        await I.makePaymentPage2(caseRef);
-        await I.viewPaymentStatus(caseRef);
-
-        await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 5,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -179,7 +166,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 5,
+            numCompleted: 4,
             numInProgress: 1,
             numNotStarted: 0,
             checkSubmittedDate: true,
@@ -197,7 +184,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 7,
+            numCompleted: 6,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -214,7 +201,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 7,
+            numCompleted: 6,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -232,7 +219,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 8,
+            numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
             checkSubmittedDate: true,
@@ -251,7 +238,7 @@ Scenario('04 BO Case Progress E2E - stop/escalate/issue', async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 9,
+            numCompleted: 8,
             numInProgress: 0,
             numNotStarted: 0,
             checkSubmittedDate: true,

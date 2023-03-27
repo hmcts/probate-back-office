@@ -163,10 +163,10 @@ class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
-        caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+        caveatNotificationService.solsCaveatRaise(caveatCallbackRequest, paymentResponse);
 
         assertEquals(1, caveatCallbackResponse.getCaveatData().getNotificationsGenerated().size());
     }
@@ -193,7 +193,7 @@ class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -225,7 +225,7 @@ class CaveatNotificationServiceTest {
         when(pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, CAVEAT_RAISED))
             .thenReturn(caveatRaised);
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -269,7 +269,7 @@ class CaveatNotificationServiceTest {
             .validateCaveatBulkPrintResponse(eq(sendLetterResponse.letterId.toString()), any(List.class)))
             .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
 
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -301,7 +301,7 @@ class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -332,7 +332,7 @@ class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -365,7 +365,7 @@ class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -398,7 +398,7 @@ class CaveatNotificationServiceTest {
             .documentFileName(SENT_EMAIL_FILE_NAME).build());
 
         caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
-        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, paymentResponse, documents, null))
             .thenReturn(caveatCallbackResponse);
 
         caveatNotificationService.caveatRaise(caveatCallbackRequest);
@@ -476,6 +476,8 @@ class CaveatNotificationServiceTest {
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        when(caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest))
+            .thenReturn(caveatCallbackResponse);
         when(caveatCallbackResponseTransformer.caveatExtendExpiry(caveatCallbackRequest, documents, null))
             .thenReturn(caveatCallbackResponse);
 
@@ -773,5 +775,5 @@ class CaveatNotificationServiceTest {
         verify(notificationService, never()).sendCaveatEmail(eq(State.CAVEAT_WITHDRAW), eq(caveatDetails));
         verify(eventValidationService).validateCaveatRequest(eq(caveatCallbackRequest), isA(List.class));
     }
-
 }
+

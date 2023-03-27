@@ -2,9 +2,7 @@
 <div><addDeceasedLink/></div>
 <div><addAppLink/></div>
 <div><rvwLink/></div>
-<div><paymentTabLink/></div>
-<div><paymentHintText/></div>
-<div><sendDocsLink/></div>
+<div><sendDocsLink/>/div>
 <div><authDocsLink/></div>
 <div><examAppLink/></div>
 <div><issueGrantLink/></div>
@@ -13,7 +11,6 @@
 <p><status-addApplicationDetails/></p>
 <p><status-reviewAndSubmit/></p>
 <p><reviewAndSubmitDate/></p>
-<p><status-paymentMade/></p>
 <p><status-sendDocuments/></p>
 <p><authenticatedDate/></p>
 <p><status-authDocuments/></p>
