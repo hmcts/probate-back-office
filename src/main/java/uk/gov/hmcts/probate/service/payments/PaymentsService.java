@@ -1,131 +1,281 @@
 package uk.gov.hmcts.probate.service.payments;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.jayway.jsonpath.DocumentContext;
+import com.jayway.jsonpath.JsonPath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.json.JSONArray;
-import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
-import uk.gov.hmcts.probate.model.payments.PaymentResponse;
-import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
-import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
+import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.CaveatNotificationService;
+import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.transformer.DocumentTransformer;
+import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.cases.CasePayment;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.service.notify.NotificationClientException;
 
-import java.net.URI;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
-import static java.util.Locale.UK;
-import static org.springframework.http.HttpMethod.POST;
-import static org.springframework.http.HttpStatus.BAD_REQUEST;
-import static org.springframework.http.HttpStatus.FORBIDDEN;
-import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.UNPROCESSABLE_ENTITY;
-import static org.springframework.web.util.UriComponentsBuilder.fromHttpUrl;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.CAVEAT;
+import static uk.gov.hmcts.probate.model.ccd.CcdCaseType.GRANT_OF_REPRESENTATION;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class PaymentsService {
 
-    private static final String PAYMENT_ERROR_404 = "Account information could not be found";
-    private static final String PAYMENT_ERROR_422 = "Invalid or missing attribute";
-    private static final String PAYMENT_ERROR_400 = "Payment Failed";
-    private static final String PAYMENT_ERROR_5XX = "Unable to retrieve account information, please try again later";
-    private static final String PAYMENT_ERROR_OTHER = "Unexpected Exception";
-    private static final String DUPLICANT_PAYMENT_ERROR_KEY = "duplicate payment";
-    private final RestTemplate restTemplate;
-    private final AuthTokenGenerator authTokenGenerator;
-    private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
+    private static final String SERVICE_REQUEST_REFERENCE_KEY = "service_request_reference";
+    private static final String PAYMENT_SUMMARY = "Service request payment details updated on case";
+    private static final String PAYMENT_COMMENT = "Service request payment status ";
+    private static final String SRP_STATUS_PAID = "Paid";
+    private final ServiceRequestClient serviceRequestClient;
+    private final SecurityUtils securityUtils;
+    private final CcdClientApi ccdClientApi;
+    private final IdamApi idamApi;
+    private final CasePaymentBuilder casePaymentBuilder;
+    private final NotificationService notificationService;
+    private final PDFManagementService pdfManagementService;
+    private final DocumentTransformer documentTransformer;
+    private final CaveatNotificationService caveatNotificationService;
 
-    @Value("${payment.url}")
-    private String payUri;
-    @Value("${payment.api}")
-    private String payApi;
-
-    public PaymentResponse getCreditAccountPaymentResponse(String authToken,
-                                                           CreditAccountPayment creditAccountPayment) {
-        URI uri = fromHttpUrl(payUri + payApi).build().toUri();
-        HttpEntity<CreditAccountPayment> request = buildRequest(authToken, creditAccountPayment);
-
-        PaymentResponse paymentResponse = null;
-        try {
-            ResponseEntity<PaymentResponse> responseEntity = restTemplate.exchange(uri, POST,
-                request, PaymentResponse.class);
-            paymentResponse = Objects.requireNonNull(responseEntity.getBody());
-        } catch (HttpClientErrorException e) {
-            if (e.getStatusCode().value() == FORBIDDEN.value()) {
-                throw getNewBusinessValidationException(e);
-            } else if (e.getStatusCode().value() == NOT_FOUND.value()) {
-                throw new BusinessValidationException(PAYMENT_ERROR_404, e.getMessage());
-            } else if (e.getStatusCode().value() == UNPROCESSABLE_ENTITY.value()) {
-                throw new BusinessValidationException(PAYMENT_ERROR_422, e.getMessage());
-            } else if (e.getStatusCode().value() == BAD_REQUEST.value()) {
-                throw getExceptionForDuplicatePayment(e);
-            } else if (e.getStatusCode().is5xxServerError()) {
-                throw new BusinessValidationException(PAYMENT_ERROR_5XX, e.getMessage());
-            } else {
-                throw new BusinessValidationException(PAYMENT_ERROR_OTHER, e.getMessage());
-            }
-        }
-        return paymentResponse;
+    public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        log.info("securityDTO:" + securityDTO);
+        log.info("serviceRequestClient:" + serviceRequestClient);
+        String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), serviceRequestDto);
+        DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
+        String readPath = "$['" + SERVICE_REQUEST_REFERENCE_KEY + "']";
+        return jsonContext.read(readPath);
     }
 
-    protected BusinessValidationException getExceptionForDuplicatePayment(HttpClientErrorException e) {
-        String message = e.getMessage();
-        if (message != null && message.contains(DUPLICANT_PAYMENT_ERROR_KEY)) {
-            String[] empty = {};
-            String duplicateMessage = businessValidationMessageRetriever.getMessage(
-                "creditAccountPaymentErrorMessageDuplicatePayment", empty, UK);
-            String duplicateMessage2 = businessValidationMessageRetriever.getMessage(
-                "creditAccountPaymentErrorMessageDuplicatePayment2", empty, UK);
-            return new BusinessValidationException(duplicateMessage, e.getMessage(), duplicateMessage2);
+    public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
+        String caseId = response.getCcdCaseNumber();
+        log.info("Updating case for Service Request, caseId:{}", caseId);
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails =
+                retrieveCaseDetailsAsCaseworker(caseId, ccdCaseType);
+
+        SecurityDTO securityDTO = getCaseworkerSecurityDTO();
+        if (GRANT_OF_REPRESENTATION == ccdCaseType) {
+            GrantOfRepresentationData caseData = buildGrantData(retrievedCaseDetails, response);
+            String paymentStatus = caseData.getPayments().get(caseData.getPayments().size() - 1)
+                    .getValue().getStatus().getName();
+            ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
+                    caseData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
+                    securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
+        } else if (CAVEAT == ccdCaseType) {
+            CaveatData caveatData = buildCaveatData(retrievedCaseDetails, response);
+            String paymentStatus = caveatData.getPayments().get(caveatData.getPayments().size() - 1)
+                    .getValue().getStatus().getName();
+            ccdClientApi.updateCaseAsCaseworker(ccdCaseType, caseId, retrievedCaseDetails.getLastModified(),
+                    caveatData, getEventIdByServiceRequestStatus(response.getServiceRequestStatus()),
+                    securityDTO, PAYMENT_COMMENT + paymentStatus, PAYMENT_SUMMARY);
         } else {
-            return new BusinessValidationException(PAYMENT_ERROR_400, e.getMessage());
+            throw new IllegalArgumentException("Service request payment for Case:" + caseId + " not valid CaseType:"
+                    + ccdCaseType);
+        }
+
+        log.info("Updated Service Request on caseId:{}", caseId);
+
+    }
+
+    private uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrieveCaseDetailsAsCaseworker(String caseId,
+                                                                                             CcdCaseType ccdCaseType) {
+        SecurityDTO securityDTO = getCaseworkerSecurityDTO();
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails = ccdClientApi
+                .readForCaseWorker(ccdCaseType, caseId, securityDTO);
+        log.info("Retrieved case for Service Request, caseId:{}", caseId);
+
+        return retrievedCaseDetails;
+    }
+
+    private SecurityDTO getCaseworkerSecurityDTO() {
+        securityUtils.setSecurityContextUserAsCaseworker();
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(securityUtils.getAuthorisation());
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        return SecurityDTO.builder().authorisation(securityUtils.getAuthorisation())
+                .serviceAuthorisation(securityUtils.generateServiceToken())
+                .userId(userId)
+                .build();
+    }
+
+    private GrantOfRepresentationData buildGrantData(
+            uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
+            ServiceRequestUpdateResponseDto response) {
+
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> placeholders = mapper.convertValue(retrievedCaseDetails.getData(), Map.class);
+        CaseData caseData = mapper.convertValue(placeholders, CaseData.class);
+
+        CaseDetails caseDetails = new CaseDetails(caseData, null, retrievedCaseDetails.getId());
+        caseDetails.setState(retrievedCaseDetails.getState());
+
+        return isSuccessfulPayment(response.getServiceRequestStatus())
+                ? buildGrantPaid(caseDetails, response) : buildGrantNotPaid(caseDetails, response);
+    }
+
+    private GrantOfRepresentationData buildGrantPaid(CaseDetails caseDetails,
+                                                                 ServiceRequestUpdateResponseDto response) {
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        Document sentEmail;
+        try {
+            if (!NO.equals(caseDetails.getData().getEvidenceHandled())) {
+                notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
+                securityUtils.setSecurityContextUserAsCaseworker();
+                sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
+            } else {
+                sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetails);
+            }
+        } catch (NotificationClientException e) {
+            log.info("Payment service NotificationClientException: " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+        if (sentEmail != null && null == sentEmail.getDocumentGeneratedBy()
+                && null != caseDetails.getData().getApplicationSubmittedBy()) {
+            sentEmail.setDocumentGeneratedBy(caseDetails.getData().getApplicationSubmittedBy());
+        }
+        documentTransformer.addDocument(callbackRequest, sentEmail, false);
+
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                caseDetails.getData().getPayments(), response);
+
+        Document coversheet = pdfManagementService
+                .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+
+        return GrantOfRepresentationData.builder()
+                .grantAwaitingDocumentationNotificationDate(caseDetails.getData()
+                        .getGrantAwaitingDocumentationNotificationDate())
+                .solsCoversheetDocument(getCoversheet(coversheet))
+                .probateNotificationsGenerated(asNotificationsGenerated(callbackRequest.getCaseDetails().getData()
+                        .getProbateNotificationsGenerated()))
+                .payments(allPayments)
+                .paymentTaken(getPaymentTakenStatus(caseDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
+                .build();
+    }
+
+    private GrantOfRepresentationData buildGrantNotPaid(CaseDetails caseDetails,
+                                                                 ServiceRequestUpdateResponseDto response) {
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                caseDetails.getData().getPayments(), response);
+        return GrantOfRepresentationData.builder()
+                .payments(allPayments)
+                .paymentTaken(getPaymentTakenStatus(caseDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
+                .build();
+    }
+
+    private uk.gov.hmcts.reform.probate.model.cases.DocumentLink getCoversheet(Document coversheet) {
+        if (coversheet == null) {
+            return null;
+        } else {
+            return uk.gov.hmcts.reform.probate.model.cases.DocumentLink.builder()
+                            .documentUrl(coversheet.getDocumentLink().getDocumentUrl())
+                            .documentBinaryUrl(coversheet.getDocumentLink().getDocumentBinaryUrl())
+                            .documentFilename(coversheet.getDocumentLink().getDocumentFilename())
+                            .build();
         }
     }
 
-    private BusinessValidationException getNewBusinessValidationException(HttpClientErrorException e) {
-        String[] payError = {getErrorMessage(e)};
-        String error1 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage", payError,
-            UK);
-        String[] empty = {};
-        String error2 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage2",
-            empty, UK);
-        String error3 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage3",
-            empty, UK);
-        String error4 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage4",
-            empty, UK);
-        String error5 = businessValidationMessageRetriever.getMessage("creditAccountPaymentErrorMessage5",
-            empty, UK);
-        return new BusinessValidationException(error1, e.getMessage(), error2, error3,
-            error4, error5);
+    private CaveatData buildCaveatData(
+            uk.gov.hmcts.reform.ccd.client.model.CaseDetails retrievedCaseDetails,
+            ServiceRequestUpdateResponseDto response) {
+        ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        Map<String, Object> placeholders = mapper.convertValue(retrievedCaseDetails.getData(), Map.class);
+        uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = mapper.convertValue(placeholders,
+                uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData.class);
+        CaveatDetails caveatDetails = new CaveatDetails(caveatData, null, retrievedCaseDetails.getId());
+        return isSuccessfulPayment(response.getServiceRequestStatus())
+                ? buildCaveatDataPaid(caveatDetails, response) : buildCaveatDataNotPaid(caveatDetails, response);
     }
 
-    private String getErrorMessage(HttpClientErrorException e) {
-
-        String body = e.getResponseBodyAsString();
-        log.info("getErrorMessage.body:" + body);
-        JSONObject json = new JSONObject(body);
-        JSONArray jsonArray = json.getJSONArray("status_histories");
-        String statusHistory = jsonArray.get(0).toString();
-        json = new JSONObject(statusHistory);
-        return json.getString("error_message");
+    private CaveatData buildCaveatDataPaid(CaveatDetails caveatDetails, ServiceRequestUpdateResponseDto response) {
+        CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        CaveatCallbackResponse caveatCallbackResponse;
+        try {
+            caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+            LocalDate appSubmittedDate =
+                    casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+            LocalDate expiryDate =
+                    casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getExpiryDate());
+            List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                    caveatDetails.getData().getPayments(), response);
+            return CaveatData.builder()
+                    .payments(allPayments)
+                    .paymentTaken(getPaymentTakenStatus(caveatDetails.getData().getPaymentTaken(),
+                            response.getServiceRequestStatus()))
+                    .applicationSubmittedDate(appSubmittedDate)
+                    .notificationsGenerated(asNotificationsGenerated(caveatCallbackResponse.getCaveatData()
+                            .getNotificationsGenerated()))
+                    .expiryDate(expiryDate)
+                    .build();
+        } catch (NotificationClientException e) {
+            throw new RuntimeException(e.getMessage());
+        }
     }
 
-    private HttpEntity<CreditAccountPayment> buildRequest(String authToken, CreditAccountPayment creditAccountPayment) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Authorization", authToken);
-        headers.add("Content-Type", "application/json");
-        String sa = authTokenGenerator.generate();
-        headers.add("ServiceAuthorization", sa);
-
-        return new HttpEntity<>(creditAccountPayment, headers);
+    private CaveatData buildCaveatDataNotPaid(CaveatDetails caveatDetails, ServiceRequestUpdateResponseDto response) {
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                caveatDetails.getData().getPayments(), response);
+        return CaveatData.builder()
+                .payments(allPayments)
+                .paymentTaken(getPaymentTakenStatus(caveatDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
+                .build();
     }
 
+    private List<CollectionMember<ProbateDocument>> asNotificationsGenerated(
+            List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<Document>> probateNotificationsGenerated) {
+        List<CollectionMember<ProbateDocument>> probateDocsGenerated =
+                new ArrayList<>();
+        for (uk.gov.hmcts.probate.model.ccd.raw.CollectionMember<Document> doc : probateNotificationsGenerated) {
+            ProbateDocument probateDoc = doc.getValue().asProbateDocument();
+            probateDocsGenerated.add(new CollectionMember<>(doc.getId(), probateDoc));
+        }
+        return probateDocsGenerated;
+    }
+
+    private EventId getEventIdByServiceRequestStatus(String serviceRequestStatus) {
+        return isSuccessfulPayment(serviceRequestStatus)
+                ? EventId.SERVICE_REQUEST_PAYMENT_SUCCESS : EventId.SERVICE_REQUEST_PAYMENT_FAILED;
+    }
+
+    private boolean isSuccessfulPayment(String serviceRequestStatus) {
+        return SRP_STATUS_PAID.equals(serviceRequestStatus);
+    }
+
+    private String getPaymentTakenStatus(String paymentTaken, String serviceRequestStatus) {
+        return YES.equals(paymentTaken) ? YES : isSuccessfulPayment(serviceRequestStatus) ? YES : NO;
+    }
 }

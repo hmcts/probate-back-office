@@ -22,6 +22,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
@@ -34,7 +35,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_SOLICITOR_CREATE = "/caveat/solsCreate";
     private static final String CAVEAT_SOLICITOR_CREATED = "/caveat/sols-created";
     private static final String CAVEAT_SOLICITOR_UPDATE = "/caveat/solsUpdate";
-    private static final String CAVEAT_VALIDATE = "/caveat/validate";
+    private static final String CAVEAT_VALIDATE = "/caveat/sols-complete-application";
     private static final String CAVEAT_VALIDATE_EXTEND = "/caveat/validate-extend";
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
     private static final String CAVEAT_SOLS_CREATED = "/caveat/solsCreate";
@@ -75,9 +76,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
     private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
     private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD = "/caveat/caveatSolicitorValidate.json";
-    private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE = "caveatSolicitorValidateResponse.txt";
     private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB = "/caveat/caveatSolicitorValidateNoDOB.json";
-    private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB = "caveatSolicitorValidateResponseNoDOB.txt";
     private static final String CAVEAT_VALIDATE_EXTEND_PAYLOAD = "/caveat/caveatValidateExtend.json";
     private static final String CAVEAT_CASE_WITHDRAW_PAYLOAD = "/caveat/caveatCaseWithdraw.json";
     private static final String YES = "Yes";
@@ -259,24 +258,12 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorCaveatRaisedEmailContents() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
-        assertTrue(responseBody.asString().contains("payments"));
-        assertTrue(responseBody.asString().contains("RC-"));
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE, EMAIL_NOTIFICATION_URL,
-            responseBody,
-            replacements);
+        assertTrue(responseBody.asString().contains("serviceRequestReference"));
     }
 
     @Test
-    public void verifySolicitorCaveatRaisedEmailContentsNoDOB() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB,
-                CAVEAT_VALIDATE);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB, EMAIL_NOTIFICATION_URL,
-            responseBody,
-            replacements);
+    public void verifySolicitorCaveatValidateEmailContentsNoDOB() throws IOException {
+        assertNotNull(validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB, CAVEAT_VALIDATE));
     }
 
     @Test
@@ -317,9 +304,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         assertThat(confirmationText, containsString("This caveat application has now been submitted"));
         assertThat(confirmationText, containsString("**Your reference:** REF1123"));
         assertThat(confirmationText, containsString("**Application fee** &pound;3.00"));
-        assertThat(confirmationText, containsString("**Payment method** fee account"));
-        assertThat(confirmationText, containsString("**Selected PBA account** PBA0082126"));
         assertThat(confirmationText, containsString("**Customer reference** appref-PAY1"));
+        assertThat(confirmationText, containsString("**You must complete payment next**"));
+        assertThat(confirmationText, containsString("Complete the payment process"));
     }
 
     @Test
@@ -419,13 +406,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     public void verifyCaveatValidateShouldReturnOKResponseCode() throws IOException {
         final ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON_2, CAVEAT_VALIDATE);
         final JsonPath jsonPath = JsonPath.from(response.asString());
-        final DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        final LocalDate today = LocalDate.now();
-        final LocalDate extended = today.plusMonths(6);
-        today.format(iso8601Formatter);
-
-        assertThat(jsonPath.get("data.applicationSubmittedDate"), is(equalTo(today.format(iso8601Formatter))));
-        assertThat(jsonPath.get("data.expiryDate"), is(equalTo(extended.format(iso8601Formatter))));
+        assertNull(jsonPath.get("data.applicationSubmittedDate"));
+        assertNull(jsonPath.get("data.expiryDate"));
     }
 
     @Test

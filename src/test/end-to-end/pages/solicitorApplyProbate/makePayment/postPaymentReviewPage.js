@@ -14,7 +14,7 @@ module.exports = async function (caseRef) {
     await I.runAccessibilityTest();
     for (let i = 0; i < postPaymentReviewTabConfig.fields.length; i++) {
         if (postPaymentReviewTabConfig.fields[i] && postPaymentReviewTabConfig.fields[i] !== '') {
-            await I.see(postPaymentReviewTabConfig.fields[i]); // eslint-disable-line no-await-in-loop
+            await I.see(postPaymentReviewTabConfig.fields[i]);
         }
     }
 

@@ -3,7 +3,7 @@
 const testConfig = require('src/test/config.js');
 const makePaymentConfig = require('./makePaymentConfig');
 
-module.exports = async function (caseRef, serviceRequestReviewTabConfig) {
+module.exports = async function (caseRef,serviceRequestReviewTabConfig) {
     const I = this;
     const tabXPath = `//div[contains(text(),"${makePaymentConfig.paymentTab}")]`;
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
@@ -11,7 +11,7 @@ module.exports = async function (caseRef, serviceRequestReviewTabConfig) {
     await I.runAccessibilityTest();
     for (let i = 0; i < serviceRequestReviewTabConfig.fields.length; i++) {
         if (serviceRequestReviewTabConfig.fields[i] && serviceRequestReviewTabConfig.fields[i] !== '') {
-            await I.see(serviceRequestReviewTabConfig.fields[i]); // eslint-disable-line no-await-in-loop
+            await I.see(serviceRequestReviewTabConfig.fields[i]);
         }
     }
 

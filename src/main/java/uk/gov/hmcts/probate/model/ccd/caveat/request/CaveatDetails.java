@@ -7,7 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
 @Data
-public class CaveatDetails {
+public class    CaveatDetails {
 
     @Valid
     @JsonProperty(value = "case_data")

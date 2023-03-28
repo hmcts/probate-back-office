@@ -10,7 +10,7 @@ ftp.client:
   environment: test
   signature: ${FTP_SIGNATURE:test}
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator,payment_app
 auth.provider.service.client:
   key: AAAAAAAAAAAAAAAA
   baseUrl: http://localhost:4502
@@ -35,12 +35,16 @@ pdf.service:
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
 payment:
-  url: ${PAYMENT_URL:http://localhost:8991}
-  api: /credit-account-payments
-  currency: GBP
   pba:
     siteId: ABA6
   service: PROBATE
+  serviceRequest:
+    url: ${PAYMENT_URL:http://localhost:8080}
+    api: /service-request
+    hmctsOrgId: ABA6
+    baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
+    GrantOfRepresentationCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/gor-payment-request-update
+    CaveatCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/caveat-payment-request-update
 
 pba:
   retrieval:
