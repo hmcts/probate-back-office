@@ -18,16 +18,16 @@ module.exports = async function (caseRef, appType) {
     await I.postPaymentReviewDetails(caseRef);
     // Tabs are hidden when there are more tabs
     for (let i = 0; i <= 6; i++) {
-        await I.waitForElement(tabXPath, 60);
-        await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
-        await I.clickTab(makePaymentConfig.eventHistoryTab);
+        await I.waitForElement(tabXPath, 60); // eslint-disable-line no-await-in-loop
+        await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60); // eslint-disable-line no-await-in-loop
+        await I.clickTab(makePaymentConfig.eventHistoryTab); // eslint-disable-line no-await-in-loop
         const result = await I.checkForText(makePaymentConfig.statusText, 10);
         if (result === true) {
             break;
         }
-        await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+        await I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`); // eslint-disable-line no-await-in-loop
     }
-    if(appType !== "Caveat"){
+    if (appType !== 'Caveat') {
         await I.waitForElement(caseProgressTabXPath, 60);
         await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
         await I.clickTab(makePaymentConfig.caseProgressTab);
