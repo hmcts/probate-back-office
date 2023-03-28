@@ -355,5 +355,9 @@
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "waterDamage", "ListElement": "Water damage"},
   {"LiveFrom": "01/01/2017", "ID": "damageTypes", "ListElementCode": "otherVisibleDamage", "ListElement": "Other"},
   {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "blank", "ListElement": "Blank letter", "DisplayOrder": 1},
-  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2}
+  {"LiveFrom": "02/01/2017", "ID": "LetterType", "ListElementCode": "template", "ListElement": "Letter template", "DisplayOrder": 2},
+  {"LiveFrom": "02/01/2017", "ID": "registrarsDecisionType", "ListElementCode": "probateRefused", "ListElement": "Probate refused", "DisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "ID": "registrarsDecisionType", "ListElementCode": "lostWill", "ListElement": "Rule 54 (lost will)", "DisplayOrder": 2},
+  {"LiveFrom": "02/01/2017", "ID": "registrarsDecisionType", "ListElementCode": "otherOrder", "ListElement": "Other order / direction", "DisplayOrder": 3},
+  {"LiveFrom": "02/01/2017", "ID": "registrarsDecisionType", "ListElementCode": "refusal", "ListElement": "Refusal", "DisplayOrder": 4}
 ]
