@@ -705,7 +705,7 @@ class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void testGenerateBlankLetter() {
+    void testGenerateBlankLetter() {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
             mapper.convertValue(CaseData.builder().letterType(BLANK).build(), Map.class);
@@ -717,7 +717,7 @@ class DocumentGeneratorServiceTest {
     }
 
     @Test
-    public void unknownLetterTypeShouldThrowException() {
+    void unknownLetterTypeShouldThrowException() {
         ObjectMapper mapper = new ObjectMapper().registerModule(new JavaTimeModule());
         expectedMap =
             mapper.convertValue(CaseData.builder().build(), Map.class);
