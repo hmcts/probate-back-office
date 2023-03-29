@@ -411,6 +411,7 @@ public class BusinessValidationController {
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
+        log.info("superuser change state started");
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest);
         return ResponseEntity.ok(response);
     }
