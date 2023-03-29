@@ -72,7 +72,7 @@
 {% endif %}
 <strong>
     <span style="text-transform: capitalize;">
-        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
     </span>
 </strong> of {{executorAddress(executor)}}
 {% endmacro %}
