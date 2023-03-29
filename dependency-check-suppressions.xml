@@ -474,4 +474,11 @@
         <packageUrl regex="true">^pkg:maven/commons\-fileupload/commons\-fileupload@.*$</packageUrl>
         <cve>CVE-2023-24998</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-aop-5.3.23.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-aop@.*$</packageUrl>
+        <cve>CVE-2023-20861</cve>
+    </suppress>
 </suppressions>
