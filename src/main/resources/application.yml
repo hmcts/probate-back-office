@@ -531,7 +531,7 @@ adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
 feature:
   blobstorage:
     smeeandford:
-      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:false}
+      enabled: ${BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED:true}
 
 ld:
   sdk_key: ${LAUNCHDARKLY_KEY:dummy}
