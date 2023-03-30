@@ -152,7 +152,8 @@ ccd:
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
 
   logstash:
-    imagePullPolicy: Always
+    imagePullPolicy: "IfNotPresent"
+    logstashJavaOpts: -Xmx1g -Xms512M
     resources:
       requests:
         cpu: "500m"
