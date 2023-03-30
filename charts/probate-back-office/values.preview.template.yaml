@@ -135,14 +135,12 @@ ccd:
 
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
-    imageTag: "7.17.3"
-    initResources:
-      limits:
-        cpu: "500m"
-        memory: "512Mi"
-      requests:
-        cpu: "25m"
-        memory: "512Mi"
+    clusterName: "es"
+    imageTag: "7.17.1"
+    replicas: 1
+    minimumMasterNodes: 1
+    antiAffinity: "soft"
+    esJavaOpts: "-Xmx512m -Xms512m"
     extraEnvs:
       - name: discovery.type
         value: single-node
@@ -150,20 +148,33 @@ ccd:
         value: ""
       - name: action.auto_create_index
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*
+    persistence:
+      enabled: false
 
   logstash:
-    imageTag: 7.17.3
+    image: hmctspublic.azurecr.io/imported/logstash/logstash
+    imageTag: 8.5.1
     imagePullPolicy: "IfNotPresent"
     logstashJavaOpts: -Xmx1g -Xms512M
-    resources:
-      requests:
-        cpu: "500m"
-        memory: "1024Mi"
-      limits:
-        cpu: "2500m"
-        memory: "1024Mi"
+    persistence:
+      enabled: false
+    volumeMounts:
+      - name: pipeline
+        mountPath: /usr/share/logstash/files
+    elasticsearch:
+      host: ${SERVICE_NAME}-es-master
+      port: 9200
     livenessProbe:
       initialDelaySeconds: 90
+    extraEnvs:
+      - name: DB_URL
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      - name: DB_USER
+        value: ${POSTGRES_USER}
+      - name: DB_PWD
+        value: ${POSTGRES_PASSWORD}
+      - name: ES_DATA_NODES_URL
+        value: http://${SERVICE_NAME}-es-master:9200
   ccd-user-profile-importer:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
