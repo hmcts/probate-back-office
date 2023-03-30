@@ -24,10 +24,60 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
-      "dateOfDeathType": null,
+      "dateOfDeathType": "diedOnOrAbout",
       "otherExecutorExists": "No",
-      "outsideUKGrantCopies": null,
       "boSendToBulkPrint": "No",
+      "outsideUKGrantCopies": null,
+      "executorsApplying": [
+        {
+          "id": "8e75cd11-b673-4523-9a1c-764ea75f5b04",
+          "value": {
+            "applyingExecutorName": "",
+            "applyingExecutorFirstName": "Add Executor First1",
+            "applyingExecutorLastName": "Add Executor Last1",
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorEmail": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "applyingExecutorAddress": {
+              "AddressLine1": "11",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "",
+              "PostCode": "11",
+              "Country": ""
+            }
+          }
+        },
+        {
+          "id": "634a93e9-cedb-4b6b-8577-5d702abe0b3c",
+          "value": {
+            "applyingExecutorName": "",
+            "applyingExecutorFirstName": "Add Executor First2",
+            "applyingExecutorLastName": "Add Executor Last2",
+            "applyingExecutorPhoneNumber": null,
+            "applyingExecutorEmail": null,
+            "aliasName": {
+              "Forenames": null,
+              "LastName": null,
+              "AppearOnGrant": ""
+            },
+            "applyingExecutorAddress": {
+              "AddressLine1": "22",
+              "AddressLine2": "",
+              "AddressLine3": "",
+              "County": "",
+              "PostTown": "",
+              "PostCode": "22",
+              "Country": ""
+            }
+          }
+        }
+      ],
       "applicationType": "Solicitor",
       "deceasedAddress": {
         "County": "",
@@ -38,6 +88,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
+      "caseType": "gop",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
@@ -64,7 +115,6 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "caseType": "gop",
       "solsSolicitorEmail": "solicitor@probate-test.com",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
@@ -108,12 +158,6 @@
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
       "registryLocation": "Birmingham",
-      "boDeceasedTitle": "Captain",
-      "boDeceasedHonours": "OBE",
-      "boWillMessage": "Will Message With a codicil",
-      "boExecutorLimitation": "Executor limitation message",
-      "boAdminClauseLimitation": "admin clause limitation message",
-      "boLimitationText": "Limitation message",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
       "solsSOTJobTitle": "job title"
