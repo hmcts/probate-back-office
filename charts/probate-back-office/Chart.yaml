@@ -9,10 +9,10 @@ maintainers:
     email: probate-action-group@HMCTS.NET
 dependencies:
   - name: java
-    version:  4.0.12
+    version:  4.0.13
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: ccd
-    version: 8.0.24
+    version: 8.0.28
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     tags:
       - probate-ccd-stack
