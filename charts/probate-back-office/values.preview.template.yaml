@@ -17,7 +17,7 @@ postgresql:
     initdb:
       scripts:
          create.sql: |
-           CREATE DATABASE probate WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
+           CREATE DATABASE probatemandb WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
            CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
            CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
            CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
@@ -167,7 +167,7 @@ ccd:
       port: 9200
     configTpl:
       xpack.monitoring.enabled: "false"
-      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/probate?ssl=disable&stringtype=unspecified
+      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/probatemandb?ssl=disable&stringtype=unspecified
       db.user: hmcts
       db.pwd: hmcts
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
@@ -230,7 +230,7 @@ java:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
-    PROBATE_POSTGRESQL_DATABASE: probate
+    PROBATE_POSTGRESQL_DATABASE: probatemandb
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
