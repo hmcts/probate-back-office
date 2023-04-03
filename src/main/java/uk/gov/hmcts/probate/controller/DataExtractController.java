@@ -38,7 +38,6 @@ public class DataExtractController {
     private final ExelaDataExtractService exelaDataExtractService;
     private final SmeeAndFordDataExtractService smeeAndFordDataExtractService;
     private final DataExtractDateValidator dataExtractDateValidator;
-    private final ObjectMapper objectMapper;
 
     @Operation(summary = "Initiate HMRC data extract within 2 dates",
             description = "Dates MUST be in format 'yyyy-MM-dd'")
@@ -63,32 +62,27 @@ public class DataExtractController {
     @PostMapping(path = "/iron-mountain")
     public ResponseEntity initiateIronMountainExtract(@Parameter(name = "Date to find cases against", required = true)
                                                       @RequestParam("date") String date) {
-        dataExtractDateValidator.dateValidator(date);
+        return executeIronMountainExtractForDate(date);
+    }
 
-        log.info("Calling perform Iron Mountain data extract from date...");
+    private ResponseEntity executeIronMountainExtractForDate(String date) {
+        dataExtractDateValidator.dateValidator(date);
+        log.info("Calling perform Iron Mountain data extract from date {}", date);
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() -> {
             ironMountainDataExtractService.performIronMountainExtractForDate(date);
         });
         log.info("Perform Iron Mountain data extract from date finished");
-
         return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
 
     @Operation(summary = "Initiate IronMountain data extract with date",
         description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
     @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity<AfterSubmitCallbackResponse> initiateIronMountainExtract(
+    public ResponseEntity initiateIronMountainExtract(
         @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
-
         String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
-        dataExtractDateValidator.dateValidator(resendDate);
-
-        log.info("Calling resend perform Iron Mountain data extract from date...");
-        ExecutorService executor = Executors.newFixedThreadPool(1);
-        executor.submit(() -> ironMountainDataExtractService.performIronMountainExtractForDate(resendDate));
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
-        return ResponseEntity.ok(afterSubmitCallbackResponse);
+        return executeIronMountainExtractForDate(resendDate);
     }
 
 

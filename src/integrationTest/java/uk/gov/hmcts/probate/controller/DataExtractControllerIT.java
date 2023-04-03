@@ -1,5 +1,8 @@
 package uk.gov.hmcts.probate.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -8,24 +11,32 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.insights.AppInsights;
+import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
+import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
+import java.math.BigDecimal;
 import java.time.format.DateTimeFormatter;
 
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -66,6 +77,34 @@ class DataExtractControllerIT {
     void ironMountainShouldReturnErrorWithNoDateOnPathParam() throws Exception {
         mockMvc.perform(post("/data-extract/iron-mountain"))
             .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void resendIronMountainShouldReturnErrorWithNoDateOnPathParam() throws Exception {
+        mockMvc.perform(post("/data-extract/resend-iron-mountain"))
+            .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    void hmrcShouldReturnOkResponseOnValidContentToResend() throws Exception {
+        SimpleModule module = new SimpleModule();
+        module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
+        JavaTimeModule javaTimeModule = new JavaTimeModule();
+        javaTimeModule.addSerializer(new LocalDateTimeSerializer());
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.registerModule(module);
+        objectMapper.registerModule(javaTimeModule);
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder().
+            resendDate("2023-01-01").registryLocation("bristol").build(), null, null);
+        CallbackRequest request = new CallbackRequest(caseDetails);
+        String bodyText = objectMapper.writeValueAsString(request);
+        mockMvc.perform(post("/data-extract/resend-iron-mountain")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bodyText)
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isAccepted())
+            .andExpect(content().string("Perform HMRC data extract finished"));
     }
 
     @Test
