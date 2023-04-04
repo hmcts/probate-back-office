@@ -36,14 +36,13 @@ import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.web.servlet.function.RequestPredicates.contentType;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
 class DataExtractControllerIT {
 
-    private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract finished";
     @MockBean
     private HmrcDataExtractService hmrcDataExtractService;
     @MockBean
@@ -95,8 +94,8 @@ class DataExtractControllerIT {
         objectMapper.registerModule(module);
         objectMapper.registerModule(javaTimeModule);
 
-        CaseDetails caseDetails = new CaseDetails(CaseData.builder().
-            resendDate("2023-01-01").registryLocation("bristol").build(), null, null);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+            .resendDate("2023-01-01").registryLocation("bristol").build(), null, null);
         CallbackRequest request = new CallbackRequest(caseDetails);
         String bodyText = objectMapper.writeValueAsString(request);
         mockMvc.perform(post("/data-extract/resend-iron-mountain")
@@ -104,7 +103,7 @@ class DataExtractControllerIT {
                 .content(bodyText)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Perform HMRC data extract finished"));
+            .andExpect(content().string(PERFORM_HMRC_DATA_EXTRACT_FINISHED));
     }
 
     @Test
@@ -119,14 +118,14 @@ class DataExtractControllerIT {
     void hmrcShouldReturnOkResponseOnValidDatesFormat() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-03-13&toDate=2019-04-13"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Perform HMRC data extract finished"));
+            .andExpect(content().string(PERFORM_HMRC_DATA_EXTRACT_FINISHED));
     }
 
     @Test
     void hmrcShouldReturnOkResponseOnSameDates() throws Exception {
         mockMvc.perform(post("/data-extract/hmrc?fromDate=2019-03-13&toDate=2019-03-13"))
             .andExpect(status().isAccepted())
-            .andExpect(content().string("Perform HMRC data extract finished"));
+            .andExpect(content().string(PERFORM_HMRC_DATA_EXTRACT_FINISHED));
     }
 
     @Test
@@ -167,8 +166,8 @@ class DataExtractControllerIT {
     @Test
     void exelaShouldReturnOkResponseOnValidDateRangeFormat() throws Exception {
         mockMvc.perform(post("/data-extract/exela?fromDate=2019-02-13&toDate=2019-02-14"))
-                .andExpect(status().isAccepted())
-                .andExpect(content().string("Exela data extract finished"));
+            .andExpect(status().isAccepted())
+            .andExpect(content().string("Exela data extract finished"));
     }
 
     @Test

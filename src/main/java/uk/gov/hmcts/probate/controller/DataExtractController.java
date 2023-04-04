@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
@@ -65,6 +63,15 @@ public class DataExtractController {
         return executeIronMountainExtractForDate(date);
     }
 
+    @Operation(summary = "Initiate IronMountain data extract with date",
+        description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
+    @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity initiateIronMountainExtract(
+        @RequestBody CallbackRequest callbackRequest) {
+        String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
+        return executeIronMountainExtractForDate(resendDate);
+    }
+
     private ResponseEntity executeIronMountainExtractForDate(String date) {
         dataExtractDateValidator.dateValidator(date);
         log.info("Calling perform Iron Mountain data extract from date {}", date);
@@ -75,16 +82,6 @@ public class DataExtractController {
         log.info("Perform Iron Mountain data extract from date finished");
         return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
-
-    @Operation(summary = "Initiate IronMountain data extract with date",
-        description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
-    @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity initiateIronMountainExtract(
-        @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
-        String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
-        return executeIronMountainExtractForDate(resendDate);
-    }
-
 
     @Operation(summary = "Initiate Exela data extract", description = " Date MUST be in format 'yyyy-MM-dd'")
     @PostMapping(path = "/exela")
