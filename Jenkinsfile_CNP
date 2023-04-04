@@ -169,7 +169,7 @@ def archiveCoreCaseDataDefinitions(env) {
 withPipeline("java", product, component) {
   env.APPINSIGHTS_INSTRUMENTATIONKEY=false
   env.IDAM_CLIENT_NAME='probate'
-  env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.internal'
+  env.CASE_DOCUMENT_AM_URL='http://ccd-case-document-am-api-aat.service.core-compute-aat.platform.hmcts.net'
   pipelineConf = config;
 
   enableAksStagingDeployment()
