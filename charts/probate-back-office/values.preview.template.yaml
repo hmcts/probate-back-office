@@ -194,7 +194,8 @@ ccd:
     livenessProbe:
       initialDelaySeconds: 90
 
-  probate-logstash:
+  logstash:
+    releaseNameOverride: ${SERVICE_NAME}-probate-logstash
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
       port: 9200
