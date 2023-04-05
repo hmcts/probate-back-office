@@ -159,7 +159,7 @@ ccd:
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
       - name: DATA_STORE_URL
-        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/probatemandb?ssl=disable&stringtype=unspecified
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
       - name: DATA_STORE_USER
         value: hmcts
       - name: DATA_STORE_PASS
@@ -171,13 +171,13 @@ ccd:
       - name: DB_PWD
         value: hmcts
       - name: ES_HOSTS
-        value: "http://probate-back-office-pr-2260-es-master:9200"
+        value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_DATA_NODES_URL
-        value: "http://probate-back-office-pr-2260-es-master:9200"
+        value: http://${SERVICE_NAME}-es-master:9200
       - name: ELASTIC_SEARCH_DATA_NODES_HOSTS
-        value: "http://probate-back-office-pr-2260-es-master:9200"
+        value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_URL
-        value: "http://probate-back-office-pr-2260-es-master:9200"
+        value: http://${SERVICE_NAME}-es-master:9200
     resources:
       requests:
         cpu: "500m"
