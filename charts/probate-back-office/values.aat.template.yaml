@@ -3,4 +3,8 @@ java:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
   memoryRequests: 1Gi
-  memoryLimits: 2Gi
+  memoryLimits: 2Gi    
+  devmemoryRequests: 1Gi
+  devcpuRequests: "1000m"
+  devmemoryLimits: 2Gi
+  devcpuLimits: "3500m"
