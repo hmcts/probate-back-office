@@ -507,6 +507,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -514,6 +515,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-context@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -521,6 +523,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -528,6 +531,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-expression@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -535,6 +539,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jcl@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -542,6 +547,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jdbc@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -549,6 +555,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-orm@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -556,6 +563,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-oxm@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -563,6 +571,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-tx@.*$</packageUrl>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
