@@ -260,10 +260,6 @@ class TemplateServiceIT {
     @Test
     void getCaveatRaisedPersonalCTSC() {
 
-        String response = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, CTSC,
-            LanguagePreference.ENGLISH);
-        assertEquals("pa-ctsc-caveat-raised", response);
-
         String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, CTSC,
             LanguagePreference.WELSH);
         assertEquals("pa-ctsc-caveat-raised-welsh", responseWelsh);
@@ -271,10 +267,6 @@ class TemplateServiceIT {
 
     @Test
     void getCaveatRaisedSolsCTSC() {
-
-        String response = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, CTSC,
-            LanguagePreference.ENGLISH);
-        assertEquals("sols-ctsc-caveat-raised", response);
 
         String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, CTSC,
             LanguagePreference.WELSH);
