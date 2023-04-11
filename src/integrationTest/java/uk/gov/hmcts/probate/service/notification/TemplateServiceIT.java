@@ -258,22 +258,6 @@ class TemplateServiceIT {
     }
 
     @Test
-    void getCaveatRaisedPersonalCTSC() {
-
-        String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, PERSONAL, CTSC,
-            LanguagePreference.WELSH);
-        assertEquals("pa-ctsc-caveat-raised-welsh", responseWelsh);
-    }
-
-    @Test
-    void getCaveatRaisedSolsCTSC() {
-
-        String responseWelsh = templateService.getTemplateId(CAVEAT_RAISED, SOLICITOR, CTSC,
-            LanguagePreference.WELSH);
-        assertEquals("sols-ctsc-caveat-raised-welsh", responseWelsh);
-    }
-
-    @Test
     void getSolsCaveatRaised() {
 
         String response = templateService.getTemplateId(CAVEAT_RAISED_SOLS, SOLICITOR,
