@@ -682,4 +682,11 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-webmvc@.*$</packageUrl>
         <cve>CVE-2023-20860</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: vm2:3.9.14
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
+        <vulnerabilityName>1091646</vulnerabilityName>
+    </suppress>
 </suppressions>
