@@ -256,7 +256,6 @@ class TemplateServiceIT {
             LanguagePreference.WELSH);
         assertEquals("sols-caveat-raised-welsh", responseWelsh);
     }
-
     @Test
     void getSolsCaveatRaised() {
 
