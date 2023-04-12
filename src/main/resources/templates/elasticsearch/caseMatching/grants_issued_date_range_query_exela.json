@@ -5,8 +5,11 @@
     "bool": {
       "filter": [
         {
-          "match": {
-            "state": "BOGrantIssued"
+          "bool": {
+            "should": [
+              { "match": { "state": "BOGrantIssued" }},
+              { "match": { "state": "BOPostGrantIssued" }}
+            ]
           }
         },
         {

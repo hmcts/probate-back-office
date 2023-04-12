@@ -45,7 +45,7 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 public class CaseQueryService {
     private static final String GRANT_ISSUED_DATE = "data.grantIssuedDate";
     private static final String STATE = "state";
-    private static final String STATE_MATCH = "BOGrantIssued";
+    private static final String[] STATE_MATCH = {"BOGrantIssued", "BOPostGrantIssued"};
     private static final String SERVICE_AUTH = "ServiceAuthorization";
     private static final String AUTHORIZATION = "Authorization";
     private static final String CASE_TYPE_ID = "ctid";
@@ -90,8 +90,14 @@ public class CaseQueryService {
 
     public List<ReturnedCaseDetails> findGrantIssuedCasesWithGrantIssuedDate(String invokedFrom, String queryDate) {
         BoolQueryBuilder query = boolQuery();
+        BoolQueryBuilder stateChecks = boolQuery();
 
-        query.must(matchQuery(STATE, STATE_MATCH));
+        for (String stateToMatch : Arrays.asList(STATE_MATCH)) {
+            stateChecks.should(new MatchQueryBuilder(STATE, stateToMatch));
+        }
+        stateChecks.minimumShouldMatch(1);
+
+        query.must(stateChecks);
         query.must(matchQuery(GRANT_ISSUED_DATE, queryDate));
         String jsonQuery = new SearchSourceBuilder().query(query)
                 .size(dataExtractPaginationSize)
