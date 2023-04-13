@@ -82,6 +82,7 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private ReturnedCaseDetails returnedCaseDetails;
     private List<ReturnedCaseDetails> exelaCaseData = new ArrayList<>();
     private List<ReturnedCaseDetails> exelaCaseDataWithCommas = new ArrayList<>();
+    private List<ReturnedCaseDetails> exelaCaseDataTypeWill = new ArrayList<>();
     private List<ReturnedCaseDetails> exelaCaseDataNoWillReference = new ArrayList<>();
     private List<ReturnedCaseDetails> exelaCaseDataNoSubtype = new ArrayList<>();
     private List<ReturnedCaseDetails> exelaCaseDataNoDOB = new ArrayList<>();
@@ -90,17 +91,22 @@ class GrantOfRepresentationPersonalisationServiceIT {
     public void setUp() {
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument
-            .builder().subtype("will").controlNumber("123456").build());
+            .builder().type("other").subtype("will").controlNumber("123456").build());
         List<CollectionMember<ScannedDocument>> scannedDocuments = new ArrayList<>(1);
         scannedDocuments.add(scannedDocument);
 
+        CollectionMember<ScannedDocument> scannedDocumentTypeWill = new CollectionMember<>(ScannedDocument
+                .builder().type("will").subtype("Original Will").controlNumber("123456").build());
+        List<CollectionMember<ScannedDocument>> scannedDocumentsTypeWill = new ArrayList<>(1);
+        scannedDocumentsTypeWill.add(scannedDocumentTypeWill);
+
         CollectionMember<ScannedDocument> scannedDocumentsNoWillReference = new CollectionMember<>(ScannedDocument
-            .builder().subtype("subtype").build());
+            .builder().type("other").subtype("subtype").build());
         List<CollectionMember<ScannedDocument>> scannedDocumentsNoWill = new ArrayList<>(1);
         scannedDocumentsNoWill.add(scannedDocumentsNoWillReference);
 
         CollectionMember<ScannedDocument> scannedDocumensNoSubtype = new CollectionMember<>(ScannedDocument
-            .builder().subtype(null).build());
+            .builder().type("other").subtype(null).build());
         List<CollectionMember<ScannedDocument>> scannedDocumentsNoSubtype = new ArrayList<>(1);
         scannedDocumentsNoSubtype.add(scannedDocumensNoSubtype);
 
@@ -143,6 +149,16 @@ class GrantOfRepresentationPersonalisationServiceIT {
             .grantIssuedDate("2019-05-01")
             .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
             .scannedDocuments(scannedDocuments)
+            .registryLocation("Cardiff")
+            .build(), LAST_DATE_MODIFIED, ID));
+
+        exelaCaseDataTypeWill.add(new ReturnedCaseDetails(CaseData.builder()
+            .applicationType(PERSONAL)
+            .deceasedForenames("Jack")
+            .deceasedSurname("Michelson")
+            .grantIssuedDate("2019-05-01")
+            .deceasedDateOfBirth(LocalDate.of(2019, 1, 1))
+            .scannedDocuments(scannedDocumentsTypeWill)
             .registryLocation("Cardiff")
             .build(), LAST_DATE_MODIFIED, ID));
 
@@ -244,6 +260,16 @@ class GrantOfRepresentationPersonalisationServiceIT {
         assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
         assertEquals("123456, Jack Henry, Michelson  Howard, 01/01/2019, 01/05/2019, 1, Cardiff\n",
             response.get(PERSONALISATION_CASE_DATA));
+    }
+
+    @Test
+    void getExelaPersonalisationContentIsOkWithTypeWill() {
+        Map<String, String> response =
+                grantOfRepresentationPersonalisationService.getExelaPersonalisation(exelaCaseDataTypeWill);
+
+        assertEquals(LocalDateTime.now().format(EXELA_DATE) + "will", response.get(PERSONALISATION_EXELA_NAME));
+        assertEquals("123456, Jack, Michelson, 01/01/2019, 01/05/2019, 1, Cardiff\n",
+                response.get(PERSONALISATION_CASE_DATA));
     }
 
     @Test

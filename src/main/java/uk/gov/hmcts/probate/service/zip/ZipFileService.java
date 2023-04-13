@@ -241,8 +241,9 @@ public class ZipFileService {
     }
 
     private boolean filterScannedDocs(CollectionMember<ScannedDocument> collectionMember) {
-        return OTHER.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getType())
-                && WILL.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getSubtype());
+        return ((OTHER.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getType())
+                && WILL.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getSubtype()))
+                || WILL.getTemplateName().equalsIgnoreCase(collectionMember.getValue().getType()));
     }
 
     private boolean filterUploadedDocs(CollectionMember<UploadDocument> collectionMember) {
