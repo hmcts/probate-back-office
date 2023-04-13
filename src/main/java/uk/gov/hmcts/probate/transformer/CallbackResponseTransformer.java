@@ -438,6 +438,13 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                       PaymentResponse paymentResponse, Document coversheet, Document sentEmail) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
@@ -1055,6 +1062,10 @@ public class CallbackResponseTransformer {
             .whoSharesInCompanyProfits(caseData.getWhoSharesInCompanyProfits())
             .taskList(caseData.getTaskList())
             .escalatedDate(ofNullable(caseData.getEscalatedDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .caseWorkerEscalationDate(ofNullable(caseData.getCaseWorkerEscalationDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .resolveCaseWorkerEscalationDate(ofNullable(caseData.getResolveCaseWorkerEscalationDate())
                 .map(dateTimeFormatter::format).orElse(null))
             .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
                 .map(dateTimeFormatter::format).orElse(null))

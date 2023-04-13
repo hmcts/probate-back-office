@@ -393,6 +393,42 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/case-worker-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> caseworkerEscalated(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+
+        log.info("case-worker-escalated started");
+
+        caseEscalatedService.caseWorkerEscalated(callbackRequest.getCaseDetails());
+
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/resolve-case-worker-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    public ResponseEntity<CallbackResponse> resolveCaseworkerEscalated(
+            @RequestBody CallbackRequest callbackRequest,
+            BindingResult bindingResult,
+            HttpServletRequest request) {
+
+        logRequest(request.getRequestURI(), callbackRequest);
+
+        validateForPayloadErrors(callbackRequest, bindingResult);
+
+        log.info("resolve-case-worker-escalated started");
+
+        caseEscalatedService.resolveCaseWorkerEscalated(callbackRequest.getCaseDetails());
+
+        CallbackResponse response = callbackResponseTransformer.resolveCaseWorkerEscalationState(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> resolveStopState(@RequestBody CallbackRequest callbackRequest,
                                                              HttpServletRequest request) {
