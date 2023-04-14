@@ -90,5 +90,8 @@
     "watch": "^1.0.2",
     "webdriverio": "^7.30.2",
     "when": "^3.7.7"
+  },
+  "resolutions": {
+    "http-cache-semantics": ">=4.1.1"
   }
 }

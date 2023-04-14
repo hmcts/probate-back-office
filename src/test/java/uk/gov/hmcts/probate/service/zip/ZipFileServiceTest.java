@@ -114,17 +114,23 @@ class ZipFileServiceTest {
         List<CollectionMember<UploadDocument>> willDocuments = new ArrayList<>();
         willDocuments.add(new CollectionMember<>(willDocument));
 
-        ScannedDocument scannedWillDocument = ScannedDocument.builder().type(DocumentType.OTHER.getTemplateName())
-                .subtype(DocumentType.WILL.getTemplateName())
+        ScannedDocument scannedSubtypeWillDocument = ScannedDocument.builder()
+                .type(DocumentType.OTHER.getTemplateName())
+                .subtype("will")
                 .url(link)
                 .build();
-        ScannedDocument scannedWillDocumentWithoutSubType = ScannedDocument.builder()
+        ScannedDocument scannedTypeWillDocument = ScannedDocument.builder().type(DocumentType.WILL.getTemplateName())
+                .subtype("Original Will")
+                .url(link)
+                .build();
+        ScannedDocument scannedOtherDocumentWithoutSubType = ScannedDocument.builder()
                 .type(DocumentType.OTHER.getTemplateName())
                 .url(link)
                 .build();
         List<CollectionMember<ScannedDocument>> scannedWillDocuments = new ArrayList<>();
-        scannedWillDocuments.add(new CollectionMember<>(scannedWillDocument));
-        scannedWillDocuments.add(new CollectionMember<>(scannedWillDocumentWithoutSubType));
+        scannedWillDocuments.add(new CollectionMember<>(scannedSubtypeWillDocument));
+        scannedWillDocuments.add(new CollectionMember<>(scannedTypeWillDocument));
+        scannedWillDocuments.add(new CollectionMember<>(scannedOtherDocumentWithoutSubType));
 
         CaseData data = CaseData.builder().caseType(GrantType.Constants.GRANT_OF_PROBATE_NAME)
                 .probateDocumentsGenerated(grantDocuments)
@@ -156,7 +162,7 @@ class ZipFileServiceTest {
                 .anyMatch(name -> name.contains("digitalGrant")));
         Assertions.assertTrue(zip.stream().map(ZipEntry::getName)
                 .anyMatch(name -> name.contains("digitalGrantReissue")));
-        verify(documentManagementService,times(12)).getDocumentByBinaryUrl(anyString());
+        verify(documentManagementService,times(15)).getDocumentByBinaryUrl(anyString());
         Files.delete(zipFile.toPath());
     }
 
