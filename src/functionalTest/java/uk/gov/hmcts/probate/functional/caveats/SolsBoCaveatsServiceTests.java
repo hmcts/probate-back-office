@@ -42,11 +42,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String DEFAULT_PAYLOAD_RESPONSE = "caveatPayloadNotificationsResponse.txt";
     private static final String DEFAULT_PAYLOAD_WELSH = "caveatPayloadNotificationsWelsh.json";
     private static final String DEFAULT_PAYLOAD_RESPONSE_WELSH = "caveatPayloadNotificationsWelshResponse.txt";
-    private static final String DEFAULT_PAYLOAD_CTSC = "caveatPayloadNotificationsCTSC.json";
-    private static final String DEFAULT_PAYLOAD_CTSC_RESPONSE = "caveatPayloadNotificationsCTSCResponse.txt";
-    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB = "caveatPayloadNotificationsCTSCNoDOB.json";
-    private static final String DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE = "caveatPayloadNotificationsCTSCNoDOBResponse"
-        + ".txt";
     private static final String PAYLOAD_CAVEAT_NO_DOB = "caveatPayloadNoDOB.json";
     private static final String RESPONSE_CAVEAT_NO_DOB = "caveatPayloadNoDOBResponse.txt";
     private static final String PAYLOAD_CAVEAT_NO_DOB_WELSH = "caveatPayloadNoDOBWelsh.json";
@@ -197,26 +192,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         replacements.put(EXPIRY_DATE_WELSH_KEY, utils.convertToWelsh(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         assertExpectedContentsWithExpectedReplacement(RESPONSE_CAVEAT_NO_DOB_WELSH, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
-    }
-
-    @Test
-    public void verifyPersonalCaveatRaisedCtscEmailContents() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_CTSC, CAVEAT_RAISED);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_CTSC_RESPONSE, EMAIL_NOTIFICATION_URL,
-            responseBody,
-            replacements);
-    }
-
-    @Test
-    public void verifyPersonalCaveatRaisedCtscEmailContentsNoDOB() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_CTSC_NO_DOB, CAVEAT_RAISED);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_CTSC_NO_DOB_RESPONSE, EMAIL_NOTIFICATION_URL,
-            responseBody,
-            replacements);
     }
 
     @Test

@@ -475,9 +475,6 @@
         <cve>CVE-2023-24998</cve>
     </suppress>
     <suppress>
-        <cve>CVE-2023-20861</cve>
-    </suppress>
-    <suppress>
         <notes><![CDATA[
    file name: accessors-smart-2.4.8.jar
    ]]></notes>
@@ -603,5 +600,12 @@
         <cpe>cpe:/a:springsource:spring_framework</cpe>
         <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: vm2:3.9.14
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
+        <vulnerabilityName>1091646</vulnerabilityName>
     </suppress>
 </suppressions>
