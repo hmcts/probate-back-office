@@ -61,6 +61,12 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     }
 
     @Test
+    public void shouldTransformCaseCreatedStateCorrectlyForPrinting() throws IOException {
+        verifyCaseProgressHtmlSolPost("caseprogress/04-casePrinting.json", CASE_PRINTED_URL,
+            "/gop/case-printed-html.txt");
+    }
+
+    @Test
     public void shouldTransformCaseCorrectlyWhenStopped() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json", CASE_STOPPED_URL,
             "/case-stopped-html.txt");
