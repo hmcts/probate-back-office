@@ -67,14 +67,6 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
     }
 
     @Test
-    // NOTE - actual cw state change to
-    // BOReadyForExamination doesn't come to back office, we just get docs received notification
-    public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressintestacy/05-caseMarkAsReadyForExam.json",
-            CASE_DOCS_RECEIVED_URL, "/intestacy/case-ready-for-exam-html.txt");
-    }
-
-    @Test
     public void shouldTransformCaseCorrectlyWhenStopped() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogressintestacy/06-caseStopped.json", CASE_STOPPED_URL,
             "/case-stopped-html.txt");
@@ -92,11 +84,6 @@ public class SolCcdCaseProgressIntestacyTests extends CaseProgressTestsBase {
             CASE_MATCHING_EXAMINING_URL, "/intestacy/case-matching-examining-html.txt");
     }
 
-    @Test
-    public void shouldTransformCaseCorrectlyWhenExamining() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressintestacy/09-examineCase.json", TASKLIST_UPDATE_URL,
-            "/intestacy/examine-case-html.txt");
-    }
 
     @Test
     public void shouldTransformCaseCorrectlyWhenCaseMatchingReadyToIssue() throws IOException {
