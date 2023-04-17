@@ -1,4 +1,4 @@
-ARG APP_INSIGHTS_AGENT_VERSION=3.4.11
+ARG APP_INSIGHTS_AGENT_VERSION=2.5.1
 FROM hmctspublic.azurecr.io/base/java:11-distroless
 LABEL maintainer="https://github.com/hmcts/probate-back-office"
 
