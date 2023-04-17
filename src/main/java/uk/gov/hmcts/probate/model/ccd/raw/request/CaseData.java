@@ -578,6 +578,7 @@ public class CaseData extends CaseDataParent {
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
     private RegistrarDirection registrarDirectionToAdd;
 
+    //transient variables needed only for flow
     private String dobOverride;
 
     // @Getter(lazy = true)
