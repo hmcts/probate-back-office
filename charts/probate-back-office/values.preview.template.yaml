@@ -136,7 +136,7 @@ ccd:
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
-    imageTag: "7.17.0"
+    imageTag: "7.17.1"
     replicas: 1
     minimumMasterNodes: 1
     antiAffinity: "soft"
