@@ -34,10 +34,11 @@ group = 'uk.gov.hmcts.probate'
 version = "4.0.0"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
-sourceCompatibility = 11
-targetCompatibility = 11
-
-mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
 
 jacoco {
   toolVersion = '0.8.2'
@@ -185,27 +186,27 @@ gitProperties {
 }
 
 def versions = [
-        springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
+        springCloudStarterNetflixHystrix: '4.0.0',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.7.4',
-        springBootStarterHateoas        : '2.7.4',
+        springBootVersion               : '3.0.5',
+        springBootStarterHateoas        : '3.0.5',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
-        jacksonDatabind                 : '2.13.2',
+        jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
-        restAssured                     : '4.4.0',
-        lombok                          : '1.18.16',
+        restAssured                     : '5.2.1',
+        lombok                          : '1.18.26',
         springDocOpenUi                 : '1.6.6',
-        springSecurityVersion           : '5.7.3',
+        springSecurityVersion           : '6.0.2',
         probateCommonsVersion           : '1.4.9',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '3.0.0',
+        serviceAuthVersion              : '4.0.0',
         pact_version                    : '4.1.34',
         probatePactCommonsVersion       : '1.0.2',
-        springCloud                     : '3.1.1',
+        springCloud                     : '4.0.0',
         elasticSearchVersion            : '7.15.0',
         documentClient                  : '1.7.3'
 ]
@@ -224,13 +225,6 @@ repositories {
   mavenCentral()
   maven { url "https://repo.maven.apache.org/maven2" }
   maven { url "https://jitpack.io" }
-}
-
-
-processResources {
-  from ('src/lib/AI-Agent.xml') {
-    into 'lib'
-  }
 }
 
 dependencyManagement {
@@ -287,10 +281,11 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.0'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
+  implementation group: 'jakarta.servlet', name: 'jakarta.servlet-api', version: '6.0.0'
 
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
@@ -299,9 +294,10 @@ dependencies {
 
   implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
@@ -309,17 +305,18 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.16'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '2.6.4'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDocOpenUi
   implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: versions.springDocOpenUi
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   implementation group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
-  implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
+  implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.2.0'
 
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
@@ -349,14 +346,14 @@ dependencies {
   testImplementation("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
-  testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+  testImplementation group: 'com.h2database', name: 'h2', version: '2.1.214'
   testImplementation group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   testImplementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
-  testImplementation 'org.awaitility:awaitility:4.1.0'
+  testImplementation 'org.awaitility:awaitility:4.2.0'
   testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
 
@@ -392,14 +389,14 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
-  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
+  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.2")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.9.2')
+  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.9.2'
   contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.6.4'
 
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
@@ -420,6 +417,11 @@ dependencies {
 
 tasks.withType(JavaCompile) {
   options.compilerArgs << '-parameters'
+}
+
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 bootJar {
