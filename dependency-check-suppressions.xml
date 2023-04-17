@@ -610,6 +610,7 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
         <vulnerabilityName>1091646</vulnerabilityName>
+        <vulnerabilityName>1091727</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
