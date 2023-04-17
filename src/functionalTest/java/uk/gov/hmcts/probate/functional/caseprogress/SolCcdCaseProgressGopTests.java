@@ -61,20 +61,6 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     }
 
     @Test
-    public void shouldTransformCaseCreatedStateCorrectlyForPrinting() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogress/04-casePrinting.json", CASE_PRINTED_URL,
-                "/gop/case-printed-html.txt");
-    }
-
-    @Test
-    // NOTE - actual cw state change to
-    // BOReadyForExamination doesn't come to back office, we just get docs received notification
-    public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogress/05-caseMarkAsReadyForExam.json", CASE_DOCS_RECEIVED_URL,
-            "/gop/case-ready-for-exam-html.txt");
-    }
-
-    @Test
     public void shouldTransformCaseCorrectlyWhenStopped() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/06-caseStopped.json", CASE_STOPPED_URL,
             "/case-stopped-html.txt");
@@ -90,12 +76,6 @@ public class SolCcdCaseProgressGopTests extends CaseProgressTestsBase {
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogress/08-caseMatchingExamining.json", CASE_MATCHING_EXAMINING_URL,
             "/gop/case-matching-examining-html.txt");
-    }
-
-    @Test
-    public void shouldTransformCaseCorrectlyWhenExamining() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogress/09-examineCase.json", TASKLIST_UPDATE_URL,
-            "/gop/examine-case-html.txt");
     }
 
     @Test

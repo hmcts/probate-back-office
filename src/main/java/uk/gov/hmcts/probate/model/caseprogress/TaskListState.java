@@ -69,12 +69,6 @@ public enum TaskListState {
 
             // Note - we never actually stop at TL_STATE_AUTHENTICATE_DOCUMENTS!
 
-            case StateConstants.STATE_BO_READY_FOR_EXAMINATION:
-                return TL_STATE_EXAMINE_APPLICATION;
-
-            case StateConstants.STATE_BO_EXAMINING:
-                return TL_STATE_EXAMINE_APPLICATION;
-
             case StateConstants.STATE_BO_EXAMINING_REISSUE:
                 return TL_STATE_EXAMINE_APPLICATION;
 

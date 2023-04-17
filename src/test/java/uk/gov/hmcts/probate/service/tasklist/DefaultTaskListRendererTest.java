@@ -409,7 +409,7 @@ class DefaultTaskListRendererTest {
     @Test
     void shouldRenderDefaultCaseProgressHtmlCorrectly() {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        caseDetails.setState("BOExamining");
+        caseDetails.setState("BOExaminingReissue");
         when(noDocumentsRequiredBusinessRule.isApplicable(any())).thenReturn(false);
         when(taskStateRendererMock.renderByReplace(TaskListState.TL_STATE_EXAMINE_APPLICATION,
             "<div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">\n"
@@ -521,7 +521,7 @@ class DefaultTaskListRendererTest {
     @Test
     void shouldRenderCaseProgressHtmlCorrectlyForNoDocs() {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        caseDetails.setState("BOExamining");
+        caseDetails.setState("BOExaminingReissue");
         when(mockCaseData.getSolsLegalStatementUpload()).thenReturn(mockDocumentLink);
         when(noDocumentsRequiredBusinessRule.isApplicable(any())).thenReturn(true);
         when(taskStateRendererMock.renderByReplace(TaskListState.TL_STATE_EXAMINE_APPLICATION,

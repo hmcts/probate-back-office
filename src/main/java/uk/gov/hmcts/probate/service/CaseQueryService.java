@@ -51,8 +51,7 @@ public class CaseQueryService {
     private static final String CASE_TYPE_ID = "ctid";
     private static final CaseType CASE_TYPE = CaseType.GRANT_OF_REPRESENTATION;
     private static final String[] STATES_MATCH_GRANT_DELAYED =
-        {"BOReadyForExamination", "BOCaseMatchingExamining", "BOExamining",
-            "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
+        {"BOCaseMatchingExamining", "BOReadyToIssue", "BOCaseQA", "BOCaseMatchingIssueGrant"};
     private static final String[] STATES_MATCH_GRANT_AWAITING_DOCUMENTATION = {"CasePrinted"};
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_DATE = "data.grantDelayedNotificationDate";
     private static final String KEY_GRANT_DELAYED_NOTIFICATION_SENT = "data.grantDelayedNotificationSent";
