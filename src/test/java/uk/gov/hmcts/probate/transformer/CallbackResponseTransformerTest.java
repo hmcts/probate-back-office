@@ -3786,6 +3786,17 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getFurtherInformation());
     }
 
+    @Test
+    void shouldOverrideDob() {
+        caseDataBuilder.deceasedDateOfBirth(LocalDate.of(1900,1,1));
+        caseDataBuilder.dobOverride("1800-12-31");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.replaceDobWithOverride(callbackRequestMock);
+        assertThat(callbackResponse.getData().getDeceasedDateOfBirth(), is("1800-12-31"));
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }

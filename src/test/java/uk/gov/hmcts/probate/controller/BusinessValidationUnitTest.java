@@ -41,6 +41,7 @@ import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
+import uk.gov.hmcts.probate.validator.DobOverrideValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
@@ -160,6 +161,8 @@ class BusinessValidationUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformer;
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
+    @Mock
+    private DobOverrideValidationRule dobOverrideValidationRuleMock;
 
     private BusinessValidationController underTest;
 
@@ -194,7 +197,8 @@ class BusinessValidationUnitTest {
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
             handOffLegacyTransformer,
-            registrarDirectionServiceMock);
+            registrarDirectionServiceMock,
+            dobOverrideValidationRuleMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -862,5 +866,18 @@ class BusinessValidationUnitTest {
                 underTest.registrarsDecision(callbackRequestMock);
         verify(registrarDirectionServiceMock, times(1)).addAndOrderDirectionsToGrant(caseDataMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldOverrideDOb() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        ResponseEntity<CallbackResponse> response =
+                underTest.overrideDob(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(dobOverrideValidationRuleMock, times(1)).validate(caseDetailsMock);
+        verify(callbackResponseTransformerMock, times(1)).replaceDobWithOverride(callbackRequestMock);
     }
 }

@@ -138,6 +138,12 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse replaceDobWithOverride(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        responseCaseDataBuilder.deceasedDateOfBirth(callbackRequest.getCaseDetails().getData().getDobOverride());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         return transformResponse(responseCaseDataBuilder.build());
