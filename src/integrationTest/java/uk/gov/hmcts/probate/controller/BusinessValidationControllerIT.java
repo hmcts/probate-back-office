@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
+import uk.gov.hmcts.probate.validator.DobOverrideValidationRule;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -199,6 +200,8 @@ class BusinessValidationControllerIT {
     private CaseDataTransformer caseDataTransformer;
     @MockBean
     private RegistrarDirectionService registrarDirectionService;
+    @MockBean
+    private DobOverrideValidationRule dobOverrideValidationRule;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -1149,6 +1152,19 @@ class BusinessValidationControllerIT {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldOverrideDOB() throws Exception {
+        caseDataBuilder.deceasedDateOfDeath(LocalDate.of(1900,1,1));
+        caseDataBuilder.dobOverride("1800-12-31");
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post("/case/override-dob").content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(CoreMatchers.containsString("1800-12-31")));
     }
 }
 
