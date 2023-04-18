@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MakeDormantCasesTask implements Runnable {
+public class MakeDormantCasesTask implements Runnable  {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final DormantCaseService dormantCaseService;
