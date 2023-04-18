@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.Constants.DATE_FORMAT;
 @Component
 @Slf4j
 @RequiredArgsConstructor
-public class MakeDormantCasesTask implements Runnable  {
+public class MakeDormantCasesTask implements Runnable {
 
     private final DataExtractDateValidator dataExtractDateValidator;
     private final DormantCaseService dormantCaseService;
@@ -29,6 +29,7 @@ public class MakeDormantCasesTask implements Runnable  {
         log.info("Scheduled task MakeDormantCasesTask started to make dormant cases");
         final String endDate = DATE_FORMAT.format(LocalDate.now().minusMonths(dormancyPeriodMonths));
         log.info("Calling perform make dormant from date, to date {} {}", dormancyStartDate, endDate);
+
         try {
             dataExtractDateValidator.dateValidator(dormancyStartDate, endDate);
             log.info("Perform make dormant from date started");
