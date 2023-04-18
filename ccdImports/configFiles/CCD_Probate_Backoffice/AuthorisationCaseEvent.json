@@ -79,7 +79,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForGrantIssued", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForCaseClosed", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForRegistrarEscalation", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForDormant", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForDormant", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boImportGrant", "UserRole": "caseworker-probate-issuer", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForImport", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseCreated", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
