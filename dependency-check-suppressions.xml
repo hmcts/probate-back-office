@@ -606,14 +606,6 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: vm2:3.9.14
-   ]]></notes>
-        <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
-        <vulnerabilityName>1091646</vulnerabilityName>
-        <vulnerabilityName>1091727</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: request:2.88.2
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
