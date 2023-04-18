@@ -26,7 +26,10 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_ORIGINAL_WILL;
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -63,7 +66,6 @@ public class SmeeAndFordPersonalisationService {
 
         personalisation.put(PERSONALISATION_SMEE_AND_FORD_NAME, getSubject(fromDate, toDate));
         personalisation.put(PERSONALISATION_CASE_DATA, removeLastNewLine(data.toString()));
-
         return personalisation;
     }
 
@@ -152,8 +154,12 @@ public class SmeeAndFordPersonalisationService {
     private String getWillFileName(CaseData data) {
         if (data.getScannedDocuments() != null) {
             for (CollectionMember<ScannedDocument> document : data.getScannedDocuments()) {
-                if (DocumentType.OTHER.name().equalsIgnoreCase(document.getValue().getType())
-                    && DOC_SUBTYPE_WILL.equals(document.getValue().getSubtype())) {
+                if (DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
+                    return document.getValue().getFileName();
+                }
+                if (DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_ORIGINAL_WILL.equalsIgnoreCase(document.getValue().getSubtype())) {
                     return document.getValue().getFileName();
                 }
             }
