@@ -42,6 +42,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 class DataExtractControllerIT {
 
     public static final String PERFORM_HMRC_DATA_EXTRACT_FINISHED = "Perform HMRC data extract finished";
+    public static final String PERFORM_IM_DATA_EXTRACT_FINISHED = "Perform Iron Mountain data extract finished";
+
     @MockBean
     private HmrcDataExtractService hmrcDataExtractService;
     @MockBean
@@ -102,7 +104,7 @@ class DataExtractControllerIT {
                 .content(bodyText)
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isAccepted())
-            .andExpect(content().string(PERFORM_HMRC_DATA_EXTRACT_FINISHED));
+            .andExpect(content().string(PERFORM_IM_DATA_EXTRACT_FINISHED));
     }
 
     @Test
