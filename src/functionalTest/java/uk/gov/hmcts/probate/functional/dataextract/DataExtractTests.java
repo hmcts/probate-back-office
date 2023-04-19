@@ -68,8 +68,8 @@ public class DataExtractTests extends IntegrationTestBase {
         objectMapper.registerModule(module);
         objectMapper.registerModule(javaTimeModule);
 
-        CaseDetails caseDetails = new CaseDetails(CaseData.builder().
-            resendDate("2023-01-01").registryLocation("bristol").build(), null, null);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+            .resendDate("2023-01-01").registryLocation("bristol").build(), null, null);
         CallbackRequest request = new CallbackRequest(caseDetails);
 
         String bodyText = objectMapper.writeValueAsString(request);
