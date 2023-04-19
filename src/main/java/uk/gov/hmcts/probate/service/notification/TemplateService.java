@@ -72,10 +72,14 @@ public class TemplateService {
                     return emailTemplates.getGrantRaised();
                 }
             case CAVEAT_RAISED:
-                if (registryLocation.equalsIgnoreCase(CTSC)) {
-                    return emailTemplates.getCaveatRaisedCtsc();
-                } else {
+                if (languagePreference.equals(LanguagePreference.ENGLISH)) {
                     return emailTemplates.getCaveatRaised();
+                } else {
+                    if (registryLocation.equalsIgnoreCase(CTSC)) {
+                        return emailTemplates.getCaveatRaisedCtsc();
+                    } else {
+                        return emailTemplates.getCaveatRaised();
+                    }
                 }
             case CAVEAT_EXTEND:
                 return emailTemplates.getCaveatExtend();

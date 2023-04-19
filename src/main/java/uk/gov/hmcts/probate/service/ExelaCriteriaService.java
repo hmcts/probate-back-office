@@ -12,6 +12,8 @@ import java.util.Comparator;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 
 @Slf4j
 @Service
@@ -36,8 +38,9 @@ public class ExelaCriteriaService {
 
     private void scannedDocumentsFilter(ReturnedCaseDetails caseItem) {
         for (CollectionMember<ScannedDocument> document : caseItem.getData().getScannedDocuments()) {
-            if (document.getValue().getSubtype() != null
-                    && document.getValue().getSubtype().equalsIgnoreCase(DOC_SUBTYPE_WILL)
+            if (((DOC_TYPE_OTHER.equalsIgnoreCase(document.getValue().getType())
+                        && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getValue().getSubtype()))
+                    || DOC_TYPE_WILL.equalsIgnoreCase(document.getValue().getType()))
                     && document.getValue().getScannedDate().isAfter(EARLIEST_DATE)) {
                 filteredCases.add(caseItem);
                 break;
