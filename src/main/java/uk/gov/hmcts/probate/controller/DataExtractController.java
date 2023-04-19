@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
-import uk.gov.service.notify.NotificationClientException;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
