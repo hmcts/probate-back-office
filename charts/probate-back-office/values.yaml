@@ -69,7 +69,7 @@ java:
           alias: smeeAndFordEmail
         - name: ftpSignature
           alias: ftp.client.signature
-        - name: ftftpEnvpEnv
+        - name: ftpEnv
           alias: ftp.client.environment
         - name: probate-bo-grantSignatureKey
           alias: pdf.service.grantSignatureSecretKey
