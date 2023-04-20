@@ -403,11 +403,9 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
-        log.info("case-worker-escalated started");
-
         caseEscalatedService.caseWorkerEscalated(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transform(callbackRequest);
 
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
