@@ -87,43 +87,43 @@ class CaveatPersonalisationServiceIT {
         registry.setName("CTSC");
 
         caseDataPersonal = CaseData.builder()
-                .applicationType(ApplicationType.PERSONAL)
-                .primaryApplicantForenames("first name")
-                .primaryApplicantSurname("surname")
-                .deceasedSurname("deceased surname")
-                .deceasedForenames("deceased forenames")
-                .solsSOTName("sols sot name")
-                .solsSolicitorAppReference("app reference")
-                .boStopDetails("stop details")
-                .boCaseStopCaveatId("123456789012345678")
-                .deceasedDateOfDeath(LocalDate.now())
-                .boStopDetailsDeclarationParagraph("Yes")
-                .build();
+            .applicationType(ApplicationType.PERSONAL)
+            .primaryApplicantForenames("first name")
+            .primaryApplicantSurname("surname")
+            .deceasedSurname("deceased surname")
+            .deceasedForenames("deceased forenames")
+            .solsSOTName("sols sot name")
+            .solsSolicitorAppReference("app reference")
+            .boStopDetails("stop details")
+            .boCaseStopCaveatId("123456789012345678")
+            .deceasedDateOfDeath(LocalDate.now())
+            .boStopDetailsDeclarationParagraph("Yes")
+            .build();
 
         caseDataSolicitor = CaseData.builder()
-                .applicationType(ApplicationType.SOLICITOR)
-                .primaryApplicantForenames("first name")
-                .primaryApplicantSurname("surname")
-                .deceasedSurname("deceased surname")
-                .deceasedForenames("deceased forenames")
-                .solsSOTName("sols sot name")
-                .solsSolicitorAppReference("app reference")
-                .boStopDetails("stop details")
-                .boCaseStopCaveatId("123456789012345678")
-                .deceasedDateOfDeath(LocalDate.now())
-                .boStopDetailsDeclarationParagraph("Yes")
-                .solsSOTName("SotName")
-                .build();
+            .applicationType(ApplicationType.SOLICITOR)
+            .primaryApplicantForenames("first name")
+            .primaryApplicantSurname("surname")
+            .deceasedSurname("deceased surname")
+            .deceasedForenames("deceased forenames")
+            .solsSOTName("sols sot name")
+            .solsSolicitorAppReference("app reference")
+            .boStopDetails("stop details")
+            .boCaseStopCaveatId("123456789012345678")
+            .deceasedDateOfDeath(LocalDate.now())
+            .boStopDetailsDeclarationParagraph("Yes")
+            .solsSOTName("SotName")
+            .build();
 
         caseDetails = new CaseDetails(caseDataPersonal, LAST_MODIFIED, ID);
 
         CaveatData caveatData = CaveatData.builder()
-                .caveatorForenames("cav first name")
-                .caveatorSurname("cav surname")
-                .deceasedForenames("forename")
-                .deceasedSurname("surname")
-                .messageContent("message content")
-                .expiryDate(LocalDate.parse("2000-10-10"))
+            .caveatorForenames("cav first name")
+            .caveatorSurname("cav surname")
+            .deceasedForenames("forename")
+            .deceasedSurname("surname")
+            .messageContent("message content")
+            .expiryDate(LocalDate.parse("2000-10-10"))
                 .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
                 .deceasedDateOfBirth(LocalDate.parse("1900-10-10"))
                 .build();
@@ -137,33 +137,33 @@ class CaveatPersonalisationServiceIT {
                 .expiryDate(LocalDate.parse("2000-10-10"))
                 .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
                 .deceasedDateOfBirth(null)
-                .build();
+            .build();
 
         returnedCaveatData = CaveatData.builder()
-                .applicationSubmittedDate(LocalDate.parse("2000-10-10"))
-                .caveatorForenames("cav first name")
-                .caveatorSurname("cav surname")
-                .deceasedForenames("forename")
-                .deceasedSurname("surname")
-                .messageContent("message content")
-                .expiryDate(LocalDate.parse("2000-10-10"))
-                .build();
+            .applicationSubmittedDate(LocalDate.parse("2000-10-10"))
+            .caveatorForenames("cav first name")
+            .caveatorSurname("cav surname")
+            .deceasedForenames("forename")
+            .deceasedSurname("surname")
+            .messageContent("message content")
+            .expiryDate(LocalDate.parse("2000-10-10"))
+            .build();
 
         caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
         caveatDetailsDobNull = new CaveatDetails(caveatDataDobNull, LAST_MODIFIED, ID);
 
         CaveatData solsCaveatData = CaveatData.builder()
-                .applicationType(ApplicationType.SOLICITOR)
-                .caveatorForenames("first name")
-                .caveatorSurname("surname")
-                .deceasedForenames("deceased forenames")
-                .deceasedSurname("deceased surname")
-                .solsSolicitorAppReference("app reference")
-                .deceasedDateOfDeath(LocalDate.now())
-                .expiryDate(LocalDate.parse("2000-10-10"))
-                .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
-                .deceasedDateOfBirth(LocalDate.parse("1900-10-10"))
-                .build();
+            .applicationType(ApplicationType.SOLICITOR)
+            .caveatorForenames("first name")
+            .caveatorSurname("surname")
+            .deceasedForenames("deceased forenames")
+            .deceasedSurname("deceased surname")
+            .solsSolicitorAppReference("app reference")
+            .deceasedDateOfDeath(LocalDate.now())
+            .expiryDate(LocalDate.parse("2000-10-10"))
+            .deceasedDateOfDeath(LocalDate.parse("2000-10-10"))
+            .deceasedDateOfBirth(LocalDate.parse("1900-10-10"))
+            .build();
         solsCaveatDetails = new CaveatDetails(solsCaveatData, LAST_MODIFIED, ID);
 
         when(dateFormatterService.formatCaveatExpiryDate(any())).thenReturn(PERSONALISATION_CAVEAT_EXPIRY_DATE);
@@ -183,7 +183,7 @@ class CaveatPersonalisationServiceIT {
         assertEquals("10th October 2000", response.get(PERSONALISATION_CAVEAT_EXPIRY_DATE));
         assertEquals("10 Hydref 2000", response.get(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE));
         assertEquals("Dyddiad geni’r ymadawedig yw: 10 Hydref 1900",
-                response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
+            response.get(PERSONALISATION_WELSH_DATE_OF_BIRTH));
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_OF_DEATH));
         assertEquals("The deceased's date of birth: 10th October 1900", response.get(PERSONALISATION_DATE_OF_BIRTH));
     }
@@ -191,7 +191,7 @@ class CaveatPersonalisationServiceIT {
     @Test
     void getPersonalisationContentIsOkDOBNull() {
         Map<String, String> response = caveatPersonalisationService
-                .getCaveatPersonalisation(caveatDetailsDobNull, registry);
+            .getCaveatPersonalisation(caveatDetailsDobNull, registry);
 
         assertEquals("cav first name cav surname", response.get(PERSONALISATION_APPLICANT_NAME));
         assertEquals("forename surname", response.get(PERSONALISATION_DECEASED_NAME));
@@ -210,7 +210,7 @@ class CaveatPersonalisationServiceIT {
     @Test
     void getSolsCaveatsPersonalisationIsOk() {
         Map<String, String> response =
-                caveatPersonalisationService.getSolsCaveatPersonalisation(solsCaveatDetails, registry);
+            caveatPersonalisationService.getSolsCaveatPersonalisation(solsCaveatDetails, registry);
 
         assertEquals("deceased forenames deceased surname", response.get(PERSONALISATION_DECEASED_NAME));
         assertEquals(caveatDetails.getId().toString(), response.get(PERSONALISATION_CCD_REFERENCE));
@@ -225,10 +225,10 @@ class CaveatPersonalisationServiceIT {
     @Test
     void getCaveatStopPersonalisationContentIsOk() {
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, caseDataPersonal.getBoCaseStopCaveatId()))
-                .thenReturn(returnedCaveatData);
+            .thenReturn(returnedCaveatData);
 
         Map<String, Object> response = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation,
-                caseDataPersonal);
+            caseDataPersonal);
 
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
         assertEquals("cav first name cav surname", response.get(PERSONALISATION_CAVEATOR_NAME));
@@ -239,10 +239,10 @@ class CaveatPersonalisationServiceIT {
     void getCaveatStopPersonalisationContentSolsIsOk() {
         personalisation.put(PERSONALISATION_APPLICANT_NAME, "name");
         when(caveatQueryServiceMock.findCaveatById(CaseType.CAVEAT, caseDataSolicitor.getBoCaseStopCaveatId()))
-                .thenReturn(returnedCaveatData);
+            .thenReturn(returnedCaveatData);
 
         Map<String, Object> response = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation,
-                caseDataSolicitor);
+            caseDataSolicitor);
 
         assertEquals("10th October 2000", response.get(PERSONALISATION_DATE_CAVEAT_ENTERED));
         assertEquals("cav first name cav surname", response.get(PERSONALISATION_CAVEATOR_NAME));
