@@ -475,6 +475,9 @@
         <cve>CVE-2023-24998</cve>
     </suppress>
     <suppress>
+        <cve>CVE-2023-20861</cve>
+    </suppress>
+    <suppress>
         <notes><![CDATA[
    file name: accessors-smart-2.4.8.jar
    ]]></notes>
@@ -487,10 +490,8 @@
    file name: spring-aop-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-aop@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -506,90 +507,72 @@
    file name: spring-beans-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-beans@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-context-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-context@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-core-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-core@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-expression-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-expression@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-jcl-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jcl@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-jdbc-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-jdbc@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-orm-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-orm@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-oxm-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-oxm@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
    file name: spring-tx-5.3.23.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework/spring\-tx@.*$</packageUrl>
-        <cpe>cpe:/a:pivotal_software:spring_framework</cpe>
-        <cpe>cpe:/a:springsource:spring_framework</cpe>
-        <cpe>cpe:/a:vmware:spring_framework</cpe>
         <cve>CVE-2023-20861</cve>
+        <cve>CVE-2023-20860</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -607,12 +590,5 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
         <vulnerabilityName>1091646</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: request:2.88.2
-   ]]></notes>
-        <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
-        <vulnerabilityName>1091725</vulnerabilityName>
     </suppress>
 </suppressions>
