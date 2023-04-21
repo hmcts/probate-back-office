@@ -371,13 +371,12 @@
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStopped", "ListElement": "Case stopped", "DisplayOrder": 9},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStoppedReissue", "ListElement": "Case stopped (reissue)", "DisplayOrder": 10},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaveatPermenant", "ListElement": "Caveat permenant", "DisplayOrder": 11},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "Dormant", "ListElement": "Dormant", "DisplayOrder": 12},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining (reissue)", "DisplayOrder": 13},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOGrantIssued", "ListElement": "Grant issue", "DisplayOrder": 14},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOSotGenerated", "ListElement": "Legal Statement Generated", "DisplayOrder": 15},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "PAAppCreated", "ListElement": "PA application created", "DisplayOrder": 16},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue", "DisplayOrder": 17},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORedecNotificationSent", "ListElement": "Redeclaration notifications sent", "DisplayOrder": 18},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar escalation", "DisplayOrder": 19}
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining (reissue)", "DisplayOrder": 12},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOGrantIssued", "ListElement": "Grant issue", "DisplayOrder": 13},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOSotGenerated", "ListElement": "Legal Statement Generated", "DisplayOrder": 14},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "PAAppCreated", "ListElement": "PA application created", "DisplayOrder": 15},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue", "DisplayOrder": 16},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORedecNotificationSent", "ListElement": "Redeclaration notifications sent", "DisplayOrder": 17},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar escalation", "DisplayOrder": 18}
 
 ]
