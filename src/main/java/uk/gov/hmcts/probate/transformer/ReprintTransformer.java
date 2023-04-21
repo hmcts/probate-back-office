@@ -21,8 +21,9 @@ import static uk.gov.hmcts.probate.service.ReprintService.LABEL_GRANT;
 import static uk.gov.hmcts.probate.service.ReprintService.LABEL_REISSUED_GRANT;
 import static uk.gov.hmcts.probate.service.ReprintService.LABEL_SOT;
 import static uk.gov.hmcts.probate.service.ReprintService.LABEL_WILL;
-import static uk.gov.hmcts.probate.service.ReprintService.WILL_DOC_SUB_TYPE;
-import static uk.gov.hmcts.probate.service.ReprintService.WILL_DOC_TYPE;
+import static uk.gov.hmcts.probate.model.Constants.DOC_SUBTYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_WILL;
+import static uk.gov.hmcts.probate.model.Constants.DOC_TYPE_OTHER;
 
 @Service
 @Slf4j
@@ -78,8 +79,9 @@ public class ReprintTransformer {
     }
 
     private boolean isFromScannedDOcuments(ScannedDocument document) {
-        return (WILL_DOC_TYPE.equalsIgnoreCase(document.getType())
-            && WILL_DOC_SUB_TYPE.equalsIgnoreCase(document.getSubtype()));
+        return ((DOC_TYPE_OTHER.equalsIgnoreCase(document.getType())
+                && DOC_SUBTYPE_WILL.equalsIgnoreCase(document.getSubtype()))
+                || DOC_TYPE_WILL.equalsIgnoreCase(document.getType()));
     }
 
     private boolean isFromGeneratedDocuments(Document document) {
