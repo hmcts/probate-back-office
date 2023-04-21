@@ -108,7 +108,7 @@ def archiveCoreCaseDataDefinitions(env) {
       shutterOption = "false"
     } else if("prod" == env){
       //WARNING, CHANGING THIS WILL SHUTTER PROD
-      shutterOption = "true"
+      shutterOption = "false"
     } else {
       shutterOption = "false"
     }
