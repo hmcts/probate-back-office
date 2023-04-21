@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.config.documents;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -22,7 +23,6 @@ import uk.gov.hmcts.reform.auth.checker.core.user.User;
 import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
 
-import jakarta.servlet.http.HttpServletRequest;
 import java.util.HashSet;
 
 import static org.mockito.ArgumentMatchers.any;

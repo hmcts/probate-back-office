@@ -200,7 +200,7 @@ def versions = [
         lombok                          : '1.18.26',
         springDocOpenUi                 : '1.6.6',
         springSecurityVersion           : '6.0.2',
-        probateCommonsVersion           : '1.4.9',
+        probateCommonsVersion           : 'DTSPB-3430-B-v1.4.10',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '4.0.0',
@@ -281,6 +281,7 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
+  implementation group: 'org.springframework.security', name: 'spring-security-web', version: versions.springSecurityVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.0'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
