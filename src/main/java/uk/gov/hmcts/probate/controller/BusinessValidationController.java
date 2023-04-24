@@ -403,7 +403,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
 
-        caseEscalatedService.caseWorkerEscalated(callbackRequest.getCaseDetails());
+        caseEscalatedService.setCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transform(callbackRequest);
 
         return ResponseEntity.ok(response);
@@ -421,7 +421,7 @@ public class BusinessValidationController {
 
         log.info("resolve-case-worker-escalated started");
 
-        caseEscalatedService.resolveCaseWorkerEscalated(callbackRequest.getCaseDetails());
+        caseEscalatedService.setResolveCaseWorkerEscalatedDate(callbackRequest.getCaseDetails());
 
         CallbackResponse response = callbackResponseTransformer.resolveCaseWorkerEscalationState(callbackRequest);
         return ResponseEntity.ok(response);

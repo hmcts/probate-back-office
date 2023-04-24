@@ -876,7 +876,7 @@ class BusinessValidationUnitTest {
 
         ResponseEntity<CallbackResponse> response =
                 underTest.caseworkerEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
-        verify(caseEscalatedServiceMock, times(1)).caseWorkerEscalated(caseDetailsMock);
+        verify(caseEscalatedServiceMock, times(1)).setCaseWorkerEscalatedDate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -888,7 +888,7 @@ class BusinessValidationUnitTest {
 
         ResponseEntity<CallbackResponse> response =
                 underTest.resolveCaseworkerEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
-        verify(caseEscalatedServiceMock, times(1)).resolveCaseWorkerEscalated(caseDetailsMock);
+        verify(caseEscalatedServiceMock, times(1)).setResolveCaseWorkerEscalatedDate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
