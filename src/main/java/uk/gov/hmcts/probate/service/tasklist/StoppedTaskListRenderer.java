@@ -23,6 +23,6 @@ public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
                 .replaceFirst("<stopDate>", stoppedDate == null ? "Unknown" : stoppedDate.format(dateFormat))
                 .replaceFirst("<caseStopReasonsList>",
                         UnorderedListRenderer.render(CaseStoppedHtmlTemplate.CASE_STOP_REASONS))
-                .replaceFirst("<numWeeks>", "4");
+                .replaceFirst("<numWeeks>", "16");
     }
 }
