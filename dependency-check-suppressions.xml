@@ -615,4 +615,11 @@
         <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
         <vulnerabilityName>1091758</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: lodash:3.10.1
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/lodash@.*$</packageUrl>
+        <vulnerabilityName>1091832</vulnerabilityName>
+    </suppress>
 </suppressions>
