@@ -111,12 +111,27 @@ def checkForEnableNightlyLabel(branch_name) {
 
 def archiveCoreCaseDataDefinitions(env) {
   dir("${WORKSPACE}/bin") {
+    // Change shutterOption to "true" to shutter Probate jurisdiction through pipeline
+    if("preview" == env){
+      shutterOption = "false"
+    } else if("demo" == env){
+      shutterOption = "false"
+    } else if("aat" == env){
+      //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
+      shutterOption = "false"
+    } else if("prod" == env){
+      //WARNING, CHANGING THIS WILL SHUTTER PROD
+      shutterOption = "false"
+    } else {
+      shutterOption = "false"
+    }
+
     if ("preview" == env) {
-      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID}"
+      sh "./build-preview-ccd-definitions.sh ${CHANGE_ID} ${shutterOption}"
     }
 
       else {
-      sh "./build-release-ccd-definitions.sh ${env}"
+      sh "./build-release-ccd-definitions.sh ${env} ${shutterOption}"
     }
   }
 

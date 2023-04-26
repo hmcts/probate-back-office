@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -87,6 +88,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -3729,6 +3731,50 @@ class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
+    }
+
+    @Test
+    void shouldTransformCaseWithRegistrarDirections() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        List<CollectionMember<RegistrarDirection>> directions = new ArrayList<>();
+        CollectionMember<RegistrarDirection> registrarDirectionCollectionMember1 = new CollectionMember<>(null,
+                RegistrarDirection.builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-01T23:45:45.890Z", formatter))
+                        .decision("Decision 1")
+                        .furtherInformation("Further information 1")
+                        .build());
+        CollectionMember<RegistrarDirection> registrarDirectionCollectionMember2 = new CollectionMember<>(null,
+                RegistrarDirection.builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-02T23:45:45.890Z", formatter))
+                        .decision("Decision 2")
+                        .build());
+
+        directions.add(registrarDirectionCollectionMember1);
+        directions.add(registrarDirectionCollectionMember2);
+
+        caseDataBuilder.registrarDirections(directions);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCaseWithRegistrarDirection(callbackRequestMock);
+        assertEquals(2, callbackResponse.getData().getRegistrarDirections().size());
+        assertEquals("2023-01-01T23:45:45.890Z", format(formatter, callbackResponse.getData(), 0));
+        assertEquals("Decision 1", callbackResponse.getData().getRegistrarDirections().get(0).getValue().getDecision());
+        assertEquals("Further information 1", callbackResponse.getData().getRegistrarDirections().get(0).getValue()
+                .getFurtherInformation());
+        assertEquals("2023-01-02T23:45:45.890Z", format(formatter, callbackResponse.getData(), 1));
+        assertEquals("Decision 2", callbackResponse.getData().getRegistrarDirections().get(1).getValue().getDecision());
+        assertNull(callbackResponse.getData().getRegistrarDirections().get(1).getValue().getFurtherInformation());
+
+        assertNotNull(callbackResponse.getData().getRegistrarDirectionToAdd());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getAddedDateTime());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getDecision());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getFurtherInformation());
+    }
+
+    private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
+        return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
 
     @Test

@@ -14,6 +14,7 @@ source ${0%/*}/setHostAndPort.sh
 ccd_definition_json_output_dir_absolute_path=$(to-abs-path "$1")
 ccd_definition_json_output_dir_name=$(echo ${ccd_definition_json_output_dir_absolute_path##*/})
 ccd_definition_excel_output_file=$(to-abs-path "${excel_output_directory}/${ccd_definition_json_output_dir_name}.xlsx")
+additionalParameters=${2-}
 
 echo $ccd_definition_excel_output_file
 
@@ -21,10 +22,10 @@ if [[ ! -e ${ccd_definition_excel_output_file} ]]; then
    touch ${ccd_definition_excel_output_file}
 fi
 
-docker run --user $UID --rm --name json2xlsx \
+docker run --rm --name json2xlsx \
     -v ${ccd_definition_json_output_dir_absolute_path}:/tmp/ccd-definition \
     -v ${ccd_definition_excel_output_file}:/tmp/ccd-definition.xlsx \
     -e CCD_DEF_CASE_SERVICE_BASE_URL \
     -e CCD_DEF_AAC_URL=${CCD_DEF_AAC_URL:-manage-case-assignment:4454} \
-    hmcts/ccd-definition-processor:latest \
-    json2xlsx -D /tmp/ccd-definition -o /tmp/ccd-definition.xlsx
+    hmctspublic.azurecr.io/ccd/definition-processor:latest \
+    json2xlsx -D /tmp/ccd-definition -o /tmp/ccd-definition.xlsx ${additionalParameters}

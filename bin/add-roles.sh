@@ -11,6 +11,7 @@ ${dir}/idam-role.sh caseworker-probate-solicitor
 ${dir}/idam-role.sh caseworker-probate-authoriser
 ${dir}/idam-role.sh caseworker-probate-systemupdate
 ${dir}/idam-role.sh caseworker-probate-caseofficer
+${dir}/idam-role.sh caseworker-probate-rparobot
 ${dir}/idam-role.sh caseworker-probate-caseadmin
 ${dir}/idam-role.sh caseworker-probate-registrar
 ${dir}/idam-role.sh caseworker-probate-superuser
@@ -37,6 +38,7 @@ ${dir}/ccd-add-role.sh caseworker-probate-solicitor
 ${dir}/ccd-add-role.sh caseworker-probate-systemupdate
 ${dir}/ccd-add-role.sh caseworker-probate-pcqextractor
 ${dir}/ccd-add-role.sh caseworker-probate-caseofficer
+${dir}/ccd-add-role.sh caseworker-probate-rparobot
 ${dir}/ccd-add-role.sh caseworker-probate-caseadmin
 ${dir}/ccd-add-role.sh caseworker-probate-registrar
 ${dir}/ccd-add-role.sh caseworker-probate-superuser

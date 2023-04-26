@@ -15,8 +15,6 @@ public class StateConstants {
 
 
     public static final String STATE_CASE_PRINTED = "CasePrinted";
-    public static final String STATE_BO_READY_FOR_EXAMINATION = "BOReadyForExamination";
-    public static final String STATE_BO_EXAMINING = "BOExamining";
 
     public static final String STATE_BO_CAVEAT_PERMANENT = "BOCaveatPermenant";
     public static final String STATE_BO_READY_TO_ISSUE = "BOReadyToIssue";

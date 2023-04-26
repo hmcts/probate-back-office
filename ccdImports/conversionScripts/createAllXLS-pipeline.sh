@@ -5,6 +5,7 @@ set -eu
 conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 environment="$2"
+shutterOption=${3:-false}
 
 if [ -z "$1" ]
   then
@@ -12,16 +13,25 @@ if [ -z "$1" ]
     exit 1
 fi
 
+if [ ${shutterOption} == true ]; then
+  echo Creating shuttered CCD Definition
+  excludedFilenamePatterns="-e *-unshutter.json"
+else
+  echo Creating unshuttered CCD Definition
+  excludedFilenamePatterns="-e *-shutter.json"
+fi
+echo excludedFilenamePatterns = $excludedFilenamePatterns
+
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
 export CCD_DEF_AAC_URL=probate-back-office-pr-2224-aac-manage-case-assignment
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
-${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Backoffice/ ${environment}
-${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Caveat/ ${environment}
-${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Legacy_Cases/ ${environment}
-${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Legacy_Search/ ${environment}
-${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Will_Lodgement/ ${environment}
-${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Standing_Search/ ${environment}
+${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Backoffice/ ${environment} "${excludedFilenamePatterns}"
+${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Caveat/ ${environment} "${excludedFilenamePatterns}"
+${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Legacy_Cases/ ${environment} "${excludedFilenamePatterns}"
+${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Legacy_Search/ ${environment} "${excludedFilenamePatterns}"
+${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Will_Lodgement/ ${environment} "${excludedFilenamePatterns}"
+${conversionFolder}/convertJsonToXLS-pipeline.sh ${configFolder}/CCD_Probate_Standing_Search/ ${environment} "${excludedFilenamePatterns}"
 
 echo XLS files placed in /jsonToXLS-${2} folder

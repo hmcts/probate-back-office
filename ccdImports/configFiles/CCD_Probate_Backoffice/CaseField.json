@@ -462,5 +462,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseworkerName", "Label": "Caseworker", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "includeStatementOfTruth", "Label": "Do you want to include a statement of truth?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "lastEvidenceAddedDate", "Label": "When was the last scanned or uploaded doc added?", "HintText": "For example, 31 03 2020", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirections", "Label": "Registrar directions", "FieldType": "Collection", "FieldTypeParameter": "RegistrarDirection", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirectionToAdd", "Label": "Registrar direction", "FieldType": "RegistrarDirection", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadedAfterCaseStopped", "Label": "Has a document been scanned or uploaded since the case was stopped?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "changeOrganisationRequestField", "Label": "Change Organisation Request", "FieldType": "ChangeOrganisationRequest", "SecurityClassification": "Public"}
 ]

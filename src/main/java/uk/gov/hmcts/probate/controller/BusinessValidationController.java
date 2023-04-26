@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
@@ -43,6 +44,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
+import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
@@ -105,9 +107,11 @@ public class BusinessValidationController {
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
+    private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final RegistrarDirectionService registrarDirectionService;
     private final CcdDataStoreService ccdDataStoreService;
 
     @PostMapping(path = "/update-task-list")
@@ -137,10 +141,22 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }
 
+    @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> validateSolsCreateDefaultIhtEstate(
+            @RequestBody CallbackRequest callbackRequest) {
+
+        final List<ValidationRule> solPcValidation = Arrays.asList(caseworkersSolicitorPostcodeValidationRule);
+        CallbackResponse response = eventValidationService.validateRequest(callbackRequest, solPcValidation);
+        if (response.getErrors().isEmpty()) {
+            return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(callbackRequest));
+        }
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateSolsCreate(
             @Validated({ApplicationCreatedGroup.class}) @RequestBody
-                    CallbackRequest callbackRequest) {
+            CallbackRequest callbackRequest) {
 
         final List<ValidationRule> solPcValidation = Arrays.asList(solicitorPostcodeValidationRule);
 
@@ -527,6 +543,20 @@ public class BusinessValidationController {
         @RequestBody CallbackRequest callbackRequest) {
         log.info("Reactivating case - " + callbackRequest.getCaseDetails().getId().toString());
         caseStoppedService.setEvidenceHandledNo(callbackRequest.getCaseDetails());
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
+    }
+
+    @PostMapping(path = "/default-registrars-decision",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setupRegistrarsDecision(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.transformCaseWithRegistrarDirection(callbackRequest));
+    }
+
+    @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> registrarsDecision(
+            @RequestBody CallbackRequest callbackRequest) {
+        registrarDirectionService.addAndOrderDirectionsToGrant(callbackRequest.getCaseDetails().getData());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
