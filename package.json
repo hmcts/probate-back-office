@@ -53,8 +53,7 @@
   "dependencies": {
     "@date-fns/upgrade": "^1.0.3",
     "html_codesniffer": "^2.5.1",
-    "require-directory": "^2.1.1",
-    "superagent": "^7.0.2"
+    "require-directory": "^2.1.1"
   },
   "devDependencies": {
     "chai": "^4.1.0",
