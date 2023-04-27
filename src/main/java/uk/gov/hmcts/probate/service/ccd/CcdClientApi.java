@@ -94,7 +94,8 @@ public class CcdClientApi implements CoreCaseDataService {
                 eventId.getName()
         );
         //check case not updated in-between DTSPB-3367
-        if (startEventResponse.getCaseDetails().getLastModified().truncatedTo(ChronoUnit.MILLIS).isAfter(lastModified)) {
+        if (startEventResponse.getCaseDetails().getLastModified().truncatedTo(ChronoUnit.MILLIS)
+            .isAfter(lastModified)) {
             throw new ConcurrentDataUpdateException(
                 String.format("caseId: %s not updated as working with out of date case details", caseId));
         }
@@ -155,7 +156,7 @@ public class CcdClientApi implements CoreCaseDataService {
             caseId
         );
     }
-    
+
     private CaseDataContent createCaseDataContent(Object object,
                                                   EventId eventId, StartEventResponse startEventResponse,
                                                   String description, String summary) {
