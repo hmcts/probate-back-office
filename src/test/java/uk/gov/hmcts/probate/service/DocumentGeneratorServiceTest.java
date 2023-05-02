@@ -17,6 +17,9 @@ import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.LanguagePreference;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
@@ -26,6 +29,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
 import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
 import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
 import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
@@ -787,7 +796,7 @@ class DocumentGeneratorServiceTest {
     }
 
     @Test
-    void shouldRemoveDocuments() {
+    void shouldRemoveDocumentsForGrant() {
         Document doc1 = Document.builder().build();
         Document doc2 = Document.builder().build();
         List<CollectionMember<Document>> generatedList = new ArrayList<>();
@@ -829,5 +838,110 @@ class DocumentGeneratorServiceTest {
 
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
         verify(documentService, times(3)).delete(any(Document.class), anyString());
+    }
+
+    @Test
+    void shouldRemoveDocumentsForCaveat() {
+        Document doc1 = Document.builder().build();
+        Document doc2 = Document.builder().build();
+        List<CollectionMember<Document>> generatedList = new ArrayList<>();
+        generatedList.add(new CollectionMember<Document>("1", doc1));
+        List<CollectionMember<Document>> originalGeneratedList = new ArrayList<>();
+        originalGeneratedList.add(new CollectionMember<Document>("1", doc1));
+        originalGeneratedList.add(new CollectionMember<Document>("2", doc2));
+
+        UploadDocument uploadDocument1 = UploadDocument.builder().build();
+        UploadDocument uploadDocument2 = UploadDocument.builder().build();
+        List<CollectionMember<UploadDocument>> uploadedList = new ArrayList<>();
+        uploadedList.add(new CollectionMember<UploadDocument>("3", uploadDocument1));
+        List<CollectionMember<UploadDocument>> originalUploadedList = new ArrayList<>();
+        originalUploadedList.add(new CollectionMember<UploadDocument>("3", uploadDocument1));
+        originalUploadedList.add(new CollectionMember<UploadDocument>("4", uploadDocument2));
+
+        ScannedDocument scannedDocument1 = ScannedDocument.builder().type("WILL").build();
+        ScannedDocument scannedDocument2 = ScannedDocument.builder().type("WILL").build();
+        List<CollectionMember<ScannedDocument>> scannedList = new ArrayList<>();
+        scannedList.add(new CollectionMember<ScannedDocument>("5", scannedDocument1));
+        List<CollectionMember<ScannedDocument>> originalScannedList = new ArrayList<>();
+        originalScannedList.add(new CollectionMember<ScannedDocument>("5", scannedDocument1));
+        originalScannedList.add(new CollectionMember<ScannedDocument>("6", scannedDocument2));
+
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(originalGeneratedList)
+                .originalDocsUploaded(originalUploadedList)
+                .originalDocsScanned(originalScannedList)
+                .build();
+        CaveatDetails caseDetails =
+                new CaveatDetails(CaveatData.builder()
+                        .documentsGenerated(generatedList)
+                        .documentsUploaded(uploadedList)
+                        .scannedDocuments(scannedList)
+                        .originalDocuments(originalDocuments)
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caseDetails);
+
+        documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(caveatCallbackRequest);
+        verify(documentService, times(3)).delete(any(Document.class), anyString());
+    }
+
+    @Test
+    void shouldRemoveDocumentsForWillLodgement() {
+        Document doc1 = Document.builder().build();
+        Document doc2 = Document.builder().build();
+        List<CollectionMember<Document>> generatedList = new ArrayList<>();
+        generatedList.add(new CollectionMember<Document>("1", doc1));
+        List<CollectionMember<Document>> originalGeneratedList = new ArrayList<>();
+        originalGeneratedList.add(new CollectionMember<Document>("1", doc1));
+        originalGeneratedList.add(new CollectionMember<Document>("2", doc2));
+
+        UploadDocument uploadDocument1 = UploadDocument.builder().build();
+        UploadDocument uploadDocument2 = UploadDocument.builder().build();
+        List<CollectionMember<UploadDocument>> uploadedList = new ArrayList<>();
+        uploadedList.add(new CollectionMember<UploadDocument>("3", uploadDocument1));
+        List<CollectionMember<UploadDocument>> originalUploadedList = new ArrayList<>();
+        originalUploadedList.add(new CollectionMember<UploadDocument>("3", uploadDocument1));
+        originalUploadedList.add(new CollectionMember<UploadDocument>("4", uploadDocument2));
+
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(originalGeneratedList)
+                .originalDocsUploaded(originalUploadedList)
+                .build();
+        WillLodgementDetails caseDetails =
+                new WillLodgementDetails(WillLodgementData.builder()
+                        .documentsGenerated(generatedList)
+                        .documentsUploaded(uploadedList)
+                        .originalDocuments(originalDocuments)
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        WillLodgementCallbackRequest willLodgementCallbackRequest = new WillLodgementCallbackRequest(caseDetails);
+
+        documentGeneratorService.permanentlyDeleteRemovedDocumentsForWillLodgement(willLodgementCallbackRequest);
+        verify(documentService, times(2)).delete(any(Document.class), anyString());
+    }
+
+    @Test
+    void shouldRemoveDocumentsForStandingSearch() {
+        UploadDocument uploadDocument1 = UploadDocument.builder().build();
+        UploadDocument uploadDocument2 = UploadDocument.builder().build();
+        List<CollectionMember<UploadDocument>> uploadedList = new ArrayList<>();
+        uploadedList.add(new CollectionMember<UploadDocument>("3", uploadDocument1));
+        List<CollectionMember<UploadDocument>> originalUploadedList = new ArrayList<>();
+        originalUploadedList.add(new CollectionMember<UploadDocument>("3", uploadDocument1));
+        originalUploadedList.add(new CollectionMember<UploadDocument>("4", uploadDocument2));
+
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsUploaded(originalUploadedList)
+               .build();
+        StandingSearchDetails caseDetails =
+                new StandingSearchDetails(StandingSearchData.builder()
+                        .documentsUploaded(uploadedList)
+                        .originalDocuments(originalDocuments)
+                        .build(),
+                        LAST_MODIFIED, CASE_ID);
+        StandingSearchCallbackRequest standingSearchCallbackRequest = new StandingSearchCallbackRequest(caseDetails);
+
+        documentGeneratorService.permanentlyDeleteRemovedDocumentsForStandingSearch(standingSearchCallbackRequest);
+        verify(documentService, times(1)).delete(any(Document.class), anyString());
     }
 }

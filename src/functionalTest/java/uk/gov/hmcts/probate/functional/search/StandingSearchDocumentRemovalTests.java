@@ -13,12 +13,6 @@ import java.io.IOException;
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class StandingSearchDocumentRemovalTests extends IntegrationTestBase {
 
-    private static final String PAYLOAD_DEFAULT = "search/standingSearchPayload.json";
-
-    private static final String SETUP_FOR_PERMANENT_DOCUMENT_REMOVAL = "/standing-search/setup-for-permanent-removal";
-    private static final String PERMANENTLY_DELETE_REMOVED = "/standing-search/permanently-delete-removed";
-
-
     @Autowired
     protected FunctionalTestUtils utils;
 
@@ -29,7 +23,8 @@ public class StandingSearchDocumentRemovalTests extends IntegrationTestBase {
 
     @Test
     public void shouldPostForDocumentRemovals() throws IOException {
-        validatePostSuccess(PAYLOAD_DEFAULT, SETUP_FOR_PERMANENT_DOCUMENT_REMOVAL);
-        validatePostSuccess(PAYLOAD_DEFAULT, PERMANENTLY_DELETE_REMOVED);
+        validatePostSuccess("search/standingSearchPayload.json", "/standing-search/setup-for-permanent-removal");
+        validatePostSuccess("search/standingSearchDocumentsPayload.json",
+                "/standing-search/permanently-delete-removed");
     }
 }

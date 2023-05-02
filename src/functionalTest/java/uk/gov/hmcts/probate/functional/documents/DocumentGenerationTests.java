@@ -173,12 +173,12 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     @Test
     public void shouldPostForDocumentRemovalsGrant() throws IOException {
         validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/setup-for-permanent-removal");
-        validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/permanently-delete-removed");
+        validatePostSuccess("document/grantDocumentsPayload.json", "/document/permanently-delete-removed");
     }
 
     @Test
     public void shouldPostForDocumentRemovalsWill() throws IOException {
         validatePostSuccess("willLodgementPayload.json", "/document/setup-for-permanent-removal-will");
-        validatePostSuccess("willLodgementPayload.json", "/document/permanently-delete-removed-will");
+        validatePostSuccess("willLodgementDocumentsPayload.json", "/document/permanently-delete-removed-will");
     }
 }
