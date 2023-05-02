@@ -1109,6 +1109,8 @@ public class CallbackResponseTransformer {
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
+            .nocPreparedDate(ofNullable(caseData.getNocPreparedDate())
+                .map(dateTimeFormatter::format).orElse(null))
             .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
         if (transform) {

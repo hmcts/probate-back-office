@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
@@ -111,6 +112,7 @@ public class BusinessValidationController {
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
+    private final PrepareNocService prepareNocService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -562,6 +564,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> prepareCaseForNoc(
             @RequestBody CallbackRequest callbackRequest) {
         log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
+        prepareNocService.addNocDate(callbackRequest.getCaseDetails().getData());
         return ResponseEntity.ok(callbackResponseTransformer.transformForNoc(callbackRequest));
     }
 

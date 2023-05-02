@@ -573,6 +573,7 @@ public class CaseData extends CaseDataParent {
     private final String includeStatementOfTruth;
     private LocalDate lastEvidenceAddedDate;
     private String documentUploadedAfterCaseStopped;
+    private LocalDate nocPreparedDate;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
