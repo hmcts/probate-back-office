@@ -46,3 +46,10 @@ src/test/end-to-end/functional-output/
 /src/main/generated/
 
 .aat-env
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
