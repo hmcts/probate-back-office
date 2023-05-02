@@ -616,4 +616,16 @@
         <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
         <vulnerabilityName>1091758</vulnerabilityName>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-2.7.4.jar
+   ]]></notes>
+        <cve>CVE-2023-20873</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <cve>CVE-2023-20862</cve>
+    </suppress>
 </suppressions>
