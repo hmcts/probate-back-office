@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.7.4'
+    springBootVersion = '3.0.6'
   }
   repositories {
     jcenter()
@@ -14,8 +14,8 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.7.4'
-  id 'uk.gov.hmcts.java' version '0.12.39'
+  id 'org.springframework.boot' version '3.0.6'
+  id 'uk.gov.hmcts.java' version '0.12.43'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
@@ -189,17 +189,16 @@ def versions = [
         springCloudStarterNetflixHystrix: '4.0.0',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '3.0.5',
-        springBootStarterHateoas        : '3.0.5',
+        springBootVersion               : '3.0.6',
+        springBootStarterHateoas        : '3.0.6',
         hmctsJavaLogging                : '5.1.7',
-        authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '5.2.1',
         lombok                          : '1.18.26',
         springDocOpenUi                 : '1.6.6',
-        springSecurityVersion           : '6.0.2',
+        springSecurityVersion           : '6.0.3',
         probateCommonsVersion           : 'DTSPB-3430-B-v1.4.10',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
@@ -272,6 +271,11 @@ configurations.all {
         details.useVersion '2.18.0'
       }
     }
+    dependencySubstitution {
+      substitute module('org.codehaus.groovy:groovy-json') with module('org.apache.groovy:groovy-json:4.0.11')
+      substitute module('org.codehaus.groovy:groovy-xml') with module('org.apache.groovy:groovy-json:4.0.11')
+      substitute module('org.codehaus.groovy:groovy') with module('org.apache.groovy:groovy-json:4.0.11')
+    }
   }
 }
 
@@ -282,7 +286,11 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   implementation group: 'org.springframework.security', name: 'spring-security-web', version: versions.springSecurityVersion
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.0'
+  implementation group: 'org.springframework.security', name: 'spring-security-config', version: versions.springSecurityVersion
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurityVersion
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: versions.springSecurityVersion
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: versions.springSecurityVersion
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.1'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
@@ -299,7 +307,7 @@ dependencies {
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.0'
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
@@ -324,9 +332,9 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.10.0'
 
-  implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+  implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '12.3'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
+  implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.1.4'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.3.2'
   implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.11.0'
@@ -352,10 +360,9 @@ dependencies {
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
-  testImplementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.2.0'
-  testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
+  testImplementation 'com.github.hmcts:fortify-client:1.3.0:all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
@@ -366,10 +373,10 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
-  testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
+  testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '4.2.0'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok

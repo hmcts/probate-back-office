@@ -1,113 +1,93 @@
 package uk.gov.hmcts.probate.config;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
-import uk.gov.hmcts.reform.auth.checker.core.service.Service;
-import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
-import uk.gov.hmcts.reform.auth.checker.core.user.User;
-import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.AuthCheckerServiceAndUserFilter;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
+import org.springframework.security.oauth2.core.OAuth2TokenValidator;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.JwtDecoders;
+import org.springframework.security.oauth2.jwt.JwtTimestampValidator;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.web.BearerTokenAuthenticationFilter;
+import org.springframework.security.web.SecurityFilterChain;
+import uk.gov.hmcts.probate.security.JwtGrantedAuthoritiesConverter;
+import uk.gov.hmcts.reform.authorisation.filters.ServiceAuthFilter;
 
+@Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
-    @Configuration
-    @Order(1)
-    public static class AuthCheckerServiceAndUSerFilterConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
+    private String issuerUri;
 
-        private final AuthCheckerServiceAndUserFilter authCheckerServiceAndUserFilter;
+    @Value("${oidc.issuer}")
+    private String issuerOverride;
 
-        public AuthCheckerServiceAndUSerFilterConfigurerAdapter(UserRequestAuthorizer<User> userRequestAuthorizer,
-                                                                ServiceRequestAuthorizer serviceRequestAuthorizer,
-                                                                AuthenticationManager authenticationManager) {
-            authCheckerServiceAndUserFilter =
-                new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
-            authCheckerServiceAndUserFilter.setAuthenticationManager(authenticationManager);
-        }
+    private ServiceAuthFilter serviceAuthFilter;
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
+    private JwtAuthenticationConverter jwtAuthenticationConverter;
 
-            http
-                .requestMatchers()
-                .antMatchers("/notify/grant-delayed-scheduled")
-                .antMatchers("/notify/grant-awaiting-documents-scheduled")
-                .and()
-                .addFilter(authCheckerServiceAndUserFilter)
-                .csrf().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated();
-        }
+
+    public SecurityConfiguration(final JwtGrantedAuthoritiesConverter jwtGrantedAuthoritiesConverter,
+                                 final ServiceAuthFilter serviceAuthFilter) {
+        this.serviceAuthFilter = serviceAuthFilter;
+        this.jwtAuthenticationConverter = new JwtAuthenticationConverter();
+        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(jwtGrantedAuthoritiesConverter);
     }
 
-    @Configuration
-    public static class AuthCheckerServiceOnlyFilterConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        private AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter;
-
-        public AuthCheckerServiceOnlyFilterConfigurerAdapter(RequestAuthorizer<Service> serviceRequestAuthorizer,
-                                                             AuthenticationManager authenticationManager) {
-            authCheckerServiceOnlyFilter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
-            authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
-        }
-
-        @Override
-        @Order(2)
-        protected void configure(HttpSecurity http) throws Exception {
-
-            http
-                .requestMatchers()
-                .antMatchers("/swagger-ui.html")
-                .antMatchers("/swagger-resources/**")
-                .antMatchers("/v2/api-docs")
-                .antMatchers("/health", "/health/liveness")
-                .antMatchers("/info")
-                .antMatchers("/case/**")
-                .antMatchers("/case-matching/**")
-                .antMatchers("/caveat/**")
-                .antMatchers("/data-extract/**")
-                .antMatchers("/document/**")
-                .antMatchers("/transform-scanned-data")
-                .antMatchers("/transform-exception-record")
-                .antMatchers("/update-case")
-                .antMatchers("/grant/**")
-                .antMatchers("/nextsteps/**")
-                .antMatchers("/notify/**")
-                .antMatchers("/forms/**")
-                .antMatchers("/template/**")
-                .antMatchers("/probateManTypes/**")
-                .antMatchers("/legacy/**")
-                .antMatchers("/standing-search/**")
-                .and()
-                .addFilter(authCheckerServiceOnlyFilter)
-                .csrf().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated();
-
-        }
-
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers("/swagger-ui.html",
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().requestMatchers("/swagger-ui.html",
+                "/swagger-ui/**",
                 "/swagger-resources/**",
-                "/v2/api-docs",
+                "/v3/**",
                 "/health",
                 "/health/liveness",
-                "/info",
-                "/data-extract/**",
+                "/health/readiness",
+                "/status/health",
+                "/loggers/**",
                 "/");
-        }
     }
 
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .formLogin().disable()
+                .logout().disable()
+                .addFilterBefore(serviceAuthFilter, BearerTokenAuthenticationFilter.class)
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .requestMatchers("/api/**").authenticated()
+                .and()
+                .oauth2ResourceServer()
+                .jwt()
+                .jwtAuthenticationConverter(jwtAuthenticationConverter)
+                .and()
+                .and()
+                .oauth2Client();
+        return http.build();
+    }
 
+    @Bean
+    JwtDecoder jwtDecoder() {
+        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder)
+                JwtDecoders.fromOidcIssuerLocation(issuerUri);
+        OAuth2TokenValidator<Jwt> withTimestamp = new JwtTimestampValidator();
+        OAuth2TokenValidator<Jwt> validator = new DelegatingOAuth2TokenValidator<>(withTimestamp);
+
+        jwtDecoder.setJwtValidator(validator);
+
+        return jwtDecoder;
+    }
 }

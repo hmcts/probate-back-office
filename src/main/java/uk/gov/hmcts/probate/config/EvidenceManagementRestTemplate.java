@@ -4,11 +4,12 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
-import org.apache.http.HttpRequestInterceptor;
-import org.apache.http.HttpResponseInterceptor;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.http.HttpRequestInterceptor;
+import org.apache.hc.core5.http.HttpResponseInterceptor;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
@@ -39,10 +40,10 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
 
 
     @Value("${http.connect.timeout}")
-    private int httpConnectTimeout;
+    private Timeout httpConnectTimeout;
 
     @Value("${http.connect.request.timeout}")
-    private int httpConnectRequestTimeout;
+    private Timeout httpConnectRequestTimeout;
 
     public EvidenceManagementRestTemplate() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -78,9 +79,9 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
         CloseableHttpClient client = HttpClientBuilder
                 .create()
                 .useSystemProperties()
-                .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
-                .addInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
-                .addInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
+                .addRequestInterceptorFirst((HttpRequestInterceptor) new OutboundRequestIdSettingInterceptor())
+                .addRequestInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
+                .addResponseInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
                 .setDefaultRequestConfig(config)
                 .build();
 

@@ -4,9 +4,10 @@ import feign.Client;
 import feign.httpclient.ApacheHttpClient;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,11 +21,11 @@ public class FeignClientConfiguration {
 
     @Setter
     @Getter
-    private int timeout;
+    private Timeout timeout;
 
     @Bean
     public Client getFeignHttpClient() {
-        return new ApacheHttpClient(getHttpClient());
+        return new ApacheHttpClient((org.apache.http.client.HttpClient) getHttpClient());
     }
 
     @Bean
@@ -38,7 +39,7 @@ public class FeignClientConfiguration {
         RequestConfig config = RequestConfig.custom()
             .setConnectTimeout(timeout)
             .setConnectionRequestTimeout(timeout)
-            .setSocketTimeout(timeout)
+            .setResponseTimeout(timeout)
             .build();
 
         return HttpClientBuilder

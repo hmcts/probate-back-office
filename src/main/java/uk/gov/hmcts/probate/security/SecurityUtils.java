@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
@@ -91,10 +90,7 @@ public class SecurityUtils {
     }
 
     public String getUserId() {
-        return ((ServiceAndUserDetails) SecurityContextHolder.getContext()
-            .getAuthentication()
-            .getPrincipal())
-            .getUsername();
+        return httpServletRequest != null ? httpServletRequest.getHeader(USER_ID) : null;
     }
 
     public String generateServiceToken() {
