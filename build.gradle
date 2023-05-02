@@ -41,7 +41,7 @@ java {
 }
 
 jacoco {
-  toolVersion = '0.8.2'
+  toolVersion = '0.8.8'
 }
 
 sonarqube {
@@ -191,7 +191,7 @@ def versions = [
         serenityreporter                : '2.6.0',
         springBootVersion               : '3.0.6',
         springBootStarterHateoas        : '3.0.6',
-        hmctsJavaLogging                : '5.1.7',
+        hmctsJavaLogging                : '6.0.1',
         jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
@@ -202,7 +202,7 @@ def versions = [
         probateCommonsVersion           : 'DTSPB-3430-B-v1.4.10',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '4.0.0',
+        serviceAuthVersion              : '5.0.0',
         pact_version                    : '4.1.34',
         probatePactCommonsVersion       : '1.0.2',
         springCloud                     : '4.0.0',
@@ -305,11 +305,9 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-spring', version: versions.hmctsJavaLogging
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts', name: 'idam-java-client', version: '3.0.0'
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
-  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.16'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
@@ -375,7 +373,7 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '4.2.0'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
@@ -391,7 +389,7 @@ dependencies {
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
   testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  testCaseCreatorImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  testCaseCreatorImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testCaseCreatorImplementation sourceSets.main.runtimeClasspath
   testCaseCreatorImplementation sourceSets.test.runtimeClasspath
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok

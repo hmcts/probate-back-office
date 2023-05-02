@@ -21,7 +21,9 @@ public class FeignClientConfiguration {
 
     @Setter
     @Getter
-    private Timeout timeout;
+    private int timeout;
+
+    private Timeout timeoutMillisecond = Timeout.ofMilliseconds(timeout);
 
     @Bean
     public Client getFeignHttpClient() {
@@ -37,9 +39,9 @@ public class FeignClientConfiguration {
 
     private CloseableHttpClient getHttpClient() {
         RequestConfig config = RequestConfig.custom()
-            .setConnectTimeout(timeout)
-            .setConnectionRequestTimeout(timeout)
-            .setResponseTimeout(timeout)
+            .setConnectTimeout(timeoutMillisecond)
+            .setConnectionRequestTimeout(timeoutMillisecond)
+            .setResponseTimeout(timeoutMillisecond)
             .build();
 
         return HttpClientBuilder

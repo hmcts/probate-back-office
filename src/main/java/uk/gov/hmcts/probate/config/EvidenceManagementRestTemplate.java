@@ -7,8 +7,6 @@ import com.google.common.collect.ImmutableList;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.hc.core5.http.HttpRequestInterceptor;
-import org.apache.hc.core5.http.HttpResponseInterceptor;
 import org.apache.hc.core5.util.Timeout;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
@@ -23,8 +21,6 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterceptor;
-import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
 
 import java.nio.charset.Charset;
 
@@ -40,10 +36,14 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
 
 
     @Value("${http.connect.timeout}")
-    private Timeout httpConnectTimeout;
+    private int httpConnectTimeout;
 
     @Value("${http.connect.request.timeout}")
-    private Timeout httpConnectRequestTimeout;
+    private int httpConnectRequestTimeout;
+
+    private Timeout httpConnectTimeoutMs = Timeout.ofMilliseconds(httpConnectTimeout);
+
+    private Timeout httpConnectRequestTimeoutMs = Timeout.ofMilliseconds(httpConnectRequestTimeout);
 
     public EvidenceManagementRestTemplate() {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -72,16 +72,13 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
 
     private ClientHttpRequestFactory getClientHttpRequestFactory() {
         RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(httpConnectTimeout)
-                .setConnectionRequestTimeout(httpConnectRequestTimeout)
+                .setConnectTimeout(httpConnectTimeoutMs)
+                .setConnectionRequestTimeout(httpConnectRequestTimeoutMs)
                 .build();
 
         CloseableHttpClient client = HttpClientBuilder
                 .create()
                 .useSystemProperties()
-                .addRequestInterceptorFirst((HttpRequestInterceptor) new OutboundRequestIdSettingInterceptor())
-                .addRequestInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
-                .addResponseInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
                 .setDefaultRequestConfig(config)
                 .build();
 
