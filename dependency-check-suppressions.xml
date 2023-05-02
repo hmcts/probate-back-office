@@ -622,4 +622,10 @@
    ]]></notes>
         <cve>CVE-2023-20873</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <cve>CVE-2023-20862</cve>
+    </suppress>
 </suppressions>
