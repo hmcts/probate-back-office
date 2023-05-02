@@ -30,7 +30,6 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
-import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -161,9 +160,6 @@ class BusinessValidationUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformer;
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
-    @Mock
-    private CcdDataStoreService ccdDataStoreService;
-
     private BusinessValidationController underTest;
 
     @BeforeEach
@@ -197,8 +193,7 @@ class BusinessValidationUnitTest {
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
             handOffLegacyTransformer,
-            registrarDirectionServiceMock,
-            ccdDataStoreService);
+            registrarDirectionServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -878,19 +873,5 @@ class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response =
                 underTest.prepareCaseForNoc(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldRemoveCaseAccessForNoc() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDetailsMock.getId()).thenReturn(99L);
-        when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
-                .thenReturn(callbackResponseMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.citizenRemoveAccess("Auth", callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-        verify(ccdDataStoreService).removeCreatorRole("99", "Auth");
     }
 }

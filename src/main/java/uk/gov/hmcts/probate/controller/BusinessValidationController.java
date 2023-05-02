@@ -38,7 +38,6 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
-import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -112,7 +111,6 @@ public class BusinessValidationController {
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
-    private final CcdDataStoreService ccdDataStoreService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -565,17 +563,6 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(callbackResponseTransformer.transformForNoc(callbackRequest));
-    }
-
-    /**
-     * TODO - helper to prove that when initiated from citizen flow, we can remove access to their case.
-     */
-    @PostMapping(path = "/citizen-remove-access")
-    public ResponseEntity citizenRemoveAccess(
-            @RequestHeader(value = "Authorization") String authToken,
-            @RequestBody CallbackRequest request) {
-        ccdDataStoreService.removeCreatorRole(request.getCaseDetails().getId().toString(), authToken);
-        return ResponseEntity.ok("completed remove access");
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
