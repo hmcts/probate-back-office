@@ -653,9 +653,9 @@ replace pr-{NUMBER} as appropriate
 ```
 https://probate-frontend-pr-1218.preview.platform.hmcts.net/health
 https://probate-caveats-fe-pr-276.preview.platform.hmcts.net/caveats/health
-http://probate-orchestrator-service-pr-334.preview.platform.hmcts.net/health
-http://probate-submit-service-pr-334.preview.platform.hmcts.net/health
-http://probate-business-service-pr-334.preview.platform.hmcts.net/health
+https://probate-orchestrator-service-pr-334.preview.platform.hmcts.net/health
+https://probate-submit-service-pr-334.preview.platform.hmcts.net/health
+https://probate-business-service-pr-334.preview.platform.hmcts.net/health
 https://probate-back-office-pr-2224.preview.platform.hmcts.net/health
 ```
 

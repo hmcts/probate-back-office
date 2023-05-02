@@ -43,9 +43,9 @@ import uk.gov.hmcts.reform.ccd.document.am.model.Document;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
@@ -58,7 +58,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class DocumentControllerUnitTest {
+class DocumentControllerUnitTest {
 
     private static final String VALID_FILE_NAME = "valid_file.png";
 
@@ -114,7 +114,7 @@ public class DocumentControllerUnitTest {
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
         documentController = new DocumentController(idamApi, documentGeneratorService, registryDetailsService,
-            pdfManagementService, callbackResponseTransformer, caseDataTransformer,
+                    pdfManagementService, callbackResponseTransformer, caseDataTransformer,
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
@@ -122,7 +122,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorIfThereAreNoFilesInTheRequest() {
+    void shouldReturnErrorIfThereAreNoFilesInTheRequest() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: no files passed");
 
@@ -131,7 +131,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorForEmptyFileList() {
+    void shouldReturnErrorForEmptyFileList() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: no files passed");
 
@@ -141,7 +141,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorForTooManyFiles() {
+    void shouldReturnErrorForTooManyFiles() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: too many files");
 
@@ -157,7 +157,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorForInvalidFileExtension() {
+    void shouldReturnErrorForInvalidFileExtension() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: invalid file type: testData");
         MockMultipartFile file = new MockMultipartFile("testData", "filename.txt", "text/plain", "some xml".getBytes());
@@ -169,7 +169,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUploadSuccessfully() throws IOException {
+    void shouldUploadSuccessfully() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
 
 
@@ -193,7 +193,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
+    void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
             .build();
@@ -213,7 +213,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
+    void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
                 .build();
@@ -235,7 +235,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
+    void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
                 .build();

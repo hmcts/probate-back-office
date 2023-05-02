@@ -1,10 +1,14 @@
 package uk.gov.hmcts.probate.service;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -33,14 +37,10 @@ import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static java.util.Collections.emptyList;
 import static java.util.Optional.ofNullable;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
@@ -57,7 +57,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT;
-
 
 @Slf4j
 @Service

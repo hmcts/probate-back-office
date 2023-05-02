@@ -6,11 +6,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.Constants;
+import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;

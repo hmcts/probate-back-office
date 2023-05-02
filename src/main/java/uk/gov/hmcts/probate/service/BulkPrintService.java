@@ -148,7 +148,7 @@ public class BulkPrintService {
                 pdfs = arrangePdfDocumentsForBulkPrinting(callbackRequest, grantDocument, coverSheet);
             }
             log.info(CASE_ID + callbackRequest.getCaseDetails().getId().toString() + "number of documents is: "
-                + pdfs.size());
+                + pdfs.size() + " with " + pdfs.get(1).copies + "copies of grant");
 
             String authHeaderValue = serviceAuthTokenGenerator.generate();
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
