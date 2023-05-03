@@ -37,7 +37,7 @@ public class PrepareNocService {
 
     private RemovedRepresentative setRemovedRepresentative(CaseData caseData) {
         OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
-        Organisation organisation = organisationPolicy != null ? organisationPolicy.getOrganisation() : null;
+        Organisation organisation = organisationPolicy.getOrganisation();
         return RemovedRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .organisationID(organisation.getOrganisationID())
