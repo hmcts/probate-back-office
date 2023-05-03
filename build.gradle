@@ -263,14 +263,6 @@ dependencyManagement {
 
 configurations.all {
   resolutionStrategy {
-    eachDependency { DependencyResolveDetails details ->
-      if (details.requested.group in ['org.hibernate']) {
-        details.useVersion '5.6.5.Final'
-      }
-      if (details.requested.group in ['org.apache.logging.log4j']) {
-        details.useVersion '2.18.0'
-      }
-    }
     dependencySubstitution {
       substitute module('org.codehaus.groovy:groovy-json') with module('org.apache.groovy:groovy-json:4.0.11')
       substitute module('org.codehaus.groovy:groovy-xml') with module('org.apache.groovy:groovy-json:4.0.11')
@@ -290,6 +282,7 @@ dependencies {
   implementation group: 'org.springframework.security', name: 'spring-security-oauth2-core', version: versions.springSecurityVersion
   implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server', version: versions.springSecurityVersion
   implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose', version: versions.springSecurityVersion
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-client', version: versions.springSecurityVersion
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.1'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
@@ -322,6 +315,7 @@ dependencies {
   implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: versions.springDocOpenUi
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   implementation group:'org.projectlombok', name: 'lombok', version: versions.lombok
+  implementation 'jakarta.inject:jakarta.inject-api:2.0.1.MR'
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.2.0'
 
