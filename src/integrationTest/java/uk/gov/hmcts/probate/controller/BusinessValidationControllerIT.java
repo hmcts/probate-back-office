@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -204,6 +205,8 @@ class BusinessValidationControllerIT {
     private CcdDataStoreService ccdDataStoreService;
     @MockBean
     private RegistrarDirectionService registrarDirectionService;
+    @MockBean
+    private PrepareNocService prepareNocService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
