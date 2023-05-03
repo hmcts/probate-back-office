@@ -31,7 +31,7 @@ class PrepareNocServiceTest {
 
     @Test
     void shouldAddAndOrder() {
-        List<CollectionMember<RemovedRepresentative>> RemovedRepresentatives = setupRemovedRepresentative();
+        List<CollectionMember<RemovedRepresentative>> removedRepresentatives = setupRemovedRepresentative();
         Organisation organisationData = Organisation.builder().organisationID("123")
                 .organisationName("ABC").build();
         OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
@@ -43,7 +43,7 @@ class PrepareNocServiceTest {
 
 
         CaseData caseData = CaseData.builder()
-                .removedRepresentatives(RemovedRepresentatives)
+                .removedRepresentatives(removedRepresentatives)
                 .removedRepresentative(removedRepresentative)
                 .applicantOrganisationPolicy(policy)
                 .solsSOTForenames("First")
