@@ -564,8 +564,9 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> prepareCaseForNoc(
             @RequestBody CallbackRequest callbackRequest) {
         log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
+        prepareNocService.addRemovedRepresentatives(callbackRequest.getCaseDetails().getData());
         prepareNocService.addNocDate(callbackRequest.getCaseDetails().getData());
-        return ResponseEntity.ok(callbackResponseTransformer.transformForNoc(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

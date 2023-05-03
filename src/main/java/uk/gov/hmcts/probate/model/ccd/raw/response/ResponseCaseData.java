@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -369,4 +370,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<RegistrarDirection>> registrarDirections;
     private final RegistrarDirection registrarDirectionToAdd;
     private final String nocPreparedDate;
+    private final List<CollectionMember<RemovedRepresentative>> removedRepresentatives;
+    private final RemovedRepresentative removedRepresentative;
 }

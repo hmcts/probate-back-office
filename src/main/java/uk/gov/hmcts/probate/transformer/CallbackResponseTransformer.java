@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -1111,6 +1112,7 @@ public class CallbackResponseTransformer {
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
             .nocPreparedDate(ofNullable(caseData.getNocPreparedDate())
                 .map(dateTimeFormatter::format).orElse(null))
+            .removedRepresentatives(getNullForEmptyRepresentatives(caseData.getRemovedRepresentatives()))
             .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
         if (transform) {
@@ -1678,6 +1680,14 @@ public class CallbackResponseTransformer {
 
     private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
             List<CollectionMember<RegistrarDirection>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
+
+    private List<CollectionMember<RemovedRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<RemovedRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
         }
