@@ -39,6 +39,7 @@ public class PrepareNocService {
         OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
         Organisation organisation = organisationPolicy != null ? organisationPolicy.getOrganisation() : null;
         return RemovedRepresentative.builder()
+                .addedDateTime(LocalDateTime.now())
                 .organisationID(organisation.getOrganisationID())
                 .organisationName(organisation.getOrganisationName())
                 .solicitorFirstName(caseData.getSolsSOTForenames())
