@@ -467,6 +467,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadedAfterCaseStopped", "Label": "Has a document been scanned or uploaded since the case was stopped?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "changeOrganisationRequestField", "Label": "Change Organisation Request", "FieldType": "ChangeOrganisationRequest", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "nocPreparedDate", "Label": "Noc prepared date", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "removedRepresentatives", "Label": "Removed representatives", "FieldType": "Collection", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "removedRepresentatives", "Label": "Removed representatives", "FieldType": "Collection", "FieldTypeParameter": "RemovedRepresentative", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "removedRepresentative", "Label": "Removed representative", "FieldType": "RemovedRepresentative", "SecurityClassification": "Public"}
 ]
