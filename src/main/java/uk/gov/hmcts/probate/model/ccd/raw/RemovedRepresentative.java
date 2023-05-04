@@ -16,11 +16,9 @@ public class RemovedRepresentative {
 
     private final LocalDateTime addedDateTime;
     private final String organisationID;
-    private final String organisationName;
     private final String solicitorFirstName;
     private final String solicitorLastName;
     private final String solicitorEmail;
-    private final SolsAddress solsAddress;
     private final Organisation organisation;
 
 }

@@ -8,7 +8,6 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.time.LocalDateTime;
@@ -37,9 +36,8 @@ class PrepareNocServiceTest {
         OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
         RemovedRepresentative removedRepresentative = RemovedRepresentative.builder()
                 .organisationID(policy.getOrganisation().getOrganisationID())
-                .organisationName(policy.getOrganisation().getOrganisationName())
-                .solicitorEmail("abc@gmail.com")
-                .solsAddress(SolsAddress.builder().postCode("SW1 0ZZ").build()).build();
+                .organisation(policy.getOrganisation())
+                .solicitorEmail("abc@gmail.com").build();
 
 
         CaseData caseData = CaseData.builder()
@@ -72,7 +70,7 @@ class PrepareNocServiceTest {
                 .builder()
                 .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
                 .organisationID(policy.getOrganisation().getOrganisationID())
-                .organisationName(policy.getOrganisation().getOrganisationName())
+                .organisation(policy.getOrganisation())
                 .solicitorFirstName("First Name1")
                 .solicitorLastName("Last Name1")
                 .solicitorEmail("abc@gmail.com")
@@ -82,10 +80,10 @@ class PrepareNocServiceTest {
                 .builder()
                 .addedDateTime(LocalDateTime.parse("2023-01-01T18:00:00.001Z", dateTimeFormatter))
                 .organisationID(policy.getOrganisation().getOrganisationID())
-                .organisationName(policy.getOrganisation().getOrganisationName())
                 .solicitorFirstName("First Name2")
                 .solicitorLastName("Last Name2")
                 .solicitorEmail("abc@gmail.com")
+                .organisation(policy.getOrganisation())
                 .build());
         removedRepresentatives.add(removedRepresentative1);
         removedRepresentatives.add(removedRepresentative2);

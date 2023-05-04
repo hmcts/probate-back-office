@@ -41,11 +41,9 @@ public class PrepareNocService {
         return RemovedRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .organisationID(organisation.getOrganisationID())
-                .organisationName(organisation.getOrganisationName())
                 .solicitorFirstName(caseData.getSolsSOTForenames())
                 .solicitorLastName(caseData.getSolsSOTSurname())
                 .solicitorEmail(caseData.getSolsSolicitorEmail())
-                .solsAddress(caseData.getSolsSolicitorAddress())
                 .organisation(organisation)
                 .build();
     }
