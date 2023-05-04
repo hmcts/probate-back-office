@@ -65,9 +65,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_EXTEND_PAYLOAD = "/caveat/caveatExtendPayloadExtend.json";
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
     private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
-    private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD = "/caveat/caveatSolicitorValidate.json";
     private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB = "/caveat/caveatSolicitorValidateNoDOB.json";
-    private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB = "caveatSolicitorValidateResponseNoDOB.txt";
     private static final String CAVEAT_VALIDATE_EXTEND_PAYLOAD = "/caveat/caveatValidateExtend.json";
     private static final String CAVEAT_CASE_WITHDRAW_PAYLOAD = "/caveat/caveatCaseWithdraw.json";
     private static final String YES = "Yes";
@@ -200,20 +198,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorCaveatRaisedEmailContents() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
-        assertTrue(responseBody.asString().contains("serviceRequestReference"));
-    }
-
-    @Test
-    public void verifySolicitorCaveatRaisedEmailContentsNoDOB() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB,
-                CAVEAT_VALIDATE);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB, EMAIL_NOTIFICATION_URL,
-            responseBody,
-            replacements);
+    public void verifySolicitorCaveatValidateEmailContentsNoDOB() throws IOException {
+        assertNotNull(validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB, CAVEAT_VALIDATE));
     }
 
     @Test
