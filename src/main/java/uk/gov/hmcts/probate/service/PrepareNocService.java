@@ -45,7 +45,7 @@ public class PrepareNocService {
                 .solicitorFirstName(caseData.getSolsSOTForenames())
                 .solicitorLastName(caseData.getSolsSOTSurname())
                 .solicitorEmail(caseData.getSolsSolicitorEmail())
-                .solsAddress(organisation.getOrganisationAddress())
+                .solsAddress(caseData.getSolsSolicitorAddress())
                 .build();
     }
 }

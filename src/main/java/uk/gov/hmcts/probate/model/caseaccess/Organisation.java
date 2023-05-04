@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import lombok.ToString;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 @Data
 @Builder
@@ -18,7 +17,4 @@ public class Organisation {
 
     @JsonProperty("OrganisationName")
     private String organisationName;
-
-    @JsonProperty("OrganisationName")
-    private SolsAddress organisationAddress;
 }
