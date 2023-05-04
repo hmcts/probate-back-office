@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -30,6 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
+import uk.gov.hmcts.probate.model.payments.pba.ContactInformationResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -1141,12 +1143,25 @@ public class CallbackResponseTransformer {
             .organisation(Organisation.builder()
                 .organisationID(organisationEntityResponse.getOrganisationIdentifier())
                 .organisationName(organisationEntityResponse.getName())
+                .organisationAddress(setOrganisationAddress(organisationEntityResponse.getContactInformation().get(0)))
                 .build())
             .orgPolicyReference(caseData.getApplicantOrganisationPolicy().getOrgPolicyReference())
             .orgPolicyCaseAssignedRole(caseData.getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole())
             .build();
         }
         return null;
+    }
+
+    private SolsAddress setOrganisationAddress(ContactInformationResponse address) {
+        return SolsAddress.builder()
+                .addressLine1(address.getAddressLine1())
+                .addressLine2(address.getAddressLine1())
+                .addressLine3(address.getAddressLine1())
+                .county(address.getCounty())
+                .postTown(address.getTownCity())
+                .postCode(address.getPostCode())
+                .country(address.getCountry()).build();
+
     }
 
     private boolean isPaperForm(CaseData caseData) {
