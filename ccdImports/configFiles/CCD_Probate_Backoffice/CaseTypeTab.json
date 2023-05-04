@@ -270,5 +270,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "ihtTab", "TabLabel": "IHT", "TabDisplayOrder": 19, "CaseFieldID": "deceasedHadLateSpouseOrCivilPartner", "FieldShowCondition": "ihtFormEstateValuesCompleted=\"No\"", "TabFieldDisplayOrder": 6},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "ihtTab", "TabLabel": "IHT", "TabDisplayOrder": 19, "CaseFieldID": "ihtUnusedAllowanceClaimed", "FieldShowCondition": "ihtFormEstateValuesCompleted=\"No\"", "TabFieldDisplayOrder": 7},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "nocTab", "TabLabel": "NOC", "TabDisplayOrder": 19, "CaseFieldID": "applicantOrganisationPolicy", "TabFieldDisplayOrder": 8},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "changeRepresentativeTab", "TabLabel": "Change of representative", "TabDisplayOrder": 20, "CaseFieldID": "removedRepresentatives", "TabFieldDisplayOrder": 1}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "Channel": "CaseWorker", "TabID": "changeRepresentativeTab", "TabLabel": "Change of representatives", "TabDisplayOrder": 20, "CaseFieldID": "removedRepresentatives", "TabFieldDisplayOrder": 1}
 ]
