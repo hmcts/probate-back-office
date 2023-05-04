@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+
 import java.time.LocalDateTime;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -19,5 +21,6 @@ public class RemovedRepresentative {
     private final String solicitorLastName;
     private final String solicitorEmail;
     private final SolsAddress solsAddress;
+    private final Organisation organisation;
 
 }

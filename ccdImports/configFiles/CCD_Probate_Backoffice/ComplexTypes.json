@@ -195,5 +195,6 @@
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solicitorFirstName", "FieldType": "Text", "ElementLabel": "Solicitor First Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solicitorLastName", "FieldType": "Text", "ElementLabel": "Solicitor Last Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solicitorEmail", "FieldType": "Text", "ElementLabel": "Solicitor EmailAddress", "RegularExpression": "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?", "SecurityClassification": "Public"},
-  {"LiveFrom": "06/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solsAddress", "FieldType": "AddressUK", "ElementLabel": "Organization address", "SecurityClassification": "Public"}
+  {"LiveFrom": "06/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solsAddress", "FieldType": "AddressUK", "ElementLabel": "Organization address", "SecurityClassification": "Public"},
+  {"LiveFrom": "06/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "organisation", "FieldType": "Organisation", "ElementLabel": "Organization", "SecurityClassification": "Public"}
 ]
