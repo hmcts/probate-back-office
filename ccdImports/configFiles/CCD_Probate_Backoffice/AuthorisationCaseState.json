@@ -274,6 +274,5 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BORedecNotificationSent", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOSotGenerated", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Dormant", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePrinted", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePrinted", "UserRole": "[APPLICANTSOLICITOR]", "CRUD": "CRUD"}
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "CasePrinted", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
 ]
