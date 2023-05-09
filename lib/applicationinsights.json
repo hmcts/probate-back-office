@@ -1,0 +1,6 @@
+{
+  "connectionString": "${file:/mnt/secrets/probate/app-insights-connection-string}",
+  "role": {
+    "name": "HMCTS Probate Backoffice"
+  }
+}
