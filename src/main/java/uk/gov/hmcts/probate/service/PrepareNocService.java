@@ -26,6 +26,7 @@ public class PrepareNocService {
     public void addRemovedRepresentatives(CaseData caseData) {
         List<CollectionMember<RemovedRepresentative>> representatives = caseData.getRemovedRepresentatives();
         RemovedRepresentative representative = setRemovedRepresentative(caseData);
+        log.info("representative - " + representative);
         representatives.add(new CollectionMember<>(null, representative));
         representatives.sort((m1, m2) -> {
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
@@ -38,6 +39,7 @@ public class PrepareNocService {
     private RemovedRepresentative setRemovedRepresentative(CaseData caseData) {
         OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
         Organisation organisation = organisationPolicy.getOrganisation();
+        log.info("Organisation - " + organisation);
         return RemovedRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .organisationID(organisation.getOrganisationID())

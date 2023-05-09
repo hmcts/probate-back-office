@@ -574,6 +574,7 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         log.info("Adding removed representative - " + callbackRequest.getCaseDetails().getId().toString());
         prepareNocService.addRemovedRepresentatives(callbackRequest.getCaseDetails().getData());
+        log.info("Added removed representative - " + callbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
