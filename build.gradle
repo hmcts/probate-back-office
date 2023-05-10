@@ -304,7 +304,8 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.0.1'
   implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
@@ -312,8 +313,6 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.16'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
-  implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '2.6.4'
-
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
@@ -468,7 +467,7 @@ task runAndPublishConsumerPactTests(type: Test){
 }
 
 task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  getMainClass().set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
