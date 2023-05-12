@@ -186,6 +186,12 @@ spring:
     hibernate.ddl-auto: none
   config:
     import: "optional:configtree:/mnt/secrets/probate/"
+  security:
+    oauth2:
+      client:
+        provider:
+          oidc:
+            issuer-uri: ${idam.web.url}/o
 
   datasource:
     url: jdbc:postgresql://${probate.postgresql.hostname}:${probate.postgresql.port}/${probate.postgresql.database}
@@ -194,6 +200,8 @@ spring:
 
   database.driverClassName: org.postgresql.Driver
 
+oidc:
+  issuer: ${OIDC_ISSUER:http://fr-am:8080/openam/oauth2/hmcts}
 
 spring.document.retriever.service.api.baseurl: localhost:5006
 

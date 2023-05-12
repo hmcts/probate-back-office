@@ -11,7 +11,7 @@ import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 import uk.gov.hmcts.probate.service.docmosis.assembler.Template;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

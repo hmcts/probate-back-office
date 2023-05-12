@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -38,7 +39,6 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;

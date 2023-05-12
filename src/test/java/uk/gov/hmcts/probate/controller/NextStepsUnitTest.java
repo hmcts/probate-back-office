@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import jakarta.servlet.http.HttpServletRequest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -42,7 +43,6 @@ import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collections;

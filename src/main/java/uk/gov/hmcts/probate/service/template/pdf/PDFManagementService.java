@@ -21,7 +21,7 @@ import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;

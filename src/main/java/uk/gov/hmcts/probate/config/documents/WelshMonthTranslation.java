@@ -2,7 +2,7 @@ package uk.gov.hmcts.probate.config.documents;
 
 import java.util.Map;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;

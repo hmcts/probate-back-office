@@ -3,8 +3,8 @@ package uk.gov.hmcts.probate.model.probateman;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.MappedSuperclass;
+import jakarta.persistence.Column;
+import jakarta.persistence.MappedSuperclass;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;

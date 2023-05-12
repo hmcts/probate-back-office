@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 
-import javax.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 import java.util.Objects;

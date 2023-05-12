@@ -10,20 +10,24 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.FilterType;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 import uk.gov.hmcts.probate.service.task.ScheduledTaskRunner;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataClientAutoConfiguration;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-@SpringBootApplication(exclude = {CoreCaseDataClientAutoConfiguration.class})
+@SpringBootApplication
+@ComponentScan(excludeFilters = {@ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE,
+        value = CoreCaseDataClientAutoConfiguration.class)})
 @EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.idam", "uk.gov.hmcts.reform.ccd",
     "uk.gov.hmcts.reform.sendletter",
     "uk.gov.hmcts.probate.service"})

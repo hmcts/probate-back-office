@@ -51,8 +51,8 @@ java:
   keyVaults:
     probate:
       secrets:
-        - name: AppInsightsInstrumentationKey
-          alias: azure.application-insights.instrumentation-key
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string
         - name: probatemandb-POSTGRES-PASS
           alias: spring.datasource.password
         - name: s2s-probate-backend

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 
 import static java.lang.Character.toLowerCase;
 

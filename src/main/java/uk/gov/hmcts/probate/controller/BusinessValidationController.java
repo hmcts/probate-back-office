@@ -59,7 +59,7 @@ import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;

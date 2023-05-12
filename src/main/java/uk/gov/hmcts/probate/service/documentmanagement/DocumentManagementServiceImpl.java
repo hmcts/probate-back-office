@@ -19,7 +19,7 @@ import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;

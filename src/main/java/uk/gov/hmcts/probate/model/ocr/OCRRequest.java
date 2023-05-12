@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 import java.util.List;
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 
 @Data
 public class OCRRequest {
