@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
@@ -25,7 +26,7 @@ class StoppedTaskListRendererTest {
 
         caseDataBuilder = CaseData.builder()
                 .grantStoppedDate(LocalDate.of(2020,1,1));
-
+        ReflectionTestUtils.setField(renderer, "grandDelayNumberOfWeeks", "16");
     }
 
     @Test
