@@ -17,6 +17,7 @@ public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
 
     @Value("${grand_delay.number_of_weeks}")
     private String grandDelayNumberOfWeeks;
+
     protected String renderBody(CaseDetails details) {
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
