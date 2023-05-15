@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
+import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -29,66 +31,79 @@ class PrepareNocServiceTest {
     }
 
     @Test
-    void shouldAddAndOrder() {
-        List<CollectionMember<RemovedRepresentative>> removedRepresentatives = setupRemovedRepresentative();
+    void shouldAddRepresentative() {
+        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
         Organisation organisationData = Organisation.builder().organisationID("123")
                 .organisationName("ABC").build();
         OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
         RemovedRepresentative removedRepresentative = RemovedRepresentative.builder()
                 .organisationID(policy.getOrganisation().getOrganisationID())
                 .organisation(policy.getOrganisation())
-                .solicitorEmail("abc@gmail.com").build();
-
+                .solicitorEmail("abc@gmail.com")
+                .solicitorFirstName("First")
+                .solicitorLastName("Last")
+                .build();
+        AddedRepresentative addedRepresentative = AddedRepresentative.builder()
+                .organisationID(policy.getOrganisation().getOrganisationID())
+                .updatedVia("abc").build();
+        ChangeOfRepresentative representative = ChangeOfRepresentative.builder()
+                .addedRepresentative(addedRepresentative)
+                .removedRepresentative(removedRepresentative)
+                .build();
 
         CaseData caseData = CaseData.builder()
-                .removedRepresentatives(removedRepresentatives)
+                .changeOfRepresentatives(changeOfRepresentatives)
+                .changeOfRepresentative(representative)
                 .removedRepresentative(removedRepresentative)
                 .applicantOrganisationPolicy(policy)
                 .solsSOTForenames("First")
                 .solsSOTSurname("Last")
                 .build();
 
-        underTest.addRemovedRepresentatives(caseData);
+        underTest.addRepresentatives(caseData);
 
-        assertEquals(3, caseData.getRemovedRepresentatives().size());
-        assertEquals("First", caseData.getRemovedRepresentatives().get(0).getValue().getSolicitorFirstName());
-        assertEquals("Last", caseData.getRemovedRepresentatives().get(0).getValue().getSolicitorLastName());
-        assertNotNull(caseData.getRemovedRepresentatives().get(0).getValue().getAddedDateTime());
-        assertEquals("First Name1",
-                caseData.getRemovedRepresentatives().get(2).getValue().getSolicitorFirstName());
+        assertEquals(3, caseData.getChangeOfRepresentatives().size());
+        assertEquals("First", caseData.getChangeOfRepresentatives().get(0)
+                .getValue().getRemovedRepresentative().getSolicitorFirstName());
+        assertEquals("Last", caseData.getChangeOfRepresentatives().get(0)
+                .getValue().getRemovedRepresentative().getSolicitorLastName());
+        assertEquals("NOC", caseData.getChangeOfRepresentatives().get(0)
+                .getValue().getAddedRepresentative().getUpdatedVia());
+        assertNotNull(caseData.getChangeOfRepresentatives().get(0).getValue().getAddedDateTime());
     }
 
-    private List<CollectionMember<RemovedRepresentative>> setupRemovedRepresentative() {
+    private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
-        List<CollectionMember<RemovedRepresentative>> removedRepresentatives = new ArrayList();
+        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
+        CollectionMember<ChangeOfRepresentative> removedRepresentative1 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                .builder()
+                .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
+                .build());
+        CollectionMember<ChangeOfRepresentative> removedRepresentative2 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                .builder()
+                .addedDateTime(LocalDateTime.parse("2023-01-01T18:00:00.001Z", dateTimeFormatter))
+                .build());
+        representatives.add(removedRepresentative1);
+        representatives.add(removedRepresentative2);
+
+        return representatives;
+    }
+
+    @Test
+    void removeRepresentative() {
         Organisation organisationData = Organisation.builder().organisationID("123")
                 .organisationName("ABC").build();
         OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
-        CollectionMember<RemovedRepresentative> removedRepresentative1 =
-                new CollectionMember<>(null, RemovedRepresentative
-                .builder()
-                .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
-                .organisationID(policy.getOrganisation().getOrganisationID())
-                .organisation(policy.getOrganisation())
-                .solicitorFirstName("First Name1")
-                .solicitorLastName("Last Name1")
-                .solicitorEmail("abc@gmail.com")
-                .build());
-        CollectionMember<RemovedRepresentative> removedRepresentative2 =
-                new CollectionMember<>(null, RemovedRepresentative
-                .builder()
-                .addedDateTime(LocalDateTime.parse("2023-01-01T18:00:00.001Z", dateTimeFormatter))
-                .organisationID(policy.getOrganisation().getOrganisationID())
-                .solicitorFirstName("First Name2")
-                .solicitorLastName("Last Name2")
-                .solicitorEmail("abc@gmail.com")
-                .organisation(policy.getOrganisation())
-                .build());
-        removedRepresentatives.add(removedRepresentative1);
-        removedRepresentatives.add(removedRepresentative2);
-
-        return removedRepresentatives;
+        CaseData caseData = CaseData.builder()
+                .applicantOrganisationPolicy(policy)
+                .solsSOTForenames("First")
+                .solsSOTSurname("Last")
+                .build();
+        underTest.setRemovedRepresentative(caseData);
+        assertEquals("First", caseData.getRemovedRepresentative().getSolicitorFirstName());
 
     }
 }

@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.Categories;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
@@ -581,7 +582,8 @@ public class CaseData extends CaseDataParent {
     private RegistrarDirection registrarDirectionToAdd;
 
     @Builder.Default
-    private final List<CollectionMember<RemovedRepresentative>> removedRepresentatives = new ArrayList<>();
+    private final List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = new ArrayList<>();
+    private ChangeOfRepresentative changeOfRepresentative;
     private RemovedRepresentative removedRepresentative;
 
     // @Getter(lazy = true)

@@ -189,10 +189,15 @@
   {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Direction added", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "decision", "FieldType": "FixedRadioList", "FieldTypeParameter": "registrarsDecisionType", "ElementLabel": "Registrar decision", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "furtherInformation", "FieldType": "TextArea", "ElementLabel": "Further information", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Removed Representative added date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "organisationID", "FieldType": "Text", "ElementLabel": "Organization Id", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solicitorFirstName", "FieldType": "Text", "ElementLabel": "Solicitor First Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solicitorLastName", "FieldType": "Text", "ElementLabel": "Solicitor Last Name", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "solicitorEmail", "FieldType": "Text", "ElementLabel": "Solicitor EmailAddress", "RegularExpression": "[a-zA-Z0-9#$%'+=?^_`{|}~-]{1,30}(?:\\.[^.\\n]{1,30}){0,30}@[a-zA-Z0-9](?:[a-zA-Z0-9-.]{0,30}[a-zA-Z0-9])?\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,10}[a-zA-Z0-9])?", "SecurityClassification": "Public"},
-  {"LiveFrom": "06/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "organisation", "FieldType": "Organisation", "ElementLabel": "Organization", "SecurityClassification": "Public"}
+  {"LiveFrom": "06/01/2017", "ID": "RemovedRepresentative", "ListElementCode": "organisation", "FieldType": "Organisation", "ElementLabel": "Organization", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "AddedRepresentative", "ListElementCode": "organisationID", "FieldType": "Text", "ElementLabel": "Organization Id", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "AddedRepresentative", "ListElementCode": "updatedBy", "FieldType": "Text", "ElementLabel": "Updated By", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "AddedRepresentative", "ListElementCode": "updateVia", "FieldType": "Text", "ElementLabel": "Update via", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Date Triggered", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "removed", "FieldType": "RemovedRepresentative", "ElementLabel": "Removed Representative", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "added", "FieldType": "AddedRepresentative", "ElementLabel": "Added Representative", "SecurityClassification": "Public"}
 ]

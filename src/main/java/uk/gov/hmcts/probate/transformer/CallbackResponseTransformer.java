@@ -13,13 +13,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
-import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -1112,7 +1112,8 @@ public class CallbackResponseTransformer {
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
             .nocPreparedDate(ofNullable(caseData.getNocPreparedDate())
                 .map(dateTimeFormatter::format).orElse(null))
-            .removedRepresentatives(getNullForEmptyRepresentatives(caseData.getRemovedRepresentatives()))
+            .removedRepresentative(caseData.getRemovedRepresentative())
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caseData.getChangeOfRepresentatives()))
             .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
         if (transform) {
@@ -1686,8 +1687,8 @@ public class CallbackResponseTransformer {
         return collectionMembers;
     }
 
-    private List<CollectionMember<RemovedRepresentative>> getNullForEmptyRepresentatives(
-            List<CollectionMember<RemovedRepresentative>> collectionMembers) {
+    private List<CollectionMember<ChangeOfRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
         }

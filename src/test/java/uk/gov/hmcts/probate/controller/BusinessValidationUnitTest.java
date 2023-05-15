@@ -879,4 +879,16 @@ class BusinessValidationUnitTest {
                 underTest.prepareCaseForNoc(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    void shouldAddRepresentatives() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.addRepresentative(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
