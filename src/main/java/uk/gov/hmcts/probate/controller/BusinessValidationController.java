@@ -30,13 +30,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.CaseEscalatedService;
-import uk.gov.hmcts.probate.service.CaseStoppedService;
-import uk.gov.hmcts.probate.service.ConfirmationResponseService;
-import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.*;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
-import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -55,6 +50,7 @@ import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,6 +103,7 @@ public class BusinessValidationController {
     private final AssignCaseAccessService assignCaseAccessService;
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final PrepareNocService prepareNocService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -158,15 +155,37 @@ public class BusinessValidationController {
     }
 
     @PostMapping(path = "/sols-access")
-    public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
+    public ResponseEntity<CallbackResponse> solicitorAccess(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestParam(value = "caseTypeId") String caseTypeId,
-        @RequestBody CallbackRequest request) {
-        assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
-        return ResponseEntity.ok(afterSubmitCallbackResponse);
+        @RequestBody CallbackRequest callbackRequest) {
+        //assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
+        log.info("sols-access - " + callbackRequest.getCaseDetails().getId().toString());
+        prepareNocService.addRemovedRepresentatives(callbackRequest.getCaseDetails().getData());
+        log.info("sols-access - end-->" + callbackRequest.getCaseDetails().getId().toString());
+        //AfterSubmitCallbackResponse afterSubmitCallbackResponse = AfterSubmitCallbackResponse.builder().build();
+        //return ResponseEntity.ok(CallbackResponse);
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 
+    @PostMapping(path = "/noc-submit")
+    public ResponseEntity<CallbackResponse> nocSubmit(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest callbackRequest) {
+        //assignCaseAccessService.assignCaseAccess(authToken, request.getCaseDetails().getId().toString(), caseTypeId);
+        log.info("noc-submit - " + callbackRequest.getCaseDetails().getId().toString());
+        prepareNocService.addRemovedRepresentatives(callbackRequest.getCaseDetails().getData());
+        log.info("noc-submit - end-->" + callbackRequest.getCaseDetails().getId().toString());
+        return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
+    }
+    @PostMapping(path = "/apply-decision", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public AboutToStartOrSubmitCallbackResponse applyDecision(
+            @RequestBody CallbackRequest callbackRequest,
+            @RequestHeader(value = "Authorization") String authToken) {
+        log.info("apply decision - " + callbackRequest.getCaseDetails().getId().toString());
+        return prepareNocService.applyDecision(callbackRequest, authToken);
+        //return ResponseEntity.ok(callbackResponseTransformer.transformForNoc(callbackRequest));
+    }
     @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidate(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody

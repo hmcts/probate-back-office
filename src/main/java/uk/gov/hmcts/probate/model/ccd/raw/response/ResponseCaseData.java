@@ -11,28 +11,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
-import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.Categories;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
-import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
-import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 
@@ -365,4 +344,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String caseworkerName;
     private final String letterText;
     private final String includeStatementOfTruth;
+    @Builder.Default
+    private final List<CollectionMember<RemovedRepresentative>> removedRepresentatives = new ArrayList<>();
+    private RemovedRepresentative removedRepresentative;
 }

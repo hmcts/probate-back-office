@@ -6,12 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.AssignCaseAccessRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 
 import java.util.Map;
 import java.util.Objects;
 
+import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -21,7 +24,6 @@ public class AssignCaseAccessService {
     private final AuthTokenGenerator authTokenGenerator;
     private final AssignCaseAccessClient assignCaseAccessClient;
     private final IdamApi idamApi;
-
 
     public void assignCaseAccess(String authorisationToken, String caseId, String caseTypeId) {
         ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authorisationToken);
@@ -56,5 +58,16 @@ public class AssignCaseAccessService {
             .assigneeId(userId)
             .caseTypeId(caseTypeId)
             .build();
+    }
+
+    public AboutToStartOrSubmitCallbackResponse applyNocDecision(CaseDetails caseDetails, String authorisationToken) {
+        return applyDecision(caseDetails, authorisationToken);
+    }
+
+    private AboutToStartOrSubmitCallbackResponse applyDecision(CaseDetails caseDetails, String userToken) {
+        return assignCaseAccessClient.applyDecision(
+                userToken,
+                authTokenGenerator.generate(),
+                decisionRequest(caseDetails));
     }
 }

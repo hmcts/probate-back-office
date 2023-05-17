@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.response;
 import lombok.Data;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import uk.gov.hmcts.probate.model.caseaccess.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplyingPowerReserved;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
@@ -87,4 +88,5 @@ public class ResponseCaseDataParent {
     protected String solsNeedsPBAPayment;
     protected OrganisationPolicy applicantOrganisationPolicy;
     protected LocalDate lastEvidenceAddedDate;
+    protected ChangeOrganisationRequest changeOrganisationRequestField;
 }

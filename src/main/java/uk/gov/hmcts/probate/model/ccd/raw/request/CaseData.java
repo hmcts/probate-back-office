@@ -45,6 +45,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 
@@ -571,6 +572,9 @@ public class CaseData extends CaseDataParent {
     private final String letterText;
     private final String includeStatementOfTruth;
     private LocalDate lastEvidenceAddedDate;
+    @Builder.Default
+    private final List<CollectionMember<RemovedRepresentative>> removedRepresentatives = new ArrayList<>();
+    private RemovedRepresentative removedRepresentative;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

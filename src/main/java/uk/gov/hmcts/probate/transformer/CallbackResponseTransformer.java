@@ -10,15 +10,7 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -39,9 +31,12 @@ import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.probate.model.caseaccess.ChangeOrganisationRequest;
+import uk.gov.hmcts.probate.model.caseaccess.ChangeOrganisationApprovalStatus;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -1102,7 +1097,10 @@ public class CallbackResponseTransformer {
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
+            .removedRepresentative(caseData.getRemovedRepresentative())
+            .removedRepresentatives(getNullForEmptyRepresentatives(caseData.getRemovedRepresentatives()))
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
+
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1110,7 +1108,19 @@ public class CallbackResponseTransformer {
             updateCaseBuilder(caseData, builder);
         }
 
-        builder.applicantOrganisationPolicy(
+        /*ChangeOrganisationRequest.builder()
+                .approvalStatus(APPROVED)
+                .requestTimestamp(time.now())
+                .caseRoleId(DynamicList.builder()
+                        .value(roleItem)
+                        .listItems(List.of(roleItem))
+                        .build())
+                .organisationToRemove(oldOrganisation)
+                .organisationToAdd(newOrganisation)
+                .build();*/
+        //builder.
+
+        /*builder.applicantOrganisationPolicy(
                 OrganisationPolicy.builder()
                         .organisation(Organisation.builder()
                                 .organisationID(null)
@@ -1118,8 +1128,24 @@ public class CallbackResponseTransformer {
                                 .build())
                         .orgPolicyReference(null)
                         .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
-                        .build());
-
+                        .build());*/
+        /*DynamicList roles =
+                DynamicList.builder().value(DynamicListItem.builder().code("[APPLICANTSOLICITOR]").build()).build();
+        builder.changeOrganisationRequestField(ChangeOrganisationRequest.builder()
+                .approvalStatus(ChangeOrganisationApprovalStatus.APPROVED)
+                .caseRoleId(roles)
+                .requestTimestamp(LocalDateTime.now())
+                .organisationToAdd(Organisation.builder()
+                        .organisationID("XXXXX")
+                        .organisationName(null)
+                        .build())
+                .organisationToRemove(Organisation.builder()
+                                .organisationID(null)
+                                .organisationName(null)
+                                .build())
+                .createdBy("ProbateSolicitor1@gmail.com")
+                .build()
+        );*/
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
         builder = taskListUpdateService.generateTaskList(caseDetails, builder);
@@ -1128,6 +1154,13 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
+    private List<CollectionMember<RemovedRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<RemovedRepresentative>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
     OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
         CaseData caseData = caseDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
