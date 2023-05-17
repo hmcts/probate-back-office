@@ -10,16 +10,26 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
+import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class PrepareNocService {
+
+    private final AuthTokenGenerator tokenGenerator;
+    private final AssignCaseAccessClient assignCaseAccessClient;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -77,5 +87,14 @@ public class PrepareNocService {
                 .updatedBy("ABC")
                 .updatedVia("NOC")
                 .build();
+    }
+
+    public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        return assignCaseAccessClient.applyDecision(
+                authorisation,
+                tokenGenerator.generate(),
+                decisionRequest(caseDetails)
+        );
     }
 }

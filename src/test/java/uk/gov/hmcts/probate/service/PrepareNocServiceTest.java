@@ -3,7 +3,10 @@ package uk.gov.hmcts.probate.service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.caseaccess.DecisionRequest;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
@@ -11,6 +14,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
+import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -19,11 +25,20 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class PrepareNocServiceTest {
 
     @InjectMocks
     private PrepareNocService underTest;
+    @Mock
+    AssignCaseAccessClient assignCaseAccessClient;
+    @Mock
+    AuthTokenGenerator tokenGenerator;
+    @Mock
+    private CallbackRequest callbackRequestMock;
 
     @BeforeEach
     public void setup() {
@@ -106,4 +121,14 @@ class PrepareNocServiceTest {
         assertEquals("First", caseData.getRemovedRepresentative().getSolicitorFirstName());
 
     }
+
+    @Test
+    public void testApplyDecision() {
+        when(tokenGenerator.generate()).thenReturn("s2sToken");
+        underTest.applyDecision(uk.gov.hmcts.reform.ccd.client.model.CallbackRequest.builder().build(), "testAuth");
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(Mockito.anyString(), Mockito.anyString(), Mockito.any(
+                DecisionRequest.class));
+    }
+
 }
