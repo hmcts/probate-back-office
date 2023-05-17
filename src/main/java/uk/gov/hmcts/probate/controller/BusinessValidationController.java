@@ -566,7 +566,7 @@ public class BusinessValidationController {
         log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
         prepareNocService.addNocDate(callbackRequest.getCaseDetails().getData());
         prepareNocService.setRemovedRepresentative(callbackRequest.getCaseDetails().getData());
-        return ResponseEntity.ok(callbackResponseTransformer.transformForNoc(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
     @PostMapping(path = "/add-representatives", consumes = APPLICATION_JSON_VALUE,
