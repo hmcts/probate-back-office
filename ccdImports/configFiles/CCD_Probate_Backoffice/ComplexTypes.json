@@ -198,5 +198,6 @@
   {"LiveFrom": "01/01/2017", "ID": "AddedRepresentative", "ListElementCode": "updatedBy", "FieldType": "Text", "ElementLabel": "Updated By", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "AddedRepresentative", "ListElementCode": "updateVia", "FieldType": "Text", "ElementLabel": "Update via", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Date Triggered", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "removed", "FieldType": "RemovedRepresentative", "ElementLabel": "Removed Representative", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "added", "FieldType": "AddedRepresentative", "ElementLabel": "Added Representative", "SecurityClassification": "Public"}
 ]

@@ -63,6 +63,7 @@ class PrepareNocServiceTest {
                 .updatedVia("abc").build();
         ChangeOfRepresentative representative = ChangeOfRepresentative.builder()
                 .addedRepresentative(addedRepresentative)
+                .removedRepresentative(removedRepresentative)
                 .build();
 
         CaseData caseData = CaseData.builder()
@@ -77,10 +78,10 @@ class PrepareNocServiceTest {
         underTest.addRepresentatives(caseData);
 
         assertEquals(3, caseData.getChangeOfRepresentatives().size());
-        /*assertEquals("First", caseData.getChangeOfRepresentatives().get(0)
+        assertEquals("First", caseData.getChangeOfRepresentatives().get(0)
                 .getValue().getRemovedRepresentative().getSolicitorFirstName());
         assertEquals("Last", caseData.getChangeOfRepresentatives().get(0)
-                .getValue().getRemovedRepresentative().getSolicitorLastName());*/
+                .getValue().getRemovedRepresentative().getSolicitorLastName());
         assertEquals("NOC", caseData.getChangeOfRepresentatives().get(0)
                 .getValue().getAddedRepresentative().getUpdatedVia());
         assertNotNull(caseData.getChangeOfRepresentatives().get(0).getValue().getAddedDateTime());
