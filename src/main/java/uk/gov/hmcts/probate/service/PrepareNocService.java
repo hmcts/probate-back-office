@@ -46,6 +46,7 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
+        log.info("CASE DATA - " + caseData.getChangeOfRepresentatives());
     }
 
     private ChangeOfRepresentative buildRepresentative(CaseData caseData) {

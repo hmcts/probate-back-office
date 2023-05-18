@@ -3867,5 +3867,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "nocPreparedDate", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-caa", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "[APPLICANTSOLICITOR]", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-caa", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "[APPLICANTSOLICITOR]", "CRUD": "CRU"}
 ]
