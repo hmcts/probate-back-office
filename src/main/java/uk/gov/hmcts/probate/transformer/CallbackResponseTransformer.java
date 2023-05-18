@@ -1129,7 +1129,7 @@ public class CallbackResponseTransformer {
                         .orgPolicyReference(null)
                         .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
                         .build());*/
-        DynamicList roles =
+        /*DynamicList roles =
                 DynamicList.builder().value(DynamicListItem.builder().code("[APPLICANTSOLICITOR]").build()).build();
         builder.changeOrganisationRequestField(ChangeOrganisationRequest.builder()
                 .approvalStatus(ChangeOrganisationApprovalStatus.APPROVED)
@@ -1145,7 +1145,7 @@ public class CallbackResponseTransformer {
                                 .build())
                 .createdBy("ProbateSolicitor1@gmail.com")
                 .build()
-        );
+        );*/
         builder = getCaseCreatorResponseCaseBuilder(caseData, builder);
 
         builder = taskListUpdateService.generateTaskList(caseDetails, builder);
