@@ -20,6 +20,10 @@ echo $ccd_definition_excel_output_file
 if [[ ! -e ${ccd_definition_excel_output_file} ]]; then
    touch ${ccd_definition_excel_output_file}
 fi
+echo 9999 $UID
+echo 1111-- $ccd_definition_json_output_dir_absolute_path
+echo 2222-- $ccd_definition_json_output_dir_name
+echo 3333-- $ccd_definition_excel_output_file
 
 docker run --user $UID --rm --name json2xlsx \
     -v ${ccd_definition_json_output_dir_absolute_path}:/tmp/ccd-definition \

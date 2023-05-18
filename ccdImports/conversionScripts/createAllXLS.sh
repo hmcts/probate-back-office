@@ -3,6 +3,7 @@
 set -eu
 
 conversionFolder=$(dirname "$0")
+echo conversionFolder=  $conversionFolder
 configFolder=${conversionFolder}/../configFiles
 
 if [ -z "$1" ]
@@ -11,12 +12,16 @@ if [ -z "$1" ]
     exit 1
 fi
 
+echo bbb
+
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
+echo 000- $CCD_DEF_CASE_SERVICE_BASE_URL
 if [ -z "2" ]
   then
     export CCD_DEF_AAC_URL=manage-case-assignment:4454
 fi
 
+echo ccc
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
 
