@@ -57,7 +57,6 @@ public class PrepareNocService {
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(addRepresentative)
-                .removedRepresentative(removeRepresentative)
                 .build();
     }
 

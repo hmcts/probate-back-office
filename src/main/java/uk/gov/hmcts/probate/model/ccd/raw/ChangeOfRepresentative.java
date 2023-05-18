@@ -14,6 +14,5 @@ import java.time.LocalDateTime;
 public class ChangeOfRepresentative {
 
     private final LocalDateTime addedDateTime;
-    private final RemovedRepresentative removedRepresentative;
     private final AddedRepresentative addedRepresentative;
 }
