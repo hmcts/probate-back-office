@@ -13,7 +13,8 @@
 </ul>
 
 <p class="govuk-body-s">You will be notified by email if we need any information from you to progress the case.</p>
-<p class="govuk-body-s">Only contact the CTSC staff if your case has been stopped for 4 weeks or more and you have not received any communication since then.</p>
+<p class="govuk-body-s">You'll usually get the grant within 16 weeks. It can take longer if you need to provide additional information.</p>
+<p class="govuk-body-s">You don't need to do anything else now, we'll email you if we need more information</p>
 
 <h2 class="govuk-heading-l">Get help with your application</h2>
 
