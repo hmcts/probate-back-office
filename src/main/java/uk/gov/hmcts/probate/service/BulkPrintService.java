@@ -69,8 +69,6 @@ public class BulkPrintService {
                                                        Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = serviceAuthTokenGenerator.generate();
-
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());
             additionalData.put(RECIPIENTS, caveatCallbackRequest.getCaseDetails().getId());
@@ -79,7 +77,7 @@ public class BulkPrintService {
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs =
                 arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet);
-
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                 new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
