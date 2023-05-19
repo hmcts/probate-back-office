@@ -1092,7 +1092,8 @@ public class CallbackResponseTransformer {
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
-            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
+            .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

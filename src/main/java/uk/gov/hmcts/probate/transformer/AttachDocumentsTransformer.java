@@ -11,4 +11,8 @@ public class AttachDocumentsTransformer {
     public void updateAttachDocuments(CaseData data) {
         data.setAttachDocuments(YES);
     }
+
+    public void updateDocsReceivedNotificationSent(CaseData data) {
+        data.setDocumentsReceivedNotificationSent(YES);
+    }
 }

@@ -242,6 +242,7 @@ public class NotificationController {
             && (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState()))) {
             document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
         }
+        caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         CallbackResponse response = callbackResponseTransformer
                 .transformCaseForAttachScannedDocs(callbackRequest, document);
         return ResponseEntity.ok(response);
