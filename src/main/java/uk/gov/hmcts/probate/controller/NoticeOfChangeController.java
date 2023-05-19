@@ -26,6 +26,7 @@ public class NoticeOfChangeController{
 
     @Autowired
     private final NoticeOfChangeService noticeOfChangeService;
+    //private final PrepareNocService prepareNocService;
 
     @PostMapping(path = "/aboutToSubmitNoCRequest", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(description = "About to submit NoC Request")
@@ -37,6 +38,7 @@ public class NoticeOfChangeController{
     public AboutToStartOrSubmitCallbackResponse aboutToSubmitNoCRequest(
         @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) String authorisation,
         @RequestBody CallbackRequest callbackRequest) {
+        //PrepareNocService.addRemovedRepresentatives();
         return noticeOfChangeService.applyCCDDecision(callbackRequest, authorisation);
     }
 
@@ -49,6 +51,6 @@ public class NoticeOfChangeController{
     public void submittedNoCRequest(
         @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) String authorisation,
         @RequestBody CallbackRequest callbackRequest) {
-        //prepareNocService.nocRequestSubmitted(callbackRequest, authorisation);
+        noticeOfChangeService.nocRequestSubmitted(callbackRequest, authorisation);
     }
 }
