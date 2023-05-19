@@ -7,9 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
@@ -18,6 +20,8 @@ import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -55,15 +59,26 @@ public class DataExtractController {
     @PostMapping(path = "/iron-mountain")
     public ResponseEntity initiateIronMountainExtract(@Parameter(name = "Date to find cases against", required = true)
                                                       @RequestParam("date") String date) {
-        dataExtractDateValidator.dateValidator(date);
+        return executeIronMountainExtractForDate(date);
+    }
 
-        log.info("Calling perform Iron Mountain data extract from date...");
+    @Operation(summary = "Initiate IronMountain data extract with date",
+        description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
+    @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
+    public ResponseEntity initiateIronMountainExtract(
+        @RequestBody CallbackRequest callbackRequest) {
+        String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
+        return executeIronMountainExtractForDate(resendDate);
+    }
+
+    private ResponseEntity executeIronMountainExtractForDate(String date) {
+        dataExtractDateValidator.dateValidator(date);
+        log.info("Calling perform Iron Mountain data extract from date {}", date);
         ExecutorService executor = Executors.newFixedThreadPool(1);
         executor.submit(() -> {
             ironMountainDataExtractService.performIronMountainExtractForDate(date);
         });
         log.info("Perform Iron Mountain data extract from date finished");
-
         return ResponseEntity.accepted().body("Perform Iron Mountain data extract finished");
     }
 
@@ -100,4 +115,5 @@ public class DataExtractController {
 
         return ResponseEntity.accepted().body(null);
     }
+
 }
