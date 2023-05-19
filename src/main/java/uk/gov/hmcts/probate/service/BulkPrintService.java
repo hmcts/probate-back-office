@@ -50,6 +50,7 @@ public class BulkPrintService {
     private static final String BEARER = "Bearer ";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String CASE_ID = "case id ";
+    private static final String RECIPIENTS = "recipients";
     private final SendLetterApi sendLetterApi;
     private final DocumentManagementService documentManagementService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
@@ -72,6 +73,7 @@ public class BulkPrintService {
 
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());
+            additionalData.put(RECIPIENTS, caveatCallbackRequest.getCaseDetails().getId());
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
@@ -139,7 +141,7 @@ public class BulkPrintService {
         try {
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
-
+            additionalData.put(RECIPIENTS, callbackRequest.getCaseDetails().getId());
             additionalData = Collections.unmodifiableMap(additionalData);
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs;
