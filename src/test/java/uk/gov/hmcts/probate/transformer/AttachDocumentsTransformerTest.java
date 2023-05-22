@@ -28,4 +28,10 @@ class AttachDocumentsTransformerTest {
         attachDocumentsTransformer.updateAttachDocuments(caseDataMock);
         verify(caseDataMock).setAttachDocuments(YES);
     }
+
+    @Test
+    void shouldSetDocumentsReceivedNotificationSent() {
+        attachDocumentsTransformer.updateDocsReceivedNotificationSent(caseDataMock);
+        verify(caseDataMock).setDocumentsReceivedNotificationSent(YES);
+    }
 }

@@ -641,6 +641,7 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDateKnown(YES)
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
+            .documentsReceivedNotificationSent(YES);
         ;
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()

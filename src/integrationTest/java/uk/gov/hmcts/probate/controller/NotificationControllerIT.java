@@ -593,6 +593,7 @@ class NotificationControllerIT {
         verify(notificationService).startGrantDelayNotificationPeriod(any());
         verify(notificationService).resetAwaitingDocumentationNotificationDate(any());
         verify(caseDataTransformer).transformCaseDataForAttachDocuments(any());
+        verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(any());
         verify(evidenceUploadService).updateLastEvidenceAddedDate(any());
         verify(notificationService).sendEmail(any(), any());
     }
