@@ -29,8 +29,11 @@ public class NoticeOfChangeService {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
         caseData.put("deceasedForenames","deceasedForenames123");
+        System.out.println("applyCCDDecision-1111-->");
         caseDetails.getData().putAll(caseData);
+        System.out.println("applyCCDDecision-2222-->");
         caseData = caseDetails.getData();
+        System.out.println("applyCCDDecision-3333-->"+caseData.get("deceasedForenames"));
         return noticeOfChangeClient.applyDecision(
                 authorisation,
                 authTokenGenerator.generate(),
