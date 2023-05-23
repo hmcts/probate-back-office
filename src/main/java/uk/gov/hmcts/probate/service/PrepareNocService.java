@@ -20,6 +20,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
 
@@ -92,6 +93,10 @@ public class PrepareNocService {
 
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Map<String, Object> caseData = caseDetails.getData();
+        caseData.put("deceasedForenames","deceasedForenames123");
+        caseDetails.getData().putAll(caseData);
+        log.info("Deceased ForeName", caseDetails.getData().get("deceasedForenames"));
         return assignCaseAccessClient.applyDecision(
                 authorisation,
                 tokenGenerator.generate(),

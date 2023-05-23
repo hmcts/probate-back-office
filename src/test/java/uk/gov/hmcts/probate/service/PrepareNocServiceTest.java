@@ -17,11 +17,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -125,7 +128,12 @@ class PrepareNocServiceTest {
     @Test
     public void testApplyDecision() {
         when(tokenGenerator.generate()).thenReturn("s2sToken");
-        underTest.applyDecision(uk.gov.hmcts.reform.ccd.client.model.CallbackRequest.builder().build(), "testAuth");
+        Map<String, Object> caseData = new HashMap<>();
+        caseData.put("deceasedForenames","deceasedForenames123");
+        CallbackRequest request = uk.gov.hmcts.reform.ccd.client.model.CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).build())
+                .build();
+        underTest.applyDecision(request, "testAuth");
         verify(assignCaseAccessClient, times(1))
                 .applyDecision(Mockito.anyString(), Mockito.anyString(), Mockito.any(
                 DecisionRequest.class));
