@@ -16,7 +16,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStopped", "Name": "Case stopped", "Description": "Case stopped", "DisplayOrder": 15},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseStoppedReissue", "Name": "Case stopped (reissue)", "Description": "Case stopped", "DisplayOrder": 16},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaveatPermenant", "Name": "Caveat permenant", "Description": "Caveat permenant", "DisplayOrder": 17},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseWorkerEscalation", "Name": "Case Worker Escalation", "Description": "Case Worker Escalation", "DisplayOrder": 18},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseWorkerEscalation", "Name": "SME Referral", "Description": "SME Referral", "DisplayOrder": 18},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Deleted", "Name": "Deleted", "Description": "Delete application", "DisplayOrder": 19},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Dormant", "Name": "Dormant", "Description": "Dormant application", "DisplayOrder": 20},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Pending", "Name": "Draft", "Description": "Draft", "DisplayOrder": 21},
