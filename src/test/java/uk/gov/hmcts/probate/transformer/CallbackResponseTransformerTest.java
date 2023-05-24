@@ -3804,6 +3804,39 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getFurtherInformation());
     }
 
+    @Test
+    void shouldTransformPersonalCaseForUpdateTaskList() {
+        CaseData caseData = caseDataBuilder
+                .applicationType(PERSONAL)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+
+        caseData = caseDataBuilder
+                .primaryApplicantEmailAddress(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
+    @Test
+    void shouldTransformSolicitorCaseForUpdateTaskList() {
+        CaseData caseData = caseDataBuilder
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+
+        caseData = caseDataBuilder
+                .solsSolicitorEmail(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
