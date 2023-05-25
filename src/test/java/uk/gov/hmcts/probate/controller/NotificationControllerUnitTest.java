@@ -284,6 +284,7 @@ class NotificationControllerUnitTest {
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -296,6 +297,7 @@ class NotificationControllerUnitTest {
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService, times(0)).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        verify(caseDataTransformer, times(0)).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
