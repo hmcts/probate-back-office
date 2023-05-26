@@ -18,7 +18,7 @@ jobs:
       - name: Setup java
         uses: actions/setup-java@v3
         with:
-          distribution: 'distroless'
+          distribution: 'temurin'
           java-version: '11'
 
       - name: List dependencies
