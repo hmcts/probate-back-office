@@ -1105,7 +1105,8 @@ public class CallbackResponseTransformer {
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
-            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
+            .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1504,18 +1505,22 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isSolsEmailSet(caseData)) {
+        if (SOLICITOR.equals(caseData.getApplicationType())) {
+            String answer = isSolsEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
+        }
+
+        if (PERSONAL.equals(caseData.getApplicationType())) {
+            String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
         if (!isCodicil(caseData)) {
