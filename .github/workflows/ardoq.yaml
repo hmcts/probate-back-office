@@ -1,0 +1,63 @@
+name: Maintain Ardoq Tech Stack
+on:
+  push:
+    branches:
+      - master
+      - main
+      - DTSSE-3097/ardoq-integration
+jobs:
+  Maintain-Ardoq-Tech-Stack:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v3
+
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+
+      - name: Setup java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'distroless'
+          java-version: '11'
+
+      - name: List dependencies
+        run: ./gradlew -q dependencies > deps.log
+
+      - name: Base 64 encode dependencies
+        run: cat deps.log | base64 > deps.log.b64
+      - name: Prepare request payload
+        run: |
+          echo -n '{
+            "vcsHost": "github.com/hmcts",
+            "hmctsApplication": "cbc2c0b75ebc8f06bb9ee36e",
+            "codeRepository": "${{ github.event.repository.name }}",
+            "encodedDependecyList": "' > payload.json
+          cat deps.log.b64 | tr -d '\n' >> payload.json
+          echo -n '",
+            "parser": "gradle",
+            "language": "' >> payload.json
+          grep -E '^FROM' Dockerfile | awk '{print $2}' | awk -F ':' '{printf("%s", $1)}' | tr '/' '\n' | tail -1 >> payload.json
+          echo -n '",
+            "languageVersion": "' >> payload.json
+          grep -E '^FROM' Dockerfile | awk '{print $2}' | awk -F ':' '{printf("%s", $2)}' >> payload.json
+          echo -n '"
+            }' >> payload.json
+
+      - name: compress body
+        run: |
+          gzip payload.json
+
+      - name: debug compression
+        run: |
+          ls -lah payload.json.gz
+
+      - name: post deps to ardoq app
+        run: |
+          curl --location --request POST '${{ secrets.ARDOQ_ADAPTER_URL }}' \
+            --header 'Authorization: Bearer ${{ secrets.ARDOQ_ADAPTER_KEY }}' \
+            --header 'Content-Type: application/json' \
+            --header 'content-encoding: gzip' \
+            --data-binary '@payload.json.gz'
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
