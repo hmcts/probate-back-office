@@ -96,7 +96,7 @@ public class PrepareNocService {
         Map<String, Object> caseData = caseDetails.getData();
         caseData.put("deceasedForenames","deceasedForenames123");
         caseDetails.getData().putAll(caseData);
-        log.info("Deceased ForeName" +caseDetails.getData().get("deceasedForenames"));
+        log.info("Deceased ForeName" + caseDetails.getData().get("deceasedForenames"));
         return assignCaseAccessClient.applyDecision(
                 authorisation,
                 tokenGenerator.generate(),
