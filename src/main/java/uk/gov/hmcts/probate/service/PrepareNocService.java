@@ -5,19 +5,25 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -31,12 +37,17 @@ public class PrepareNocService {
 
     private final AuthTokenGenerator tokenGenerator;
     private final AssignCaseAccessClient assignCaseAccessClient;
+    private final SaveNocService saveNocService;
+    private final CcdClientApi ccdClientApi;
+    private final SecurityUtils securityUtils;
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
     }
 
-    public void addRepresentatives(CaseData caseData) {
+    public void addRepresentatives(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details) {
+        CaseData caseData = details.getData();
         List<CollectionMember<ChangeOfRepresentative>> representatives = caseData.getChangeOfRepresentatives();
         ChangeOfRepresentative representative = buildRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
@@ -47,7 +58,13 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
-        log.info("CASE DATA - " + caseData.getChangeOfRepresentatives());
+        final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
+                .builder()
+                .changeOfRepresentatives(saveNocService.getRepresentatives(representatives))
+                .build();
+        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, details.getId().toString(),
+                grantOfRepresentationData, EventId.APPLY_DECISION,
+                securityUtils.getUserAndServiceSecurityDTO(), "Apply Noc", "Apply Noc");
     }
 
     private ChangeOfRepresentative buildRepresentative(CaseData caseData) {

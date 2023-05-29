@@ -885,7 +885,7 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
+        when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
                 underTest.addRepresentative(callbackRequestMock);

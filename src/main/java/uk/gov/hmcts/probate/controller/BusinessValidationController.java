@@ -574,7 +574,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> addRepresentative(
             @RequestBody CallbackRequest callbackRequest) {
         log.info("Adding removed representative - " + callbackRequest.getCaseDetails().getId().toString());
-        prepareNocService.addRepresentatives(callbackRequest.getCaseDetails().getData());
+        prepareNocService.addRepresentatives(callbackRequest.getCaseDetails());
         log.info("Added removed representative - " + callbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }

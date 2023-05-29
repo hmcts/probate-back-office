@@ -14,7 +14,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -28,6 +31,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,6 +46,12 @@ class PrepareNocServiceTest {
     AuthTokenGenerator tokenGenerator;
     @Mock
     private CallbackRequest callbackRequestMock;
+    @Mock
+    private CcdClientApi ccdClientApi;
+    @Mock
+    private SecurityUtils securityUtils;
+    @Mock
+    private SaveNocService saveNocService;
 
     @BeforeEach
     public void setup() {
@@ -78,7 +88,16 @@ class PrepareNocServiceTest {
                 .solsSOTSurname("Last")
                 .build();
 
-        underTest.addRepresentatives(caseData);
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details = new uk.gov.hmcts
+                .probate.model.ccd.raw.request.CaseDetails(caseData, null, 0L);
+
+        underTest.addRepresentatives(details);
 
         assertEquals(3, caseData.getChangeOfRepresentatives().size());
         assertEquals("First", caseData.getChangeOfRepresentatives().get(0)
@@ -88,6 +107,9 @@ class PrepareNocServiceTest {
         assertEquals("NOC", caseData.getChangeOfRepresentatives().get(0)
                 .getValue().getAddedRepresentative().getUpdatedVia());
         assertNotNull(caseData.getChangeOfRepresentatives().get(0).getValue().getAddedDateTime());
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
     }
 
     private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {
