@@ -41,6 +41,7 @@ public class SendLetterServiceConsumerTest {
 
     private static final String XEROX_TYPE_PARAMETER = "PRO001";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
+    private static final String ADDITIONAL_DATA_RECIPIENTS = "recipients";
     private static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
     private final String someServiceAuthToken = "someServiceAuthToken";
 
@@ -80,6 +81,7 @@ public class SendLetterServiceConsumerTest {
         String response = Base64.getEncoder().encodeToString(pdf);
         Map<String, Object> additionalData = new HashMap<>();
         additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, "123421323");
+        additionalData.put(ADDITIONAL_DATA_RECIPIENTS, "1234567890123456");
         LetterV3 letter = new LetterV3(XEROX_TYPE_PARAMETER, Arrays.asList(new Document(response, 2)), additionalData);
         return letter;
     }

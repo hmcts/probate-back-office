@@ -76,6 +76,8 @@ class BulkPrintServiceTest {
     @Mock
     private DocumentTransformer documentTransformer;
 
+    private static final String RECIPIENTS = "recipients";
+
     @BeforeEach
     public void setUp() throws Exception {
         MockitoAnnotations.openMocks(this);
@@ -115,13 +117,15 @@ class BulkPrintServiceTest {
                 .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), letterV3ArgumentCaptor.capture()))
+                .thenReturn(sendLetterResponse);
         SendLetterResponse response = bulkPrintService.sendToBulkPrintForGrant(callbackRequest, grant, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
+        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
     }
 
 
@@ -445,10 +449,12 @@ class BulkPrintServiceTest {
                 .build();
         UUID uuid = UUID.randomUUID();
         SendLetterResponse sendLetterResponse = new SendLetterResponse(uuid);
-        when(sendLetterApiMock.sendLetter(anyString(), any(LetterV3.class))).thenReturn(sendLetterResponse);
+        when(sendLetterApiMock.sendLetter(anyString(), letterV3ArgumentCaptor.capture()))
+                .thenReturn(sendLetterResponse);
         SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
+        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
@@ -758,7 +764,7 @@ class BulkPrintServiceTest {
         assertEquals(sendLetterResponse, response);
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(10, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
-
+        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
     }
 
@@ -920,10 +926,9 @@ class BulkPrintServiceTest {
 
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(2, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
+        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
 
         assertNotNull(letterId);
         assertThat(letterId, is(uuid.toString()));
     }
-
-
 }
