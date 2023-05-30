@@ -111,7 +111,6 @@ public class PrepareNocService {
 
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        caseDetails.getData().get("removedRepresentative");
         Map<String, Object> caseData = caseDetails.getData();
         caseData.put("deceasedForenames","deceasedForenames123");
         caseDetails.getData().putAll(caseData);
