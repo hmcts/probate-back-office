@@ -64,7 +64,8 @@ public class PrepareNocService {
                 .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, details.getId().toString(),
                 grantOfRepresentationData, EventId.APPLY_DECISION,
-                securityUtils.getSecurityDTO(), "Apply Noc", "Apply Noc");
+                securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), "Apply Noc",
+                "Apply Noc");
     }
 
     private ChangeOfRepresentative buildRepresentative(CaseData caseData) {
@@ -110,6 +111,7 @@ public class PrepareNocService {
 
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        caseDetails.getData().get("removedRepresentative");
         Map<String, Object> caseData = caseDetails.getData();
         caseData.put("deceasedForenames","deceasedForenames123");
         caseDetails.getData().putAll(caseData);
