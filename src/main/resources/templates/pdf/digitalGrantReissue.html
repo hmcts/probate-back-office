@@ -97,9 +97,13 @@ Died on
 <strong>{{cd.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if cd.domicilityCountry != null and cd.domicilityCountry != "" %}{{cd.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
 {% endmacro %}
 
+{% macro codicils(cd) %}
+{% if cd.codicilAddedDateList|length == 1 %} with 1 codicil{% elseif cd.codicilAddedDateList|length > 1 %} with {{ cd.codicilAddedDateList|length }} codicils{% endif %}
+{% endmacro %}
+
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
 <p>The Last Will and Testament <strong>
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %} {% if cd.willHasCodicils == "Yes" %}{{ codicils(cd) }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 
