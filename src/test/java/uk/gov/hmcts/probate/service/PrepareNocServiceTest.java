@@ -6,6 +6,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.model.caseaccess.DecisionRequest;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
@@ -32,6 +34,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -51,6 +54,10 @@ class PrepareNocServiceTest {
     @Mock
     private SecurityUtils securityUtils;
     @Mock
+    private AuthTokenGenerator authTokenGenerator;
+    @Mock
+    private IdamApi idamApi;
+    @Mock
     private SaveNocService saveNocService;
 
     @BeforeEach
@@ -60,6 +67,12 @@ class PrepareNocServiceTest {
 
     @Test
     void shouldAddRepresentative() {
+        HashMap<String, Object> stringObjectMap = new HashMap<>();
+        stringObjectMap.put("id", "Value");
+        ResponseEntity<Map<String, Object>> responseEntity = new ResponseEntity<>(stringObjectMap, HttpStatus.CONTINUE);
+
+        when(idamApi.getUserDetails(anyString())).thenReturn(responseEntity);
+        when(authTokenGenerator.generate()).thenReturn("Generate");
         List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
         Organisation organisationData = Organisation.builder().organisationID("123")
                 .organisationName("ABC").build();
@@ -97,7 +110,7 @@ class PrepareNocServiceTest {
         uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details = new uk.gov.hmcts
                 .probate.model.ccd.raw.request.CaseDetails(caseData, null, 0L);
 
-        underTest.addRepresentatives(details);
+        underTest.addRepresentatives(details, "testAuth");
 
         assertEquals(3, caseData.getChangeOfRepresentatives().size());
         assertEquals("First", caseData.getChangeOfRepresentatives().get(0)
@@ -109,7 +122,7 @@ class PrepareNocServiceTest {
         assertNotNull(caseData.getChangeOfRepresentatives().get(0).getValue().getAddedDateTime());
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
-                        any(), any(), any(), any());
+                        any(), any(), any(), any(), any(), any());
     }
 
     private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {

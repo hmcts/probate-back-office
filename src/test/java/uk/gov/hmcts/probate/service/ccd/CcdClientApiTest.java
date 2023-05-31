@@ -353,7 +353,9 @@ class CcdClientApiTest {
                 "1",
                 grantOfRepresentationData,
                 eventId,
-                securityDTO,
+                AUTHORISATION,
+                SERVICE_AUTHORISATION,
+                USER_ID,
                 "Description",
                 "Summary");
 

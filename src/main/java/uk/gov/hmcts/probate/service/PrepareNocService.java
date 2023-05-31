@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
@@ -27,6 +28,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
 
@@ -40,13 +42,16 @@ public class PrepareNocService {
     private final SaveNocService saveNocService;
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
+    private final IdamApi idamApi;
+    private final AuthTokenGenerator authTokenGenerator;
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
     }
 
-    public void addRepresentatives(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details) {
+    public void addRepresentatives(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details,
+                                   String authorisationToken) {
         CaseData caseData = details.getData();
         List<CollectionMember<ChangeOfRepresentative>> representatives = caseData.getChangeOfRepresentatives();
         ChangeOfRepresentative representative = buildRepresentative(caseData);
@@ -58,14 +63,17 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
+        ResponseEntity<Map<String, Object>> userResponse = idamApi.getUserDetails(authorisationToken);
+        Map<String, Object> result = Objects.requireNonNull(userResponse.getBody());
+        String userId = result.get("id").toString().toLowerCase();
+        String serviceToken = authTokenGenerator.generate();
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
                 .builder()
                 .changeOfRepresentatives(saveNocService.getRepresentatives(representatives))
                 .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, details.getId().toString(),
-                grantOfRepresentationData, EventId.APPLY_DECISION,
-                securityUtils.getSecurityDTO(), "Apply Noc",
-                "Apply Noc");
+                grantOfRepresentationData, EventId.APPLY_DECISION, authorisationToken, serviceToken,
+                userId, "Apply Noc", "Apply Noc");
     }
 
     private ChangeOfRepresentative buildRepresentative(CaseData caseData) {
