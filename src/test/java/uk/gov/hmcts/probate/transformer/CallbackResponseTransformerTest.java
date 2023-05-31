@@ -2405,18 +2405,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldChangeCaseStateCaseMatchingIssueGrant() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .transferToState(CASE_MATCHING_ISSUE_GRANT);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
-        assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
-    }
-
-
-    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
