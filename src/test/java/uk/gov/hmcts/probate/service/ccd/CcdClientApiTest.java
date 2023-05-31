@@ -313,7 +313,7 @@ class CcdClientApiTest {
     @Test
     void updateCaseAsCaseworkerException() throws ConcurrentDataUpdateException {
         LocalDateTime timeLastModified = LocalDateTime.of(2022, 1, 8, 10, 10, 0, 0);
-        LocalDateTime timeNewer = timeLastModified.plusNanos(1);
+        LocalDateTime timeNewer = timeLastModified.plusNanos(1000000);
         StartEventResponse startEventResponse = Mockito.mock(StartEventResponse.class);
 
         when(coreCaseDataApi.startEventForCaseWorker(

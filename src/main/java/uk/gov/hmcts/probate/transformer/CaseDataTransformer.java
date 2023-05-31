@@ -96,4 +96,8 @@ public class CaseDataTransformer {
             attachDocumentsTransformer.updateAttachDocuments(callbackRequest.getCaseDetails().getData());
         }
     }
+
+    public void transformCaseDataForDocsReceivedNotificationSent(CallbackRequest callbackRequest) {
+        attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
+    }
 }

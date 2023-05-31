@@ -6,8 +6,9 @@ const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 module.exports = async function (caseIdShareCase, caseRef) {
     const I = this;
     await I.waitForText('Your cases', 20);
-    await I.click('//span[normalize-space()="' + caseIdShareCase + '"]');
-    await I.wait(3);
+    const caseRefNoDashes = await I.replaceAll(caseIdShareCase, '-', '');
+    I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    await I.wait(testConfig.ManualDelayMedium);
     await I.selectOption('//select[@id="next-step"]', 'Delete');
     await I.waitForNavigationToComplete('button[type="submit"]');
     await I.wait(testConfig.CreateCaseDelay);
