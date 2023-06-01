@@ -64,7 +64,7 @@ public class PrepareNocService {
                 .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, details.getId().toString(),
                 grantOfRepresentationData, EventId.APPLY_DECISION,
-                securityUtils.getSecurityDTO(), "Apply Noc",
+                securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), "Apply Noc",
                 "Apply Noc");
     }
 
