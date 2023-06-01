@@ -888,7 +888,7 @@ class BusinessValidationUnitTest {
         when(callbackResponseTransformerMock.transformCase(callbackRequestMock))
                 .thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
-                underTest.addRepresentative("testAuth", callbackRequestMock);
+                underTest.addRepresentative(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

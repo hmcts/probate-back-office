@@ -572,10 +572,9 @@ public class BusinessValidationController {
     @PostMapping(path = "/add-representatives", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> addRepresentative(
-            @RequestHeader(value = "Authorization") String authToken,
             @RequestBody CallbackRequest callbackRequest) {
         log.info("Adding removed representative - " + callbackRequest.getCaseDetails().getId().toString());
-        prepareNocService.addRepresentatives(callbackRequest.getCaseDetails(), authToken);
+        prepareNocService.addRepresentatives(callbackRequest.getCaseDetails());
         log.info("Added removed representative - " + callbackRequest.getCaseDetails().getId().toString());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
