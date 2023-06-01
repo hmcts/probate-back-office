@@ -871,5 +871,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-issuer", "CRUD": "RU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "RU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecisionComplete", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecisionComplete", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecisionComplete", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecisionComplete", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecisionComplete", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecisionComplete", "UserRole": "caseworker-probate-solicitor", "CRUD": "RU"}
 ]
