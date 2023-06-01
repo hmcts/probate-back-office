@@ -146,4 +146,10 @@ class CaseDataTransformerTest {
         caseDataTransformer.transformCaseDataForAttachDocuments(callbackRequestMock);
         verify(attachDocumentsTransformer, times(0)).updateAttachDocuments(caseDataMock);
     }
+
+    @Test
+    void shouldTransformDocsReceivedNotificationSent() {
+        caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequestMock);
+        verify(attachDocumentsTransformer).updateDocsReceivedNotificationSent(caseDataMock);
+    }
 }
