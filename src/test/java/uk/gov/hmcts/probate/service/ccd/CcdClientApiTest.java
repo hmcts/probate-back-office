@@ -341,7 +341,11 @@ class CcdClientApiTest {
                 eq(false),
                 any(CaseDataContent.class))).thenReturn(responseCaseDetails);
 
-
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
 
 
         CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCaseworker(
@@ -349,9 +353,7 @@ class CcdClientApiTest {
                 "1",
                 grantOfRepresentationData,
                 eventId,
-                AUTHORISATION,
-                SERVICE_AUTHORISATION,
-                USER_ID,
+                securityDTO,
                 "Description",
                 "Summary");
 

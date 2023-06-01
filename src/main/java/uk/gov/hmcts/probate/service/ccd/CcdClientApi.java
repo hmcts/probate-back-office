@@ -118,16 +118,15 @@ public class CcdClientApi implements CoreCaseDataService {
     @Override
     public CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId,
                                               CaseData caseData, EventId eventId,
-                                              String authorisationToken, String serviceToken, String userId,
-                                              String description, String summary) {
+                                              SecurityDTO securityDTO, String description, String summary) {
         log.info("Update case as for caseType: {}, caseId: {}, eventId: {}",
                 caseType.getName(), caseId, eventId.getName());
         log.info("Retrieve event token from CCD for Caseworker, caseType: {}, caseId: {}, eventId: {}",
                 caseType.getName(), caseId, eventId.getName());
         StartEventResponse startEventResponse = coreCaseDataApi.startEventForCaseWorker(
-                authorisationToken,
-                serviceToken,
-                userId,
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
                 PROBATE.name(),
                 caseType.getName(),
                 caseId,
@@ -139,9 +138,9 @@ public class CcdClientApi implements CoreCaseDataService {
         log.info("Submit event to CCD for Caseworker, caseType: {}, caseId: {}",
                 caseType.getName(), caseId);
         return coreCaseDataApi.submitEventForCaseWorker(
-                authorisationToken,
-                serviceToken,
-                userId,
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                securityDTO.getUserId(),
                 PROBATE.name(),
                 caseType.getName(),
                 caseId,
