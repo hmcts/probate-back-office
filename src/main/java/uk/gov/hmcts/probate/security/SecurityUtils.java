@@ -117,7 +117,7 @@ public class SecurityUtils {
     }
 
     public String getSchedulerToken() {
-        return getIdamOauth2TokenScheduler("ProbateSchedulerAAT@gmail.com", "Pa55word11");
+        return getIdamOauth2TokenScheduler(schedulerUserName, schedulerPassword);
     }
 
     private String getIdamOauth2TokenScheduler(String username, String password) {
