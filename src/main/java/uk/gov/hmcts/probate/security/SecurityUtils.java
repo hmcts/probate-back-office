@@ -117,12 +117,12 @@ public class SecurityUtils {
     }
 
     public String getSchedulerToken() {
-        log.info("Scheduler username: {}", schedulerUserName);
-        log.info("Scheduler password: {}", schedulerPassword);
-        return getIdamOauth2TokenScheduler(schedulerUserName, schedulerPassword);
+        return getIdamOauth2TokenScheduler("ProbateSchedulerAAT@gmail.com", "Pa55word11");
     }
 
     private String getIdamOauth2TokenScheduler(String username, String password) {
+        log.info("Scheduler username: {}", username);
+        log.info("Scheduler password: {}", password);
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
         try {
