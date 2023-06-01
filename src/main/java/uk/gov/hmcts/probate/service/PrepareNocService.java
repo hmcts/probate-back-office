@@ -63,7 +63,7 @@ public class PrepareNocService {
                 .changeOfRepresentatives(saveNocService.getRepresentatives(representatives))
                 .build();
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, details.getId().toString(),
-                grantOfRepresentationData, EventId.APPLY_DECISION,
+                grantOfRepresentationData, EventId.MAKE_CASE_DORMANT,
                 securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), "Apply Noc",
                 "Apply Noc");
     }
