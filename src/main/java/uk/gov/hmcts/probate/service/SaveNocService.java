@@ -42,7 +42,7 @@ public class SaveNocService {
 
         Organisation organisation = Organisation.builder()
                 .organisationID(representative.getRemovedRepresentative().getOrganisation().getOrganisationID())
-                .organisationName(representative.getRemovedRepresentative().getOrganisation().getOrganisationID())
+                .organisationName(representative.getRemovedRepresentative().getOrganisation().getOrganisationName())
                 .build();
 
         RemovedRepresentative removed = RemovedRepresentative.builder()

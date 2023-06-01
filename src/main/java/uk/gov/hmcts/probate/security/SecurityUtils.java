@@ -117,6 +117,8 @@ public class SecurityUtils {
     }
 
     public String getSchedulerToken() {
+        log.info("Scheduler username", schedulerUserName);
+        log.info("Scheduler password", schedulerPassword);
         return getIdamOauth2TokenScheduler(schedulerUserName, schedulerPassword);
     }
 
