@@ -241,6 +241,7 @@ public class NotificationController {
                 .validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules).getErrors().isEmpty()
             && (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState()))) {
             document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+            caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         }
         CallbackResponse response = callbackResponseTransformer
                 .transformCaseForAttachScannedDocs(callbackRequest, document);

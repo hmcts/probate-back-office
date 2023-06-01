@@ -516,6 +516,9 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
+    private LocalDate caseWorkerEscalationDate;
+    private LocalDate resolveCaseWorkerEscalationDate;
+    private String resolveCaseWorkerEscalationState;
     private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
     private LocalDate grantAwaitingDocumentationNotificationDate;
@@ -574,6 +577,7 @@ public class CaseData extends CaseDataParent {
     private final String includeStatementOfTruth;
     private LocalDate lastEvidenceAddedDate;
     private String documentUploadedAfterCaseStopped;
+    private String documentsReceivedNotificationSent;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
