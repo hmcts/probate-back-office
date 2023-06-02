@@ -56,6 +56,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
     private static final String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
         + "which is available from the Court) was John Smith";
+    private static final String MULTI_EXEC_TC_DECEASED_ONE_CODICIL = "The Last Will and Testament with 1 codicil "
+            + "of  (An official copy of which is available from the Court) was John Smith";
+    private static final String MULTI_EXEC_TC_DECEASED_TWO_CODICILS = "The Last Will and Testament with 2 codicils "
+            + "of  (An official copy of which is available from the Court) was John Smith";
     private static final String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
     private static final String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon "
@@ -792,7 +796,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
-        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED_ONE_CODICIL));
         assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
     }
@@ -804,7 +808,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
-        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED_ONE_CODICIL));
         assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
     }
@@ -856,7 +860,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
-        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED_TWO_CODICILS));
         assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
         assertTrue(response.contains(POWER_RESERVED_TO_ONE));
@@ -871,7 +875,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
-        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
+        assertTrue(response.contains(MULTI_EXEC_TC_DECEASED_TWO_CODICILS));
         assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
         assertTrue(response.contains(POWER_RESERVED_TO_ONE));
