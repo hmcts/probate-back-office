@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -71,9 +72,14 @@ class PrepareNocServiceTest {
                 .solicitorFirstName("First")
                 .solicitorLastName("Last")
                 .build();
+        ChangeOrganisationRequest changeOrganisationRequest = ChangeOrganisationRequest.builder()
+                .createdBy("abc@gmail.com")
+                .build();
         AddedRepresentative addedRepresentative = AddedRepresentative.builder()
                 .organisationID(policy.getOrganisation().getOrganisationID())
-                .updatedVia("abc").build();
+                .updatedVia("abc")
+                .updatedBy(changeOrganisationRequest.getCreatedBy())
+                .build();
         ChangeOfRepresentative representative = ChangeOfRepresentative.builder()
                 .addedRepresentative(addedRepresentative)
                 .removedRepresentative(removedRepresentative)
@@ -83,6 +89,7 @@ class PrepareNocServiceTest {
                 .changeOfRepresentatives(changeOfRepresentatives)
                 .changeOfRepresentative(representative)
                 .removedRepresentative(removedRepresentative)
+                .changeOrganisationRequestField(changeOrganisationRequest)
                 .applicantOrganisationPolicy(policy)
                 .solsSOTForenames("First")
                 .solsSOTSurname("Last")

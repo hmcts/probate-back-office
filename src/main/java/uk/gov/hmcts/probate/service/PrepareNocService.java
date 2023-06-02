@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -101,11 +102,12 @@ public class PrepareNocService {
     }
 
     private AddedRepresentative setAddedRepresentative(CaseData caseData) {
+        ChangeOrganisationRequest changeOrganisationRequest = caseData.getChangeOrganisationRequestField();
         OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
         Organisation organisation = organisationPolicy.getOrganisation();
         return AddedRepresentative.builder()
                 .organisationID(organisation.getOrganisationID())
-                .updatedBy("ABC")
+                .updatedBy(changeOrganisationRequest.getCreatedBy())
                 .updatedVia("NOC")
                 .build();
     }

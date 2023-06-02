@@ -1113,6 +1113,7 @@ public class CallbackResponseTransformer {
             .nocPreparedDate(ofNullable(caseData.getNocPreparedDate())
                 .map(dateTimeFormatter::format).orElse(null))
             .removedRepresentative(caseData.getRemovedRepresentative())
+            .changeOrganisationRequestField(caseData.getChangeOrganisationRequestField())
             .changeOfRepresentatives(getNullForEmptyRepresentatives(caseData.getChangeOfRepresentatives()))
             .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
 
