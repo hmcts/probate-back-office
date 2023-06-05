@@ -12,14 +12,26 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class SaveNocServiceTest {
 
@@ -31,6 +43,10 @@ class SaveNocServiceTest {
     AuthTokenGenerator tokenGenerator;
     @Mock
     private CallbackRequest callbackRequestMock;
+    @Mock
+    private CcdClientApi ccdClientApi;
+    @Mock
+    private SecurityUtils securityUtils;
 
     @BeforeEach
     public void setup() {
@@ -76,9 +92,67 @@ class SaveNocServiceTest {
                 .solsSOTSurname("Last")
                 .build();
 
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details = new uk.gov.hmcts
-                .probate.model.ccd.raw.request.CaseDetails(caseData, null, 0L);
-
         underTest.getRepresentatives(representatives);
+    }
+
+    @Test
+    void addRepresentatives() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy organisationPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                        .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                                .organisationID("orgId1")
+                                .organisationName("OrgName1").build()).build();
+        ChangeOrganisationRequest changeOrganisationRequest = ChangeOrganisationRequest.builder()
+                .createdBy("abc@gmail.com").build();
+        uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative removed =
+                uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative.builder()
+                        .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
+                        .organisation(organisationPolicy.getOrganisation())
+                        .solicitorEmail("abc@gmail.com")
+                        .solicitorFirstName("First")
+                        .solicitorLastName("Last")
+                        .build();
+        uk.gov.hmcts.reform.probate.model.cases.AddedRepresentative added =
+                uk.gov.hmcts.reform.probate.model.cases.AddedRepresentative.builder()
+                        .organisationID("orgId2")
+                        .updatedBy(changeOrganisationRequest.getCreatedBy())
+                        .updatedVia("NOC")
+                        .build();
+        uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative representative =
+                uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative.builder()
+                        .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
+                        .addedRepresentative(added)
+                        .removedRepresentative(removed)
+                        .build();
+        List<uk.gov.hmcts.reform.probate.model.cases.CollectionMember
+                <uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative>> representatives
+                = new ArrayList<>();
+        uk.gov.hmcts.reform.probate.model.cases.CollectionMember
+                <uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative> representative1 =
+                new uk.gov.hmcts.reform.probate.model.cases.CollectionMember<>(null, representative);
+        representatives.add(representative1);
+
+        Map<String, Object> caseData = new HashMap<>();
+        caseData.put("removedRepresentative", removed);
+        caseData.put("changeOrganisationRequestField", changeOrganisationRequest);
+        caseData.put("applicantOrganisationPolicy",organisationPolicy);
+        caseData.put("changeOfRepresentatives",representatives);
+
+        CaseDetails caseDetails = CaseDetails.builder().data(caseData)
+                .id(0L).build();
+        CallbackRequest callbackRequest = CallbackRequest.builder().caseDetails(caseDetails)
+                .caseDetailsBefore(caseDetails).build();
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        underTest.addRepresentatives(callbackRequest);
+        verify(ccdClientApi, times(1))
+                .updateCaseAsCaseworker(any(), any(), any(),
+                        any(), any(), any(), any());
     }
 }

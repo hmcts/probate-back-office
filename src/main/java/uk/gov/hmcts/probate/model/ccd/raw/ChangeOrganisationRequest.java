@@ -25,7 +25,7 @@ public class ChangeOrganisationRequest {
     private Organisation organisationToRemove;
 
     @JsonProperty("CaseRoleId")
-    private DynamicList caseRoleId;
+    private String caseRoleId;
 
     @JsonProperty("RequestTimestamp")
     @JsonSerialize(using = LocalDateTimeSerializer.class)

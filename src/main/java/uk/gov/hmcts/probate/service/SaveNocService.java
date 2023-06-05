@@ -3,19 +3,35 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
+import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.security.SecurityUtils;
+import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
+import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.Organisation;
 import uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative;
 import uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative;
 import uk.gov.hmcts.reform.probate.model.cases.AddedRepresentative;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
+import uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class SaveNocService {
+
+    private final CcdClientApi ccdClientApi;
+    private final SecurityUtils securityUtils;
 
     public List<CollectionMember<ChangeOfRepresentative>> getRepresentatives(
             List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember
@@ -58,5 +74,59 @@ public class SaveNocService {
                 .removedRepresentative(removed)
                 .build();
 
+    }
+
+    public void addRepresentatives(CallbackRequest callbackRequest) {
+        CaseDetails caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
+        Map<String, Object> oldCaseData = caseDetailsBefore.getData();
+        ChangeOrganisationRequest changeOrganisationRequest =
+                (ChangeOrganisationRequest) oldCaseData.get("changeOrganisationRequestField");
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        Map<String, Object> caseData = caseDetails.getData();
+        List<CollectionMember<ChangeOfRepresentative>> representatives =
+                (List<CollectionMember<ChangeOfRepresentative>>) caseData.get("changeOfRepresentatives");
+        ChangeOfRepresentative representative = buildRepresentative(caseData, changeOrganisationRequest);
+        representatives.add(new CollectionMember<>(null, representative));
+        log.info("Change of Representatives - " + representatives);
+        representatives.sort((m1, m2) -> {
+            LocalDateTime dt1 = m1.getValue().getAddedDateTime();
+            LocalDateTime dt2 = m2.getValue().getAddedDateTime();
+            return dt1.compareTo(dt2);
+        });
+        Collections.reverse(representatives);
+
+        final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
+                .builder()
+                .changeOfRepresentatives(representatives)
+                .build();
+        log.info("Grant of representation data - " + grantOfRepresentationData);
+        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseDetails.getId().toString(),
+                grantOfRepresentationData, EventId.APPLY_DECISION,
+                securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), "Apply Noc",
+                "Apply Noc");
+    }
+
+    private ChangeOfRepresentative buildRepresentative(Map<String, Object> caseData,
+                                                       ChangeOrganisationRequest changeOrganisationRequest) {
+        RemovedRepresentative removeRepresentative = (RemovedRepresentative) caseData.get("removedRepresentative");
+        AddedRepresentative addRepresentative = setAddedRepresentative(caseData, changeOrganisationRequest);
+        log.info("Removed Representative - " + removeRepresentative);
+        log.info("Added Representative - " + addRepresentative);
+        return ChangeOfRepresentative.builder()
+                .addedDateTime(LocalDateTime.now())
+                .addedRepresentative(addRepresentative)
+                .removedRepresentative(removeRepresentative)
+                .build();
+    }
+
+    private AddedRepresentative setAddedRepresentative(Map<String, Object>  caseData,
+                                                       ChangeOrganisationRequest changeOrganisationRequest) {
+        OrganisationPolicy organisationPolicy = (OrganisationPolicy) caseData.get("applicantOrganisationPolicy");
+        Organisation organisation = organisationPolicy.getOrganisation();
+        return AddedRepresentative.builder()
+                .organisationID(organisation.getOrganisationID())
+                .updatedBy(changeOrganisationRequest.getCreatedBy())
+                .updatedVia("NOC")
+                .build();
     }
 }
