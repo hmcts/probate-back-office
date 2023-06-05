@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.controller;
 
 import org.apache.commons.io.IOUtils;
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -18,15 +19,18 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.response.WillLodgementCallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.DocumentValidation;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
-import uk.gov.hmcts.probate.service.RegistryDetailsService;
 import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistryDetailsService;
+import uk.gov.hmcts.probate.service.ReprintService;
 import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -45,15 +49,16 @@ import java.util.Collections;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
+import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class DocumentControllerUnitTest {
+class DocumentControllerUnitTest {
 
     private static final String VALID_FILE_NAME = "valid_file.png";
 
@@ -109,7 +114,7 @@ public class DocumentControllerUnitTest {
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 
         documentController = new DocumentController(idamApi, documentGeneratorService, registryDetailsService,
-            pdfManagementService, callbackResponseTransformer, caseDataTransformer,
+                    pdfManagementService, callbackResponseTransformer, caseDataTransformer,
             willLodgementCallbackResponseTransformer, notificationService, registriesProperties, bulkPrintService,
             eventValidationService, emailAddressNotifyValidationRules, bulkPrintValidationRules,
             redeclarationSoTValidationRule, reprintService, documentValidation, documentManagementService,
@@ -117,7 +122,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorIfThereAreNoFilesInTheRequest() {
+    void shouldReturnErrorIfThereAreNoFilesInTheRequest() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: no files passed");
 
@@ -126,7 +131,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorForEmptyFileList() {
+    void shouldReturnErrorForEmptyFileList() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: no files passed");
 
@@ -136,7 +141,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorForTooManyFiles() {
+    void shouldReturnErrorForTooManyFiles() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: too many files");
 
@@ -152,7 +157,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorForInvalidFileExtension() {
+    void shouldReturnErrorForInvalidFileExtension() {
         List<String> expectedResult = new ArrayList<>();
         expectedResult.add("Error: invalid file type: testData");
         MockMultipartFile file = new MockMultipartFile("testData", "filename.txt", "text/plain", "some xml".getBytes());
@@ -164,7 +169,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUploadSuccessfully() throws IOException {
+    void shouldUploadSuccessfully() throws IOException {
         final byte[] bytes = IOUtils.toByteArray(getClass().getResourceAsStream("/files/" + VALID_FILE_NAME));
 
 
@@ -188,7 +193,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
+    void shouldAlwaysUpdateLastEvidenceAddedDateAsCaseworker() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
             .build();
@@ -208,7 +213,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
+    void shouldUpdateLastEvidenceAddedDateWhenStoppedAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
                 .build();
@@ -230,7 +235,7 @@ public class DocumentControllerUnitTest {
     }
 
     @Test
-    public void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
+    void shouldUpdateLastEvidenceAddedDateWhenOngoingAsRobot() {
         CallbackRequest callbackRequest = mock(CallbackRequest.class);
         CaseData mockCaseData = CaseData.builder()
                 .build();
@@ -248,4 +253,55 @@ public class DocumentControllerUnitTest {
         verify(evidenceUploadService, times(2))
                 .updateLastEvidenceAddedDate(mockCaseDetails);
     }
+
+    @Test
+    void shouldSetupDeleteDocumentsForGrant() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response =
+                documentController.setupForPermanentRemovalGrant(callbackRequest);
+        verify(callbackResponseTransformer, times(1)).setupOriginalDocumentsForRemoval(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldDeleteDocumentsForGrant() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response =
+                documentController.permanentlyDeleteRemovedGrant(callbackRequest);
+        verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
+        verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetupDeleteDocumentsForWillLodgement() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+        WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<WillLodgementCallbackResponse> response =
+                documentController.setupForPermanentRemovalWillLodgement(callbackRequest);
+        verify(willLodgementCallbackResponseTransformer, times(1)).setupOriginalDocumentsForRemoval(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldDeleteDocumentsForWillLodgement() {
+        WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
+        WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<WillLodgementCallbackResponse> response =
+                documentController.permanentlyDeleteRemovedWillLodgement(callbackRequest);
+        verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
+        verify(willLodgementCallbackResponseTransformer, times(1)).transform(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
 }
