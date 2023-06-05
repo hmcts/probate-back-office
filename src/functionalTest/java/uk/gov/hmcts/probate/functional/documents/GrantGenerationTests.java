@@ -69,8 +69,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
     private static final String EXTRANEOUS_CURLY_START_BRACE = "{";
     private static final String EXTRANEOUS_CURLY_END_BRACE = "}";
-    private static final String SINGLE_EXEC_TC_ADMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
-        + "granted by this court to the following Executorof";
+    private static final String SINGLE_EXEC_TC_ADMINISTRATION_STATEMENT = "The Administration of 's estate is John "
+        + "Smithgranted by this court to the following Executorof";
     private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
     public static final String THE_UNITED_KINGDOM = "the United Kingdom";
