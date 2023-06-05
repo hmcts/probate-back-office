@@ -79,10 +79,12 @@ public class SaveNocService {
     public void addRepresentatives(CallbackRequest callbackRequest) {
         CaseDetails caseDetailsBefore = callbackRequest.getCaseDetailsBefore();
         Map<String, Object> oldCaseData = caseDetailsBefore.getData();
-        ChangeOrganisationRequest changeOrganisationRequest =
-                (ChangeOrganisationRequest) oldCaseData.get("changeOrganisationRequestField");
+        log.info("Old case data - " + oldCaseData);
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
+        log.info("New case data - " + caseData);
+        ChangeOrganisationRequest changeOrganisationRequest =
+                (ChangeOrganisationRequest) oldCaseData.get("changeOrganisationRequestField");
         List<CollectionMember<ChangeOfRepresentative>> representatives =
                 (List<CollectionMember<ChangeOfRepresentative>>) caseData.get("changeOfRepresentatives");
         ChangeOfRepresentative representative = buildRepresentative(caseData, changeOrganisationRequest);
