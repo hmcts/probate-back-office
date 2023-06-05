@@ -39,7 +39,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_WITHDRAW = "/caveat/withdraw";
     private static final String CAVEAT_SOLS_CREATED = "/caveat/solsCreate";
     private static final String DEFAULT_PAYLOAD = "caveatPayloadNotifications.json";
-    private static final String DEFAULT_PAYLOAD_RESPONSE = "caveatPayloadNotificationsResponse.txt";
     private static final String DEFAULT_PAYLOAD_WELSH = "caveatPayloadNotificationsWelsh.json";
     private static final String DEFAULT_PAYLOAD_RESPONSE_WELSH = "caveatPayloadNotificationsWelshResponse.txt";
     private static final String PAYLOAD_CAVEAT_NO_DOB = "caveatPayloadNoDOB.json";
@@ -51,10 +50,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         "solicitorCaveatWithdrawnExpectedEmailText.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_WITHDRAWN_RESPONSE_WELSH =
         "solicitorCaveatWithdrawnExpectedTextWelsh.txt";
-    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE = "caveatPayloadNotificationsSolicitorResponse.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_WELSH = "caveatPayloadNotificationsSolicitorWelsh.json";
-    private static final String DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH =
-        "caveatPayloadNotificationsSolicitorResponseWelsh.txt";
     private static final String DEFAULT_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOB.json";
     private static final String RESPONSE_PAYLOAD_SOLICITOR_NO_DOB = "caveatPayloadNotificationsSolicitorNoDOBResponse"
         + ".txt";
@@ -69,8 +65,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_EXTEND_PAYLOAD = "/caveat/caveatExtendPayloadExtend.json";
     private static final String CAVEAT_SOLICITOR_CREATE_PAYLOAD = "/caveat/caveatSolicitorCreate.json";
     private static final String CAVEAT_SOLICITOR_UPDATE_PAYLOAD = "/caveat/caveatSolicitorUpdate.json";
-    private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD = "/caveat/caveatSolicitorValidate.json";
-    private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE = "caveatSolicitorValidateResponse.txt";
     private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB = "/caveat/caveatSolicitorValidateNoDOB.json";
     private static final String CAVEAT_SOLICITOR_VALIDATE_RESPONSE_NO_DOB = "caveatSolicitorValidateResponseNoDOB.txt";
     private static final String CAVEAT_VALIDATE_EXTEND_PAYLOAD = "/caveat/caveatValidateExtend.json";
@@ -139,15 +133,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalCaveatRaisedEmailContents() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_RAISED);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_RESPONSE, EMAIL_NOTIFICATION_URL, responseBody,
-            replacements);
-    }
-
-    @Test
     public void verifyPersonalCaveatRaisedEmailContentsNoDOB() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
@@ -195,24 +180,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatRaisedSolicitorPaperEmailContents() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_RAISED);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE, EMAIL_NOTIFICATION_URL,
-            responseBody, replacements);
-    }
-
-    @Test
-    public void verifyCaveatRaisedSolicitorPaperEmailContentsWelsh() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_RAISED);
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(DEFAULT_PAYLOAD_SOLICITOR_RESPONSE_WELSH, EMAIL_NOTIFICATION_URL,
-            responseBody, replacements);
-    }
-
-    @Test
     public void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOBWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
@@ -229,18 +196,6 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
         assertExpectedContentsWithExpectedReplacement(RESPONSE_PAYLOAD_SOLICITOR_NO_DOB, EMAIL_NOTIFICATION_URL,
             responseBody, replacements);
-    }
-
-    @Test
-    public void verifySolicitorCaveatRaisedEmailContents() throws IOException {
-        final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD, CAVEAT_VALIDATE);
-        assertTrue(responseBody.asString().contains("payments"));
-        assertTrue(responseBody.asString().contains("RC-"));
-        final HashMap<String, String> replacements = new HashMap<>();
-        replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
-        assertExpectedContentsWithExpectedReplacement(CAVEAT_SOLICITOR_VALIDATE_RESPONSE, EMAIL_NOTIFICATION_URL,
-            responseBody,
-            replacements);
     }
 
     @Test

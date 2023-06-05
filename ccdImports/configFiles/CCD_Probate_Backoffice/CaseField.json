@@ -426,6 +426,9 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantDelayedNotificationDate", "Label": "Grant delayed notification date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantStoppedDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "escalatedDate", "Label": "Case escalated date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "caseWorkerEscalationDate", "Label": "SME Referral date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveCaseWorkerEscalationDate", "Label": "Resolve SME Referral date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "resolveCaseWorkerEscalationState", "Label": "Resolve SME Referral state to?", "FieldType": "FixedList", "FieldTypeParameter": "resolveEscalationStateFixedList", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "authenticatedDate", "Label": "Case authenticated date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentationNotificationDate", "Label": "Grant stopped date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "grantAwaitingDocumentatioNotificationSent", "Label": "Has a grant awaiting documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
@@ -464,5 +467,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "lastEvidenceAddedDate", "Label": "When was the last scanned or uploaded doc added?", "HintText": "For example, 31 03 2020", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirections", "Label": "Registrar directions", "FieldType": "Collection", "FieldTypeParameter": "RegistrarDirection", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirectionToAdd", "Label": "Registrar direction", "FieldType": "RegistrarDirection", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadedAfterCaseStopped", "Label": "Has a document been scanned or uploaded since the case was stopped?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadedAfterCaseStopped", "Label": "Has a document been scanned or uploaded since the case was stopped?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentsReceivedNotificationSent", "Label": "Has a document received documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]

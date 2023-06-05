@@ -438,6 +438,14 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+
+    public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                       PaymentResponse paymentResponse, Document coversheet, Document sentEmail) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
@@ -1056,6 +1064,10 @@ public class CallbackResponseTransformer {
             .taskList(caseData.getTaskList())
             .escalatedDate(ofNullable(caseData.getEscalatedDate())
                 .map(dateTimeFormatter::format).orElse(null))
+            .caseWorkerEscalationDate(ofNullable(caseData.getCaseWorkerEscalationDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .resolveCaseWorkerEscalationDate(ofNullable(caseData.getResolveCaseWorkerEscalationDate())
+                .map(dateTimeFormatter::format).orElse(null))
             .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
                 .map(dateTimeFormatter::format).orElse(null))
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
@@ -1092,7 +1104,8 @@ public class CallbackResponseTransformer {
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
-            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped());
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
+            .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1365,32 +1378,22 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isSolsEmailSet(caseData)) {
+        if (SOLICITOR.equals(caseData.getApplicationType())) {
+            String answer = isSolsEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
-            builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
-        if (isPAEmailSet(caseData)) {
+        if (PERSONAL.equals(caseData.getApplicationType())) {
+            String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
-            builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
         if (!isCodicil(caseData)) {
@@ -1501,18 +1504,22 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isSolsEmailSet(caseData)) {
+        if (SOLICITOR.equals(caseData.getApplicationType())) {
+            String answer = isSolsEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
+        }
+
+        if (PERSONAL.equals(caseData.getApplicationType())) {
+            String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
         if (!isCodicil(caseData)) {
