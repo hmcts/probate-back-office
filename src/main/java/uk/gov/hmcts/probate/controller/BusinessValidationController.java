@@ -104,6 +104,7 @@ public class BusinessValidationController {
     private final FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final PrepareNocService prepareNocService;
+    private final NoticeOfChangeService noticeOfChangeService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -436,9 +437,11 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/initPaperForm", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> initPaperForm(
+            @RequestHeader(value = "Authorization") String authToken,
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult) {
 
+        noticeOfChangeService.showProfessionUsers(authToken);
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = callbackResponseTransformer.defaultDateOfDeathType(callbackRequest);
 

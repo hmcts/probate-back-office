@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.model.noc.FindUsersByOrganisationResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -68,9 +69,32 @@ public class OrganisationsRetrievalService {
         return new HttpEntity<>(headers);
     }
 
+    public FindUsersByOrganisationResponse getOrganisationUsers(String orgId, String authToken) {
+        URI uri = buildOrgUserUri(orgId);
+        HttpEntity<HttpHeaders> request = buildRequest(authToken);
+        try {
+            log.info("SAC: get getOrganisationUsers for orgId {}", orgId);
+            log.info("SAC: get getOrganisationUsers forfromHttpUrl {}", uri);
+            ResponseEntity<FindUsersByOrganisationResponse>  responseEntity = restTemplate.exchange(uri, GET,
+                    request, FindUsersByOrganisationResponse.class);
+
+            log.info("SAC: found getOrganisationUsers for orgId {}, getOrganisationUsers {}", orgId,
+                    responseEntity.toString());
+            return Objects.requireNonNull(responseEntity.getBody());
+        } catch (Exception e) {
+            log.error("SAC: Exception when looking up org for orgId {} authToken {} for exception {}",
+                    orgId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+        }
+        log.info("SAC: no getOrganisationUsers for orgId {}", orgId);
+        return null;
+    }
+
     private URI buildUri() {
         return fromHttpUrl(orgUri + orgApi)
             .build().toUri();
     }
-
+    private URI buildOrgUserUri(String orgId) {
+        return fromHttpUrl(orgUri+"/refdata/internal/v1/organisations/"+orgId+"/users?returnRoles=false")
+                .build().toUri();
+    }
 }
