@@ -19,7 +19,7 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
