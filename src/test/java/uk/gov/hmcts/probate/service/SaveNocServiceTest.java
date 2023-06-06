@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.service;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,14 +19,10 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -48,8 +43,6 @@ class SaveNocServiceTest {
     private CcdClientApi ccdClientApi;
     @Mock
     private SecurityUtils securityUtils;
-    @Mock
-    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
@@ -107,8 +100,8 @@ class SaveNocServiceTest {
                         .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
                                 .organisationID("orgId1")
                                 .organisationName("OrgName1").build()).build();
-        ChangeOrganisationRequest changeOrganisationRequest = ChangeOrganisationRequest.builder()
-                .createdBy("abc@gmail.com").build();
+        Map<String, Object> map = new LinkedHashMap<>();
+        map.put("CreatedBy","abc@gmail.com");
         uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative removed =
                 uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative.builder()
                         .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
@@ -120,7 +113,7 @@ class SaveNocServiceTest {
         uk.gov.hmcts.reform.probate.model.cases.AddedRepresentative added =
                 uk.gov.hmcts.reform.probate.model.cases.AddedRepresentative.builder()
                         .organisationID("orgId2")
-                        .updatedBy(changeOrganisationRequest.getCreatedBy())
+                        .updatedBy("changeOrganisationRequest.getCreatedBy()")
                         .updatedVia("NOC")
                         .build();
         uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative representative =
@@ -139,7 +132,7 @@ class SaveNocServiceTest {
 
         Map<String, Object> caseData = new HashMap<>();
         caseData.put("removedRepresentative", removed);
-        caseData.put("changeOrganisationRequestField", changeOrganisationRequest);
+        caseData.put("changeOrganisationRequestField", map);
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
         caseData.put("changeOfRepresentatives",representatives);
 
