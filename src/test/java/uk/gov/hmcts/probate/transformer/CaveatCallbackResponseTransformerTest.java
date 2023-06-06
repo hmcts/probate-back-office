@@ -26,7 +26,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -42,6 +44,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -669,6 +672,30 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals(REPRESENTATIVE_NAME, caveatData.getSolsSolicitorRepresentativeName());
         assertEquals(DX_NUMBER, caveatData.getDxNumber());
         assertTrue(caveatData.getPractitionerAcceptsServiceByEmail());
+    }
+
+    @Test
+    void shouldSetupDocumentsForRemoval() {
+
+        List<CollectionMember<Document>> generated = Arrays.asList(new CollectionMember("1",
+                Document.builder().build()));
+        List<CollectionMember<ScannedDocument>> scanned = Arrays.asList(new CollectionMember("2",
+                ScannedDocument.builder().build()));
+        List<CollectionMember<UploadDocument>> uploaded = Arrays.asList(new CollectionMember("3",
+                UploadDocument.builder().build()));
+
+        caveatDataBuilder.documentsGenerated(generated);
+        caveatDataBuilder.scannedDocuments(scanned);
+        caveatDataBuilder.documentsUploaded(uploaded);
+
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+
+        CaveatCallbackResponse response = underTest.setupOriginalDocumentsForRemoval(caveatCallbackRequestMock);
+        OriginalDocuments originalDocuments = response.getCaveatData().getOriginalDocuments();
+        assertEquals("1", originalDocuments.getOriginalDocsGenerated().get(0).getId());
+        assertEquals("2", originalDocuments.getOriginalDocsScanned().get(0).getId());
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {

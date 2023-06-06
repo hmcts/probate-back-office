@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.Respons
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
@@ -337,6 +338,20 @@ public class CaveatCallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CaveatCallbackResponse setupOriginalDocumentsForRemoval(CaveatCallbackRequest callbackRequest) {
+        CaveatData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(callbackRequest.getCaseDetails());
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(caseData.getDocumentsGenerated())
+                .originalDocsScanned(caseData.getScannedDocuments())
+                .originalDocsUploaded(caseData.getDocumentsUploaded())
+                .build();
+
+        responseCaseDataBuilder.originalDocuments(originalDocuments);
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     private String transformToString(LocalDate dateValue) {

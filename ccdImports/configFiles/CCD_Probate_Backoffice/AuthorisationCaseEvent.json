@@ -720,6 +720,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "moveToCWEscalation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "resolveCWEscalation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAddCommentForCWEscalation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "removeDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "serviceRequestPaymentFailed", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "makeCaseDormant", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},

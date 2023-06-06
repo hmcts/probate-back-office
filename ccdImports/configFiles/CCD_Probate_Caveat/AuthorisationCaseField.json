@@ -337,6 +337,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "bulkScanEnvelopes", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "registrarDirections", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "registrarDirectionToAdd", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "originalDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "serviceRequestReference", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "paymentTaken", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "serviceRequestWaysToPay", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},

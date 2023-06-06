@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -23,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
@@ -62,6 +64,7 @@ public class CaveatController {
     private final PaymentsService paymentsService;
     private final FeeService feeService;
     private final RegistrarDirectionService registrarDirectionService;
+    private final DocumentGeneratorService documentGeneratorService;
     private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
@@ -239,4 +242,16 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 
+    @PostMapping(path = "/setup-for-permanent-removal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CaveatCallbackResponse> setupForPermanentRemovalCaveat(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.setupOriginalDocumentsForRemoval(callbackRequest));
+    }
+
+    @PostMapping(path = "/permanently-delete-removed", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CaveatCallbackResponse> permanentlyDeleteRemovedCaveat(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(callbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
 }

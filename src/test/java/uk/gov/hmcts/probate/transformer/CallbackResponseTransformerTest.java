@@ -3766,6 +3766,28 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldSetupDocumentsForRemoval() {
+
+        List<CollectionMember<Document>> generated = Arrays.asList(new CollectionMember("1",
+                Document.builder().build()));
+        List<CollectionMember<ScannedDocument>> scanned = Arrays.asList(new CollectionMember("2",
+                ScannedDocument.builder().build()));
+        List<CollectionMember<UploadDocument>> uploaded = Arrays.asList(new CollectionMember("3",
+                UploadDocument.builder().build()));
+
+        caseDataBuilder.probateDocumentsGenerated(generated);
+        caseDataBuilder.scannedDocuments(scanned);
+        caseDataBuilder.boDocumentsUploaded(uploaded);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse response = underTest.setupOriginalDocumentsForRemoval(callbackRequestMock);
+        assertEquals("1", response.getData().getOriginalDocuments().getOriginalDocsGenerated().get(0).getId());
+        assertEquals("2", response.getData().getOriginalDocuments().getOriginalDocsScanned().get(0).getId());
+        assertEquals("3", response.getData().getOriginalDocuments().getOriginalDocsUploaded().get(0).getId());
+    }
+
+    @Test
     void shouldTransformPersonalCaseForUpdateTaskList() {
         CaseData caseData = caseDataBuilder
                 .applicationType(PERSONAL)

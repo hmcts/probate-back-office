@@ -491,6 +491,7 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-superuser", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseEventID": "removeDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentFailed", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "attachScannedDocs", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
