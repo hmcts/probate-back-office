@@ -85,7 +85,7 @@ public class SaveNocService {
         log.info("New case data - " + caseData);
         log.info("change organisation request- " + oldCaseData.get("changeOrganisationRequestField"));
         Map<String, Object> map = (Map<String, Object>) oldCaseData.get("changeOrganisationRequestField");
-        map.forEach((key,value) -> log.info("Key - " + key + ":"+map.get(key)));
+        map.forEach((key,value) -> log.info("Key - " + key + ":" + map.get(key)));
         String solicitorEmail = (String) map.get("CreatedBy");
         log.info("solicitor email - " + solicitorEmail);
         ChangeOrganisationRequest changeOrganisationRequest = (ChangeOrganisationRequest)
