@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -19,7 +20,7 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -47,6 +48,8 @@ class SaveNocServiceTest {
     private CcdClientApi ccdClientApi;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
