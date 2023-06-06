@@ -115,9 +115,12 @@ public class PrepareNocService {
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
-        caseData.put("deceasedForenames","deceasedForenames123");
+        log.info("case Data - " + caseData);
+        Map<String, Object> map = (Map<String, Object>) caseData.get("changeOrganisationRequestField");
+        String email = (String) map.get("CreatedBy");
+        log.info("solicitor2 email - " + email);
+        caseData.put("solicitor2Email", email);
         caseDetails.getData().putAll(caseData);
-        log.info("Deceased ForeName" + caseDetails.getData().get("deceasedForenames"));
         return assignCaseAccessClient.applyDecision(
                 authorisation,
                 tokenGenerator.generate(),
