@@ -101,8 +101,7 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
             caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            creditAccountPaymentTransformer, creditAccountPaymentValidationRule,
-            solicitorPaymentMethodValidationRuleMock, registrarDirectionService, documentGeneratorService);
+            registrarDirectionService, documentGeneratorService, serviceRequestAlreadyCreatedValidationRuleMock);
 
     }
 
