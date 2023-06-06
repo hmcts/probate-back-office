@@ -14,7 +14,7 @@ import uk.gov.hmcts.reform.probate.model.cases.Organisation;
 import uk.gov.hmcts.reform.probate.model.cases.ChangeOfRepresentative;
 import uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative;
 import uk.gov.hmcts.reform.probate.model.cases.AddedRepresentative;
-import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
@@ -85,8 +85,9 @@ public class SaveNocService {
         log.info("New case data - " + caseData);
         log.info("New case data - " + caseData);
         log.info("change organisation request - " + oldCaseData.get("changeOrganisationRequestField"));
-        ChangeOrganisationRequest changeOrganisationRequest =
-                (ChangeOrganisationRequest) oldCaseData.get("changeOrganisationRequestField");
+        ChangeOrganisationRequest changeOrganisationRequest = (ChangeOrganisationRequest)
+                oldCaseData.get("changeOrganisationRequestField");
+        log.info("changeOrganisationRequest after - " + changeOrganisationRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives =
                 (List<CollectionMember<ChangeOfRepresentative>>) caseData.get("changeOfRepresentatives");
         ChangeOfRepresentative representative = buildRepresentative(caseData, changeOrganisationRequest);
@@ -110,8 +111,8 @@ public class SaveNocService {
                 "Apply Noc");
     }
 
-    private ChangeOfRepresentative buildRepresentative(Map<String, Object> caseData,
-                                                       ChangeOrganisationRequest changeOrganisationRequest) {
+    private ChangeOfRepresentative buildRepresentative(Map<String, Object> caseData, ChangeOrganisationRequest
+                                                               changeOrganisationRequest) {
         RemovedRepresentative removeRepresentative = (RemovedRepresentative) caseData.get("removedRepresentative");
         AddedRepresentative addRepresentative = setAddedRepresentative(caseData, changeOrganisationRequest);
         log.info("Removed Representative - " + removeRepresentative);
