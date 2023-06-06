@@ -134,7 +134,6 @@ public class BulkPrintService {
 
     private SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument,
                                                Document coverSheet, boolean forReprint) {
-
         SendLetterResponse sendLetterResponse = null;
         try {
             Map<String, Object> additionalData = new HashMap<>();

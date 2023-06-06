@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.time.LocalDate;
@@ -71,6 +72,9 @@ public class StandingSearchData {
     private String recordId;
     private String legacyType;
     private String legacyCaseViewUrl;
+
+    //transient in-event vars
+    private OriginalDocuments originalDocuments;
 
     // EVENT = misc
 

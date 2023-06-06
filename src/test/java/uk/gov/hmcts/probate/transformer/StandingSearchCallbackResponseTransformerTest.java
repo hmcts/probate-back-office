@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
@@ -22,6 +23,7 @@ import uk.gov.hmcts.probate.model.ccd.standingsearch.response.StandingSearchCall
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
@@ -152,6 +154,23 @@ class StandingSearchCallbackResponseTransformerTest {
 
         assertEquals(SS_FORMATTED_EXPIRY_DATE,
             standingSearchCallbackResponse.getResponseStandingSearchData().getExpiryDate());
+    }
+
+    @Test
+    void shouldSetupDocumentsForRemoval() {
+
+        List<CollectionMember<UploadDocument>> uploaded = Arrays.asList(new CollectionMember("3",
+                UploadDocument.builder().build()));
+
+        standingSearchDataBuilder.documentsUploaded(uploaded);
+
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
+
+        StandingSearchCallbackResponse response = underTest
+                .setupOriginalDocumentsForRemoval(standingSearchCallbackRequestMock);
+        OriginalDocuments originalDocuments = response.getResponseStandingSearchData().getOriginalDocuments();;
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
     }
 
     private void assertCommon(StandingSearchCallbackResponse standingSearchCallbackResponse) {
