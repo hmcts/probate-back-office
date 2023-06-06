@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -8,6 +9,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
@@ -26,7 +28,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -47,6 +48,8 @@ class SaveNocServiceTest {
     private CcdClientApi ccdClientApi;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
+    private ObjectMapper objectMapper;
 
     @BeforeEach
     public void setup() {
@@ -104,8 +107,8 @@ class SaveNocServiceTest {
                         .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
                                 .organisationID("orgId1")
                                 .organisationName("OrgName1").build()).build();
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("CreatedBy","abc@gmail.com");
+        ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
+                .createdBy("abc@gmail.com").build();
         uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative removed =
                 uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative.builder()
                         .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
@@ -136,7 +139,7 @@ class SaveNocServiceTest {
 
         Map<String, Object> caseData = new HashMap<>();
         caseData.put("removedRepresentative", removed);
-        caseData.put("changeOrganisationRequestField", map);
+        caseData.put("changeOrganisationRequestField", changeRequest);
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
         caseData.put("changeOfRepresentatives",representatives);
 

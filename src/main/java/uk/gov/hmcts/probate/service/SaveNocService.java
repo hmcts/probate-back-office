@@ -1,10 +1,12 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
@@ -31,6 +33,7 @@ public class SaveNocService {
 
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
+    private final ObjectMapper objectMapper;
 
     public List<CollectionMember<ChangeOfRepresentative>> getRepresentatives(
             List<uk.gov.hmcts.probate.model.ccd.raw.CollectionMember
@@ -83,9 +86,8 @@ public class SaveNocService {
         Map<String, Object> caseData = caseDetails.getData();
         log.info("New case data - " + caseData);
         log.info("change organisation request- " + oldCaseData.get("changeOrganisationRequestField"));
-        Map<String, Object> map = (Map<String, Object>) oldCaseData.get("changeOrganisationRequestField");
-        String email = (String) map.get("CreatedBy");
-        log.info("solicitor2 email - " + email);
+        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseDetails);
+        log.info("change organisation request after- " + changeRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives =
                 (List<CollectionMember<ChangeOfRepresentative>>) caseData.get("changeOfRepresentatives");
         ChangeOfRepresentative representative = buildRepresentative(caseData);
@@ -107,6 +109,12 @@ public class SaveNocService {
                 grantOfRepresentationData, EventId.APPLY_DECISION,
                 securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), "Apply Noc",
                 "Apply Noc");
+    }
+
+    private ChangeOrganisationRequest getChangeOrganisationRequest(CaseDetails caseDetails) {
+
+        return objectMapper.convertValue(caseDetails.getData().get("changeOrganisationRequestField"),
+                ChangeOrganisationRequest.class);
     }
 
     private ChangeOfRepresentative buildRepresentative(Map<String, Object> caseData) {
