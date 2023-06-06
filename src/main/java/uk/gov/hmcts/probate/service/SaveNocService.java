@@ -84,6 +84,9 @@ public class SaveNocService {
         Map<String, Object> caseData = caseDetails.getData();
         log.info("New case data - " + caseData);
         log.info("New case data - " + caseData);
+        log.info("change organisation request class- " + oldCaseData.get("changeOrganisationRequestField").getClass());
+        log.info("change organisation request className - " + oldCaseData.get("changeOrganisationRequestField")
+                .getClass().getName());
         log.info("change organisation request - " + oldCaseData.get("changeOrganisationRequestField"));
         ChangeOrganisationRequest changeOrganisationRequest = (ChangeOrganisationRequest)
                 oldCaseData.get("changeOrganisationRequestField");
