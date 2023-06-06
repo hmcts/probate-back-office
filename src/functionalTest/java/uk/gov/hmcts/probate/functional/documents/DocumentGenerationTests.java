@@ -44,7 +44,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
         final String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
         String expectedText = removeCrLfs(utils.getJsonFromFile("willLodgementDepositReceiptResponse.txt"));
-        expectedText = expectedText.replaceAll("19th November 2020", caseData.convertDate(LocalDate.now()));
+        expectedText = expectedText.replace("19th November 2020", caseData.convertDate(LocalDate.now()));
 
         assertTrue(response.contains(expectedText));
     }
@@ -131,7 +131,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
             .config(config)
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
-            .body(utils.getJsonFromFile("/document/generateLetter.json"))
+            .body(utils.getJsonFromFile(GENERATE_LETTER_PAYLOAD))
             .when().post(PREVIEW_LETTER).andReturn();
         final JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
         final String documentUrl = jsonPath.get("data.previewLink.document_binary_url");
@@ -170,4 +170,15 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
 
     }
 
+    @Test
+    public void shouldPostForDocumentRemovalsGrant() throws IOException {
+        validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/setup-for-permanent-removal");
+        validatePostSuccess("document/grantDocumentsPayload.json", "/document/permanently-delete-removed");
+    }
+
+    @Test
+    public void shouldPostForDocumentRemovalsWill() throws IOException {
+        validatePostSuccess("willLodgementPayload.json", "/document/setup-for-permanent-removal-will");
+        validatePostSuccess("willLodgementDocumentsPayload.json", "/document/permanently-delete-removed-will");
+    }
 }

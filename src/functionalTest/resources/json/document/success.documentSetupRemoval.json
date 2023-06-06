@@ -1,0 +1,115 @@
+{
+  "case_details": {
+    "id": 1542274092933333,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "SolAppUpdated",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Solicitor",
+      "registryLocation": "ctsc",
+      "solsSolicitorFirmName": "The Firm",
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "solsSolicitorPhoneNumber": "07070707077",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsSolicitorAppReference": "REF1123",
+      "caveatorForenames": "Applicant_fn",
+      "caveatorSurname": "Applicant_Surname",
+      "deceasedForenames": "DeceasedNmae",
+      "deceasedSurname": "DeceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedAnyOtherNames": "No",
+      "deceasedFullAliasNameList": [],
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsPaymentMethods": "fee account",
+      "solsFeeAccountNumber": "12345",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
+      "documentsGenerated":[{
+        "id":"fdc89b5a-4011-487b-9cef-9a36c470fa43",
+        "value":{
+          "DocumentType":"sentEmail",
+          "DocumentGeneratedBy":"ecb5edf4-2f5f-4031-a0ec-12fb71f47584",
+          "DocumentDateAdded":"2020-02-10",
+          "DocumentLink":{
+            "document_url":"http://dm-store:5006/documents/3bdcf395-c63f-4af7-8adb-20b170f4159e",
+            "document_filename":"sentEmail.pdf",
+            "document_binary_url":"http://dm-store:5006/documents/3bdcf395-c63f-4af7-8adb-20b170f4159e/binary"
+          },
+          "DocumentFileName":"06c54b3d-a706-411b-b388-2ac441d526f4.pdf"
+        }
+      }],
+      "documentsUploaded": [
+        {
+          "id": "f5a87162-361b-4637-b568-4975c855b996",
+          "value": {
+            "Comment": null,
+            "DocumentLink": {
+              "document_url": "http://dm-store:8080/documents/8367c8ee-c15e-43e3-8f30-cc6d334af0c2",
+              "document_filename": "LegalStatementUploaded.pdf",
+              "document_binary_url": "http://dm-store:8080/documents/8367c8ee-c15e-43e3-8f30-cc6d334af0c2/binary"
+            },
+            "DocumentType": "uploadedLegalStatement"
+          }
+        }
+      ],
+      "scanned_documents": [
+        {
+          "type": "form",
+          "subtype": "PA8A",
+          "url": {
+            "document_url": "https://dm-store:5006/fdfsfsdf",
+            "document_binary_url": "https://dm-store:5006/fdfsfsdf",
+            "document_filename": "123135453645.pdf"
+          },
+          "control_number": "123135453645",
+          "file_name": "123135453645.pdf",
+          "scanned_date": "2019-07-15T12:34:56.789Z",
+          "delivery_date": "2019-07-18T12:00:00.000Z"
+        }
+      ]
+    }
+  }
+}
