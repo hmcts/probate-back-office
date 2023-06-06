@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
@@ -270,6 +271,28 @@ class WillLodgementCallbackResponseTransformerTest {
         assertCommonDetails(willLodgementCallbackResponse);
         assertEquals(1, willLodgementCallbackResponse.getResponseWillLodgementData().getDocumentsGenerated().size());
     }
+
+    @Test
+    void shouldSetupDocumentsForRemoval() {
+
+        List<CollectionMember<Document>> generated = Arrays.asList(new CollectionMember("1",
+                Document.builder().build()));
+        List<CollectionMember<UploadDocument>> uploaded = Arrays.asList(new CollectionMember("3",
+                UploadDocument.builder().build()));
+
+        willLodgementDataBuilder.documentsGenerated(generated);
+        willLodgementDataBuilder.documentsUploaded(uploaded);
+
+        when(willLodgementCallbackRequestMock.getCaseDetails()).thenReturn(willLodgementDetailsMock);
+        when(willLodgementDetailsMock.getData()).thenReturn(willLodgementDataBuilder.build());
+
+        WillLodgementCallbackResponse response = underTest
+                .setupOriginalDocumentsForRemoval(willLodgementCallbackRequestMock);
+        OriginalDocuments originalDocuments = response.getResponseWillLodgementData().getOriginalDocuments();;
+        assertEquals("1", originalDocuments.getOriginalDocsGenerated().get(0).getId());
+        assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
+    }
+
 
 
 }

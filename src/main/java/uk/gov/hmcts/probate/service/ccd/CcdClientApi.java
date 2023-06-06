@@ -156,7 +156,7 @@ public class CcdClientApi implements CoreCaseDataService {
             caseId
         );
     }
-
+    
     private CaseDataContent createCaseDataContent(Object object,
                                                   EventId eventId, StartEventResponse startEventResponse,
                                                   String description, String summary) {
