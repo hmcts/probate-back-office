@@ -7,15 +7,19 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.ccd.ChangeOrganisationApprovalStatus;
 
 import java.time.LocalDateTime;
 
-@Data
-@Builder
-@AllArgsConstructor
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Builder
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
 public class ChangeOrganisationRequest {
 
     @JsonProperty("OrganisationToAdd")
