@@ -86,7 +86,7 @@ public class SaveNocService {
         Map<String, Object> caseData = caseDetails.getData();
         log.info("New case data - " + caseData);
         log.info("change organisation request- " + oldCaseData.get("changeOrganisationRequestField"));
-        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseDetails);
+        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseDetailsBefore);
         log.info("change organisation request after- " + changeRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives =
                 (List<CollectionMember<ChangeOfRepresentative>>) caseData.get("changeOfRepresentatives");
