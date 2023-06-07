@@ -9,7 +9,7 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;

@@ -6,7 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
@@ -117,8 +117,14 @@ public class SaveNocService {
                 ChangeOrganisationRequest.class);
     }
 
+    private RemovedRepresentative getRemovedRepresentative(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("removedRepresentative"),
+                RemovedRepresentative.class);
+    }
+
     private ChangeOfRepresentative buildRepresentative(Map<String, Object> caseData) {
-        RemovedRepresentative removeRepresentative = (RemovedRepresentative) caseData.get("removedRepresentative");
+        RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
         AddedRepresentative addRepresentative = setAddedRepresentative(caseData);
         log.info("Removed Representative - " + removeRepresentative);
         log.info("Added Representative - " + addRepresentative);
