@@ -155,6 +155,13 @@ class SaveNocServiceTest {
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
                 uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.class)).thenReturn(organisationPolicy);
+        when(objectMapper.convertValue(caseData.get("removedRepresentative"),
+                uk.gov.hmcts.reform.probate.model.cases.RemovedRepresentative.class)).thenReturn(removed);
+        when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
+                ChangeOrganisationRequest.class)).thenReturn(changeRequest);
+        when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
+                List.class))
+                .thenReturn(representatives);
         underTest.addRepresentatives(callbackRequest);
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),

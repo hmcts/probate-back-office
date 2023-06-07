@@ -88,8 +88,8 @@ public class SaveNocService {
         log.info("change organisation request- " + oldCaseData.get("changeOrganisationRequestField"));
         ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseDetailsBefore);
         log.info("change organisation request after- " + changeRequest);
-        List<CollectionMember<ChangeOfRepresentative>> representatives =
-                (List<CollectionMember<ChangeOfRepresentative>>) caseData.get("changeOfRepresentatives");
+        List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
+        log.info("reps before- " + representatives);
         ChangeOfRepresentative representative = buildRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives - " + representatives);
@@ -115,6 +115,15 @@ public class SaveNocService {
 
         return objectMapper.convertValue(caseDetails.getData().get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class);
+    }
+
+    private List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {
+        Object changeOfRepresentativesValue = caseData.get("changeOfRepresentatives");
+        if (changeOfRepresentativesValue == null) {
+            log.info("Change of reps - " + changeOfRepresentativesValue);
+            return null;
+        }
+        return objectMapper.convertValue(caseData.get("changeOfRepresentatives"), List.class);
     }
 
     private RemovedRepresentative getRemovedRepresentative(Map<String, Object> caseData) {
