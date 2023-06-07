@@ -123,6 +123,12 @@ public class SaveNocService {
                 RemovedRepresentative.class);
     }
 
+    public OrganisationPolicy getOrganisationPolicy(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
+                OrganisationPolicy.class);
+    }
+
     private ChangeOfRepresentative buildRepresentative(Map<String, Object> caseData) {
         RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
         AddedRepresentative addRepresentative = setAddedRepresentative(caseData);
@@ -136,7 +142,7 @@ public class SaveNocService {
     }
 
     private AddedRepresentative setAddedRepresentative(Map<String, Object>  caseData) {
-        OrganisationPolicy organisationPolicy = (OrganisationPolicy) caseData.get("applicantOrganisationPolicy");
+        OrganisationPolicy organisationPolicy = getOrganisationPolicy(caseData);
         Organisation organisation = organisationPolicy.getOrganisation();
         return AddedRepresentative.builder()
                 .organisationID(organisation.getOrganisationID())

@@ -153,6 +153,8 @@ class SaveNocServiceTest {
                 .build();
 
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.class)).thenReturn(organisationPolicy);
         underTest.addRepresentatives(callbackRequest);
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
