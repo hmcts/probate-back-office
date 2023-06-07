@@ -143,10 +143,6 @@ class SaveNocServiceTest {
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
         caseData.put("changeOfRepresentatives",representatives);
 
-        CaseDetails caseDetails = CaseDetails.builder().data(caseData)
-                .id(0L).build();
-        CallbackRequest callbackRequest = CallbackRequest.builder().caseDetails(caseDetails)
-                .caseDetailsBefore(caseDetails).build();
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .authorisation("AUTH")
                 .serviceAuthorisation("S2S")
@@ -162,6 +158,10 @@ class SaveNocServiceTest {
         when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
                 List.class))
                 .thenReturn(representatives);
+        CaseDetails caseDetails = CaseDetails.builder().data(caseData)
+                .id(0L).build();
+        CallbackRequest callbackRequest = CallbackRequest.builder().caseDetails(caseDetails)
+                .caseDetailsBefore(caseDetails).build();
         underTest.addRepresentatives(callbackRequest);
         verify(ccdClientApi, times(1))
                 .updateCaseAsCaseworker(any(), any(), any(),
