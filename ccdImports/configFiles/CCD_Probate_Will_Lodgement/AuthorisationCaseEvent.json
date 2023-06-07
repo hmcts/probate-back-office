@@ -77,5 +77,6 @@
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForLodged", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "generateDepositReceiptForWithdrawn", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "WillLodgement", "CaseEventID": "boHistoryCorrection", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
-  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"}
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "SYSTEM_MAINTENANCE", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
+  {"CaseTypeID": "WillLodgement", "CaseEventID": "removeDocuments", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]

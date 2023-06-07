@@ -6,6 +6,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
 import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementDetails;
@@ -126,5 +127,18 @@ public class WillLodgementCallbackResponseTransformer {
         return ofNullable(dateValue)
             .map(String::valueOf)
             .orElse(null);
+    }
+
+    public WillLodgementCallbackResponse setupOriginalDocumentsForRemoval(
+            WillLodgementCallbackRequest callbackRequest) {
+        WillLodgementData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseWillLodgementData.ResponseWillLodgementDataBuilder responseWillLodgementDataBuilder =
+                getResponseWillLodgementData(callbackRequest.getCaseDetails());
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(caseData.getDocumentsGenerated())
+                .originalDocsUploaded(caseData.getDocumentsUploaded())
+                .build();
+        responseWillLodgementDataBuilder.originalDocuments(originalDocuments);
+        return transformResponse(responseWillLodgementDataBuilder.build());
     }
 }
