@@ -121,7 +121,7 @@ public class SaveNocService {
         Object changeOfRepresentativesValue = caseData.get("changeOfRepresentatives");
         if (changeOfRepresentativesValue == null) {
             log.info("Change of reps - " + changeOfRepresentativesValue);
-            return null;
+            return new ArrayList<>();
         }
         return objectMapper.convertValue(caseData.get("changeOfRepresentatives"), List.class);
     }
