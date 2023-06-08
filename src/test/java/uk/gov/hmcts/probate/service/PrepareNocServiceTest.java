@@ -15,10 +15,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.payments.pba.FindUsersByOrganisationResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -34,6 +36,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -56,6 +59,8 @@ class PrepareNocServiceTest {
     private ObjectMapper objectMapper;
     @Mock
     private SaveNocService saveNocService;
+    @Mock
+    private OrganisationsRetrievalService organisationsRetrievalService;
 
     @BeforeEach
     public void setup() {
@@ -192,10 +197,14 @@ class PrepareNocServiceTest {
         when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
                 List.class)).thenReturn(changeOfRepresentatives);
 
-        CallbackRequest request = CallbackRequest.builder()
-                .caseDetails(CaseDetails.builder().data(caseData).build())
-                .build();
+        FindUsersByOrganisationResponse organisationResponse = new FindUsersByOrganisationResponse();
+        organisationResponse.setOrganisationIdentifier("123");
+        when(organisationsRetrievalService.findUserOrganisation(anyString(), anyString()))
+                .thenReturn(organisationResponse);
         when(tokenGenerator.generate()).thenReturn("s2sToken");
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .build();
         underTest.applyDecision(request, "testAuth");
         verify(assignCaseAccessClient, times(1))
                 .applyDecision(Mockito.anyString(), Mockito.anyString(), Mockito.any(

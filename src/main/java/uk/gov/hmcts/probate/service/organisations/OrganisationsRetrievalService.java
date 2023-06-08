@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.model.payments.pba.FindUsersByOrganisationResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
@@ -52,6 +53,26 @@ public class OrganisationsRetrievalService {
                 caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
         }
         log.info("SAC: no OrganisationEntityResponse for caseId {}", caseId);
+        return null;
+    }
+
+    public FindUsersByOrganisationResponse findUserOrganisation(String caseId, String authToken) {
+        URI uri = buildUri();
+        HttpEntity<HttpHeaders> request = buildRequest(authToken);
+
+        try {
+            log.info("SAC: get FindUsersByOrganisationResponse for caseId {}", caseId);
+            ResponseEntity<FindUsersByOrganisationResponse> responseEntity = restTemplate.exchange(uri, GET,
+                    request, FindUsersByOrganisationResponse.class);
+
+            log.info("SAC: found FindUsersByOrganisationResponse for caseId {}, FindUsersByOrganisationResponse {}",
+                    caseId, responseEntity.toString());
+            return Objects.requireNonNull(responseEntity.getBody());
+        } catch (Exception e) {
+            log.error("SAC: Exception when looking up org for case {} authToken {} for exception {}",
+                    caseId, new String(Base64.getEncoder().encode(authToken.getBytes())), e.getMessage());
+        }
+        log.info("SAC: no FindUsersByOrganisationResponse for caseId {}", caseId);
         return null;
     }
 
