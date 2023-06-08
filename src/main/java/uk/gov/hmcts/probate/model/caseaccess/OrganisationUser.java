@@ -1,0 +1,23 @@
+package uk.gov.hmcts.probate.model.caseaccess;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class OrganisationUser {
+    private String userIdentifier;
+    private String email;
+    private String firstName;
+    private String lastName;
+
+    @JsonIgnore
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
+}

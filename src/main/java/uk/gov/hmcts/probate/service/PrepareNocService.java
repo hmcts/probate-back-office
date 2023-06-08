@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationUser;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
@@ -43,6 +45,7 @@ public class PrepareNocService {
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
+    private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -130,6 +133,9 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
+        OrganisationUser organisationUser = organisationsRetrievalService.findUserByEmail(
+                caseDetails.getId().toString(), changeRequest.getCreatedBy(), authorisation);
+        log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
