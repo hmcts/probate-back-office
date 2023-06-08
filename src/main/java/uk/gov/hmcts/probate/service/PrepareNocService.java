@@ -16,8 +16,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
+import uk.gov.hmcts.probate.service.caseaccess.OrganisationApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
@@ -45,7 +45,7 @@ public class PrepareNocService {
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
-    private final OrganisationsRetrievalService organisationsRetrievalService;
+    private final OrganisationApi organisationApi;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -133,7 +133,7 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
-        OrganisationUser organisationUser = organisationsRetrievalService.findUserByEmail(
+        OrganisationUser organisationUser = organisationApi.findUserByEmail(
                 caseDetails.getId().toString(), changeRequest.getCreatedBy(), authorisation);
         log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);

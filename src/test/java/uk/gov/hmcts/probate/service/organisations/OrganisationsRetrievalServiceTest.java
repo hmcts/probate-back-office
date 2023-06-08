@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.ClientException;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationUser;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
@@ -34,7 +33,6 @@ class OrganisationsRetrievalServiceTest {
     @Mock(name = "restTemplate")
     private RestTemplate restTemplate;
     OrganisationEntityResponse organisationEntityResponse;
-    OrganisationUser organisationUser;
 
     @Mock
     private AuthTokenGenerator authTokenGenerator;
@@ -60,28 +58,6 @@ class OrganisationsRetrievalServiceTest {
         assertEquals(organisationEntityResponse, organisationEntity);
 
         when(authTokenGenerator.generate()).thenReturn("S2S_DUMMY");
-    }
-
-    @Test
-    void testOrganisationGetsReturnedOk() {
-        MockitoAnnotations.openMocks(this);
-
-        organisationUser = new OrganisationUser();
-        organisationUser.setUserIdentifier(ORG_ID);
-        organisationUser.setFirstName(ORGANISATION_NAME);
-
-        ResponseEntity<OrganisationUser> organisationsResponseEntity =
-                ResponseEntity.of(Optional.of(organisationUser));
-
-        when(restTemplate.exchange(any(URI.class), any(HttpMethod.class),
-                any(HttpEntity.class), any(Class.class))).thenReturn(organisationsResponseEntity);
-
-        organisationsRetrievalService.orgApis = "/test_api";
-        organisationsRetrievalService.orgUri = "http://localhost:8080/test";
-        when(authTokenGenerator.generate()).thenReturn("S2S_DUMMY");
-        OrganisationUser organisationEntity = organisationsRetrievalService.findUserByEmail(
-                "1234567890123456", "abc@gmail.co", AUTH_TOKEN);
-        assertEquals(organisationUser, organisationEntity);
     }
 
     @Test
