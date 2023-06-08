@@ -13,11 +13,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
-import uk.gov.hmcts.probate.model.payments.pba.FindUsersByOrganisationResponse;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
@@ -45,7 +43,6 @@ public class PrepareNocService {
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
-    private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -118,13 +115,13 @@ public class PrepareNocService {
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
-        log.info("Case data" + caseData);
+        log.info("Case data Before- " + caseData);
+        log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
         ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
         log.info("change organisation request after- " + changeRequest);
-        String createdBy = changeRequest.getCreatedBy();
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Representatives before- " + representatives);
-        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData, createdBy);
+        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives - " + representatives);
         representatives.sort((m1, m2) -> {
@@ -133,9 +130,6 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
-        FindUsersByOrganisationResponse usersResponse = organisationsRetrievalService
-                .findUserOrganisation(caseDetails.getId().toString(),authorisation);
-        log.info("response - " + usersResponse);
         caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
@@ -145,9 +139,9 @@ public class PrepareNocService {
         );
     }
 
-    private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData, String createdBy) {
+    private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
         RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
-        AddedRepresentative addRepresentative = setAddRepresentative(caseData, createdBy);
+        AddedRepresentative addRepresentative = setAddRepresentative(caseData);
         log.info("Removed Representative - " + removeRepresentative);
         log.info("Added Representative - " + addRepresentative);
         return ChangeOfRepresentative.builder()
@@ -157,12 +151,15 @@ public class PrepareNocService {
                 .build();
     }
 
-    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData, String createdBy) {
+    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData) {
+        log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
+        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
+        log.info("change organisation request after- " + changeRequest);
         OrganisationPolicy organisationPolicy = getOrganisationPolicy(caseData);
         Organisation organisation = organisationPolicy.getOrganisation();
         return AddedRepresentative.builder()
                 .organisationID(organisation.getOrganisationID())
-                .updatedBy(createdBy)
+                .updatedBy(changeRequest.getCreatedBy())
                 .updatedVia("NOC")
                 .build();
     }
