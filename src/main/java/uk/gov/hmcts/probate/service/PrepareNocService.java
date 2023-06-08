@@ -14,10 +14,12 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.caseaccess.OrganisationApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
@@ -46,6 +48,7 @@ public class PrepareNocService {
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
+    private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -133,6 +136,9 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
+        OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
+                    caseDetails.getId().toString(), authorisation);
+        log.info("Organisation Entity Response - " + organisationEntityResponse);
         OrganisationUser organisationUser = organisationApi.findUserByEmail(authorisation,
                 tokenGenerator.generate(), changeRequest.getCreatedBy());
         log.info("org user - " + organisationUser);

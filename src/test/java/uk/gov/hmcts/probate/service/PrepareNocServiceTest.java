@@ -15,11 +15,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.caseaccess.OrganisationApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
+import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -60,6 +62,8 @@ class PrepareNocServiceTest {
     private SaveNocService saveNocService;
     @Mock
     private OrganisationApi organisationApi;
+    @Mock
+    private  OrganisationsRetrievalService organisationsRetrievalService;
 
     @BeforeEach
     public void setup() {
@@ -199,6 +203,12 @@ class PrepareNocServiceTest {
         when(tokenGenerator.generate()).thenReturn("s2sToken");
         OrganisationUser organisationUser = new OrganisationUser();
         organisationUser.setUserIdentifier("abc");
+        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
+        organisationEntityResponse.setOrganisationIdentifier("123");
+        organisationEntityResponse.setName("abc");
+
+        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
+                .thenReturn(organisationEntityResponse);
         when(organisationApi.findUserByEmail(anyString(), anyString(), anyString())).thenReturn(organisationUser);
         CallbackRequest request = CallbackRequest.builder()
                 .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
