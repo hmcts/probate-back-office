@@ -210,6 +210,12 @@ class PrepareNocServiceTest {
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
         when(organisationApi.findUserByEmail(anyString(), anyString(), anyString())).thenReturn(organisationUser);
+        SecurityDTO securityDTOs = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTOs);
         CallbackRequest request = CallbackRequest.builder()
                 .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
                 .build();

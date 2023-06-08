@@ -15,6 +15,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.caseaccess.OrganisationApi;
@@ -139,8 +140,8 @@ public class PrepareNocService {
         OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
                     caseDetails.getId().toString(), authorisation);
         log.info("Organisation Entity Response - " + organisationEntityResponse);
-        OrganisationUser organisationUser = organisationApi.findUserByEmail(authorisation,
-                tokenGenerator.generate(), changeRequest.getCreatedBy());
+        OrganisationUser organisationUser =
+                getUserDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), changeRequest);
         log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);
@@ -149,6 +150,12 @@ public class PrepareNocService {
                 tokenGenerator.generate(),
                 decisionRequest(caseDetails)
         );
+    }
+
+    private OrganisationUser getUserDetails (SecurityDTO securityDTO, ChangeOrganisationRequest changeRequest) {
+        return organisationApi.findUserByEmail(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), changeRequest.getCreatedBy());
+
     }
 
     private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
