@@ -1112,7 +1112,6 @@ public class CallbackResponseTransformer {
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
             .nocPreparedDate(ofNullable(caseData.getNocPreparedDate())
                 .map(dateTimeFormatter::format).orElse(null))
-            .solicitor2Email(caseData.getSolicitor2Email())
             .removedRepresentative(caseData.getRemovedRepresentative())
             .changeOrganisationRequestField(caseData.getChangeOrganisationRequestField())
             .changeOfRepresentatives(getNullForEmptyRepresentatives(caseData.getChangeOfRepresentatives()))

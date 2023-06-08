@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -21,6 +22,7 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -51,6 +52,8 @@ class PrepareNocServiceTest {
     private CcdClientApi ccdClientApi;
     @Mock
     private SecurityUtils securityUtils;
+    @Mock
+    private ObjectMapper objectMapper;
     @Mock
     private SaveNocService saveNocService;
 
@@ -89,7 +92,6 @@ class PrepareNocServiceTest {
                 .applicantOrganisationPolicy(policy)
                 .solsSOTForenames("First")
                 .solsSOTSurname("Last")
-                .solicitor2Email("def@gmail.com")
                 .build();
 
         SecurityDTO securityDTO = SecurityDTO.builder()
@@ -153,14 +155,47 @@ class PrepareNocServiceTest {
 
     @Test
     public void testApplyDecision() {
-        when(tokenGenerator.generate()).thenReturn("s2sToken");
-        Map<String, Object> map = new LinkedHashMap<>();
-        map.put("CreatedBy","abc@gmail.com");
+        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
+
+        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                .organisationID("orgId1")
+                .organisationName("OrgName1").build()).build();
+        ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
+                .createdBy("abc@gmail.com").build();
+        RemovedRepresentative removed = RemovedRepresentative.builder()
+                        .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
+                        .organisation(organisationPolicy.getOrganisation())
+                        .solicitorEmail("abc@gmail.com")
+                        .solicitorFirstName("First")
+                        .solicitorLastName("Last")
+                        .build();
+
         Map<String, Object> caseData = new HashMap<>();
-        caseData.put("changeOrganisationRequestField", map);
-        CallbackRequest request = uk.gov.hmcts.reform.ccd.client.model.CallbackRequest.builder()
+        caseData.put("removedRepresentative", removed);
+        caseData.put("changeOrganisationRequestField", changeRequest);
+        caseData.put("applicantOrganisationPolicy",organisationPolicy);
+        caseData.put("changeOfRepresentatives",changeOfRepresentatives);
+
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH")
+                .serviceAuthorisation("S2S")
+                .build();
+
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
+                OrganisationPolicy.class)).thenReturn(organisationPolicy);
+        when(objectMapper.convertValue(caseData.get("removedRepresentative"),
+                RemovedRepresentative.class)).thenReturn(removed);
+        when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
+                ChangeOrganisationRequest.class)).thenReturn(changeRequest);
+        when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
+                List.class)).thenReturn(changeOfRepresentatives);
+
+        CallbackRequest request = CallbackRequest.builder()
                 .caseDetails(CaseDetails.builder().data(caseData).build())
                 .build();
+        when(tokenGenerator.generate()).thenReturn("s2sToken");
         underTest.applyDecision(request, "testAuth");
         verify(assignCaseAccessClient, times(1))
                 .applyDecision(Mockito.anyString(), Mockito.anyString(), Mockito.any(

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,11 +20,12 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +42,7 @@ public class PrepareNocService {
     private final SaveNocService saveNocService;
     private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    private final ObjectMapper objectMapper;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -105,7 +107,7 @@ public class PrepareNocService {
         Organisation organisation = organisationPolicy.getOrganisation();
         return AddedRepresentative.builder()
                 .organisationID(organisation.getOrganisationID())
-                .updatedBy(caseData.getSolicitor2Email())
+                .updatedBy("ABC")
                 .updatedVia("NOC")
                 .build();
     }
@@ -113,16 +115,77 @@ public class PrepareNocService {
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
-        log.info("case Data - " + caseData);
-        Map<String, Object> map = (Map<String, Object>) caseData.get("changeOrganisationRequestField");
-        String email = (String) map.get("CreatedBy");
-        log.info("solicitor2 email - " + email);
-        caseData.put("solicitor2Email", email);
+        log.info("Case data Before- " + caseData);
+        log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
+        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
+        log.info("change organisation request after- " + changeRequest);
+        List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
+        log.info("Representatives before- " + representatives);
+        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
+        representatives.add(new CollectionMember<>(null, representative));
+        log.info("Change of Representatives - " + representatives);
+        representatives.sort((m1, m2) -> {
+            LocalDateTime dt1 = m1.getValue().getAddedDateTime();
+            LocalDateTime dt2 = m2.getValue().getAddedDateTime();
+            return dt1.compareTo(dt2);
+        });
+        Collections.reverse(representatives);
+        caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
                 authorisation,
                 tokenGenerator.generate(),
                 decisionRequest(caseDetails)
         );
+    }
+
+    private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
+        RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
+        AddedRepresentative addRepresentative = setAddRepresentative(caseData);
+        log.info("Removed Representative - " + removeRepresentative);
+        log.info("Added Representative - " + addRepresentative);
+        return ChangeOfRepresentative.builder()
+                .addedDateTime(LocalDateTime.now())
+                .addedRepresentative(addRepresentative)
+                .removedRepresentative(removeRepresentative)
+                .build();
+    }
+
+    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData) {
+        log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
+        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
+        log.info("change organisation request after- " + changeRequest);
+        OrganisationPolicy organisationPolicy = getOrganisationPolicy(caseData);
+        Organisation organisation = organisationPolicy.getOrganisation();
+        return AddedRepresentative.builder()
+                .organisationID(organisation.getOrganisationID())
+                .updatedBy(changeRequest.getCreatedBy())
+                .updatedVia("NOC")
+                .build();
+    }
+
+    private ChangeOrganisationRequest getChangeOrganisationRequest(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
+                ChangeOrganisationRequest.class);
+    }
+
+    public OrganisationPolicy getOrganisationPolicy(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"), OrganisationPolicy.class);
+    }
+
+    private RemovedRepresentative getRemovedRepresentative(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("removedRepresentative"), RemovedRepresentative.class);
+    }
+
+    private List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {
+        Object changeOfRepresentativesValue = caseData.get("changeOfRepresentatives");
+        if (changeOfRepresentativesValue == null) {
+            log.info("Change of reps - " + changeOfRepresentativesValue);
+            return new ArrayList<>();
+        }
+        return objectMapper.convertValue(caseData.get("changeOfRepresentatives"), List.class);
     }
 }

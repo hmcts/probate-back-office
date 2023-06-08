@@ -587,7 +587,6 @@ public class CaseData extends CaseDataParent {
     private ChangeOfRepresentative changeOfRepresentative;
     private RemovedRepresentative removedRepresentative;
     private ChangeOrganisationRequest changeOrganisationRequestField;
-    private String solicitor2Email;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

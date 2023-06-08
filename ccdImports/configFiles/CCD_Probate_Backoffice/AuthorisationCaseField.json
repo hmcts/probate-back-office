@@ -2149,7 +2149,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitor2Email", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
@@ -2580,7 +2579,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitor2Email", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedForenames", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedSurname", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
@@ -2827,7 +2825,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastEvidenceAddedDate", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitor2Email", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "citizen", "CRUD": "CRU"},
@@ -3871,5 +3868,4 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solicitor2Email", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
 ]
