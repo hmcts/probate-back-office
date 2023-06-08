@@ -152,7 +152,7 @@ public class PrepareNocService {
         );
     }
 
-    private OrganisationUser getUserDetails (SecurityDTO securityDTO, ChangeOrganisationRequest changeRequest) {
+    private OrganisationUser getUserDetails(SecurityDTO securityDTO, ChangeOrganisationRequest changeRequest) {
         return organisationApi.findUserByEmail(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), changeRequest.getCreatedBy());
 
