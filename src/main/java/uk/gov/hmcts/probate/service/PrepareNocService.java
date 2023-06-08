@@ -133,8 +133,8 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
-        OrganisationUser organisationUser = organisationApi.findUserByEmail(
-                caseDetails.getId().toString(), changeRequest.getCreatedBy(), authorisation);
+        OrganisationUser organisationUser = organisationApi.findUserByEmail(authorisation,
+                tokenGenerator.generate(), changeRequest.getCreatedBy());
         log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);
