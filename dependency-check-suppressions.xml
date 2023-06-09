@@ -626,11 +626,171 @@
         <cpe>cpe:/a:vmware:spring_boot</cpe>
         <cve>CVE-2023-20883</cve>
     </suppress>
-
     <suppress>
         <notes><![CDATA[
    file name: spring-security-web-5.7.3.jar
    ]]></notes>
         <cve>CVE-2023-20862</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-actuator-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-actuator@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-actuator-autoconfigure-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-actuator\-autoconfigure@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-configuration-processor-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-configuration\-processor@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-actuator-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-actuator@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-aop-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-aop@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-data-jpa-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-data\-jpa@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-hateoas-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-hateoas@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-jdbc-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-jdbc@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-json-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-json@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-logging-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-logging@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-oauth2-client-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-oauth2\-client@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-security-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-security@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-tomcat-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-tomcat@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-web-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-web@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-web-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-web@.*$</packageUrl>
+        <cpe>cpe:/a:web_project:web</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-web-services-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-web\-services@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-starter-web-services-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-web\-services@.*$</packageUrl>
+        <cpe>cpe:/a:web_project:web</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
     </suppress>
 </suppressions>
