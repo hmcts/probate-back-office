@@ -4,13 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationUser;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -25,7 +26,6 @@ import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
@@ -140,7 +140,7 @@ public class PrepareNocService {
         OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
                     caseDetails.getId().toString(), authorisation);
         log.info("Organisation Entity Response - " + organisationEntityResponse);
-        OrganisationUser organisationUser =
+        FindUsersByOrganisation organisationUser =
                 getUserDetails(securityUtils.getUserBySolTokenAndServiceSecurityDTO(), changeRequest);
         log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);
@@ -152,9 +152,9 @@ public class PrepareNocService {
         );
     }
 
-    private OrganisationUser getUserDetails(SecurityDTO securityDTO, ChangeOrganisationRequest changeRequest) {
-        return organisationApi.findUserByEmail(securityDTO.getAuthorisation(),
-                securityDTO.getServiceAuthorisation(), changeRequest.getCreatedBy());
+    private FindUsersByOrganisation getUserDetails(SecurityDTO securityDTO, ChangeOrganisationRequest changeRequest) {
+        return organisationApi.findSolicitorOrganisation(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), changeRequest.getOrganisationToAdd().getOrganisationID());
 
     }
 

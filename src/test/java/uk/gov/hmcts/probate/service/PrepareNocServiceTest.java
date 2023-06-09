@@ -9,9 +9,10 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.DecisionRequest;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationUser;
+import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -25,7 +26,6 @@ import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.ChangeOrganisationRequest;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -170,7 +170,8 @@ class PrepareNocServiceTest {
                 .organisationID("orgId1")
                 .organisationName("OrgName1").build()).build();
         ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
-                .createdBy("abc@gmail.com").build();
+                .createdBy("abc@gmail.com")
+                .organisationToAdd(Organisation.builder().organisationID("12").build()).build();
         RemovedRepresentative removed = RemovedRepresentative.builder()
                         .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
                         .organisation(organisationPolicy.getOrganisation())
@@ -201,15 +202,15 @@ class PrepareNocServiceTest {
                 List.class)).thenReturn(changeOfRepresentatives);
 
         when(tokenGenerator.generate()).thenReturn("s2sToken");
-        OrganisationUser organisationUser = new OrganisationUser();
-        organisationUser.setUserIdentifier("abc");
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("123");
         organisationEntityResponse.setName("abc");
-
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
-        when(organisationApi.findUserByEmail(anyString(), anyString(), anyString())).thenReturn(organisationUser);
+        FindUsersByOrganisation organisationUser = new FindUsersByOrganisation();
+        organisationUser.setOrganisationIdentifier("abc");
+        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
+                .thenReturn(organisationUser);
         SecurityDTO securityDTOs = SecurityDTO.builder()
                 .authorisation("AUTH")
                 .serviceAuthorisation("S2S")
