@@ -141,7 +141,7 @@ public class PrepareNocService {
                     caseDetails.getId().toString(), authorisation);
         log.info("Organisation Entity Response - " + organisationEntityResponse);
         OrganisationUser organisationUser =
-                getUserDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), changeRequest);
+                getUserDetails(securityUtils.getUserBySolTokenAndServiceSecurityDTO(), changeRequest);
         log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);

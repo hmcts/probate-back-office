@@ -40,6 +40,8 @@ public class SecurityUtils {
 
     private TokenResponse cacheSchedulerTokenResponse;
 
+    private TokenResponse cacheSolTokenResponse;
+
     @Value("${auth.provider.client.redirect}")
     private String authRedirectUrl;
 
@@ -60,6 +62,12 @@ public class SecurityUtils {
     @Value("${probate.scheduler.password}")
     private String schedulerPassword;
 
+    @Value("${probate.solicitor2.email}")
+    private String sol2UserName;
+
+    @Value("${probate.solicitor2.password}")
+    private String sol2Password;
+
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
             .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
@@ -78,6 +86,15 @@ public class SecurityUtils {
 
     public SecurityDTO getUserBySchedulerTokenAndServiceSecurityDTO() {
         String token = getSchedulerToken();
+        return SecurityDTO.builder()
+                .authorisation(token)
+                .serviceAuthorisation(generateServiceToken())
+                .userId(getUserId(token))
+                .build();
+    }
+
+    public SecurityDTO getUserBySolTokenAndServiceSecurityDTO() {
+        String token = getSolToken();
         return SecurityDTO.builder()
                 .authorisation(token)
                 .serviceAuthorisation(generateServiceToken())
@@ -120,9 +137,42 @@ public class SecurityUtils {
         return getIdamOauth2TokenScheduler(schedulerUserName, schedulerPassword);
     }
 
+    public String getSolToken() {
+        return getIdamOauth2TokenSol(sol2UserName, sol2Password);
+    }
+
+    private String getIdamOauth2TokenSol(String username, String password) {
+        log.info("Sol2 username: {}", username);
+        log.info("Sol2 password: {}", password);
+        TokenResponse idamOpenIdTokenResponse;
+        log.info("Client ID: {} . Authenticating...", authClientId);
+        try {
+            if (ObjectUtils.isEmpty(cacheSolTokenResponse) || isExpired(cacheSolTokenResponse)) {
+                log.info("No cached IDAM token found, requesting from IDAM service.");
+                TokenResponse tokenResponse = idamApi.generateOpenIdToken(
+                        new TokenRequest(
+                                authClientId,
+                                authClientSecret,
+                                OPENID_GRANT_TYPE,
+                                authRedirectUrl,
+                                username,
+                                password,
+                                "openid profile roles",
+                                null,
+                                null
+                        ));
+                cacheSolTokenResponse = tokenResponse;
+            }
+            idamOpenIdTokenResponse = cacheSolTokenResponse;
+            log.info("Getting AccessToken...");
+            return BEARER + idamOpenIdTokenResponse.accessToken;
+        } catch (Exception e) {
+            log.error("Exception on IDAM token" + e.getMessage());
+            throw e;
+        }
+    }
+
     private String getIdamOauth2TokenScheduler(String username, String password) {
-        log.info("Scheduler username: {}", username);
-        log.info("Scheduler password: {}", password);
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
         try {
