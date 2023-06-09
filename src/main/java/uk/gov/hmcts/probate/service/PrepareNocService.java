@@ -174,10 +174,8 @@ public class PrepareNocService {
         log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
         ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
         log.info("change organisation request after- " + changeRequest);
-        OrganisationPolicy organisationPolicy = getOrganisationPolicy(caseData);
-        Organisation organisation = organisationPolicy.getOrganisation();
         return AddedRepresentative.builder()
-                .organisationID(organisation.getOrganisationID())
+                .organisationID(changeRequest.getOrganisationToAdd().getOrganisationID())
                 .updatedBy(changeRequest.getCreatedBy())
                 .updatedVia("NOC")
                 .build();
