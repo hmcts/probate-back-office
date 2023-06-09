@@ -137,8 +137,8 @@ public class PrepareNocService {
             return dt1.compareTo(dt2);
         });
         Collections.reverse(representatives);
-        OrganisationEntityResponse organisationEntityResponse = organisationsRetrievalService.getOrganisationEntity(
-                    caseDetails.getId().toString(), authorisation);
+        OrganisationEntityResponse organisationEntityResponse =
+                getUserAddress(securityUtils.getUserBySolTokenAndServiceSecurityDTO(), changeRequest);
         log.info("Organisation Entity Response - " + organisationEntityResponse);
         FindUsersByOrganisation organisationUser =
                 getUserDetails(securityUtils.getUserBySolTokenAndServiceSecurityDTO(), changeRequest);
@@ -150,6 +150,13 @@ public class PrepareNocService {
                 tokenGenerator.generate(),
                 decisionRequest(caseDetails)
         );
+    }
+
+    private OrganisationEntityResponse getUserAddress(SecurityDTO securityDTO,
+                                                      ChangeOrganisationRequest changeRequest) {
+        return organisationApi.findOrganisationByOrgId(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), changeRequest.getOrganisationToAdd().getOrganisationID());
+
     }
 
     private FindUsersByOrganisation getUserDetails(SecurityDTO securityDTO, ChangeOrganisationRequest changeRequest) {

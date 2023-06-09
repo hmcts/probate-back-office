@@ -205,6 +205,8 @@ class PrepareNocServiceTest {
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
         organisationEntityResponse.setOrganisationIdentifier("123");
         organisationEntityResponse.setName("abc");
+        when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
+                .thenReturn(organisationEntityResponse);
         when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
         FindUsersByOrganisation organisationUser = new FindUsersByOrganisation();
