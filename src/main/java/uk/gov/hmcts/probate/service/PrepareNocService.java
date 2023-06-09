@@ -187,11 +187,6 @@ public class PrepareNocService {
                 ChangeOrganisationRequest.class);
     }
 
-    public OrganisationPolicy getOrganisationPolicy(Map<String, Object> caseData) {
-
-        return objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"), OrganisationPolicy.class);
-    }
-
     private RemovedRepresentative getRemovedRepresentative(Map<String, Object> caseData) {
 
         return objectMapper.convertValue(caseData.get("removedRepresentative"), RemovedRepresentative.class);

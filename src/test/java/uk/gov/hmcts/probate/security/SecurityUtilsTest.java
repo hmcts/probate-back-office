@@ -163,8 +163,8 @@ class SecurityUtilsTest {
 
     @Test
     void shouldReturnSolicitorCacheToken() {
-        ReflectionTestUtils.setField(securityUtils, "sol2UserName", SOLICITOR_USER_NAME);
-        ReflectionTestUtils.setField(securityUtils, "sol2Password", SOLICITOR_PASSWORD);
+        /*ReflectionTestUtils.setField(securityUtils, "sol2UserName", SOLICITOR_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "sol2Password", SOLICITOR_PASSWORD);*/
 
         TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
         when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
@@ -185,8 +185,8 @@ class SecurityUtilsTest {
 
     @Test
     void shouldReturnSolicitorToken() {
-        ReflectionTestUtils.setField(securityUtils, "sol2UserName", SOLICITOR_USER_NAME);
-        ReflectionTestUtils.setField(securityUtils, "sol2Password", SOLICITOR_PASSWORD);
+        /*ReflectionTestUtils.setField(securityUtils, "sol2UserName", SOLICITOR_USER_NAME);
+        ReflectionTestUtils.setField(securityUtils, "sol2Password", SOLICITOR_PASSWORD);*/
         UserInfo userInfo = UserInfo.builder().sub("solicitor@probate-test.com")
                 .uid("12344").build();
         when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
