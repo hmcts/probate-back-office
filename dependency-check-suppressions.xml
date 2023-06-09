@@ -687,6 +687,15 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
+   file name: spring-boot-autoconfigure-2.7.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-autoconfigure@.*$</packageUrl>
+        <cpe>cpe:/a:vmware:spring_boot</cpe>
+        <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
    file name: spring-boot-starter-data-jpa-2.7.4.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.springframework\.boot/spring\-boot\-starter\-data\-jpa@.*$</packageUrl>
