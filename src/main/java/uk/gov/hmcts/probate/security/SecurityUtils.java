@@ -138,7 +138,7 @@ public class SecurityUtils {
     }
 
     public String getSolToken() {
-        return getIdamOauth2TokenSol(sol2UserName, sol2Password);
+        return getIdamOauth2TokenSol("probatesolicitortestorgtest1@gmail.com", "Probate123");
     }
 
     private String getIdamOauth2TokenSol(String username, String password) {
