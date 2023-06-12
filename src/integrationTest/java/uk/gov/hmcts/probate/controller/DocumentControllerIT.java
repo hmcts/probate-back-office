@@ -33,8 +33,10 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.IdamApi;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -50,6 +52,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -740,6 +743,38 @@ class DocumentControllerIT {
                 .andReturn();
         verify(evidenceUploadService)
                 .updateLastEvidenceAddedDate(any(CaseDetails.class));
+    }
+
+    @Test
+    void shouldSetupForPermanentRemovalGrant() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("digitalCase.json");
+        mockMvc.perform(post("/document/setup-for-permanent-removal")
+                        .content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDeleteRemovedDocumentsGrant() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("digitalCase.json");
+        mockMvc.perform(post("/document/permanently-delete-removed")
+                        .content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldSetupForPermanentRemovalWillLodgement() throws Exception {
+        String willPayload = testUtils.getStringFromFile("willLodgementPayloadNotifications.json");
+        mockMvc.perform(post("/document/setup-for-permanent-removal-will")
+                        .content(willPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDeleteRemovedDocumentsWillLodgement() throws Exception {
+        String willPayload = testUtils.getStringFromFile("willLodgementDocumentsPayloadNotifications.json");
+        mockMvc.perform(post("/document/permanently-delete-removed-will")
+                        .content(willPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
     private Matcher<String> doesNotContainString(String s) {
