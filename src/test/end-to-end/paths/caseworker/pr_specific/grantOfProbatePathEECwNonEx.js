@@ -153,4 +153,20 @@ Scenario(scenarioName, async function ({I}) {
     issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
 
+    nextStepName = 'Post Grant Issue';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.postGrantIssue);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Post grant issued';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+
+    nextStepName = 'Resolve Post Grant Issue';
+    await I.logInfo(scenarioName, nextStepName, caseRef);
+    await I.chooseNextStep(nextStepConfig.resolvePostGrantIssue);
+    await I.enterEventSummary(caseRef, nextStepName);
+    endState = 'Grant issued';
+    await I.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
+    issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+    await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
+
 }).retry(testConfig.TestRetryScenarios);
