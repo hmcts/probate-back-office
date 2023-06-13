@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
-import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -32,15 +31,16 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -62,91 +62,70 @@ class PrepareNocServiceTest {
     @Mock
     private ObjectMapper objectMapper;
     @Mock
-    private SaveNocService saveNocService;
-    @Mock
     private OrganisationApi organisationApi;
     @Mock
     private  OrganisationsRetrievalService organisationsRetrievalService;
+    private Map<String, Object> caseData;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         MockitoAnnotations.openMocks(this);
-    }
-
-    @Test
-    void shouldAddRepresentative() {
-        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
-        Organisation organisationData = Organisation.builder().organisationID("123")
-                .organisationName("ABC").build();
-        OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
-        RemovedRepresentative removedRepresentative = RemovedRepresentative.builder()
-                .organisationID(policy.getOrganisation().getOrganisationID())
-                .organisation(policy.getOrganisation())
+        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("orgId1")
+                        .organisationName("OrgName1").build()).build();
+        ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
+                .createdBy("abc@gmail.com")
+                .organisationToAdd(Organisation.builder().organisationID("12").build()).build();
+        RemovedRepresentative removed = RemovedRepresentative.builder()
+                .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
+                .organisation(organisationPolicy.getOrganisation())
                 .solicitorEmail("abc@gmail.com")
                 .solicitorFirstName("First")
                 .solicitorLastName("Last")
                 .build();
-        AddedRepresentative addedRepresentative = AddedRepresentative.builder()
-                .organisationID(policy.getOrganisation().getOrganisationID())
-                .updatedVia("abc")
-                .updatedBy("def@gmail.com")
-                .build();
-        ChangeOfRepresentative representative = ChangeOfRepresentative.builder()
-                .addedRepresentative(addedRepresentative)
-                .removedRepresentative(removedRepresentative)
-                .build();
 
-        CaseData caseData = CaseData.builder()
-                .changeOfRepresentatives(changeOfRepresentatives)
-                .changeOfRepresentative(representative)
-                .removedRepresentative(removedRepresentative)
-                .applicantOrganisationPolicy(policy)
-                .solsSOTForenames("First")
-                .solsSOTSurname("Last")
-                .build();
+        caseData = new HashMap<>();
+        caseData.put("removedRepresentative", removed);
+        caseData.put("changeOrganisationRequestField", changeRequest);
+        caseData.put("applicantOrganisationPolicy",organisationPolicy);
+        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
+        caseData.put("changeOfRepresentatives",changeOfRepresentatives);
+        SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
+                .country("United Kingdom").postCode("sw2").build();
+        caseData.put("solsSolicitorAddress",address);
 
+        when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
+                OrganisationPolicy.class)).thenReturn(organisationPolicy);
+        when(objectMapper.convertValue(caseData.get("removedRepresentative"),
+                RemovedRepresentative.class)).thenReturn(removed);
+        when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
+                ChangeOrganisationRequest.class)).thenReturn(changeRequest);
+        when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
+                List.class)).thenReturn(changeOfRepresentatives);
+
+        when(tokenGenerator.generate()).thenReturn("s2sToken");
+
+        OrganisationEntityResponse organisationEntityResponse = OrganisationEntityResponse.builder()
+                .contactInformation(Arrays.asList(ContactInformationResponse.builder().addressLine1("Line1")
+                        .addressLine1("Line2").addressLine3("Line3")
+                        .country("UK").townCity("city").postcode("abc").build())).build();
+        when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
+                .thenReturn(organisationEntityResponse);
+        when(objectMapper.convertValue(organisationEntityResponse,
+                SolsAddress.class)).thenReturn(address);
+        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
+                .users(Arrays.asList(SolicitorUser.builder()
+                        .firstName("first").lastName("last").email("abc@gmail.com").build())).build();
+
+        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
+                .thenReturn(organisationUser);
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .authorisation("AUTH")
                 .serviceAuthorisation("S2S")
                 .build();
 
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details = new uk.gov.hmcts
-                .probate.model.ccd.raw.request.CaseDetails(caseData, null, 0L);
-
-        underTest.addRepresentatives(details);
-
-        assertEquals(3, caseData.getChangeOfRepresentatives().size());
-        assertEquals("First", caseData.getChangeOfRepresentatives().get(0)
-                .getValue().getRemovedRepresentative().getSolicitorFirstName());
-        assertEquals("Last", caseData.getChangeOfRepresentatives().get(0)
-                .getValue().getRemovedRepresentative().getSolicitorLastName());
-        assertEquals("NOC", caseData.getChangeOfRepresentatives().get(0)
-                .getValue().getAddedRepresentative().getUpdatedVia());
-        assertNotNull(caseData.getChangeOfRepresentatives().get(0).getValue().getAddedDateTime());
-        verify(ccdClientApi, times(1))
-                .updateCaseAsCaseworker(any(), any(), any(),
-                        any(), any(), any(), any());
-    }
-
-    private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {
-        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
-
-        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
-        CollectionMember<ChangeOfRepresentative> removedRepresentative1 =
-                new CollectionMember<>(null, ChangeOfRepresentative
-                .builder()
-                .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
-                .build());
-        CollectionMember<ChangeOfRepresentative> removedRepresentative2 =
-                new CollectionMember<>(null, ChangeOfRepresentative
-                .builder()
-                .addedDateTime(LocalDateTime.parse("2023-01-01T18:00:00.001Z", dateTimeFormatter))
-                .build());
-        representatives.add(removedRepresentative1);
-        representatives.add(removedRepresentative2);
-
-        return representatives;
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
     }
 
     @Test
@@ -165,80 +144,68 @@ class PrepareNocServiceTest {
     }
 
     @Test
-    public void testApplyDecision() {
-        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
-
-        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                .organisationID("orgId1")
-                .organisationName("OrgName1").build()).build();
-        ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
-                .createdBy("abc@gmail.com")
-                .organisationToAdd(Organisation.builder().organisationID("12").build()).build();
-        RemovedRepresentative removed = RemovedRepresentative.builder()
-                        .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
-                        .organisation(organisationPolicy.getOrganisation())
-                        .solicitorEmail("abc@gmail.com")
-                        .solicitorFirstName("First")
-                        .solicitorLastName("Last")
-                        .build();
-        SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
-                .country("United Kingdom").postCode("sw2").build();
-
-        Map<String, Object> caseData = new HashMap<>();
-        caseData.put("removedRepresentative", removed);
-        caseData.put("changeOrganisationRequestField", changeRequest);
-        caseData.put("applicantOrganisationPolicy",organisationPolicy);
-        caseData.put("changeOfRepresentatives",changeOfRepresentatives);
-        caseData.put("solsSolicitorAddress",address);
-
-        SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation("AUTH")
-                .serviceAuthorisation("S2S")
-                .build();
-
-        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
-        when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
-                OrganisationPolicy.class)).thenReturn(organisationPolicy);
-        when(objectMapper.convertValue(caseData.get("removedRepresentative"),
-                RemovedRepresentative.class)).thenReturn(removed);
-        when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
-                ChangeOrganisationRequest.class)).thenReturn(changeRequest);
-        when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
-                List.class)).thenReturn(changeOfRepresentatives);
-
-        when(tokenGenerator.generate()).thenReturn("s2sToken");
-        ContactInformationResponse response = ContactInformationResponse.builder().addressLine1("Line1")
-                .addressLine1("Line2").addressLine3("Line3").country("UK").townCity("city").postcode("abc").build();
-        List<ContactInformationResponse> addressList = new ArrayList<>();
-        addressList.add(response);
-        OrganisationEntityResponse organisationEntityResponse = OrganisationEntityResponse.builder()
-                .contactInformation(addressList).build();
-        when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
-                .thenReturn(organisationEntityResponse);
-        when(objectMapper.convertValue(organisationEntityResponse,
-                SolsAddress.class)).thenReturn(address);
-        SolicitorUser user = SolicitorUser.builder().firstName("first").lastName("last").email("email").build();
-        List<SolicitorUser> userList = new ArrayList<>();
-        userList.add(user);
-        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
-                .users(userList).build();
-
-        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
-                .thenReturn(organisationUser);
-        SecurityDTO securityDTOs = SecurityDTO.builder()
-                .authorisation("AUTH")
-                .serviceAuthorisation("S2S")
-                .build();
-
-        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTOs);
+     void testApplyDecision() {
         CallbackRequest request = CallbackRequest.builder()
                 .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
                 .build();
         underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
         verify(assignCaseAccessClient, times(1))
                 .applyDecision(anyString(), anyString(), any(
                 DecisionRequest.class));
+    }
+
+    @Test
+     void testWhenFindOrganisationThrowsException() {
+        doThrow(new NullPointerException()).when(organisationApi)
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .build();
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
+    }
+
+    @Test
+    void testWhenFindByOrgIdThrowsException() {
+        doThrow(new NullPointerException()).when(organisationApi)
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .build();
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
+    }
+
+    private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+
+        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
+        CollectionMember<ChangeOfRepresentative> removedRepresentative1 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                        .builder()
+                        .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
+                        .build());
+        CollectionMember<ChangeOfRepresentative> removedRepresentative2 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                        .builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-01T18:00:00.001Z", dateTimeFormatter))
+                        .build());
+        representatives.add(removedRepresentative1);
+        representatives.add(removedRepresentative2);
+
+        return representatives;
     }
 
 }

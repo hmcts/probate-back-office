@@ -8,8 +8,6 @@ import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
-import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
-import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
@@ -22,12 +20,10 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.caseaccess.OrganisationApi;
-import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
-import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -46,8 +42,6 @@ public class PrepareNocService {
 
     private final AuthTokenGenerator tokenGenerator;
     private final AssignCaseAccessClient assignCaseAccessClient;
-    private final SaveNocService saveNocService;
-    private final CcdClientApi ccdClientApi;
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
@@ -56,45 +50,10 @@ public class PrepareNocService {
         caseData.setNocPreparedDate(LocalDate.now());
     }
 
-    public void addRepresentatives(uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails details) {
-        CaseData caseData = details.getData();
-        List<CollectionMember<ChangeOfRepresentative>> representatives = caseData.getChangeOfRepresentatives();
-        ChangeOfRepresentative representative = buildRepresentative(caseData);
-        representatives.add(new CollectionMember<>(null, representative));
-        log.info("Change of Representatives - " + representatives);
-        representatives.sort((m1, m2) -> {
-            LocalDateTime dt1 = m1.getValue().getAddedDateTime();
-            LocalDateTime dt2 = m2.getValue().getAddedDateTime();
-            return dt1.compareTo(dt2);
-        });
-        Collections.reverse(representatives);
-        final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
-                .builder()
-                .changeOfRepresentatives(saveNocService.getRepresentatives(representatives))
-                .build();
-        log.info("Grant of representation data - " + grantOfRepresentationData);
-        ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, details.getId().toString(),
-                grantOfRepresentationData, EventId.APPLY_DECISION,
-                securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), "Apply Noc",
-                "Apply Noc");
-    }
-
-    private ChangeOfRepresentative buildRepresentative(CaseData caseData) {
-        RemovedRepresentative removeRepresentative = caseData.getRemovedRepresentative();
-        AddedRepresentative addRepresentative = setAddedRepresentative(caseData);
-        log.info("Removed Representative - " + removeRepresentative);
-        log.info("Added Representative - " + addRepresentative);
-        return ChangeOfRepresentative.builder()
-                .addedDateTime(LocalDateTime.now())
-                .addedRepresentative(addRepresentative)
-                .removedRepresentative(removeRepresentative)
-                .build();
-    }
-
     public RemovedRepresentative setRemovedRepresentative(CaseData caseData) {
         OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
 
-        if (organisationPolicy != null) {
+        if (organisationPolicy != null & organisationPolicy.getOrganisation() != null) {
             Organisation organisation = organisationPolicy.getOrganisation();
 
             RemovedRepresentative removed = RemovedRepresentative.builder()
@@ -110,28 +69,16 @@ public class PrepareNocService {
         return null;
     }
 
-    private AddedRepresentative setAddedRepresentative(CaseData caseData) {
-        OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
-        Organisation organisation = organisationPolicy.getOrganisation();
-        return AddedRepresentative.builder()
-                .organisationID(organisation.getOrganisationID())
-                .updatedBy("ABC")
-                .updatedVia("NOC")
-                .build();
-    }
-
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
-        log.info("Case data Before- " + caseData);
-        log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
-        log.info("change organisation request after- " + changeOrganisationRequest);
+        log.info("change organisation request" + changeOrganisationRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
-        log.info("Representatives before- " + representatives);
+        log.info("Change of Representatives before- " + representatives);
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
-        log.info("Change of Representatives - " + representatives);
+        log.info("Change of Representatives after- " + representatives);
         representatives.sort((m1, m2) -> {
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
@@ -140,12 +87,13 @@ public class PrepareNocService {
         Collections.reverse(representatives);
         SolsAddress solsAddress =
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        changeOrganisationRequest);
+                        changeOrganisationRequest, caseDetails.getId().toString());
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        changeOrganisationRequest, caseData);
+                        changeOrganisationRequest, caseData, caseDetails.getId().toString());
 
         caseData.put("changeOfRepresentatives", representatives);
         caseData.put("solsSolicitorAddress", solsAddress);
+        caseData.put("solsSolicitorFirmName", changeOrganisationRequest.getOrganisationToAdd().getOrganisationName());
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
                 authorisation,
@@ -155,22 +103,29 @@ public class PrepareNocService {
     }
 
     private SolsAddress getNewSolicitorAddress(SecurityDTO securityDTO,
-                                                      ChangeOrganisationRequest changeRequest) {
-        OrganisationEntityResponse organisationResponse =
-                organisationApi.findOrganisationByOrgId(securityDTO.getAuthorisation(),
-                securityDTO.getServiceAuthorisation(), changeRequest.getOrganisationToAdd().getOrganisationID());
-        log.info("Organisation Entity Response - " + organisationResponse);
-        return convertSolicitorAddress(organisationResponse);
+                                                      ChangeOrganisationRequest changeRequest, String caseId) {
+        try {
+            log.info("Get OrganisationEntityResponse for caseId {}", caseId);
+            OrganisationEntityResponse organisationResponse =
+                    organisationApi.findOrganisationByOrgId(securityDTO.getAuthorisation(),
+                            securityDTO.getServiceAuthorisation(),
+                            changeRequest.getOrganisationToAdd().getOrganisationID());
+
+            log.info("Found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
+                    organisationResponse);
+            return convertSolicitorAddress(organisationResponse);
+        } catch (Exception e) {
+            log.error("Exception when looking up OrganisationEntityResponse for case {} for exception {}",
+                    caseId, e.getMessage());
+        }
+        log.info("No OrganisationEntityResponse for caseId {}", caseId);
+        return null;
     }
 
     private void getNewSolicitorDetails(SecurityDTO securityDTO,
                                                            ChangeOrganisationRequest changeOrganisationRequest,
-                                                       Map<String, Object> caseData) {
-        FindUsersByOrganisation organisationUser =
-                organisationApi.findSolicitorOrganisation(securityDTO.getAuthorisation(),
-                        securityDTO.getServiceAuthorisation(),
-                        changeOrganisationRequest.getOrganisationToAdd().getOrganisationID());
-        log.info("org user - " + organisationUser);
+                                                       Map<String, Object> caseData, String id) {
+        FindUsersByOrganisation organisationUser = findOrganisationDetails(securityDTO, changeOrganisationRequest, id);
         Optional<SolicitorUser> solicitorDetails = Optional.empty();
         if (null != organisationUser
                 && null != organisationUser.getUsers()
@@ -190,11 +145,31 @@ public class PrepareNocService {
 
         } else {
             log.error(
-                    "Notice of change: Solicitor %s does not belong to organisation id %s",
+                    "Notice of change: Solicitor {} does not belong to organisation id {}",
                     changeOrganisationRequest.getCreatedBy(),
                     changeOrganisationRequest.getOrganisationToAdd().getOrganisationID()
             );
         }
+    }
+
+    private FindUsersByOrganisation findOrganisationDetails(SecurityDTO securityDTO,
+                                                            ChangeOrganisationRequest changeOrganisationRequest,
+                                                            String caseId) {
+        try {
+            log.info("Get OrganisationUser for caseId {}", caseId);
+            FindUsersByOrganisation organisationUser = organisationApi
+                    .findSolicitorOrganisation(securityDTO.getAuthorisation(),
+                    securityDTO.getServiceAuthorisation(),
+                    changeOrganisationRequest.getOrganisationToAdd().getOrganisationID());
+            log.info("Found OrganisationUser for caseId {}, OrganisationUser {}", caseId,
+                    organisationUser);
+            return organisationUser;
+        } catch (Exception e) {
+            log.error("Exception when looking up organisationUser for case {} for exception {}",
+                    caseId, e.getMessage());
+        }
+        log.info("No OrganisationUser for caseId {}", caseId);
+        return null;
     }
 
     private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
@@ -210,9 +185,7 @@ public class PrepareNocService {
     }
 
     private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData) {
-        log.info("change organisation request- " + caseData.get("changeOrganisationRequestField"));
         ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
-        log.info("change organisation request after- " + changeRequest);
         return AddedRepresentative.builder()
                 .organisationID(changeRequest.getOrganisationToAdd().getOrganisationID())
                 .updatedBy(changeRequest.getCreatedBy())

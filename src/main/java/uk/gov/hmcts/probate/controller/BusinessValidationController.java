@@ -569,16 +569,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
-    @PostMapping(path = "/add-representatives", consumes = APPLICATION_JSON_VALUE,
-            produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> addRepresentative(
-            @RequestBody CallbackRequest callbackRequest) {
-        log.info("Adding removed representative - " + callbackRequest.getCaseDetails().getId().toString());
-        prepareNocService.addRepresentatives(callbackRequest.getCaseDetails());
-        log.info("Added removed representative - " + callbackRequest.getCaseDetails().getId().toString());
-        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
-    }
-
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.service.PrepareNocService;
-import uk.gov.hmcts.probate.service.SaveNocService;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 
@@ -28,7 +27,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 @RequestMapping("/noc")
 public class NoticeOfChangeController {
     private final PrepareNocService prepareNocService;
-    private final SaveNocService saveNocService;
 
     @PostMapping(path = "/apply-decision", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
     @Operation(description = "About to submit NoC Request")
@@ -41,17 +39,7 @@ public class NoticeOfChangeController {
     public AboutToStartOrSubmitCallbackResponse applyDecision(
             @RequestHeader(HttpHeaders.AUTHORIZATION) @Parameter(hidden = true) String authorisation,
             @RequestBody CallbackRequest callbackRequest) {
+        log.info("Apply Decision - " + callbackRequest.getCaseDetails().getId().toString());
         return prepareNocService.applyDecision(callbackRequest, authorisation);
-    }
-
-    @PostMapping(path = "/submittedNoCRequest", consumes = APPLICATION_JSON_VALUE, produces = APPLICATION_JSON_VALUE)
-    @Operation(description = "Submitted request for NoC")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "Callback processed.",
-                    content = @Content(mediaType = "application/json",
-                            schema = @Schema(implementation = AboutToStartOrSubmitCallbackResponse.class))),
-        @ApiResponse(responseCode = "400", description = "Bad Request", content = @Content)})
-    public void submittedNoCRequest(@RequestBody CallbackRequest callbackRequest) {
-        saveNocService.addRepresentatives(callbackRequest);
     }
 }
