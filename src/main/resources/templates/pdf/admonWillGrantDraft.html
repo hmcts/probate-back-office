@@ -12,8 +12,14 @@
 {% endmacro %}
 
 {% macro codicils(codicilAddedDateList) %}
-{% if codicilAddedDateList|length == 1 %} with 1 codicil{% elseif codicilAddedDateList|length > 1 %} with {{ codicilAddedDateList|length }} codicils{% endif %}
+{% if codicilAddedDateList|length == 1 %} with one codicil{% endif %}
+{% if codicilAddedDateList|length == 2 %} with two codicils{% endif %}
+{% if codicilAddedDateList|length == 3 %} with three codicils{% endif %}
+{% if codicilAddedDateList|length == 4 %} with four codicils{% endif %}
+{% if codicilAddedDateList|length == 5 %} with five codicils{% endif %}
+{% if codicilAddedDateList|length > 5 %} with {{codicilAddedDateList|length}} codicils{% endif %}
 {% endmacro %}
+
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:remove="all" th:text="${title}">Grant of Probate</title>

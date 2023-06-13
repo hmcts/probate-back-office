@@ -56,8 +56,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
     private static final String MULTI_EXEC_TC = "The Last Will and Testament ";
     private static final String MULTI_EXEC_TC_DECEASED = "John Smith";
-    private static final String ONE_CODICIL = "with 1 codicil";
-    private static final String TWO_CODICILS = "with 2 codicils";
+    private static final String ONE_CODICIL = "with one codicil";
+    private static final String TWO_CODICILS = "with two codicils";
     private static final String MULTI_EXEC_TC_ADMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
     private static final String MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT = "The Administration of John 's "
