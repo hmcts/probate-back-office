@@ -275,7 +275,7 @@
             {% else %}
             <p>
                 <strong>
-                    <span class="capitalize">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
+                    <span style="text-transform: capitalize;">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
                 </strong> of
                 <strong>
                     <span class="camelCase">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1}}{% endif %}

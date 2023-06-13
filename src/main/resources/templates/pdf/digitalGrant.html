@@ -58,7 +58,7 @@
 
 {% macro primaryApplicantNameAndAddress(cd) %}
 <strong>
-    <span class="capitalize">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
+    <span style="text-transform: capitalize;">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
 {% endmacro %}
 
 {% macro executorAnd(cd) %}
