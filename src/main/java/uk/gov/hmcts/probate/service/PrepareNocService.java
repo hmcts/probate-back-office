@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessClient;
 import uk.gov.hmcts.probate.service.caseaccess.OrganisationApi;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
-import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;

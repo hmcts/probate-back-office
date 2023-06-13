@@ -218,7 +218,7 @@ class PrepareNocServiceTest {
                 .serviceAuthorisation("S2S")
                 .build();
 
-        when(securityUtils.getUserBySolTokenAndServiceSecurityDTO()).thenReturn(securityDTOs);
+        when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTOs);
         CallbackRequest request = CallbackRequest.builder()
                 .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
                 .build();
