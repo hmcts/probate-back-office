@@ -49,7 +49,6 @@ public class PrepareNocService {
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
-    private final OrganisationsRetrievalService organisationsRetrievalService;
 
     public void addNocDate(CaseData caseData) {
         caseData.setNocPreparedDate(LocalDate.now());
@@ -138,10 +137,10 @@ public class PrepareNocService {
         });
         Collections.reverse(representatives);
         OrganisationEntityResponse organisationEntityResponse =
-                getUserAddress(securityUtils.getUserBySolTokenAndServiceSecurityDTO(), changeRequest);
+                getUserAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), changeRequest);
         log.info("Organisation Entity Response - " + organisationEntityResponse);
         FindUsersByOrganisation organisationUser =
-                getUserDetails(securityUtils.getUserBySolTokenAndServiceSecurityDTO(), changeRequest);
+                getUserDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), changeRequest);
         log.info("org user - " + organisationUser);
         caseData.put("changeOfRepresentatives", representatives);
         caseDetails.getData().putAll(caseData);
