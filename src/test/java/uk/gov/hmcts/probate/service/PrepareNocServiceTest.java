@@ -9,13 +9,16 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.DecisionRequest;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
+import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.payments.pba.ContactInformationResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -179,12 +182,15 @@ class PrepareNocServiceTest {
                         .solicitorFirstName("First")
                         .solicitorLastName("Last")
                         .build();
+        SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
+                .country("United Kingdom").postCode("sw2").build();
 
         Map<String, Object> caseData = new HashMap<>();
         caseData.put("removedRepresentative", removed);
         caseData.put("changeOrganisationRequestField", changeRequest);
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
         caseData.put("changeOfRepresentatives",changeOfRepresentatives);
+        caseData.put("solsSolicitorAddress",address);
 
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .authorisation("AUTH")
@@ -202,15 +208,22 @@ class PrepareNocServiceTest {
                 List.class)).thenReturn(changeOfRepresentatives);
 
         when(tokenGenerator.generate()).thenReturn("s2sToken");
-        OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
-        organisationEntityResponse.setOrganisationIdentifier("123");
-        organisationEntityResponse.setName("abc");
+        ContactInformationResponse response = ContactInformationResponse.builder().addressLine1("Line1")
+                .addressLine1("Line2").addressLine3("Line3").country("UK").townCity("city").postcode("abc").build();
+        List<ContactInformationResponse> addressList = new ArrayList<>();
+        addressList.add(response);
+        OrganisationEntityResponse organisationEntityResponse = OrganisationEntityResponse.builder()
+                .contactInformation(addressList).build();
         when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
-        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
-                .thenReturn(organisationEntityResponse);
-        FindUsersByOrganisation organisationUser = new FindUsersByOrganisation();
-        organisationUser.setOrganisationIdentifier("abc");
+        when(objectMapper.convertValue(organisationEntityResponse,
+                SolsAddress.class)).thenReturn(address);
+        SolicitorUser user = SolicitorUser.builder().firstName("first").lastName("last").email("email").build();
+        List<SolicitorUser> userList = new ArrayList<>();
+        userList.add(user);
+        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
+                .users(userList).build();
+
         when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
                 .thenReturn(organisationUser);
         SecurityDTO securityDTOs = SecurityDTO.builder()

@@ -3867,5 +3867,9 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "nocPreparedDate", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorAddress", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSOTForenames", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSOTSurname", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorEmail", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
 ]
