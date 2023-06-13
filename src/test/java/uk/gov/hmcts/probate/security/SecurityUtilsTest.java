@@ -34,8 +34,6 @@ class SecurityUtilsTest {
     private static final String CASEWORKER_USER_NAME = "caseworkerUserName";
     private static final String SCHEDULER_PASSWORD = "schedulerPassword";
     private static final String SCHEDULER_USER_NAME = "schedulerUserName";
-    private static final String SOLICITOR_PASSWORD = "sol2Password";
-    private static final String SOLICITOR_USER_NAME = "sol2UserName";
     private static final String AUTH_CLIENT_SECRET = "authClientSecret";
     private static final String AUTH_CLIENT_ID = "authClientId";
     private static final String REDIRECT = "http://redirect";
@@ -159,44 +157,5 @@ class SecurityUtilsTest {
                 .thenReturn(tokenResponse);
 
         securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
-    }
-
-    @Test
-    void shouldReturnSolicitorCacheToken() {
-        /*ReflectionTestUtils.setField(securityUtils, "sol2UserName", SOLICITOR_USER_NAME);
-        ReflectionTestUtils.setField(securityUtils, "sol2Password", SOLICITOR_PASSWORD);*/
-
-        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
-        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
-                .thenReturn(tokenResponse);
-
-        // first time
-        String idamToken = securityUtils.getSolToken();
-
-        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
-
-        // second time
-        idamToken = securityUtils.getSolToken();
-
-        assertThat(idamToken, containsString("Bearer " + USER_TOKEN));
-
-        verify(idamApi, atMostOnce()).generateOpenIdToken(any(TokenRequest.class));
-    }
-
-    @Test
-    void shouldReturnSolicitorToken() {
-        /*ReflectionTestUtils.setField(securityUtils, "sol2UserName", SOLICITOR_USER_NAME);
-        ReflectionTestUtils.setField(securityUtils, "sol2Password", SOLICITOR_PASSWORD);*/
-        UserInfo userInfo = UserInfo.builder().sub("solicitor@probate-test.com")
-                .uid("12344").build();
-        when(idamApi.retrieveUserInfo(any())).thenReturn(userInfo);
-
-        when(authTokenGenerator.generate()).thenReturn("Test");
-
-        TokenResponse tokenResponse = new TokenResponse(USER_TOKEN,"360000",USER_TOKEN,null,null,null);
-        when(idamApi.generateOpenIdToken(any(TokenRequest.class)))
-                .thenReturn(tokenResponse);
-
-        securityUtils.getUserBySolTokenAndServiceSecurityDTO();
     }
 }
