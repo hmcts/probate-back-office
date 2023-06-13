@@ -18,5 +18,7 @@
   "findMatchesIssueGrant": "Find matches (Issue grant)",
   "failQa": "Fail QA",
   "resolveStop": "Resolve stop",
+  "postGrantIssue": "Post Grant Issue",
+  "resolvePostGrantIssue": "Resolve Post Grant Issue",
   "changeState": "Change state"
 }

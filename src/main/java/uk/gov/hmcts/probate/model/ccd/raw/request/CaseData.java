@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -583,6 +584,9 @@ public class CaseData extends CaseDataParent {
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
     private RegistrarDirection registrarDirectionToAdd;
+
+    //transient in-event vars
+    private final OriginalDocuments originalDocuments;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
