@@ -27,10 +27,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static uk.gov.hmcts.probate.model.caseaccess.DecisionRequest.decisionRequest;
 
@@ -78,14 +75,7 @@ public class PrepareNocService {
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after- " + representatives);
-        /*representatives.sort((m1, m2) -> {
-            log.info("m1 {} : m2 {}- ", m1,m2);
-            LocalDateTime dt1 = m1.getValue().getAddedDateTime();
-            LocalDateTime dt2 = m2.getValue().getAddedDateTime();
-            return dt1.compareTo(dt2);
-        });
-        log.info("List before reverse- " + representatives);
-        Collections.reverse(representatives);*/
+        Collections.sort(representatives, new CollectionMemberComparator());
         log.info("List after reverse- " + representatives);
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
@@ -103,6 +93,16 @@ public class PrepareNocService {
                 tokenGenerator.generate(),
                 decisionRequest(caseDetails)
         );
+    }
+    static class CollectionMemberComparator<T extends Comparable<T>> implements Comparator<CollectionMember<T>> {
+        public int compare(CollectionMember<T> o1, CollectionMember<T> o2) {
+            log.info("o1 {} : o2 {}- ", o1,o2);
+            LocalDateTime dt1 = ((ChangeOfRepresentative)o1.getValue()).getAddedDateTime();
+            log.info("dt1 {} ", dt1);
+            LocalDateTime dt2 = ((ChangeOfRepresentative)o2.getValue()).getAddedDateTime();
+            log.info("dt2 {} ", dt2);
+            return dt1.compareTo(dt2);
+        }
     }
 
     public SolsAddress getNewSolicitorAddress(SecurityDTO securityDTO, String orgId,
