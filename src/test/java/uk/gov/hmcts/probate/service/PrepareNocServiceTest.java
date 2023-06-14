@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -40,6 +41,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -78,7 +80,7 @@ class PrepareNocServiceTest {
                         .organisationID("orgId1")
                         .organisationName("OrgName1").build()).build();
         ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
-                .createdBy("abc@gmail.com")
+                .createdBy("sol2@gmail.com")
                 .organisationToAdd(Organisation.builder().organisationID("12").build()).build();
         RemovedRepresentative removed = RemovedRepresentative.builder()
                 .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
@@ -92,8 +94,8 @@ class PrepareNocServiceTest {
         caseData.put("removedRepresentative", removed);
         caseData.put("changeOrganisationRequestField", changeRequest);
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
-        caseData.put("solsSolicitorFirmName","firm");
-        caseData.put("changeOfRepresentatives",null);
+        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
+        caseData.put("changeOfRepresentatives",changeOfRepresentatives);
         SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
                 .country("United Kingdom").postCode("sw2").county("county").build();
         caseData.put("solsSolicitorAddress",address);
@@ -104,11 +106,14 @@ class PrepareNocServiceTest {
                 RemovedRepresentative.class)).thenReturn(removed);
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class)).thenReturn(changeRequest);
+        when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(changeOfRepresentatives);
+        when(objectMapper.convertValue(any(), eq(SolsAddress.class))).thenReturn(address);
 
         when(tokenGenerator.generate()).thenReturn("s2sToken");
+
         contactInformationResponse = ContactInformationResponse.builder().addressLine1("Line1")
-                .addressLine1("Line2").addressLine3("Line3")
-                .country("UK").townCity("city").postCode("abc").build();
+                .addressLine2("Line2").addressLine3("Line3")
+                .country("UK").townCity("city").postCode("sw2").county("county").build();
 
         organisationEntityResponse = OrganisationEntityResponse.builder().name("Org2 name")
                 .contactInformation(Arrays.asList(contactInformationResponse)).build();
@@ -161,6 +166,39 @@ class PrepareNocServiceTest {
     }
 
     @Test
+    void testForNullRepresentativesBefore() {
+        caseData.put("changeOfRepresentatives",null);
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .build();
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
+    }
+
+    @Test
+    void testForEmptyListOfRepresentativesBefore() {
+        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = new ArrayList<>();
+        caseData.put("changeOfRepresentatives",changeOfRepresentatives);
+        CallbackRequest request = CallbackRequest.builder()
+                .caseDetails(CaseDetails.builder().data(caseData).id(0L).build())
+                .build();
+        underTest.applyDecision(request, "testAuth");
+        verify(organisationApi, times(1))
+                .findOrganisationByOrgId(anyString(), anyString(), anyString());
+        verify(organisationApi, times(1))
+                .findSolicitorOrganisation(anyString(), anyString(), anyString());
+        verify(assignCaseAccessClient, times(1))
+                .applyDecision(anyString(), anyString(), any(
+                        DecisionRequest.class));
+    }
+
+    @Test
      void testWhenFindOrganisationThrowsException() {
         doThrow(new NullPointerException()).when(organisationApi)
                 .findSolicitorOrganisation(anyString(), anyString(), anyString());
@@ -190,31 +228,31 @@ class PrepareNocServiceTest {
                         DecisionRequest.class));
     }
 
-    /*@Test
-    public void shouldConvertOrganisationAddress() {
+    @Test
+     void shouldConvertOrganisationAddress() {
 
         when(organisationApi.findOrganisationByOrgId("auth", "authToken",
                 "organisationId")).thenReturn(organisationEntityResponse);
-
-        when(underTest.convertSolicitorAddress(organisationEntityResponse, caseData))
-                .thenReturn(prepareSolAddressData(organisationEntityResponse));
+        SolsAddress solAddress = SolsAddress.builder().addressLine1("Line1").addressLine2("Line2")
+                .country("UK").postCode("sw2").county("county").postTown("city").build();
+        when(objectMapper.convertValue(any(), eq(SolsAddress.class))).thenReturn(solAddress);
 
         SolsAddress address = underTest.getNewSolicitorAddress(securityDTO, "organisationId",
                 caseData, "1L");
 
 
-        Assert.assertEquals(address.getAddressLine1(),
+        assertEquals(address.getAddressLine1(),
                 organisationEntityResponse.getContactInformation().get(0).getAddressLine1());
-        Assert.assertEquals(address.getCounty(),
+        assertEquals(address.getCounty(),
                 organisationEntityResponse.getContactInformation().get(0).getCounty());
-        Assert.assertEquals(address.getCountry(),
+        assertEquals(address.getCountry(),
                 organisationEntityResponse.getContactInformation().get(0).getCountry());
-        Assert.assertEquals(address.getPostTown(),
+        assertEquals(address.getPostTown(),
                 organisationEntityResponse.getContactInformation().get(0).getTownCity());
-        Assert.assertEquals(address.getPostCode(),
+        assertEquals(address.getPostCode(),
                 organisationEntityResponse.getContactInformation().get(0).getPostCode());
 
-    }*/
+    }
 
     private List<CollectionMember<ChangeOfRepresentative>> setupRepresentative() {
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");

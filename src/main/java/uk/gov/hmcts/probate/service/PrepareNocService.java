@@ -76,17 +76,15 @@ public class PrepareNocService {
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
         log.info("change organisation request" + changeOrganisationRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
-        log.info("Change of Representatives before- " + representatives);
+        log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
-        log.info("Change of Representatives after- " + representatives);
+        log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
         representatives.sort((m1, m2) -> {
-            log.info("m1 {} : m2 {}- ", m1,m2);
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt1.compareTo(dt2);
         });
-        log.info("List before reverse- " + representatives);
         Collections.reverse(representatives);
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
@@ -94,10 +92,8 @@ public class PrepareNocService {
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest.getOrganisationToAdd().getOrganisationID(),
                         caseData, caseDetails.getId().toString());
-        log.info("case data before putting to caseDetails- " + caseData);
         caseData.put("changeOfRepresentatives", representatives);
         caseData.put("solsSolicitorAddress", solsAddress);
-        log.info("case data- " + caseData);
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
                 authorisation,
@@ -145,6 +141,7 @@ public class PrepareNocService {
             caseData.put("solsSOTForenames", solicitorUser.getFirstName());
             caseData.put("solsSOTSurname", solicitorUser.getLastName());
             caseData.put("solsSolicitorEmail", solicitorUser.getEmail());
+            caseData.put("solsSOTName", solicitorUser.getFirstName() + " " + solicitorUser.getLastName());
 
         } else {
             log.error(
@@ -196,7 +193,7 @@ public class PrepareNocService {
                 .build();
     }
 
-    public SolsAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse,
+    private SolsAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse,
                                                 Map<String, Object> caseData) {
         caseData.put("solsSolicitorFirmName", organisationResponse.getName());
         return objectMapper.convertValue(SolsAddress.builder()
