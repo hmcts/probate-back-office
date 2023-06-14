@@ -93,8 +93,7 @@ class PrepareNocServiceTest {
         caseData.put("changeOrganisationRequestField", changeRequest);
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
         caseData.put("solsSolicitorFirmName","firm");
-        List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
-        caseData.put("changeOfRepresentatives",changeOfRepresentatives);
+        caseData.put("changeOfRepresentatives",null);
         SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
                 .country("United Kingdom").postCode("sw2").county("county").build();
         caseData.put("solsSolicitorAddress",address);
@@ -105,8 +104,6 @@ class PrepareNocServiceTest {
                 RemovedRepresentative.class)).thenReturn(removed);
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class)).thenReturn(changeRequest);
-        when(objectMapper.convertValue(caseData.get("changeOfRepresentatives"),
-                List.class)).thenReturn(changeOfRepresentatives);
 
         when(tokenGenerator.generate()).thenReturn("s2sToken");
         contactInformationResponse = ContactInformationResponse.builder().addressLine1("Line1")

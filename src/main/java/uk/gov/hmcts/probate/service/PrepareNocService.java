@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +29,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -79,7 +80,14 @@ public class PrepareNocService {
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after- " + representatives);
-        representatives.sort(Comparator.comparing(e -> e.getValue().getAddedDateTime()));
+        representatives.sort((m1, m2) -> {
+            log.info("m1 {} : m2 {}- ", m1,m2);
+            LocalDateTime dt1 = m1.getValue().getAddedDateTime();
+            LocalDateTime dt2 = m2.getValue().getAddedDateTime();
+            return dt1.compareTo(dt2);
+        });
+        log.info("List before reverse- " + representatives);
+        Collections.reverse(representatives);
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
         SolsAddress solsAddress =
@@ -213,14 +221,15 @@ public class PrepareNocService {
         return objectMapper.convertValue(caseData.get("removedRepresentative"), RemovedRepresentative.class);
     }
 
-    private List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {
+    public List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {
         Object changeOfRepresentativesValue = caseData.get("changeOfRepresentatives");
         log.info("Change of reps value - " + changeOfRepresentativesValue);
         if (changeOfRepresentativesValue == null) {
             log.info("Change of reps - " + changeOfRepresentativesValue);
             return new ArrayList<>();
         }
-
-        return objectMapper.convertValue(changeOfRepresentativesValue, List.class);
+        TypeReference<List<CollectionMember<ChangeOfRepresentative>>> typeRef =
+                new TypeReference<>() {};
+        return objectMapper.convertValue(changeOfRepresentativesValue, typeRef);
     }
 }
