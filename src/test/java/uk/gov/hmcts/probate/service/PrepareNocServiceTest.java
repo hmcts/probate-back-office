@@ -11,7 +11,11 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
-import uk.gov.hmcts.probate.model.ccd.raw.*;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.payments.pba.ContactInformationResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
@@ -222,8 +226,6 @@ class PrepareNocServiceTest {
         CollectionMember<ChangeOfRepresentative> removedRepresentative1 =
                 new CollectionMember<>(null, ChangeOfRepresentative
                         .builder()
-                        .addedRepresentative(AddedRepresentative.builder()
-                                .organisationID("123").updatedBy("abc").build())
                         .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
                         .build());
         CollectionMember<ChangeOfRepresentative> removedRepresentative2 =
