@@ -88,12 +88,12 @@ public class PrepareNocService {
         log.info("List before reverse- " + representatives);
         Collections.reverse(representatives);
         log.info("List after reverse- " + representatives);
+        getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
+                        changeOrganisationRequest, caseData, caseDetails.getId().toString());
         SolsAddress solsAddress =
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest.getOrganisationToAdd().getOrganisationID(),
                         caseData, caseDetails.getId().toString());
-        getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        changeOrganisationRequest, caseData, caseDetails.getId().toString());
         log.info("case data before putting to caseDetails- " + caseData);
         caseData.put("changeOfRepresentatives", representatives);
         caseData.put("solsSolicitorAddress", solsAddress);
