@@ -80,20 +80,24 @@ public class PrepareNocService {
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after- " + representatives);
         representatives.sort((m1, m2) -> {
+            log.info("m1 {} : m2 {}- ", m1,m2);
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt1.compareTo(dt2);
         });
+        log.info("List before reverse- " + representatives);
         Collections.reverse(representatives);
+        log.info("List after reverse- " + representatives);
         SolsAddress solsAddress =
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
-                        changeOrganisationRequest, caseDetails.getId().toString());
+                        changeOrganisationRequest.getOrganisationToAdd().getOrganisationID(),
+                        caseData, caseDetails.getId().toString());
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
-
+        log.info("case data before putting to caseDetails- " + caseData);
         caseData.put("changeOfRepresentatives", representatives);
         caseData.put("solsSolicitorAddress", solsAddress);
-        caseData.put("solsSolicitorFirmName", changeOrganisationRequest.getOrganisationToAdd().getOrganisationName());
+        log.info("case data- " + caseData);
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
                 authorisation,
@@ -102,18 +106,17 @@ public class PrepareNocService {
         );
     }
 
-    private SolsAddress getNewSolicitorAddress(SecurityDTO securityDTO,
-                                                      ChangeOrganisationRequest changeRequest, String caseId) {
+    public SolsAddress getNewSolicitorAddress(SecurityDTO securityDTO, String orgId,
+                                               Map<String, Object> caseData, String caseId) {
         try {
             log.info("Get OrganisationEntityResponse for caseId {}", caseId);
             OrganisationEntityResponse organisationResponse =
                     organisationApi.findOrganisationByOrgId(securityDTO.getAuthorisation(),
-                            securityDTO.getServiceAuthorisation(),
-                            changeRequest.getOrganisationToAdd().getOrganisationID());
+                            securityDTO.getServiceAuthorisation(), orgId);
 
             log.info("Found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
                     organisationResponse);
-            return convertSolicitorAddress(organisationResponse);
+            return convertSolicitorAddress(organisationResponse, caseData);
         } catch (Exception e) {
             log.error("Exception when looking up OrganisationEntityResponse for case {} for exception {}",
                     caseId, e.getMessage());
@@ -193,11 +196,14 @@ public class PrepareNocService {
                 .build();
     }
 
-    private SolsAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse) {
+    public SolsAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse,
+                                                Map<String, Object> caseData) {
+        caseData.put("solsSolicitorFirmName", organisationResponse.getName());
         return objectMapper.convertValue(SolsAddress.builder()
                 .addressLine1(organisationResponse.getContactInformation().get(0).getAddressLine1())
                 .addressLine2(organisationResponse.getContactInformation().get(0).getAddressLine2())
                 .addressLine3(organisationResponse.getContactInformation().get(0).getAddressLine3())
+                .county(organisationResponse.getContactInformation().get(0).getCounty())
                 .country(organisationResponse.getContactInformation().get(0).getCountry())
                 .postTown(organisationResponse.getContactInformation().get(0).getTownCity())
                 .postCode(organisationResponse.getContactInformation().get(0).getPostCode())
@@ -217,6 +223,7 @@ public class PrepareNocService {
 
     private List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {
         Object changeOfRepresentativesValue = caseData.get("changeOfRepresentatives");
+        log.info("Change of reps value - " + changeOfRepresentativesValue);
         if (changeOfRepresentativesValue == null) {
             log.info("Change of reps - " + changeOfRepresentativesValue);
             return new ArrayList<>();
