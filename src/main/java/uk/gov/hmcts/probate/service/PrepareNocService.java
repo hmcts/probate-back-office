@@ -29,7 +29,6 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -80,9 +79,7 @@ public class PrepareNocService {
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after- " + representatives);
-        Collections.sort(representatives, new CollectionMemberComparator());
-        Collections.reverse(representatives);
-        log.info("List after reverse- " + representatives);
+        representatives.sort(Comparator.comparing(e -> e.getValue().getAddedDateTime()));
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
         SolsAddress solsAddress =
@@ -99,18 +96,6 @@ public class PrepareNocService {
                 tokenGenerator.generate(),
                 decisionRequest(caseDetails)
         );
-    }
-
-    static class CollectionMemberComparator implements Comparator<CollectionMember<ChangeOfRepresentative>> {
-        public int compare(CollectionMember<ChangeOfRepresentative> o1, CollectionMember<ChangeOfRepresentative> o2) {
-            log.info("I am in compare");
-            log.info("o1 {} : o2 {}- ", o1,o2);
-            LocalDateTime dt1 = o1.getValue().getAddedDateTime();
-            log.info("dt1 {} ", dt1);
-            LocalDateTime dt2 = o2.getValue().getAddedDateTime();
-            log.info("dt2 {} ", dt2);
-            return dt1.compareTo(dt2);
-        }
     }
 
     public SolsAddress getNewSolicitorAddress(SecurityDTO securityDTO, String orgId,
