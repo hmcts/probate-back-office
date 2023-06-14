@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -79,14 +80,14 @@ public class PrepareNocService {
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after- " + representatives);
-        representatives.sort((m1, m2) -> {
+        /*representatives.sort((m1, m2) -> {
             log.info("m1 {} : m2 {}- ", m1,m2);
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt1.compareTo(dt2);
         });
         log.info("List before reverse- " + representatives);
-        Collections.reverse(representatives);
+        Collections.reverse(representatives);*/
         log.info("List after reverse- " + representatives);
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
@@ -228,6 +229,7 @@ public class PrepareNocService {
             log.info("Change of reps - " + changeOfRepresentativesValue);
             return new ArrayList<>();
         }
-        return (List<CollectionMember<ChangeOfRepresentative>>)changeOfRepresentativesValue;
+
+        return objectMapper.convertValue(changeOfRepresentativesValue, List.class);
     }
 }
