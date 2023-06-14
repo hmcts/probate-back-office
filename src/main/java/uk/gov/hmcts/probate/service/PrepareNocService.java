@@ -228,6 +228,6 @@ public class PrepareNocService {
             log.info("Change of reps - " + changeOfRepresentativesValue);
             return new ArrayList<>();
         }
-        return objectMapper.convertValue(caseData.get("changeOfRepresentatives"), List.class);
+        return (List<CollectionMember<ChangeOfRepresentative>>)changeOfRepresentativesValue;
     }
 }
