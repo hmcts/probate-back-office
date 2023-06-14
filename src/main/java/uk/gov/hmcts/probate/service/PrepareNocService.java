@@ -81,6 +81,7 @@ public class PrepareNocService {
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after- " + representatives);
         Collections.sort(representatives, new CollectionMemberComparator());
+        Collections.reverse(representatives);
         log.info("List after reverse- " + representatives);
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
@@ -99,6 +100,7 @@ public class PrepareNocService {
                 decisionRequest(caseDetails)
         );
     }
+    
     static class CollectionMemberComparator<T extends Comparable<T>> implements Comparator<CollectionMember<T>> {
         public int compare(CollectionMember<T> o1, CollectionMember<T> o2) {
             log.info("o1 {} : o2 {}- ", o1,o2);
