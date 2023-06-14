@@ -362,8 +362,4 @@ java:
           alias: SCHEDULER_CASEWORKER_USERNAME
         - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
-        - name: solicitor2UserEmail
-          alias: SOL2_USER_EMAIL
-        - name: solicitor2UserPass
-          alias: SOL2_USER_PASSWORD
 

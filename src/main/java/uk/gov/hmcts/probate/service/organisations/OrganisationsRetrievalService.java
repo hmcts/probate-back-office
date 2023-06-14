@@ -35,7 +35,6 @@ public class OrganisationsRetrievalService {
     @Value("${prd.organisations.api}")
     protected String orgApi;
 
-
     public OrganisationEntityResponse getOrganisationEntity(String caseId, String authToken) {
         URI uri = buildUri();
         HttpEntity<HttpHeaders> request = buildRequest(authToken);

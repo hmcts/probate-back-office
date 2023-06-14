@@ -157,7 +157,6 @@ class BusinessValidationControllerIT {
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
-    private static final String CITIZEN_REMOVE_ACCESS = "/case/citizen-remove-access";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()

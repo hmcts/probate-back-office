@@ -200,7 +200,7 @@ public class PrepareNocService {
                 .addressLine3(organisationResponse.getContactInformation().get(0).getAddressLine3())
                 .country(organisationResponse.getContactInformation().get(0).getCountry())
                 .postTown(organisationResponse.getContactInformation().get(0).getTownCity())
-                .postCode(organisationResponse.getContactInformation().get(0).getPostcode())
+                .postCode(organisationResponse.getContactInformation().get(0).getPostCode())
                 .build(), SolsAddress.class);
     }
 

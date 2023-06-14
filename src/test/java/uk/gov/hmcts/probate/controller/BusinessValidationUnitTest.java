@@ -873,8 +873,7 @@ class BusinessValidationUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(callbackResponseTransformerMock.transformForNoc(callbackRequestMock))
-                .thenReturn(callbackResponseMock);
+
         ResponseEntity<CallbackResponse> response =
                 underTest.prepareCaseForNoc(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

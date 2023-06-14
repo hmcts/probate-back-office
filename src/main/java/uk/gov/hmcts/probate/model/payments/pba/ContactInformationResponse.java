@@ -34,5 +34,5 @@ public class ContactInformationResponse {
     @JsonProperty
     private String country;
     @JsonProperty
-    private String postcode;
+    private String postCode;
 }

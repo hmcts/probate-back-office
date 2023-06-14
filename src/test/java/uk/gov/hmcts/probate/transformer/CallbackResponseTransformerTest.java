@@ -3776,12 +3776,4 @@ class CallbackResponseTransformerTest {
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
-
-    @Test
-    void shouldTransformForNoc() {
-        CallbackResponse callbackResponse = underTest.transformForNoc(callbackRequestMock);
-
-        assertEquals(callbackResponse.getData().getApplicantOrganisationPolicy().getOrgPolicyCaseAssignedRole(),
-                "[APPLICANTSOLICITOR]");
-    }
 }

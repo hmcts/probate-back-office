@@ -109,7 +109,7 @@ class PrepareNocServiceTest {
         OrganisationEntityResponse organisationEntityResponse = OrganisationEntityResponse.builder()
                 .contactInformation(Arrays.asList(ContactInformationResponse.builder().addressLine1("Line1")
                         .addressLine1("Line2").addressLine3("Line3")
-                        .country("UK").townCity("city").postcode("abc").build())).build();
+                        .country("UK").townCity("city").postCode("abc").build())).build();
         when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
         when(objectMapper.convertValue(organisationEntityResponse,

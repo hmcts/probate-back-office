@@ -311,56 +311,6 @@ class CcdClientApiTest {
     }
 
     @Test
-    void updateCCDCaseAsCaseworker() {
-        StartEventResponse startEventResponse = Mockito.mock(StartEventResponse.class);
-
-        EventId eventId = EventId.DEATH_RECORD_VERIFIED;
-
-        when(coreCaseDataApi.startEventForCaseWorker(
-                eq(AUTHORISATION),
-                eq(SERVICE_AUTHORISATION),
-                eq(USER_ID),
-                eq(JurisdictionId.PROBATE.name()),
-                eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
-                any(),
-                any())).thenReturn(startEventResponse);
-
-        CaseDetails responseCaseDetails = Mockito.mock(CaseDetails.class);
-        when(startEventResponse.getCaseDetails()).thenReturn(responseCaseDetails);
-
-        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
-                .build();
-
-        when(coreCaseDataApi.submitEventForCaseWorker(
-                eq(AUTHORISATION),
-                eq(SERVICE_AUTHORISATION),
-                eq(USER_ID),
-                eq(JurisdictionId.PROBATE.name()),
-                eq(CcdCaseType.GRANT_OF_REPRESENTATION.getName()),
-                eq("1"),
-                eq(false),
-                any(CaseDataContent.class))).thenReturn(responseCaseDetails);
-
-        SecurityDTO securityDTO = SecurityDTO.builder()
-                .authorisation(AUTHORISATION)
-                .serviceAuthorisation(SERVICE_AUTHORISATION)
-                .userId(USER_ID)
-                .build();
-
-
-        CaseDetails actualCaseDetails = ccdClientApi.updateCaseAsCaseworker(
-                CcdCaseType.GRANT_OF_REPRESENTATION,
-                "1",
-                grantOfRepresentationData,
-                eventId,
-                securityDTO,
-                "Description",
-                "Summary");
-
-        assertThat(actualCaseDetails, equalTo(responseCaseDetails));
-    }
-
-    @Test
     void updateCaseAsCaseworkerException() throws ConcurrentDataUpdateException {
         LocalDateTime timeLastModified = LocalDateTime.of(2022, 1, 8, 10, 10, 0, 0);
         LocalDateTime timeNewer = timeLastModified.plusNanos(1000000);

@@ -19,10 +19,6 @@ public interface CoreCaseDataService {
                                        CaseData caseData, EventId eventId,
                                        SecurityDTO securityDTO, String description, String summary);
 
-    CaseDetails updateCaseAsCaseworker(CcdCaseType caseType, String caseId,
-                                       CaseData caseData, EventId eventId,
-                                       SecurityDTO securityDTO, String description, String summary);
-
     CaseDetails updateCaseAsCitizen(CcdCaseType ccdCaseType, String caseId, CaseData caseData, EventId eventId,
                                        SecurityDTO securityDTO, String description, String summary);
 

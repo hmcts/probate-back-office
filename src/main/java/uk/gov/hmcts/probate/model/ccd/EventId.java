@@ -21,8 +21,7 @@ public enum EventId {
     DEATH_RECORD_VERIFIED("deathRecordVerified"),
     DEATH_RECORD_VERIFICATION_FAILED("deathRecordVerificationFailed"),
     MAKE_CASE_DORMANT("makeCaseDormant"),
-    REACTIVATE_DORMANT_CASE("reactivateDormantCase"),
-    APPLY_DECISION("applyNocDecisionComplete");
+    REACTIVATE_DORMANT_CASE("reactivateDormantCase");
     @Getter
     private final String name;
 
