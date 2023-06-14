@@ -100,13 +100,14 @@ public class PrepareNocService {
                 decisionRequest(caseDetails)
         );
     }
-    
-    static class CollectionMemberComparator<T extends Comparable<T>> implements Comparator<CollectionMember<T>> {
-        public int compare(CollectionMember<T> o1, CollectionMember<T> o2) {
+
+    static class CollectionMemberComparator implements Comparator<CollectionMember<ChangeOfRepresentative>> {
+        public int compare(CollectionMember<ChangeOfRepresentative> o1, CollectionMember<ChangeOfRepresentative> o2) {
+            log.info("I am in compare");
             log.info("o1 {} : o2 {}- ", o1,o2);
-            LocalDateTime dt1 = ((ChangeOfRepresentative)o1.getValue()).getAddedDateTime();
+            LocalDateTime dt1 = o1.getValue().getAddedDateTime();
             log.info("dt1 {} ", dt1);
-            LocalDateTime dt2 = ((ChangeOfRepresentative)o2.getValue()).getAddedDateTime();
+            LocalDateTime dt2 = o2.getValue().getAddedDateTime();
             log.info("dt2 {} ", dt2);
             return dt1.compareTo(dt2);
         }
