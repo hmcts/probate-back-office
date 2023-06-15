@@ -82,11 +82,6 @@ class PrepareNocCaveatServiceTest {
                 .organisation(organisationPolicy.getOrganisation())
                 .solicitorEmail("abc@gmail.com")
                 .build();
-        ChangeOfRepresentative changeOfRepresentative  = ChangeOfRepresentative.builder()
-                .addedDateTime(LocalDateTime.now())
-                .addedRepresentative(AddedRepresentative.builder().organisationID("12").build())
-                .removedRepresentative(removed).build();
-
         caseData = new HashMap<>();
         caseData.put("removedRepresentative", removed);
         caseData.put("changeOrganisationRequestField", changeRequest);
@@ -96,7 +91,10 @@ class PrepareNocCaveatServiceTest {
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address Line1").proAddressLine2("Line2")
                 .proCountry("United Kingdom").proPostCode("sw2").proCounty("county").build();
         caseData.put("caveatorAddress",address);
-
+        ChangeOfRepresentative changeOfRepresentative  = ChangeOfRepresentative.builder()
+                .addedDateTime(LocalDateTime.now())
+                .addedRepresentative(AddedRepresentative.builder().organisationID("12").build())
+                .removedRepresentative(removed).build();
         when(prepareNocServiceMock.buildChangeOfRepresentative(caseData)).thenReturn(changeOfRepresentative);
         when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
                 OrganisationPolicy.class)).thenReturn(organisationPolicy);
