@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -59,6 +60,8 @@ class PrepareNocCaveatServiceTest {
     private ObjectMapper objectMapper;
     @Mock
     private OrganisationApi organisationApi;
+    @Mock
+    private PrepareNocService prepareNocServiceMock;
     private Map<String, Object> caseData;
     private OrganisationEntityResponse organisationEntityResponse;
     private ContactInformationResponse contactInformationResponse;
@@ -79,6 +82,10 @@ class PrepareNocCaveatServiceTest {
                 .organisation(organisationPolicy.getOrganisation())
                 .solicitorEmail("abc@gmail.com")
                 .build();
+        ChangeOfRepresentative changeOfRepresentative  = ChangeOfRepresentative.builder()
+                .addedDateTime(LocalDateTime.now())
+                .addedRepresentative(AddedRepresentative.builder().organisationID("12").build())
+                .removedRepresentative(removed).build();
 
         caseData = new HashMap<>();
         caseData.put("removedRepresentative", removed);
@@ -90,6 +97,7 @@ class PrepareNocCaveatServiceTest {
                 .proCountry("United Kingdom").proPostCode("sw2").proCounty("county").build();
         caseData.put("caveatorAddress",address);
 
+        when(prepareNocServiceMock.buildChangeOfRepresentative(caseData)).thenReturn(changeOfRepresentative);
         when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
                 OrganisationPolicy.class)).thenReturn(organisationPolicy);
         when(objectMapper.convertValue(caseData.get("removedRepresentative"),
@@ -109,18 +117,18 @@ class PrepareNocCaveatServiceTest {
                 .contactInformation(Arrays.asList(contactInformationResponse)).build();
         when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
-        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
-                .users(Arrays.asList(SolicitorUser.builder()
-                        .firstName("Sol2First").lastName("Sol2LastName").email("sol2@gmail.com").build())).build();
 
-        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
-                .thenReturn(organisationUser);
         securityDTO = SecurityDTO.builder()
                 .authorisation("AUTH")
                 .serviceAuthorisation("S2S")
                 .build();
 
         when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
+        FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
+                .users(Arrays.asList(SolicitorUser.builder()
+                        .firstName("Sol2First").lastName("Sol2LastName").email("sol2@gmail.com").build())).build();
+        when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
+                .thenReturn(organisationUser);
     }
 
     @Test

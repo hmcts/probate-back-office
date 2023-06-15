@@ -11,7 +11,6 @@ import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
-import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -47,6 +46,7 @@ public class PrepareNocCaveatService {
     private final SecurityUtils securityUtils;
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
+    private final PrepareNocService prepareNocService;
 
     public void addNocDate(CaveatData caveatData) {
         caveatData.setNocPreparedDate(LocalDate.now());
@@ -76,7 +76,7 @@ public class PrepareNocCaveatService {
         log.info("change organisation request" + changeOrganisationRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
-        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
+        ChangeOfRepresentative representative = prepareNocService.buildChangeOfRepresentative(caseData);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
         representatives.sort((m1, m2) -> {
@@ -123,7 +123,8 @@ public class PrepareNocCaveatService {
     private void getNewSolicitorDetails(SecurityDTO securityDTO,
                                                            ChangeOrganisationRequest changeOrganisationRequest,
                                                        Map<String, Object> caseData, String id) {
-        FindUsersByOrganisation organisationUser = findOrganisationDetails(securityDTO, changeOrganisationRequest, id);
+        FindUsersByOrganisation organisationUser =
+                findCaveatOrganisationDetails(securityDTO, changeOrganisationRequest, id);
         Optional<SolicitorUser> solicitorDetails = Optional.empty();
         if (null != organisationUser
                 && null != organisationUser.getUsers()
@@ -148,15 +149,15 @@ public class PrepareNocCaveatService {
         }
     }
 
-    private FindUsersByOrganisation findOrganisationDetails(SecurityDTO securityDTO,
+    private FindUsersByOrganisation findCaveatOrganisationDetails(SecurityDTO securityDTO,
                                                             ChangeOrganisationRequest changeOrganisationRequest,
                                                             String caseId) {
         try {
             log.info("Get OrganisationUser for caseId {}", caseId);
             FindUsersByOrganisation organisationUser = organisationApi
                     .findSolicitorOrganisation(securityDTO.getAuthorisation(),
-                    securityDTO.getServiceAuthorisation(),
-                    changeOrganisationRequest.getOrganisationToAdd().getOrganisationID());
+                            securityDTO.getServiceAuthorisation(),
+                            changeOrganisationRequest.getOrganisationToAdd().getOrganisationID());
             log.info("Found OrganisationUser for caseId {}, OrganisationUser {}", caseId,
                     organisationUser);
             return organisationUser;
@@ -166,27 +167,6 @@ public class PrepareNocCaveatService {
         }
         log.info("No OrganisationUser for caseId {}", caseId);
         return null;
-    }
-
-    private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
-        RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
-        AddedRepresentative addRepresentative = setAddRepresentative(caseData);
-        log.info("Removed Representative - " + removeRepresentative);
-        log.info("Added Representative - " + addRepresentative);
-        return ChangeOfRepresentative.builder()
-                .addedDateTime(LocalDateTime.now())
-                .addedRepresentative(addRepresentative)
-                .removedRepresentative(removeRepresentative)
-                .build();
-    }
-
-    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData) {
-        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
-        return AddedRepresentative.builder()
-                .organisationID(changeRequest.getOrganisationToAdd().getOrganisationID())
-                .updatedBy(changeRequest.getCreatedBy())
-                .updatedVia("NOC")
-                .build();
     }
 
     private ProbateAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse,
@@ -207,11 +187,6 @@ public class PrepareNocCaveatService {
 
         return objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class);
-    }
-
-    private RemovedRepresentative getRemovedRepresentative(Map<String, Object> caseData) {
-
-        return objectMapper.convertValue(caseData.get("removedRepresentative"), RemovedRepresentative.class);
     }
 
     public List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {

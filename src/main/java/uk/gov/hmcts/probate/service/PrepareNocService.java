@@ -172,7 +172,7 @@ public class PrepareNocService {
         return null;
     }
 
-    private ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
+    public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
         RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
         AddedRepresentative addRepresentative = setAddRepresentative(caseData);
         log.info("Removed Representative - " + removeRepresentative);
