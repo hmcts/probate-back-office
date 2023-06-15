@@ -18,12 +18,15 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -175,6 +178,13 @@ public class CaveatData {
 
     //transient in-event vars
     private OriginalDocuments originalDocuments;
+
+    @Builder.Default
+    private final List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = new ArrayList<>();
+    private ChangeOfRepresentative changeOfRepresentative;
+    private RemovedRepresentative removedRepresentative;
+    private ChangeOrganisationRequest changeOrganisationRequestField;
+    private LocalDate nocPreparedDate;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);

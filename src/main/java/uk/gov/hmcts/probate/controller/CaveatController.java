@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.PrepareNocCaveatService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
@@ -70,6 +71,8 @@ public class CaveatController {
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
+
+    private final PrepareNocCaveatService prepareNocCaveatService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -262,6 +265,15 @@ public class CaveatController {
     public ResponseEntity<CaveatCallbackResponse> permanentlyDeleteRemovedCaveat(
             @RequestBody CaveatCallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(callbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
+    @PostMapping(path = "/prepare-case-for-noc", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> prepareCaseForNoc(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
+        prepareNocCaveatService.addNocDate(callbackRequest.getCaseDetails().getData());
+        prepareNocCaveatService.setRemovedRepresentative(callbackRequest.getCaseDetails().getData());
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 }

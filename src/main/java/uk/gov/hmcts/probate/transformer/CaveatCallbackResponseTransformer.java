@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.ResponseCaveatDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
@@ -306,7 +307,12 @@ public class CaveatCallbackResponseTransformer {
             .solsSolicitorRepresentativeName(caveatData.getSolsSolicitorRepresentativeName())
             .dxNumber(caveatData.getDxNumber())
             .practitionerAcceptsServiceByEmail(caveatData.getPractitionerAcceptsServiceByEmail())
-            .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()));
+            .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()))
+            .nocPreparedDate(ofNullable(caveatData.getNocPreparedDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .removedRepresentative(caveatData.getRemovedRepresentative())
+            .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()));
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -400,4 +406,11 @@ public class CaveatCallbackResponseTransformer {
         return collectionMembers;
     }
 
+    private List<CollectionMember<ChangeOfRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
 }

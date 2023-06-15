@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.validation.BindingResult;
+import uk.gov.hmcts.probate.service.PrepareNocCaveatService;
 import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
@@ -24,13 +25,15 @@ class NoticeOfChangeUnitTest {
     private BindingResult bindingResultMock;
     @Mock
     private PrepareNocService prepareNocServiceMock;
+    @Mock
+    private PrepareNocCaveatService prepareNocCaveatServiceMock;
 
     private NoticeOfChangeController underTest;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
-        underTest = new NoticeOfChangeController(prepareNocServiceMock);
+        underTest = new NoticeOfChangeController(prepareNocServiceMock, prepareNocCaveatServiceMock);
     }
 
     @Test
@@ -39,6 +42,15 @@ class NoticeOfChangeUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         underTest.applyDecision("auth", callbackRequestMock);
         verify(prepareNocServiceMock, times(1))
+                .applyDecision(Mockito.any(CallbackRequest.class), Mockito.anyString());
+    }
+
+    @Test
+    void shouldApplyCaveatDecision() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        underTest.applyDecisionCaveat("auth", callbackRequestMock);
+        verify(prepareNocCaveatServiceMock, times(1))
                 .applyDecision(Mockito.any(CallbackRequest.class), Mockito.anyString());
     }
 }

@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.service.PrepareNocService;
+import uk.gov.hmcts.probate.service.PrepareNocCaveatService;
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
@@ -29,10 +30,13 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 class NoticeOfChangeControllerIT {
 
     private static final String APPLY_DECISION = "/noc/apply-decision";
+    private static final String APPLY_DECISION_CAVEAT = "/noc/caveat-apply-decision";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     @MockBean
     private PrepareNocService prepareNocService;
+    @MockBean
+    private PrepareNocCaveatService prepareNocCaveatService;
     @Autowired
     private MockMvc mockMvc;
     @Autowired
@@ -57,10 +61,17 @@ class NoticeOfChangeControllerIT {
     }
 
     @Test
-    void shouldPrepareCaseForNoc() throws Exception {
+    void shouldApplyDecision() throws Exception {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(APPLY_DECISION).content(json).header("Authorization", AUTH_TOKEN)
                         .contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldApplyDecisionCaveat() throws Exception {
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(APPLY_DECISION_CAVEAT).content(json).header("Authorization", AUTH_TOKEN)
+                .contentType(MediaType.APPLICATION_JSON));
     }
 }
 

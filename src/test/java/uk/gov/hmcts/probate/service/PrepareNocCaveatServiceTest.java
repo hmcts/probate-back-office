@@ -8,16 +8,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.DecisionRequest;
+import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
-import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
+import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.payments.pba.ContactInformationResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -45,16 +45,14 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class PrepareNocServiceTest {
+class PrepareNocCaveatServiceTest {
 
     @InjectMocks
-    private PrepareNocService underTest;
+    private PrepareNocCaveatService underTest;
     @Mock
     AssignCaseAccessClient assignCaseAccessClient;
     @Mock
     AuthTokenGenerator tokenGenerator;
-    @Mock
-    private CallbackRequest callbackRequestMock;
     @Mock
     private SecurityUtils securityUtils;
     @Mock
@@ -80,8 +78,6 @@ class PrepareNocServiceTest {
                 .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
                 .organisation(organisationPolicy.getOrganisation())
                 .solicitorEmail("abc@gmail.com")
-                .solicitorFirstName("First")
-                .solicitorLastName("Last")
                 .build();
 
         caseData = new HashMap<>();
@@ -90,9 +86,9 @@ class PrepareNocServiceTest {
         caseData.put("applicantOrganisationPolicy",organisationPolicy);
         List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
         caseData.put("changeOfRepresentatives",changeOfRepresentatives);
-        SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
-                .country("United Kingdom").postCode("sw2").county("county").build();
-        caseData.put("solsSolicitorAddress",address);
+        ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address Line1").proAddressLine2("Line2")
+                .proCountry("United Kingdom").proPostCode("sw2").proCounty("county").build();
+        caseData.put("caveatorAddress",address);
 
         when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
                 OrganisationPolicy.class)).thenReturn(organisationPolicy);
@@ -101,7 +97,7 @@ class PrepareNocServiceTest {
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class)).thenReturn(changeRequest);
         when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(changeOfRepresentatives);
-        when(objectMapper.convertValue(any(), eq(SolsAddress.class))).thenReturn(address);
+        when(objectMapper.convertValue(any(), eq(ProbateAddress.class))).thenReturn(address);
 
         when(tokenGenerator.generate()).thenReturn("s2sToken");
 
@@ -113,8 +109,6 @@ class PrepareNocServiceTest {
                 .contactInformation(Arrays.asList(contactInformationResponse)).build();
         when(organisationApi.findOrganisationByOrgId(anyString(), anyString(), anyString()))
                 .thenReturn(organisationEntityResponse);
-        when(objectMapper.convertValue(organisationEntityResponse,
-                SolsAddress.class)).thenReturn(address);
         FindUsersByOrganisation organisationUser = FindUsersByOrganisation.builder()
                 .users(Arrays.asList(SolicitorUser.builder()
                         .firstName("Sol2First").lastName("Sol2LastName").email("sol2@gmail.com").build())).build();
@@ -134,13 +128,12 @@ class PrepareNocServiceTest {
         Organisation organisationData = Organisation.builder().organisationID("123")
                 .organisationName("ABC").build();
         OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
-        CaseData caseData = CaseData.builder()
+        CaveatData caveatData = CaveatData.builder()
                 .applicantOrganisationPolicy(policy)
-                .solsSOTForenames("First")
-                .solsSOTSurname("Last")
+                .caveatorEmailAddress("abc@gmail.com")
                 .build();
-        underTest.setRemovedRepresentative(caseData);
-        assertEquals("First", caseData.getRemovedRepresentative().getSolicitorFirstName());
+        underTest.setRemovedRepresentative(caveatData);
+        assertEquals("abc@gmail.com", caveatData.getRemovedRepresentative().getSolicitorEmail());
 
     }
 
@@ -227,23 +220,23 @@ class PrepareNocServiceTest {
 
         when(organisationApi.findOrganisationByOrgId("auth", "authToken",
                 "organisationId")).thenReturn(organisationEntityResponse);
-        SolsAddress solAddress = SolsAddress.builder().addressLine1("Line1").addressLine2("Line2")
-                .country("UK").postCode("sw2").county("county").postTown("city").build();
-        when(objectMapper.convertValue(any(), eq(SolsAddress.class))).thenReturn(solAddress);
+        ProbateAddress solAddress = ProbateAddress.builder().proAddressLine1("Line1").proAddressLine2("Line2")
+                .proCountry("UK").proPostCode("sw2").proCounty("county").proPostTown("city").build();
+        when(objectMapper.convertValue(any(), eq(ProbateAddress.class))).thenReturn(solAddress);
 
-        SolsAddress address = underTest.getNewSolicitorAddress(securityDTO, "organisationId",
+        ProbateAddress address = underTest.getNewSolicitorAddress(securityDTO, "organisationId",
                 caseData, "1L");
 
 
-        assertEquals(address.getAddressLine1(),
+        assertEquals(address.getProAddressLine1(),
                 organisationEntityResponse.getContactInformation().get(0).getAddressLine1());
-        assertEquals(address.getCounty(),
+        assertEquals(address.getProCounty(),
                 organisationEntityResponse.getContactInformation().get(0).getCounty());
-        assertEquals(address.getCountry(),
+        assertEquals(address.getProCountry(),
                 organisationEntityResponse.getContactInformation().get(0).getCountry());
-        assertEquals(address.getPostTown(),
+        assertEquals(address.getProPostTown(),
                 organisationEntityResponse.getContactInformation().get(0).getTownCity());
-        assertEquals(address.getPostCode(),
+        assertEquals(address.getProPostCode(),
                 organisationEntityResponse.getContactInformation().get(0).getPostCode());
 
     }
