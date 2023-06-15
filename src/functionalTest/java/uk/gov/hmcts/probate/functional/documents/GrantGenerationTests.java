@@ -1249,6 +1249,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_TWO));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(REGISTRY_ADDRESS));
+        assertFalse(response.contains("Executorsof "));
     }
 
     @Test
