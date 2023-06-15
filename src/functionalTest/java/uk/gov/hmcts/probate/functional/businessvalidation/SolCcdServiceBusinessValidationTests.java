@@ -59,7 +59,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOLS_CREATED_URL = "/case/sols-created";
     private static final String SOLS_ACCESS_URL = "/case/sols-access";
     private static final String REACTIVATE_CASE = "/case/reactivate-case";
-
+    private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
+    private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
     private static final String SOLS_CASE_CREATION_PAYLOAD = "solsCaseCreationDefaultPayload.json";
     private static final String SOLS_CASE_CREATE_EVENT_ID = "solicitorCreateApplication";
     private static final String EVENT_PARM = "EVENT_PARM";
@@ -678,6 +679,24 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithStateChange() throws IOException {
         validatePostSuccess("personalPayloadNotifications.json", REDEC_COMPLETE);
+    }
+
+    @Test
+    public void verifyRequestSuccessForCaseWorkerEscalation() throws IOException {
+        final ResponseBody responseBody = validatePostSuccess("solicitorPayloadCaseWorkerEscalation.json",
+                CASE_WORKER_ESCALATED);
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String caseWorkerEscalationDate = jsonPath.get("data.caseWorkerEscalationDate");
+        assertEquals(caseWorkerEscalationDate, TODAY_YYYY_MM_DD);
+    }
+
+    @Test
+    public void verifyRequestSuccessForCaseWorkerResolveEscalation() throws IOException {
+        final ResponseBody responseBody = validatePostSuccess(
+                "solicitorPayloadCaseWorkerResolveEscalation.json", CASE_WORKER_RESOLVED_ESCALATED);
+        final JsonPath jsonPath = JsonPath.from(responseBody.asString());
+        final String resolveCaseWorkerEscalationDate = jsonPath.get("data.resolveCaseWorkerEscalationDate");
+        assertEquals(resolveCaseWorkerEscalationDate, TODAY_YYYY_MM_DD);
     }
 
     @Test

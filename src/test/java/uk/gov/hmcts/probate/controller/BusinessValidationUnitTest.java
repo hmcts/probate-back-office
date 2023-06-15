@@ -161,9 +161,10 @@ class BusinessValidationUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformer;
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
-
     @Mock
     private PrepareNocService prepareNocServiceMock;
+    @Mock
+    private CaseEscalatedService caseEscalatedService;
     private BusinessValidationController underTest;
 
     @BeforeEach
@@ -865,6 +866,30 @@ class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response =
                 underTest.registrarsDecision(callbackRequestMock);
         verify(registrarDirectionServiceMock, times(1)).addAndOrderDirectionsToGrant(caseDataMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldInvokeCaseWorkerEscalation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        ResponseEntity<CallbackResponse> response =
+                underTest.caseworkerEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+        verify(caseEscalatedServiceMock, times(1)).setCaseWorkerEscalatedDate(caseDetailsMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldInvokeCaseWorkerResolveEscalation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+
+        ResponseEntity<CallbackResponse> response =
+                underTest.resolveCaseworkerEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
+        verify(caseEscalatedServiceMock, times(1)).setResolveCaseWorkerEscalatedDate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

@@ -50,6 +50,7 @@ public class BulkPrintService {
     private static final String BEARER = "Bearer ";
     private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String CASE_ID = "case id ";
+    private static final String RECIPIENTS = "recipients";
     private final SendLetterApi sendLetterApi;
     private final DocumentManagementService documentManagementService;
     private final AuthTokenGenerator serviceAuthTokenGenerator;
@@ -68,16 +69,15 @@ public class BulkPrintService {
                                                        Document grantDocument, Document coverSheet) {
         SendLetterResponse sendLetterResponse = null;
         try {
-            String authHeaderValue = serviceAuthTokenGenerator.generate();
-
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());
+            additionalData.put(RECIPIENTS, caveatCallbackRequest.getCaseDetails().getId());
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs =
                 arrangePdfDocumentsForBulkPrinting(caveatCallbackRequest, grantDocument, coverSheet);
-
+            String authHeaderValue = serviceAuthTokenGenerator.generate();
             sendLetterResponse = sendLetterApi.sendLetter(BEARER + authHeaderValue,
                 new LetterV3(XEROX_TYPE_PARAMETER, pdfs, additionalData));
             log.info("Letter service produced the following letter Id {} for a pdf size {} for the case id {}",
@@ -134,12 +134,11 @@ public class BulkPrintService {
 
     private SendLetterResponse sendToBulkPrint(CallbackRequest callbackRequest, Document grantDocument,
                                                Document coverSheet, boolean forReprint) {
-
         SendLetterResponse sendLetterResponse = null;
         try {
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
-
+            additionalData.put(RECIPIENTS, callbackRequest.getCaseDetails().getId());
             additionalData = Collections.unmodifiableMap(additionalData);
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs;

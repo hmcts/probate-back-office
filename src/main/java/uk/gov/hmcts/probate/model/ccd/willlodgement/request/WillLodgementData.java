@@ -1,8 +1,12 @@
 package uk.gov.hmcts.probate.model.ccd.willlodgement.request;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonPOJOBuilder;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
@@ -10,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.ProbateExecutor;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
 import java.text.DateFormat;
@@ -21,72 +26,77 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+@JsonDeserialize(builder = WillLodgementData.WillLodgementDataBuilder.class)
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 @Data
 public class WillLodgementData {
 
-    private final ApplicationType applicationType;
-    private final String registryLocation;
+    private ApplicationType applicationType;
+    private String registryLocation;
 
     // EVENT = createWillLodgment - general details
 
-    private final String lodgementType;
+    private String lodgementType;
 
-    private final LocalDate lodgedDate;
+    private LocalDate lodgedDate;
 
-    private final LocalDate willDate;
+    private LocalDate willDate;
 
-    private final LocalDate codicilDate;
+    private LocalDate codicilDate;
 
-    private final long numberOfCodicils;
+    private long numberOfCodicils;
 
-    private final String jointWill;
+    private String jointWill;
 
     // EVENT = createStandingSearch - deceased data
 
-    private final String deceasedForenames;
+    private String deceasedForenames;
 
-    private final String deceasedSurname;
+    private String deceasedSurname;
 
-    private final String deceasedGender;
+    private String deceasedGender;
 
-    private final LocalDate deceasedDateOfBirth;
+    private LocalDate deceasedDateOfBirth;
 
-    private final LocalDate deceasedDateOfDeath;
+    private LocalDate deceasedDateOfDeath;
 
-    private final String deceasedTypeOfDeath;
+    private String deceasedTypeOfDeath;
 
-    private final String deceasedAnyOtherNames;
+    private String deceasedAnyOtherNames;
 
-    private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
+    private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
-    private final ProbateAddress deceasedAddress;
+    private ProbateAddress deceasedAddress;
 
-    private final String deceasedEmailAddress;
+    private String deceasedEmailAddress;
 
     // EVENT = createStandingSearch - executor data
 
-    private final String executorTitle;
+    private String executorTitle;
 
-    private final String executorForenames;
+    private String executorForenames;
 
-    private final String executorSurname;
+    private String executorSurname;
 
-    private final ProbateAddress executorAddress;
+    private ProbateAddress executorAddress;
 
-    private final String executorEmailAddress;
+    private String executorEmailAddress;
 
-    private final List<CollectionMember<ProbateExecutor>> additionalExecutorList;
+    private List<CollectionMember<ProbateExecutor>> additionalExecutorList;
 
     // EVENT = misc
 
-    private final String withdrawalReason;
+    private String withdrawalReason;
 
-    private final List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
+    @Builder.Default
+    private List<CollectionMember<Document>> documentsGenerated = new ArrayList<>();
 
-    private final List<CollectionMember<UploadDocument>> documentsUploaded;
+    private List<CollectionMember<UploadDocument>> documentsUploaded;
 
-    private final List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
+    @Builder.Default
+    private List<CollectionMember<CaseMatch>> caseMatches = new ArrayList<>();
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);
@@ -103,9 +113,12 @@ public class WillLodgementData {
     @Getter(lazy = true)
     private final String willDateFormatted = convertDate(willDate);
 
-    private final String recordId;
-    private final String legacyType;
-    private final String legacyCaseViewUrl;
+    private String recordId;
+    private String legacyType;
+    private String legacyCaseViewUrl;
+
+    //transient in-event vars
+    private OriginalDocuments originalDocuments;
 
     private String convertDate(LocalDate date) {
         DateFormat orgFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH);
@@ -136,5 +149,9 @@ public class WillLodgementData {
             ex.getMessage();
             return null;
         }
+    }
+
+    @JsonPOJOBuilder(withPrefix = "")
+    public static final class WillLodgementDataBuilder {
     }
 }

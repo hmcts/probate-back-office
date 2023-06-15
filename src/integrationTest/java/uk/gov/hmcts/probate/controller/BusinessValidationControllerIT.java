@@ -156,6 +156,8 @@ class BusinessValidationControllerIT {
     private static final String REGISTRARS_DECISION = "/case/registrars-decision";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
+    private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
     private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
@@ -928,6 +930,29 @@ class BusinessValidationControllerIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
         verify(caseStoppedService).caseResolved(any(CaseDetails.class));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseWorkerEscalationAfterCaseworkerEscalated() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadCaseWorkerEscalation.json");
+
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseMatchingIssueGrantAfterResolveCaseworkerEscalated() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadCaseWorkerResolveEscalation.json");
+
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

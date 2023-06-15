@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
@@ -470,6 +471,7 @@ public class CaseData extends CaseDataParent {
     private final String legacyId;
     private final String legacyType;
     private final String legacyCaseViewUrl;
+    private final String resendDate;
     private final String boCaveatStopNotificationRequested;
     private final String boCaveatStopNotification;
     private final String boCaseStopCaveatId;
@@ -518,6 +520,9 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
+    private LocalDate caseWorkerEscalationDate;
+    private LocalDate resolveCaseWorkerEscalationDate;
+    private String resolveCaseWorkerEscalationState;
     private String grantDelayedNotificationIdentified;
     private String grantDelayedNotificationSent;
     private LocalDate grantAwaitingDocumentationNotificationDate;
@@ -576,11 +581,15 @@ public class CaseData extends CaseDataParent {
     private final String includeStatementOfTruth;
     private LocalDate lastEvidenceAddedDate;
     private String documentUploadedAfterCaseStopped;
+    private String documentsReceivedNotificationSent;
     private LocalDate nocPreparedDate;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
     private RegistrarDirection registrarDirectionToAdd;
+
+    //transient in-event vars
+    private final OriginalDocuments originalDocuments;
 
     @Builder.Default
     private final List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = new ArrayList<>();
