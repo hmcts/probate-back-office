@@ -54,7 +54,7 @@ public class PrepareNocService {
     public RemovedRepresentative setRemovedRepresentative(CaseData caseData) {
         OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
 
-        if (organisationPolicy != null & organisationPolicy.getOrganisation() != null) {
+        if (organisationPolicy != null && organisationPolicy.getOrganisation() != null) {
             Organisation organisation = organisationPolicy.getOrganisation();
 
             RemovedRepresentative removed = RemovedRepresentative.builder()
@@ -220,7 +220,6 @@ public class PrepareNocService {
 
     public List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {
         Object changeOfRepresentativesValue = caseData.get("changeOfRepresentatives");
-        log.info("Change of reps value - " + changeOfRepresentativesValue);
         if (changeOfRepresentativesValue == null) {
             log.info("Change of reps - " + changeOfRepresentativesValue);
             return new ArrayList<>();
