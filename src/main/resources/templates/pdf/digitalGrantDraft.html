@@ -57,10 +57,8 @@
 {% endmacro %}
 
 {% macro primaryApplicantNameAndAddress(cd) %}
-{%if cd.primaryApplicantIsApplying == "Yes"%}
 <strong>
     <span class="capitalize">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
-{%endif%}
 {% endmacro %}
 
 {% macro executorAnd(cd) %}
@@ -351,7 +349,9 @@ Died on
                 {% endif %}
             {% endfor %}
             {{ lastWillAndTestamentParagraph(case_details.case_data, applyingExecCounter) }}
+            {% if primaryApplicantApplying == true %}
             {{ primaryApplicantNameAndAddress(case_details.case_data) }}
+            {% endif %}}
             {% if isTc == true %}
                 {{ trustCorp(case_details.case_data, primaryApplicantApplying) }}
             {% endif %}

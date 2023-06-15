@@ -803,7 +803,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
-        assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
         assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
