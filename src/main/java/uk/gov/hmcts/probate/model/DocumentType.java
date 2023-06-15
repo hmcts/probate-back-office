@@ -95,6 +95,9 @@ public enum DocumentType {
     @JsonProperty("caveatWithdrawn")
     CAVEAT_WITHDRAWN("caveatWithdrawn"),
 
+    @JsonProperty("cherished")
+    CHERISHED("cherished"),
+
     @JsonProperty("grantCoversheet")
     GRANT_COVERSHEET("grantCoversheet"),
 
