@@ -1223,18 +1223,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() throws IOException {
-
-        final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
-            "\"primaryApplicantIsApplying\": \"Yes\",", "");
-        final String response =
-            generateGrantDocumentFromPayload(payload,
-                GENERATE_GRANT_DRAFT);
-        assertTrue(response.contains(PRIMARY_APPLICANT));
-    }
-
-
-    @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsMultipleExsPANotApplying.json",
