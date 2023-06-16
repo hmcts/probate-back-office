@@ -563,6 +563,8 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "pcqId", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-pcqextractor", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorAppReference", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorForenames", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
