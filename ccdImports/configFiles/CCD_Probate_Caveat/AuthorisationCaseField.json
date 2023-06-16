@@ -581,5 +581,6 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorEmailAddress", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
+  {"CaseTypeID": "Caveat", "CaseFieldID": "caveatorAddress", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "solsSolicitorFirmName", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
 ]
