@@ -348,7 +348,7 @@ public class DocumentGeneratorService {
             if (!remainingScanned.contains(documentCollectionMember)) {
                 Document document = Document.builder()
                         .documentLink(documentCollectionMember.getValue().getUrl())
-                        .documentType(DocumentType.lookup(documentCollectionMember.getValue().getType()))
+                        .documentType(DocumentType.valueOf(documentCollectionMember.getValue().getType()))
                         .build();
                 log.info("permanently removing scanned document: {}", documentCollectionMember.getId());
                 documentsToDelete.add(document);
