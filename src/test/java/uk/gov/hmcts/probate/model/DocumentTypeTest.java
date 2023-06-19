@@ -1,6 +1,8 @@
 package uk.gov.hmcts.probate.model;
 
-import static org.junit.jupiter.api.Assertions.*;
+
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
