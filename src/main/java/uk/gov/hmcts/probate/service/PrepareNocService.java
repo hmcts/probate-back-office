@@ -76,8 +76,7 @@ public class PrepareNocService {
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
-        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData,
-                changeOrganisationRequest.getCreatedBy());
+        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData, changeOrganisationRequest);
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
         representatives.sort((m1, m2) -> {
@@ -170,9 +169,10 @@ public class PrepareNocService {
         return null;
     }
 
-    public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData, String createdBy) {
+    public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData,
+                                                              ChangeOrganisationRequest changeOrganisationRequest) {
         RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
-        AddedRepresentative addRepresentative = setAddRepresentative(caseData, createdBy);
+        AddedRepresentative addRepresentative = setAddRepresentative(changeOrganisationRequest);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(addRepresentative)
@@ -180,11 +180,10 @@ public class PrepareNocService {
                 .build();
     }
 
-    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData, String createdBy) {
-        ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
+    private AddedRepresentative setAddRepresentative(ChangeOrganisationRequest changeOrganisationRequest) {
         return AddedRepresentative.builder()
-                .organisationID(changeRequest.getOrganisationToAdd().getOrganisationID())
-                .updatedBy(createdBy)
+                .organisationID(changeOrganisationRequest.getOrganisationToAdd().getOrganisationID())
+                .updatedBy(changeOrganisationRequest.getCreatedBy())
                 .updatedVia("NOC")
                 .build();
     }

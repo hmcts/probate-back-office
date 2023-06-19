@@ -96,7 +96,7 @@ class PrepareNocCaveatServiceTest {
                 .addedRepresentative(AddedRepresentative.builder().organisationID("12")
                         .updatedBy("abc.gmail.com").build())
                 .removedRepresentative(removed).build();
-        when(prepareNocServiceMock.buildChangeOfRepresentative(caseData, "abc.gmail.com"))
+        when(prepareNocServiceMock.buildChangeOfRepresentative(caseData, changeRequest))
                 .thenReturn(changeOfRepresentative);
         when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
                 OrganisationPolicy.class)).thenReturn(organisationPolicy);
