@@ -93,7 +93,8 @@ class PrepareNocCaveatServiceTest {
         caseData.put("caveatorAddress",address);
         ChangeOfRepresentative changeOfRepresentative  = ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
-                .addedRepresentative(AddedRepresentative.builder().organisationID("12").build())
+                .addedRepresentative(AddedRepresentative.builder().organisationID("12")
+                        .updatedBy("abc.gmail.com").build())
                 .removedRepresentative(removed).build();
         when(prepareNocServiceMock.buildChangeOfRepresentative(caseData, "abc.gmail.com"))
                 .thenReturn(changeOfRepresentative);
