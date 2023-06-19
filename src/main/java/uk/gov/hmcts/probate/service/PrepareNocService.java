@@ -76,7 +76,8 @@ public class PrepareNocService {
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
-        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
+        ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData,
+                changeOrganisationRequest.getCreatedBy());
         representatives.add(new CollectionMember<>(null, representative));
         log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
         representatives.sort((m1, m2) -> {
@@ -169,9 +170,9 @@ public class PrepareNocService {
         return null;
     }
 
-    public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
+    public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData, String createdBy) {
         RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
-        AddedRepresentative addRepresentative = setAddRepresentative(caseData);
+        AddedRepresentative addRepresentative = setAddRepresentative(caseData, createdBy);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(addRepresentative)
@@ -179,11 +180,11 @@ public class PrepareNocService {
                 .build();
     }
 
-    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData) {
+    private AddedRepresentative setAddRepresentative(Map<String, Object>  caseData, String createdBy) {
         ChangeOrganisationRequest changeRequest = getChangeOrganisationRequest(caseData);
         return AddedRepresentative.builder()
                 .organisationID(changeRequest.getOrganisationToAdd().getOrganisationID())
-                .updatedBy(changeRequest.getCreatedBy())
+                .updatedBy(createdBy)
                 .updatedVia("NOC")
                 .build();
     }
