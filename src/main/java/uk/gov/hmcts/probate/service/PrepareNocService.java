@@ -74,7 +74,6 @@ public class PrepareNocService {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
-        log.info("change organisation request" + changeOrganisationRequest);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
         log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData);
@@ -110,8 +109,7 @@ public class PrepareNocService {
                     organisationApi.findOrganisationByOrgId(securityDTO.getAuthorisation(),
                             securityDTO.getServiceAuthorisation(), orgId);
 
-            log.info("Found OrganisationEntityResponse for caseId {}, OrganisationEntityResponse {}", caseId,
-                    organisationResponse);
+            log.info("Found OrganisationEntityResponse for caseId {}", caseId);
             return convertSolicitorAddress(organisationResponse, caseData);
         } catch (Exception e) {
             log.error("Exception when looking up OrganisationEntityResponse for case {} for exception {}",
@@ -161,8 +159,7 @@ public class PrepareNocService {
                     .findSolicitorOrganisation(securityDTO.getAuthorisation(),
                     securityDTO.getServiceAuthorisation(),
                     changeOrganisationRequest.getOrganisationToAdd().getOrganisationID());
-            log.info("Found OrganisationUser for caseId {}, OrganisationUser {}", caseId,
-                    organisationUser);
+            log.info("Found OrganisationUser for caseId {}", caseId);
             return organisationUser;
         } catch (Exception e) {
             log.error("Exception when looking up organisationUser for case {} for exception {}",
@@ -175,8 +172,6 @@ public class PrepareNocService {
     public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData) {
         RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
         AddedRepresentative addRepresentative = setAddRepresentative(caseData);
-        log.info("Removed Representative - " + removeRepresentative);
-        log.info("Added Representative - " + addRepresentative);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
                 .addedRepresentative(addRepresentative)
