@@ -40,7 +40,6 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationC
 import uk.gov.hmcts.probate.validator.CaseworkerAmendAndCreateValidationRule;
 import uk.gov.hmcts.probate.validator.CaseworkersSolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.CheckListAmendCaseValidationRule;
-import uk.gov.hmcts.probate.validator.ChangeToSameStateValidationRule;
 import uk.gov.hmcts.probate.validator.CodicilDateValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRule;
@@ -159,8 +158,6 @@ class BusinessValidationUnitTest {
     @Mock
     private FurtherEvidenceForApplicationValidationRule furtherEvidenceForApplicationValidationRule;
     @Mock
-    private ChangeToSameStateValidationRule changeToSameStateValidationRule;
-    @Mock
     private HandOffLegacyTransformer handOffLegacyTransformer;
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
@@ -199,7 +196,6 @@ class BusinessValidationUnitTest {
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
             furtherEvidenceForApplicationValidationRule,
-            changeToSameStateValidationRule,
             handOffLegacyTransformer,
             registrarDirectionServiceMock
             );
@@ -893,20 +889,6 @@ class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response =
                 underTest.resolveCaseworkerEscalated(callbackRequestMock, bindingResultMock, httpServletRequest);
         verify(caseEscalatedServiceMock, times(1)).setResolveCaseWorkerEscalatedDate(caseDetailsMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-
-
-    @Test
-    void shouldChangeCaseState() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.changeCaseState(callbackRequestMock,httpServletRequest);
-        verify(callbackResponseTransformerMock, times(1))
-                .transferToState(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
