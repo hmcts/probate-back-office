@@ -469,6 +469,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "registrarDirectionToAdd", "Label": "Registrar direction", "FieldType": "RegistrarDirection", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadedAfterCaseStopped", "Label": "Has a document been scanned or uploaded since the case was stopped?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "originalDocuments", "Label": "All original Documents", "FieldType": "OriginalDocuments", "FieldTypeParameter": "ProbateDocument", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentsReceivedNotificationSent", "Label": "Has a document received documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "transferToState", "Label": "State to transfer case to", "FieldType": "FixedList", "FieldTypeParameter": "transferToStateFixedList", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentsReceivedNotificationSent", "Label": "Has a document received documentation notification been sent?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
