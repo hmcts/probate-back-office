@@ -32,6 +32,8 @@ def secrets = [
                 secret('cwUserId', 'CW_USER_ID'),
                 secret('cwUserEmail', 'CW_USER_EMAIL'),
                 secret('cwUserPass', 'CW_USER_PASSWORD'),
+                secret('cwSuperuserEmail', 'CW_SUPERUSER_EMAIL'),
+                secret('cwSuperuserPass', 'CW_SUPERUSER_PASSWORD'),
                 secret('solicitorUserEmail', 'SOL_USER_EMAIL'),
                 secret('solicitorUserPass', 'SOL_USER_PASSWORD'),
                 secret('solicitor2UserEmail', 'SOL2_USER_EMAIL'),
@@ -94,6 +96,10 @@ def branchesToSync = ['demo', 'ithc', 'perftest']
 
 def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
+}
+
+def checkForEnableCWNightlyLabel(branch_name) {
+  return new GithubAPI(this).getLabelsbyPattern(branch_name, "cw-nightly").contains("cw-nightly")
 }
 
 def archiveCoreCaseDataDefinitions(env) {
@@ -216,6 +222,11 @@ withPipeline("java", product, component) {
       env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
       sh 'yarn install'
       sh 'yarn test:fullfunctional-pr'
+    }
+    if (checkForEnableCWNightlyLabel(env.BRANCH_NAME)) {
+      env.TEST_E2E_URL = "https://xui-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
+      sh 'yarn install'
+      sh 'yarn test:fullfunctional-cw'
     }
     steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
     publishHTML target: [

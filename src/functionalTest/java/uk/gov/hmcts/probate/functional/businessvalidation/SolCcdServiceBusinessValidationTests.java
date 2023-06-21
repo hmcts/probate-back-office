@@ -42,6 +42,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String CASE_CREATE_VALIDATE_URL = "/case/sols-create-validate";
@@ -671,6 +672,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestSuccessForResolveStop() throws IOException {
         validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
+    }
+
+    @Test
+    public void verifyRequestSuccessForChangeCaseState() throws IOException {
+        validatePostSuccess("solicitorPayloadChangeCaseState.json", CHANGE_CASE_STATE_URL);
     }
 
     @Test
