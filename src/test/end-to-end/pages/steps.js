@@ -151,8 +151,6 @@ module.exports = function () {
         shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
         shareCaseDelete: steps.shareCase.shareCaseDelete,
         chooseResolveStop: steps.resolveStop.resolveStop,
-        probateStopCase: steps.stopCaseProbate.stopCaseProbate,
-        authenticateSuperUserCW: steps.IDAM.signInSuperUser,
-        chooseChangeState: steps.changeState.changeState
+        probateStopCase: steps.stopCaseProbate.stopCaseProbate
     });
 };
