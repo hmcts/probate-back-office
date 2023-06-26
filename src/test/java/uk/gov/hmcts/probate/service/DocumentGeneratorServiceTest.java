@@ -820,7 +820,7 @@ class DocumentGeneratorServiceTest {
         originalUploadedList.add(new CollectionMember<UploadDocument>("4", uploadDocument2));
 
         ScannedDocument scannedDocument1 = ScannedDocument.builder().type("WILL").build();
-        ScannedDocument scannedDocument2 = ScannedDocument.builder().type("WILL").build();
+        ScannedDocument scannedDocument2 = ScannedDocument.builder().type("CHERISHED").build();
         List<CollectionMember<ScannedDocument>> scannedList = new ArrayList<>();
         scannedList.add(new CollectionMember<ScannedDocument>("5", scannedDocument1));
         List<CollectionMember<ScannedDocument>> originalScannedList = new ArrayList<>();
