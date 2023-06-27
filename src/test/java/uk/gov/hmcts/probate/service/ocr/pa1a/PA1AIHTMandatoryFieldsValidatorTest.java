@@ -13,13 +13,13 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class PA1ACommonMandatoryFieldsValidatorTest {
+class PA1AIHTMandatoryFieldsValidatorTest {
 
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private ArrayList<String> warnings;
 
     @InjectMocks
-    private PA1ACommonMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
+    private PA1AIHTMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
 
     @BeforeEach
     public void setup() {

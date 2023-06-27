@@ -19,7 +19,7 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_K
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class PA1ACommonMandatoryFieldsValidator {
+public class PA1AIHTMandatoryFieldsValidator {
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
         if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
