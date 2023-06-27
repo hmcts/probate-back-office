@@ -6,7 +6,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
-import uk.gov.hmcts.probate.service.ocr.pa1a.PA1AIHTMandatoryFieldsValidator;
+import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ASolicitorMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCommonMandatoryFieldsValidator;
@@ -33,7 +33,7 @@ public class OCRToCCDMandatoryField {
     private final PA1PSolicitorMandatoryFieldsValidator pa1PSolicitorMandatoryFieldsValidator;
     private final PA1ACitizenMandatoryFieldsValidator pa1ACitizenMandatoryFieldsValidator;
     private final PA1ASolicitorMandatoryFieldsValidator pa1ASolicitorMandatoryFieldsValidator;
-    private final PA1AIHTMandatoryFieldsValidator pa1AIHTMandatoryFieldsValidator;
+    private final PA1ACommonMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
     private final PA8ACitizenMandatoryFieldsValidator pa8ACitizenMandatoryFieldsValidator;
     private final PA8ASolicitorMandatoryFieldsValidator pa8ASolicitorMandatoryFieldsValidator;
 
@@ -82,7 +82,7 @@ public class OCRToCCDMandatoryField {
             pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         } else {
             pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-            pa1AIHTMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+            pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         }
 
         return warnings;

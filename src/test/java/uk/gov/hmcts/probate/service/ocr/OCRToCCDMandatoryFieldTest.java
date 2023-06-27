@@ -7,7 +7,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACitizenMandatoryFieldsValidator;
-import uk.gov.hmcts.probate.service.ocr.pa1a.PA1AIHTMandatoryFieldsValidator;
+import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ACommonMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1a.PA1ASolicitorMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCitizenMandatoryFieldsValidator;
 import uk.gov.hmcts.probate.service.ocr.pa1p.PA1PCommonMandatoryFieldsValidator;
@@ -39,7 +39,7 @@ class OCRToCCDMandatoryFieldTest {
     @Mock
     private PA1ASolicitorMandatoryFieldsValidator pa1ASolicitorMandatoryFieldsValidator;
     @Mock
-    private PA1AIHTMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
+    private PA1ACommonMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
     @Mock
     private PA8ACitizenMandatoryFieldsValidator pa8ACitizenMandatoryFieldsValidator;
     @Mock
