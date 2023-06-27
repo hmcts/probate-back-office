@@ -79,7 +79,7 @@ public class CaveatPersonalisationService {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
-                        localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
+                localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         getDODPersonalisation(caveatData, personalisation);
         getDOBPersonalisation(caveatData, personalisation);
 
@@ -102,7 +102,7 @@ public class CaveatPersonalisationService {
         personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE,
                 dateFormatterService.formatCaveatExpiryDate(caveatData.getExpiryDate()));
         personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE,
-                        localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
+                localDateToWelshStringConverter.convert(caveatData.getExpiryDate()));
         getDODPersonalisation(caveatData, personalisation);
         getDOBPersonalisation(caveatData, personalisation);
 
@@ -123,11 +123,10 @@ public class CaveatPersonalisationService {
         }
     }
 
-
     private void getDODPersonalisation(CaveatData caveatData, HashMap<String, String> personalisation) {
         personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH,
-            localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfDeath()));
+                localDateToWelshStringConverter.convert(caveatData.getDeceasedDateOfDeath()));
         personalisation.put(PERSONALISATION_DATE_OF_DEATH,
-            dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
+                dateFormatterService.formatDate(caveatData.getDeceasedDateOfDeath()));
     }
 }
