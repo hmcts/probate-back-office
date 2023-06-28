@@ -103,7 +103,6 @@ Died on
 {% if cd.codicilAddedDateList|length == 3 %} with three codicils{% endif %}
 {% if cd.codicilAddedDateList|length == 4 %} with four codicils{% endif %}
 {% if cd.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
-{% if cd.codicilAddedDateList|length > 5 %} with {{cd.codicilAddedDateList|length}} codicils{% endif %}
 {% endmacro %}
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
