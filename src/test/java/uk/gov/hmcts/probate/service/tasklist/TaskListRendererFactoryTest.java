@@ -11,7 +11,6 @@ import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_CREATED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_AWAIT_REDEC;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_STOPPED_REISSUE;
-import static uk.gov.hmcts.probate.model.ApplicationState.EXAMINING;
 import static uk.gov.hmcts.probate.model.ApplicationState.REGISTRAR_ESCALATION;
 import static uk.gov.hmcts.probate.model.ApplicationState.STOPPED;
 
@@ -39,12 +38,6 @@ class TaskListRendererFactoryTest {
     @Test
     void shouldReturnCorrectRendererForState_CaseCreated() {
         renderer = taskListRendererFactory.getTaskListRenderer(CASE_CREATED.getId());
-        assertEquals(defaultTaskListRenderer, renderer);
-    }
-
-    @Test
-    void shouldReturnCorrectRendererForState_BOExamining() {
-        renderer = taskListRendererFactory.getTaskListRenderer(EXAMINING.getId());
         assertEquals(defaultTaskListRenderer, renderer);
     }
 

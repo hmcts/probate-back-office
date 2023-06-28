@@ -75,6 +75,8 @@ public class ResponseCaseDataParent {
     protected final String solsReviewSOTConfirmCheckbox2Names;
     protected final String taskList;
     protected final String escalatedDate;
+    protected final String caseWorkerEscalationDate;
+    protected final String resolveCaseWorkerEscalationDate;
     protected final String authenticatedDate;
     protected final String iht217;
     protected final String noOriginalWillAccessReason;

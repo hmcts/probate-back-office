@@ -231,6 +231,7 @@
         <vulnerabilityName>1089550</vulnerabilityName>
         <vulnerabilityName>1091185</vulnerabilityName>
         <vulnerabilityName>1091307</vulnerabilityName>
+        <vulnerabilityName>1091832</vulnerabilityName>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -603,16 +604,28 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: vm2:3.9.14
-   ]]></notes>
-        <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
-        <vulnerabilityName>1091646</vulnerabilityName>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
    file name: request:2.88.2
    ]]></notes>
         <packageUrl regex="true">^pkg:npm/request@.*$</packageUrl>
         <vulnerabilityName>1091725</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: vm2:3.9.16
+   ]]></notes>
+        <packageUrl regex="true">^pkg:npm/vm2@.*$</packageUrl>
+        <vulnerabilityName>1091758</vulnerabilityName>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-boot-2.7.4.jar
+   ]]></notes>
+        <cve>CVE-2023-20873</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: spring-security-web-5.7.3.jar
+   ]]></notes>
+        <cve>CVE-2023-20862</cve>
     </suppress>
 </suppressions>

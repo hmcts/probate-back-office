@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.tasklist;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.htmlrendering.ParagraphRenderer;
 import uk.gov.hmcts.probate.htmlrendering.UnorderedListRenderer;
@@ -14,6 +15,9 @@ import java.time.format.DateTimeFormatter;
 @RequiredArgsConstructor
 public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
 
+    @Value("${grand_delay.number_of_weeks}")
+    private String grandDelayNumberOfWeeks;
+
     protected String renderBody(CaseDetails details) {
 
         DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
@@ -23,6 +27,6 @@ public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
                 .replaceFirst("<stopDate>", stoppedDate == null ? "Unknown" : stoppedDate.format(dateFormat))
                 .replaceFirst("<caseStopReasonsList>",
                         UnorderedListRenderer.render(CaseStoppedHtmlTemplate.CASE_STOP_REASONS))
-                .replaceFirst("<numWeeks>", "4");
+                .replaceFirst("<numWeeks>", grandDelayNumberOfWeeks);
     }
 }
