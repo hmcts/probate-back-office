@@ -18,6 +18,6 @@ module.exports = async function (caseRef) {
         }
     }
 
-    await I.waitForElement('#bckLnksize', testConfig.WaitForTextTimeout);
+    await I.waitForElement('.govuk-back-link', testConfig.WaitForTextTimeout);
     await I.click(makePaymentConfig.backToPaymentLinkText);
 };
