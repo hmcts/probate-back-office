@@ -239,7 +239,22 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
+    @Mapping(target = "solsWillType", source = "ocrFields.solsWillType")
+    @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
+
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
+
+    @AfterMapping
+    default void clearEmptySolsWillType(@MappingTarget GrantOfRepresentationData caseData,
+                                        ExceptionRecordOCRFields ocrField) {
+        if (caseData.getSolsWillType() != null && caseData.getSolsWillType().isEmpty()) {
+            caseData.setSolsWillType(null);
+            // there might not be a reason given but if there is not will type set then clear
+            if (caseData.getSolsWillTypeReason() != null && caseData.getSolsWillTypeReason().isEmpty()) {
+                caseData.setSolsWillTypeReason(null);
+            }
+        }
+    }
 
     @AfterMapping
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData,
