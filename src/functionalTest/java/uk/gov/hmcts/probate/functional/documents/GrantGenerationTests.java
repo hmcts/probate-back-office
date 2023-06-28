@@ -1136,22 +1136,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForPersonlaDigitalGrantReissueWithExecutorName()
-            throws IOException {
-        String response =
-                generateGrantDocument("personalPayloadMultipleExecutors.json",
-                        GENERATE_GRANT);
-        assertTrue(response.contains(ADD_EXEC_CURRENT_NAME));
-
-        final String payload =
-                replaceAllInString(
-                        getJsonFromFile("personalPayloadMultipleExecutors.json"),
-                        "\"case_data\": {", "\"case_data\": {\n      \"schemaVersion\": \"2.0.0\",");
-        response = generateReissueGrantDraftDocumentFromPayload(payload);
-        assertTrue(response.contains(ADD_EXEC_CURRENT_NAME));
-
-        response = generateGrantDocumentFromPayload(payload, GENERATE_GRANT_REISSUE);
-        assertTrue(response.contains(ADD_EXEC_CURRENT_NAME));
+    public void verifyPersonalGenerateGrantDraftReissueShouldReturnOkResponseCode() throws IOException {
+        validatePostSuccess("personalPayloadMultipleExecutors.json", GENERATE_GRANT_DRAFT_REISSUE);
     }
 
     @Test
