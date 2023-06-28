@@ -2381,6 +2381,29 @@ class CallbackResponseTransformerTest {
         assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
     }
 
+
+    @Test
+    void shouldChangeCaseStateBOCaseQA() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .transferToState(QA_CASE_STATE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
+        assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldChangeCaseStateCaseMatchingIssueGrant() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .transferToState(CASE_MATCHING_ISSUE_GRANT);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
+        assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
+    }
+
     @Test
     void shouldTransformCaseForLetter() {
 

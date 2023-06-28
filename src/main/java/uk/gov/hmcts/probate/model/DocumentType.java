@@ -1,5 +1,8 @@
 package uk.gov.hmcts.probate.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 
@@ -95,6 +98,9 @@ public enum DocumentType {
     @JsonProperty("caveatWithdrawn")
     CAVEAT_WITHDRAWN("caveatWithdrawn"),
 
+    @JsonProperty("cherished")
+    CHERISHED("cherished"),
+
     @JsonProperty("grantCoversheet")
     GRANT_COVERSHEET("grantCoversheet"),
 
@@ -171,5 +177,17 @@ public enum DocumentType {
 
     DocumentType(String templateName) {
         this.templateName = templateName;
+    }
+
+    private static Map<String, DocumentType> map = new HashMap<>();
+    static {
+        for (DocumentType s : DocumentType.values()) {
+            map.put(s.name(), s);
+            map.put(s.name().toLowerCase(), s);
+        }
+    }
+
+    public static DocumentType lookup(String name) {
+        return map.get(name);
     }
 }

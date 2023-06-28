@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.7.4'
+    springBootVersion = '2.7.12'
   }
   repositories {
     jcenter()
@@ -14,7 +14,7 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.7.4'
+  id 'org.springframework.boot' version '2.7.12'
   id 'uk.gov.hmcts.java' version '0.12.39'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
@@ -34,13 +34,16 @@ group = 'uk.gov.hmcts.probate'
 version = "4.0.0"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
 
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 jacoco {
-  toolVersion = '0.8.2'
+  toolVersion = '0.8.8'
 }
 
 sonarqube {
@@ -188,18 +191,18 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.7.4',
-        springBootStarterHateoas        : '2.7.4',
+        springBootVersion               : '2.7.12',
+        springBootStarterHateoas        : '2.7.12',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
-        jacksonDatabind                 : '2.13.2',
+        jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
-        lombok                          : '1.18.16',
+        lombok                          : '1.18.26',
         springDocOpenUi                 : '1.6.6',
         springSecurityVersion           : '5.7.3',
-        probateCommonsVersion           : '1.4.14',
+        probateCommonsVersion           : '1.4.15',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '3.0.0',
@@ -226,12 +229,6 @@ repositories {
   maven { url "https://jitpack.io" }
 }
 
-
-processResources {
-  from ('src/lib/AI-Agent.xml') {
-    into 'lib'
-  }
-}
 
 dependencyManagement {
   imports {
@@ -301,7 +298,8 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.0.1'
   implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
@@ -422,6 +420,11 @@ tasks.withType(JavaCompile) {
   options.compilerArgs << '-parameters'
 }
 
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
+}
+
 bootJar {
   archiveFileName = 'back-office.jar'
   manifest {
@@ -458,7 +461,7 @@ task runAndPublishConsumerPactTests(type: Test){
 }
 
 task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  getMainClass().set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }

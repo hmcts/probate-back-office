@@ -151,5 +151,4 @@ Scenario(scenarioName, async function ({I}) {
     // When sending an email notification, the Date added for the email notification is set to today
     issueGrantConfig.date = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
     await I.seeCaseDetails(caseRef, grantNotificationsTabConfig, issueGrantConfig);
-
 });
