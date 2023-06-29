@@ -1,2 +1,2 @@
 
-Exception proparing IM row data: null|
+Exception proparing IM row data: Cannot invoke "uk.gov.hmcts.probate.model.ApplicationType.equals(Object)" because the return value of "uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.getApplicationType()" is null|

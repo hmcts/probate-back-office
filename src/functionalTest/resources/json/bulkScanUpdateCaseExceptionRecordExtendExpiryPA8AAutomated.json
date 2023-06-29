@@ -111,12 +111,12 @@
             "document_filename":"19365040100100002.pdf",
             "document_binary_url":"http://dm-store:5006/documents/dfd74122-8a21-4bab-b7d1-e6f3d9ca3dad/binary"
           },
-          "scannedDate":"2020-01-02T17:42:03.868Z",
+          "scannedDate":"2020-01-02T17:42:03.868",
           "controlNumber":"19365040100100002",
           "exceptionRecordReference":"1577986967061368",
           "type":"form",
           "fileName":"19365040100100002.pdf",
-          "deliveryDate":"2020-01-02T17:42:03.868Z",
+          "deliveryDate":"2020-01-02T17:42:03.868",
           "subtype":"duoplicate document"
         }
       }],
