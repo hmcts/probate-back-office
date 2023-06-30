@@ -4,14 +4,17 @@ import feign.Client;
 import feign.httpclient.ApacheHttpClient;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.http.client.HttpClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.concurrent.TimeUnit;
 
 
 @Configuration
@@ -24,7 +27,7 @@ public class FeignClientConfiguration {
 
     @Bean
     public Client getFeignHttpClient() {
-        return new ApacheHttpClient(getHttpClient());
+        return new ApacheHttpClient((HttpClient) getHttpClient());
     }
 
     @Bean
@@ -36,9 +39,8 @@ public class FeignClientConfiguration {
 
     private CloseableHttpClient getHttpClient() {
         RequestConfig config = RequestConfig.custom()
-            .setConnectTimeout(timeout)
-            .setConnectionRequestTimeout(timeout)
-            .setSocketTimeout(timeout)
+            .setConnectTimeout(timeout, TimeUnit.MILLISECONDS)
+            .setConnectionRequestTimeout(timeout, TimeUnit.MILLISECONDS)
             .build();
 
         return HttpClientBuilder

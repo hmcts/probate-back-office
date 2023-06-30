@@ -24,9 +24,8 @@ class AppInsightsTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         TelemetryContext telemetryContext = new TelemetryContext();
-        telemetryContext.setInstrumentationKey("some-key");
         doReturn(telemetryContext).when(telemetryClient).getContext();
-        classUnderTest = new AppInsights(instrumentKey, telemetryClient);
+        classUnderTest = new AppInsights(telemetryClient);
     }
 
     @Test
@@ -37,12 +36,11 @@ class AppInsightsTest {
     @Test
     void testTelemetry() {
         TelemetryContext telemetryContext = new TelemetryContext();
-        telemetryContext.setInstrumentationKey("key");
 
         TelemetryClient telemetryClient = mock(TelemetryClient.class);
         when(telemetryClient.getContext()).thenReturn(telemetryContext);
 
-        AppInsights appInsights = new AppInsights(instrumentKey, telemetryClient);
+        AppInsights appInsights = new AppInsights(telemetryClient);
 
         Assert.isInstanceOf(AppInsights.class, appInsights);
     }

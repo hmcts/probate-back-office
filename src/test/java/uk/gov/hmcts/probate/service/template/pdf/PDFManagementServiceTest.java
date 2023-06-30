@@ -28,7 +28,7 @@ import uk.gov.hmcts.reform.ccd.document.am.model.Document.Links;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import javax.crypto.BadPaddingException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;

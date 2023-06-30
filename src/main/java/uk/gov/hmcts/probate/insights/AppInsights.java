@@ -1,9 +1,7 @@
 package uk.gov.hmcts.probate.insights;
 
 import com.microsoft.applicationinsights.TelemetryClient;
-import com.microsoft.applicationinsights.TelemetryConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
@@ -15,10 +13,7 @@ public class AppInsights implements EventRepository {
     private final TelemetryClient telemetry;
 
     @Autowired
-    public AppInsights(@Value("${azure.application-insights.instrumentation-key}")
-                           String instrumentationKey,
-                       TelemetryClient telemetry) {
-        TelemetryConfiguration.getActive().setInstrumentationKey(instrumentationKey);
+    public AppInsights(TelemetryClient telemetry) {
         telemetry.getContext().getComponent().setVersion(getClass().getPackage().getImplementationVersion());
         this.telemetry = telemetry;
     }

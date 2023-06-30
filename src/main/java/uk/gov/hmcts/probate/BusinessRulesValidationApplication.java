@@ -16,8 +16,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 import uk.gov.hmcts.probate.service.task.ScheduledTaskRunner;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataClientAutoConfiguration;
 
-import javax.annotation.PostConstruct;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.annotation.PostConstruct;
+import jakarta.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
