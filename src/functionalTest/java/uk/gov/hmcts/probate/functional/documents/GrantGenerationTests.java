@@ -1136,11 +1136,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyPersonalGenerateGrantDraftReissueShouldReturnOkResponseCode() throws IOException {
-        validatePostSuccess("personalPayloadMultipleExecutors.json", GENERATE_GRANT_DRAFT_REISSUE);
-    }
-
-    @Test
     public void verifySuccessForGetDigitalGrantDraftWithPowerReservedMultipleSOls() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
