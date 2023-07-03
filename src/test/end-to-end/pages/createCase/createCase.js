@@ -22,9 +22,8 @@ module.exports = async function (caseType, event) {
     await I.waitForText(createCaseConfig.waitForText, testConfig.WaitForTextTimeout || 60);
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);
-    console.log('waitForSelector cc-jurisdiction option[value=PROBATE]..............................');
     //await I.waitForSelector({css: '#cc-jurisdiction option[value=PROBATE]'});
-    await I.waitForElementVisible({css: '#cc-jurisdiction option[value=PROBATE]'});
+    await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'},300);
     await I.selectOption('#cc-jurisdiction', 'PROBATE');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForEnabled({css: '#cc-case-type'}, testConfig.WaitForTextTimeout || 60);
