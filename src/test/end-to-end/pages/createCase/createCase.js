@@ -10,7 +10,7 @@ module.exports = async function (caseType, event) {
     await I.waitForText(createCaseConfig.waitForText, testConfig.WaitForTextTimeout || 60);
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 600);
-    await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 600);
+    await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 1200);
     await I.selectOption('#cc-jurisdiction', 'PROBATE');
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForEnabled({css: '#cc-case-type'}, testConfig.WaitForTextTimeout || 60);
