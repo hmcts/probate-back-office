@@ -88,7 +88,7 @@
         "AddressLine3": ""
       },
       "deceasedSurname": "Smith",
-      "willHasCodicils": "No",
+      "willHasCodicils": "Yes",
       "paragraphDetails": [],
       "registryLocation": "ctsc",
       "solsSOTForenames": "Tony",
@@ -168,7 +168,20 @@
       "otherExecutorExists": "Yes",
       "solsSOTNeedToUpdate": "No",
       "solsSolicitorIsExec": "No",
-      "codicilAddedDateList": [],
+      "codicilAddedDateList": [
+        {
+          "id": "26b774f7-1578-44d6-b684-e2691792a9a3",
+          "value": {
+            "dateCodicilAdded": "2020-10-10"
+          }
+        },
+        {
+          "id": "26b774f7-1578-44d6-b684-e2691792a9a3",
+          "value": {
+            "dateCodicilAdded": "2020-10-10"
+          }
+        }
+      ],
       "solsSolicitorAddress": {
         "County": "Somerset",
         "Country": "United Kingdom",
