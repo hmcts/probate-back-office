@@ -54,7 +54,12 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.State.*;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
+import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.NOC;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
@@ -278,14 +283,12 @@ public class NotificationController {
         CallbackResponse response;
 
         List<Document> documents = new ArrayList<>();
-            response =
-                    eventValidationService.validateNocEmail(caseData,
-                            nocEmailAddressNotifyValidationRule);
-            if (response.getErrors().isEmpty()) {
-                Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
-                documents.add(nocSentEmail);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
-            }
+        response = eventValidationService.validateNocEmail(caseData, nocEmailAddressNotifyValidationRule);
+        if (response.getErrors().isEmpty()) {
+            Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
+            documents.add(nocSentEmail);
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+        }
         return ResponseEntity.ok(response);
     }
 

@@ -4,7 +4,6 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -15,7 +14,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
@@ -37,10 +35,10 @@ public class NocEmailAddressNotifyValidationRule {
     }
 
     private String getRemovedSolicitorEmail(CaseData caseData) {
-        CollectionMember<ChangeOfRepresentative> representative = caseData.getChangeOfRepresentatives()!= null ?
-                caseData.getChangeOfRepresentatives().get(caseData.getChangeOfRepresentatives().size() - 1) : null;
+        CollectionMember<ChangeOfRepresentative> representative = caseData.getChangeOfRepresentatives() != null
+                ? caseData.getChangeOfRepresentatives().get(caseData.getChangeOfRepresentatives().size() - 1) : null;
 
-        if (representative!= null){
+        if (representative != null) {
             return representative.getValue().getRemovedRepresentative().getSolicitorEmail();
         }
         return null;

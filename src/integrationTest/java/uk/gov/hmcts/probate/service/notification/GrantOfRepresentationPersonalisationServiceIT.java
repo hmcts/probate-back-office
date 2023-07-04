@@ -61,6 +61,9 @@ class GrantOfRepresentationPersonalisationServiceIT {
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
+    private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+    private static final String PERSONALISATION_OLD_SOLICITOR_EMAIL = "old_solicitor_email";
+    private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     Registry registry = new Registry();
     @InjectMocks
     private GrantOfRepresentationPersonalisationService grantOfRepresentationPersonalisationService;
@@ -282,6 +285,14 @@ class GrantOfRepresentationPersonalisationServiceIT {
             response.get(PERSONALISATION_CASE_DATA));
     }
 
+    @Test
+    void getNocPersonalisationContentIsOkNoWillReference() {
+        Map<String, Object> response =
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(ID, "abc@gmail.com");
+
+        assertEquals(LocalDateTime.now().format(NOC_DATE), response.get(PERSONALISATION_NOC_SUBMITTED_DATE));
+        assertEquals(ID.toString(), response.get(PERSONALISATION_CCD_REFERENCE));
+    }
 
     @Test
     void getExelaPersonalisationContentIsOkNoSubType() {
