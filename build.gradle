@@ -34,13 +34,16 @@ group = 'uk.gov.hmcts.probate'
 version = "4.0.0"
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
-sourceCompatibility = 11
-targetCompatibility = 11
+java {
+  toolchain {
+    languageVersion = JavaLanguageVersion.of(17)
+  }
+}
 
 mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
 
 jacoco {
-  toolVersion = '0.8.2'
+  toolVersion = '0.8.8'
 }
 
 sonarqube {
@@ -192,11 +195,11 @@ def versions = [
         springBootStarterHateoas        : '2.7.12',
         hmctsJavaLogging                : '5.1.7',
         authCheckerLib                  : '2.1.4',
-        jacksonDatabind                 : '2.13.2',
+        jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
-        lombok                          : '1.18.16',
+        lombok                          : '1.18.26',
         springDocOpenUi                 : '1.6.6',
         springSecurityVersion           : '5.7.3',
         probateCommonsVersion           : 'DTSPB-3309-v5-1.4.10',
@@ -227,19 +230,13 @@ repositories {
 }
 
 
-processResources {
-  from ('src/lib/AI-Agent.xml') {
-    into 'lib'
-  }
-}
-
 dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.1"
   }
   dependencies {
     // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '4.1.77.Final') {
+    dependencySet(group: 'io.netty', version: '4.1.94.Final') {
       entry 'netty-buffer'
       entry 'netty-codec'
       entry 'netty-codec-dns'
@@ -297,11 +294,12 @@ dependencies {
     force = true
   }
 
-  implementation group: 'com.google.guava', name: 'guava', version: '30.1-jre'
+  implementation group: 'com.google.guava', name: 'guava', version: '32.0.1-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-appinsights', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.0.1'
   implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
@@ -324,7 +322,7 @@ dependencies {
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.10.0'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
@@ -400,7 +398,7 @@ dependencies {
   contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
   contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
   contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
-  contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '5.6.4'
+  contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.0'
 
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
@@ -420,6 +418,11 @@ dependencies {
 
 tasks.withType(JavaCompile) {
   options.compilerArgs << '-parameters'
+}
+
+// https://github.com/gradle/gradle/issues/16791
+tasks.withType(JavaExec).configureEach {
+  javaLauncher.set(javaToolchains.launcherFor(java.toolchain))
 }
 
 bootJar {
@@ -458,7 +461,7 @@ task runAndPublishConsumerPactTests(type: Test){
 }
 
 task fortifyScan(type: JavaExec)  {
-  main = "uk.gov.hmcts.fortifyclient.FortifyClientMainApp"
+  getMainClass().set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
