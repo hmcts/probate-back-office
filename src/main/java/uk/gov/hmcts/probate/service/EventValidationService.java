@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -18,6 +19,7 @@ import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
 import uk.gov.hmcts.probate.validator.EmailValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 
@@ -70,6 +72,14 @@ public class EventValidationService {
                 .build();
     }
 
+    public CallbackResponse validateNocEmail(CaseData caseData,
+                                             NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule) {
+        List<FieldErrorResponse> businessErrors = nocEmailAddressNotifyValidationRule.validate(caseData);
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,
                                                   List<? extends ValidationRuleCaveats> rules) {
 
@@ -116,7 +126,7 @@ public class EventValidationService {
                 .build();
     }
 
-    public CallbackResponse validatePaymentResponse(CaseDetails caseDetails, PaymentResponse paymentResponse, 
+    public CallbackResponse validatePaymentResponse(CaseDetails caseDetails, PaymentResponse paymentResponse,
             CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
         String selectedPBA = caseDetails.getData().getSolsPBANumber().getValue().getLabel();
         List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule
@@ -126,7 +136,7 @@ public class EventValidationService {
             .build();
     }
 
-    public CaveatCallbackResponse validateCaveatPaymentResponse(CaveatDetails caveatDetails, 
+    public CaveatCallbackResponse validateCaveatPaymentResponse(CaveatDetails caveatDetails,
             PaymentResponse paymentResponse, CreditAccountPaymentValidationRule creditAccountPaymentValidationRule) {
         String selectedPBA = caveatDetails.getData().getSolsPBANumber().getValue().getLabel();
         List<FieldErrorResponse> businessErrors = creditAccountPaymentValidationRule

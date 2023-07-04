@@ -71,6 +71,8 @@ public class TemplateService {
                 } else {
                     return emailTemplates.getGrantRaised();
                 }
+            case NOC:
+                return emailTemplates.getNoticeOfChangeReceived();
             case CAVEAT_RAISED:
                 if (languagePreference.equals(LanguagePreference.ENGLISH)) {
                     return emailTemplates.getCaveatRaised();

@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
@@ -53,11 +54,7 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
-import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
-import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.*;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
@@ -89,6 +86,7 @@ public class NotificationController {
     private final GrantNotificationService grantNotificationService;
     private final CaseDataTransformer caseDataTransformer;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -269,6 +267,26 @@ public class NotificationController {
         log.info("...Called perform Grants Awaiting Documents");
         return ResponseEntity.ok(grantScheduleResponse);
 
+    }
+
+    @PostMapping(path = "/noc-notification")
+    public ResponseEntity<CallbackResponse> sendNOCEmailNotification(
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        log.info("Preparing to send email notification for NOC");
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+            response =
+                    eventValidationService.validateNocEmail(caseData,
+                            nocEmailAddressNotifyValidationRule);
+            if (response.getErrors().isEmpty()) {
+                Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
+                documents.add(nocSentEmail);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            }
+        return ResponseEntity.ok(response);
     }
 
     private ProbateDocument buildProbateDocument(Document boDocument) {

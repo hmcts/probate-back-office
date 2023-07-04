@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -162,6 +163,28 @@ public class NotificationService {
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
                 caseDetails.getId());
+
+        return getSentEmailDocument(state, emailAddress, response);
+    }
+
+    public Document sendNocEmail(State state, CaseDetails caseDetails) throws
+            NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+        String emailAddress = getRemovedSolicitorEmail(caseData);
+
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(caseDetails.getId(),
+                        emailAddress);
+        String emailReplyToId = registry.getEmailReplyToId();
+        String reference = caseData.getSolsSolicitorAppReference();
+        log.info("Personlisation complete now get the email repsonse");
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                        caseDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -444,4 +467,13 @@ public class NotificationService {
         }
     }
 
+    private String getRemovedSolicitorEmail(CaseData caseData) {
+        CollectionMember<ChangeOfRepresentative> representative = caseData.getChangeOfRepresentatives()!= null ?
+                caseData.getChangeOfRepresentatives().get(caseData.getChangeOfRepresentatives().size() - 1) : null;
+
+        if (representative!= null){
+            return representative.getValue().getRemovedRepresentative().getSolicitorEmail();
+        }
+        return null;
+    }
 }
