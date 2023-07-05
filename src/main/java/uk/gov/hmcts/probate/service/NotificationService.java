@@ -468,7 +468,7 @@ public class NotificationService {
     }
 
     private String getRemovedSolicitorEmail(CaseData caseData) {
-        CollectionMember<ChangeOfRepresentative> representative = caseData.getChangeOfRepresentatives() != null
+        CollectionMember<ChangeOfRepresentative> representative = !caseData.getChangeOfRepresentatives().isEmpty()
                 ? caseData.getChangeOfRepresentatives().get(caseData.getChangeOfRepresentatives().size() - 1) : null;
 
         if (representative != null) {
