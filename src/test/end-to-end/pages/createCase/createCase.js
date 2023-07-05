@@ -12,7 +12,7 @@ module.exports = async function (caseType, event) {
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);
     /* eslint-disable no-await-in-loop */
     do{
-        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter}`);
+        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
     }while(!I.waitForText('Jurisdiction', testConfig.WaitForTextTimeout || 60))
 
     await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 60);
