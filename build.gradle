@@ -277,11 +277,7 @@ configurations.all {
     }
   }
 }
-configurations {
-  compileOnly {
-    extendsFrom annotationProcessor
-  }
-}
+
 
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
