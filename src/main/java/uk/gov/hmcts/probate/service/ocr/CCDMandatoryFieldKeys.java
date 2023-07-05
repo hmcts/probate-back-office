@@ -25,8 +25,6 @@ public interface CCDMandatoryFieldKeys {
         "Executor %s not applying reason";
     String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS =
         GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
-    String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE =
-        GORSolicitorMandatoryFields.IHT_FORM_COMPLETED_ONLINE.getKey();
     String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";
