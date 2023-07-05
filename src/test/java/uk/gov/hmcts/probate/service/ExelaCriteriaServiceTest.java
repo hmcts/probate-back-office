@@ -32,6 +32,7 @@ class ExelaCriteriaServiceTest {
     private ReturnedCaseDetails case5;
     private ReturnedCaseDetails case6;
     private ReturnedCaseDetails case7;
+    private ReturnedCaseDetails case8;
 
     private ExelaCriteriaService exelaCriteriaService = new ExelaCriteriaService();
 
@@ -60,6 +61,11 @@ class ExelaCriteriaServiceTest {
                 "test", "Cherished", null, LocalDateTime.now(), DocumentLink.builder().build(),
                 "test", LocalDateTime.now()));
 
+        final CollectionMember<ScannedDocument> scannedDocumentWillType
+                = new CollectionMember<>(new ScannedDocument("6",
+                "test", "will", "Original Will", LocalDateTime.now(), DocumentLink.builder().build(),
+                "test", LocalDateTime.now()));
+
         List<CollectionMember<ScannedDocument>> scannedDocumentsCase1 = new ArrayList<>();
         scannedDocumentsCase1.add(scannedDocument);
         scannedDocumentsCase1.add(scannedDocumentNullSubType);
@@ -76,6 +82,9 @@ class ExelaCriteriaServiceTest {
         scannedDocumentsCase4.add(scannedDocumentNullSubType);
         scannedDocumentsCase4.add(scannedDocumentCherished);
         scannedDocumentsCase4.add(scannedDocument);
+
+        List<CollectionMember<ScannedDocument>> scannedDocumentsCase5 = new ArrayList<>();
+        scannedDocumentsCase5.add(scannedDocumentWillType);
 
         final CaseData caseData1 = CaseData.builder()
                 .scannedDocuments(scannedDocumentsCase1)
@@ -112,6 +121,11 @@ class ExelaCriteriaServiceTest {
                 .deceasedSurname("addington")
                 .build();
 
+        final CaseData caseData8 = CaseData.builder()
+                .scannedDocuments(scannedDocumentsCase5)
+                .deceasedSurname("zurgel")
+                .build();
+
         case1 = new ReturnedCaseDetails(caseData1, LAST_MODIFIED, 1L);
         case2 = new ReturnedCaseDetails(caseData2, LAST_MODIFIED, 2L);
         case3 = new ReturnedCaseDetails(caseData3, LAST_MODIFIED, 3L);
@@ -119,6 +133,7 @@ class ExelaCriteriaServiceTest {
         case5 = new ReturnedCaseDetails(caseData5, LAST_MODIFIED, 3L);
         case6 = new ReturnedCaseDetails(caseData6, LAST_MODIFIED, 3L);
         case7 = new ReturnedCaseDetails(caseData7, LAST_MODIFIED, 3L);
+        case8 = new ReturnedCaseDetails(caseData8, LAST_MODIFIED, 3L);
     }
 
     @Test
@@ -162,8 +177,16 @@ class ExelaCriteriaServiceTest {
         cases.add(case5);
         cases.add(case6);
         cases.add(case7);
+        cases.add(case8);
         List<ReturnedCaseDetails> returnedCaseDetails = exelaCriteriaService.getFilteredCases(cases.build());
         assertThat(returnedCaseDetails.get(0).getData().getDeceasedSurname(), is("Abson"));
         assertThat(returnedCaseDetails.get(1).getData().getDeceasedSurname(), is("addington"));
+        assertThat(returnedCaseDetails.get(4).getData().getDeceasedSurname(), is("zurgel"));
+    }
+
+    @Test
+    void testTypeWillShouldReturnCase() {
+        cases.add(case8);
+        assertThat(exelaCriteriaService.getFilteredCases(cases.build()).size(), is(1));
     }
 }

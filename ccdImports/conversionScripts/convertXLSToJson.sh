@@ -30,5 +30,5 @@ docker run --rm --name xlsx2json \
   -v ${ccd_definition_absolute_path}:/tmp/ccd-definition \
   -v ${ccd_definition_json_output_dir_absolute_path}:/tmp/ccd-definition-json \
   -e CCD_DEF_CASE_SERVICE_BASE_URL \
-  docker.artifactory.reform.hmcts.net/ccd/ccd-definition-processor:latest \
+  hmctspublic.azurecr.io/ccd/definition-processor:latest \
   xlsx2json -D /tmp/ccd-definition-json -i /tmp/ccd-definition

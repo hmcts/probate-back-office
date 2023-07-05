@@ -35,6 +35,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
@@ -142,6 +143,7 @@ class BusinessValidationControllerIT {
     private static final String CASE_CHCEKLIST_URL = "/case/validateCheckListDetails";
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String REDECE_SOT = "/case/redeclarationSot";
@@ -149,8 +151,13 @@ class BusinessValidationControllerIT {
     private static final String DEFAULT_SOLS_PBA = "/case/default-sols-pba";
     private static final String REACTIVATE_CASE = "/case/reactivate-case";
     private static final String PA_CREATE_URL = "/case/pa-create";
+    private static final String DEFAULT_REGISTRARS_DECISION = "/case/default-registrars-decision";
+    private static final String REGISTRARS_DECISION = "/case/registrars-decision";
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
+    private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
+    private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
+
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -194,6 +201,8 @@ class BusinessValidationControllerIT {
     private NotificationService notificationService;
     @MockBean
     private CaseDataTransformer caseDataTransformer;
+    @MockBean
+    private RegistrarDirectionService registrarDirectionService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -919,6 +928,40 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void shouldSetStateToBOCaseWorkerEscalationAfterCaseworkerEscalated() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadCaseWorkerEscalation.json");
+
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseMatchingIssueGrantAfterResolveCaseworkerEscalated() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadCaseWorkerResolveEscalation.json");
+
+        mockMvc.perform(post(CASE_WORKER_RESOLVED_ESCALATED).content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseQA"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
+    void shouldSetStateToBOCaseMatchingIssueGrantAfterChangeCaseState() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile(
+                "solicitorPayloadChangeCaseStateForCaseMatchingIssueGrant.json");
+
+        mockMvc.perform(post(CHANGE_CASE_STATE_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.state").value("BOCaseMatchingIssueGrant"))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+    }
+
+    @Test
     void shouldSetStateForRedeclarationCompleteToRedec() throws Exception {
         String payload = testUtils.getStringFromFile("payloadWithResponseRecorded.json");
 
@@ -1124,6 +1167,26 @@ class BusinessValidationControllerIT {
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(REACTIVATE_CASE).content(json).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDefaultRegistrarsDecision() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(DEFAULT_REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRegistrarsDecision() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 

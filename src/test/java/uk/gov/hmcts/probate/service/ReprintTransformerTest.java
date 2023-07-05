@@ -78,17 +78,23 @@ class ReprintTransformerTest {
             new CollectionMember(null, draft));
         when(caseData.getProbateDocumentsGenerated()).thenReturn(generatedDocs);
 
-        ScannedDocument will = ScannedDocument.builder()
+        ScannedDocument subWill = ScannedDocument.builder()
             .type("Other")
             .fileName("Will1")
             .subtype("will")
             .build();
+        ScannedDocument will = ScannedDocument.builder()
+                .type("Will")
+                .fileName("OriginalWill")
+                .subtype("Original Will")
+                .build();
         ScannedDocument otherSc = ScannedDocument.builder()
             .type("Other")
             .fileName("otherSc1")
             .subtype("otherSc")
             .build();
-        scannedDocs = Arrays.asList(new CollectionMember(null, will), new CollectionMember(null, otherSc));
+        scannedDocs = Arrays.asList(new CollectionMember(null, subWill),
+                new CollectionMember(null, otherSc), new CollectionMember(null, will));
         when(caseData.getScannedDocuments()).thenReturn(scannedDocs);
 
         Document sot1 = Document.builder()
@@ -109,13 +115,16 @@ class ReprintTransformerTest {
         when(caseData.getProbateSotDocumentsGenerated()).thenReturn(sotDocs);
 
         reprintTransformer.transformReprintDocuments(caseDetails, responseCaseDataBuilder);
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(3));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().size(), is(4));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getCode(), is("Will1"));
         assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(0).getLabel(), is("Will"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getCode(), is("Grant1"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getLabel(), is("Grant"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("WSOT3"));
-        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(), is("SOT"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1)
+                .getCode(), is("OriginalWill"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(1).getLabel(), is("Will"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getCode(), is("Grant1"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(2).getLabel(), is("Grant"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(3).getCode(), is("WSOT3"));
+        assertThat(responseCaseDataBuilder.build().getReprintDocument().getListItems().get(3).getLabel(), is("SOT"));
     }
 
     @Test

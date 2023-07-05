@@ -3,5 +3,9 @@
   "100001_Unexpected Content-Type was returned_https://probate-back-office-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
   "100000_A Client Error response code was returned by the server_https://probate-back-office-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
   "10036_Server Leaks Version Information via \"Server\" HTTP Response Header Field_https://probate-back-office-aat.service.core-compute-aat.internal/v2/api-docs_GET": "ignore",
-  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/v2/api-docs_GET":"ignore"
+  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/v2/api-docs_GET":"ignore",
+  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal_GET":"ignore",
+  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/_GET":"ignore",
+  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
+  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/sitemap.xml_GET":"ignore"
 }

@@ -1,0 +1,96 @@
+{
+  "case_details": {
+    "id": 1542274092933333,
+    "jurisdiction": "PROBATE",
+    "case_type_id": "Caveat",
+    "state": "SolAppUpdated",
+    "created_date": "2018-11-15T09:28:12.992",
+    "last_modified": [
+      2018,
+      6,
+      7,
+      10,
+      8,
+      8,
+      695000000
+    ],
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "applicationType": "Solicitor",
+      "registryLocation": "ctsc",
+      "solsSolicitorFirmName": "The Firm",
+      "caveatorEmailAddress": "caveator@probate-test.com",
+      "solsSolicitorPhoneNumber": "07070707077",
+      "caveatorAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsSolicitorAppReference": "REF1123",
+      "caveatorForenames": "Applicant_fn",
+      "caveatorSurname": "Applicant_Surname",
+      "deceasedForenames": "DeceasedNmae",
+      "deceasedSurname": "DeceasedSurname",
+      "deceasedDateOfDeath": "2020-01-01",
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedAnyOtherNames": "No",
+      "deceasedFullAliasNameList": [],
+      "deceasedAddress": {
+        "AddressLine1": "2",
+        "AddressLine2": "",
+        "AddressLine3": "",
+        "County": "",
+        "PostTown": "",
+        "PostCode": "2",
+        "Country": ""
+      },
+      "solsPaymentMethods": "fee account",
+      "solsFeeAccountNumber": "12345",
+      "solsPBANumber": {
+        "value": {
+          "code": "PBA0082126",
+          "label": "PBA0082126"
+        },
+        "list_items": [
+          {
+            "code": "PBA0082126",
+            "label": "PBA0082126"
+          },
+          {
+            "code": "PBA0083372",
+            "label": "PBA0083372"
+          }
+        ]
+      },
+      "solsPBAPaymentReference": "appref-PAY1",
+      "registrarDirections": [
+        {
+          "id": "714db563-8dba-4a8f-ac58-ce6bb54dc3d8",
+          "value": {
+            "decision": "refusal",
+            "addedDateTime": "2023-02-16T10:45:16.573996406",
+            "furtherInformation": "dddddd"
+          }
+        },
+        {
+          "id": "1824a3fa-2d30-4765-955f-2e90ecc2551f",
+          "value": {
+            "decision": "refusal",
+            "addedDateTime": "2023-02-16T10:47:14.479068153"
+          }
+        },
+        {
+          "id": "37146d64-a49b-4a11-944d-46a73f1c7858",
+          "value": {
+            "decision": "lostWill",
+            "addedDateTime": "2023-02-16T10:47:26.725707963"
+          }
+        }
+      ]
+    }
+  }
+}

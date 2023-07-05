@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -25,8 +26,10 @@ import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -65,6 +68,8 @@ public class CaveatController {
     private final CreditAccountPaymentTransformer creditAccountPaymentTransformer;
     private final CreditAccountPaymentValidationRule creditAccountPaymentValidationRule;
     private final SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRule;
+    private final RegistrarDirectionService registrarDirectionService;
+    private final DocumentGeneratorService documentGeneratorService;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -229,5 +234,34 @@ public class CaveatController {
         CaveatCallbackResponse response = caveatNotificationService.withdraw(caveatCallbackRequest);
 
         return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/default-registrars-decision",
+            consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> setupRegistrarsDecision(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        return ResponseEntity.ok(caveatCallbackResponseTransformer
+                .transformCaseWithRegistrarDirection(callbackRequest));
+    }
+
+    @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CaveatCallbackResponse> registrarsDecision(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        registrarDirectionService.addAndOrderDirectionsToCaveat(callbackRequest.getCaseDetails().getData());
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
+    @PostMapping(path = "/setup-for-permanent-removal", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CaveatCallbackResponse> setupForPermanentRemovalCaveat(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.setupOriginalDocumentsForRemoval(callbackRequest));
+    }
+
+    @PostMapping(path = "/permanently-delete-removed", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CaveatCallbackResponse> permanentlyDeleteRemovedCaveat(
+            @RequestBody CaveatCallbackRequest callbackRequest) {
+        documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(callbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 }

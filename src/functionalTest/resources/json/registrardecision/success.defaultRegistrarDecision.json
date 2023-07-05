@@ -1,0 +1,116 @@
+{
+  "case_details": {
+    "id": 1512040945638398,
+    "jurisdiction": "PROBATE",
+    "state": "CasePrinted",
+    "case_type_id": "GrantOfRepresentation",
+    "last_modified": null,
+    "security_classification": "PUBLIC",
+    "case_data": {
+      "caseType": "gop",
+      "taskList": "",
+      "paperForm": "No",
+      "willExists": "Yes",
+      "bulkPrintId": [],
+      "caseMatches": [],
+      "ihtNetValue": "39000000",
+      "ihtFormEstate": "IHT207",
+      "ihtGrossValue": "40000000",
+      "applicationType": "Personal",
+      "dateOfDeathType": "diedOn",
+      "deceasedAddress": {
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "SW11 1PD",
+        "PostTown": "London",
+        "AddressLine1": "1 Rse Way",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "deceasedSurname": "deadsn",
+      "evidenceHandled": "No",
+      "paragraphDetails": [],
+      "registryLocation": "Oxford",
+      "boSendToBulkPrint": "Yes",
+      "bulkScanEnvelopes": [],
+      "deceasedForenames": "deadfn",
+      "executorsApplying": [],
+      "deceasedDateOfBirth": "1900-01-01",
+      "deceasedDateOfDeath": "2023-01-01",
+      "otherExecutorExists": "No",
+      "registrarDirections": [
+        {
+          "id": "714db563-8dba-4a8f-ac58-ce6bb54dc3d8",
+          "value": {
+            "decision": "refusal",
+            "addedDateTime": "2023-02-16T10:45:16.573996406",
+            "furtherInformation": "dddddd"
+          }
+        },
+        {
+          "id": "1824a3fa-2d30-4765-955f-2e90ecc2551f",
+          "value": {
+            "decision": "refusal",
+            "addedDateTime": "2023-02-16T10:47:14.479068153"
+          }
+        },
+        {
+          "id": "37146d64-a49b-4a11-944d-46a73f1c7858",
+          "value": {
+            "decision": "lostWill",
+            "addedDateTime": "2023-02-16T10:47:26.725707963"
+          }
+        }
+      ],
+      "executorsNotApplying": [],
+      "deceasedAnyOtherNames": "No",
+      "languagePreferenceWelsh": "No",
+      "primaryApplicantAddress": {
+        "County": "",
+        "Country": "United Kingdom",
+        "PostCode": "SW11 1PD",
+        "PostTown": "London",
+        "AddressLine1": "1 Rse Way",
+        "AddressLine2": "",
+        "AddressLine3": ""
+      },
+      "primaryApplicantSurname": "app1",
+      "applicationSubmittedDate": "2023-01-01",
+      "primaryApplicantHasAlias": "No",
+      "caseHandedOffToLegacySite": "No",
+      "primaryApplicantForenames": "app1",
+      "probateDocumentsGenerated": [],
+      "deceasedDomicileInEngWales": "Yes",
+      "primaryApplicantIsApplying": "Yes",
+      "solsDeceasedAliasNamesList": [],
+      "boCaveatStopSendToBulkPrint": "Yes",
+      "boRequestInfoSendToBulkPrint": "Yes",
+      "ihtFormEstateValuesCompleted": "Yes",
+      "primaryApplicantEmailAddress": "sanjay.parekh@hmcts.net",
+      "probateSotDocumentsGenerated": [],
+      "boCaveatStopEmailNotification": "Yes",
+      "boGrantReissueSendToBulkPrint": "Yes",
+      "probateNotificationsGenerated": [
+        {
+          "id": "6dbc8692-fc4e-4302-82b2-c9792dd1ddd5",
+          "value": {
+            "DocumentLink": {
+              "document_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/bad49bb4-c1f8-47a8-8c16-d5b105253170",
+              "document_filename": "sentEmail.pdf",
+              "document_binary_url": "http://dm-store-aat.service.core-compute-aat.internal/documents/bad49bb4-c1f8-47a8-8c16-d5b105253170/binary"
+            },
+            "DocumentType": "sentEmail",
+            "DocumentFileName": "2f79fedc-9d79-4e0b-9dfa-8fe6297c4912.pdf",
+            "DocumentDateAdded": "2023-02-16",
+            "DocumentGeneratedBy": "5927"
+          }
+        }
+      ],
+      "boEmailGrantIssuedNotification": "Yes",
+      "boEmailRequestInfoNotification": "Yes",
+      "boAssembleLetterSendToBulkPrint": "Yes",
+      "boEmailDocsReceivedNotification": "Yes",
+      "boEmailGrantReissuedNotification": "Yes"
+    }
+  }
+}

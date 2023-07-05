@@ -29,10 +29,6 @@ class TaskListConstantsTest {
         assertEquals(TaskListState.TL_STATE_SEND_DOCUMENTS,
                 TaskListState.mapCaseState(StateConstants.STATE_CASE_PRINTED));
         assertEquals(TaskListState.TL_STATE_EXAMINE_APPLICATION,
-                TaskListState.mapCaseState(StateConstants.STATE_BO_READY_FOR_EXAMINATION));
-        assertEquals(TaskListState.TL_STATE_EXAMINE_APPLICATION,
-                TaskListState.mapCaseState(StateConstants.STATE_BO_EXAMINING));
-        assertEquals(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                 TaskListState.mapCaseState(StateConstants.STATE_BO_EXAMINING_REISSUE));
         assertEquals(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                 TaskListState.mapCaseState(StateConstants.STATE_BO_CASE_MATCHING_EXAMINING));

@@ -16,8 +16,10 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -111,7 +113,6 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
-
     private static final String SOL_AS_EXEC_ID = "solicitor";
     private static final String PBA_PAYMENT_METHOD = "pba";
     private final DocumentTransformer documentTransformer;
@@ -146,6 +147,18 @@ public class CallbackResponseTransformer {
     public CallbackResponse defaultDateOfDeathType(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder().dateOfDeathType(DEFAULT_DATE_OF_DEATHTYPE);
         return transformResponse(builder.build());
+    }
+
+    public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        OriginalDocuments originalDocuments = OriginalDocuments.builder()
+                .originalDocsGenerated(caseData.getProbateDocumentsGenerated())
+                .originalDocsScanned(caseData.getScannedDocuments())
+                .originalDocsUploaded(caseData.getBoDocumentsUploaded())
+                .build();
+        responseCaseDataBuilder.originalDocuments(originalDocuments);
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
@@ -438,6 +451,22 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+
+    public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+
+    public CallbackResponse transferToState(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getTransferToState());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                       PaymentResponse paymentResponse, Document coversheet, Document sentEmail) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
@@ -562,6 +591,15 @@ public class CallbackResponseTransformer {
         boolean transform = doTransform(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
+                .build();
+
+        return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse transformCaseWithRegistrarDirection(CallbackRequest callbackRequest) {
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+                .registrarDirectionToAdd(RegistrarDirection.builder()
+                        .build())
                 .build();
 
         return transformResponse(responseCaseData);
@@ -1047,6 +1085,10 @@ public class CallbackResponseTransformer {
             .taskList(caseData.getTaskList())
             .escalatedDate(ofNullable(caseData.getEscalatedDate())
                 .map(dateTimeFormatter::format).orElse(null))
+            .caseWorkerEscalationDate(ofNullable(caseData.getCaseWorkerEscalationDate())
+                .map(dateTimeFormatter::format).orElse(null))
+            .resolveCaseWorkerEscalationDate(ofNullable(caseData.getResolveCaseWorkerEscalationDate())
+                .map(dateTimeFormatter::format).orElse(null))
             .authenticatedDate(ofNullable(caseData.getAuthenticatedDate())
                 .map(dateTimeFormatter::format).orElse(null))
             .deceasedDiedEngOrWales(caseData.getDeceasedDiedEngOrWales())
@@ -1081,7 +1123,10 @@ public class CallbackResponseTransformer {
             .deceasedWrittenWishes(caseData.getDeceasedWrittenWishes())
             .applicantOrganisationPolicy(caseData.getApplicantOrganisationPolicy())
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
-            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate());
+            .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
+            .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
+            .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
+            .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1354,32 +1399,22 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isSolsEmailSet(caseData)) {
+        if (SOLICITOR.equals(caseData.getApplicationType())) {
+            String answer = isSolsEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
-            builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
-        if (isPAEmailSet(caseData)) {
+        if (PERSONAL.equals(caseData.getApplicationType())) {
+            String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
-            builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
         if (!isCodicil(caseData)) {
@@ -1490,18 +1525,22 @@ public class CallbackResponseTransformer {
                     .primaryApplicantIsApplying(ANSWER_YES);
         }
 
-        if (isSolsEmailSet(caseData)) {
+        if (SOLICITOR.equals(caseData.getApplicationType())) {
+            String answer = isSolsEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_YES)
-                    .boEmailRequestInfoNotification(ANSWER_YES)
-                    .boEmailGrantIssuedNotification(ANSWER_YES)
-                    .boEmailGrantReissuedNotification(ANSWER_YES);
-        } else {
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
+        }
+
+        if (PERSONAL.equals(caseData.getApplicationType())) {
+            String answer = isPAEmailSet(caseData) ? ANSWER_YES : ANSWER_NO;
             builder
-                    .boEmailDocsReceivedNotification(ANSWER_NO)
-                    .boEmailRequestInfoNotification(ANSWER_NO)
-                    .boEmailGrantIssuedNotification(ANSWER_NO)
-                    .boEmailGrantReissuedNotification(ANSWER_NO);
+                    .boEmailDocsReceivedNotification(answer)
+                    .boEmailRequestInfoNotification(answer)
+                    .boEmailGrantIssuedNotification(answer)
+                    .boEmailGrantReissuedNotification(answer);
         }
 
         if (!isCodicil(caseData)) {
@@ -1644,5 +1683,13 @@ public class CallbackResponseTransformer {
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData)
                 .caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
+    }
+
+    private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
+            List<CollectionMember<RegistrarDirection>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
     }
 }

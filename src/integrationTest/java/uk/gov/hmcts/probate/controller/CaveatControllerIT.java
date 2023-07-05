@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
@@ -44,6 +45,10 @@ import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 @AutoConfigureMockMvc
 class CaveatControllerIT {
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
+    private static final String DEFAULT_REGISTRARS_DECISION = "/caveat/default-registrars-decision";
+    private static final String REGISTRARS_DECISION = "/caveat/registrars-decision";
+    private static final String SETUP_FOR_REMOVAL = "/caveat/setup-for-permanent-removal";
+    private static final String DELETE_REMOVED = "/caveat/permanently-delete-removed";
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,6 +61,9 @@ class CaveatControllerIT {
 
     @MockBean
     private PDFManagementService pdfManagementService;
+
+    @MockBean
+    private RegistrarDirectionService registrarDirectionService;
 
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
@@ -292,5 +300,34 @@ class CaveatControllerIT {
             .content(caveatPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDefaultRegistrarsDecision() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        mockMvc.perform(post(DEFAULT_REGISTRARS_DECISION).content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRegistrarsDecision() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        mockMvc.perform(post(REGISTRARS_DECISION).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldSetupForPermanentRemovalCaveat() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        mockMvc.perform(post(SETUP_FOR_REMOVAL).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldDeleteRemovedDocuments() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatDocumentsPayloadNotifications.json");
+        mockMvc.perform(post(DELETE_REMOVED).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }

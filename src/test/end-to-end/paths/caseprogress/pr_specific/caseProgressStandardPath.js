@@ -47,7 +47,7 @@ Scenario(scenarioName, async function ({I}) {
             linkUrl: '/trigger/solicitorUpdateProbate/solicitorUpdateProbatesolicitorUpdateProbatePage1',
             goToNextStep: true});
 
-        await I.logInfo(scenarioName, 'Add application details');
+        await I.logInfo(scenarioName, 'Grant of probate details');
         await I.caseProgressClickSelectOrFillElementsAndContinue([
             {locator: {css: '#willAccessOriginal_Yes'}},
             {locator: {css: '#originalWillSignedDate-day'}, text: '10'},

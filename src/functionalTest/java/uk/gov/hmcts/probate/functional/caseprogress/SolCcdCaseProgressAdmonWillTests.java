@@ -62,14 +62,6 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     }
 
     @Test
-    // NOTE - actual cw state change to
-    // BOReadyForExamination doesn't come to back office, we just get docs received notification
-    public void shouldTransformCaseCorrectlyWhenMarkingAsReadyForExam() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/05-caseMarkAsReadyForExam.json",
-            CASE_DOCS_RECEIVED_URL, "/admonwill/case-ready-for-exam-html.txt");
-    }
-
-    @Test
     public void shouldTransformCaseCorrectlyWhenStopped() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/06-caseStopped.json", CASE_STOPPED_URL,
             "/case-stopped-html.txt");
@@ -85,12 +77,6 @@ public class SolCcdCaseProgressAdmonWillTests extends CaseProgressTestsBase {
     public void shouldTransformCaseCorrectlyWhenCaseMatchingExamining() throws IOException {
         verifyCaseProgressHtmlSolPost("caseprogressadmonwill/08-caseMatchingExamining.json",
             CASE_MATCHING_EXAMINING_URL, "/admonwill/case-matching-examining-html.txt");
-    }
-
-    @Test
-    public void shouldTransformCaseCorrectlyWhenExamining() throws IOException {
-        verifyCaseProgressHtmlSolPost("caseprogressadmonwill/09-examineCase.json", TASKLIST_UPDATE_URL,
-            "/admonwill/examine-case-html.txt");
     }
 
     @Test

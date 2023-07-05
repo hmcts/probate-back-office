@@ -85,6 +85,7 @@
   {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "understandItem2", "FieldType": "Text", "ElementLabel": "Understanditem2", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Declaration", "ListElementCode": "submitWarning", "FieldType": "Text", "ElementLabel": "SubmitWarning", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "boCaseStopReason", "ListElementCode": "caseStopReason", "FieldType": "FixedList", "FieldTypeParameter": "stopReasonFixedList", "ElementLabel": "Select a reason for stopping the case", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "boCaseStopReason", "ListElementCode": "caseStopSubReasonDocRequired", "FieldType": "FixedList", "FieldTypeParameter": "DocumentsRequiredSubList", "ElementLabel": "Select the document that is required", "FieldShowCondition": "caseStopReason=\"DocumentsRequired\"", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "ListElementCode": "DocumentType", "FieldType": "FixedList", "FieldTypeParameter": "probateDocumentTypeEnum", "ElementLabel": "Type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "ListElementCode": "DocumentLink", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "ListElementCode": "DocumentDateAdded", "FieldType": "Date", "ElementLabel": "Date added", "SecurityClassification": "Public"},
@@ -185,5 +186,11 @@
   {"LiveFrom": "01/01/2017", "ID": "Damage", "ListElementCode": "damageTypesList", "FieldType": "MultiSelectList", "FieldTypeParameter": "damageTypes", "ElementLabel": "Damage type", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "Damage", "ListElementCode": "otherDamageDescription", "FieldType": "TextArea", "ElementLabel": "Other", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "firstName", "FieldType": "Text", "ElementLabel": "First name(s)", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "lastName", "FieldType": "Text", "ElementLabel": "Last name", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "DamageCulprit", "ListElementCode": "lastName", "FieldType": "Text", "ElementLabel": "Last name", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "addedDateTime", "FieldType": "DateTime", "ElementLabel": "Direction added", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "decision", "FieldType": "FixedRadioList", "FieldTypeParameter": "registrarsDecisionType", "ElementLabel": "Registrar decision", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "RegistrarDirection", "ListElementCode": "furtherInformation", "FieldType": "TextArea", "ElementLabel": "Further information", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "OriginalDocuments", "ListElementCode": "originalDocsGenerated", "FieldType": "Collection", "FieldTypeParameter": "ProbateDocument", "ElementLabel": "Documents generated", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "OriginalDocuments", "ListElementCode": "originalDocsUploaded", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "ElementLabel": "Documents uploaded", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "OriginalDocuments", "ListElementCode": "originalDocsScanned", "FieldType": "Collection", "FieldTypeParameter": "ScannedDocument", "ElementLabel": "Documents scanned", "SecurityClassification": "Public"}
 ]

@@ -20,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
+import uk.gov.hmcts.probate.service.ScannedDocumentOrderingService;
 import uk.gov.hmcts.probate.service.DocumentsReceivedNotificationService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
@@ -88,6 +89,8 @@ class NotificationControllerUnitTest {
     DocumentsReceivedNotificationService documentsReceivedNotificationService;
     @Mock
     CaseDataTransformer caseDataTransformer;
+    @Mock
+    ScannedDocumentOrderingService scannedDocumentOrderingService;
     @Mock
     RaiseGrantOfRepresentationNotificationService raiseGrantOfRepresentationNotificationService;
     @Mock
@@ -242,6 +245,35 @@ class NotificationControllerUnitTest {
     }
 
     @Test
+    void shouldOrderScannedDocumentsForGrantReceived() throws NotificationClientException {
+        List scannedDocMock = mock(List.class);
+        CaseData caseData = CaseData.builder()
+                .scannedDocuments(scannedDocMock)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.sendGrantReceivedNotification(callbackRequest);
+        verify(scannedDocumentOrderingService)
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldOrderScannedDocumentsForAttachDocs() throws NotificationClientException {
+        List scannedDocMock = mock(List.class);
+        CaseData caseData = CaseData.builder()
+                .scannedDocuments(scannedDocMock)
+                .build();
+        CallbackRequest callbackRequest = new CallbackRequest(new CaseDetails(caseData, null, 0L));
+        ResponseEntity<CallbackResponse> callbackResponse =
+                notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
+                        httpServletRequest);
+        verify(scannedDocumentOrderingService)
+                .orderScannedDocuments(callbackRequest.getCaseDetails().getData());
+        assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldSendNotificationForAttachDocsCasePrinted() throws NotificationClientException {
         setUpMocks(APPLICATION_RECEIVED);
         CaseDetails caseDetails = new CaseDetails(CaseData.builder().primaryApplicantEmailAddress("pa@probate-test.com")
@@ -252,6 +284,7 @@ class NotificationControllerUnitTest {
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        verify(caseDataTransformer).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -264,6 +297,7 @@ class NotificationControllerUnitTest {
                 notificationController.startDelayedNotificationPeriod(callbackRequest, bindingResultMock,
                         httpServletRequest);
         verify(notificationService, times(0)).sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
+        verify(caseDataTransformer, times(0)).transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         assertThat(callbackResponse.getStatusCode(), is(HttpStatus.OK));
     }
 

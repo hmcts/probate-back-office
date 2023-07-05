@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.tasklist;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 
@@ -25,7 +26,7 @@ class StoppedTaskListRendererTest {
 
         caseDataBuilder = CaseData.builder()
                 .grantStoppedDate(LocalDate.of(2020,1,1));
-
+        ReflectionTestUtils.setField(renderer, "grandDelayNumberOfWeeks", "16");
     }
 
     @Test
@@ -43,9 +44,10 @@ class StoppedTaskListRendererTest {
             + "</ul>\n\n"
             + "<p class=\"govuk-body-s\">You will be notified by email if we need any information from you to "
             + "progress the case.</p>\n"
-            + "<p class=\"govuk-body-s\">Only contact the CTSC staff if your case has been stopped for 4 weeks or "
-            + "more and you have not "
-            + "received any communication since then.</p>\n\n"
+            + "<p class=\"govuk-body-s\">You'll usually get the grant within 16 weeks. It can take longer if you need "
+            + "to provide additional information.</p>\n"
+            + "<p class=\"govuk-body-s\">You don't need to do anything else now, we'll email you if we need more "
+            + "information</p>\n\n"
             + "<h2 class=\"govuk-heading-l\">Get help with your application</h2>\n\n"
             + "<h3 class=\"govuk-heading-m\">Telephone</h3>\n\n"
             + "<p class=\"govuk-body-s\">You will need the case reference or the deceased's full name when you call."

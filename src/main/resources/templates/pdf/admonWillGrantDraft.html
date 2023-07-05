@@ -10,6 +10,15 @@
 {% if address.Country != null and address.Country != "" %}{{ address.Country }}{% endif %}
 {% endif %}
 {% endmacro %}
+
+{% macro codicils(codicilAddedDateList) %}
+{% if codicilAddedDateList|length == 1 %} with one codicil{% endif %}
+{% if codicilAddedDateList|length == 2 %} with two codicils{% endif %}
+{% if codicilAddedDateList|length == 3 %} with three codicils{% endif %}
+{% if codicilAddedDateList|length == 4 %} with four codicils{% endif %}
+{% if codicilAddedDateList|length == 5 %} with five codicils{% endif %}
+{% endmacro %}
+
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <title th:remove="all" th:text="${title}">Grant of Probate</title>
@@ -228,9 +237,9 @@
                 Died on
                 {% endif %} <strong>{{case_details.case_data.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{case_details.case_data.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
             </p>
-            <p>The Last Will and Testament <strong><span class="lowerCase">
-                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}
-                </span></strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+            <p>The Last Will and Testament <strong>
+                {% if case_details.case_data.boWillMessage != null and case_details.case_data.boWillMessage != ""%}{{ case_details.case_data.boWillMessage }}{% endif %}{% if case_details.case_data.willHasCodicils == "Yes" %}{{ codicils(case_details.case_data.codicilAddedDateList) }}{% endif %}
+                </strong> of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
                 The Administration of <strong>{{case_details.case_data.deceasedForenames}} {{case_details.case_data.deceasedSurname}}</strong>'s estate is granted by this court to the following administrator{% set applyingExecCounter = 0 %}{% for executor
                 in case_details.case_data.executorsApplying %}{% set applyingExecCounter = applyingExecCounter + 1 %}{%
                 endfor %}{% if applyingExecCounter > 0 %}s{% endif %}
@@ -271,7 +280,7 @@
             {% else %}
             <p>
                 <strong>
-                    <span class="capitalize">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
+                    <span style="text-transform: capitalize;">{{case_details.case_data.primaryApplicantForenames}} {{case_details.case_data.primaryApplicantSurname}}</span>
                 </strong> of
                 <strong>
                     <span class="camelCase">{% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1}}{% endif %}

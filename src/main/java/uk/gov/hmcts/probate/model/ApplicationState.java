@@ -17,14 +17,11 @@ public enum ApplicationState {
     STOPPED("Stopped","Stopped"),
     CASE_PRINTED("CasePrinted", "Awaiting documentation"),
 
-    READY_FOR_EXAMINATION("BOReadyForExamination","Ready for examination"),
-    EXAMINING("BOExamining","Examining"),
 
     BO_CASE_STOPPED("BOCaseStopped","Case stopped"),
     CAVEAT_PERMENANT("BOCaveatPermenant", "Caveat permenant"),
     REGISTRAR_ESCALATION("BORegistrarEscalation", "Registrar escalation"),
 
-    READY_TO_ISSUE("BOReadyToIssue", "Ready to issue"),
     CASE_QA("BOCaseQA", "Case selected for QA"),
 
     CASE_MATCHING_ISSUE_GRANT("BOCaseMatchingIssueGrant", "Case Matching (Issue grant)"),

@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
@@ -16,8 +17,10 @@ import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.CreditAccountPaymentTransformer;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -37,6 +40,8 @@ import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class CaveatControllerUnitTest {
@@ -75,6 +80,8 @@ class CaveatControllerUnitTest {
     @Mock
     private CaveatDetails caveatDetailsMock;
     @Mock
+    private CaveatData caveatDataMock;
+    @Mock
     private FeeResponse feeResponseMock;
     @Mock
     private CaveatCallbackResponse caveatCallbackResponse;
@@ -86,6 +93,10 @@ class CaveatControllerUnitTest {
     private SolicitorPaymentMethodValidationRule solicitorPaymentMethodValidationRuleMock;
     @Mock
     private PaymentResponse paymentResponseMock;
+    @Mock
+    private RegistrarDirectionService registrarDirectionService;
+    @Mock
+    private DocumentGeneratorService documentGeneratorService;
 
     @BeforeEach
     public void setUp() {
@@ -94,7 +105,8 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
             confirmationResponseService, paymentsService, feeService, creditAccountPaymentTransformer,
-            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock);
+            creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock,
+            registrarDirectionService, documentGeneratorService);
 
     }
 
@@ -155,5 +167,39 @@ class CaveatControllerUnitTest {
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));
+    }
+
+    @Test
+    void shouldInvokeRegistrarsDecision() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+
+        ResponseEntity<CaveatCallbackResponse> response =
+                underTest.registrarsDecision(caveatCallbackRequest);
+        verify(registrarDirectionService, times(1)).addAndOrderDirectionsToCaveat(caveatDataMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSetupDeleteDocuments() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+
+        ResponseEntity<CaveatCallbackResponse> response =
+                underTest.setupForPermanentRemovalCaveat(caveatCallbackRequest);
+        verify(caveatCallbackResponseTransformer, times(1)).setupOriginalDocumentsForRemoval(caveatCallbackRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldDeleteDocuments() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+
+        ResponseEntity<CaveatCallbackResponse> response =
+                underTest.permanentlyDeleteRemovedCaveat(caveatCallbackRequest);
+        verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForCaveat(caveatCallbackRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

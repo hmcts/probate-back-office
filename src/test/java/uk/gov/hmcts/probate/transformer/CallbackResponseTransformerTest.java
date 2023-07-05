@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
@@ -87,6 +88,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -639,6 +641,7 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDateKnown(YES)
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
+            .documentsReceivedNotificationSent(YES);
         ;
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
@@ -807,7 +810,7 @@ class CallbackResponseTransformerTest {
 
         assertCommon(callbackResponse);
         assertLegacyInfo(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertNull(callbackResponse.getData().getState());
     }
 
@@ -1013,7 +1016,7 @@ class CallbackResponseTransformerTest {
         assertEquals(APPLICANT_HAS_ALIAS, callbackResponse.getData().getPrimaryApplicantHasAlias());
         assertEquals(OTHER_EXECS_EXIST, callbackResponse.getData().getOtherExecutorExists());
 
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals(TOTAL_FEE, callbackResponse.getData().getTotalFee());
         assertEquals(SOL_PAY_METHODS_CHEQUE, callbackResponse.getData().getSolsPaymentMethods());
         assertNull(callbackResponse.getData().getSolsFeeAccountNumber());
@@ -1164,7 +1167,7 @@ class CallbackResponseTransformerTest {
             Arrays.asList(grantDocument, grantIssuedSentEmail), "abc123", "2");
 
         assertCommon(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals("abc123", callbackResponse.getData()
             .getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(ADMON_WILL_GRANT_REISSUE.getTemplateName(),
@@ -1551,6 +1554,23 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformCaseForSolsEmailIsSet() {
+        caseDataBuilder.solsSolicitorEmail("");
+        caseDataBuilder.applicationType(SOLICITOR);
+        caseDataBuilder.solsSolicitorEmail(SOLICITOR_FIRM_EMAIL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantIssuedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailDocsReceivedNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailGrantReissuedNotification());
+    }
+
+    @Test
     void shouldTransformCaseForPAEmailEmpty() {
         caseDataBuilder.primaryApplicantEmailAddress("");
         caseDataBuilder.applicationType(PERSONAL);
@@ -1895,7 +1915,7 @@ class CallbackResponseTransformerTest {
         assertEquals(NO, callbackResponse.getData().getWillExists());
 
         assertCommonDetails(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertLegacyInfo(callbackResponse);
         assertCommonPaperForm(callbackResponse);
         assertSolsDetails(callbackResponse);
@@ -2351,6 +2371,40 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldResolveCaseWorkerEscalationStateBOCaseQA() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .resolveCaseWorkerEscalationState(QA_CASE_STATE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.resolveCaseWorkerEscalationState(callbackRequestMock);
+        assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
+    }
+
+
+    @Test
+    void shouldChangeCaseStateBOCaseQA() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .transferToState(QA_CASE_STATE);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
+        assertEquals(QA_CASE_STATE, callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldChangeCaseStateCaseMatchingIssueGrant() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .transferToState(CASE_MATCHING_ISSUE_GRANT);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
+        assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
+    }
+
+    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -2386,7 +2440,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCaseForLetterPreview(callbackRequestMock, letter);
 
         assertCommon(callbackResponse);
-        assertEquals(NO, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
     }
 
     @Test
@@ -3742,5 +3796,104 @@ class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getScannedDocuments().size());
         assertEquals(SCANNED_DOCUMENTS_LIST, callbackResponse.getData().getScannedDocuments());
         assertEquals(0, callbackResponse.getData().getProbateNotificationsGenerated().size());
+    }
+
+    @Test
+    void shouldTransformCaseWithRegistrarDirections() {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        List<CollectionMember<RegistrarDirection>> directions = new ArrayList<>();
+        CollectionMember<RegistrarDirection> registrarDirectionCollectionMember1 = new CollectionMember<>(null,
+                RegistrarDirection.builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-01T23:45:45.890Z", formatter))
+                        .decision("Decision 1")
+                        .furtherInformation("Further information 1")
+                        .build());
+        CollectionMember<RegistrarDirection> registrarDirectionCollectionMember2 = new CollectionMember<>(null,
+                RegistrarDirection.builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-02T23:45:45.890Z", formatter))
+                        .decision("Decision 2")
+                        .build());
+
+        directions.add(registrarDirectionCollectionMember1);
+        directions.add(registrarDirectionCollectionMember2);
+
+        caseDataBuilder.registrarDirections(directions);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCaseWithRegistrarDirection(callbackRequestMock);
+        assertEquals(2, callbackResponse.getData().getRegistrarDirections().size());
+        assertEquals("2023-01-01T23:45:45.890Z", format(formatter, callbackResponse.getData(), 0));
+        assertEquals("Decision 1", callbackResponse.getData().getRegistrarDirections().get(0).getValue().getDecision());
+        assertEquals("Further information 1", callbackResponse.getData().getRegistrarDirections().get(0).getValue()
+                .getFurtherInformation());
+        assertEquals("2023-01-02T23:45:45.890Z", format(formatter, callbackResponse.getData(), 1));
+        assertEquals("Decision 2", callbackResponse.getData().getRegistrarDirections().get(1).getValue().getDecision());
+        assertNull(callbackResponse.getData().getRegistrarDirections().get(1).getValue().getFurtherInformation());
+
+        assertNotNull(callbackResponse.getData().getRegistrarDirectionToAdd());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getAddedDateTime());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getDecision());
+        assertNull(callbackResponse.getData().getRegistrarDirectionToAdd().getFurtherInformation());
+    }
+
+    @Test
+    void shouldSetupDocumentsForRemoval() {
+
+        List<CollectionMember<Document>> generated = Arrays.asList(new CollectionMember("1",
+                Document.builder().build()));
+        List<CollectionMember<ScannedDocument>> scanned = Arrays.asList(new CollectionMember("2",
+                ScannedDocument.builder().build()));
+        List<CollectionMember<UploadDocument>> uploaded = Arrays.asList(new CollectionMember("3",
+                UploadDocument.builder().build()));
+
+        caseDataBuilder.probateDocumentsGenerated(generated);
+        caseDataBuilder.scannedDocuments(scanned);
+        caseDataBuilder.boDocumentsUploaded(uploaded);
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse response = underTest.setupOriginalDocumentsForRemoval(callbackRequestMock);
+        assertEquals("1", response.getData().getOriginalDocuments().getOriginalDocsGenerated().get(0).getId());
+        assertEquals("2", response.getData().getOriginalDocuments().getOriginalDocsScanned().get(0).getId());
+        assertEquals("3", response.getData().getOriginalDocuments().getOriginalDocsUploaded().get(0).getId());
+    }
+
+    @Test
+    void shouldTransformPersonalCaseForUpdateTaskList() {
+        CaseData caseData = caseDataBuilder
+                .applicationType(PERSONAL)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+
+        caseData = caseDataBuilder
+                .primaryApplicantEmailAddress(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
+    @Test
+    void shouldTransformSolicitorCaseForUpdateTaskList() {
+        CaseData caseData = caseDataBuilder
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+
+        caseData = caseDataBuilder
+                .solsSolicitorEmail(null)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
+    private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
+        return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
 }
