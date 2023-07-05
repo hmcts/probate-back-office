@@ -51,9 +51,9 @@ public class SmeeAndFordExtractTask implements Runnable {
         } catch (ApiClientException e) {
             log.error(e.getMessage());
         } catch (FeignException e) {
-            log.error("Error on calling BackOfficeAPI: {}", e.getMessage());
+            log.error("Error on calling BackOfficeAPI:{}", e.getMessage());
         } catch (Exception e) {
-            log.error("Error on SmeeAndFordExtractTask Scheduler: {}", e.getMessage());
+            log.error("Error on SmeeAndFordExtractTask Scheduler:{}", e.getMessage());
         } finally {
             ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
             executorService.schedule(new TimerTask() {
