@@ -125,12 +125,14 @@ public class CaveatNotificationService {
         } catch (NotificationClientException e) {
             log.info("Case:" + caveatDetails.getId() + " NotificationClientException: " + e.getMessage());
         }
-        if (document != null && null == document.getDocumentGeneratedBy()
-                && null != caveatDetails.getData().getApplicationSubmittedBy()) {
-            document.setDocumentGeneratedBy(caveatDetails.getData().getApplicationSubmittedBy());
-        }
         List<Document> documents = new ArrayList<>();
-        documents.add(document);
+        if (document != null) {
+            if (null == document.getDocumentGeneratedBy()
+                    && null != caveatDetails.getData().getApplicationSubmittedBy()) {
+                document.setDocumentGeneratedBy(caveatDetails.getData().getApplicationSubmittedBy());
+            }
+            documents.add(document);
+        }
         return caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null);
     }
 
