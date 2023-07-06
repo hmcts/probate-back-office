@@ -209,7 +209,7 @@ xui-webapp:
     ingressHost: xui-${SERVICE_FQDN}
     devcpuRequests: 1000m
     devmemoryRequests: 1024Mi
-    devcpuLimits: 2
+    devcpuLimits: 2000m
     devmemoryLimits: 2Gi
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
