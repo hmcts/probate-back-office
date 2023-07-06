@@ -148,24 +148,25 @@ public class PaymentsService {
                                                                  ServiceRequestUpdateResponseDto response) {
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
-        Document sentEmail;
+        Document sentEmail = null;
         try {
+            securityUtils.setSecurityContextUserAsCaseworker();
             if (!NO.equals(caseDetails.getData().getEvidenceHandled())) {
                 notificationService.startAwaitingDocumentationNotificationPeriod(caseDetails);
-                securityUtils.setSecurityContextUserAsCaseworker();
                 sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED, caseDetails);
             } else {
                 sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED_NO_DOCS, caseDetails);
             }
         } catch (NotificationClientException e) {
-            log.info("Payment service NotificationClientException: " + e.getMessage());
-            throw new RuntimeException(e.getMessage());
+            log.info("Case:" + caseDetails.getId() + "Payment service NotificationClientException: " + e.getMessage());
         }
-        if (sentEmail != null && null == sentEmail.getDocumentGeneratedBy()
-                && null != caseDetails.getData().getApplicationSubmittedBy()) {
-            sentEmail.setDocumentGeneratedBy(caseDetails.getData().getApplicationSubmittedBy());
+        if (sentEmail != null) {
+            if (null == sentEmail.getDocumentGeneratedBy()
+                    && null != caseDetails.getData().getApplicationSubmittedBy()) {
+                sentEmail.setDocumentGeneratedBy(caseDetails.getData().getApplicationSubmittedBy());
+            }
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
         }
-        documentTransformer.addDocument(callbackRequest, sentEmail, false);
 
         List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
                 caseDetails.getData().getPayments(), response);
@@ -222,27 +223,23 @@ public class PaymentsService {
 
     private CaveatData buildCaveatDataPaid(CaveatDetails caveatDetails, ServiceRequestUpdateResponseDto response) {
         CaveatCallbackRequest caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
-        CaveatCallbackResponse caveatCallbackResponse;
-        try {
-            caveatCallbackResponse = caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
-            LocalDate appSubmittedDate =
-                    casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
-            LocalDate expiryDate =
-                    casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getExpiryDate());
-            List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
-                    caveatDetails.getData().getPayments(), response);
-            return CaveatData.builder()
-                    .payments(allPayments)
-                    .paymentTaken(getPaymentTakenStatus(caveatDetails.getData().getPaymentTaken(),
-                            response.getServiceRequestStatus()))
-                    .applicationSubmittedDate(appSubmittedDate)
-                    .notificationsGenerated(asNotificationsGenerated(caveatCallbackResponse.getCaveatData()
-                            .getNotificationsGenerated()))
-                    .expiryDate(expiryDate)
-                    .build();
-        } catch (NotificationClientException e) {
-            throw new RuntimeException(e.getMessage());
-        }
+        CaveatCallbackResponse caveatCallbackResponse =
+                caveatNotificationService.solsCaveatRaise(caveatCallbackRequest);
+        LocalDate appSubmittedDate =
+                casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
+        LocalDate expiryDate =
+                casePaymentBuilder.parseDate(caveatCallbackResponse.getCaveatData().getExpiryDate());
+        List<CollectionMember<CasePayment>> allPayments = casePaymentBuilder.addPaymentFromServiceRequestResponse(
+                caveatDetails.getData().getPayments(), response);
+        return CaveatData.builder()
+                .payments(allPayments)
+                .paymentTaken(getPaymentTakenStatus(caveatDetails.getData().getPaymentTaken(),
+                        response.getServiceRequestStatus()))
+                .applicationSubmittedDate(appSubmittedDate)
+                .notificationsGenerated(asNotificationsGenerated(caveatCallbackResponse.getCaveatData()
+                        .getNotificationsGenerated()))
+                .expiryDate(expiryDate)
+                .build();
     }
 
     private CaveatData buildCaveatDataNotPaid(CaveatDetails caveatDetails, ServiceRequestUpdateResponseDto response) {

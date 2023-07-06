@@ -133,6 +133,45 @@ class PaymentsServiceTest {
     }
 
     @Test
+    void shouldRetrieveAndUpdateGrantDataWithNotificationFailure() throws NotificationClientException {
+        setupIdamUserResponse();
+
+        HashMap<String, Object> caseData = new HashMap();
+        caseData.put("registryLocation", "ctsc");
+        caseData.put("languagePreferenceWelsh", "No");
+        caseData.put("applicationType", "Solicitor");
+        caseData.put("solsSolicitorEmail", "solsSolicitorEmail@probate-test.com");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = CaseDetails.builder()
+                .id(0L)
+                .data(caseData)
+                .build();
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+        Document sentEmail = Document.builder()
+                .documentLink(DocumentLink.builder().build())
+                .documentType(DocumentType.EMAIL)
+                .build();
+        when(notificationService.sendEmail(any(), any())).thenThrow(NotificationClientException.class);
+        Document coversheet = Document.builder()
+                .documentLink(DocumentLink.builder().build())
+                .documentType(DocumentType.BLANK)
+                .build();
+        when(pdfManagementService
+                .generateAndUpload(any(CallbackRequest.class), any())).thenReturn(coversheet);
+        when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
+                CasePayment.builder()
+                        .status(PaymentStatus.SUCCESS)
+                        .build()));
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
+        paymentsService.updateCaseFromServiceRequest(responseDto, GRANT_OF_REPRESENTATION);
+
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
+                any(), any(),
+                any(), any(), any());
+    }
+
+    @Test
     void shouldRetrieveAndUpdateGrantDataWithPaymentResponseEvidenceHandled()
             throws NotificationClientException {
         setupIdamUserResponse();
@@ -267,34 +306,38 @@ class PaymentsServiceTest {
     }
 
     @Test
-    void shouldNotUpdateCaveatDataWhenNotificationFailure() {
-        assertThrows(RuntimeException.class, () -> {
-            setupIdamUserResponse();
+    void shouldUpdateCaveatDataWhenNotificationFailure() {
+        setupIdamUserResponse();
 
-            HashMap<String, Object> caseData = new HashMap();
-            caseData.put("registryLocation", "ctsc");
-            caseData.put("languagePreferenceWelsh", "No");
-            caseData.put("applicationType", "Solicitor");
-            caseData.put("caveatorEmailAddress", "solsSolicitorEmail@probate-test.com");
-            uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = CaseDetails.builder()
-                    .id(0L)
-                    .data(caseData)
-                    .build();
-            when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
-            when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
-            when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
-            List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
-                    CasePayment.builder()
-                            .status(PaymentStatus.SUCCESS)
-                            .build()));
-            when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
-            ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
-            paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
+        HashMap<String, Object> caseData = new HashMap();
+        caseData.put("registryLocation", "ctsc");
+        caseData.put("languagePreferenceWelsh", "No");
+        caseData.put("applicationType", "Solicitor");
+        caseData.put("caveatorEmailAddress", "solsSolicitorEmail@probate-test.com");
+        uk.gov.hmcts.reform.ccd.client.model.CaseDetails caseDetails = CaseDetails.builder()
+                .id(0L)
+                .data(caseData)
+                .build();
+        when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
+        CaveatCallbackResponse response = CaveatCallbackResponse.builder()
+                .caveatData(ResponseCaveatData.builder()
+                        .notificationsGenerated(new ArrayList<>())
+                        .build())
+                .build();
+        when(caveatNotificationService.solsCaveatRaise(any())).thenReturn(response);
+        when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
+        List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
+                CasePayment.builder()
+                        .status(PaymentStatus.SUCCESS)
+                        .build()));
+        when(casePaymentBuilder.addPaymentFromServiceRequestResponse(any(), any())).thenReturn(payments);
+        ServiceRequestUpdateResponseDto responseDto = getServiceRequestUpdateResponseDtoSuccessPayment();
+        paymentsService.updateCaseFromServiceRequest(responseDto, CAVEAT);
 
-            verify(ccdClientApi, times(0)).updateCaseAsCaseworker(any(), any(), any(),
-                    any(), any(),
-                    any(), any(), any());
-        });
+        verify(ccdClientApi).updateCaseAsCaseworker(any(), any(), any(),
+                any(), any(),
+                any(), any(), any());
+
     }
 
     @Test
@@ -312,7 +355,6 @@ class PaymentsServiceTest {
                     .data(caseData)
                     .build();
             when(ccdClientApi.readForCaseWorker(any(), any(), any())).thenReturn(caseDetails);
-            when(caveatNotificationService.solsCaveatRaise(any())).thenThrow(NotificationClientException.class);
             when(casePaymentBuilder.parseDate(any())).thenReturn(LocalDate.now(), LocalDate.now());
             List<CollectionMember<CasePayment>> payments = Arrays.asList(new CollectionMember(null,
                     CasePayment.builder()
