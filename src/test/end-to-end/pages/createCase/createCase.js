@@ -10,11 +10,6 @@ module.exports = async function (caseType, event) {
     await I.waitForText(createCaseConfig.waitForText, testConfig.WaitForTextTimeout || 60);
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);
-    /* eslint-disable no-await-in-loop */
-    do{
-        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
-    }while(!I.waitForText('Jurisdiction', testConfig.WaitForTextTimeout || 60))
-
     await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 60);
     await I.selectOption('#cc-jurisdiction', 'PROBATE');
     await I.wait(testConfig.CreateCaseDelay);
