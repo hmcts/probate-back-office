@@ -6,7 +6,7 @@ const createCaseConfig = require('./createCaseConfig');
 module.exports = async function (caseType, event) {
 
     const I = this;
-    var numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
+    var numElementFound = 0;
     do{
         I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
         await I.wait(testConfig.CreateCaseDelay);
