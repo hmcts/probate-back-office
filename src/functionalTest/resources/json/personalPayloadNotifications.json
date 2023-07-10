@@ -39,32 +39,6 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "legalStatement": {
-        "intro": "This statement is based on the information ApplicantCurrent ApplicantL has given in their application. It will be stored as a public record.",
-        "deceased": "Deceased DeceasedL was born on 12 December 1918 and died on 12 December 2022, domiciled in England and Wales.",
-        "applicant": "We, ApplicantCurrent ApplicantL of 52 Gaywood Close London SW2 3QP United Kingdom and ExecutorCurrentName of 55 Lambton Road London SW20 0LW United Kingdom, make the following statement:",
-        "executorsApplying": [
-          {
-            "id": "329ce6c6-86a0-45ba-898e-c6302877f07f",
-            "value": {
-              "name": "ApplicantCurrent ApplicantL, an executor named in the will, is applying for probate.",
-              "sign": "ApplicantCurrent ApplicantL will send to the probate registry what we have seen and believe to be the true and original last will and testament of Deceased DeceasedL."
-            }
-          },
-          {
-            "id": "84735e49-1e2f-48a5-8bca-ad812475b371",
-            "value": {
-              "name": "ExecutorCurrentName, an executor named in the will as ExecutorNameOnWill, is applying for probate. Their name is different because ExecutorCurrentName changed their name by deed poll.",
-              "sign": ""
-            }
-          }
-        ],
-        "deceasedEstateLand": "To the best of our knowledge, information and belief, there was no land vested in Deceased DeceasedL which was settled previously to the death (and not by the will) of Deceased DeceasedL and which remained settled land notwithstanding such death.",
-        "deceasedOtherNames": "",
-        "deceasedEstateValue": "The gross value for the estate amounts to &pound;123.00 and the net value for the estate amounts to &pound;122.00.",
-        "executorsNotApplying": [],
-        "deceasedEstateValueExceptedEstateConfirmation": "I confirm that the estate is an excepted estate."
-      },
       "caseType": "gop",
       "executorsApplyingNotifications": [
         {
@@ -92,7 +66,6 @@
           "value": {
             "applyingExecutorName": "Eileen Executor",
             "applyingExecutorEmail": "executor1@probate-test.com",
-            "applyingExecutorOtherNames": "ExecutorCurrentName",
             "applyingExecutorAddress": {
               "County": "",
               "Country": "",
