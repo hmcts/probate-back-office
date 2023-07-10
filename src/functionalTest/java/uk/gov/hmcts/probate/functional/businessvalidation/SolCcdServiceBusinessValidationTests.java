@@ -46,6 +46,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
     private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
+    private static final String ESCALATE_TO_REGISTRAR_URL = "/case/case-escalated";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String CASE_CREATE_VALIDATE_URL = "/case/sols-create-validate";
@@ -680,6 +681,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestSuccessForChangeCaseState() throws IOException {
         validatePostSuccess("solicitorPayloadChangeCaseState.json", CHANGE_CASE_STATE_URL);
+    }
+
+    @Test
+    public void verifyRequestSuccessForEscalateToRegistrar() throws IOException {
+        final String payload = utils.getJsonFromFile("solicitorExecutorsCaseStopped.json");
+        final ResponseBody result = validatePostSuccessForPayload(payload, ESCALATE_TO_REGISTRAR_URL);
+        final JsonPath jsonPath = JsonPath.from(result.prettyPrint());
+        final String escalatedDate = jsonPath.get("data.escalatedDate");
+        assertEquals(escalatedDate, TODAY_YYYY_MM_DD);
     }
 
     @Test
