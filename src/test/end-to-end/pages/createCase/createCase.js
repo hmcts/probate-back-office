@@ -11,10 +11,10 @@ module.exports = async function (caseType, event) {
     do{
         I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
         await I.wait(testConfig.CreateCaseDelay);
-        await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);
-        await I.wait(testConfig.CreateCaseDelay);
         numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
     }while(numElementFound <= 0)
+    await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);
+    await I.wait(testConfig.CreateCaseDelay);
     await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 60);
     await I.selectOption('#cc-jurisdiction', 'PROBATE');
     await I.wait(testConfig.CreateCaseDelay);
