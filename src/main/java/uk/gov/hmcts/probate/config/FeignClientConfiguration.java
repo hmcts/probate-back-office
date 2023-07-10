@@ -1,13 +1,12 @@
 package uk.gov.hmcts.probate.config;
 
 import feign.Client;
-import feign.httpclient.ApacheHttpClient;
+import feign.hc5.ApacheHttp5Client;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.hc.client5.http.config.RequestConfig;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
-import org.apache.http.client.HttpClient;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -27,7 +26,7 @@ public class FeignClientConfiguration {
 
     @Bean
     public Client getFeignHttpClient() {
-        return new ApacheHttpClient((HttpClient) getHttpClient());
+        return new ApacheHttp5Client(getHttpClient());
     }
 
     @Bean

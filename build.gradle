@@ -206,7 +206,7 @@ def versions = [
         serviceAuthVersion              : '5.1.0',
         springBootStarterHateoas        : '3.1.1',
         springBootVersion               : '3.1.1',
-        springCloud                     : '3.1.1',
+        springCloud                     : '4.0.3',
         springCloudStarterNetflixHystrix: '4.0.3',
         springDocOpenUi                 : '1.6.6'
 ]
@@ -284,6 +284,9 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
   implementation group: 'org.springframework.security', name: 'spring-security-web'
+  implementation group: 'org.springframework.security', name: 'spring-security-config'
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-jose'
+  implementation group: 'org.springframework.security', name: 'spring-security-oauth2-resource-server'
   implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.2'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
@@ -301,9 +304,10 @@ dependencies {
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '3.17.3-RELEASE'
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
-  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.16'
+  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.0'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
+  implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.12'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.4.12'
   implementation 'org.apache.httpcomponents.client5:httpclient5:5.2.1'
   implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '12.3'
@@ -323,7 +327,7 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.0'
 
-  implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '12.3'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   //implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
 

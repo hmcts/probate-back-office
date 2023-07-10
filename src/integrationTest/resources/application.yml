@@ -386,6 +386,8 @@ idam:
     host: ${S2S_AUTH_URL:http://localhost:4502}
   api:
     url: ${IDAM_SERVICE_HOST:http://localhost:5000}
+  s2s-authorised:
+    services: ${S2S_NAMES_WHITELIST:probate_backend,bulk_scan_processor,bulk_scan_orchestrator,payment_app}
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8485}

@@ -6,7 +6,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.MediaType;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -15,19 +14,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import uk.gov.hmcts.probate.insights.AppInsights;
-import uk.gov.hmcts.reform.auth.checker.core.SubjectResolver;
-import uk.gov.hmcts.reform.auth.checker.core.service.Service;
-import uk.gov.hmcts.reform.auth.checker.core.user.User;
-import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
-
-import jakarta.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.formLogin;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestBuilders.logout;
 import static org.springframework.security.test.web.servlet.response.SecurityMockMvcResultMatchers.authenticated;
@@ -42,8 +28,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(properties = {"s2s.enabled=true"})
 class SecurityConfigurationIT {
 
-    private static final String PRINCIPAL = "ccd-datamgmt-api";
-
     private static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
     private static final String AUTHORIZATION = "Authorization";
@@ -53,19 +37,7 @@ class SecurityConfigurationIT {
 
     private MockMvc mvc;
 
-    @MockBean
-    private SubjectResolver<Service> serviceResolver;
 
-    @MockBean
-    private UserRequestAuthorizer<User> userRequestAuthorizer;
-
-    @MockBean
-    private AppInsights appInsights;
-
-    @MockBean
-    private CoreCaseDataApi coreCaseDataApi;
-
-    private Service service;
 
     @BeforeEach
     public void setUp() {
@@ -73,12 +45,6 @@ class SecurityConfigurationIT {
             .apply(springSecurity())
             .defaultRequest(get("/").accept(MediaType.TEXT_HTML))
             .build();
-
-        service = new Service(PRINCIPAL);
-        when(serviceResolver.getTokenDetails(anyString())).thenReturn(service);
-
-        User user = new User("123", new HashSet<>());
-        when(userRequestAuthorizer.authorise(any(HttpServletRequest.class))).thenReturn(user);
     }
 
     @Test
