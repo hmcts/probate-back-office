@@ -23,7 +23,7 @@ module.exports = async function (opts) {
     assert (texts[6] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
     assert (texts[7] === 'Make payment');
     await I.wait(3);
-    if (texts[8] === ''){
+    if (texts[8] === '') {
         assert (texts[8] === '');
     } else {
         assert (texts[8] === 'Once payment is made, you\'ll need to refresh the page or re-enter the case for the payment status to update.');
