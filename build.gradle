@@ -189,7 +189,7 @@ gitProperties {
 
 def versions = [
         ccdClient                       : '4.9.2',
-        commonsIO                       : '2.11.0',
+        commonsIO                       : '2.13.0',
         commonsValidator                : '1.6',
         documentClient                  : '1.7.3',
         elasticSearchVersion            : '7.15.0',
@@ -305,7 +305,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.0'
-  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.11'
+  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.12'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.4.12'

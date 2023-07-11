@@ -14,7 +14,6 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
 import uk.gov.hmcts.probate.model.ccd.raw.LocalDateTimeSerializer;
 import uk.gov.hmcts.probate.service.task.ScheduledTaskRunner;
-import uk.gov.hmcts.reform.ccd.client.CoreCaseDataClientAutoConfiguration;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
-@SpringBootApplication(exclude = {CoreCaseDataClientAutoConfiguration.class})
+@SpringBootApplication
 @EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.idam", "uk.gov.hmcts.reform.ccd",
     "uk.gov.hmcts.reform.sendletter",
     "uk.gov.hmcts.probate.service"})
