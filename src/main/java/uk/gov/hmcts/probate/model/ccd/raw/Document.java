@@ -5,6 +5,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.reform.probate.model.ProbateDocument;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
+import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 
 import java.time.LocalDate;
 
@@ -39,5 +42,22 @@ public class Document {
         this.documentFileName = documentFileName;
         this.documentDateAdded = documentDateAdded;
         this.documentGeneratedBy = documentGeneratedBy;
+    }
+
+    public ProbateDocument asProbateDocument() {
+        ProbateDocumentLink probateDocumentLink = ProbateDocumentLink.builder()
+                .documentBinaryUrl(getDocumentLink().getDocumentBinaryUrl())
+                .documentFilename(getDocumentLink().getDocumentFilename())
+                .documentUrl(getDocumentLink().getDocumentUrl())
+                .build();
+        ProbateDocumentType probateDocumentType = ProbateDocumentType.valueOf(getDocumentType().name());
+        return ProbateDocument.builder()
+                .documentDateAdded(getDocumentDateAdded())
+                .documentFileName(getDocumentFileName())
+                .documentGeneratedBy(getDocumentGeneratedBy())
+                .documentLink(probateDocumentLink)
+                .documentType(probateDocumentType)
+                .build();
+
     }
 }

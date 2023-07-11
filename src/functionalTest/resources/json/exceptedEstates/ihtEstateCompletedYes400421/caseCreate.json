@@ -177,7 +177,9 @@
       "solsSOTJobTitle": "job title",
       "deceasedDateOfDeath": "2021-01-01",
       "ihtFormEstateValuesCompleted": "Yes",
-      "ihtFormEstate": "IHT400421"
+      "ihtFormEstate": "IHT400421",
+      "paymentTaken": "Yes",
+      "serviceRequestReference": "abcdef123456"
     }
   },
   "event_id": "solicitorReviewAndConfirm"
