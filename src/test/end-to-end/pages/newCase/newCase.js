@@ -8,19 +8,14 @@ module.exports = async function () {
     const I = this;
     const locator = newCaseConfig.xuiCreateCaseLocator;
     await I.wait(testConfig.CreateCaseDelay);
-    var numElementFound = 0;
-    do{
-        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases`);
-        await I.wait(testConfig.CreateCaseDelay);
-        try{
-            I.seeInCurrentUrl('/cases');
+    var numElementFound = await I.grabNumberOfVisibleElements(locator);
+    if(numElementFound<=0){
+        do{
+            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases`).catch(() => I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay));
             await I.wait(testConfig.CreateCaseDelay);
             numElementFound = await I.grabNumberOfVisibleElements(locator);
-        } catch(error) {
-            await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
-        }
-
-    }while(numElementFound<=0);
+        }while(numElementFound<=0);
+    }
     await I.waitForText(newCaseConfig.waitForText, testConfig.WaitForTextTimeout);
     await I.rejectCookies();
     await I.waitForEnabled({css: locator});
