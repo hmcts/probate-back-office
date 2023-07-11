@@ -21,7 +21,7 @@ module.exports = async function (caseRef, appType) {
         await I.waitForElement(tabXPath, 60); // eslint-disable-line no-await-in-loop
         await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60); // eslint-disable-line no-await-in-loop
         await I.clickTab(makePaymentConfig.eventHistoryTab); // eslint-disable-line no-await-in-loop
-        const result = await I.checkForText(makePaymentConfig.statusText, 10);
+        const result = await I.checkForText(makePaymentConfig.statusText, 10); // eslint-disable-line no-await-in-loop
         if (result === true) {
             break;
         }
