@@ -12,13 +12,14 @@ module.exports = async function () {
     do{
         I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases`);
         await I.wait(testConfig.CreateCaseDelay);
-        const currentPageURL = I.seeInCurrentUrl('/cases');
-
-        if (!currentPageURL){
+        try{
+            I.seeInCurrentUrl('/cases');
+            await I.wait(testConfig.CreateCaseDelay);
+            numElementFound = await I.grabNumberOfVisibleElements(locator);
+        } catch(error) {
             await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         }
-        await I.wait(testConfig.CreateCaseDelay);
-        numElementFound = await I.grabNumberOfVisibleElements(locator);
+
     }while(numElementFound<=0);
     await I.waitForText(newCaseConfig.waitForText, testConfig.WaitForTextTimeout);
     await I.rejectCookies();
