@@ -288,8 +288,9 @@ public class NotificationController {
             Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
             documents.add(nocSentEmail);
             response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+        } else {
+            log.info("No email sent or document returned to case: {}", caseDetails.getId());
         }
-        log.info("No email sent or document returned to case: {}", caseDetails.getId());
         return ResponseEntity.ok(response);
     }
 

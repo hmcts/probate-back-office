@@ -12,8 +12,11 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -40,6 +43,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,10 +59,12 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
+import static uk.gov.hmcts.probate.model.State.NOC;
 
 @ExtendWith(SpringExtension.class)
 class NotificationControllerUnitTest {
@@ -338,6 +344,40 @@ class NotificationControllerUnitTest {
         ResponseEntity<ProbateDocument> stringResponseEntity =
                 notificationController.sendApplicationReceivedNotification(callbackRequest);
         verify(notificationService).startAwaitingDocumentationNotificationPeriod(any());
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSendNocEmail() throws NotificationClientException {
+        setUpMocks(NOC);
+        CollectionMember<ChangeOfRepresentative> representative =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                        .builder().removedRepresentative(RemovedRepresentative.builder()
+                                .solicitorEmail("solicitor@gmail.com").build())
+                        .build());
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .changeOfRepresentatives(Arrays.asList(representative))
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file")
+                                .documentBinaryUrl("binary").build())
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
+        when(notificationService.sendNocEmail(any(), any())).thenReturn(document);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.sendNOCEmailNotification(callbackRequest);
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 }
