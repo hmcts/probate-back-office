@@ -21,7 +21,7 @@ management:
       show-details: always
       enabled: true
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator,payment_app
 auth.provider.service.client:
   key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
   baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
@@ -66,17 +66,17 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01289.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01289.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01289.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01289.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01289.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01289.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -88,17 +88,17 @@ docmosis:
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00228.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00228.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00228.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00228.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00228.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00228.doc
 
 fee.api:
   url: http://localhost:4411
@@ -115,18 +115,15 @@ fee.api:
   ihtMinAmt: 5000.00
 
 payment:
-  url: http://localhost:8886
-  api: /credit-account-payments
-  currency: GBP
   pba:
     siteId: ABA6
-  service: PROBATE
-
-pba:
-  retrieval:
-    url: http://localhost:8887
-    health.url: ${pba.retrieval.url}/health
-    api: /refdata/external/v1/organisations/pbas
+  serviceRequest:
+    url: ${PAYMENT_URL:http://localhost:8080}
+    api: /service-request
+    hmctsOrgId: ABA6
+    baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
+    GrantOfRepresentationCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/gor-payment-request-update
+    CaveatCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/caveat-payment-request-update
 
 prd:
   organisations:

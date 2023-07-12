@@ -6,6 +6,8 @@ const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
+const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
+const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Case Progress - Reenter Deceased Details';
@@ -137,15 +139,26 @@ Scenario(scenarioName, async function ({I}) {
         // extra copies
         await I.caseProgressWaitForElementThenContinue('#extraCopiesOfGrant');
 
-        await I.logInfo(scenarioName, 'Payment');
-        await I.caseProgressFeePayment(caseProgressConfig);
-        await I.caseProgressCompleteApplication();
-
         await I.logInfo(scenarioName, 'Submit confirmation');
+        await I.completeApplicationPage6();
+        await I.completeApplicationPage7();
         await I.caseProgressSubmittedConfirmation();
 
         const caseRef = await I.caseProgressCheckCaseProgressTab({
             numCompleted: 4,
+            numInProgress: 0,
+            numNotStarted: 1,
+            linkText: 'Make payment',
+            linkUrl: '#Service%20Request'});
+
+        await I.logInfo(scenarioName, 'Payment');
+        await I.makePaymentPage1(caseRef, serviceRequestTabConfig);
+        await I.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
+        await I.makePaymentPage2(caseRef);
+        await I.viewPaymentStatus(caseRef);
+
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 5,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -162,7 +175,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 6,
+            numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -179,7 +192,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 6,
+            numCompleted: 7,
             numInProgress: 1,
             numNotStarted: 0,
             signOut: true});
@@ -198,7 +211,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 7,
+            numCompleted: 8,
             numInProgress: 1,
             numNotStarted: 0,
             checkSubmittedDate: true,
@@ -217,7 +230,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
         await I.navigateToCase(caseRef);
         await I.caseProgressCheckCaseProgressTab({
-            numCompleted: 8,
+            numCompleted: 9,
             numInProgress: 0,
             numNotStarted: 0,
             checkSubmittedDate: true,
