@@ -354,7 +354,9 @@ class NotificationControllerUnitTest {
                 .solsSolicitorAppReference("1234-5678-9012")
                 .languagePreferenceWelsh("No")
                 .removedRepresentative(RemovedRepresentative.builder()
-                        .solicitorEmail("solicitor@gmail.com").build())
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
                 .build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         document = Document.builder()

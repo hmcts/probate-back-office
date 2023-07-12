@@ -171,12 +171,13 @@ public class NotificationService {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
         String emailAddress = getRemovedSolicitorEmail(caseData);
+        String solicitorName = removedSolicitorNameForPersonalisation(caseData);
 
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
                 caseData.getRegistryLocation(), caseData.getLanguagePreference());
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getNocPersonalisation(caseDetails.getId(),
-                        emailAddress);
+                        solicitorName);
         String emailReplyToId = registry.getEmailReplyToId();
         String reference = caseData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email repsonse");
@@ -470,5 +471,12 @@ public class NotificationService {
         String solicitorEmail = caseData.getRemovedRepresentative() != null
                 ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
         return solicitorEmail;
+    }
+
+    private String removedSolicitorNameForPersonalisation(CaseData caseData) {
+        String solicitorName = caseData.getRemovedRepresentative() != null
+                ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
+                caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+        return solicitorName;
     }
 }

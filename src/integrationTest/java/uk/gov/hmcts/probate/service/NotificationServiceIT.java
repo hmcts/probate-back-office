@@ -134,7 +134,7 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_WELSH_DATE_OF_BIRTH = "deceased_date_of_birth_welsh_text";
     private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
-    private static final String PERSONALISATION_OLD_SOLICITOR_EMAIL = "old_solicitor_email";
+    private static final String PERSONALISATION_OLD_SOLICITOR_NAME = "old_solicitor_name";
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Autowired
@@ -2164,13 +2164,15 @@ class NotificationServiceIT {
                 .solsSolicitorAppReference("1234-5678-9012")
                 .languagePreferenceWelsh("No")
                 .removedRepresentative(RemovedRepresentative.builder()
-                        .solicitorEmail("solicitor@gmail.com").build())
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
                 .build(), LAST_MODIFIED, ID);
         notificationService.sendNocEmail(NOC, caseDetails);
 
         HashMap<String, String> personalisation = new HashMap<>();
 
-        personalisation.put(PERSONALISATION_OLD_SOLICITOR_EMAIL, "solicitor@gmail.com");
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
 
