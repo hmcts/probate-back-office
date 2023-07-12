@@ -50,6 +50,9 @@ exports.config = {
         screenshotOnFail: {
             enabled: true,
             fullPageScreenshots: 'true'
+        },
+        tryTo: {
+            enabled: true
         }
     },
     'mocha': {

@@ -6,13 +6,20 @@ const createCaseConfig = require('./createCaseConfig');
 module.exports = async function (caseType, event) {
 
     const I = this;
-    var numElementFound =0;
     await I.wait(testConfig.CreateCaseDelay);
-    do{
-        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
-        await I.wait(testConfig.CreateCaseDelay);
-        numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
-    }while(numElementFound <= 0)
+    var numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
+    if(numElementFound<=0) {
+        do {
+            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
+
+            const checkUrl = await tryTo(() => I.seeInCurrentUrl('/cases/case-filter'));
+            if (checkUrl === false){
+                await I.refreshCreateCasePage(true, testConfig.CaseProgressSignInDelay);
+            }
+            await I.wait(testConfig.CreateCaseDelay);
+            numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
+        } while (numElementFound <= 0)
+    }
     await I.waitForEnabled({css: '#cc-jurisdiction'}, testConfig.WaitForTextTimeout || 60);
     await I.wait(testConfig.CreateCaseDelay);
     await I.waitForElement({css: '#cc-jurisdiction option[value=PROBATE]'}, testConfig.WaitForTextTimeout || 60);

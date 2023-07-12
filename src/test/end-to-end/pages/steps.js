@@ -11,6 +11,7 @@ module.exports = function () {
         authenticateWithIdamIfAvailable: steps.IDAM.signIn,
         selectNewCase: steps.newCase.newCase,
         selectCaseTypeOptions: steps.createCase.createCase,
+        refreshCreateCasePage: steps.createCase.refreshCasePage,
         handleEvidence: steps.handleEvidence.handleEvidence,
         registrarsDecision: steps.registrarsDecision.registrarsDecision,
         enterWillLodgementPage1: steps.createWillLodgement.page1,
