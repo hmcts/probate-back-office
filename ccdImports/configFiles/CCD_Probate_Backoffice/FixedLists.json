@@ -407,5 +407,8 @@
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "PAAppCreated", "ListElement": "PA application created", "DisplayOrder": 15},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOReadyToIssue", "ListElement": "Ready to issue", "DisplayOrder": 16},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORedecNotificationSent", "ListElement": "Redeclaration notifications sent", "DisplayOrder": 17},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar escalation", "DisplayOrder": 18}
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BORegistrarEscalation", "ListElement": "Registrar escalation", "DisplayOrder": 18},
+  {"LiveFrom": "02/01/2017", "ID": "paymentTaken", "ListElementCode": "Yes", "ListElement": "Yes", "DisplayOrder": 1},
+  {"LiveFrom": "02/01/2017", "ID": "paymentTaken", "ListElementCode": "No", "ListElement": "No", "DisplayOrder": 2},
+  {"LiveFrom": "02/01/2017", "ID": "paymentTaken", "ListElementCode": "NotApplicable", "ListElement": "Not Applicable", "DisplayOrder": 3}
 ]

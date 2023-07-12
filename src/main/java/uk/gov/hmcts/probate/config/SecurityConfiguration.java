@@ -87,6 +87,7 @@ public class SecurityConfiguration {
                 .antMatchers("/probateManTypes/**")
                 .antMatchers("/legacy/**")
                 .antMatchers("/standing-search/**")
+                .antMatchers("/payment/**")
                 .and()
                 .addFilter(authCheckerServiceOnlyFilter)
                 .csrf().disable()
