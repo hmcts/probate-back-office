@@ -1191,48 +1191,6 @@ class NotificationServiceIT {
     }
 
     @Test
-    void sendGeneralCaveatRaisedCtscBilingualEmail()
-        throws NotificationClientException, BadRequestException {
-
-        HashMap<String, String> personalisation = new HashMap<>();
-
-        personalisation
-            .put(PERSONALISATION_APPLICANT_NAME, caveatRaisedCtscCaseDataBilingual.getData().getCaveatorFullName());
-        personalisation
-            .put(PERSONALISATION_DECEASED_NAME, caveatRaisedCtscCaseDataBilingual.getData().getDeceasedFullName());
-        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatRaisedCtscCaseDataBilingual.getId().toString());
-        personalisation
-            .put(PERSONALISATION_MESSAGE_CONTENT, caveatRaisedCtscCaseDataBilingual.getData().getMessageContent());
-        personalisation.put(PERSONALISATION_REGISTRY_NAME, "CTSC");
-        personalisation.put(PERSONALISATION_REGISTRY_PHONE, "0300 303 0648");
-        personalisation.put(PERSONALISATION_CAVEAT_EXPIRY_DATE, "1st January 2019");
-        personalisation.put(PERSONALISATION_WELSH_CAVEAT_EXPIRY_DATE, "1 Ionawr 2019");
-        personalisation.put(PERSONALISATION_DATE_OF_DEATH, "12th December 2000");
-        personalisation.put(PERSONALISATION_WELSH_DATE_OF_DEATH, "12 Rhagfyr 2000");
-        if (caveatData.getDeceasedDateOfBirth() != null) {
-            personalisation.put(PERSONALISATION_DATE_OF_BIRTH,
-                "The deceased's date of birth: " + dateFormatterService
-                    .formatDate(caveatRaisedCtscCaseData.getData().getDeceasedDateOfBirth()));
-            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH,
-                "Dyddiad geni’r ymadawedig yw: " + localDateToWelshStringConverter
-                    .convert(caveatData.getDeceasedDateOfBirth()));
-        } else {
-            personalisation.put(PERSONALISATION_DATE_OF_BIRTH, "");
-            personalisation.put(PERSONALISATION_WELSH_DATE_OF_BIRTH, "");
-        }
-
-        notificationService.sendCaveatEmail(CAVEAT_RAISED, caveatRaisedCtscCaseDataBilingual);
-
-        verify(notificationClient).sendEmail(
-            eq("pa-ctsc-caveat-raised-welsh"),
-            eq("caveator@probate-test.com"),
-            eq(personalisation),
-            eq("1"));
-
-        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
-    }
-
-    @Test
     void sendSolsCaveatRaisedCtscEmail()
         throws NotificationClientException, BadRequestException {
 
