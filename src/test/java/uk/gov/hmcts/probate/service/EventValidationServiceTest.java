@@ -12,11 +12,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 
 import java.util.Arrays;
@@ -25,6 +27,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 class EventValidationServiceTest {
 
@@ -45,6 +48,8 @@ class EventValidationServiceTest {
     private CaveatData caveatDataMock;
     @Mock
     private PaymentResponse paymentResponseMock;
+    @Mock
+    private NocEmailAddressNotifyValidationRule nocEmailAddressValidationRuleMock;
 
     private SimpleValidationRule validationRule;
 
@@ -100,6 +105,25 @@ class EventValidationServiceTest {
         CaveatCallbackResponse fieldErrorResponses = eventValidationService
             .validateCaveatPaymentResponse(caveatDetailsMock, paymentResponseMock,
                 creditAccountPaymentValidationRuleMock);
+
+        assertEquals(2, fieldErrorResponses.getErrors().size());
+
+    }
+
+    @Test
+    void shouldGatherNocValidationErrors() {
+
+        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
+                FieldErrorResponse.builder().build());
+        caseDataMock = CaseData.builder()
+                .applicationType(SOLICITOR)
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com").build())
+                .build();
+        when(nocEmailAddressValidationRuleMock.validate(caseDataMock))
+                .thenReturn(errors);
+        CallbackResponse fieldErrorResponses = eventValidationService
+                .validateNocEmail(caseDataMock, nocEmailAddressValidationRuleMock);
 
         assertEquals(2, fieldErrorResponses.getErrors().size());
 

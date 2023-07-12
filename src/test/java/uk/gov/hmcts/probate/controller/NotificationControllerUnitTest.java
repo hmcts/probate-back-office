@@ -12,8 +12,6 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
@@ -43,7 +41,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -350,18 +347,14 @@ class NotificationControllerUnitTest {
     @Test
     void shouldSendNocEmail() throws NotificationClientException {
         setUpMocks(NOC);
-        CollectionMember<ChangeOfRepresentative> representative =
-                new CollectionMember<>(null, ChangeOfRepresentative
-                        .builder().removedRepresentative(RemovedRepresentative.builder()
-                                .solicitorEmail("solicitor@gmail.com").build())
-                        .build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Manchester")
                 .solsSolicitorEmail("solicitor@probate-test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .languagePreferenceWelsh("No")
-                .changeOfRepresentatives(Arrays.asList(representative))
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com").build())
                 .build(), LAST_MODIFIED, ID);
         callbackRequest = new CallbackRequest(caseDetails);
         document = Document.builder()

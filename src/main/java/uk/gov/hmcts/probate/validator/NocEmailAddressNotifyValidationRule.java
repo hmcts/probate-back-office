@@ -4,8 +4,6 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
@@ -35,12 +33,8 @@ public class NocEmailAddressNotifyValidationRule {
     }
 
     private String getRemovedSolicitorEmail(CaseData caseData) {
-        CollectionMember<ChangeOfRepresentative> representative = !caseData.getChangeOfRepresentatives().isEmpty()
-                ? caseData.getChangeOfRepresentatives().get(caseData.getChangeOfRepresentatives().size() - 1) : null;
-
-        if (representative != null) {
-            return representative.getValue().getRemovedRepresentative().getSolicitorEmail();
-        }
-        return null;
+        String solicitorEmail = caseData.getRemovedRepresentative() != null
+                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
+        return solicitorEmail;
     }
 }

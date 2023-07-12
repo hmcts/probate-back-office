@@ -22,7 +22,6 @@ import uk.gov.hmcts.probate.model.SentEmail;
 import uk.gov.hmcts.probate.model.State;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -468,12 +467,8 @@ public class NotificationService {
     }
 
     private String getRemovedSolicitorEmail(CaseData caseData) {
-        CollectionMember<ChangeOfRepresentative> representative = !caseData.getChangeOfRepresentatives().isEmpty()
-                ? caseData.getChangeOfRepresentatives().get(caseData.getChangeOfRepresentatives().size() - 1) : null;
-
-        if (representative != null) {
-            return representative.getValue().getRemovedRepresentative().getSolicitorEmail();
-        }
-        return null;
+        String solicitorEmail = caseData.getRemovedRepresentative() != null
+                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
+        return solicitorEmail;
     }
 }

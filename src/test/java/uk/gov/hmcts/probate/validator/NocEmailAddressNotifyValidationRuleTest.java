@@ -6,13 +6,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -49,14 +46,10 @@ class NocEmailAddressNotifyValidationRuleTest {
 
     @Test
     void shouldPassSolicitorWithEmail() {
-        CollectionMember<ChangeOfRepresentative> representative =
-                new CollectionMember<>(null, ChangeOfRepresentative
-                        .builder().removedRepresentative(RemovedRepresentative.builder()
-                                .solicitorEmail("solicitor@gmail.com").build())
-                        .build());
         caseData = CaseData.builder()
             .applicationType(SOLICITOR)
-            .changeOfRepresentatives(Arrays.asList(representative))
+            .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com").build())
             .build();
         List<FieldErrorResponse> validationErrors = nocEmailAddressNotifyValidationRule.validate(caseData);
 
@@ -72,8 +65,8 @@ class NocEmailAddressNotifyValidationRuleTest {
             .build();
         List<FieldErrorResponse> validationErrors = nocEmailAddressNotifyValidationRule.validate(caseData);
 
-        assertTrue(validationErrors.size() == 1);
-        assertEquals(validationErrors.get(0).getMessage(), "solicitor missing");
+        assertEquals(1, validationErrors.size());
+        assertEquals("solicitor missing", validationErrors.get(0).getMessage());
     }
 
 }

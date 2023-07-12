@@ -29,7 +29,6 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
-import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
@@ -2158,18 +2157,14 @@ class NotificationServiceIT {
     void verifySendNocEmail()
             throws NotificationClientException, BadRequestException {
 
-        CollectionMember<ChangeOfRepresentative> representative =
-                new CollectionMember<>(null, ChangeOfRepresentative
-                        .builder().removedRepresentative(RemovedRepresentative.builder()
-                        .solicitorEmail("solicitor@gmail.com").build())
-                        .build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .registryLocation("Manchester")
                 .solsSolicitorEmail("solicitor@probate-test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .languagePreferenceWelsh("No")
-                .changeOfRepresentatives(Arrays.asList(representative))
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com").build())
                 .build(), LAST_MODIFIED, ID);
         notificationService.sendNocEmail(NOC, caseDetails);
 
