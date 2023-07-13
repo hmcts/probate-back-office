@@ -34,8 +34,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 
 @ExtendWith(SpringExtension.class)
@@ -101,6 +102,7 @@ class NoticeOfChangeControllerIT {
         mockMvc.perform(post(APPLY_DECISION_CAVEAT).content(json).header("Authorization", AUTH_TOKEN)
                 .contentType(MediaType.APPLICATION_JSON));
     }
+
     @Test
     void shouldReturnSuccessfulResponseForNoc() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorValidateNocCaveatPayload.json");
