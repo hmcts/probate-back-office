@@ -11,12 +11,15 @@ module.exports = async function () {
     var numElementFound = await I.grabNumberOfVisibleElements(locator);
     if(numElementFound<=0){
         do{
-            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases`);
-
-            const checkUrl = await tryTo(() => I.seeInCurrentUrl('/cases'));
-            if (checkUrl === false){
-                await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+            await I.wait(testConfig.CreateCaseDelay);
+            const checkPageLoad = await tryTo(() => I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases`));
+            if (checkPageLoad === false) {
+                const checkUrl = await tryTo(() => I.seeInCurrentUrl('/cases'));
+                if (checkUrl === false){
+                    await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+                }
             }
+
             await I.wait(testConfig.CreateCaseDelay);
             numElementFound = await I.grabNumberOfVisibleElements(locator);
         }while(numElementFound<=0);

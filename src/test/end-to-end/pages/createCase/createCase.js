@@ -10,12 +10,15 @@ module.exports = async function (caseType, event) {
     var numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
     if(numElementFound<=0) {
         do {
-            I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`);
-
-            const checkUrl = await tryTo(() => I.seeInCurrentUrl('/cases/case-filter'));
-            if (checkUrl === false){
-                await I.refreshCreateCasePage(true, testConfig.CaseProgressSignInDelay);
+            await I.wait(testConfig.CreateCaseDelay);
+            const checkPageLoad = await tryTo(() => I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-filter`));
+            if (checkPageLoad === false) {
+                const checkUrl = await tryTo(() => I.seeInCurrentUrl('/cases/case-filter'));
+                if (checkUrl === false){
+                    await I.refreshCreateCasePage(true, testConfig.CaseProgressSignInDelay);
+                }
             }
+
             await I.wait(testConfig.CreateCaseDelay);
             numElementFound = await I.grabNumberOfVisibleElements({css: `#cc-jurisdiction option[value=PROBATE]`});
         } while (numElementFound <= 0)
