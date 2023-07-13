@@ -8,14 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.payments.CreditAccountPayment;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
@@ -34,13 +30,10 @@ import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
-import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -51,9 +44,6 @@ import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
-import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 
 class CaveatControllerUnitTest {
 
@@ -110,9 +100,6 @@ class CaveatControllerUnitTest {
     private DocumentGeneratorService documentGeneratorService;
     @Mock
     private PrepareNocCaveatService prepareNocCaveatService;
-    @Mock
-    private NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule;
-    private Document document;
 
     @BeforeEach
     public void setUp() {
@@ -122,8 +109,7 @@ class CaveatControllerUnitTest {
             caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
             confirmationResponseService, paymentsService, feeService, creditAccountPaymentTransformer,
             creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock,
-            registrarDirectionService, documentGeneratorService, prepareNocCaveatService,
-                nocEmailAddressNotifyValidationRule);
+            registrarDirectionService, documentGeneratorService, prepareNocCaveatService);
 
     }
 
@@ -228,37 +214,6 @@ class CaveatControllerUnitTest {
         ResponseEntity<CaveatCallbackResponse> response =
                 underTest.prepareCaseForNoc(caveatCallbackRequest);
         verify(prepareNocCaveatService, times(1)).setRemovedRepresentative(caveatDataMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldSendNocEmail() throws NotificationClientException {
-        CaveatDetails caveatDetails = new CaveatDetails(CaveatData.builder()
-                .applicationType(SOLICITOR)
-                .registryLocation("Manchester")
-                .solsSolicitorAppReference("1234-5678-9012")
-                .languagePreferenceWelsh("No")
-                .removedRepresentative(RemovedRepresentative.builder()
-                        .solicitorEmail("solicitor@gmail.com")
-                        .solicitorFirstName("FirstName")
-                        .solicitorLastName("LastName").build())
-                .build(), LAST_MODIFIED, ID);
-        caveatCallbackRequest  = new CaveatCallbackRequest(caveatDetails);
-        document = Document.builder()
-                .documentDateAdded(LocalDate.now())
-                .documentFileName("fileName")
-                .documentGeneratedBy("generatedBy")
-                .documentLink(
-                        DocumentLink.builder().documentUrl("url").documentFilename("file")
-                                .documentBinaryUrl("binary").build())
-                .documentType(DocumentType.SENT_EMAIL)
-                .build();
-        caveatCallbackResponse = CaveatCallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
-        when(eventValidationService.validateCaveatNocEmail(any(), any())).thenReturn(caveatCallbackResponse);
-        when(notificationService.sendCaveatNocEmail(any(), any())).thenReturn(document);
-
-        ResponseEntity<CaveatCallbackResponse> response =
-                underTest.sendNOCEmailNotification(caveatCallbackRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
