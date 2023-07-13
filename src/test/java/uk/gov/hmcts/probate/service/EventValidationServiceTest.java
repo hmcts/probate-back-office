@@ -17,9 +17,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.payments.PaymentResponse;
-import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
-import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -36,8 +35,6 @@ class EventValidationServiceTest {
 
     @Mock
     private CCDData ccdDataMock;
-    @Mock
-    private CreditAccountPaymentValidationRule creditAccountPaymentValidationRuleMock;
     @Mock
     private CaseDetails caseDetailsMock;
     @Mock
@@ -68,45 +65,6 @@ class EventValidationServiceTest {
             .validate(ccdDataMock, Collections.singletonList(validationRule));
 
         assertEquals(2, fieldErrorResponses.size());
-
-    }
-
-    @Test
-    void shouldGatherPaymentValidationErrors() {
-
-        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
-            FieldErrorResponse.builder().build());
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(caseDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
-            .value(DynamicListItem.builder().code("PBACode").label("PBALabel").build())
-            .build());
-        when(caseDetailsMock.getId()).thenReturn(1234L);
-        when(creditAccountPaymentValidationRuleMock.validate("PBALabel", "1234", paymentResponseMock))
-            .thenReturn(errors);
-        CallbackResponse fieldErrorResponses = eventValidationService
-            .validatePaymentResponse(caseDetailsMock, paymentResponseMock, creditAccountPaymentValidationRuleMock);
-
-        assertEquals(2, fieldErrorResponses.getErrors().size());
-
-    }
-
-    @Test
-    void shouldGatherCaveatPaymentValidationErrors() {
-
-        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
-            FieldErrorResponse.builder().build());
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
-        when(caveatDataMock.getSolsPBANumber()).thenReturn(DynamicList.builder()
-            .value(DynamicListItem.builder().code("PBACode").label("PBALabel").build())
-            .build());
-        when(caveatDetailsMock.getId()).thenReturn(1234L);
-        when(creditAccountPaymentValidationRuleMock.validate("PBALabel", "1234", paymentResponseMock))
-            .thenReturn(errors);
-        CaveatCallbackResponse fieldErrorResponses = eventValidationService
-            .validateCaveatPaymentResponse(caveatDetailsMock, paymentResponseMock,
-                creditAccountPaymentValidationRuleMock);
-
-        assertEquals(2, fieldErrorResponses.getErrors().size());
 
     }
 

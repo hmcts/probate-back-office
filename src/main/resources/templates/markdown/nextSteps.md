@@ -14,19 +14,7 @@ This probate application has now been submitted
 
 Payment summary
 -------------------------------------------------
-**Application fee** &pound;{{applicationFee}}
-
-**Fee for additional UK copies** &pound;{{feeForUkCopies}}
-
-**Fee for certified copies** &pound;{{feeForNonUkCopies}}
-
-**Fee amount** &pound;{{paymentAmount}}
-
-**Payment method** {{paymentMethod}}
-
-**Selected PBA account** {{selectedPBA}}
-
-**Customer reference** {{paymentReferenceNumber}}
+{{paymentSummary}}
 
 Notes for this application
 -------------------------------------------------
@@ -35,7 +23,7 @@ Notes for this application
 
 What you need to do now
 ==================================================
-
+{{paymentInfo}}
 Print a copy of this page for your records. 
  
 You now need to send us:

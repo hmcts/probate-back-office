@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.State;
 
 import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
-import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 
 @Slf4j
@@ -74,15 +73,7 @@ public class TemplateService {
             case NOC:
                 return emailTemplates.getNoticeOfChangeReceived();
             case CAVEAT_RAISED:
-                if (languagePreference.equals(LanguagePreference.ENGLISH)) {
-                    return emailTemplates.getCaveatRaised();
-                } else {
-                    if (registryLocation.equalsIgnoreCase(CTSC)) {
-                        return emailTemplates.getCaveatRaisedCtsc();
-                    } else {
-                        return emailTemplates.getCaveatRaised();
-                    }
-                }
+                return emailTemplates.getCaveatRaised();
             case CAVEAT_EXTEND:
                 return emailTemplates.getCaveatExtend();
             case CAVEAT_RAISED_SOLS:

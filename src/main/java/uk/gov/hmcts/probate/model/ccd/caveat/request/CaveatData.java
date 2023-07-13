@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -113,7 +112,6 @@ public class CaveatData {
     private String solsDeceasedNameSection;
     // EVENT = cavConfirmation - confirmation details
     private String solsFeeAccountNumber;
-    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
     private String solsPaymentMethods;
     private DynamicList solsPBANumber;
     private String solsPBAPaymentReference;
@@ -166,6 +164,9 @@ public class CaveatData {
     private String autoClosedExpiry;
     private String pcqId;
     private OrganisationPolicy applicantOrganisationPolicy;
+    private String serviceRequestReference;
+    private String paymentTaken;
+    private String applicationSubmittedBy;
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
