@@ -2166,7 +2166,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "serviceRequestWaysToPay", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedBy", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "taskList", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastEvidenceAddedDate", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registrarDirections", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "registrarDirectionToAdd", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
