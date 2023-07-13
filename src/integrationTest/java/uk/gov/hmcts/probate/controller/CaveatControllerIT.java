@@ -15,6 +15,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
@@ -50,6 +52,7 @@ class CaveatControllerIT {
     private static final String SETUP_FOR_REMOVAL = "/caveat/setup-for-permanent-removal";
     private static final String DELETE_REMOVED = "/caveat/permanently-delete-removed";
     private static final String PREPARE_FOR_NOC = "/caveat/prepare-case-for-noc";
+    private static final String NOC_EMAIL = "/caveat/noc-notification";
 
     @Autowired
     private MockMvc mockMvc;
@@ -66,6 +69,7 @@ class CaveatControllerIT {
     @MockBean
     private RegistrarDirectionService registrarDirectionService;
 
+    @MockBean
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
     @Autowired
@@ -73,6 +77,7 @@ class CaveatControllerIT {
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
+    private CaveatCallbackResponse successfulResponse;
 
     @BeforeEach
     public void setUp() throws NotificationClientException, BadRequestException {
@@ -154,7 +159,6 @@ class CaveatControllerIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
-    @Test
     void caveatRaisedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
@@ -340,5 +344,36 @@ class CaveatControllerIT {
                         .content(caveatPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnSuccessfulResponseForNoc() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorValidateNocCaveatPayload.json");
+        successfulResponse = CaveatCallbackResponse.builder()
+                        .caveatData(ResponseCaveatData.builder().deceasedForenames("Bob").build()).build();
+        when(caveatCallbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
+
+        mockMvc.perform(post(NOC_EMAIL)
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    void shouldReturnUnSuccessfulResponseForNocEmail() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorValidateCaveatPayload.json");
+        successfulResponse = CaveatCallbackResponse.builder()
+                .caveatData(ResponseCaveatData.builder().deceasedForenames("Bob").build()).build();
+        when(caveatCallbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
+
+        mockMvc.perform(post(NOC_EMAIL)
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this solicitor. "
+                                + "Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 }

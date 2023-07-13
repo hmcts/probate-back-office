@@ -6,8 +6,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.List;
@@ -28,8 +26,6 @@ class NocEmailAddressNotifyValidationRuleTest {
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
-
-    private CaseData caseData;
     private FieldErrorResponse fieldErrorResponseSolicitor;
 
     @BeforeEach
@@ -46,12 +42,8 @@ class NocEmailAddressNotifyValidationRuleTest {
 
     @Test
     void shouldPassSolicitorWithEmail() {
-        caseData = CaseData.builder()
-            .applicationType(SOLICITOR)
-            .removedRepresentative(RemovedRepresentative.builder()
-                        .solicitorEmail("solicitor@gmail.com").build())
-            .build();
-        List<FieldErrorResponse> validationErrors = nocEmailAddressNotifyValidationRule.validate(caseData);
+        List<FieldErrorResponse> validationErrors =
+                nocEmailAddressNotifyValidationRule.validate(SOLICITOR, "solicitor@gmail.com");
 
         assertTrue(validationErrors.isEmpty());
         verify(businessValidationMessageService, times(0)).generateError(any(String.class),
@@ -60,10 +52,8 @@ class NocEmailAddressNotifyValidationRuleTest {
 
     @Test
     void shouldFailSolicitorWithNoEmail() {
-        caseData = CaseData.builder()
-            .applicationType(SOLICITOR)
-            .build();
-        List<FieldErrorResponse> validationErrors = nocEmailAddressNotifyValidationRule.validate(caseData);
+        List<FieldErrorResponse> validationErrors =
+                nocEmailAddressNotifyValidationRule.validate(SOLICITOR, "");
 
         assertEquals(1, validationErrors.size());
         assertEquals("solicitor missing", validationErrors.get(0).getMessage());

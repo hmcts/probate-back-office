@@ -4,7 +4,7 @@ import io.micrometer.core.instrument.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
@@ -21,20 +21,14 @@ public class NocEmailAddressNotifyValidationRule {
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
-    public List<FieldErrorResponse> validate(CaseData caseData) {
+    public List<FieldErrorResponse> validate(ApplicationType applicationType, String solicitorEmail) {
         Set<FieldErrorResponse> errors = new HashSet<>();
 
-        if (SOLICITOR.equals(caseData.getApplicationType()) && StringUtils
-                .isEmpty(getRemovedSolicitorEmail(caseData))) {
+        if (SOLICITOR.equals(applicationType) && StringUtils
+                .isEmpty(solicitorEmail)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     "notifyApplicantNoEmailSOLS"));
         }
         return new ArrayList<>(errors);
-    }
-
-    private String getRemovedSolicitorEmail(CaseData caseData) {
-        String solicitorEmail = caseData.getRemovedRepresentative() != null
-                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
-        return solicitorEmail;
     }
 }

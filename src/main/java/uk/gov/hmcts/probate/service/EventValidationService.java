@@ -74,10 +74,34 @@ public class EventValidationService {
 
     public CallbackResponse validateNocEmail(CaseData caseData,
                                              NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule) {
-        List<FieldErrorResponse> businessErrors = nocEmailAddressNotifyValidationRule.validate(caseData);
+        String solicitorEmail = getRemovedSolicitorEmail(caseData);
+        List<FieldErrorResponse> businessErrors = nocEmailAddressNotifyValidationRule
+                .validate(caseData.getApplicationType(), solicitorEmail);
         return CallbackResponse.builder()
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();
+    }
+
+    private String getRemovedSolicitorEmail(CaseData caseData) {
+        String solicitorEmail = caseData.getRemovedRepresentative() != null
+                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
+        return solicitorEmail;
+    }
+
+    public CaveatCallbackResponse validateCaveatNocEmail(CaveatData caveatData,
+                                             NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule) {
+        String solicitorEmail = getCaveatRemovedSolicitorEmail(caveatData);
+        List<FieldErrorResponse> businessErrors = nocEmailAddressNotifyValidationRule
+                .validate(caveatData.getApplicationType(), solicitorEmail);
+        return CaveatCallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
+    private String getCaveatRemovedSolicitorEmail(CaveatData caveatData) {
+        String solicitorEmail = caveatData.getRemovedRepresentative() != null
+                ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
+        return solicitorEmail;
     }
 
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,

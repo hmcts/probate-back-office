@@ -285,9 +285,13 @@ public class NotificationController {
         List<Document> documents = new ArrayList<>();
         response = eventValidationService.validateNocEmail(caseData, nocEmailAddressNotifyValidationRule);
         if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to notify Solicitor for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
             Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
             documents.add(nocSentEmail);
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            log.info("Successful response from notify for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            response = callbackResponseTransformer.addNocDocuments(callbackRequest, documents);
         } else {
             log.info("No email sent or document returned to case: {}", caseDetails.getId());
         }

@@ -120,10 +120,29 @@ class EventValidationServiceTest {
                 .removedRepresentative(RemovedRepresentative.builder()
                         .solicitorEmail("solicitor@gmail.com").build())
                 .build();
-        when(nocEmailAddressValidationRuleMock.validate(caseDataMock))
-                .thenReturn(errors);
+        when(nocEmailAddressValidationRuleMock.validate(caseDataMock.getApplicationType(),
+                caseDataMock.getRemovedRepresentative().getSolicitorEmail())).thenReturn(errors);
         CallbackResponse fieldErrorResponses = eventValidationService
                 .validateNocEmail(caseDataMock, nocEmailAddressValidationRuleMock);
+
+        assertEquals(2, fieldErrorResponses.getErrors().size());
+
+    }
+
+    @Test
+    void shouldGatherCaveatNocValidationErrors() {
+
+        List<FieldErrorResponse> errors = Arrays.asList(FieldErrorResponse.builder().build(),
+                FieldErrorResponse.builder().build());
+        caveatDataMock = CaveatData.builder()
+                .applicationType(SOLICITOR)
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com").build())
+                .build();
+        when(nocEmailAddressValidationRuleMock.validate(caveatDataMock.getApplicationType(),
+                caveatDataMock.getRemovedRepresentative().getSolicitorEmail())).thenReturn(errors);
+        CaveatCallbackResponse fieldErrorResponses = eventValidationService
+                .validateCaveatNocEmail(caveatDataMock, nocEmailAddressValidationRuleMock);
 
         assertEquals(2, fieldErrorResponses.getErrors().size());
 

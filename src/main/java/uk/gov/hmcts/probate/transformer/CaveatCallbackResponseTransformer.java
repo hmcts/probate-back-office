@@ -238,6 +238,15 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CaveatCallbackResponse addNocDocuments(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
+
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
         return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
     }

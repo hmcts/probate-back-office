@@ -197,6 +197,7 @@ class NotificationControllerIT {
         when(documentGeneratorService.generateCoversheet(any())).thenReturn(EMPTY_DOC);
 
         when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any()))
@@ -628,7 +629,7 @@ class NotificationControllerIT {
     }
 
     @Test
-    void shouldReturnUnSuccessfulEmail() throws Exception {
+    void shouldReturnUnSuccessfulForNocEmail() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
         mockMvc.perform(post("/notify/noc-notification").content(solicitorPayload)

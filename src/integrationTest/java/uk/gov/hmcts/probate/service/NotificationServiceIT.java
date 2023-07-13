@@ -2185,4 +2185,36 @@ class NotificationServiceIT {
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
+
+    @Test
+    void verifySendCaveatNocEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaveatDetails caveatDetails = new CaveatDetails(CaveatData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendCaveatNocEmail(NOC, caveatDetails);
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
+        personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
+
+        verify(notificationClient).sendEmail(
+                eq("sols-noc"),
+                eq("solicitor@gmail.com"),
+                eq(personalisation),
+                eq("1234-5678-9012"),
+                eq(""));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
 }

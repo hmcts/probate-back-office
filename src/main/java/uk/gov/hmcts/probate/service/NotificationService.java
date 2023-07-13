@@ -166,25 +166,47 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-    public Document sendNocEmail(State state, CaseDetails caseDetails) throws
-            NotificationClientException {
+    public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
-        String emailAddress = getRemovedSolicitorEmail(caseData);
+        String emailAddress = caseData.getRemovedRepresentative() != null
+                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
         String solicitorName = removedSolicitorNameForPersonalisation(caseData);
+        String reference = caseData.getSolsSolicitorAppReference();
 
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        return nocDocument(state, caseData.getApplicationType(), caseData.getRegistryLocation(),
+                caseData.getLanguagePreference(), registry,
+                caseDetails.getId(), emailAddress, solicitorName, reference);
+    }
+
+    public Document sendCaveatNocEmail(State state, CaveatDetails caveatDetails) throws
+            NotificationClientException {
+        CaveatData caveatData = caveatDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
+        String emailAddress = caveatData.getRemovedRepresentative() != null
+                ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
+        String solicitorName = removedSolicitorNameForPersonalisation(caveatData);
+        String reference = caveatData.getSolsSolicitorAppReference();
+
+        return nocDocument(state, caveatData.getApplicationType(), caveatData.getRegistryLocation(),
+                caveatData.getLanguagePreference(), registry,
+                caveatDetails.getId(), emailAddress, solicitorName, reference);
+    }
+
+    public Document nocDocument(State state, ApplicationType applicationType, String registryLocation,
+                             LanguagePreference languagePreference,Registry registry, Long id, String emailAddress,
+                             String solicitorName, String reference) throws
+            NotificationClientException {
+        String templateId = templateService.getTemplateId(state, applicationType, registryLocation, languagePreference);
         Map<String, Object> personalisation =
-                grantOfRepresentationPersonalisationService.getNocPersonalisation(caseDetails.getId(),
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(id,
                         solicitorName);
         String emailReplyToId = registry.getEmailReplyToId();
-        String reference = caseData.getSolsSolicitorAppReference();
-        log.info("Personlisation complete now get the email repsonse");
+        log.info("Personlisation complete now get the email response");
 
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
-                        caseDetails.getId());
+                        id);
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -467,16 +489,17 @@ public class NotificationService {
         }
     }
 
-    private String getRemovedSolicitorEmail(CaseData caseData) {
-        String solicitorEmail = caseData.getRemovedRepresentative() != null
-                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
-        return solicitorEmail;
-    }
-
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {
         String solicitorName = caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+        return solicitorName;
+    }
+
+    private String removedSolicitorNameForPersonalisation(CaveatData caveatData) {
+        String solicitorName = caveatData.getRemovedRepresentative() != null
+                ? String.join(" ", caveatData.getRemovedRepresentative().getSolicitorFirstName(),
+                caveatData.getRemovedRepresentative().getSolicitorLastName()) : null;
         return solicitorName;
     }
 }

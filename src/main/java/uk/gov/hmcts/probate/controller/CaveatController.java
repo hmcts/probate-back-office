@@ -41,13 +41,16 @@ import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationR
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CreditAccountPaymentValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPaymentMethodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
+import static uk.gov.hmcts.probate.model.State.NOC;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -73,6 +76,7 @@ public class CaveatController {
     private final DocumentGeneratorService documentGeneratorService;
 
     private final PrepareNocCaveatService prepareNocCaveatService;
+    private final NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -275,5 +279,29 @@ public class CaveatController {
         prepareNocCaveatService.addNocDate(callbackRequest.getCaseDetails().getData());
         prepareNocCaveatService.setRemovedRepresentative(callbackRequest.getCaseDetails().getData());
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
+    @PostMapping(path = "/noc-notification")
+    public ResponseEntity<CaveatCallbackResponse> sendNOCEmailNotification(
+            @RequestBody CaveatCallbackRequest callbackRequest) throws NotificationClientException {
+        log.info("Preparing to send email notification for NOC");
+        CaveatDetails caveatDetails = callbackRequest.getCaseDetails();
+        CaveatData caveatData = caveatDetails.getData();
+        CaveatCallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        response = eventValidationService.validateCaveatNocEmail(caveatData, nocEmailAddressNotifyValidationRule);
+        if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to notify Solicitor for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            Document nocSentEmail = notificationService.sendCaveatNocEmail(NOC, caveatDetails);
+            documents.add(nocSentEmail);
+            log.info("Successful response from notify for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            response = caveatCallbackResponseTransformer.addNocDocuments(callbackRequest, documents);
+        } else {
+            log.info("No email sent or document returned to case: {}", caveatDetails.getId());
+        }
+        return ResponseEntity.ok(response);
     }
 }
