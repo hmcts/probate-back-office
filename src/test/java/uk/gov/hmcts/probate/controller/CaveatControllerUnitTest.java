@@ -122,7 +122,8 @@ class CaveatControllerUnitTest {
             caveatCallbackResponseTransformer, eventValidationService, notificationService, caveatNotificationService,
             confirmationResponseService, paymentsService, feeService, creditAccountPaymentTransformer,
             creditAccountPaymentValidationRule, solicitorPaymentMethodValidationRuleMock,
-            registrarDirectionService, documentGeneratorService, prepareNocCaveatService, nocEmailAddressNotifyValidationRule);
+            registrarDirectionService, documentGeneratorService, prepareNocCaveatService,
+                nocEmailAddressNotifyValidationRule);
 
     }
 
