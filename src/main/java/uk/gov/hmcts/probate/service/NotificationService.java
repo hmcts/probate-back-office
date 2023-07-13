@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
@@ -186,13 +187,12 @@ public class NotificationService {
         Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
         String emailAddress = caveatData.getRemovedRepresentative() != null
                 ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
-        String solicitorName = removedSolicitorNameForCaveatPersonalisation(caveatData);
         String deceasedName = caveatData.getDeceasedFullName();
         String reference = caveatData.getSolsSolicitorAppReference();
 
         return nocDocument(state, caveatData.getApplicationType(), caveatData.getRegistryLocation(),
                 caveatData.getLanguagePreference(), registry,
-                caveatDetails.getId(), emailAddress, solicitorName, reference, deceasedName);
+                caveatDetails.getId(), emailAddress, CAVEAT_SOLICITOR_NAME, reference, deceasedName);
     }
 
     public Document nocDocument(State state, ApplicationType applicationType, String registryLocation,
@@ -495,13 +495,6 @@ public class NotificationService {
         String solicitorName = caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
-        return solicitorName;
-    }
-
-    private String removedSolicitorNameForCaveatPersonalisation(CaveatData caveatData) {
-        String solicitorName = caveatData.getRemovedRepresentative() != null
-                ? String.join(" ", caveatData.getRemovedRepresentative().getSolicitorFirstName(),
-                caveatData.getRemovedRepresentative().getSolicitorLastName()) : null;
         return solicitorName;
     }
 }

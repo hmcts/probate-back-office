@@ -73,6 +73,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
@@ -2167,7 +2168,7 @@ class NotificationServiceIT {
 
         HashMap<String, String> personalisation = new HashMap<>();
 
-        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, CAVEAT_SOLICITOR_NAME);
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
         personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
         personalisation.put(PERSONALISATION_DECEASED_NAME, caveatDetails.getData().getDeceasedFullName());

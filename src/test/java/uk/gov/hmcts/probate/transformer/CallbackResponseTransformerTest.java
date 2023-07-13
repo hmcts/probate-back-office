@@ -863,6 +863,19 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldAddNocToGeneratedDocuments() {
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .build();
+
+        CallbackResponse callbackResponse =
+                underTest.addNocDocuments(callbackRequestMock, Arrays.asList(document));
+
+        assertCommon(callbackResponse);
+    }
+
+    @Test
     void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
