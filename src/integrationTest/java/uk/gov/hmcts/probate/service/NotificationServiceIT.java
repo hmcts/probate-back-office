@@ -2163,6 +2163,8 @@ class NotificationServiceIT {
                 .solsSolicitorEmail("solicitor@probate-test.com")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .languagePreferenceWelsh("No")
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
                 .removedRepresentative(RemovedRepresentative.builder()
                         .solicitorEmail("solicitor@gmail.com")
                         .solicitorFirstName("FirstName")
@@ -2175,6 +2177,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
         personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
 
         verify(notificationClient).sendEmail(
                 eq("sols-noc"),
@@ -2195,6 +2198,8 @@ class NotificationServiceIT {
                 .registryLocation("Manchester")
                 .solsSolicitorAppReference("1234-5678-9012")
                 .languagePreferenceWelsh("No")
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
                 .removedRepresentative(RemovedRepresentative.builder()
                         .solicitorEmail("solicitor@gmail.com")
                         .solicitorFirstName("FirstName")
@@ -2207,6 +2212,7 @@ class NotificationServiceIT {
         personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
         personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatDetails.getData().getDeceasedFullName());
 
         verify(notificationClient).sendEmail(
                 eq("sols-noc"),

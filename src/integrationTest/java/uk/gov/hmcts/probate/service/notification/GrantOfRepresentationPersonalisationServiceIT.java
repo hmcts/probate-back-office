@@ -287,7 +287,8 @@ class GrantOfRepresentationPersonalisationServiceIT {
     @Test
     void getNocPersonalisationContentIsOkNoWillReference() {
         Map<String, Object> response =
-                grantOfRepresentationPersonalisationService.getNocPersonalisation(ID, "First Last");
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(ID, "First Last",
+                        "Deceased DeceasedL");
 
         assertEquals(LocalDateTime.now().format(NOC_DATE), response.get(PERSONALISATION_NOC_SUBMITTED_DATE));
         assertEquals(ID.toString(), response.get(PERSONALISATION_CCD_REFERENCE));

@@ -70,12 +70,13 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
-    public Map<String, Object> getNocPersonalisation(Long caseId, String solicitorName) {
+    public Map<String, Object> getNocPersonalisation(Long caseId, String solicitorName, String deceasedName) {
         HashMap<String, Object> personalisation = new HashMap<>();
 
         personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, solicitorName);
         personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
         personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, EXELA_CONTENT_DATE.format(LocalDateTime.now()));
+        personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
 
         return personalisation;
     }
