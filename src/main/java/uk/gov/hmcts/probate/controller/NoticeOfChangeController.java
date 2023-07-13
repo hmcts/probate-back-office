@@ -82,7 +82,7 @@ public class NoticeOfChangeController {
         return prepareNocCaveatService.applyDecision(callbackRequest, authorisation);
     }
 
-    @PostMapping(path = "/noc-notification")
+    @PostMapping(path = "/caveat-noc-notification")
     public ResponseEntity<CaveatCallbackResponse> sendNOCEmailNotification(
             @RequestBody CaveatCallbackRequest callbackRequest) throws NotificationClientException {
         log.info("Preparing to send email notification for NOC");

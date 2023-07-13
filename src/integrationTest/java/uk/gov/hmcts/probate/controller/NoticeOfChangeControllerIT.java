@@ -46,7 +46,7 @@ class NoticeOfChangeControllerIT {
 
     private static final String APPLY_DECISION = "/noc/apply-decision";
     private static final String APPLY_DECISION_CAVEAT = "/noc/caveat-apply-decision";
-    private static final String NOC_EMAIL = "/noc/noc-notification";
+    private static final String NOC_EMAIL = "/noc/caveat-noc-notification";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     @MockBean
