@@ -238,8 +238,8 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CaveatCallbackResponse addNocDocuments(CaveatCallbackRequest caveatCallbackRequest, List<Document> documents)
-    {
+    public CaveatCallbackResponse addNocDocuments(CaveatCallbackRequest caveatCallbackRequest,
+                                                  List<Document> documents) {
         documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
