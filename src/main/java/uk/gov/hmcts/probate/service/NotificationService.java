@@ -176,9 +176,19 @@ public class NotificationService {
         String reference = caseData.getSolsSolicitorAppReference();
         String deceasedName = caseData.getDeceasedFullName();
 
-        return nocDocument(state, caseData.getApplicationType(), caseData.getRegistryLocation(),
-                caseData.getLanguagePreference(), registry,
-                caseDetails.getId(), emailAddress, solicitorName, reference, deceasedName);
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(caseDetails.getId(),
+                        solicitorName, deceasedName);
+        String emailReplyToId = registry.getEmailReplyToId();
+        log.info("Personlisation complete now get the email response");
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                        caseDetails.getId());
+
+        return getSentEmailDocument(state, emailAddress, response);
     }
 
     public Document sendCaveatNocEmail(State state, CaveatDetails caveatDetails) throws
@@ -188,27 +198,19 @@ public class NotificationService {
         String emailAddress = caveatData.getRemovedRepresentative() != null
                 ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
         String deceasedName = caveatData.getDeceasedFullName();
-        String reference = caveatData.getSolsSolicitorAppReference();
 
-        return nocDocument(state, caveatData.getApplicationType(), caveatData.getRegistryLocation(),
-                caveatData.getLanguagePreference(), registry,
-                caveatDetails.getId(), emailAddress, CAVEAT_SOLICITOR_NAME, reference, deceasedName);
-    }
-
-    public Document nocDocument(State state, ApplicationType applicationType, String registryLocation,
-                             LanguagePreference languagePreference,Registry registry, Long id, String emailAddress,
-                             String solicitorName, String reference, String deceasedName) throws
-            NotificationClientException {
-        String templateId = templateService.getTemplateId(state, applicationType, registryLocation, languagePreference);
+        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(),
+                caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
         Map<String, Object> personalisation =
-                grantOfRepresentationPersonalisationService.getNocPersonalisation(id,
-                        solicitorName, deceasedName);
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(caveatDetails.getId(),
+                        CAVEAT_SOLICITOR_NAME, deceasedName);
         String emailReplyToId = registry.getEmailReplyToId();
+        String reference = caveatData.getSolsSolicitorAppReference();
         log.info("Personlisation complete now get the email response");
 
         SendEmailResponse response =
                 getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
-                        id);
+                        caveatDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -492,9 +494,8 @@ public class NotificationService {
     }
 
     private String removedSolicitorNameForPersonalisation(CaseData caseData) {
-        String solicitorName = caseData.getRemovedRepresentative() != null
+        return caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
-        return solicitorName;
     }
 }

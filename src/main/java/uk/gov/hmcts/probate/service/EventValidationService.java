@@ -79,9 +79,8 @@ public class EventValidationService {
     }
 
     private String getRemovedSolicitorEmail(CaseData caseData) {
-        String solicitorEmail = caseData.getRemovedRepresentative() != null
+        return caseData.getRemovedRepresentative() != null
                 ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
-        return solicitorEmail;
     }
 
     public CaveatCallbackResponse validateCaveatNocEmail(CaveatData caveatData,
@@ -95,9 +94,8 @@ public class EventValidationService {
     }
 
     private String getCaveatRemovedSolicitorEmail(CaveatData caveatData) {
-        String solicitorEmail = caveatData.getRemovedRepresentative() != null
+        return caveatData.getRemovedRepresentative() != null
                 ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
-        return solicitorEmail;
     }
 
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,

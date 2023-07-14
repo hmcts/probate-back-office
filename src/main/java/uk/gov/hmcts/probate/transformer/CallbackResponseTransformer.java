@@ -350,8 +350,6 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse addNocDocuments(CallbackRequest callbackRequest, List<Document> documents) {
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = caseDetails.getData();
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
