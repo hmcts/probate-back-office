@@ -16,12 +16,15 @@ public enum EventId {
     SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_IDENTIFIED("scheduledUpdateGrantDelayNotificationIdentified"),
     SCHEDULED_UPDATE_GRANT_DELAY_NOTIFICATION_SENT("scheduledUpdateGrantDelayNotificationSent"),
     SCHEDULED_UPDATE_GRANT_AWAITING_DOCUMENTATION_NOTIFICATION_SENT("scheduledUpdateGrantAwaitingDocsNotificationSent"),
+    SERVICE_REQUEST_PAYMENT_SUCCESS("serviceRequestPaymentSuccess"),
+    SERVICE_REQUEST_PAYMENT_FAILED("serviceRequestPaymentFailed"),
     GRANT_STOPPED_DATE("grantStoppedDate"),
     GRANT_RESOLVED("grantResolved"),
     DEATH_RECORD_VERIFIED("deathRecordVerified"),
     DEATH_RECORD_VERIFICATION_FAILED("deathRecordVerificationFailed"),
     MAKE_CASE_DORMANT("makeCaseDormant"),
-    REACTIVATE_DORMANT_CASE("reactivateDormantCase");
+    REACTIVATE_DORMANT_CASE("reactivateDormantCase"),
+    RESEND_DATA("dataExtractResendData");
     @Getter
     private final String name;
 

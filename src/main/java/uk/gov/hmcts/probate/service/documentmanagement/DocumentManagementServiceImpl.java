@@ -48,6 +48,10 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String auth = securityDTO.getAuthorisation();
+        if (auth == null) {
+            securityDTO = securityUtils.getUserByCaseworkerTokenAndServiceSecurityDTO();
+            auth = securityDTO.getAuthorisation();
+        }
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }
@@ -83,6 +87,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         String s2s = securityDTO.getServiceAuthorisation();
         String selfHref = document.getDocumentLink().getDocumentUrl();
         UUID docId = UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
+        log.info("Deleting document wth id:{}", docId.toString());
         caseDocumentClient.deleteDocument(auth, s2s, docId, DELETE_PERMANENT);
     }
 

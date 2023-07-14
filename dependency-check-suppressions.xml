@@ -114,6 +114,18 @@
         <cve>CVE-2022-38751</cve>
         <cve>CVE-2022-38752</cve>
         <cve>CVE-2022-41854</cve>
+        <cve>CVE-2021-4235</cve>
+        <cve>CVE-2022-3064</cve>
+        <cve>CVE-2022-1471</cve>
+        <cpe>cpe:/a:snakeyaml_project:snakeyaml</cpe>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: guava-30.1-jre.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.google\.guava/guava@.*$</packageUrl>
+        <cpe>cpe:/a:google:guava</cpe>
+        <cve>CVE-2023-2976</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -123,6 +135,7 @@
         <cve>CVE-2022-42003</cve>
         <cve>CVE-2022-42004</cve>
         <cve>CVE-2020-36518</cve>
+        <cve>CVE-2023-35116</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -154,13 +167,6 @@
         <cve>CVE-2021-37533</cve>
     </suppress>
     <suppress>
-        <notes><![CDATA[
-   file name: snakeyaml-1.30.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2022-1471</cve>
-    </suppress>
-    <suppress>
         <notes>netty</notes>
         <cve>CVE-2022-41881</cve>
         <cve>CVE-2022-41915</cve>
@@ -171,20 +177,6 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.latencyutils/LatencyUtils@.*$</packageUrl>
         <cve>CVE-2021-4277</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: snakeyaml-1.30.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2021-4235</cve>
-    </suppress>
-    <suppress>
-        <notes><![CDATA[
-   file name: snakeyaml-1.30.jar
-   ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.yaml/snakeyaml@.*$</packageUrl>
-        <cve>CVE-2022-3064</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -621,6 +613,7 @@
    file name: spring-boot-2.7.4.jar
    ]]></notes>
         <cve>CVE-2023-20873</cve>
+        <cve>CVE-2023-20883</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[

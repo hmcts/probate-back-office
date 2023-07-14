@@ -7,7 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import uk.gov.hmcts.probate.controller.validation.CaveatCompletedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatCreatedGroup;
 import uk.gov.hmcts.probate.controller.validation.CaveatUpdatedGroup;
 import uk.gov.hmcts.probate.model.ApplicationType;
@@ -21,6 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
@@ -109,7 +109,6 @@ public class CaveatData {
     private String solsDeceasedNameSection;
     // EVENT = cavConfirmation - confirmation details
     private String solsFeeAccountNumber;
-    @NotBlank(groups = {CaveatCompletedGroup.class}, message = "{solsPaymentMethodsIsNull}")
     private String solsPaymentMethods;
     private DynamicList solsPBANumber;
     private String solsPBAPaymentReference;
@@ -162,6 +161,9 @@ public class CaveatData {
     private String autoClosedExpiry;
     private String pcqId;
     private OrganisationPolicy applicantOrganisationPolicy;
+    private String serviceRequestReference;
+    private String paymentTaken;
+    private String applicationSubmittedBy;
 
     @Builder.Default
     private List<CollectionMember<BulkScanEnvelope>> bulkScanEnvelopes = new ArrayList<>();
@@ -171,6 +173,9 @@ public class CaveatData {
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
     private RegistrarDirection registrarDirectionToAdd;
+
+    //transient in-event vars
+    private OriginalDocuments originalDocuments;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);

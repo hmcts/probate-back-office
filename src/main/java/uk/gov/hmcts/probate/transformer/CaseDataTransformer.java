@@ -24,7 +24,7 @@ public class CaseDataTransformer {
     private final EvidenceHandledTransformer evidenceHandledTransformer;
     private final AttachDocumentsTransformer attachDocumentsTransformer;
 
-    public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
+    public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
         final var caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
@@ -34,6 +34,14 @@ public class CaseDataTransformer {
 
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
         solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
+    }
+
+    public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest,
+                                                           String serviceRequestReference) {
+
+        transformForSolicitorApplicationCompletion(callbackRequest);
+        solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(callbackRequest.getCaseDetails(),
+                serviceRequestReference);
     }
 
 
@@ -95,5 +103,9 @@ public class CaseDataTransformer {
         if (CASE_PRINTED_NAME.equals(callbackRequest.getCaseDetails().getState())) {
             attachDocumentsTransformer.updateAttachDocuments(callbackRequest.getCaseDetails().getData());
         }
+    }
+
+    public void transformCaseDataForDocsReceivedNotificationSent(CallbackRequest callbackRequest) {
+        attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
     }
 }

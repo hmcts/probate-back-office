@@ -13,6 +13,34 @@ import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
+import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
+import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementCallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.willlodgement.request.WillLodgementData;
+import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
+import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
+import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
+import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
+import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Collections.emptyList;
+import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
@@ -29,18 +57,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSUE_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE_DRAFT;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
-import uk.gov.hmcts.probate.service.docmosis.DocumentTemplateService;
-import uk.gov.hmcts.probate.service.docmosis.GenericMapperService;
-import uk.gov.hmcts.probate.service.docmosis.PreviewLetterService;
-import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.service.template.pdf.PlaceholderDecorator;
-import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
-
 
 @Slf4j
 @Service
@@ -250,6 +266,97 @@ public class DocumentGeneratorService {
             WELSH_INTESTACY_GRANT_REISSUE_DRAFT};
         for (DocumentType documentType : documentTypes) {
             documentService.expire(callbackRequest, documentType);
+        }
+    }
+
+    public void permanentlyDeleteRemovedDocumentsForGrant(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
+        permanentlyDeleteRemovedDocuments(originalDocuments.getOriginalDocsGenerated(),
+                caseData.getProbateDocumentsGenerated(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getBoDocumentsUploaded(),
+                originalDocuments.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                caseRef);
+    }
+
+    public void permanentlyDeleteRemovedDocumentsForCaveat(CaveatCallbackRequest callbackRequest) {
+        CaveatData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
+
+        permanentlyDeleteRemovedDocuments(originalDocuments.getOriginalDocsGenerated(),
+                caseData.getDocumentsGenerated(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                originalDocuments.getOriginalDocsScanned(), caseData.getScannedDocuments(),
+                caseRef);
+    }
+
+    public void permanentlyDeleteRemovedDocumentsForStandingSearch(StandingSearchCallbackRequest callbackRequest) {
+        StandingSearchData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
+
+        permanentlyDeleteRemovedDocuments(null,null,
+                originalDocuments.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                null, null,
+                caseRef);
+    }
+
+    public void permanentlyDeleteRemovedDocumentsForWillLodgement(WillLodgementCallbackRequest callbackRequest) {
+        WillLodgementData caseData = callbackRequest.getCaseDetails().getData();
+        String caseRef = callbackRequest.getCaseDetails().getId().toString();
+        OriginalDocuments originalDocuments = caseData.getOriginalDocuments();
+
+        permanentlyDeleteRemovedDocuments(originalDocuments.getOriginalDocsGenerated(),
+                caseData.getDocumentsGenerated(),
+                originalDocuments.getOriginalDocsUploaded(), caseData.getDocumentsUploaded(),
+                null, null,
+                caseRef);
+    }
+
+    private void permanentlyDeleteRemovedDocuments(List<CollectionMember<Document>> originalGenerated,
+                                                  List<CollectionMember<Document>> remainingGenerated,
+                                                  List<CollectionMember<UploadDocument>> originalUploaded,
+                                                  List<CollectionMember<UploadDocument>> remainingUploaded,
+                                                  List<CollectionMember<ScannedDocument>> originalScanned,
+                                                  List<CollectionMember<ScannedDocument>> remainingScanned,
+                                                  String caseId) {
+        log.info("attempting to permanently delete removed documents on case: {}", caseId);
+
+        List<Document> documentsToDelete = new ArrayList<>();
+        for (CollectionMember<Document> documentCollectionMember : ofNullable(originalGenerated).orElse(emptyList())) {
+            if (!remainingGenerated.contains(documentCollectionMember)) {
+                log.info("permanently removing generated document: {}", documentCollectionMember.getId());
+                documentsToDelete.add(documentCollectionMember.getValue());
+            }
+        }
+        for (CollectionMember<UploadDocument> documentCollectionMember :
+                ofNullable(originalUploaded).orElse(emptyList())) {
+            if (!remainingUploaded.contains(documentCollectionMember)) {
+                Document document = Document.builder()
+                        .documentLink(documentCollectionMember.getValue().getDocumentLink())
+                        .documentType(documentCollectionMember.getValue().getDocumentType())
+                        .build();
+                log.info("permanently removing uploaded document: {}", documentCollectionMember.getId());
+                documentsToDelete.add(document);
+            }
+        }
+        for (CollectionMember<ScannedDocument> documentCollectionMember :
+                ofNullable(originalScanned).orElse(emptyList())) {
+            if (!remainingScanned.contains(documentCollectionMember)) {
+                Document document = Document.builder()
+                        .documentLink(documentCollectionMember.getValue().getUrl())
+                        .documentType(DocumentType.lookup(documentCollectionMember.getValue().getType()))
+                        .build();
+                log.info("permanently removing scanned document: {}", documentCollectionMember.getId());
+                documentsToDelete.add(document);
+            }
+        }
+
+        for (Document document : documentsToDelete) {
+            documentService.delete(document, caseId);
         }
     }
 

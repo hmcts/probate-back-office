@@ -48,11 +48,14 @@ java:
     PROBATE_POSTGRESQL_PORT: 5432
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
     ADHOC_JOB_DATE:
+    BACK_OFFICE_BASEURL: http://probate-back-office-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
   keyVaults:
     probate:
       secrets:
         - name: AppInsightsInstrumentationKey
           alias: azure.application-insights.instrumentation-key
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string
         - name: probatemandb-POSTGRES-PASS
           alias: spring.datasource.password
         - name: s2s-probate-backend

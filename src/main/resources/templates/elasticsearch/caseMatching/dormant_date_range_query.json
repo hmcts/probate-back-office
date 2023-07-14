@@ -35,7 +35,9 @@
               { "match": { "state": "BOExaminingReissue" }},
               { "match": { "state": "BOCaseImported" }},
               { "match": { "state": "applyforGrantPaperApplication" }},
-              { "match": { "state": "BOCaveatPermenant" }}
+              { "match": { "state": "BOCaveatPermenant" }},
+              { "match": { "state": "BOCaseWorkerEscalation" }},
+              { "match": { "state": "BOPostGrantIssued" }}
             ]
           }
         }
