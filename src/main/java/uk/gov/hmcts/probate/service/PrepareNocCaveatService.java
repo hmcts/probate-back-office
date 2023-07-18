@@ -82,9 +82,8 @@ public class PrepareNocCaveatService {
         representatives.sort((m1, m2) -> {
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
-            return dt1.compareTo(dt2);
+            return dt2.compareTo(dt1);
         });
-        Collections.reverse(representatives);
         getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
         ProbateAddress solsAddress =
