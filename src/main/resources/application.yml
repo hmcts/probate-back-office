@@ -22,6 +22,10 @@ management:
       enabled: true
 
 springdoc:
+  swagger-ui:
+    path: "/swagger-ui.html"
+  api-docs:
+    path: v2/api-docs
   packagesToScan: uk.gov.hmcts.probate.controller
   pathsToMatch: /**
 
