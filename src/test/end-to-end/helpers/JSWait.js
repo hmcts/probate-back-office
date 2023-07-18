@@ -47,6 +47,16 @@ class JSWait extends codecept_helper {
         }
         await helper.waitInUrl(url, 60);
     }
+    async checkForText(text, timeout = null) {
+        const helper = this.helpers.WebDriver || this.helpers.Puppeteer;
+        try {
+            await helper.waitForText(text, timeout);
+        } catch (e) {
+            console.log(`Text "${text}" not found on page.`);
+            return false;
+        }
+        return true;
+    }
 }
 
 module.exports = JSWait;

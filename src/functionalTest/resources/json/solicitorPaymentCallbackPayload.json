@@ -1,0 +1,14 @@
+{
+  "service_request_reference": "2020-1599477846961",
+  "ccd_case_number": "1675256322849999",
+  "service_request_amount": 277.50,
+  "service_request_status":"Paid",
+  "payment":
+  {
+    "payment_amount": 277.50,
+    "payment_reference": "RC-1234",
+    "payment_method": "payment by account",
+    "case_reference":"example of case ref",
+    "account_number":"PBA123"
+  }
+}

@@ -25,6 +25,7 @@
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s"><font color="#505a5f">The legal statement is generated. You can review, change any details, then sign and submit your application.</font></p></div><div class="govuk-grid-column-one-third">&nbsp;</div></div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 
+<div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Make payment</p><p class="govuk-body-s"><font color="#505a5f"></font></p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p></div></div><hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <div class="govuk-grid-row"><div class="govuk-grid-column-two-thirds"><p class="govuk-body-s">Send documents<br/><details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">
     <span class="govuk-details__summary-text">

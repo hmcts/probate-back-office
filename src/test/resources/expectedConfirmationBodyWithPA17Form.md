@@ -22,11 +22,7 @@ Payment summary
 
 **Fee amount** &pound;0.10
 
-**Payment method** fee account
-
-**Selected PBA account** PBA-12345
-
-**Customer reference** Fee account PBA-12345
+**Customer application reference** Fee account PBA-12345
 
 Notes for this application
 -------------------------------------------------
@@ -35,6 +31,11 @@ ADDITIONAL INFO
 
 What you need to do now
 ==================================================
+**You must complete payment next**
+
+Go to the Service Request tab on you case details
+
+Complete the payment process
 
 Print a copy of this page for your records. 
  

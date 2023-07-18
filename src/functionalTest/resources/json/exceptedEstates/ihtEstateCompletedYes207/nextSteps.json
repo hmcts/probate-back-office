@@ -88,6 +88,7 @@
           }
         }
       ],
+      "solsPBAPaymentReference": "appref-PAY2",
       "deceasedDomicileInEngWales": "Yes",
       "outsideUKGrantCopies":1,
       "solsPaymentMethods":"fee account",
