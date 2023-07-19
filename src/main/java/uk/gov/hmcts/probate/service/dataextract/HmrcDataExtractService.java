@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
-import uk.gov.hmcts.probate.service.EmailService;
 import uk.gov.hmcts.probate.service.FileTransferService;
 import uk.gov.hmcts.probate.service.EmailWithFileService;
 import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
@@ -25,7 +24,7 @@ public class HmrcDataExtractService {
     private final FileTransferService fileTransferService;
     private final HmrcFileService hmrcFileService;
     private final FileExtractDateFormatter fileExtractDateFormatter;
-    private final EmailService emailService;
+
     private final EmailWithFileService emailWithFileService;
 
     public void performHmrcExtractFromDate(String fromDate, String toDate) {
@@ -59,8 +58,13 @@ public class HmrcDataExtractService {
         long totalSpace = file.getTotalSpace();
         log.info("HMRC file is {}bytes", totalSpace);
         // probably need to figure out how many records is too many for 2mb limit
-        // then change so send multiple files if that happens
-        emailWithFileService.emailFile(file);
+        // then change so send multiple files if that happens but this is POC so ok
+        boolean isSuccess = emailWithFileService.emailFile(file);
+        if(isSuccess==false) {
+            log.error("Failed to email hmrc file:" + file.getName());
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to email HMRC file for " + date);
+        }
     }
 
     private void uploadHmrcFile(String fromDate, String toDate, List<ReturnedCaseDetails> casesFound) {

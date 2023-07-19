@@ -23,16 +23,18 @@ import uk.gov.service.notify.SendEmailResponse;
 @Component
 public class EmailWithFileService {
 
+    private final NotificationClient notificationClient;
+
     @Value("${extract.templates.hmrcExtract}")
     private String templateId;
 
     @Autowired
     private final EmailAddresses emailAddresses;
 
-    public void emailFile(File file) {
+    public boolean emailFile(File file) {
         if(null==file || !file.exists()) {
             log.error("Error HMRC file does not exist");
-            return;
+            return false;
         }
 
         byte[] fileContents = new byte[0];
@@ -40,6 +42,7 @@ public class EmailWithFileService {
             fileContents = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
             log.error("Error reading HMRC file {}",e.getMessage() );
+            return false;
         }
 
         HashMap<String, Object> personalisation = new HashMap<>();
@@ -53,6 +56,7 @@ public class EmailWithFileService {
                 ));
         } catch (NotificationClientException e) {
             log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
+            return false;
         }
         try {
             SendEmailResponse response = notificationClient.sendEmail(templateId,
@@ -61,8 +65,10 @@ public class EmailWithFileService {
                 null,
                 null);
             log.info("HMRC email response: {}", response.toString());
+            return true;
         } catch (NotificationClientException e) {
             log.error("Error sending email to HMRC: {}", e.getMessage());
+            return false;
         }
 
     }
