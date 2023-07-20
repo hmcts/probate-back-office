@@ -154,6 +154,7 @@ class CaveatControllerIT {
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
+    @Test
     void caveatRaisedShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
