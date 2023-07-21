@@ -29,6 +29,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPrimaryA
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToRelationship;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToRelationshipOther;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolicitorAddress;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolicitorWillType;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToYesOrNo;
 import uk.gov.hmcts.probate.service.exceptionrecord.utils.OCRFieldExtractor;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
@@ -56,7 +57,8 @@ import java.util.List;
         OCRFieldNumberMapper.class,
         OCRFieldIhtFormEstateValuesCompletedMapper.class,
         OCRFieldIhtFormCompletedOnlineMapper.class,
-        OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class
+        OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class,
+        OCRFieldSolicitorWillTypeMapper.class
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -239,16 +241,15 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
-    @Mapping(target = "solsWillType", source = "ocrFields.solsWillType")
+    @Mapping(target = "solsWillType", source = "ocrFields.solsWillType", qualifiedBy = {ToSolicitorWillType.class})
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
 
     @AfterMapping
-    default void clearEmptySolsWillType(@MappingTarget GrantOfRepresentationData caseData,
+    default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData,
                                         ExceptionRecordOCRFields ocrField) {
-        if (caseData.getSolsWillType() != null && caseData.getSolsWillType().isEmpty()) {
-            caseData.setSolsWillType(null);
+        if (null == caseData.getSolsWillType()) {
             // there might not be a reason given but if there is not will type set then clear
             if (caseData.getSolsWillTypeReason() != null && caseData.getSolsWillTypeReason().isEmpty()) {
                 caseData.setSolsWillTypeReason(null);

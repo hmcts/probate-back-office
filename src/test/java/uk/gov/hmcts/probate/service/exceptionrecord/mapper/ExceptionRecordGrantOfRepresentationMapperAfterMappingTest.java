@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -471,6 +472,33 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         assertTrue(response.getCaseHandedOffToLegacySite());
     }
 
+    @Test
+    void testSolicitorWillTypeProbate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("Probate").build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_PROBATE);
+    }
+
+    @Test
+    void testSolicitorWillTypeAdmon() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("Admon Will").build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.ADMON_WILL);
+        assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_ADMON);
+    }
+
+    @Test
+    void testSolicitorWillTypeIntestacy() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("Intestacy").build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
+        assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_INTESTACY);
+    }
+
     @Configuration
     public static class Config {
 
@@ -557,6 +585,10 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         @Bean
         public OCRFieldNumberMapper ocrFieldPaymentMethodMapper() {
             return new OCRFieldNumberMapper();
+        }
+
+        @Bean OCRFieldSolicitorWillTypeMapper ocrFieldSolicitorWillTypeMapper() {
+            return new OCRFieldSolicitorWillTypeMapper();
         }
 
         @Bean
