@@ -241,7 +241,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
-    @Mapping(target = "solsWillType", source = "ocrFields.solsWillType", qualifiedBy = {ToSolicitorWillType.class})
+    @Mapping(target = "solsWillType", source = "ocrFields", qualifiedBy = {ToSolicitorWillType.class})
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
