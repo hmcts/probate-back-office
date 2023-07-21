@@ -475,7 +475,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSolicitorWillTypeProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Probate").build();
+                .solsWillType("Grant").build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_PROBATE);

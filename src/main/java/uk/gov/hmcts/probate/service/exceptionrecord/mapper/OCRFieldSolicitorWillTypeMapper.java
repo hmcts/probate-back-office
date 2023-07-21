@@ -19,7 +19,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Soli
 @Component
 public class OCRFieldSolicitorWillTypeMapper {
 
-    private static final String GRANT_OF_PROBATE = "PROBATE";
+    private static final String GRANT_OF_PROBATE = "GRANT";
     private static final String ADMON_WILL = "ADMON";
     private static final String INTESTACY = "INTESTACY";
 
