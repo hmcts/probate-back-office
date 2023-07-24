@@ -938,6 +938,7 @@ public class CallbackResponseTransformer {
             .solsSolicitorIsApplying(caseData.getSolsSolicitorIsApplying())
             .solsSolicitorNotApplyingReason(caseData.getSolsSolicitorNotApplyingReason())
             .solsWillType(caseData.getSolsWillType())
+            .solsWillTypeReason(caseData.getSolsWillTypeReason())
             .solsApplicantRelationshipToDeceased(caseData.getSolsApplicantRelationshipToDeceased())
             .solsSpouseOrCivilRenouncing(caseData.getSolsSpouseOrCivilRenouncing())
             .solsAdoptedEnglandOrWales(caseData.getSolsAdoptedEnglandOrWales())
