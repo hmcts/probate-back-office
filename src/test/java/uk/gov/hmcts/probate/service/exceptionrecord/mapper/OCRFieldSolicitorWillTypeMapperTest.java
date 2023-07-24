@@ -67,10 +67,10 @@ class OCRFieldSolicitorWillTypeMapperTest {
 
     @Test
     void shouldThrowExceptionForInvalidWillType() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("Invalid")
+                .build();
         assertThrows(OCRMappingException.class, () -> {
-            ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                    .solsWillType("Invalid")
-                    .build();
             SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
         });
     }

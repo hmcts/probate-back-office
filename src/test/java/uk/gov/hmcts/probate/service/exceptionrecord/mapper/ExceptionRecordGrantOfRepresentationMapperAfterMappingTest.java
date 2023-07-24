@@ -475,10 +475,10 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSolicitorWillTypeProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Grant").build();
+                .solsWillType("Probate").build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-        assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_PROBATE);
+        assertEquals(SolicitorWillType.GRANT_TYPE_PROBATE, response.getSolsWillType());
     }
 
     @Test
@@ -487,7 +487,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .solsWillType("Admon Will").build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.ADMON_WILL);
-        assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_ADMON);
+        assertEquals(SolicitorWillType.GRANT_TYPE_ADMON, response.getSolsWillType());
     }
 
     @Test
@@ -496,7 +496,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
                 .solsWillType("Intestacy").build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
-        assertEquals(response.getSolsWillType(), SolicitorWillType.GRANT_TYPE_INTESTACY);
+        assertEquals(SolicitorWillType.GRANT_TYPE_INTESTACY, response.getSolsWillType());
     }
 
     @Configuration
