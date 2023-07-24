@@ -40,9 +40,18 @@ class OCRFieldSolicitorWillTypeMapperTest {
     }
 
     @Test
-    void testCorrectWillTypeProbate() {
+    void testCorrectWillTypeGrant() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsWillType("Grant")
+                .build();
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        assertEquals(SolicitorWillType.GRANT_TYPE_PROBATE, response);
+    }
+
+    @Test
+    void testCorrectWillTypeProbate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("Probate")
                 .build();
         SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
         assertEquals(SolicitorWillType.GRANT_TYPE_PROBATE, response);

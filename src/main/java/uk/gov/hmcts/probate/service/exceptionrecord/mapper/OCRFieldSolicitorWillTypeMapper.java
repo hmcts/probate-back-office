@@ -19,8 +19,9 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Soli
 @Component
 public class OCRFieldSolicitorWillTypeMapper {
 
-    private static final String GRANT_OF_PROBATE = "GRANT";
-    private static final String ADMON_WILL = "ADMON";
+    private static final String GRANT = "GRANT";
+    private static final String PROBATE = "PROBATE";
+    private static final String ADMON = "ADMON";
     private static final String INTESTACY = "INTESTACY";
 
     @ToSolicitorWillType
@@ -31,9 +32,10 @@ public class OCRFieldSolicitorWillTypeMapper {
         String solsWillType = ocrFields.getSolsWillType().replaceAll("\\s+","").toUpperCase();
         log.info("Beginning mapping for Solicitor Will Type value: {}", solsWillType);
 
-        if (solsWillType.contains(GRANT_OF_PROBATE) || solsWillType.contains(GRANT_TYPE_PROBATE_VALUE.toUpperCase())) {
+        if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE) ||
+                solsWillType.contains(GRANT_TYPE_PROBATE_VALUE.toUpperCase())) {
             return GRANT_TYPE_PROBATE;
-        } else if (solsWillType.contains(ADMON_WILL) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
+        } else if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
             return GRANT_TYPE_ADMON;
         } else if (solsWillType.contains(INTESTACY)
                 || solsWillType.contains(GRANT_TYPE_INTESTACY_VALUE.toUpperCase())) {

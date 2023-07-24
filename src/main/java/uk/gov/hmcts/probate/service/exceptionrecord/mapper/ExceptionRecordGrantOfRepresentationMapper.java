@@ -247,13 +247,11 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
 
     @AfterMapping
-    default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData,
-                                        ExceptionRecordOCRFields ocrField) {
-        if (null == caseData.getSolsWillType()) {
-            // there might not be a reason given but if there is not will type set then clear
-            if (caseData.getSolsWillTypeReason() != null && caseData.getSolsWillTypeReason().isEmpty()) {
-                caseData.setSolsWillTypeReason(null);
-            }
+    default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData) {
+        // there might not be a reason given but if there is not will type set then clear
+        if (null == caseData.getSolsWillType() && caseData.getSolsWillTypeReason() != null
+                && caseData.getSolsWillTypeReason().isEmpty()) {
+            caseData.setSolsWillTypeReason(null);
         }
     }
 
