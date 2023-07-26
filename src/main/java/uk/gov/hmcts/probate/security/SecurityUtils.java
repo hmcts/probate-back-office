@@ -65,7 +65,7 @@ public class SecurityUtils {
     @Value("${probate.scheduler.password}")
     private String schedulerPassword;
 
-    @Value("${auth.idam.s2s-auth.services-allowed-to-payment-update}")
+    @Value("${idam.s2s-auth.services-allowed-to-payment-update}")
     private List<String> allowedToUpdateDetails;
 
     public SecurityDTO getSecurityDTO() {

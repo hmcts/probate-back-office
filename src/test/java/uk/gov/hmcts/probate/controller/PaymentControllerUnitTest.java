@@ -62,9 +62,10 @@ class PaymentControllerUnitTest {
 
     @Test
     void shouldDoGorServiceRequestUpdate() throws InvalidTokenException {
-        ResponseEntity<PaymentStatusReponse> response = underTest
-                                                        .doGorServiceRequestUpdate(s2sAuthToken, serviceRequestUpdateResponseDtoMock);
         when(authS2sUtil.checkIfServiceIsAllowed(s2sAuthToken)).thenReturn(true);
+        ResponseEntity<PaymentStatusReponse> response = underTest
+                                                        .doGorServiceRequestUpdate(s2sAuthToken,
+                                                                serviceRequestUpdateResponseDtoMock);
         verify(paymentsServiceMock)
                 .updateCaseFromServiceRequest(serviceRequestUpdateResponseDtoMock, CcdCaseType.GRANT_OF_REPRESENTATION);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -72,10 +73,10 @@ class PaymentControllerUnitTest {
     }
 
     @Test
-    void shouldDoCaveatServiceRequestUpdate() {
+    void shouldDoCaveatServiceRequestUpdate() throws InvalidTokenException {
+        when(authS2sUtil.checkIfServiceIsAllowed(s2sAuthToken)).thenReturn(true);
         ResponseEntity<PaymentStatusReponse> response = underTest
                 .doCaveatServiceRequestUpdate(s2sAuthToken, serviceRequestUpdateResponseDtoMock);
-        
         verify(paymentsServiceMock)
                 .updateCaseFromServiceRequest(serviceRequestUpdateResponseDtoMock, CcdCaseType.CAVEAT);
         assertEquals(HttpStatus.OK, response.getStatusCode());
@@ -91,5 +92,35 @@ class PaymentControllerUnitTest {
         verify(caseDataTransformerMock).transformCaseDataForEvidenceHandled(request);
         assertEquals(HttpStatus.OK, response.getStatusCode());
         assertEquals(callbackResponse, response.getBody());
+    }
+
+    @Test
+    void shouldReturnForbiddenWhenServiceNotAllowedAndGorServiceRequest() throws InvalidTokenException {
+        when(authS2sUtil.checkIfServiceIsAllowed(s2sAuthToken)).thenReturn(false);
+        ResponseEntity<PaymentStatusReponse> response = underTest
+                .doGorServiceRequestUpdate(s2sAuthToken,
+                        serviceRequestUpdateResponseDtoMock);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("forbidden", response.getBody().status);
+    }
+
+    @Test
+    void shouldReturnForbiddenWhenServiceNotAllowedAndCaveatServiceRequest() throws InvalidTokenException {
+        when(authS2sUtil.checkIfServiceIsAllowed(s2sAuthToken)).thenReturn(false);
+        ResponseEntity<PaymentStatusReponse> response = underTest
+                .doGorServiceRequestUpdate(s2sAuthToken,
+                        serviceRequestUpdateResponseDtoMock);
+        assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
+        assertEquals("forbidden", response.getBody().status);
+    }
+
+    @Test
+    void shouldThrowWhenS2sTokenIsMissingOrInvalidWithGorServiceRequest() {
+        when(underTest.doGorServiceRequestUpdate(s2sAuthToken,
+                        serviceRequestUpdateResponseDtoMock)).thenThrow(InvalidTokenException.class);
+        ResponseEntity<PaymentStatusReponse> response = underTest
+                .doGorServiceRequestUpdate(s2sAuthToken,
+                        serviceRequestUpdateResponseDtoMock);
+        assertEquals(HttpStatus.UNAUTHORIZED, response.getStatusCode());
     }
 }
