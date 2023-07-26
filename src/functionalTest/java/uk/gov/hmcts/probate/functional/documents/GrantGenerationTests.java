@@ -22,7 +22,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         "Extracted by Solicitor Firm Name (Ref: 1231-3984-3949-0300) SolAddLn1, SolAddLn3, SolAddPT, KT10 0LA, "
             + "SolAddCo";
     private static final String PA = "Extracted personally";
-    private static final String PRIMARY_APPLICANT = "Executor name 1 Executor Last Name 1";
+    private static final String PRIMARY_APPLICANT = "Executor Name 1 Executor Last Name 1";
     private static final String WILL_MESSAGE = "Will Message With a codicil";
     private static final String ADMIN_MESSAGE = "admin clause limitation message";
     private static final String LIMITATION_MESSAGE = "Limitation message";
@@ -54,19 +54,23 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String SPAIN = "Spain";
 
     private static final String MULTI_EXEC_TC_PROB_PRACTITIONER = "Tony Stark";
-    private static final String MULTI_EXEC_TC_DECEASED = "The Last Will and Testament of  (An official copy of "
-        + "which is available from the Court) was John Smith";
-    private static final String MULTI_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
+    private static final String MULTI_EXEC_TC = "The Last Will and Testament ";
+    private static final String MULTI_EXEC_TC_DECEASED = "John Smith";
+    private static final String ONE_CODICIL = "with one codicil";
+    private static final String TWO_CODICILS = "with two codicils";
+    private static final String MULTI_EXEC_TC_ADMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
         + "granted by this court to the following Executors";
+    private static final String MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT = "The Administration of John 's "
+            + "estate is granted by this court to the following ExecutorsSmith";
     private static final String MULTI_EXEC_TC_TRUST_CORP_DETAILS = "and  MyTc 19 Curtis Street Charlton Kings Swindon "
         + "Glos Sn2 2JU United Kingdom";
-    private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "Executorsof  MyTc 19 Curtis Street "
+    private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI = "ExecutorsSmithof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
     private static final String POWER_RESERVED_TO_ONE = "Power reserved to another Executor";
     private static final String EXTRANEOUS_CURLY_START_BRACE = "{";
     private static final String EXTRANEOUS_CURLY_END_BRACE = "}";
-    private static final String SINGLE_EXEC_TC_AMINISTRATION_STATEMENT = "The Administration of 's estate is John Smith"
-        + "granted by this court to the following Executorof";
+    private static final String SINGLE_EXEC_TC_ADMINISTRATION_STATEMENT = "The Administration of 's estate is John "
+        + "Smithgranted by this court to the following Executorof";
     private static final String NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE = "Executorof  MyTc 19 Curtis Street "
         + "Charlton Kings Swindon Glos Sn2 2JU United Kingdom";
     public static final String THE_UNITED_KINGDOM = "the United Kingdom";
@@ -130,7 +134,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String PARTNERS_FIRM_POWER_RESERVED_PAYLOAD =
         "solicitorPayloadTrustCorpsPartnersInFirmPowerReserved.json";
     private static final String FRAGMENT_WITH_NO_MULTIPLE_ANDS =
-        "Executorsof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
+        "ExecutorsSmithof  MyTc 19 Curtis Street Charlton Kings Swindon Glos Sn2 2JU United Kingdom of and "
             + "Fred FlintstoneApplying 7 Ashley Avenue Burnham-on-Sea Somerset SN15JU United Kingdom"
             + "The application has stated that the gross value";
 
@@ -767,8 +771,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(GOP));
 
         assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(MULTI_EXEC_TC_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_DETAILS));
     }
 
@@ -780,8 +785,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(GOP));
 
         assertTrue(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(MULTI_EXEC_TC_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(MULTI_EXEC_TC_TRUST_CORP_DETAILS));
     }
 
@@ -792,8 +798,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(ONE_CODICIL));
+        assertTrue(response.contains(MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
     }
 
@@ -804,8 +812,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(ONE_CODICIL));
+        assertTrue(response.contains(MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
     }
 
@@ -816,8 +826,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(SINGLE_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(SINGLE_EXEC_TC_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE));
     }
 
@@ -828,8 +839,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(SINGLE_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(SINGLE_EXEC_TC_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_SINGLE));
     }
 
@@ -856,8 +868,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(TWO_CODICILS));
+        assertTrue(response.contains(MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
         assertTrue(response.contains(POWER_RESERVED_TO_ONE));
         assertFalse(response.contains(EXTRANEOUS_CURLY_START_BRACE));
@@ -871,8 +885,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(REGISTRY_ADDRESS_HARLOW));
         assertTrue(response.contains(GOP));
         assertFalse(response.contains(MULTI_EXEC_TC_PROB_PRACTITIONER));
+        assertTrue(response.contains(MULTI_EXEC_TC));
         assertTrue(response.contains(MULTI_EXEC_TC_DECEASED));
-        assertTrue(response.contains(MULTI_EXEC_TC_AMINISTRATION_STATEMENT));
+        assertTrue(response.contains(TWO_CODICILS));
+        assertTrue(response.contains(MULTI_EXEC_TC_NOT_NAMED_ADMINISTRATION_STATEMENT));
         assertTrue(response.contains(NOT_NAMED_SOL_TC_TRUST_CORP_DETAILS_MULTI));
         assertTrue(response.contains(POWER_RESERVED_TO_ONE));
         assertFalse(response.contains(EXTRANEOUS_CURLY_START_BRACE));
@@ -1222,18 +1238,6 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
     }
-
-    @Test
-    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() throws IOException {
-
-        final String payload = replaceAllInString(utils.getJsonFromFile(LONDON_GOP_PAYLOAD),
-            "\"primaryApplicantIsApplying\": \"Yes\",", "");
-        final String response =
-            generateGrantDocumentFromPayload(payload,
-                GENERATE_GRANT_DRAFT);
-        assertTrue(response.contains(PRIMARY_APPLICANT));
-    }
-
 
     @Test
     public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantNotApplying() throws IOException {

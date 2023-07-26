@@ -100,6 +100,7 @@ public abstract class IntegrationTestBase {
 
     protected ResponseBody validatePostSuccessForPayload(String payload, String path, Headers headers) {
         Response response = RestAssured.given()
+            .config(config)
             .relaxedHTTPSValidation()
             .headers(headers)
             .body(payload)
@@ -107,6 +108,20 @@ public abstract class IntegrationTestBase {
             .andReturn();
 
         response.then().assertThat().statusCode(200);
+
+        return response.getBody();
+    }
+
+    protected ResponseBody validatePutSuccess(String fileName, String path, int statusCode) throws IOException {
+        Headers headers = utils.getHeadersNoUser();
+        Response response = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(headers)
+                .body(utils.getJsonFromFile(fileName))
+                .when().put(path)
+                .andReturn();
+
+        response.then().assertThat().statusCode(statusCode);
 
         return response.getBody();
     }

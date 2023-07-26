@@ -7,6 +7,7 @@ import org.mockito.InjectMocks;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 class WillLodgementDataTest {
 
@@ -102,5 +103,13 @@ class WillLodgementDataTest {
                 .build();
 
         assertEquals(null, caseData.getWillDateFormatted());
+    }
+
+    @Test
+    void shouldNotReturnNullDocumentsGenerated() {
+        final WillLodgementData caseData = WillLodgementData.builder()
+                .build();
+
+        assertNotNull(caseData.getDocumentsGenerated());
     }
 }

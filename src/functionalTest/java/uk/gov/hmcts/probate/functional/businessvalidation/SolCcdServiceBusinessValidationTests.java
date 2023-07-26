@@ -19,10 +19,7 @@ import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
 
-import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -45,6 +42,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String PAPER_FORM_URL = "/case/paperForm";
     private static final String INIT_PAPER_FORM_URL = "/case/initPaperForm";
     private static final String RESOLVE_STOP_URL = "/case/resolveStop";
+    private static final String CHANGE_CASE_STATE_URL = "/case/changeCaseState";
     private static final String REDEC_COMPLETE = "/case/redeclarationComplete";
     private static final String CASE_STOPPED_URL = "/case/case-stopped";
     private static final String CASE_CREATE_VALIDATE_URL = "/case/sols-create-validate";
@@ -416,7 +414,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
             200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
-    
+
     @Test
     public void shouldPassOriginalWillAndCodicilDateValidationWithCodicilDateOneDayAfterWillDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
@@ -677,6 +675,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
+    public void verifyRequestSuccessForChangeCaseState() throws IOException {
+        validatePostSuccess("solicitorPayloadChangeCaseState.json", CHANGE_CASE_STATE_URL);
+    }
+
+    @Test
     public void verifyRequestSuccessForRedeclarationCompleteWithStateChange() throws IOException {
         validatePostSuccess("personalPayloadNotifications.json", REDEC_COMPLETE);
     }
@@ -806,24 +809,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         assertEquals(willExist, "Yes");
         assertNull(errors);
-    }
-
-    @Test()
-    public void verifyRequestProbateSuccessForDefaultingPBAsOnNextSteps() throws IOException {
-        final ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile(
-            "solicitorPDFPayloadProbate.json"),
-            DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
-        final JsonPath jsonPath = JsonPath.from(body.asString());
-        final String errors = jsonPath.get("data.errors");
-        final HashMap solsPBANumbers = jsonPath.get("data.solsPBANumber");
-
-        assertNull(errors);
-        assertNotNull(solsPBANumbers);
-        List<HashMap> listItems = ((List<HashMap>) solsPBANumbers.get("list_items"));
-        assertEquals(2, ((List) solsPBANumbers.get("list_items")).size());
-        String allPBAs = listItems.get(0).get("code") + "," + listItems.get(1).get("code");
-        assertThat(allPBAs, containsString("PBA0082126"));
-        assertThat(allPBAs, containsString("PBA0083372"));
     }
 
     @Test
@@ -1029,7 +1014,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         assertEquals("[APPLICANTSOLICITOR]",
             jsonPath.get("data.applicantOrganisationPolicy.OrgPolicyCaseAssignedRole"));
     }
-    
+
     @Test
     public void shouldReturnSuccessReactivateCase() throws IOException {
         validatePostSuccessForPayload(utils.getJsonFromFile("success.paperForm.json"),
