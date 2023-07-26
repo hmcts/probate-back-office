@@ -44,7 +44,7 @@ public class PaymentController {
             @RequestBody ServiceRequestUpdateResponseDto serviceRequestUpdateResponseDto) {
         try {
             Boolean isServiceAllowed = authS2sUtil.checkIfServiceIsAllowed(s2sAuthToken);
-            if(Boolean.TRUE.equals(isServiceAllowed)) {
+            if (Boolean.TRUE.equals(isServiceAllowed)) {
                 paymentsService.updateCaseFromServiceRequest(serviceRequestUpdateResponseDto,
                         CcdCaseType.GRANT_OF_REPRESENTATION);
                 return ResponseEntity.ok().body(new PaymentStatusReponse(SUCCESSFUL_UPDATE));
