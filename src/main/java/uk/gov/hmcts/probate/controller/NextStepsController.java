@@ -34,6 +34,8 @@ import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule
 import uk.gov.service.notify.NotificationClientException;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

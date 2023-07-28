@@ -5,20 +5,24 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.security.authentication.TestingAuthenticationToken;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.test.context.TestSecurityContextHolder;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import java.util.Collection;
 import java.util.Collections;
 
+import static java.util.stream.Collectors.toList;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.core.StringContains.containsString;
@@ -66,8 +70,8 @@ class SecurityUtilsTest {
 
     @Test
     void shouldGetUserAndServiceSecurityDTO() {
-        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
-                Collections.EMPTY_LIST, "servicename");
+        UserDetails serviceAndUserDetails = new User("username", USER_TOKEN,
+                toGrantedAuthorities(Collections.EMPTY_LIST));
         TestSecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
         when(httpServletRequestMock.getHeader("Authorization")).thenReturn("AUTH");
@@ -80,8 +84,8 @@ class SecurityUtilsTest {
 
     @Test
     void shouldGetUserId() {
-        UserDetails serviceAndUserDetails = new ServiceAndUserDetails("username", USER_TOKEN,
-                Collections.EMPTY_LIST, "servicename");
+        UserDetails serviceAndUserDetails = new User("username", USER_TOKEN,
+                toGrantedAuthorities(Collections.EMPTY_LIST));
         TestSecurityContextHolder.getContext().setAuthentication(
                 new TestingAuthenticationToken(serviceAndUserDetails, USER_TOKEN, "ROLE_USER"));
         String id = securityUtils.getUserId();
@@ -220,5 +224,9 @@ class SecurityUtilsTest {
         assertEquals("12344", securityDTO.getUserId());
         assertEquals("Bearer CW_TOKEN", securityDTO.getAuthorisation());
         assertEquals("CWTest", securityDTO.getServiceAuthorisation());
+    }
+
+    private static Collection<? extends GrantedAuthority> toGrantedAuthorities(Collection<String> roles) {
+        return roles.stream().map(SimpleGrantedAuthority::new).collect(toList());
     }
 }
