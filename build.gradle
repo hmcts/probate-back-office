@@ -188,12 +188,13 @@ gitProperties {
 }
 
 def versions = [
-        ccdClient                       : '4.9.2',
+        ccdClient                       : '4.9.1',
         commonsIO                       : '2.13.0',
         commonsValidator                : '1.6',
         documentClient                  : '1.7.3',
         elasticSearchVersion            : '7.15.0',
         hmctsJavaLogging                : '5.1.7',
+        idamJavaClient                  : '2.0.1',
         jacksonDatabind                 : '2.15.2',
         lombok                          : '1.18.26',
         mapStruct                       : '1.2.0.Final',
@@ -306,6 +307,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.0'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13-DTSPB-3654v2'
+  implementation group: 'com.github.hmcts', name: 'idam-java-client', version: versions.idamJavaClient
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.12'
   implementation group: 'com.microsoft.azure', name: 'applicationinsights-web', version: '3.4.12'
@@ -406,6 +408,7 @@ dependencies {
   contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
   contractTestImplementation group: 'com.github.hmcts', name: 'probate-pact-commons', version: versions.probatePactCommonsVersion
+  contractTestImplementation group: 'com.github.hmcts', name: 'idam-java-client', version: versions.idamJavaClient
   contractTestImplementation sourceSets.main.runtimeClasspath
   contractTestImplementation sourceSets.test.runtimeClasspath
 

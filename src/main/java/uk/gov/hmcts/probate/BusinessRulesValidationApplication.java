@@ -25,7 +25,8 @@ import java.util.function.Function;
 @SpringBootApplication
 @EnableFeignClients(basePackages = {"uk.gov.hmcts.reform.idam", "uk.gov.hmcts.reform.ccd",
     "uk.gov.hmcts.reform.sendletter",
-    "uk.gov.hmcts.probate.service"})
+    "uk.gov.hmcts.probate.service",
+    "uk.gov.hmcts.reform.authorisation"})
 @EnableScheduling
 public class BusinessRulesValidationApplication implements CommandLineRunner {
 

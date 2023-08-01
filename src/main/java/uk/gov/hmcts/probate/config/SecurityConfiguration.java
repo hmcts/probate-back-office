@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -18,12 +17,9 @@ public class SecurityConfiguration {
 
     private final ServiceAuthFilter serviceAuthFilter;
 
-    @Autowired
     public SecurityConfiguration(ServiceAuthFilter serviceAuthFilter) {
-        super();
         this.serviceAuthFilter = serviceAuthFilter;
     }
-
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
@@ -37,8 +33,7 @@ public class SecurityConfiguration {
             "/info",
             "/favicon.ico",
             "/data-extract/**",
-            "/"
-        );
+            "/");
     }
 
     @Bean
@@ -47,7 +42,7 @@ public class SecurityConfiguration {
         http
             .csrf(AbstractHttpConfigurer::disable)
             .addFilterBefore(serviceAuthFilter, BearerTokenAuthenticationFilter.class)
-            .authorizeHttpRequests((authorize) -> authorize
+            .authorizeHttpRequests(authorize -> authorize
                 .requestMatchers(
                     "/notify/grant-delayed-scheduled",
                     "/notify/grant-awaiting-documents-scheduled",
@@ -65,7 +60,7 @@ public class SecurityConfiguration {
                     "/probateManTypes/**",
                     "/legacy/**",
                     "/standing-search/**")
-            .authenticated())
+                .permitAll())
             .formLogin(AbstractHttpConfigurer::disable)
             .logout(AbstractHttpConfigurer::disable);
 

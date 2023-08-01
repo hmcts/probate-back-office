@@ -219,10 +219,18 @@ logging:
     console: "%d{yyyy-MMM-dd HH:mm:ss.SSS} %-5level [%thread] %logger{15} - %msg%n"
 
 idam:
+  api:
+    url: http://localhost:8080
+    client:
+      id: client_id
+      secret: 123456
+      redirect_uri: https://localhost:3000/receiver
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
+  s2s-authorised:
+    services: ${S2S_NAMES_WHITELIST:probate_backend,bulk_scan_processor,bulk_scan_orchestrator,payment_app}
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
