@@ -33,7 +33,8 @@ public class PaymentController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseDataTransformer caseDataTransformer;
 
-    private SecurityUtils authS2sUtil;
+    private final SecurityUtils authS2sUtil;
+
     public static final String SUCCESSFUL_UPDATE = "success";
     public static final String SERVICE_AUTHORIZATION_HEADER = "ServiceAuthorization";
 

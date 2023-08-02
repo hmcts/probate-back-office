@@ -12,6 +12,8 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
+import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
+import uk.gov.hmcts.reform.authorisation.validators.ServiceAuthTokenValidator;
 
 import javax.sql.DataSource;
 
@@ -40,6 +42,11 @@ public class TestContextConfiguration {
                 .contract(new SpringMvcContract())
                 .target(ServiceAuthorisationApi.class, s2sUrl);
         return new ServiceAuthTokenGenerator(secret, microservice, serviceAuthorisationApi);
+    }
+
+    @Bean
+    public AuthTokenValidator tokenValidator(ServiceAuthorisationApi s2sApi) {
+        return new ServiceAuthTokenValidator(s2sApi);
     }
 
     @Bean
