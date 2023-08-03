@@ -20,7 +20,8 @@ public class ServiceAuthConfiguration {
 
     public ServiceAuthTokenGenerator serviceAuthTokenGenerator(@Value("${idam.s2s-auth.url}")
                                                                    String s2sUrl,
-                                                               @Value("${idam.s2s-auth.totp_secret}") String secret,
+                                                               @Value("${idam.s2s-auth.totp_secret}")
+                                                                   String secret,
                                                                @Value("${idam.s2s-auth.microservice}") String microservice) {
         final ServiceAuthorisationApi serviceAuthorisationApi = Feign.builder()
             .encoder(new JacksonEncoder())
