@@ -44,7 +44,7 @@ class PaymentControllerUnitTest {
 
     @Mock
     private CallbackResponse callbackResponse;
-    @MockBean
+    @Mock
     private SecurityUtils authS2sUtil;
 
     @InjectMocks
