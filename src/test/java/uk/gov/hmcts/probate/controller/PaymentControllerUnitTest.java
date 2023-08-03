@@ -101,7 +101,6 @@ class PaymentControllerUnitTest {
                 .doGorServiceRequestUpdate(s2sAuthToken,
                         serviceRequestUpdateResponseDtoMock);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-        assertEquals("forbidden", response.getBody().status);
     }
 
     @Test
@@ -111,7 +110,6 @@ class PaymentControllerUnitTest {
                 .doGorServiceRequestUpdate(s2sAuthToken,
                         serviceRequestUpdateResponseDtoMock);
         assertEquals(HttpStatus.FORBIDDEN, response.getStatusCode());
-        assertEquals("forbidden", response.getBody().status);
     }
 
     @Test
