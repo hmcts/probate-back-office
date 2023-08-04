@@ -46,7 +46,7 @@ class PaymentControllerIT {
         String solicitorPaymentCallbackPayload = testUtils.getStringFromFile("solicitorPaymentCallbackPayload.json");
 
         mockMvc.perform(put("/payment/gor-payment-request-update")
-                        .header("Authorization", "AUTH_TOKEN")
+                        .header("ServiceAuthorization", "AUTH_TOKEN")
                         .content(solicitorPaymentCallbackPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -58,7 +58,7 @@ class PaymentControllerIT {
         String solicitorPaymentCallbackPayload = testUtils.getStringFromFile("solicitorPaymentCallbackPayload.json");
 
         mockMvc.perform(put("/payment/caveat-payment-request-update")
-                        .header("Authorization", "AUTH_TOKEN")
+                        .header("ServiceAuthorization", "AUTH_TOKEN")
                         .content(solicitorPaymentCallbackPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
