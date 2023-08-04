@@ -22,7 +22,8 @@ public class ServiceAuthConfiguration {
                                                                    String s2sUrl,
                                                                @Value("${idam.s2s-auth.totp_secret}")
                                                                    String secret,
-                                                               @Value("${idam.s2s-auth.microservice}") String microservice) {
+                                                               @Value("${idam.s2s-auth.microservice}")
+                                                                   String microservice) {
         final ServiceAuthorisationApi serviceAuthorisationApi = Feign.builder()
             .encoder(new JacksonEncoder())
             .contract(new SpringMvcContract())
