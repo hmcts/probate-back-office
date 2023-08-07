@@ -36,7 +36,7 @@ class PaymentControllerIT {
     @MockBean
     private PaymentsService paymentsService;
 
-    @Mock
+    @MockBean
     private SecurityUtils authS2sUtil;
 
     @Autowired
