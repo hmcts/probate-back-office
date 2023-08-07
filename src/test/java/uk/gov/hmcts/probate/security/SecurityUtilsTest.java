@@ -20,7 +20,6 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
-import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
