@@ -20,6 +20,7 @@ import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -227,22 +228,22 @@ class SecurityUtilsTest {
     }
 
     @Test
-    public void givenTokenIsNull_whenGetBearToken_thenReturnNull() {
+    void givenTokenIsNull_whenGetBearToken_thenReturnNull() {
         testGetBearToken(null, null);
     }
 
     @Test
-    public void givenTokenIsBlank_whenGetBearToken_thenReturnBlank() {
+    void givenTokenIsBlank_whenGetBearToken_thenReturnBlank() {
         testGetBearToken(" ", " ");
     }
 
     @Test
-    public void givenTokenDoesNotHaveBearer_whenGetBearToken_thenReturnWithBearer() {
+    void givenTokenDoesNotHaveBearer_whenGetBearToken_thenReturnWithBearer() {
         testGetBearToken("TestToken", "Bearer TestToken");
     }
 
     @Test
-    public void givenTokenDoesHaveBearer_whenGetBearToken_thenReturnWithBearer() {
+    void givenTokenDoesHaveBearer_whenGetBearToken_thenReturnWithBearer() {
         testGetBearToken("Bearer TestToken", "Bearer TestToken");
     }
 
@@ -251,21 +252,22 @@ class SecurityUtilsTest {
     }
 
     @Test
-    public void givenServiceNameIsAuthenticated() throws InvalidTokenException {
+    void givenServiceNameIsAuthenticated() throws InvalidTokenException {
         when(authTokenValidator.getServiceName("Bearer TestService")).thenReturn("TestService");
         assertEquals("TestService", securityUtils.authenticate("TestService"));
     }
 
     @Test()
-    public void authenticateABlankToken() throws InvalidTokenException {
+    void authenticateABlankToken() throws InvalidTokenException {
         assertThrows(InvalidTokenException.class, () -> {
             securityUtils.authenticate(" ");
         });
     }
 
     @Test
-    public void givenServiceNameIsNullFromToken() throws InvalidTokenException {
+    void givenServiceNameIsNullFromToken() throws InvalidTokenException {
         when(authTokenValidator.getServiceName("Bearer TestService")).thenReturn(null);
         assertEquals(Boolean.FALSE, securityUtils.checkIfServiceIsAllowed("TestService"));
     }
+
 }
