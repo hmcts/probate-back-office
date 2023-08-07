@@ -38,7 +38,7 @@ public class HmrcDataExtractService {
                 fromDate, toDate, casesFound.size());
 
             emailHmrcFile(fromDate, casesFound);
-            
+
         }
     }
 
@@ -60,7 +60,7 @@ public class HmrcDataExtractService {
         // probably need to figure out how many records is too many for 2mb limit
         // then change so send multiple files if that happens but this is POC so ok
         boolean isSuccess = emailWithFileService.emailFile(file);
-        if(isSuccess==false) {
+        if (isSuccess == false) {
             log.error("Failed to email hmrc file:" + file.getName());
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
                 "Failed to email HMRC file for " + date);

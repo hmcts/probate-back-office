@@ -32,7 +32,7 @@ public class EmailWithFileService {
     private final EmailAddresses emailAddresses;
 
     public boolean emailFile(File file) {
-        if(null==file || !file.exists()) {
+        if (null == file || !file.exists()) {
             log.error("Error HMRC file does not exist");
             return false;
         }
@@ -41,7 +41,7 @@ public class EmailWithFileService {
         try {
             fileContents = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
-            log.error("Error reading HMRC file {}",e.getMessage() );
+            log.error("Error reading HMRC file {}", e.getMessage());
             return false;
         }
 
