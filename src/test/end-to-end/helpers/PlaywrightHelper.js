@@ -6,7 +6,7 @@ const testConfig = require('src/test/config.js');
 
 const {runAccessibility} = require('./accessibility/runner');
 
-class PuppeteerHelper extends Helper {
+class PlaywrightHelper extends Helper {
 
     async clickBrowserBackButton() {
         const page = this.helpers['Playwright'].page;
@@ -168,4 +168,4 @@ class PuppeteerHelper extends Helper {
     }
 }
 
-module.exports = PuppeteerHelper;
+module.exports = PlaywrightHelper;
