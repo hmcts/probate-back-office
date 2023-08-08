@@ -35,7 +35,6 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
@@ -114,7 +113,6 @@ public class BusinessValidationController {
     private final ChangeToSameStateValidationRule changeToSameStateValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
-    private final PrepareNocService prepareNocService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {

@@ -27,7 +27,6 @@ import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.PrepareNocService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
@@ -166,8 +165,6 @@ class BusinessValidationUnitTest {
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
     @Mock
-    private PrepareNocService prepareNocServiceMock;
-    @Mock
     private CaseEscalatedService caseEscalatedService;
     private BusinessValidationController underTest;
 
@@ -203,8 +200,7 @@ class BusinessValidationUnitTest {
             furtherEvidenceForApplicationValidationRule,
             changeToSameStateValidationRule,
             handOffLegacyTransformer,
-            registrarDirectionServiceMock,
-            prepareNocServiceMock);
+            registrarDirectionServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
