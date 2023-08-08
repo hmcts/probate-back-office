@@ -57,7 +57,7 @@ public class PrepareNocCaveatService {
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
             return dt2.compareTo(dt1);
         });
-        getNewSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
+        findNewCaveatSolicitorDetails(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                         changeOrganisationRequest, caseData, caseDetails.getId().toString());
         ProbateAddress solsAddress =
                 getNewSolicitorAddress(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
@@ -91,7 +91,7 @@ public class PrepareNocCaveatService {
         return null;
     }
 
-    private void getNewSolicitorDetails(SecurityDTO securityDTO,
+    private void findNewCaveatSolicitorDetails(SecurityDTO securityDTO,
                                                            ChangeOrganisationRequest changeOrganisationRequest,
                                                        Map<String, Object> caseData, String id) {
         FindUsersByOrganisation organisationUser =
