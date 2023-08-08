@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
-import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
@@ -15,7 +13,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -26,7 +23,6 @@ import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -166,15 +162,15 @@ public class PrepareNocService {
     private RemovedRepresentative setRemovedRepresentative(Map<String, Object> caseData,
                                                            ChangeOrganisationRequest changeOrganisationRequest) {
 
-            RemovedRepresentative removed = RemovedRepresentative.builder()
+        RemovedRepresentative removed = RemovedRepresentative.builder()
                     .organisationID(changeOrganisationRequest.getOrganisationToRemove().getOrganisationID())
                     .solicitorFirstName(getRemovedRepresentativeFirstName(caseData))
                     .solicitorLastName(getRemovedRepresentativeLastName(caseData))
                     .solicitorEmail(getRemovedRepresentativeEmail(caseData))
                     .organisation(changeOrganisationRequest.getOrganisationToRemove())
                     .build();
-            caseData.put("removedRepresentative", removed);
-            return removed;
+        caseData.put("removedRepresentative", removed);
+        return removed;
     }
 
     private SolsAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse,
