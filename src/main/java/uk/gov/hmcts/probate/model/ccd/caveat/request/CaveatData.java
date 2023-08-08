@@ -185,7 +185,6 @@ public class CaveatData {
     private ChangeOfRepresentative changeOfRepresentative;
     private RemovedRepresentative removedRepresentative;
     private ChangeOrganisationRequest changeOrganisationRequestField;
-    private LocalDate nocPreparedDate;
 
     public String getDeceasedFullName() {
         return String.join(" ", deceasedForenames, deceasedSurname);

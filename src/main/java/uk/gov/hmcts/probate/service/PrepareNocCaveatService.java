@@ -6,15 +6,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
-import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
@@ -25,7 +21,6 @@ import uk.gov.hmcts.reform.ccd.client.model.AboutToStartOrSubmitCallbackResponse
 import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import java.util.ArrayList;
@@ -46,27 +41,6 @@ public class PrepareNocCaveatService {
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
     private final PrepareNocService prepareNocService;
-
-    public void addNocDate(CaveatData caveatData) {
-        caveatData.setNocPreparedDate(LocalDate.now());
-    }
-
-    public RemovedRepresentative setRemovedRepresentative(CaveatData caveatData) {
-        OrganisationPolicy organisationPolicy = caveatData.getApplicantOrganisationPolicy();
-
-        if (organisationPolicy != null && organisationPolicy.getOrganisation() != null) {
-            Organisation organisation = organisationPolicy.getOrganisation();
-
-            RemovedRepresentative removed = RemovedRepresentative.builder()
-                    .organisationID(organisation.getOrganisationID())
-                    .solicitorEmail(caveatData.getCaveatorEmailAddress())
-                    .organisation(organisation)
-                    .build();
-            caveatData.setRemovedRepresentative(removed);
-            return removed;
-        }
-        return null;
-    }
 
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();

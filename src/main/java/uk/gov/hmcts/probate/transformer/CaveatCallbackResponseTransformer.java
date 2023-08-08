@@ -298,8 +298,6 @@ public class CaveatCallbackResponseTransformer {
             .serviceRequestReference(caveatData.getServiceRequestReference())
             .paymentTaken(caveatData.getPaymentTaken())
             .applicationSubmittedBy(caveatData.getApplicationSubmittedBy())
-            .nocPreparedDate(ofNullable(caveatData.getNocPreparedDate())
-                .map(dateTimeFormatter::format).orElse(null))
             .removedRepresentative(caveatData.getRemovedRepresentative())
             .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
             .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()));

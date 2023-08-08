@@ -161,14 +161,22 @@ public class PrepareNocService {
 
     private RemovedRepresentative setRemovedRepresentative(Map<String, Object> caseData,
                                                            ChangeOrganisationRequest changeOrganisationRequest) {
-
-        RemovedRepresentative removed = RemovedRepresentative.builder()
+        RemovedRepresentative removed;
+        if (caseData.get("caveatorEmailAddress") != null) {
+            removed = RemovedRepresentative.builder()
                     .organisationID(changeOrganisationRequest.getOrganisationToRemove().getOrganisationID())
-                    .solicitorFirstName(getRemovedRepresentativeFirstName(caseData))
-                    .solicitorLastName(getRemovedRepresentativeLastName(caseData))
-                    .solicitorEmail(getRemovedRepresentativeEmail(caseData))
+                    .solicitorEmail(caseData.get("caveatorEmailAddress").toString())
                     .organisation(changeOrganisationRequest.getOrganisationToRemove())
                     .build();
+        } else {
+            removed = RemovedRepresentative.builder()
+                    .organisationID(changeOrganisationRequest.getOrganisationToRemove().getOrganisationID())
+                    .solicitorFirstName(caseData.get("solsSOTForenames").toString())
+                    .solicitorLastName(caseData.get("solsSOTSurname").toString())
+                    .solicitorEmail(caseData.get("solsSolicitorEmail").toString())
+                    .organisation(changeOrganisationRequest.getOrganisationToRemove())
+                    .build();
+        }
         caseData.put("removedRepresentative", removed);
         return removed;
     }
@@ -191,21 +199,6 @@ public class PrepareNocService {
 
         return objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class);
-    }
-
-    private String getRemovedRepresentativeFirstName(Map<String, Object> caseData) {
-
-        return objectMapper.convertValue(caseData.get("solsSOTForenames"), String.class);
-    }
-
-    private String getRemovedRepresentativeLastName(Map<String, Object> caseData) {
-
-        return objectMapper.convertValue(caseData.get("solsSOTSurname"), String.class);
-    }
-
-    private String getRemovedRepresentativeEmail(Map<String, Object> caseData) {
-
-        return objectMapper.convertValue(caseData.get("solsSolicitorEmail"), String.class);
     }
 
     public List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {

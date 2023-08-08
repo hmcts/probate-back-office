@@ -113,7 +113,6 @@ public class ResponseCaveatData {
     private final String paymentTaken;
     private final String applicationSubmittedBy;
 
-    private final String nocPreparedDate;
     private final List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives;
     private final ChangeOfRepresentative changeOfRepresentative;
     private final RemovedRepresentative removedRepresentative;

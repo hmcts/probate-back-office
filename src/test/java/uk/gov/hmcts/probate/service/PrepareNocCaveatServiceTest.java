@@ -10,10 +10,8 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.caseaccess.DecisionRequest;
 import uk.gov.hmcts.probate.model.caseaccess.FindUsersByOrganisation;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
-import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.caseaccess.SolicitorUser;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
-import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AddedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
@@ -70,22 +68,20 @@ class PrepareNocCaveatServiceTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("orgId1")
-                        .organisationName("OrgName1").build()).build();
         ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
                 .createdBy("sol2@gmail.com")
-                .organisationToAdd(Organisation.builder().organisationID("12").build()).build();
+                .organisationToAdd(Organisation.builder().organisationID("12").build())
+                .organisationToRemove(Organisation.builder().organisationID("13")
+                        .organisationName("OldOrg").build()).build();
         RemovedRepresentative removed = RemovedRepresentative.builder()
-                .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
-                .organisation(organisationPolicy.getOrganisation())
-                .solicitorEmail("abc@gmail.com")
+                .organisationID(changeRequest.getOrganisationToRemove().getOrganisationID())
+                .organisation(changeRequest.getOrganisationToRemove())
+                .solicitorEmail("OldSolicitor@gmail.com")
                 .build();
         caseData = new HashMap<>();
         caseData.put("removedRepresentative", removed);
         caseData.put("changeOrganisationRequestField", changeRequest);
-        caseData.put("applicantOrganisationPolicy",organisationPolicy);
+        caseData.put("caveatorEmailAddress","OldSolicitor@gmail.com");
         List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
         caseData.put("changeOfRepresentatives",changeOfRepresentatives);
         ProbateAddress address = ProbateAddress.builder().proAddressLine1("Address Line1").proAddressLine2("Line2")
@@ -98,8 +94,6 @@ class PrepareNocCaveatServiceTest {
                 .removedRepresentative(removed).build();
         when(prepareNocServiceMock.buildChangeOfRepresentative(caseData, changeRequest))
                 .thenReturn(changeOfRepresentative);
-        when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
-                OrganisationPolicy.class)).thenReturn(organisationPolicy);
         when(objectMapper.convertValue(caseData.get("removedRepresentative"),
                 RemovedRepresentative.class)).thenReturn(removed);
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
@@ -129,20 +123,6 @@ class PrepareNocCaveatServiceTest {
                         .firstName("Sol2First").lastName("Sol2LastName").email("sol2@gmail.com").build())).build();
         when(organisationApi.findSolicitorOrganisation(anyString(), anyString(), anyString()))
                 .thenReturn(organisationUser);
-    }
-
-    @Test
-    void removeRepresentative() {
-        Organisation organisationData = Organisation.builder().organisationID("123")
-                .organisationName("ABC").build();
-        OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
-        CaveatData caveatData = CaveatData.builder()
-                .applicantOrganisationPolicy(policy)
-                .caveatorEmailAddress("abc@gmail.com")
-                .build();
-        underTest.setRemovedRepresentative(caveatData);
-        assertEquals("abc@gmail.com", caveatData.getRemovedRepresentative().getSolicitorEmail());
-
     }
 
     @Test

@@ -100,7 +100,6 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentFailed", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "boPrepareForNoc", "UserRole": "caseworker-probate-issuer", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "paymentSuccessApp", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},

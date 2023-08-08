@@ -19,7 +19,6 @@ import uk.gov.hmcts.probate.service.ConfirmationResponseService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
-import uk.gov.hmcts.probate.service.PrepareNocCaveatService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
@@ -94,8 +93,6 @@ class CaveatControllerUnitTest {
     private DocumentGeneratorService documentGeneratorService;
     @Mock
     private HttpServletRequest httpServletRequestMock;
-    @Mock
-    private PrepareNocCaveatService prepareNocCaveatService;
 
     @BeforeEach
     public void setUp() {
@@ -104,8 +101,7 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
             caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService, serviceRequestAlreadyCreatedValidationRuleMock,
-                prepareNocCaveatService);
+            registrarDirectionService, documentGeneratorService, serviceRequestAlreadyCreatedValidationRuleMock);
 
     }
 
@@ -179,17 +175,6 @@ class CaveatControllerUnitTest {
         ResponseEntity<CaveatCallbackResponse> response =
                 underTest.permanentlyDeleteRemovedCaveat(caveatCallbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForCaveat(caveatCallbackRequest);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldTransformNoc() {
-        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
-        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-
-        ResponseEntity<CaveatCallbackResponse> response =
-                underTest.prepareCaseForNoc(caveatCallbackRequest);
-        verify(prepareNocCaveatService, times(1)).setRemovedRepresentative(caveatDataMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

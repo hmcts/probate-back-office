@@ -82,13 +82,7 @@ class PrepareNocServiceTest {
         caseData.put("solsSOTForenames","OldSolicitorFirstName");
         caseData.put("solsSOTSurname","OldSolicitorLastName");
         caseData.put("solsSolicitorEmail","OldSolicitor@gmail.com");
-
-        when(objectMapper.convertValue(caseData.get("solsSOTForenames"),
-                String.class)).thenReturn("OldSolicitorFirstName");
-        when(objectMapper.convertValue(caseData.get("solsSOTSurname"),
-                String.class)).thenReturn("OldSolicitorLastName");
-        when(objectMapper.convertValue(caseData.get("solsSolicitorEmail"),
-                String.class)).thenReturn("OldSolicitor@gmail.com");
+        
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class)).thenReturn(changeRequest);
         when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(changeOfRepresentatives);
