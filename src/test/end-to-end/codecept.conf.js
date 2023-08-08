@@ -4,7 +4,7 @@ exports.config = {
     'tests': testConfig.TestPathToRun,
     'output': testConfig.TestOutputDir,
     'helpers': {
-        'Puppeteer': {
+        'Playwright': {
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
             'waitForAction': 1000,
