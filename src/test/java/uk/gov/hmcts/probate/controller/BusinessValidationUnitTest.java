@@ -909,15 +909,4 @@ class BusinessValidationUnitTest {
                 .transferToState(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
-
-    @Test
-    void shouldPrepareCaseForNoc() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-
-        ResponseEntity<CallbackResponse> response =
-                underTest.prepareCaseForNoc(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
 }

@@ -606,15 +606,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
-    @PostMapping(path = "/prepare-case-for-noc", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> prepareCaseForNoc(
-            @RequestBody CallbackRequest callbackRequest) {
-        log.info("transformForNoc case - " + callbackRequest.getCaseDetails().getId().toString());
-        prepareNocService.addNocDate(callbackRequest.getCaseDetails().getData());
-        prepareNocService.setRemovedRepresentative(callbackRequest.getCaseDetails().getData());
-        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
-    }
-
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);

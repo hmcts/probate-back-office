@@ -46,29 +46,6 @@ public class PrepareNocService {
     private final ObjectMapper objectMapper;
     private final OrganisationApi organisationApi;
 
-    public void addNocDate(CaseData caseData) {
-        caseData.setNocPreparedDate(LocalDate.now());
-    }
-
-    public RemovedRepresentative setRemovedRepresentative(CaseData caseData) {
-        OrganisationPolicy organisationPolicy = caseData.getApplicantOrganisationPolicy();
-
-        if (organisationPolicy != null && organisationPolicy.getOrganisation() != null) {
-            Organisation organisation = organisationPolicy.getOrganisation();
-
-            RemovedRepresentative removed = RemovedRepresentative.builder()
-                    .organisationID(organisation.getOrganisationID())
-                    .solicitorFirstName(caseData.getSolsSOTForenames())
-                    .solicitorLastName(caseData.getSolsSOTSurname())
-                    .solicitorEmail(caseData.getSolsSolicitorEmail())
-                    .organisation(organisation)
-                    .build();
-            caseData.setRemovedRepresentative(removed);
-            return removed;
-        }
-        return null;
-    }
-
     public AboutToStartOrSubmitCallbackResponse applyDecision(CallbackRequest callbackRequest, String authorisation) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         Map<String, Object> caseData = caseDetails.getData();
@@ -169,7 +146,7 @@ public class PrepareNocService {
 
     public ChangeOfRepresentative buildChangeOfRepresentative(Map<String, Object> caseData,
                                                               ChangeOrganisationRequest changeOrganisationRequest) {
-        RemovedRepresentative removeRepresentative = getRemovedRepresentative(caseData);
+        RemovedRepresentative removeRepresentative = setRemovedRepresentative(caseData, changeOrganisationRequest);
         AddedRepresentative addRepresentative = setAddRepresentative(changeOrganisationRequest);
         return ChangeOfRepresentative.builder()
                 .addedDateTime(LocalDateTime.now())
@@ -184,6 +161,20 @@ public class PrepareNocService {
                 .updatedBy(changeOrganisationRequest.getCreatedBy())
                 .updatedVia("NOC")
                 .build();
+    }
+
+    private RemovedRepresentative setRemovedRepresentative(Map<String, Object> caseData,
+                                                           ChangeOrganisationRequest changeOrganisationRequest) {
+
+            RemovedRepresentative removed = RemovedRepresentative.builder()
+                    .organisationID(changeOrganisationRequest.getOrganisationToRemove().getOrganisationID())
+                    .solicitorFirstName(getRemovedRepresentativeFirstName(caseData))
+                    .solicitorLastName(getRemovedRepresentativeLastName(caseData))
+                    .solicitorEmail(getRemovedRepresentativeEmail(caseData))
+                    .organisation(changeOrganisationRequest.getOrganisationToRemove())
+                    .build();
+            caseData.put("removedRepresentative", removed);
+            return removed;
     }
 
     private SolsAddress convertSolicitorAddress(OrganisationEntityResponse organisationResponse,
@@ -206,9 +197,19 @@ public class PrepareNocService {
                 ChangeOrganisationRequest.class);
     }
 
-    private RemovedRepresentative getRemovedRepresentative(Map<String, Object> caseData) {
+    private String getRemovedRepresentativeFirstName(Map<String, Object> caseData) {
 
-        return objectMapper.convertValue(caseData.get("removedRepresentative"), RemovedRepresentative.class);
+        return objectMapper.convertValue(caseData.get("solsSOTForenames"), String.class);
+    }
+
+    private String getRemovedRepresentativeLastName(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("solsSOTSurname"), String.class);
+    }
+
+    private String getRemovedRepresentativeEmail(Map<String, Object> caseData) {
+
+        return objectMapper.convertValue(caseData.get("solsSolicitorEmail"), String.class);
     }
 
     public List<CollectionMember<ChangeOfRepresentative>> getChangeOfRepresentations(Map<String, Object> caseData) {

@@ -375,7 +375,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     //transient in-event vars
     private final OriginalDocuments originalDocuments;
     private final String documentsReceivedNotificationSent;
-    private final String nocPreparedDate;
     private final List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives;
     private final ChangeOfRepresentative changeOfRepresentative;
     private final RemovedRepresentative removedRepresentative;

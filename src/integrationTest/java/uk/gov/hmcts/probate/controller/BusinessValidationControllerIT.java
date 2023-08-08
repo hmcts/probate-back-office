@@ -1194,16 +1194,5 @@ class BusinessValidationControllerIT {
         mockMvc.perform(post(REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
-
-    @Test
-    void shouldPrepareCaseForNoc() throws Exception {
-        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
-        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
-
-        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
-        mockMvc.perform(post(PREPARE_FOR_NOC).content(json).header("Authorization", AUTH_TOKEN)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
 }
 

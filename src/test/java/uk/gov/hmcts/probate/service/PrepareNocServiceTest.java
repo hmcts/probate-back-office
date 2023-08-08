@@ -69,35 +69,29 @@ class PrepareNocServiceTest {
     @BeforeEach
     void setup() {
         MockitoAnnotations.openMocks(this);
-        OrganisationPolicy organisationPolicy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("orgId1")
-                        .organisationName("OrgName1").build()).build();
         ChangeOrganisationRequest changeRequest = ChangeOrganisationRequest.builder()
                 .createdBy("sol2@gmail.com")
-                .organisationToAdd(Organisation.builder().organisationID("12").build()).build();
-        RemovedRepresentative removed = RemovedRepresentative.builder()
-                .organisationID(organisationPolicy.getOrganisation().getOrganisationID())
-                .organisation(organisationPolicy.getOrganisation())
-                .solicitorEmail("abc@gmail.com")
-                .solicitorFirstName("First")
-                .solicitorLastName("Last")
-                .build();
+                .organisationToAdd(Organisation.builder().organisationID("12").build())
+                .organisationToRemove(Organisation.builder().organisationID("13")
+                .organisationName("OldOrg").build()).build();
 
         caseData = new HashMap<>();
-        caseData.put("removedRepresentative", removed);
         caseData.put("changeOrganisationRequestField", changeRequest);
-        caseData.put("applicantOrganisationPolicy",organisationPolicy);
         List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives = setupRepresentative();
         caseData.put("changeOfRepresentatives",changeOfRepresentatives);
         SolsAddress address = SolsAddress.builder().addressLine1("Address Line1").addressLine2("Line2")
                 .country("United Kingdom").postCode("sw2").county("county").build();
         caseData.put("solsSolicitorAddress",address);
+        caseData.put("solsSOTForenames","OldSolicitorFirstName");
+        caseData.put("solsSOTSurname","OldSolicitorLastName");
+        caseData.put("solsSolicitorEmail","OldSolicitor@gmail.com");
 
-        when(objectMapper.convertValue(caseData.get("applicantOrganisationPolicy"),
-                OrganisationPolicy.class)).thenReturn(organisationPolicy);
-        when(objectMapper.convertValue(caseData.get("removedRepresentative"),
-                RemovedRepresentative.class)).thenReturn(removed);
+        when(objectMapper.convertValue(caseData.get("solsSOTForenames"),
+                String.class)).thenReturn("OldSolicitorFirstName");
+        when(objectMapper.convertValue(caseData.get("solsSOTSurname"),
+                String.class)).thenReturn("OldSolicitorLastName");
+        when(objectMapper.convertValue(caseData.get("solsSolicitorEmail"),
+                String.class)).thenReturn("OldSolicitor@gmail.com");
         when(objectMapper.convertValue(caseData.get("changeOrganisationRequestField"),
                 ChangeOrganisationRequest.class)).thenReturn(changeRequest);
         when(objectMapper.convertValue(any(), any(TypeReference.class))).thenReturn(changeOfRepresentatives);
@@ -127,21 +121,6 @@ class PrepareNocServiceTest {
                 .build();
 
         when(securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO()).thenReturn(securityDTO);
-    }
-
-    @Test
-    void removeRepresentative() {
-        Organisation organisationData = Organisation.builder().organisationID("123")
-                .organisationName("ABC").build();
-        OrganisationPolicy policy = OrganisationPolicy.builder().organisation(organisationData).build();
-        CaseData caseData = CaseData.builder()
-                .applicantOrganisationPolicy(policy)
-                .solsSOTForenames("First")
-                .solsSOTSurname("Last")
-                .build();
-        underTest.setRemovedRepresentative(caseData);
-        assertEquals("First", caseData.getRemovedRepresentative().getSolicitorFirstName());
-
     }
 
     @Test
