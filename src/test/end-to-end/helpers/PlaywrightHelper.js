@@ -119,7 +119,7 @@ class PlaywrightHelper extends Helper {
     }
 
     async performAsyncActionForElements(locator, actionFunc) {
-        const elements = await this.helpers.Puppeteer._locate(locator);
+        const elements = await this.helpers.Playwright._locate(locator);
         if (!elements || elements.length === 0) {
             return;
         }
