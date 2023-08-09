@@ -46,30 +46,45 @@ public class EmailWithFileService {
         }
 
         HashMap<String, Object> personalisation = new HashMap<>();
-        try {
-            personalisation.put("link_to_file",
-                NotificationClient.prepareUpload(
-                    fileContents,
-                    false,
-                    false,
-                    new RetentionPeriodDuration(10, ChronoUnit.WEEKS)
-                ));
-        } catch (NotificationClientException e) {
-            log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
+        if (prepareUpload(fileContents, personalisation)) {
             return false;
         }
+        return sendEmail(personalisation);
+
+    }
+
+    public boolean sendEmail(HashMap<String, Object> personalisation) {
+
         try {
             SendEmailResponse response = notificationClient.sendEmail(templateId,
                 emailAddresses.getHmrcEmail(),
                 personalisation,
                 null,
                 null);
-            log.info("HMRC email response: {}", response.toString());
-            return true;
+            if (null != response) {
+                log.info("HMRC email response: {}", response.toString());
+            }
         } catch (NotificationClientException e) {
             log.error("Error sending email to HMRC: {}", e.getMessage());
             return false;
         }
 
+        return true;
+    }
+
+    private boolean prepareUpload(byte[] fileContents, HashMap<String, Object> personalisation) {
+        try {
+            personalisation.put("link_to_file",
+                NotificationClient.prepareUpload(
+                    fileContents,
+                    false,
+                    false,
+                    new RetentionPeriodDuration(10, ChronoUnit.WEEKS).toString()
+                ));
+        } catch (NotificationClientException e) {
+            log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
+            return true;
+        }
+        return false;
     }
 }
