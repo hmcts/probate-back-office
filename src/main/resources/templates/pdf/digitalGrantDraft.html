@@ -72,7 +72,9 @@
 {% endif %}
 <strong>
     <span style="text-transform: capitalize;">
-        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
+        {% if cd.applicationType == "Personal" and cd.legalStatement != null and executor.value.applyingExecutorOtherNames != null and executor.value
+        .applyingExecutorOtherNames != ""%}{{executor.value.applyingExecutorOtherNames}}
+        {% elseif executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
     </span>
 </strong> of {{executorAddress(executor)}}
 {% endmacro %}
@@ -343,7 +345,7 @@ Died on
             {% endif %}
             {% set primaryApplicantApplying = false %}
             {% set applyingExecCounter = 0 %}
-            {% if (case_details.case_data.primaryApplicantIsApplying != "No" and isTc == false) or
+            {% if (case_details.case_data.primaryApplicantIsApplying == "Yes" and isTc == false) or
                 (isTc == true and case_details.case_data.solsSolicitorIsExec == "Yes" and case_details.case_data.solsSolicitorIsApplying == "Yes") %}
                 {% set primaryApplicantApplying = true %}
                 {% set applyingExecCounter = 1 %}
@@ -358,7 +360,7 @@ Died on
             {% endfor %}
             {{ lastWillAndTestamentParagraph(case_details.case_data, applyingExecCounter) }}
             {% if primaryApplicantApplying == true %}
-                {{ primaryApplicantNameAndAddress(case_details.case_data) }}
+            {{ primaryApplicantNameAndAddress(case_details.case_data) }}
             {% endif %}
             {% if isTc == true %}
                 {{ trustCorp(case_details.case_data, primaryApplicantApplying) }}

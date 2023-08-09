@@ -121,22 +121,20 @@ class TaskStateRendererTest {
         additionalExecutorsNotApplyingList.add(additionalExecutorsNotApplyingDied);
     }
 
-    public void shouldRenderCorrectHtmlForState_CaseCreatedSolDtls() {
+    @Test
+    void shouldRenderCorrectHtmlForState_CaseCreatedSolDtls() {
         final String expectedHtml = "<div><a href=\""
                 + UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
                 + "\" class=\"govuk-link\">Add Probate practitioner details</a></div>\n"
                 + "<div>Add deceased details</div>\n"
                 + "<div>Add application details</div>\n"
                 + "<div>Review and sign legal statement and submit application</div>\n"
-                + "<div>/div>\n"
+                + "<div>Make payment</div>\n"
+                + "<div></div>\n"
+                + "<div></div>\n"
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
                 + "<div>Issue grant of representation<</div>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
-                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
-                + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
-                + "</p>\n"
                 + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
@@ -145,9 +143,10 @@ class TaskStateRendererTest {
                 + "</p>\n"
                 + "<p></p>\n"
                 + "<p></p>\n"
+                + "<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
-                + "&nbsp;</div></div>\n</p>\n<p></p>\n"
+                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Authenticated on "
                 + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -170,7 +169,9 @@ class TaskStateRendererTest {
             + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
             + "<div>Add application details</div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
-            + "<div>/div>\n"
+            + "<div>Make payment</div>\n"
+            + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation<</div>\n"
@@ -188,7 +189,7 @@ class TaskStateRendererTest {
             + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
-            + "&nbsp;</div></div>\n</p>\n<p></p>\n"
+            + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Authenticated on "
             + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -211,7 +212,9 @@ class TaskStateRendererTest {
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
-            + "<div>/div>\n"
+            + "<div>Make payment</div>\n"
+            + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation<</div>\n"
@@ -240,6 +243,7 @@ class TaskStateRendererTest {
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Authenticated on 10 Oct 2020</strong></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -265,7 +269,9 @@ class TaskStateRendererTest {
             + UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP.replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
-            + "<div>/div>\n"
+            + "<div>Make payment</div>\n"
+            + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation<</div>\n"
@@ -290,6 +296,7 @@ class TaskStateRendererTest {
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
+            + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated "
             + "on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -313,7 +320,9 @@ class TaskStateRendererTest {
                 .replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
-            + "<div>/div>\n"
+            + "<div>Make payment</div>\n"
+            + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation<</div>\n"
@@ -337,6 +346,7 @@ class TaskStateRendererTest {
             + "01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
+            + "<p></p>\n"
             + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>"
             + "Authenticated on 10 Oct 2020"
@@ -361,7 +371,9 @@ class TaskStateRendererTest {
                 .replaceFirst("<CASE_ID>", "9999")
             + "\" class=\"govuk-link\">Add application details</a></div>\n"
             + "<div>Review and sign legal statement and submit application</div>\n"
-            + "<div>/div>\n"
+            + "<div>Make payment</div>\n"
+            + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation<</div>\n"
@@ -385,6 +397,7 @@ class TaskStateRendererTest {
             + "01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
+            + "<p></p>\n"
             + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated "
             + "on 10 Oct 2020"
@@ -778,7 +791,7 @@ class TaskStateRendererTest {
 
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
-                        "caseprogress/gop/solicitorCaseProgressAuthenticateDocuments");
+                        "caseprogress/gop/solicitorCaseProgressAuthenticateDocumentsSend");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
@@ -809,7 +822,7 @@ class TaskStateRendererTest {
 
         String expectedHtml = fileSystemResourceService
                 .getFileFromResourceAsString(
-                        "caseprogress/gop/solicitorCaseProgressAuthenticateDocuments");
+                        "caseprogress/gop/solicitorCaseProgressSendDocumentsState");
         expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -1109,4 +1122,31 @@ class TaskStateRendererTest {
         String result = taskStateRenderer.renderSendDocsDetails(TaskState.IN_PROGRESS, "", mock(CaseDetails.class));
         assertEquals(expectedHtml, result);
     }
+
+    @Test
+    void shouldRenderCorrectPaymentStateNotStarted() {
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/gop/PaymentNotStarted");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_MAKE_PAYMENT,
+                testHtml, (long) 9999, "WillLeft", "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    void shouldRenderCorrectPaymentStateInProgress() {
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/gop/PaymentInProgress");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_PAYMENT_ATTEMPTED,
+                testHtml, (long) 9999, "WillLeft", "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
+        assertEquals(expectedHtml, result);
+    }
+
 }

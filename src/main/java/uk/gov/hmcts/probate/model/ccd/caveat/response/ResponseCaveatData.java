@@ -105,4 +105,8 @@ public class ResponseCaveatData {
 
     //transient in-event vars
     private final OriginalDocuments originalDocuments;
+
+    private final String serviceRequestReference;
+    private final String paymentTaken;
+    private final String applicationSubmittedBy;
 }

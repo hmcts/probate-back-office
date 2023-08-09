@@ -231,7 +231,7 @@
             <p>{% for executor in case_details.case_data.executorsApplying %}
                 {% if loop.first %}
                 <span style="text-transform: capitalize;"><strong>
-                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
                </strong></span>
                 of <span class="camelCase"><strong>
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
@@ -246,7 +246,7 @@
                 <br/>
                 <span>and </span>
                 <span style="text-transform: capitalize;"><strong>
-                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
                </strong></span>
                 of <span class="camelCase"><strong>
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
@@ -278,7 +278,7 @@
                 <br/>
                 <span>and </span>
                 <span style="text-transform: capitalize;"><strong>
-                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% endif %}
+                    {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
                </strong></span>
                 of <span class="camelCase"><strong>
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }}{% endif %}
