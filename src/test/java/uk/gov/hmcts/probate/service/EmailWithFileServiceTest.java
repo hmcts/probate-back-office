@@ -68,15 +68,12 @@ class EmailWithFileServiceTest {
     @Test
     void testEmailFileNoFileFail() {
         assertFalse(emailWithFileService
-            .emailFile(Paths.get(System.getProperty("java.io.tmpdir"), "absenty.txt").toFile()));
-        assertFalse(emailWithFileService
             .emailFile(Paths.get(System.getProperty("java.io.tmpdir"), "").toFile()));
         verifyNoInteractions(notificationClient);
     }
 
     @Test
     void testEmailFile_ReadFileException() throws IOException {
-
         assertFalse(emailWithFileService.emailFile(
             Paths.get(System.getProperty("java.io.tmpdir"), "absenty.txt").toFile()));
         verifyNoInteractions(notificationClient);
