@@ -131,7 +131,8 @@ dependencies {
 ./gradle bootWithCCD 
 # run in debugger with 
 ./gradlew bootWithCCD --debug-jvm
-or just click debug in intellij on probate-back-office [bootWithCCD] run/debug configuration
+or just click debug in inte
+llij on probate-back-office [bootWithCCD] run/debug configuration
 
 
 NOTE that the bootWithCCD brings up a prcess that just sits there, to exit either Ctrl-C 

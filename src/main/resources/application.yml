@@ -503,7 +503,7 @@ data-extract:
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 
-hmrcEmail: ${HMRC_EMAIL:delyth.jones11@justice.gov.uk}
+hmrcEmail: ${HMRC_EMAIL:probate-hmrc-extract-aaaakmsw7ddsfspzaz5f3upafi@moj.org.slack.com}
 
 welsh:
   months:
