@@ -33,6 +33,8 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String HONOURS = "OBE";
     private static final String ADD_EXEC_ONE = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_ONE_FIRST_NAME = "Add Executor First1";
+    private static final String ADD_EXEC_CURRENT_NAME = "ExecutorCurrentName";
+    private static final String ADD_EXEC_NAME_ON_WILL = "ExecutorNameOnWill";
     private static final String ADD_EXEC_ONE_LAST_NAME = "Add Executor Last1";
     private static final String ADD_EXEC_TWO_FIRST_NAME = "Add Executor First2";
     private static final String ADD_EXEC_TWO_LAST_NAME = "Add Executor Last2";
@@ -936,6 +938,36 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
+    public void verifySuccessForPersonalDigitalGrantWithExecutorCurrentName() throws IOException {
+        final String response =
+                getFirstProbateDocumentsText("personalPayloadMultipleExecutors.json",
+                        GENERATE_GRANT);
+
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(ADD_EXEC_CURRENT_NAME));
+    }
+
+    @Test
+    public void verifySuccessForPersonalDigitalGrantWithExecutorNameOnWill() throws IOException {
+        final String response =
+                getFirstProbateDocumentsText("personalPayloadWithExecutorNameOnWill.json",
+                        GENERATE_GRANT);
+
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(ADD_EXEC_NAME_ON_WILL));
+    }
+
+    @Test
+    public void verifySuccessForCaseWorkerPersonalGrantWithExecutorCurrentName() throws IOException {
+        final String response =
+                getFirstProbateDocumentsText("CaseWorkerPersonalPayloadWithExecutors.json",
+                        GENERATE_GRANT);
+
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(ADD_EXEC_CURRENT_NAME));
+    }
+
+    @Test
     public void verifySuccessForGetDigitalGrantWithPowerReservedMultipleSOls() throws IOException {
         final String response =
             getFirstProbateDocumentsText("solicitorPayloadNotificationsPowerReservedMultiple.json",
@@ -1086,6 +1118,21 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(ADD_EXEC_ONE_LAST_NAME));
         assertTrue(response.contains(ADD_EXEC_TWO_FIRST_NAME));
         assertTrue(response.contains(ADD_EXEC_TWO_LAST_NAME));
+    }
+
+    @Test
+    public void verifySuccessForPersonalDigitalGrantDraftWithExecutorName() throws IOException {
+        final String response =
+                getFirstProbateDocumentsText("personalPayloadMultipleExecutors.json",
+                        GENERATE_GRANT_DRAFT);
+
+        assertTrue(response.contains(GOP));
+        assertTrue(response.contains(ADD_EXEC_CURRENT_NAME));
+    }
+
+    @Test
+    public void verifyPersonalGenerateGrantDraftReissueShouldReturnOkResponseCode() throws IOException {
+        validatePostSuccess("personalPayloadMultipleExecutors.json", GENERATE_GRANT_DRAFT_REISSUE);
     }
 
     @Test
