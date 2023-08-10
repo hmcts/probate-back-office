@@ -16,6 +16,7 @@ module "db-v11" {
   database_name      = var.database_name_v11
   postgresql_user    = var.postgresql_user_v11
   postgresql_version = 11
+  collation          = "en_GB"
   sku_name           = "GP_Gen5_2"
   sku_tier           = "GeneralPurpose"
   common_tags        = var.common_tags
