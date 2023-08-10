@@ -7,7 +7,7 @@ locals {
 }
 
 module "db-v11" {
-  source             = "git@github.com:hmcts/cnp-module-postgres?ref=postgresql_tf"
+  source             = "git@github.com:hmcts/cnp-module-postgres?ref=postgresql_tf_collation_fix"
   product            = var.product
   component          = var.component
   name               = "${var.database_name_v11}-postgres-db-v11"
