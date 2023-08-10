@@ -46,14 +46,14 @@ class EmailWithFileServiceTest {
 
     @Test
     void testEmailFile_Success() throws IOException, NotificationClientException {
-        File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
-        SendEmailResponse mockResponse = mock(SendEmailResponse.class);
         JSONObject jsonObject = new JSONObject().put("testKey", "testValue");
         when(emailAddresses.getHmrcEmail()).thenReturn("hmrc@example.com");
         mockStatic(NotificationClient.class);
         when(NotificationClient.prepareUpload(any(byte[].class), anyBoolean(), anyBoolean(), anyString()))
             .thenReturn(jsonObject);
+        SendEmailResponse mockResponse = mock(SendEmailResponse.class);
         when(notificationClient.sendEmail(any(), any(), any(), any(), any())).thenReturn(mockResponse);
+        File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
         assertTrue(emailWithFileService.emailFile(file));
 
     }
