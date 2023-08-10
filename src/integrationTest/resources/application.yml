@@ -133,7 +133,7 @@ idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
 extract:
   templates:
-    hmrcExtract: "c2457e2c-f74d-4611-aa32-659913101920"
+    hmrcExtract: "72dfad41-fed8-431f-896e-3151775dbe8f"
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"

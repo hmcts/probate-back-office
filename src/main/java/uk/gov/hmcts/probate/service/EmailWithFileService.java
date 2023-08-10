@@ -83,8 +83,8 @@ public class EmailWithFileService {
                 ));
         } catch (NotificationClientException e) {
             log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
-            return true;
+            return false;
         }
-        return false;
+        return true;
     }
 }
