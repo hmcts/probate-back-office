@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.HashMap;
+import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,7 @@ public class EmailWithFileService {
     @Autowired
     private final EmailAddresses emailAddresses;
 
-    public boolean emailFile(File file) {
+    public boolean emailFile(File file, String date) {
         if (null == file || !file.exists()) {
             log.error("Error HMRC file does not exist");
             return false;
@@ -45,15 +46,16 @@ public class EmailWithFileService {
             return false;
         }
 
-        HashMap<String, Object> personalisation = new HashMap<>();
-        if (prepareUpload(fileContents, personalisation)) {
+        Map<String, Object> personalisation = new HashMap<>();
+        personalisation.put("extract_date", date);
+        if (!prepareUpload(fileContents, (HashMap<String, Object>) personalisation)) {
             return false;
         }
         return sendEmail(personalisation);
 
     }
 
-    public boolean sendEmail(HashMap<String, Object> personalisation) {
+    public boolean sendEmail(Map<String, Object> personalisation) {
 
         try {
             SendEmailResponse response = notificationClient.sendEmail(templateId,
