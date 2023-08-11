@@ -45,11 +45,6 @@ public class TestContextConfiguration {
     }
 
     @Bean
-    public AuthTokenValidator tokenValidator(ServiceAuthorisationApi s2sApi) {
-        return new ServiceAuthTokenValidator(s2sApi);
-    }
-
-    @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
