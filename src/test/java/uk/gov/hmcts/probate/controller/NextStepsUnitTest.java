@@ -117,7 +117,7 @@ class NextStepsUnitTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(callbackResponseTransformerMock
-                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, USER_ID))
+                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, USER_ID))
                 .thenReturn(callbackResponseMock);
         when(httpServletRequestMock.getHeader("user-id")).thenReturn(USER_ID);
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
@@ -220,7 +220,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock
-                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, "", USER_ID))
+                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, USER_ID))
                 .thenReturn(callbackResponseMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -239,7 +239,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                null, USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
@@ -255,7 +255,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn(null);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -274,7 +274,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn("No");
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -294,7 +294,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn(null);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -314,7 +314,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn("No");
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());

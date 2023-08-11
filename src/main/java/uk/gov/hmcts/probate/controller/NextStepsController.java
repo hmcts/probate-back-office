@@ -91,7 +91,7 @@ public class NextStepsController {
                 ccdData.getFee().getOutsideUKGrantCopies());
             String userId = request.getHeader("user-id");
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, null, userId);
+                        feesResponse, userId);
         }
 
         return ResponseEntity.ok(callbackResponse);

@@ -461,7 +461,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                      String serviceRequestReference, String userId) {
+                                                          String userId) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -471,7 +471,7 @@ public class CallbackResponseTransformer {
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
-                .transformForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
+                .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
