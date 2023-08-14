@@ -1450,8 +1450,25 @@ public class CallbackResponseTransformer {
         builder
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-                .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+
+        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildDeceasedAliasNameExecutor)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .collect(Collectors.toList());
+        }
+        if (deceasedAliasNames.isEmpty()) {
+            builder
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+        } else {
+            builder
+                    .solsDeceasedAliasNamesList(deceasedAliasNames)
+                    .deceasedAliasNamesList(null);
+        }
 
         if (caseData.getApplicationType() != PERSONAL) {
             builder
