@@ -17,7 +17,8 @@ import java.util.HashMap;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)

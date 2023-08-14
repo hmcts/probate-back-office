@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +64,6 @@ public class CaveatController {
     private final FeeService feeService;
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
-    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -161,8 +159,6 @@ public class CaveatController {
             log.error("Case Id: {} ERROR: {}", caveatCallbackRequest.getCaseDetails().getId(), bindingResult);
             throw new BadRequestException("Invalid payload", bindingResult);
         }
-
-        serviceRequestAlreadyCreatedValidationRule.validate(caveatCallbackRequest.getCaseDetails());
 
         CaveatCallbackResponse caveatCallbackResponse;
 
