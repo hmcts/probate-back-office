@@ -17,8 +17,7 @@ import java.util.HashMap;
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
 import static junit.framework.TestCase.assertTrue;
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.*;
 
 @Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
@@ -112,14 +111,15 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
                                                       boolean hasCopies) throws IOException {
         int rndUkCopies = 0;
         int rndNonUkCopies = 0;
+        int applicationFee = hasApplication ? APP_FEE : 0;
         if (hasCopies) {
             rndUkCopies = (int) ((Math.random() * MAX_UK_COPIES) + 1);
             rndNonUkCopies = (int) (Math.random() * MAX_NON_UK_COPIES) + 1;
         }
         Response response = getResponse(fileName, rndUkCopies, rndNonUkCopies, utils.getHeadersWithSolicitorUser());
         response.then().assertThat().statusCode(200);
-        if (hasApplication || hasCopies) {
-            response.then().assertThat().body("data.serviceRequestReference", notNullValue());
+        if (hasApplication) {
+            response.then().assertThat().body("data.applicationFee", equalTo("" + applicationFee));
         }
         return response;
     }
