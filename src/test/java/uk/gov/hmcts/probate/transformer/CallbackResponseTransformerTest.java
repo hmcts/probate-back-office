@@ -1443,9 +1443,6 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldTransformPersonalCaseForEmptyDeceasedNames() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
-        List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
-
-        caseDataBuilder.deceasedAliasNameList(deceasedAliasNamesList);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
