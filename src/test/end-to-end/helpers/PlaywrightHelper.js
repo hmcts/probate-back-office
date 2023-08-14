@@ -9,7 +9,7 @@ const {runAccessibility} = require('./accessibility/runner');
 class PlaywrightHelper extends Helper {
 
     async clickBrowserBackButton() {
-        const page = this.helpers['Playwright'].page;
+        const page = this.helpers[helperName].page;
         await page.goBack();
     }
 
@@ -34,7 +34,8 @@ class PlaywrightHelper extends Helper {
         }
         return typeof locator === 'string' ? this.adjustLocator(locator) : this.adjustLocator(locator.css);
     }
-/*
+
+    /*
     async addATemporaryDummyTab() {
         if (this.helpers[helperName].browser.newPage) {
             // is Puppeteer. With Xui we have an issue where it gets stuck unless you open a new tab for some reason
@@ -43,9 +44,10 @@ class PlaywrightHelper extends Helper {
             await dummyTab.close();
         }
     }
-*/
+    */
+
     async waitForNavigationToComplete(locator, delay = 0) {
-        const page = this.helpers['Playwright'].page;
+        const page = this.helpers[helperName].page;
 
         await this.delay(delay);
         const promises = [];
@@ -68,7 +70,7 @@ class PlaywrightHelper extends Helper {
     }
 
     async clickTab(tabTitle) {
-        const helper = this.helpers['Playwright'];
+        const helper = this.helpers[helperName];
         const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
 
         // wait for element defined by XPath appear in page

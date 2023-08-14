@@ -17,7 +17,7 @@ class JSWait extends codecept_helper {
         });
     }
 
-    async amOnLoadedPage (url, waitForNetworkIdle = true) {
+    async amOnLoadedPage (url) {
         const helper = this.helpers.WebDriver || this.helpers.Playwright;
         const helperIsPlaywright = this.helpers.Playwright;
 
@@ -26,8 +26,8 @@ class JSWait extends codecept_helper {
                 url = helper.options.url + url;
             }
         }
-            // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
-            await helper.amOnPage(url, 60);
+        // wait for a max of 1 min (override default of max 1 sec), but will return as soon as ready within that timeframe
+        await helper.amOnPage(url, 60);
 
         await helper.waitInUrl(url, 60);
     }
