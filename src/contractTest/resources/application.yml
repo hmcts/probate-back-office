@@ -468,7 +468,7 @@ data-extract:
     size: 100
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFord@probate-test.com}
-hmrcEmail: ${HMRC_EMAIL:probate-hmrc-extract-aaaakmsw7ddsfspzaz5f3upafi@moj.org.slack.com}
+hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 welsh:
   months:

@@ -54,24 +54,24 @@ class EmailWithFileServiceTest {
         SendEmailResponse mockResponse = mock(SendEmailResponse.class);
         when(notificationClient.sendEmail(any(), any(), any(), any(), any())).thenReturn(mockResponse);
         File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
-        assertTrue(emailWithFileService.emailFile(file));
+        assertTrue(emailWithFileService.emailFile(file,"dateStr"));
 
     }
 
     /**
-     * Method under test: {@link EmailWithFileService#emailFile(File)}.
+     * Method under test: {@link EmailWithFileService#emailFile(File, String)}.
      */
     @Test
     void testEmailFileNoFileFail() {
         assertFalse(emailWithFileService
-            .emailFile(Paths.get(System.getProperty("java.io.tmpdir"), "").toFile()));
+            .emailFile(Paths.get(System.getProperty("java.io.tmpdir"), "").toFile(), "dateStr"));
         verifyNoInteractions(notificationClient);
     }
 
     @Test
     void testEmailFile_ReadFileException() throws IOException {
         assertFalse(emailWithFileService.emailFile(
-            Paths.get(System.getProperty("java.io.tmpdir"), "absenty.txt").toFile()));
+            Paths.get(System.getProperty("java.io.tmpdir"), "absenty.txt").toFile(), "dateStr"));
         verifyNoInteractions(notificationClient);
     }
 }

@@ -79,7 +79,7 @@ class HmrcDataExtractServiceTest {
         when(hmrcFileService.createHmrcFile(any(), any())).thenReturn(file);
 
 
-        when(emailWithFileService.emailFile(any())).thenReturn(true);
+        when(emailWithFileService.emailFile(any(), any())).thenReturn(true);
         when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.CREATED.value());
     }
 
