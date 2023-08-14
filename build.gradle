@@ -340,12 +340,6 @@ dependencies {
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
-  // Spring Boot Starter Mail
-  implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-  // JavaMail API
-  implementation 'javax.mail:javax.mail-api:1.6.2'
-  implementation 'com.sun.mail:javax.mail:1.6.2'
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '4.1.0-RELEASE'
 

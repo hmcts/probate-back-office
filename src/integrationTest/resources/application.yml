@@ -402,7 +402,7 @@ idam-s2s-auth:
 
 excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
-hmrcEmail: ${HMRC_EMAIL:probate-hmrc-extract-aaaakmsw7ddsfspzaz5f3upafi@moj.org.slack.com}
+hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 data-extract:
   pagination:
