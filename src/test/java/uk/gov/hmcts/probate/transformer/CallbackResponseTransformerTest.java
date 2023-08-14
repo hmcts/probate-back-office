@@ -1421,6 +1421,26 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformPersonalCaseNoPaymentForDeceasedAliasNames() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+
+        caseDataBuilder.deceasedAliasNameList(deceasedAliasNamesList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
+        assertEquals(YES, callbackResponse.getData().getDeceasedAnyOtherNames());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
     void shouldTransformPersonalCaseForEmptyDeceasedNames() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
