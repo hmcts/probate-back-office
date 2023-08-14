@@ -118,7 +118,7 @@ class HmrcDataExtractServiceTest {
 
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
-        verify(emailWithFileService, times(1)).emailFile(any());
+        verify(emailWithFileService, times(1)).emailFile(any(), any());
         verify(fileExtractDateFormatter).getHmrcFormattedFileDate(anyString(), any());
         verify(hmrcFileService).createHmrcFile(any(), anyString());
     }
@@ -131,7 +131,7 @@ class HmrcDataExtractServiceTest {
 
         hmrcDataExtractService.performHmrcExtractFromDate("2000-10-30", "2000-12-31");
 
-        verify(emailWithFileService, times(1)).emailFile(any());
+        verify(emailWithFileService, times(1)).emailFile(any(), any());
         verify(fileExtractDateFormatter, times(1)).getHmrcFormattedFileDate(anyString(), any());
         verify(hmrcFileService, times(1)).createHmrcFile(any(), anyString());
     }
@@ -158,7 +158,7 @@ class HmrcDataExtractServiceTest {
             List<ReturnedCaseDetails> returnedCases = new ImmutableList.Builder<ReturnedCaseDetails>().add(new
                     ReturnedCaseDetails(caseData, LAST_MODIFIED, 1L)).build();
             when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
-            when(emailWithFileService.emailFile(any())).thenReturn(false);
+            when(emailWithFileService.emailFile(any(), any())).thenReturn(false);
             when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
 
             hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
