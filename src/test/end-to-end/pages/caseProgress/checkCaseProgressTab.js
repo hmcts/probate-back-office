@@ -49,7 +49,6 @@ module.exports = async function (opts) {
     } else {
         await I.seeNumberOfVisibleElements('p.govuk-body-s a', 0);
         const docsText = await I.grabTextFrom('span.govuk-details__summary-text');
-        console.log("The text value is: " + docsText);
         assert.equal(docsText, '\nView the documents needed by HM Courts and Tribunal Service\n');
     }
 
