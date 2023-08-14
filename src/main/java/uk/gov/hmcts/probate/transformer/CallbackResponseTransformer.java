@@ -1459,7 +1459,7 @@ public class CallbackResponseTransformer {
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .collect(Collectors.toList());
+                    .toList();
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
