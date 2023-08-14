@@ -1431,7 +1431,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
@@ -1467,7 +1467,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
 
         assertCommonDetails(callbackResponse);
         assertLegacyInfo(callbackResponse);
