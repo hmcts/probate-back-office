@@ -1,15 +1,15 @@
 'use strict';
 
 const Helper = codecept_helper;
-const helperName = 'Puppeteer';
+const helperName = 'Playwright';
 const testConfig = require('src/test/config.js');
 
 const {runAccessibility} = require('./accessibility/runner');
 
-class PuppeteerHelper extends Helper {
+class PlaywrightHelper extends Helper {
 
     async clickBrowserBackButton() {
-        const page = this.helpers[helperName].page;
+        const page = this.helpers['Playwright'].page;
         await page.goBack();
     }
 
@@ -34,7 +34,7 @@ class PuppeteerHelper extends Helper {
         }
         return typeof locator === 'string' ? this.adjustLocator(locator) : this.adjustLocator(locator.css);
     }
-
+/*
     async addATemporaryDummyTab() {
         if (this.helpers[helperName].browser.newPage) {
             // is Puppeteer. With Xui we have an issue where it gets stuck unless you open a new tab for some reason
@@ -43,13 +43,13 @@ class PuppeteerHelper extends Helper {
             await dummyTab.close();
         }
     }
-
+*/
     async waitForNavigationToComplete(locator, delay = 0) {
-        const page = this.helpers[helperName].page;
+        const page = this.helpers['Playwright'].page;
 
         await this.delay(delay);
         const promises = [];
-        promises.push(page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle2']}));
+        promises.push(page.waitForNavigation({waitUntil: 'domcontentloaded'}));
         if (locator) {
             if (Array.isArray(locator)) {
                 for (let i=0; i < locator.length; i++) {
@@ -68,14 +68,14 @@ class PuppeteerHelper extends Helper {
     }
 
     async clickTab(tabTitle) {
-        const helper = this.helpers[helperName];
+        const helper = this.helpers['Playwright'];
         const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
 
         // wait for element defined by XPath appear in page
-        await helper.page.waitForXPath(tabXPath);
+        await helper.page.waitForSelector(tabXPath);
 
         // evaluate XPath expression of the target selector (it returns array of ElementHandle)
-        const clickableTabs = await helper.page.$x(tabXPath);
+        const clickableTabs = await helper.page.$$(tabXPath);
 
         /* eslint-disable no-await-in-loop */
         for (let i=0; i < clickableTabs.length; i++) {
@@ -119,7 +119,7 @@ class PuppeteerHelper extends Helper {
     }
 
     async performAsyncActionForElements(locator, actionFunc) {
-        const elements = await this.helpers.Puppeteer._locate(locator);
+        const elements = await this.helpers.Playwright._locate(locator);
         if (!elements || elements.length === 0) {
             return;
         }
@@ -168,4 +168,4 @@ class PuppeteerHelper extends Helper {
     }
 }
 
-module.exports = PuppeteerHelper;
+module.exports = PlaywrightHelper;

@@ -42,14 +42,15 @@ module.exports = async function (opts) {
     if (opts.linkText && opts.linkUrl) {
         await I.seeNumberOfVisibleElements('p.govuk-body-s a', 1);
         const lnkTxt = await I.grabTextFrom('p.govuk-body-s a');
-        assert (lnkTxt=== opts.linkText); //assert deceased details has a link
+        assert (lnkTxt === opts.linkText); //assert deceased details has a link
 
         const lnk = await I.grabAttributeFrom('p.govuk-body-s a', 'href');
         assert (lnk.endsWith(opts.linkUrl));
     } else {
         await I.seeNumberOfVisibleElements('p.govuk-body-s a', 0);
         const docsText = await I.grabTextFrom('span.govuk-details__summary-text');
-        assert (docsText === 'View the documents needed by HM Courts and Tribunal Service');
+        console.log("The text value is: " + docsText);
+        assert.equal(docsText, '\nView the documents needed by HM Courts and Tribunal Service\n');
     }
 
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', opts.numCompleted);
