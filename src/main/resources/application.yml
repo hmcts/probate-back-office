@@ -86,17 +86,17 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01289.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01289.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01289.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01289.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01289.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01289.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -110,29 +110,29 @@ docmosis:
     blankLetter:
       templateName: FL-PRB-GNO-ENG-01040.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshDigitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshDigitalGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00228.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
 
 fee.api:
   url: http://localhost:4411
@@ -525,6 +525,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
+shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
