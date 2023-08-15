@@ -428,6 +428,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
+shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
