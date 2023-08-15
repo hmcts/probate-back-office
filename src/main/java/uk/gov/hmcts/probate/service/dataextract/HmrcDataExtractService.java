@@ -28,17 +28,23 @@ public class HmrcDataExtractService {
     private final EmailWithFileService emailWithFileService;
 
     public void performHmrcExtractFromDate(String fromDate, String toDate) {
-        if (fromDate.equals(toDate)) {
-            performHmrcExtract(fromDate);
-        } else {
-            log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
+        try {
+            if (fromDate.equals(toDate)) {
+                performHmrcExtract(fromDate);
+            } else {
+                log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
-            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
-            log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
-                fromDate, toDate, casesFound.size());
+                List<ReturnedCaseDetails> casesFound =
+                    caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
+                log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
+                    fromDate, toDate, casesFound.size());
 
-            emailHmrcFile(fromDate, casesFound);
+                emailHmrcFile(fromDate, casesFound);
 
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
         }
     }
 
