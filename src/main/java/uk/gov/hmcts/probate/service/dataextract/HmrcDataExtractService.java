@@ -76,8 +76,8 @@ public class HmrcDataExtractService {
     private void uploadHmrcFile(String fromDate, String toDate, List<ReturnedCaseDetails> casesFound) {
         String dateDesc = " from " + fromDate + " to " + toDate;
         log.info("preparing for file HMRC upload");
-        int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
-            casesFound, buildFileName(toDate)));
+        File hmrcFile = hmrcFileService.createHmrcFile(casesFound, buildFileName(dateDesc));
+        int response = fileTransferService.uploadFile(hmrcFile);
 
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {
@@ -85,6 +85,18 @@ public class HmrcDataExtractService {
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
                 "Failed to upload HMRC file for " + dateDesc);
         }
+        //check file size as there is a 2mb limit
+        long totalSpace = hmrcFile.getTotalSpace();
+        log.info("HMRC file is {}bytes", totalSpace);
+        // probably need to figure out how many records is too many for 2mb limit
+        // then change so send multiple files if that happens but this is POC so ok
+        boolean isSuccess = emailWithFileService.emailFile(hmrcFile, dateDesc);
+        if (!isSuccess) {
+            log.error("Failed to email hmrc file:" + hmrcFile.getName());
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to email HMRC file for " + dateDesc);
+        }
+
     }
 
     private String buildFileName(String toDate) {
