@@ -57,6 +57,11 @@ public class CaseMatchingController {
 
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
 
+        String caseIds = caseMatches.stream()
+                .map(member -> member.getCaseLink().getCaseReference())
+                .collect(Collectors.joining(", "));
+        log.info("Case ID: " + request.getCaseDetails().getId() + " case matching search result: " + caseIds);
+
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(request, caseMatches));
     }
 
@@ -65,6 +70,11 @@ public class CaseMatchingController {
         CaseMatchingCriteria caseMatchingCriteria = CaseMatchingCriteria.of(request.getCaseDetails());
 
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
+
+        String caseIds = caseMatches.stream()
+                .map(member -> member.getCaseLink().getCaseReference())
+                .collect(Collectors.joining(", "));
+        log.info("Case ID: " + request.getCaseDetails().getId() + " case matching search result: " + caseIds);
 
         return ResponseEntity.ok(caveatCallbackResponseTransformer.addMatches(request, caseMatches));
     }
@@ -107,6 +117,11 @@ public class CaseMatchingController {
         List<CaseMatch> rows = legacyImportService
             .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
+        String caseIds = rows.stream()
+                .map(member -> member.getCaseLink().getCaseReference())
+                .collect(Collectors.joining(", "));
+        log.info("Case ID: " + callbackRequest.getCaseDetails().getId() + " case matching import: " + caseIds);
+
         return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows));
     }
 
@@ -126,6 +141,11 @@ public class CaseMatchingController {
         log.info("import-legacy-from-caveat-flow");
         List<CaseMatch> rows = legacyImportService
             .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
+
+        String caseIds = rows.stream()
+                .map(member -> member.getCaseLink().getCaseReference())
+                .collect(Collectors.joining(", "));
+        log.info("Case ID: " + callbackRequest.getCaseDetails().getId() + " case matching import: " + caseIds);
 
         return ResponseEntity.ok(caveatCallbackResponseTransformer.addMatches(callbackRequest, rows));
     }
