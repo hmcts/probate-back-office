@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -58,7 +59,8 @@ public class CaseMatchingController {
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
 
         String caseIds = caseMatches.stream()
-                .map(member -> member.getCaseLink().getCaseReference())
+                .map(c -> Optional.ofNullable(c.getCaseLink().getCaseReference()))
+                .map(Object::toString)
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + request.getCaseDetails().getId() + " case matching search result: " + caseIds);
 
@@ -72,7 +74,8 @@ public class CaseMatchingController {
         List<CaseMatch> caseMatches = caseMatchingService.findCrossMatches(CaseType.getAll(), caseMatchingCriteria);
 
         String caseIds = caseMatches.stream()
-                .map(member -> member.getCaseLink().getCaseReference())
+                .map(c -> Optional.ofNullable(c.getCaseLink().getCaseReference()))
+                .map(Object::toString)
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + request.getCaseDetails().getId() + " case matching search result: " + caseIds);
 
@@ -118,7 +121,8 @@ public class CaseMatchingController {
             .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         String caseIds = rows.stream()
-                .map(member -> member.getCaseLink().getCaseReference())
+                .map(c -> Optional.ofNullable(c.getCaseLink().getCaseReference()))
+                .map(Object::toString)
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + callbackRequest.getCaseDetails().getId() + " case matching import: " + caseIds);
 
@@ -143,7 +147,8 @@ public class CaseMatchingController {
             .importLegacyRows(callbackRequest.getCaseDetails().getData().getCaseMatches());
 
         String caseIds = rows.stream()
-                .map(member -> member.getCaseLink().getCaseReference())
+                .map(c -> Optional.ofNullable(c.getCaseLink().getCaseReference()))
+                .map(Object::toString)
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + callbackRequest.getCaseDetails().getId() + " case matching import: " + caseIds);
 

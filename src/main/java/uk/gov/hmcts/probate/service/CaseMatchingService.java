@@ -59,7 +59,8 @@ public class CaseMatchingService {
         MatchedCases matchedCases = elasticSearchService.runQuery(caseType, jsonQuery);
 
         String caseIds = matchedCases.getCases().stream()
-                .map(cases -> cases.getId().toString())
+                .map(c -> Optional.ofNullable(c.getId()))
+                .map(Object::toString)
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + criteria.getId() + " case matching findMatches: " + caseIds);
 
