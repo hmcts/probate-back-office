@@ -1,12 +1,12 @@
 'use strict';
 
 const Helper = codecept_helper;
-const helperName = 'Playwright';
+const helperName = 'Puppeteer';
 const testConfig = require('src/test/config.js');
 
 const {runAccessibility} = require('./accessibility/runner');
 
-class PlaywrightHelper extends Helper {
+class PuppeteerHelper extends Helper {
 
     async clickBrowserBackButton() {
         const page = this.helpers[helperName].page;
@@ -35,7 +35,6 @@ class PlaywrightHelper extends Helper {
         return typeof locator === 'string' ? this.adjustLocator(locator) : this.adjustLocator(locator.css);
     }
 
-    /*
     async addATemporaryDummyTab() {
         if (this.helpers[helperName].browser.newPage) {
             // is Puppeteer. With Xui we have an issue where it gets stuck unless you open a new tab for some reason
@@ -44,14 +43,13 @@ class PlaywrightHelper extends Helper {
             await dummyTab.close();
         }
     }
-    */
 
     async waitForNavigationToComplete(locator, delay = 0) {
         const page = this.helpers[helperName].page;
 
         await this.delay(delay);
         const promises = [];
-        promises.push(page.waitForNavigation({waitUntil: 'domcontentloaded'}));
+        promises.push(page.waitForNavigation({waitUntil: ['domcontentloaded', 'networkidle2']}));
         if (locator) {
             if (Array.isArray(locator)) {
                 for (let i=0; i < locator.length; i++) {
@@ -74,10 +72,10 @@ class PlaywrightHelper extends Helper {
         const tabXPath = `//div[contains(text(),"${tabTitle}")]`;
 
         // wait for element defined by XPath appear in page
-        await helper.page.waitForSelector(tabXPath);
+        await helper.page.waitForXPath(tabXPath);
 
         // evaluate XPath expression of the target selector (it returns array of ElementHandle)
-        const clickableTabs = await helper.page.$$(tabXPath);
+        const clickableTabs = await helper.page.$x(tabXPath);
 
         /* eslint-disable no-await-in-loop */
         for (let i=0; i < clickableTabs.length; i++) {
@@ -121,7 +119,7 @@ class PlaywrightHelper extends Helper {
     }
 
     async performAsyncActionForElements(locator, actionFunc) {
-        const elements = await this.helpers.Playwright._locate(locator);
+        const elements = await this.helpers.Puppeteer._locate(locator);
         if (!elements || elements.length === 0) {
             return;
         }
@@ -170,4 +168,4 @@ class PlaywrightHelper extends Helper {
     }
 }
 
-module.exports = PlaywrightHelper;
+module.exports = PuppeteerHelper;

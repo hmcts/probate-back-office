@@ -53,6 +53,3 @@ src/test/end-to-end/functional-output/
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-/test-results/
-/playwright-report/
-/playwright/.cache/

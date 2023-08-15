@@ -1407,13 +1407,18 @@ class NotificationServiceIT {
 
     @Test
     void sendSmeeAndFordEmail() throws NotificationClientException {
-        notificationService.sendSmeeAndFordEmail(exelaCaseData.build(), "fromDate", "toDate");
+        Document doc = Document.builder().build();
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(doc);
+
+        Document document = notificationService.sendSmeeAndFordEmail(exelaCaseData.build(), "fromDate", "toDate");
 
         verify(notificationClient).sendEmail(
             eq("pa-smeeFord-data"),
             eq("smeeAndFord@probate-test.com"),
             any(),
             anyString());
+
+        assertEquals(doc, document);
     }
 
     @Test

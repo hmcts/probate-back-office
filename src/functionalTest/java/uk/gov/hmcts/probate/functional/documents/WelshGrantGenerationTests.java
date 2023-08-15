@@ -35,12 +35,6 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyPersonalExecutorNameGenerateWelshGrantGOP() throws IOException {
-        verifyPersonalWelshGrantText("personalPayloadGrantExecutorGOPWelsh.json",
-                "expectedDocumentGrantWithExecutorGOPWelsh.txt");
-    }
-
-    @Test
     public void verifyPersonalGenerateWelshGrantAdmonWill() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantAdmonWillWelsh.json",
             "expectedDocumentGrantAdmonWillWelsh.txt");

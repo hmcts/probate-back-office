@@ -4,12 +4,12 @@ exports.config = {
     'tests': testConfig.TestPathToRun,
     'output': testConfig.TestOutputDir,
     'helpers': {
-        'Playwright': {
+        'Puppeteer': {
             'waitForTimeout': 60000,
             'getPageTimeout': 60000,
             'waitForAction': 1000,
             'show': testConfig.TestShowBrowserWindow,
-            'waitForNavigation': 'domcontentloaded',
+            'waitForNavigation': ['domcontentloaded', 'networkidle0'],
             'chrome': {
                 'ignoreHTTPSErrors': true,
                 'ignore-certificate-errors': true,
@@ -30,8 +30,8 @@ exports.config = {
             },
 
         },
-        'PlaywrightHelper': {
-            'require': './helpers/PlaywrightHelper.js'
+        'PuppeteerHelper': {
+            'require': './helpers/PuppeteerHelper.js'
         },
         'JSWait': {
             require: './helpers/JSWait.js'

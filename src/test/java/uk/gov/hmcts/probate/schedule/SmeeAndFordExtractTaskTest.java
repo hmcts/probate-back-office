@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.schedule;
 import feign.FeignException;
 import feign.Request;
 import feign.Response;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -11,7 +10,6 @@ import org.mockito.Mock;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
@@ -21,9 +19,10 @@ import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.doThrow;
 
 @ExtendWith(SpringExtension.class)
 class SmeeAndFordExtractTaskTest {
@@ -38,11 +37,6 @@ class SmeeAndFordExtractTaskTest {
     private SmeeAndFordExtractTask smeeAndFordExtractTask;
 
     private static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
-    @BeforeEach
-    public void setUp() throws Exception {
-        ReflectionTestUtils.setField(smeeAndFordExtractTask, "shcedulerTimerShutdownDelayMinutes", "1");
-    }
 
     @Test
     void shouldInitiateSmeeAndFordExtractDateRange() {
@@ -83,7 +77,7 @@ class SmeeAndFordExtractTaskTest {
     @Test
     void shouldThrowFeignExceptionForSmeeAndFordExtract() {
         String date = DATE_FORMAT.format(LocalDate.now().minusDays(1L));
-        doThrow(FeignException
+        when(smeeAndFordDataExtractService.performSmeeAndFordExtractForDateRange(date, date)).thenThrow(FeignException
                 .errorStatus("performSmeeAndFordExtractForDateRange", Response.builder()
                         .status(404)
                         .reason("message error")
@@ -95,8 +89,7 @@ class SmeeAndFordExtractTaskTest {
                                 null,
                                 null))
                         .body(new byte[0])
-                        .build())).when(smeeAndFordDataExtractService).performSmeeAndFordExtractForDateRange(date,
-                date);
+                        .build()));
         smeeAndFordExtractTask.run();
         verify(dataExtractDateValidator).dateValidator(date,date);
         verify(smeeAndFordDataExtractService).performSmeeAndFordExtractForDateRange(date, date);

@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.ClientException;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.NotificationService;
@@ -29,28 +30,28 @@ public class SmeeAndFordDataExtractService {
     @Value("${feature.blobstorage.smeeandford.enabled}")
     public boolean featureBlobStorageSmeeAndFord;
 
-    public void performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
+    public Document performSmeeAndFordExtractForDateRange(String fromDate, String toDate) {
         if (fromDate.equals(toDate)) {
-            performSmeeAndFordExtractForDate(fromDate);
+            return performSmeeAndFordExtractForDate(fromDate);
         } else {
             log.info("Smee And Ford data extract initiated from date: {} to {}", fromDate, toDate);
             List<ReturnedCaseDetails> cases = caseQueryService
                 .findCaseStateWithinDateRangeSmeeAndFord(fromDate, toDate);
             log.info("Found {} cases with dated document for Smee And Ford from-to", cases.size());
 
-            sendSmeeAndFordEmail(cases, fromDate, toDate);
+            return sendSmeeAndFordEmail(cases, fromDate, toDate);
         }
     }
 
-    private void performSmeeAndFordExtractForDate(String date) {
+    private Document performSmeeAndFordExtractForDate(String date) {
         log.info("Smee And Ford data extract initiated for date: {}", date);
         List<ReturnedCaseDetails> cases = caseQueryService.findAllCasesWithGrantIssuedDate("Smee And Ford", date);
         log.info("Found {} cases with dated document for SF", cases.size());
 
-        sendSmeeAndFordEmail(cases, date, date);
+        return sendSmeeAndFordEmail(cases, date, date);
     }
 
-    private void sendSmeeAndFordEmail(List<ReturnedCaseDetails> cases, String fromDate, String toDate) {
+    private Document sendSmeeAndFordEmail(List<ReturnedCaseDetails> cases, String fromDate, String toDate) {
         log.info("Sending email to Smee And Ford for {} filtered cases", cases.size());
         if (!cases.isEmpty()) {
             try {
@@ -61,7 +62,7 @@ public class SmeeAndFordDataExtractService {
                     log.info("Zip file uploaded on blob store");
                     Files.delete(tempFile.toPath());
                 }
-                notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
+                return notificationService.sendSmeeAndFordEmail(cases, fromDate, toDate);
             } catch (NotificationClientException e) {
                 log.warn("NotificationService exception sending email to Smee And Ford", e);
                 throw new ClientException(HttpStatus.BAD_GATEWAY.value(),
@@ -73,5 +74,6 @@ public class SmeeAndFordDataExtractService {
             }
         }
 
+        return null;
     }
 }
