@@ -162,12 +162,9 @@ public class CaveatController {
 
         CaveatCallbackResponse caveatCallbackResponse;
 
-        FeeResponse feeResponse = feeService.getCaveatFeesData();
-        String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
-                .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
         String userId = request.getHeader("user-id");
         caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
-                caveatCallbackRequest, serviceRequestReference, userId);
+                caveatCallbackRequest, userId);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -184,6 +181,10 @@ public class CaveatController {
         }
 
         CaveatData caveatData = caveatDataTransformer.transformSolsCaveats(caveatCallbackRequest);
+
+        FeeResponse feeResponse = feeService.getCaveatFeesData();
+        paymentsService.createServiceRequest(serviceRequestTransformer
+                .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
             .getNextStepsConfirmation(caveatData);

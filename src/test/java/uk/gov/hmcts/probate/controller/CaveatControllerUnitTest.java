@@ -109,7 +109,7 @@ class CaveatControllerUnitTest {
             .thenReturn(SERVICE_REQUEST_REFERENCE);
         when(httpServletRequestMock.getHeader("user-id")).thenReturn(USER_ID);
         when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
-                SERVICE_REQUEST_REFERENCE, USER_ID)).thenReturn(caveatCallbackResponse);
+                USER_ID)).thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.solsCompleteApplication(caveatCallbackRequest,
             bindingResultMock, httpServletRequestMock);
 
