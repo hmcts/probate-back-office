@@ -77,7 +77,8 @@ public class HmrcDataExtractService {
     private void uploadHmrcFile(String fromDate, String toDate, List<ReturnedCaseDetails> casesFound) {
         String dateDesc = " from " + fromDate + " to " + toDate;
         log.info("preparing for file HMRC upload");
-        File hmrcFile = hmrcFileService.createHmrcFile(casesFound, buildFileName(dateDesc));
+        File hmrcFile = hmrcFileService.createHmrcFile(casesFound, buildFileName(fromDate));
+        emailHmrcFile(dateDesc, hmrcFile);
         int response = fileTransferService.uploadFile(hmrcFile);
 
         log.info("Response for HMRC upload={}", response);
@@ -86,7 +87,6 @@ public class HmrcDataExtractService {
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
                 "Failed to upload HMRC file for " + dateDesc);
         }
-        emailHmrcFile(dateDesc, hmrcFile);
     }
 
     private String buildFileName(String toDate) {
