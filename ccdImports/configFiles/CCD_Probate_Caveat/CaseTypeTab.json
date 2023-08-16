@@ -51,5 +51,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyType", "TabFieldDisplayOrder": 2},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrlLink", "TabFieldDisplayOrder": 3},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "legacyCaseTab", "TabLabel": "Legacy details", "TabDisplayOrder": 12, "CaseFieldID": "legacyCaseViewUrl", "TabFieldDisplayOrder": 4},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "serviceRequestTab", "TabLabel": "Service Request", "TabDisplayOrder": 13, "CaseFieldID": "serviceRequestWaysToPay", "TabShowCondition": "(paymentTaken!=\"NotApplicable\" AND applicationSubmittedDate!=\"\")","TabFieldDisplayOrder": 1}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "Channel": "CaseWorker", "TabID": "serviceRequestTab", "TabLabel": "Service Request", "TabDisplayOrder": 13, "CaseFieldID": "serviceRequestWaysToPay", "TabShowCondition": "paymentTaken!=\"NotApplicable\" AND applicationSubmittedDate!=\"\"","TabFieldDisplayOrder": 1}
 ]
