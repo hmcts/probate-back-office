@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacyImportService;
@@ -81,8 +80,6 @@ class CaseMatchingControllerUnitTest {
     private CallbackResponse callbackResponse;
     @Mock
     private CaveatCallbackResponse caveatCallbackResponse;
-    @Mock
-    private CaseMatchingCriteria caseMatchingCriteriaMock;
 
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
@@ -104,6 +101,15 @@ class CaseMatchingControllerUnitTest {
                 .fullName("fullname")
                 .build();
 
+        CaseMatch ccdCaseNoId = CaseMatch.builder()
+                .dob("dob")
+                .dod("dod")
+                .aliases("aliases")
+                .postcode("postcode")
+                .type("type")
+                .fullName("fullname")
+                .build();
+
         CaseMatch legacyCase = CaseMatch.builder()
                 .id("id")
                 .dob("dob")
@@ -118,6 +124,7 @@ class CaseMatchingControllerUnitTest {
 
         caseMatches.add(ccdCase);
         caseMatches.add(legacyCase);
+        caseMatches.add(ccdCaseNoId);
         when(caseMatchingService.findCrossMatches(eq(CaseType.getAll()), any())).thenReturn(caseMatches);
     }
 
