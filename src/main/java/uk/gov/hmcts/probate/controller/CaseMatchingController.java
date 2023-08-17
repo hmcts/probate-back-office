@@ -63,9 +63,9 @@ public class CaseMatchingController {
                     if (c.getCaseLink() != null) {
                         return Optional.ofNullable(c.getCaseLink().getCaseReference())
                                 .map(Object::toString)
-                                .orElse("");
+                                .orElse("NoCaseID");
                     } else {
-                        return "";
+                        return "NoCaseLink";
                     }
                 })
                 .collect(Collectors.joining(", "));
@@ -85,9 +85,9 @@ public class CaseMatchingController {
                     if (c.getCaseLink() != null) {
                         return Optional.ofNullable(c.getCaseLink().getCaseReference())
                                 .map(Object::toString)
-                                .orElse("");
+                                .orElse("NoCaseID");
                     } else {
-                        return "";
+                        return "NoCaseLink";
                     }
                 })
                 .collect(Collectors.joining(", "));
@@ -139,9 +139,9 @@ public class CaseMatchingController {
                     if (c.getCaseLink() != null) {
                         return Optional.ofNullable(c.getCaseLink().getCaseReference())
                                 .map(Object::toString)
-                                .orElse("");
+                                .orElse("NoCaseID");
                     } else {
-                        return "";
+                        return "NoCaseLink";
                     }
                 })
                 .collect(Collectors.joining(", "));
@@ -172,9 +172,9 @@ public class CaseMatchingController {
                     if (c.getCaseLink() != null) {
                         return Optional.ofNullable(c.getCaseLink().getCaseReference())
                                 .map(Object::toString)
-                                .orElse("");
+                                .orElse("NoCaseID");
                     } else {
-                        return "";
+                        return "NoCaseLink";
                     }
                 })
                 .collect(Collectors.joining(", "));
