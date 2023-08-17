@@ -179,7 +179,8 @@ class CaseMatchingControllerUnitTest {
         when(legacyImportService.areLegacyRowsValidToImport(caseMatchMock)).thenReturn(true);
         when(legacyImportService.importLegacyRows(caseMatchMock)).thenReturn(caseMatches);
         when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches)).thenReturn(callbackResponse);
-        ResponseEntity<CallbackResponse> response = underTest.doImportFromGrant(callbackRequest, httpServletRequestMock);
+        ResponseEntity<CallbackResponse> response = underTest
+                .doImportFromGrant(callbackRequest, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponse));
