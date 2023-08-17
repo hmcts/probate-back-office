@@ -8,7 +8,6 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -40,11 +39,9 @@ public class EmailWithFileService {
             return false;
         }
 
-        byte[] encodedFileStr;
+        byte[] fileContents;
         try {
-            byte[] fileContents = FileUtils.readFileToByteArray(file);
-            Base64 base64 = new Base64();
-            encodedFileStr = base64.encode(fileContents);
+            fileContents = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
             log.error("Error reading HMRC file {}", e.getMessage());
             return false;
@@ -53,7 +50,7 @@ public class EmailWithFileService {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("extract_date", date);
 
-        if (!prepareUpload(encodedFileStr, (HashMap<String, Object>) personalisation)) {
+        if (!prepareUpload(fileContents, (HashMap<String, Object>) personalisation)) {
             return false;
         }
         return sendEmail(personalisation);
