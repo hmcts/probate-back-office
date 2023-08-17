@@ -87,7 +87,7 @@ public class EmailWithFileService {
                     fileContents,
                     false,
                     false,
-                    new RetentionPeriodDuration(10, ChronoUnit.WEEKS).toString()
+                    new RetentionPeriodDuration(26, ChronoUnit.WEEKS).toString()
                 ));
         } catch (NotificationClientException e) {
             log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
