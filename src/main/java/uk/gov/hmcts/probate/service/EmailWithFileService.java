@@ -8,6 +8,8 @@ import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -38,7 +40,7 @@ public class EmailWithFileService {
             return false;
         }
 
-        byte[] fileContents = new byte[0];
+        byte[] fileContents;
         try {
             fileContents = FileUtils.readFileToByteArray(file);
         } catch (IOException e) {
@@ -48,6 +50,7 @@ public class EmailWithFileService {
 
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("extract_date", date);
+
         if (!prepareUpload(fileContents, (HashMap<String, Object>) personalisation)) {
             return false;
         }
@@ -56,18 +59,22 @@ public class EmailWithFileService {
     }
 
     public boolean sendEmail(Map<String, Object> personalisation) {
-
+        //list of emails in secrets need to be sent separately for service
+        emailAddresses.getHmrcEmail();
+        String[] emails = StringUtils.split(emailAddresses.getHmrcEmail(), ";");
         try {
-            SendEmailResponse response = notificationClient.sendEmail(templateId,
-                emailAddresses.getHmrcEmail(),
-                personalisation,
-                null,
-                null);
-            if (null != response) {
-                log.info("HMRC email response: {}", response.toString());
+            for (String email : emails) {
+                SendEmailResponse response = notificationClient.sendEmail(templateId,
+                    email,
+                    personalisation,
+                    null,
+                    null);
+                if (null != response) {
+                    log.info("HMRC email response: {}", response.toString());
+                }
             }
         } catch (NotificationClientException e) {
-            log.error("Error sending email to HMRC: {}", e.getMessage());
+            log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
             return false;
         }
 
