@@ -43,6 +43,17 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public static final String TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON = "bulkScanTransformExceptionRecordPA8A.json";
     public static final String APPLICATION_SUBMITTED_DATE = "\"applicationSubmittedDate\":\"";
     public static final String APPLICATION_SUBMITTED_DATE_0_9 = "\"applicationSubmittedDate\":\"[0-9-]+\"";
+    public static final String EXPIRY_DATE = "\"expiryDate\":\"";
+    public static final String EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON =
+        "bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json";
+    public static final String EXPIRY_DATE_0_9 = "\"expiryDate\":\"[0-9-]+\"";
+    public static final String SENT_EMAIL = "sentEmail";
+    public static final String EXCEPTION_RECORD_OUTPUT_ERROR_JSON =
+        "expectedBulkScanTransformExceptionRecordOutputError.json";
+    public static final String EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON =
+        "bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json";
+    public static final String EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON =
+        "bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json";
 
     @Before
     public void setUp() {
@@ -96,7 +107,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .and().body(containsString(containsText));
     }
 
-    private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) throws IOException {
+    private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) {
         final ValidatableResponse response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -292,9 +303,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             LocalDate.now().plusDays(7).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String expectedExpiryDate6MonthsFromNow =
             LocalDate.now().plusDays(7).plusMonths(6).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
-        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expiryDate);
+        final String expiryDate = EXPIRY_DATE + expiryDate7DaysFromNow + "\"";
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
+        jsonRequest = jsonRequest.replaceAll(EXPIRY_DATE_0_9, expiryDate);
         final JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
 
         // Unable to use static file as documents are generated in the response, picking out specific values instead.
@@ -318,15 +329,15 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         // Checked Generated Notification Documents
         Assert.assertEquals("Correct number generated notifications", 2,
             jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
-        Assert.assertEquals("Correct DocumentType Doc 1", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 1", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
-        Assert.assertEquals("Correct DocumentType Doc 2", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 2", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
     }
 
     @Test
     public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
@@ -336,9 +347,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorJSON() throws IOException {
         final String expiryDate3MonthsFromNow =
             LocalDate.now().plusMonths(3).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expireDate = "\"expiryDate\":\"" + expiryDate3MonthsFromNow + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
-        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expireDate);
+        final String expireDate = EXPIRY_DATE + expiryDate3MonthsFromNow + "\"";
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
+        jsonRequest = jsonRequest.replaceAll(EXPIRY_DATE_0_9, expireDate);
         String jsonResponse = utils.getJsonFromFile(
                     "expectedBulkScanUpdateCaseExceptionRecordExpiryOutsideOneMonthErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
@@ -371,21 +382,21 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA8AReturnTransformErrorJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformSolicitorPA8AReturnTransformErrorJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordError.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformSolicitorPA8AReturnTransformErrorAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
@@ -486,9 +497,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testUpdateCaseExtendCaveatPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         final String expiryDate7DaysFromNow = LocalDate.now().plusDays(7).format(
             CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json");
-        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expiryDate);
+        final String expiryDate = EXPIRY_DATE + expiryDate7DaysFromNow + "\"";
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
+        jsonRequest = jsonRequest.replaceAll(EXPIRY_DATE_0_9, expiryDate);
         JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
         String expectedExpiryDate6MonthsFromNow = LocalDate.now().plusDays(7).plusMonths(6).format(
                 CaveatCallbackResponseTransformer.dateTimeFormatter);
@@ -513,16 +524,16 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         // Checked Generated Notification Documents
         Assert.assertEquals("Correct number generated notifications", 2,
             jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
-        Assert.assertEquals("Correct DocumentType Doc 1", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 1", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
-        Assert.assertEquals("Correct DocumentType Doc 2", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 2", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
     }
 
     @Test
     public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorAutomatedJSON() throws IOException {
         String jsonRequest =
-            utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json");
+            utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
         String jsonResponse =
             utils.getJsonFromFile("expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
@@ -532,11 +543,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorAutomatedJSON() throws IOException {
         final String expiryDate3MonthsFromNow = LocalDate.now().plusMonths(3).format(
             CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expireDate = "\"expiryDate\":\"" + expiryDate3MonthsFromNow + "\"";
+        final String expireDate = EXPIRY_DATE + expiryDate3MonthsFromNow + "\"";
         String jsonRequest =
-            utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json");
+            utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
         jsonRequest =
-            jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expireDate);
+            jsonRequest.replaceAll(EXPIRY_DATE_0_9, expireDate);
         String jsonResponse =
             utils.getJsonFromFile(
                 "expectedBulkScanUpdateCaseExceptionRecordExpiryOutsideOneMonthErrorPA8A.json");
@@ -561,7 +572,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
         final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
         String jsonRequest =
-            utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
+            utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         String jsonResponse =
             utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1A.json");
         jsonResponse =
@@ -572,19 +583,19 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA8AReturnTransformErrorAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordErrorAutomated.json");
-        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformPA1AReturnTransformForbiddenJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         transformExceptionPostForbidden(jsonRequest);
     }
 
     @Test
     public void testUpdatePA1AReturnTransformForbiddenJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         updateExceptionPostForbidden(jsonRequest);
     }
 
