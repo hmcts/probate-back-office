@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
@@ -25,6 +26,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.REQUEST_TIMEOUT;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 class DefaultExceptionHandlerTest {
@@ -48,6 +50,8 @@ class DefaultExceptionHandlerTest {
 
     @Mock
     private NotFoundException notFoundException;
+    @Mock
+    private SocketException socketException;
 
     @Mock
     private OCRMappingException ocrMappingException;
@@ -152,6 +156,17 @@ class DefaultExceptionHandlerTest {
 
         assertEquals(NOT_FOUND, response.getStatusCode());
         assertEquals(DefaultExceptionHandler.CLIENT_ERROR, response.getBody().getError());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
+    }
+
+    @Test
+    void shouldReturnSocketException() {
+        when(socketException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
+
+        ResponseEntity<ErrorResponse> response = underTest.handle(socketException);
+
+        assertEquals(REQUEST_TIMEOUT, response.getStatusCode());
+        assertEquals(DefaultExceptionHandler.SERVER_ERROR, response.getBody().getError());
         assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
     }
 

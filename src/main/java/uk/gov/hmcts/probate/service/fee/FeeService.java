@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
@@ -16,6 +17,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import javax.annotation.Nullable;
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.net.URI;
 
 import static uk.gov.hmcts.probate.insights.AppInsightsEvent.REQUEST_SENT;
@@ -42,9 +44,17 @@ public class FeeService {
     }
 
     public FeesResponse getAllFeesData(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
-        FeeResponse applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
-        FeeResponse ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
-        FeeResponse nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
+        FeeResponse applicationFeeResponse = null;
+        FeeResponse ukCopiesFeeResponse = null;
+        FeeResponse nonUkCopiesFeeResponse = null;
+        try {
+            applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
+            ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
+            nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
+        } catch (SocketTimeoutException e) {
+            throw new SocketException("Error while calling Fee register service");
+        }
+
 
         return FeesResponse.builder()
             .applicationFeeResponse(applicationFeeResponse)
@@ -53,7 +63,7 @@ public class FeeService {
             .build();
     }
 
-    public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) {
+    public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) throws SocketTimeoutException {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));

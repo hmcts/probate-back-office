@@ -10,12 +10,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
 
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -58,7 +60,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void issueFeeShouldReturnPositiveValue() {
+    void issueFeeShouldReturnPositiveValue() throws SocketTimeoutException {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
@@ -68,7 +70,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void issueFeeShouldReturnZeroValue() {
+    void issueFeeShouldReturnZeroValue() throws SocketTimeoutException{
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
 
         FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(1000));
@@ -179,6 +181,15 @@ class FeeServiceTest {
             when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenReturn(null);
             feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
         });
+    }
+
+    @Test
+    void testExceptionIfRestTemplateReturnTimeout() {
+        Exception exception = assertThrows(SocketException.class, () -> {
+            when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenThrow(new SocketException("Read timeout"));
+            feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
+        });
+        assertEquals("message", exception.getMessage());
     }
 
     @Test
