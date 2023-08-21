@@ -44,15 +44,15 @@ public class FeeService {
     }
 
     public FeesResponse getAllFeesData(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
-        FeeResponse applicationFeeResponse = null;
-        FeeResponse ukCopiesFeeResponse = null;
-        FeeResponse nonUkCopiesFeeResponse = null;
+        FeeResponse applicationFeeResponse;
+        FeeResponse ukCopiesFeeResponse;
+        FeeResponse nonUkCopiesFeeResponse;
         try {
             applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
             ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
             nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
         } catch (SocketTimeoutException e) {
-            throw new SocketException("Error while calling Fee register service");
+            throw new SocketException("Exception while calling Fee register service");
         }
 
 

@@ -70,7 +70,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void issueFeeShouldReturnZeroValue() throws SocketTimeoutException{
+    void issueFeeShouldReturnZeroValue() throws SocketTimeoutException {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
 
         FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(1000));
@@ -186,10 +186,11 @@ class FeeServiceTest {
     @Test
     void testExceptionIfRestTemplateReturnTimeout() {
         Exception exception = assertThrows(SocketException.class, () -> {
-            when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenThrow(new SocketException("Read timeout"));
+            when(restTemplate.getForEntity(any(), eq(FeeResponse.class)))
+                    .thenThrow(new SocketException("Exception while calling Fee register service"));
             feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
         });
-        assertEquals("message", exception.getMessage());
+        assertEquals("Exception while calling Fee register service", exception.getMessage());
     }
 
     @Test
