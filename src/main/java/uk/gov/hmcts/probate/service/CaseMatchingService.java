@@ -61,9 +61,9 @@ public class CaseMatchingService {
         String caseIds = matchedCases.getCases().stream()
                 .map(c -> Optional.ofNullable(c.getId())
                         .map(Object::toString)
-                        .orElse(""))
+                        .orElse("NoCaseID"))
                 .collect(Collectors.joining(", "));
-        log.info("Case ID: " + criteria.getId() + " case matching findMatches: " + caseIds);
+        log.info("Case ID: " + criteria.getId() + " caseType: " + caseType + " case matching findMatches: " + caseIds);
 
         return matchedCases.getCases().stream()
                 .filter(c -> c.getId() == null || !criteria.getId().equals(c.getId()))
