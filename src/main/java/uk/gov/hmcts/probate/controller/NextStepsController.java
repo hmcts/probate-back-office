@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
@@ -35,6 +36,7 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -84,11 +86,15 @@ public class NextStepsController {
             serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
 
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
-
-            FeesResponse feesResponse = feeService.getAllFeesData(
-                ccdData.getIht().getNetValueInPounds(),
-                ccdData.getFee().getExtraCopiesOfGrant(),
-                ccdData.getFee().getOutsideUKGrantCopies());
+            FeesResponse feesResponse;
+            try {
+                feesResponse = feeService.getAllFeesData(
+                        ccdData.getIht().getNetValueInPounds(),
+                        ccdData.getFee().getExtraCopiesOfGrant(),
+                        ccdData.getFee().getOutsideUKGrantCopies());
+            } catch (SocketTimeoutException e) {
+                throw new SocketException("Exception while calling Fee register service");
+            }
             String userId = request.getHeader("user-id");
             if (feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) > 0) {
                 String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
