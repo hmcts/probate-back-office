@@ -3,7 +3,7 @@ server:
 
 resttemplate:
   httpclient:
-    timeout: 1000
+    timeout: 10000
 
 ftp.client:
   url: https://green.blob.core.windows.net
@@ -136,7 +136,7 @@ docmosis:
 
 fee.api:
   url: http://localhost:4411
-  api: /fees-register/fees/lookup
+  api: /fees-registers/fees/lookup
   service: probate
   jurisdiction1: family
   jurisdiction2: probate registry

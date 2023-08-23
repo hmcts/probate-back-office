@@ -51,7 +51,7 @@ public class FeeService {
             applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
             ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
             nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
-        } catch (SocketTimeoutException e) {
+        } catch (Exception e) {
             throw new SocketException("Exception while calling Fee register service");
         }
 
