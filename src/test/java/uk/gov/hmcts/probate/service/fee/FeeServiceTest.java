@@ -79,7 +79,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeShouldReturnZeroValue() {
+    void copiesFeeShouldReturnZeroValue() throws SocketTimeoutException {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         FeeResponse copiesFee = feeService.getCopiesFeeResponse(5L);
@@ -88,7 +88,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeEqualsZero() {
+    void copiesFeeEqualsZero() throws SocketTimeoutException {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         FeeResponse copiesFee = feeService.getCopiesFeeResponse(null);
@@ -97,7 +97,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeEqualsNonZeroNewFeeToggledOff() {
+    void copiesFeeEqualsNonZeroNewFeeToggledOff() throws SocketTimeoutException {
 
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
@@ -115,7 +115,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeEqualsNonZeroNewFeeToggledOn() {
+    void copiesFeeEqualsNonZeroNewFeeToggledOn() throws SocketTimeoutException {
 
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");

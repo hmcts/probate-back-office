@@ -79,7 +79,7 @@ public class FeeService {
         }
     }
 
-    public FeeResponse getCopiesFeeResponse(Long copies) {
+    public FeeResponse getCopiesFeeResponse(Long copies) throws SocketTimeoutException {
         if (copies == null) {
             return buildZeroValueFee();
         }

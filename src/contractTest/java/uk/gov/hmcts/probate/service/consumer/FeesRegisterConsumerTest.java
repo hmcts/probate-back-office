@@ -141,7 +141,7 @@ public class FeesRegisterConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "createCopiesFeeFragment")
-    public void verifyCopiesFeeServicePact() throws JSONException {
+    public void verifyCopiesFeeServicePact() throws JSONException, SocketTimeoutException {
         FeeResponse result = feeService.getCopiesFeeResponse(3L);
         Assert.assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
 
@@ -149,7 +149,7 @@ public class FeesRegisterConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "createCopiesNoFeeFragment")
-    public void verifyCopiesNoFeeServicePact() throws JSONException {
+    public void verifyCopiesNoFeeServicePact() throws JSONException, SocketTimeoutException {
         FeeResponse result = feeService.getCopiesFeeResponse(0L);
         Assert.assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
     }
