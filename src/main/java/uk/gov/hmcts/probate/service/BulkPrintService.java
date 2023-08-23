@@ -71,7 +71,8 @@ public class BulkPrintService {
         try {
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, caveatCallbackRequest.getCaseDetails().getId());
-            additionalData.put(RECIPIENTS, caveatCallbackRequest.getCaseDetails().getId());
+            additionalData.put(RECIPIENTS, new String[]{String.valueOf(caveatCallbackRequest
+                    .getCaseDetails().getId())});
 
             additionalData = Collections.unmodifiableMap(additionalData);
 
@@ -138,7 +139,8 @@ public class BulkPrintService {
         try {
             Map<String, Object> additionalData = new HashMap<>();
             additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, callbackRequest.getCaseDetails().getId());
-            additionalData.put(RECIPIENTS, callbackRequest.getCaseDetails().getId());
+            additionalData.put(RECIPIENTS, new String[]{String.valueOf(callbackRequest
+                    .getCaseDetails().getId())});
             additionalData = Collections.unmodifiableMap(additionalData);
 
             List<uk.gov.hmcts.reform.sendletter.api.model.v3.Document> pdfs;
