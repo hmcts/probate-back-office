@@ -81,8 +81,6 @@ public class NextStepsController {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
-            serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
-
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
@@ -101,6 +99,7 @@ public class NextStepsController {
                         feesResponse, null, userId);
             }
         }
+        serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
 
         return ResponseEntity.ok(callbackResponse);
     }
