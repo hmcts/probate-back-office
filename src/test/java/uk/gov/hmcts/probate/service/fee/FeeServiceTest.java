@@ -190,7 +190,8 @@ class FeeServiceTest {
                     .thenThrow(new SocketException("Exception while calling Fee register service"));
             feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
         });
-        assertEquals("Exception while calling Fee register service", exception.getMessage());
+        assertEquals("Timeout occurred while calling Fee register service.Please try again later",
+                exception.getMessage());
     }
 
     @Test
