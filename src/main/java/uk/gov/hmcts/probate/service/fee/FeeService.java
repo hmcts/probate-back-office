@@ -52,7 +52,7 @@ public class FeeService {
             ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
             nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
         } catch (Exception e) {
-            throw new SocketException("Exception while calling Fee register service");
+            throw new SocketException("Timeout occurred while calling Fee register service");
         }
 
 
