@@ -136,7 +136,7 @@ docmosis:
 
 fee.api:
   url: http://localhost:4411
-  api: /fees-registers/fees/lookup
+  api: /fees-register/fees/lookup
   service: probate
   jurisdiction1: family
   jurisdiction2: probate registry
