@@ -29,7 +29,6 @@ import java.util.List;
 import static net.logstash.logback.argument.StructuredArguments.keyValue;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
-import static org.springframework.http.HttpStatus.REQUEST_TIMEOUT;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 @Slf4j
@@ -114,13 +113,14 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = SocketException.class)
-    public ResponseEntity<ErrorResponse> handle(SocketException exception) {
-        log.warn("Socket timeout exception", exception);
-        ErrorResponse errorResponse = new ErrorResponse(REQUEST_TIMEOUT.value(), SERVER_ERROR,
-                exception.getMessage());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        return new ResponseEntity<>(errorResponse, headers, REQUEST_TIMEOUT);
+    public ResponseEntity<CallbackResponse> handle(SocketException exception) {
+        log.warn(exception.getMessage());
+        List<String> userMessages = new ArrayList<>();
+        userMessages.add(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(userMessages)
+                .build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler(OCRMappingException.class)

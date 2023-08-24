@@ -26,7 +26,6 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
-import static org.springframework.http.HttpStatus.REQUEST_TIMEOUT;
 import static org.springframework.http.HttpStatus.SERVICE_UNAVAILABLE;
 
 class DefaultExceptionHandlerTest {
@@ -163,11 +162,10 @@ class DefaultExceptionHandlerTest {
     void shouldReturnSocketException() {
         when(socketException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
-        ResponseEntity<ErrorResponse> response = underTest.handle(socketException);
+        ResponseEntity<CallbackResponse> response = underTest.handle(socketException);
 
-        assertEquals(REQUEST_TIMEOUT, response.getStatusCode());
-        assertEquals(DefaultExceptionHandler.SERVER_ERROR, response.getBody().getError());
-        assertEquals(EXCEPTION_MESSAGE, response.getBody().getMessage());
+        assertEquals(OK, response.getStatusCode());
+        assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0));
     }
 
     @Test
