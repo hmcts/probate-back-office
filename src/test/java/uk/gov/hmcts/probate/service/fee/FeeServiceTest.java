@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
@@ -59,7 +60,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void issueFeeShouldReturnPositiveValue() {
+    void issueFeeShouldReturnPositiveValue() throws SocketTimeoutException {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
 
@@ -69,7 +70,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void issueFeeShouldReturnZeroValue() {
+    void issueFeeShouldReturnZeroValue() throws SocketTimeoutException {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
 
         FeeResponse issueFee = feeService.getApplicationFeeResponse(BigDecimal.valueOf(1000));
@@ -78,7 +79,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeShouldReturnZeroValue() {
+    void copiesFeeShouldReturnZeroValue() throws SocketTimeoutException {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         FeeResponse copiesFee = feeService.getCopiesFeeResponse(5L);
@@ -87,7 +88,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeEqualsZero() {
+    void copiesFeeEqualsZero() throws SocketTimeoutException {
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ZERO);
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.NO_CONTENT);
         FeeResponse copiesFee = feeService.getCopiesFeeResponse(null);
@@ -96,7 +97,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeEqualsNonZeroNewFeeToggledOff() {
+    void copiesFeeEqualsNonZeroNewFeeToggledOff() throws SocketTimeoutException {
 
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
@@ -114,7 +115,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void copiesFeeEqualsNonZeroNewFeeToggledOn() {
+    void copiesFeeEqualsNonZeroNewFeeToggledOn() throws SocketTimeoutException {
 
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getKeyword()).thenReturn("FeeKey");
@@ -132,7 +133,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void getTotalFee() throws SocketTimeoutException {
+    void getTotalFee() {
         when(responseEntity.getStatusCode()).thenReturn(HttpStatus.OK);
         when(feeResponse.getFeeAmount()).thenReturn(BigDecimal.ONE);
 
@@ -143,7 +144,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void getApplicationFeeWithOldKeywordGreaterThan5000() throws SocketTimeoutException {
+    void getApplicationFeeWithOldKeywordGreaterThan5000() {
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getIhtMinAmt()).thenReturn(Double.valueOf(5000));
         when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
@@ -159,7 +160,7 @@ class FeeServiceTest {
     }
 
     @Test
-    void getApplicationFeeWithOldKeywordNotGreaterThan5000() throws SocketTimeoutException {
+    void getApplicationFeeWithOldKeywordNotGreaterThan5000() {
         when(feeServiceConfiguration.getUrl()).thenReturn("http://test.test/lookupWithKeyword");
         when(feeServiceConfiguration.getIhtMinAmt()).thenReturn(Double.valueOf(5000));
         when(featureToggleService.isNewFeeRegisterCodeEnabled()).thenReturn(true);
@@ -180,6 +181,16 @@ class FeeServiceTest {
             when(restTemplate.getForEntity(any(), eq(FeeResponse.class))).thenReturn(null);
             feeService.getApplicationFeeResponse(BigDecimal.valueOf(5000));
         });
+    }
+
+    @Test
+    void testExceptionIfRestTemplateReturnTimeout() {
+        Exception exception = assertThrows(SocketException.class, () -> {
+            when(restTemplate.getForEntity(any(), eq(FeeResponse.class)))
+                    .thenThrow(new SocketException("Exception while calling Fee register service"));
+            feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
+        });
+        assertEquals("Exception while calling Fee register service", exception.getMessage());
     }
 
     @Test

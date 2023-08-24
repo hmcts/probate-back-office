@@ -13,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
-import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -39,13 +38,11 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.net.SocketTimeoutException;
 import java.util.Collections;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
@@ -109,7 +106,7 @@ class NextStepsUnitTest {
     private AppInsights appInsights;
 
     @BeforeEach
-    public void setUp() throws NotificationClientException, SocketTimeoutException {
+    public void setUp() throws NotificationClientException {
         MockitoAnnotations.openMocks(this);
 
         underTest = new NextStepsController(ccdBeanTransformerMock,
@@ -328,19 +325,5 @@ class NextStepsUnitTest {
         verify(notificationServiceMock, times(0)).startAwaitingDocumentationNotificationPeriod(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
-    }
-
-    @Test
-    void testExceptionIfRestTemplateReturnTimeout() {
-        when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-        when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
-        when(ccdDataMock.getFee()).thenReturn(feeMock);
-        Exception exception = assertThrows(SocketException.class, () -> {
-            when(feeServiceMock.getAllFeesData(null, 0L, 0L))
-                    .thenThrow(new SocketException("Exception while calling Fee register service"));
-            underTest.validate(callbackRequestMock,
-                    bindingResultMock, httpServletRequestMock);
-        });
-        assertEquals("Exception while calling Fee register service", exception.getMessage());
     }
 }

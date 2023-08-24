@@ -9,6 +9,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import uk.gov.hmcts.probate.config.FeeServiceConfiguration;
 import uk.gov.hmcts.probate.exception.ClientDataException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
@@ -42,11 +43,18 @@ public class FeeService {
         return result;
     }
 
-    public FeesResponse getAllFeesData(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies)
-            throws SocketTimeoutException {
-        FeeResponse applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
-        FeeResponse ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
-        FeeResponse nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
+    public FeesResponse getAllFeesData(BigDecimal amountInPounds, Long ukCopies, Long nonUkCopies) {
+        FeeResponse applicationFeeResponse;
+        FeeResponse ukCopiesFeeResponse;
+        FeeResponse nonUkCopiesFeeResponse;
+        try {
+            applicationFeeResponse = getApplicationFeeResponse(amountInPounds);
+            ukCopiesFeeResponse = getCopiesFeeResponse(ukCopies);
+            nonUkCopiesFeeResponse = getCopiesFeeResponse(nonUkCopies);
+        } catch (Exception e) {
+            throw new SocketException("Exception while calling Fee register service");
+        }
+
 
         return FeesResponse.builder()
             .applicationFeeResponse(applicationFeeResponse)
@@ -55,7 +63,7 @@ public class FeeService {
             .build();
     }
 
-    public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) {
+    public FeeResponse getApplicationFeeResponse(BigDecimal amountInPound) throws SocketTimeoutException {
         URI uri = buildUri(FEE_API_EVENT_TYPE_ISSUE, amountInPound.toString());
         appInsights.trackEvent(REQUEST_SENT.toString(), appInsights.trackingMap("url",uri.toString()));
         ResponseEntity<FeeResponse> responseEntity = nonNull(restTemplate.getForEntity(uri, FeeResponse.class));
@@ -71,7 +79,7 @@ public class FeeService {
         }
     }
 
-    public FeeResponse getCopiesFeeResponse(Long copies) {
+    public FeeResponse getCopiesFeeResponse(Long copies) throws SocketTimeoutException {
         if (copies == null) {
             return buildZeroValueFee();
         }
