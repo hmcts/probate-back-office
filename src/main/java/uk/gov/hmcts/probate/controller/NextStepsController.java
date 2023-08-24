@@ -36,7 +36,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
-import java.net.SocketTimeoutException;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -92,7 +91,7 @@ public class NextStepsController {
                         ccdData.getIht().getNetValueInPounds(),
                         ccdData.getFee().getExtraCopiesOfGrant(),
                         ccdData.getFee().getOutsideUKGrantCopies());
-            } catch (SocketTimeoutException e) {
+            } catch (Exception e) {
                 throw new SocketException("Exception while calling Fee register service");
             }
             String userId = request.getHeader("user-id");
