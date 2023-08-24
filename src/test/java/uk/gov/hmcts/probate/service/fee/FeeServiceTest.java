@@ -187,7 +187,8 @@ class FeeServiceTest {
     void testExceptionIfRestTemplateReturnTimeout() {
         Exception exception = assertThrows(SocketException.class, () -> {
             when(restTemplate.getForEntity(any(), eq(FeeResponse.class)))
-                    .thenThrow(new SocketException("Exception while calling Fee register service"));
+                    .thenThrow(new SocketException("Timeout occurred while calling " +
+                            "Fee register service.Please try again later"));
             feeService.getAllFeesData(BigDecimal.valueOf(5001), 1L, 1L);
         });
         assertEquals("Timeout occurred while calling Fee register service.Please try again later",
