@@ -131,6 +131,9 @@ http.connect.request.timeout: 60000
 
 idam.service.host: ${S2S_AUTH_URL:http://localhost:4502}
 
+extract:
+  templates:
+    hmrcExtract: "72dfad41-fed8-431f-896e-3151775dbe8f"
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
@@ -399,6 +402,7 @@ idam-s2s-auth:
 
 excelaEmail: exela@probate-test.com
 smeeAndFordEmail: smeeAndFord@probate-test.com
+hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 data-extract:
   pagination:
@@ -426,6 +430,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
+shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:
