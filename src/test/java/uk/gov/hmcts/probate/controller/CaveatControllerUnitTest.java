@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -82,6 +83,8 @@ class CaveatControllerUnitTest {
     @Mock
     private ServiceRequestDto serviceRequestDtoMock;
     @Mock
+    private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
+    @Mock
     private RegistrarDirectionService registrarDirectionService;
     @Mock
     private DocumentGeneratorService documentGeneratorService;
@@ -95,7 +98,7 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
             caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService);
+            registrarDirectionService, documentGeneratorService,serviceRequestAlreadyCreatedValidationRuleMock);
 
     }
 

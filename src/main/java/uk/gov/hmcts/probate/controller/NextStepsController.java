@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,6 +55,7 @@ public class NextStepsController {
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -89,6 +91,7 @@ public class NextStepsController {
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
                         feesResponse, userId);
         }
+        serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
 
         return ResponseEntity.ok(callbackResponse);
     }
