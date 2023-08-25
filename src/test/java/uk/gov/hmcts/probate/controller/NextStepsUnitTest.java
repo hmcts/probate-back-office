@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -95,8 +94,6 @@ class NextStepsUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
     @Mock
     private ServiceRequestTransformer serviceRequestTransformer;
-    @Mock
-    private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
 
     private static final String USER_ID = "User-ID";
 
@@ -110,7 +107,7 @@ class NextStepsUnitTest {
         underTest = new NextStepsController(ccdBeanTransformerMock,
                 confirmationResponseServiceMock, callbackResponseTransformerMock, serviceRequestTransformer,
                 caseDataTransformer, objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService,
-                handOffLegacyTransformerMock, serviceRequestAlreadyCreatedValidationRuleMock);
+                handOffLegacyTransformerMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);

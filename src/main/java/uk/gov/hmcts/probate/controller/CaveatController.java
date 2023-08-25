@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +64,6 @@ public class CaveatController {
     private final FeeService feeService;
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
-    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -167,8 +165,6 @@ public class CaveatController {
         String userId = request.getHeader("user-id");
         caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
                 caveatCallbackRequest, userId);
-
-        serviceRequestAlreadyCreatedValidationRule.validate(caveatCallbackRequest.getCaseDetails());
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
