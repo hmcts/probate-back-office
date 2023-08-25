@@ -297,5 +297,6 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BORedecNotificationSent", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOSotGenerated", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Dormant", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseWorkerEscalation", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"}
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseWorkerEscalation", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "SolAppUpdated", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"}
 ]
