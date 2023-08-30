@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.exception.OCRException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
@@ -108,6 +109,17 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = OCRException.class)
+    public ResponseEntity<CallbackResponse> handle(OCRException exception) {
+        log.warn(exception.getMessage());
+        List<String> userMessages = new ArrayList<>();
+        userMessages.add(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(userMessages)
+                .build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler(OCRMappingException.class)
