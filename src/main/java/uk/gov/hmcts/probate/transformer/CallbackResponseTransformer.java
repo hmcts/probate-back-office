@@ -463,7 +463,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          String serviceRequestReference, String userId) {
+                                                          String userId) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -473,7 +473,7 @@ public class CallbackResponseTransformer {
         final var applicationSubmittedDate = dateTimeFormatter.format(LocalDate.now());
         final var schemaVersion = getSchemaVersion(callbackRequest.getCaseDetails().getData());
         caseDataTransformer
-            .transformForSolicitorApplicationCompletion(callbackRequest, serviceRequestReference);
+                .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
@@ -1451,10 +1451,27 @@ public class CallbackResponseTransformer {
 
     private void updateCaseBuilderForTransformCase(CaseData caseData, ResponseCaseDataBuilder<?, ?> builder) {
         builder
-            .ihtReferenceNumber(caseData.getIhtReferenceNumber())
-            .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
-            .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames())
-            .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+                .ihtReferenceNumber(caseData.getIhtReferenceNumber())
+                .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
+                .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
+
+        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildDeceasedAliasNameExecutor)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .toList();
+        }
+        if (deceasedAliasNames.isEmpty()) {
+            builder
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
+        } else {
+            builder
+                    .solsDeceasedAliasNamesList(deceasedAliasNames)
+                    .deceasedAliasNamesList(null);
+        }
 
         if (caseData.getApplicationType() != PERSONAL) {
             builder

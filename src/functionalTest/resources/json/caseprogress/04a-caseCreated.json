@@ -161,7 +161,7 @@
       "solsSolicitorAppReference": "1231-3984-3949-0300",
       "solsSOTJobTitle": "job title",
       "paymentTaken": "Yes",
-      "serviceRequestReference": "2000-1234567890"
+      "totalFee" : "8000"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",
