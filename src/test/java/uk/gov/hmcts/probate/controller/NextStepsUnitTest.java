@@ -12,7 +12,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.exception.BadRequestException;
-import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.Fee;
@@ -33,7 +32,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +42,6 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -97,8 +94,6 @@ class NextStepsUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformerMock;
     @Mock
     private ServiceRequestTransformer serviceRequestTransformer;
-    @Mock
-    private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
 
     private static final String USER_ID = "User-ID";
 
@@ -112,12 +107,12 @@ class NextStepsUnitTest {
         underTest = new NextStepsController(ccdBeanTransformerMock,
                 confirmationResponseServiceMock, callbackResponseTransformerMock, serviceRequestTransformer,
                 caseDataTransformer, objectMapperMock, feeServiceMock, stateChangeServiceMock, paymentsService,
-                handOffLegacyTransformerMock, serviceRequestAlreadyCreatedValidationRuleMock);
+                handOffLegacyTransformerMock);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(callbackResponseTransformerMock
-                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, null, USER_ID))
+                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, USER_ID))
                 .thenReturn(callbackResponseMock);
         when(httpServletRequestMock.getHeader("user-id")).thenReturn(USER_ID);
         when(feeServiceMock.getAllFeesData(null, 0L, 0L)).thenReturn(feesResponseMock);
@@ -153,23 +148,6 @@ class NextStepsUnitTest {
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponseMock));
-    }
-
-    @Test
-    void shouldValidateWithServiceRequestAlreadyCreatedError() {
-        assertThrows(BusinessValidationException.class, () -> {
-            when(ccdBeanTransformerMock.transform(callbackRequestMock)).thenReturn(ccdDataMock);
-            when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
-            when(ccdDataMock.getFee()).thenReturn(feeMock);
-            when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
-            when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
-
-            doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
-                    .validate(caseDetailsMock);
-
-            underTest.validate(callbackRequestMock,
-                    bindingResultMock, httpServletRequestMock);
-        });
     }
 
     @Test
@@ -220,7 +198,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock
-                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, "", USER_ID))
+                .transformForSolicitorComplete(callbackRequestMock, feesResponseMock, USER_ID))
                 .thenReturn(callbackResponseMock);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -239,7 +217,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.ZERO);
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                null, USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
 
         ResponseEntity<CallbackResponse> response = underTest.validate(callbackRequestMock,
                 bindingResultMock, httpServletRequestMock);
@@ -255,7 +233,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn(null);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -274,7 +252,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn("No");
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -294,7 +272,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn(null);
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
@@ -314,7 +292,7 @@ class NextStepsUnitTest {
         when(ccdDataMock.getFee()).thenReturn(feeMock);
         when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
         when(callbackResponseTransformerMock.transformForSolicitorComplete(callbackRequestMock, feesResponseMock,
-                "", USER_ID)).thenReturn(callbackResponseMock);
+                USER_ID)).thenReturn(callbackResponseMock);
         when(caseDataMock.getEvidenceHandled()).thenReturn("No");
         CallbackResponse creditPaymentResponseError = Mockito.mock(CallbackResponse.class);
         when(creditPaymentResponseError.getErrors()).thenReturn(Collections.emptyList());
