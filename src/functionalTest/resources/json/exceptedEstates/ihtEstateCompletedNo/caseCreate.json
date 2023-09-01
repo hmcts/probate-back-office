@@ -181,7 +181,7 @@
       "ihtEstateNetValue": "60000000",
       "ihtEstateNetQualifyingValue": "10000000",
       "paymentTaken": "Yes",
-      "serviceRequestReference": "abcdef123456"
+      "totalFee" : "8000"
     }
   },
   "event_id": "solicitorReviewAndConfirm"

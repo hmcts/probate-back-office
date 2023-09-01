@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
+import java.math.BigDecimal;
+
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -61,8 +63,8 @@ class CaseDataTransformerTest {
 
     @Test
     void shouldTransformForSolicitorCompletionWithServiceRequestReference() {
-        String serviceRequestReference = "serviceRequestReference";
-        caseDataTransformer.transformForSolicitorApplicationCompletion(callbackRequestMock,serviceRequestReference);
+        BigDecimal totalAmount = BigDecimal.valueOf(100000);
+        caseDataTransformer.transformForSolicitorApplicationCompletion(callbackRequestMock,totalAmount);
 
         verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
         verify(solicitorApplicationCompletionTransformer)
@@ -70,7 +72,7 @@ class CaseDataTransformerTest {
         verify(solicitorApplicationCompletionTransformer).mapSolicitorExecutorFieldsOnCompletion(caseDataMock);
         verify(solicitorApplicationCompletionTransformer).clearSolicitorExecutorLists(caseDataMock);
         verify(solicitorApplicationCompletionTransformer).setFieldsOnServiceRequest(caseDetailsMock,
-                serviceRequestReference);
+                totalAmount);
     }
 
     @Test

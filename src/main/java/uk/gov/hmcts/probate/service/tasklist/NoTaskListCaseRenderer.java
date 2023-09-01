@@ -21,7 +21,7 @@ public abstract class NoTaskListCaseRenderer extends NoTaskListRenderer {
             .replaceFirst("<englishPhoneNumber/>", "0300 303 0648")
             .replaceFirst("<welshPhoneNumber/>", "0300 303 0654")
             .replaceFirst("<englishOpeningTimes/>",
-                    "Monday to Friday, 8am to 6pm. Closed on Saturdays, Sundays and bank holidays")
+                    "Monday to Friday, 9am to 5pm. Closed on Saturdays, Sundays and bank holidays")
             .replaceFirst("<welshOpeningTimes/>",
                     "Monday to Friday, 8am to 5pm (except public holidays)")
         );

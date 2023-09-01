@@ -622,16 +622,15 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformResponseWithServiceRequest() {
+    void shouldTransformResponse() {
         caveatDataBuilder.applicationType(SOLICITOR);
         caveatDataBuilder.paperForm("No");
         caveatDataBuilder.registryLocation("ctsc");
         setupMocks();
         CaveatCallbackResponse caveatCallbackResponse =
-                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "SRref", "User-id");
+                underTest.transformResponseWithServiceRequest(caveatCallbackRequestMock, "User-id");
 
         assertCommonSolsCaveats(caveatCallbackResponse);
-        assertEquals(caveatCallbackResponse.getCaveatData().getServiceRequestReference(), "SRref");
         assertEquals(caveatCallbackResponse.getCaveatData().getApplicationSubmittedBy(), "User-id");
     }
 

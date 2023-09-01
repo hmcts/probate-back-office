@@ -9,6 +9,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
@@ -56,10 +57,8 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         }
     }
 
-    public void setFieldsOnServiceRequest(CaseDetails caseDetails, String serviceRequestReference) {
-        if (serviceRequestReference != null) {
-            caseDetails.getData().setServiceRequestReference(serviceRequestReference);
-        } else {
+    public void setFieldsOnServiceRequest(CaseDetails caseDetails, BigDecimal totalAmount) {
+        if (totalAmount.compareTo(BigDecimal.ZERO) == 0) {
             caseDetails.getData().setPaymentTaken(NOT_APPLICABLE);
             caseDetails.setState(CASE_PRINTED.getId());
         }

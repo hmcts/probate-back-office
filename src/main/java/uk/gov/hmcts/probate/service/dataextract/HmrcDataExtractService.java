@@ -8,9 +8,11 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
 import uk.gov.hmcts.probate.service.CaseQueryService;
 import uk.gov.hmcts.probate.service.FileTransferService;
+import uk.gov.hmcts.probate.service.EmailWithFileService;
 import uk.gov.hmcts.probate.service.filebuilder.FileExtractDateFormatter;
 import uk.gov.hmcts.probate.service.filebuilder.HmrcFileService;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -23,17 +25,26 @@ public class HmrcDataExtractService {
     private final HmrcFileService hmrcFileService;
     private final FileExtractDateFormatter fileExtractDateFormatter;
 
+    private final EmailWithFileService emailWithFileService;
+
     public void performHmrcExtractFromDate(String fromDate, String toDate) {
-        if (fromDate.equals(toDate)) {
-            performHmrcExtract(fromDate);
-        } else {
-            log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
+        try {
+            if (fromDate.equals(toDate)) {
+                performHmrcExtract(fromDate);
+            } else {
+                log.info("HMRC data extract initiated for dates from-to: {}-{}", fromDate, toDate);
 
-            List<ReturnedCaseDetails> casesFound = caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
-            log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
-                fromDate, toDate, casesFound.size());
+                List<ReturnedCaseDetails> casesFound =
+                    caseQueryService.findCaseStateWithinDateRangeHMRC(fromDate, toDate);
+                log.info("Cases found for HMRC data extract initiated for dates from-to: {}-{}, cases found: {}",
+                    fromDate, toDate, casesFound.size());
 
-            uploadHmrcFile(fromDate, toDate, casesFound);
+                uploadHmrcFile(fromDate, toDate, casesFound);
+
+            }
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            throw e;
         }
     }
 
@@ -46,11 +57,29 @@ public class HmrcDataExtractService {
         uploadHmrcFile(date, date, casesFound);
     }
 
+    private void emailHmrcFile(String date, File hmrcFile) {
+
+        //check file size as there is a 2mb limit
+        long totalSpace = hmrcFile.length() / 1048576L;
+        log.info("HMRC file is {}MB", totalSpace);
+        if (totalSpace > 2L) {
+            //not expecting this size, service will error but we'll log additional error too
+            log.error("File is over 2MB");
+        }
+        boolean isSuccess = emailWithFileService.emailFile(hmrcFile, date);
+        if (!isSuccess) {
+            log.error("Failed to email hmrc file:" + hmrcFile.getName());
+            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
+                "Failed to email HMRC file for " + date);
+        }
+    }
+
     private void uploadHmrcFile(String fromDate, String toDate, List<ReturnedCaseDetails> casesFound) {
         String dateDesc = " from " + fromDate + " to " + toDate;
         log.info("preparing for file HMRC upload");
-        int response = fileTransferService.uploadFile(hmrcFileService.createHmrcFile(
-            casesFound, buildFileName(toDate)));
+        File hmrcFile = hmrcFileService.createHmrcFile(casesFound, buildFileName(fromDate));
+        emailHmrcFile(dateDesc, hmrcFile);
+        int response = fileTransferService.uploadFile(hmrcFile);
 
         log.info("Response for HMRC upload={}", response);
         if (response != 201) {

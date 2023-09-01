@@ -24,6 +24,7 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
+      "solsPBAPaymentReference": "appref-PAY2",
       "otherExecutorExists": "Yes",
       "deceasedAddress": {
         "County": "Middlesex",

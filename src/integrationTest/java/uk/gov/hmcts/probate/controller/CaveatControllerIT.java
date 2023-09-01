@@ -17,12 +17,16 @@ import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
+import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
+import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -64,6 +68,14 @@ class CaveatControllerIT {
 
     @MockBean
     private RegistrarDirectionService registrarDirectionService;
+    @MockBean
+    private FeeService feeService;
+    @MockBean
+    private FeesResponse feesResponseMock;
+    @MockBean
+    private PaymentsService paymentsService;
+    @MockBean
+    private ServiceRequestTransformer serviceRequestTransformer;
 
     private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
 
@@ -89,6 +101,7 @@ class CaveatControllerIT {
         organisationEntityResponse.setName("ORGANISATION_NAME");
         doReturn(organisationEntityResponse).when(organisationsRetrievalService).getOrganisationEntity(
                 "1234567890123456", AUTH_TOKEN);
+        when(feeService.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
 
     }
 

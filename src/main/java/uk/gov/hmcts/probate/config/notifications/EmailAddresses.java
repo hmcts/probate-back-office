@@ -12,4 +12,6 @@ public class EmailAddresses {
     private String excelaEmail;
 
     private String smeeAndFordEmail;
+
+    private String hmrcEmail;
 }

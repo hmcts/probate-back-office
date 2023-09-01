@@ -37,7 +37,6 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,7 +64,6 @@ public class CaveatController {
     private final FeeService feeService;
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
-    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -162,16 +160,11 @@ public class CaveatController {
             throw new BadRequestException("Invalid payload", bindingResult);
         }
 
-        serviceRequestAlreadyCreatedValidationRule.validate(caveatCallbackRequest.getCaseDetails());
-
         CaveatCallbackResponse caveatCallbackResponse;
 
-        FeeResponse feeResponse = feeService.getCaveatFeesData();
-        String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
-                .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
         String userId = request.getHeader("user-id");
         caveatCallbackResponse = caveatCallbackResponseTransformer.transformResponseWithServiceRequest(
-                caveatCallbackRequest, serviceRequestReference, userId);
+                caveatCallbackRequest, userId);
 
         return ResponseEntity.ok(caveatCallbackResponse);
     }
@@ -188,6 +181,10 @@ public class CaveatController {
         }
 
         CaveatData caveatData = caveatDataTransformer.transformSolsCaveats(caveatCallbackRequest);
+
+        FeeResponse feeResponse = feeService.getCaveatFeesData();
+        paymentsService.createServiceRequest(serviceRequestTransformer
+                .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
             .getNextStepsConfirmation(caveatData);

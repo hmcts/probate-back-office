@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -224,23 +225,21 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetServiceRequest() {
-        String serviceRequestReference = "Service Request";
+        BigDecimal totalAmount = BigDecimal.valueOf(100000);
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
-        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, serviceRequestReference);
+        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
-        assertEquals(serviceRequestReference, caseData.getServiceRequestReference());
         assertNull(caseData.getPaymentTaken());
     }
 
     @Test
     void shouldSetPaymentTakenNotApplicableWhenNoServiceRequest() {
-        String serviceRequestReference = null;
+        BigDecimal totalAmount = BigDecimal.ZERO;
         CaseData caseData = caseDataBuilder.build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
-        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, serviceRequestReference);
+        solicitorApplicationCompletionTransformerMock.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
-        assertNull(caseData.getServiceRequestReference());
         assertEquals(NOT_APPLICABLE, caseData.getPaymentTaken());
     }
 }

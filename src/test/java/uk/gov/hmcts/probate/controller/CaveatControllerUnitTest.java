@@ -7,7 +7,6 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
-import uk.gov.hmcts.probate.exception.BusinessValidationException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -27,7 +26,6 @@ import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -35,8 +33,6 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -84,8 +80,6 @@ class CaveatControllerUnitTest {
     @Mock
     private ServiceRequestTransformer serviceRequestTransformer;
     @Mock
-    private ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRuleMock;
-    @Mock
     private ServiceRequestDto serviceRequestDtoMock;
     @Mock
     private RegistrarDirectionService registrarDirectionService;
@@ -101,7 +95,7 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
             caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
             caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService, serviceRequestAlreadyCreatedValidationRuleMock);
+            registrarDirectionService, documentGeneratorService);
 
     }
 
@@ -115,22 +109,12 @@ class CaveatControllerUnitTest {
             .thenReturn(SERVICE_REQUEST_REFERENCE);
         when(httpServletRequestMock.getHeader("user-id")).thenReturn(USER_ID);
         when(caveatCallbackResponseTransformer.transformResponseWithServiceRequest(caveatCallbackRequest,
-                SERVICE_REQUEST_REFERENCE, USER_ID)).thenReturn(caveatCallbackResponse);
+                USER_ID)).thenReturn(caveatCallbackResponse);
         ResponseEntity<CaveatCallbackResponse> response = underTest.solsCompleteApplication(caveatCallbackRequest,
             bindingResultMock, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(caveatCallbackResponse));
-    }
-
-    @Test
-    void shouldValidateWithServiceRequestAlreadyCreatedErrors() {
-        assertThrows(BusinessValidationException.class, () -> {
-            when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
-            doThrow(BusinessValidationException.class).when(serviceRequestAlreadyCreatedValidationRuleMock)
-                    .validate(caveatDetailsMock);
-            underTest.solsCompleteApplication(caveatCallbackRequest, bindingResultMock, httpServletRequestMock);
-        });
     }
 
     @Test

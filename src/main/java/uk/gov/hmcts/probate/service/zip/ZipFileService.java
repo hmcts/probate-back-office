@@ -69,13 +69,13 @@ public class ZipFileService {
     private static final String HEADER_ROW_FILE = "templates/dataExtracts/ManifestFileHeaderRow.csv";
 
     public void generateZipFile(List<ReturnedCaseDetails> cases, File tempFile, String fromDate) {
-        log.info("generateZipFile for {} cases", cases.size());
+        log.info("Smee And Ford generateZipFile for {} cases", cases.size());
 
         List<ZippedManifestData> manifestDataList = new ArrayList<>();
         try (final FileOutputStream fos = new FileOutputStream(tempFile);
             final ZipOutputStream zipOut = new ZipOutputStream(fos)) {
             for (ReturnedCaseDetails returnedCaseDetails : cases) {
-                log.info("Starting for case {}", returnedCaseDetails.getId());
+                log.info("Smee And Ford Starting for case {}", returnedCaseDetails.getId());
                 getWillDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
                 getReIssueGrantDocuments(zipOut, returnedCaseDetails, manifestDataList);
@@ -226,13 +226,12 @@ public class ZipFileService {
             }
         }
 
-        log.info("secureDir:" + secureDir);
         Path tempFilePath = Files.createTempFile(secureDir, zipName, ".zip");
         boolean isRenamed = tempFilePath.toFile().renameTo(file);
         if (file != null && isRenamed) {
             boolean isReadable = file.setReadable(true, true);
             boolean isWritable = file.setWritable(true, true);
-            log.info("file: {} and file is isReadable {} and isWritable {}",
+            log.info("Smee And Ford file: {} and file is isReadable {} and isWritable {}",
                     file.getPath(), isReadable, isWritable);
             Files.deleteIfExists(tempFilePath);
             return file;
