@@ -175,7 +175,7 @@ class DefaultExceptionHandlerTest {
     void shouldReturnSocketException() {
         when(ocrException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
-        ResponseEntity<SuccessfulTransformationResponse> response = underTest.handle(ocrException);
+        ResponseEntity<ValidationResponse> response = underTest.handle(ocrException);
 
         assertEquals(OK, response.getStatusCode());
     }

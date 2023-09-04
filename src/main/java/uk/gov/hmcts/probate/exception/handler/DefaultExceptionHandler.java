@@ -113,11 +113,11 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = OCRException.class)
-    public ResponseEntity<SuccessfulTransformationResponse> handle(OCRException exception) {
+    public ResponseEntity<ValidationResponse> handle(OCRException exception) {
         log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getMessage());
-        SuccessfulTransformationResponse callbackResponse = SuccessfulTransformationResponse.builder()
+        ValidationResponse callbackResponse = ValidationResponse.builder()
                 .warnings(userMessages)
                 .build();
         return ResponseEntity.ok(callbackResponse);
