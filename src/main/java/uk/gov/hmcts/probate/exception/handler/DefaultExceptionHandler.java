@@ -19,6 +19,7 @@ import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -112,11 +113,11 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = OCRException.class)
-    public ResponseEntity<ValidationResponse> handle(OCRException exception) {
+    public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRException exception) {
         log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getMessage());
-        ValidationResponse callbackResponse = ValidationResponse.builder()
+        ExceptionRecordErrorResponse callbackResponse = ExceptionRecordErrorResponse.builder()
                 .warnings(userMessages)
                 .build();
         return ResponseEntity.ok(callbackResponse);
