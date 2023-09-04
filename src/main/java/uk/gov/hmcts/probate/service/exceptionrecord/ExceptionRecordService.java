@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
+import uk.gov.hmcts.probate.exception.OCRException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
@@ -143,7 +144,7 @@ public class ExceptionRecordService {
 
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);
-            throw new OCRMappingException(e.getMessage());
+            throw new OCRException(e.getMessage());
         }
     }
 
