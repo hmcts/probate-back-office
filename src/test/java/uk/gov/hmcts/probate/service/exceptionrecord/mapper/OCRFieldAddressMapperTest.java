@@ -199,7 +199,7 @@ class OCRFieldAddressMapperTest {
 
     @Test
     void testPrimaryApplicantAddressPostcodeError() {
-        assertThrows(OCRException.class, () -> {
+        assertThrows(OCRMappingException.class, () -> {
             Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
         });
     }
