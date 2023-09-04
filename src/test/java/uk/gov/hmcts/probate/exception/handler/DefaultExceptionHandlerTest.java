@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Arrays;
