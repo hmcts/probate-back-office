@@ -39,6 +39,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
+    private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
     public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
 
@@ -117,8 +118,10 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getMessage());
+        List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
         ExceptionRecordErrorResponse callbackResponse = ExceptionRecordErrorResponse.builder()
                 .warnings(userMessages)
+                .errors(errors)
                 .build();
         return ResponseEntity.ok(callbackResponse);
     }
