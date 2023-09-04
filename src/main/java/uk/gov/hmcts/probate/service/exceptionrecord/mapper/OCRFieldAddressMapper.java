@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.exception.OCRException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToAttorneyOnBehalfOfAddress;
@@ -169,7 +168,7 @@ public class OCRFieldAddressMapper {
                 "An invalid postcode has been found '" + postCode + "', please provide a valid postcode";
             log.error(errorMessage);
             warnings.add(errorMessage);
-            throw new OCRException(errorMessage);
+            throw new OCRMappingException(errorMessage, warnings);
         }
     }
 }
