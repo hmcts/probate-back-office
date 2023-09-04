@@ -81,7 +81,7 @@ public class SendLetterServiceConsumerTest {
         String response = Base64.getEncoder().encodeToString(pdf);
         Map<String, Object> additionalData = new HashMap<>();
         additionalData.put(ADDITIONAL_DATA_CASE_REFERENCE, "123421323");
-        additionalData.put(ADDITIONAL_DATA_RECIPIENTS, "1234567890123456");
+        additionalData.put(ADDITIONAL_DATA_RECIPIENTS, new String[]{"1234567890123456"});
         LetterV3 letter = new LetterV3(XEROX_TYPE_PARAMETER, Arrays.asList(new Document(response, 2)), additionalData);
         return letter;
     }
