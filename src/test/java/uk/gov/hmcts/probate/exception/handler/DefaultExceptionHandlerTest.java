@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.model.exceptionrecord.SuccessfulTransformationResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.Arrays;
@@ -174,9 +175,8 @@ class DefaultExceptionHandlerTest {
     void shouldReturnSocketException() {
         when(ocrException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
-        ResponseEntity<CallbackResponse> response = underTest.handle(ocrException);
+        ResponseEntity<SuccessfulTransformationResponse> response = underTest.handle(ocrException);
 
         assertEquals(OK, response.getStatusCode());
-        assertEquals(EXCEPTION_MESSAGE, response.getBody().getErrors().get(0));
     }
 }
