@@ -206,28 +206,28 @@ class OCRFieldAddressMapperTest {
 
     @Test
     void testCaveatAddressPostcodeError() {
-        assertThrows(OCRException.class, () -> {
+        assertThrows(OCRMappingException.class, () -> {
             Address response = addressMapper.toCaveatorAddress(ocrFieldsPostcodeError);
         });
     }
 
     @Test
     void testDeceasedAddressPostcodeError() {
-        assertThrows(OCRException.class, () -> {
+        assertThrows(OCRMappingException.class, () -> {
             Address response = addressMapper.toDeceasedAddress(ocrFieldsPostcodeError);
         });
     }
 
     @Test
     void testSolicitorAddressPostcodeError() {
-        assertThrows(OCRException.class, () -> {
+        assertThrows(OCRMappingException.class, () -> {
             Address response = addressMapper.toSolicitorAddress(ocrFieldsPostcodeError);
         });
     }
 
     @Test
     void testAttorneyNamesAndAddressPostcodeError() {
-        assertThrows(OCRException.class, () -> {
+        assertThrows(OCRMappingException.class, () -> {
             List<CollectionMember<AttorneyNamesAndAddress>> response =
                     addressMapper.toAttorneyOnBehalfOfAddress(ocrFieldsPostcodeError);
         });
@@ -238,7 +238,7 @@ class OCRFieldAddressMapperTest {
         String errorMessage = null;
         try {
             Address response = addressMapper.toPrimaryApplicantAddress(ocrFieldsPostcodeError);
-        } catch (OCRException ocrme) {
+        } catch (OCRMappingException ocrme) {
             errorMessage = ocrme.getMessage();
         }
         assertEquals(ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE, errorMessage);
