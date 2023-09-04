@@ -115,6 +115,8 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = OCRException.class)
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRException exception) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         log.warn(exception.getMessage());
         List<String> userMessages = new ArrayList<>();
         userMessages.add(exception.getMessage());
@@ -123,7 +125,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
                 .warnings(userMessages)
                 .errors(errors)
                 .build();
-        return ResponseEntity.ok(callbackResponse);
+        return new ResponseEntity<>(callbackResponse, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(OCRMappingException.class)

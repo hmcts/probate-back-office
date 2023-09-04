@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.probate.exception.BadRequestException;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
@@ -172,11 +173,11 @@ class DefaultExceptionHandlerTest {
 
 
     @Test
-    void shouldReturnSocketException() {
+    void shouldReturnOCRException() {
         when(ocrException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
 
         ResponseEntity<ExceptionRecordErrorResponse> response = underTest.handle(ocrException);
 
-        assertEquals(OK, response.getStatusCode());
+        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
     }
 }
