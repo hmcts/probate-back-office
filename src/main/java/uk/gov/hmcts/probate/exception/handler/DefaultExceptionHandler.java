@@ -14,12 +14,10 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.exception.OCRException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordErrorResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
@@ -39,7 +37,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
     public static final String CONNECTION_ERROR = "Connection error";
-    private static final String OCR_EXCEPTION_ERROR = "OCR fields could not be mapped to a case";
     public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
 
@@ -111,21 +108,6 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
-    }
-
-    @ExceptionHandler(value = OCRException.class)
-    public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRException exception) {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        log.warn(exception.getMessage());
-        List<String> userMessages = new ArrayList<>();
-        userMessages.add(exception.getMessage());
-        List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
-        ExceptionRecordErrorResponse callbackResponse = ExceptionRecordErrorResponse.builder()
-                .warnings(userMessages)
-                .errors(errors)
-                .build();
-        return new ResponseEntity<>(callbackResponse, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     @ExceptionHandler(OCRMappingException.class)

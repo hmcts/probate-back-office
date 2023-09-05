@@ -12,7 +12,6 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.exception.OCRException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
@@ -54,8 +53,6 @@ class DefaultExceptionHandlerTest {
 
     @Mock
     private OCRMappingException ocrMappingException;
-    @Mock
-    private OCRException ocrException;
 
     @InjectMocks
     private DefaultExceptionHandler underTest;
@@ -169,15 +166,5 @@ class DefaultExceptionHandlerTest {
         assertEquals(OK, response.getStatusCode());
         assertEquals(1, response.getBody().getErrors().size());
         assertEquals("Message", response.getBody().getErrors().get(0));
-    }
-
-
-    @Test
-    void shouldReturnOCRException() {
-        when(ocrException.getMessage()).thenReturn(EXCEPTION_MESSAGE);
-
-        ResponseEntity<ExceptionRecordErrorResponse> response = underTest.handle(ocrException);
-
-        assertEquals(HttpStatus.UNPROCESSABLE_ENTITY, response.getStatusCode());
     }
 }
