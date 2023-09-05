@@ -39,7 +39,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.Assertions.entry;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -76,6 +78,7 @@ class BulkPrintServiceTest {
     @Mock
     private DocumentTransformer documentTransformer;
 
+    private static final String ADDITIONAL_DATA_CASE_REFERENCE = "caseReference";
     private static final String RECIPIENTS = "recipients";
 
     @BeforeEach
@@ -125,7 +128,10 @@ class BulkPrintServiceTest {
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
-        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
+        assertThat(letterV3ArgumentCaptor.getValue().additionalData).contains(
+                entry(ADDITIONAL_DATA_CASE_REFERENCE, 0L),
+                entry(RECIPIENTS, new String[] {"0"})
+        );
     }
 
 
@@ -454,10 +460,13 @@ class BulkPrintServiceTest {
         SendLetterResponse response = bulkPrintService.sendToBulkPrintForCaveat(callbackRequest, document, coverSheet);
 
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
-        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
 
         assertNotNull(response);
         assertThat(response.letterId, is(uuid));
+        assertThat(letterV3ArgumentCaptor.getValue().additionalData).contains(
+                entry(ADDITIONAL_DATA_CASE_REFERENCE, 0L),
+                entry(RECIPIENTS, new String[] {"0"})
+        );
     }
 
     @Test
@@ -764,7 +773,10 @@ class BulkPrintServiceTest {
         assertEquals(sendLetterResponse, response);
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(10, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
-        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
+        assertThat(letterV3ArgumentCaptor.getValue().additionalData).contains(
+                entry(ADDITIONAL_DATA_CASE_REFERENCE, 0L),
+                entry(RECIPIENTS, new String[] {"0"})
+        );
         verify(sendLetterApiMock).sendLetter(anyString(), any(LetterV3.class));
     }
 
@@ -926,7 +938,10 @@ class BulkPrintServiceTest {
 
         assertEquals(1, letterV3ArgumentCaptor.getValue().documents.get(0).copies);
         assertEquals(2, letterV3ArgumentCaptor.getValue().documents.get(1).copies);
-        assertEquals(0L, letterV3ArgumentCaptor.getValue().additionalData.get(RECIPIENTS));
+        assertThat(letterV3ArgumentCaptor.getValue().additionalData).contains(
+                entry(ADDITIONAL_DATA_CASE_REFERENCE, 0L),
+                entry(RECIPIENTS, new String[] {"0"})
+        );
 
         assertNotNull(letterId);
         assertThat(letterId, is(uuid.toString()));

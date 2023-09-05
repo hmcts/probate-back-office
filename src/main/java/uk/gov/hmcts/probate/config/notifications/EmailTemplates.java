@@ -27,5 +27,6 @@ public class EmailTemplates {
     private String grantIssuedIntestacy;
     private String grantDelayed;
     private String grantAwaitingDocumentation;
+    private String hmrcExtract;
     private String noticeOfChangeReceived;
 }

@@ -225,6 +225,9 @@ azure:
   application-insights:
     instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
+extract:
+  templates:
+    hmrcExtract: "72dfad41-fed8-431f-896e-3151775dbe8f"
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
@@ -501,6 +504,8 @@ data-extract:
     size: 100
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
+
+hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
 
 welsh:
   months:
