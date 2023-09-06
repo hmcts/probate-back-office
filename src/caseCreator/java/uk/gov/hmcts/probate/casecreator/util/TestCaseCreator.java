@@ -71,10 +71,10 @@ public class TestCaseCreator {
     private RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator;
     private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    {
+    /*{
         System.setProperty("socksProxyHost", "localhost");
         System.setProperty("socksProxyPort", "9090");
-    }
+    }*/
 
     public TestCaseCreator() {
         this.springIntegration = new SpringIntegrationMethodRule();
@@ -179,6 +179,7 @@ public class TestCaseCreator {
     }
 
     private String generateClientCode() throws Exception {
+        log.info("generateClientCode idamUsername : {} --{}", idamUsername,idamPassword);
         final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
         JsonNode jsonNode = objectMapper.readValue(RestAssured.given().relaxedHTTPSValidation().baseUri(idamUserBaseUrl)
             .header("Authorization", "Basic " + encoded)
