@@ -4,6 +4,7 @@ provider "azurerm" {
 
 locals {
   vaultName = "${var.product}-${var.env}"
+  test      = "${var.product}-${var.env}"
 }
 
 module "db-v11" {
