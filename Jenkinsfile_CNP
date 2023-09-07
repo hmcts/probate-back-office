@@ -3,7 +3,7 @@ import uk.gov.hmcts.contino.AppPipelineConfig
 import uk.gov.hmcts.contino.AppPipelineDsl
 import uk.gov.hmcts.contino.GithubAPI
 
-@Library("Infrastructure@DTSPO-15007/postgres-nagger")
+@Library("Infrastructure")
 
 String product = "probate"
 String component = "back-office"
