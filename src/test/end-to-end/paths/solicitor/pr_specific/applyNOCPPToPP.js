@@ -19,6 +19,7 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
+const nocApplicantDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfig')
 
 Feature('Solicitor - Notice Of Change').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Notice Of Change';
@@ -113,10 +114,18 @@ Scenario(scenarioName, async function ({I}) {
     await I.signOut();
 
     // await I.logInfo(scenarioName, 'Login as PP user 2');
+    nextStepName = 'Apply Noc Decision';
+    endState = 'Awaiting documentation';
     await I.authenticateUserNoc(false);
     await I.nocNavigation();
-    await I.nocPage1("1694-0148-3223-9727");
+    await I.nocPage1("1691-0773-7926-2025");
     await I.nocPage2(deceasedDetailsConfig.page1_surname);
-    await I.nocPage3("1694-0148-3223-9727", deceasedDetailsConfig.page1_surname);
+    await I.nocPage3("1691-0773-7926-2025", deceasedDetailsConfig.page1_surname);
+    await I.nocConfirmationPage("1691-0773-7926-2025");
+
+    await I.seeCaseDetails("1691-0773-7926-2025", caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
+    await I.seeCaseDetails("1691-0773-7926-2025", caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
+    await I.seeUpdatesOnCase("1691-0773-7926-2025", applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfig, false);
+    await I.seeCaseDetails("1691-0773-7926-2025", historyTabConfig, {}, nextStepName, endState);
 
 }).retry(testConfig.TestRetryScenarios);
