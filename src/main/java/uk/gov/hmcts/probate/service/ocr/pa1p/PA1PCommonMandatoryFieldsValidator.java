@@ -20,6 +20,7 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_F
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_FIELD_WARNING_STRING;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_KEY_EXECUTORSNOTAPPLYING_EXECUTORNAME;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_KEY_IHTFORMCOMPLETEDONLINE;
+import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_KEY_FORM_VERSION;
 import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS;
 
 @Slf4j
@@ -56,14 +57,18 @@ public class PA1PCommonMandatoryFieldsValidator {
 
         if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
             boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
-            if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
-                log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTREFERENCENUMBER);
-                warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING,
-                    DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
-            } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
-                log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTFORMID);
-                warnings.add(
-                    String.format(MANDATORY_FIELD_WARNING_STRING, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
+            if (ocrFieldValues.containsKey(MANDATORY_KEY_FORM_VERSION)
+                    && "1" == ocrFieldValues.get(MANDATORY_KEY_FORM_VERSION)) { //Need to change after 3640 is pushed
+                if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
+                    log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTREFERENCENUMBER);
+                    warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING,
+                            DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
+                } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
+                    log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTFORMID);
+                    warnings.add(
+                            String.format(MANDATORY_FIELD_WARNING_STRING,
+                                    DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
+                }
             }
         }
     }

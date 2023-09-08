@@ -16,6 +16,7 @@ public enum IntestacyCitizenMandatoryFields {
     DECEASED_ANY_OTHER_NAMES("deceasedAnyOtherNames", "Did the deceased have assets in any other names?"),
     DECEASED_DOMICILE_IN_ENG_WALES("deceasedDomicileInEngWales",
             "Was the deceased domiciled in England or Wales at the time of their death?"),
+    FORM_VERSION("formVersion", "Form version"),
     IHT_FORM_COMPLETED_ONLINE("ihtFormCompletedOnline", "IHT form completed online?", "1"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate"),
     IHT_NET_VALUE("ihtNetValue", "Net value of the estate"),
@@ -25,7 +26,7 @@ public enum IntestacyCitizenMandatoryFields {
     IHT_ESTATE_GROSS("ihtEstateGrossValue", "gross value of the estate for inheritance tax", "0"),
     IHT_ESTATE_NET("ihtEstateNetValue", "net value of the estate for inheritance tax", "0"),
     IHT_ESTATE_NQV("ihtEstateNetQualifyingValue", "net qualifying value of the estate", "0"),
-    IHT_UNUSED_ALLOWANCE("ihtUnusedAllowanceClaimed", "Are you claiming against this estate the unused proportion of " 
+    IHT_UNUSED_ALLOWANCE("ihtUnusedAllowanceClaimed", "Are you claiming against this estate the unused proportion of "
         + "the inheritance tax nil-rate band of a pre-deceased spouse or civil partner of the deceased?", "0")
         ;
 
@@ -56,7 +57,7 @@ public enum IntestacyCitizenMandatoryFields {
     public boolean isVersion2() {
         return Arrays.stream(formVersions).anyMatch(r -> r.equals("2"));
     }
-    
+
     public boolean isVersion1() {
         return Arrays.stream(formVersions).anyMatch(r -> r.equals("1"));
     }

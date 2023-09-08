@@ -27,6 +27,9 @@ public interface CCDMandatoryFieldKeys {
         GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
     String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE =
         GORSolicitorMandatoryFields.IHT_FORM_COMPLETED_ONLINE.getKey();
+
+    String MANDATORY_KEY_FORM_VERSION =
+            GORSolicitorMandatoryFields.FORM_VERSION.getKey();
     String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";

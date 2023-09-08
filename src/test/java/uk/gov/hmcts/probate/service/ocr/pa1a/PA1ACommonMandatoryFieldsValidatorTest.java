@@ -42,6 +42,7 @@ class PA1ACommonMandatoryFieldsValidatorTest {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
+        ocrFieldValues.put("formVersion","1");
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(1, warnings.size());
@@ -54,6 +55,7 @@ class PA1ACommonMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
         ocrFieldValues.put("ihtFormCompletedOnline","true");
+        ocrFieldValues.put("formVersion","1");
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(1, warnings.size());

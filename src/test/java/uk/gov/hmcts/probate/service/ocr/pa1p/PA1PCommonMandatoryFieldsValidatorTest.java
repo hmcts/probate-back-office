@@ -56,6 +56,7 @@ class PA1PCommonMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         ocrFieldValues.remove("ihtFormId");
+        ocrFieldValues.put("formVersion", "1");
         pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
         assertEquals(1, warnings.size());
@@ -69,6 +70,7 @@ class PA1PCommonMandatoryFieldsValidatorTest {
 
         ocrFieldValues.remove("ihtFormId");
         ocrFieldValues.put("ihtFormCompletedOnline", "true");
+        ocrFieldValues.put("formVersion", "1");
 
         pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
