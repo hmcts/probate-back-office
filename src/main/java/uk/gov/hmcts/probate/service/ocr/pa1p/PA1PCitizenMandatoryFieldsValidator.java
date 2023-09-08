@@ -46,18 +46,6 @@ public class PA1PCitizenMandatoryFieldsValidator {
                     warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
                 }
             });
-    }
-
-    private void addWarningsFormVersion2(Map<String, String> ocrFieldValues, List<String> warnings) {
-        Stream.of(GORCitizenMandatoryFields.values()).filter(GORCitizenMandatoryFields::isVersion2)
-            .forEach(field -> {
-                log.info("Checking v2 {} against ocr fields", field.getKey());
-                if (!ocrFieldValues.containsKey(field.getKey())) {
-                    log.warn("v2 " + MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
-                    warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
-                }
-            });
-
         if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
             boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
             if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
@@ -70,6 +58,18 @@ public class PA1PCitizenMandatoryFieldsValidator {
                     String.format(MANDATORY_FIELD_WARNING_STRING, DEPENDANT_DESC_IHTFORMID, DEPENDANT_KEY_IHTFORMID));
             }
         }
+    }
+
+    private void addWarningsFormVersion2(Map<String, String> ocrFieldValues, List<String> warnings) {
+        Stream.of(GORCitizenMandatoryFields.values()).filter(GORCitizenMandatoryFields::isVersion2)
+            .forEach(field -> {
+                log.info("Checking v2 {} against ocr fields", field.getKey());
+                if (!ocrFieldValues.containsKey(field.getKey())) {
+                    log.warn("v2 " + MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
+                    warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
+                }
+            });
+
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
     }
 
