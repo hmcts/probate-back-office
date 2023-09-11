@@ -1,5 +1,5 @@
 {
-  "waitForText" : "Case list",
+  "nocWaitForText" : "Case list",
   "xuiNocLocator": "a[href=\"\/noc\"]",
   "page1WaitForText": "Notice of change",
   "page2WaitForText": "Deceased Surname",

@@ -7,7 +7,7 @@ module.exports = async function () {
 
     const I = this;
     await I.wait(testConfig.CreateCaseDelay);
-    await I.waitForText(noticeOfChangeConfig.waitForText, testConfig.WaitForTextTimeout);
+    await I.waitForText(noticeOfChangeConfig.nocWaitForText, testConfig.WaitForTextTimeout);
     await I.rejectCookies();
 
     const locator = noticeOfChangeConfig.xuiNocLocator;

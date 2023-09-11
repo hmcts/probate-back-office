@@ -20,6 +20,13 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
 const nocApplicantDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfig')
+const changeOfRepresentativesTabConfig = require('src/test/end-to-end/pages/noticeOfChange/nocChangeOfRepresentativesTabConfig');
+const changeOfRepresentativesDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfig');
+const nocApplicantDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfigAAT')
+const changeOfRepresentativesDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfigAAT');
+const nocConfig = require('src/test/end-to-end/pages/noticeOfChange/noticeOfChangeConfig');
+const dateFns = require("date-fns");
+const {legacyParse, convertTokens} = require("@date-fns/upgrade/v2");
 
 Feature('Solicitor - Notice Of Change').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Notice Of Change';
@@ -113,19 +120,45 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
     await I.signOut();
 
-    // await I.logInfo(scenarioName, 'Login as PP user 2');
-    nextStepName = 'Apply Noc Decision';
+    await I.logInfo(scenarioName, 'Login as PP user 2 to perform NoC');
+
+    let env = '';
+    let url = testConfig.TestBackOfficeUrl;
+    if (url.includes("demo")) {
+        env = 'Demo';
+    } else {
+        env = 'AAT';
+    }
+
+    nextStepName = 'Apply NoC Decision';
     endState = 'Awaiting documentation';
     await I.authenticateUserNoc(false);
     await I.nocNavigation();
-    await I.nocPage1("1691-0773-7926-2025");
+    await I.nocPage1(caseRef);
     await I.nocPage2(deceasedDetailsConfig.page1_surname);
-    await I.nocPage3("1691-0773-7926-2025", deceasedDetailsConfig.page1_surname);
-    await I.nocConfirmationPage("1691-0773-7926-2025");
+    await I.nocPage3(caseRef, deceasedDetailsConfig.page1_surname);
+    await I.nocConfirmationPage(caseRef);
 
-    await I.seeCaseDetails("1691-0773-7926-2025", caseDetailsTabDeceasedDtlsConfig, gopDtlsAndDcsdDtls);
-    await I.seeCaseDetails("1691-0773-7926-2025", caseDetailsTabGopConfig, gopDtlsAndDcsdDtls);
-    await I.seeUpdatesOnCase("1691-0773-7926-2025", applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfig, false);
-    await I.seeCaseDetails("1691-0773-7926-2025", historyTabConfig, {}, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
+    await I.seeCaseDetails(caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
 
+    if (env === 'Demo') {
+        changeOfRepresentativesDetailsConfig.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+        await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfig, false);
+        await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesDetailsConfig);
+    }
+    else {
+        changeOfRepresentativesDetailsConfigAAT.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+        await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfigAAT, false);
+        await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesDetailsConfigAAT);
+    }
+
+    await I.signOut();
+
+    await I.logInfo(scenarioName, 'Login as PP user 1 to verify NoC');
+    await I.authenticateWithIdamIfAvailable(true);
+    await I.navigateToCase(caseRef);
+    await I.waitForText(nocConfig.nocWaitForText, testConfig.WaitForTextTimeout);
+    await I.see(nocConfig.nocWaitForText);
+    await I.dontSee(caseRef);
 }).retry(testConfig.TestRetryScenarios);
