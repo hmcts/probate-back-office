@@ -132,12 +132,13 @@ public class OCRFieldTestUtils {
     }
 
     //original is version1
-    public List<OCRField> addAllMandatoryGORCitizenFields(){
+    public List<OCRField> addAllMandatoryGORCitizenFields() {
         return addAllMandatoryGORCitizenFields(1);
     }
+
     public List<OCRField> addAllMandatoryGORCitizenFields(int version) {
         List<OCRField> ocrFields = new ArrayList<>();
-        if(2==version) {
+        if (2 == version) {
             ocrFields.addAll(addIHTMandatoryFieldsV2());
             addAllV2Data(ocrFields);
         } else {
