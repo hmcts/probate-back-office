@@ -449,6 +449,12 @@ document:
         baseurl: localhost:8080
 
 idam:
+  api:
+    url: http://localhost:8080
+    client:
+      id: client_id
+      secret: 123456
+      redirect_uri: https://localhost:3000/receiver
   s2s-auth:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
