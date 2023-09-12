@@ -18,10 +18,6 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField('#deceasedDateOfDeath-month', createCaveatConfig.page2_dateOfDeath_month);
         await I.fillField('#deceasedDateOfDeath-year', createCaveatConfig.page2_dateOfDeath_year);
 
-        await I.fillField('#deceasedDateOfBirth-day', createCaveatConfig.page2_dateOfBirth_day);
-        await I.fillField('#deceasedDateOfBirth-month', createCaveatConfig.page2_dateOfBirth_month);
-        await I.fillField('#deceasedDateOfBirth-year', createCaveatConfig.page2_dateOfBirth_year);
-
         await I.click(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`);
 
         let idx = 0;
