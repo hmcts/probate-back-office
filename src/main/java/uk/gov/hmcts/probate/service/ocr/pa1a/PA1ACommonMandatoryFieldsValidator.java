@@ -23,10 +23,10 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_K
 public class PA1ACommonMandatoryFieldsValidator {
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
-        if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
-            boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
-            if (ocrFieldValues.containsKey(MANDATORY_KEY_FORM_VERSION)
-                    && "1".equals(ocrFieldValues.get(MANDATORY_KEY_FORM_VERSION))) {
+        if (ocrFieldValues.containsKey(MANDATORY_KEY_FORM_VERSION)
+                && "1".equals(ocrFieldValues.get(MANDATORY_KEY_FORM_VERSION))) {
+            if (ocrFieldValues.containsKey(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE)) {
+                boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(MANDATORY_KEY_IHTFORMCOMPLETEDONLINE));
                 if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
                     log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTREFERENCENUMBER);
                     warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING,
