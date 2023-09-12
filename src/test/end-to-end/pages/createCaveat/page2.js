@@ -54,9 +54,6 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForText(createCaveatConfig.page2_amend_waitForText, testConfig.WaitForTextTimeout);
         await I.fillField('#deceasedForenames', createCaveatConfig.page2_forenames_update+unique_deceased_user);
         await I.fillField('#deceasedSurname', createCaveatConfig.page2_surname_update+unique_deceased_user);
-        await I.fillField('#deceasedDateOfBirth-day', createCaveatConfig.page2_dateOfBirth_day_update);
-        await I.fillField('#deceasedDateOfBirth-month', createCaveatConfig.page2_dateOfBirth_month_update);
-        await I.fillField('#deceasedDateOfBirth-year', createCaveatConfig.page2_dateOfBirth_year_update);
     }
 
     await I.waitForNavigationToComplete(commonConfig.continueButton);
