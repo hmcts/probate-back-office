@@ -20,7 +20,15 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData.CaseDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.fee.FeesResponse;
+import uk.gov.hmcts.probate.service.fee.FeeService;
+import uk.gov.hmcts.probate.service.payments.PaymentsService;
+import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 
+import java.math.BigDecimal;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -48,11 +56,20 @@ class NextStepsControllerIT {
 
     @MockBean
     AppInsights appInsights;
+    @MockBean
+    FeeService feeService;
+    @MockBean
+    FeesResponse feesResponseMock;
+    @MockBean
+    private PaymentsService paymentsService;
+    @MockBean
+    private ServiceRequestTransformer serviceRequestTransformer;
 
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         OBJECT_MAPPER.registerModule(new JavaTimeModule());
+        when(feeService.getAllFeesData(any(), any(), any())).thenReturn(feesResponseMock);
     }
 
     @Test
@@ -62,6 +79,7 @@ class NextStepsControllerIT {
             .build();
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(0));
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))
@@ -74,6 +92,7 @@ class NextStepsControllerIT {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR).build();
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+        when(feesResponseMock.getTotalAmount()).thenReturn(BigDecimal.valueOf(100000));
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(NEXTSTEPS_CONFIRMATION_URL).content(json).contentType(MediaType.APPLICATION_JSON))

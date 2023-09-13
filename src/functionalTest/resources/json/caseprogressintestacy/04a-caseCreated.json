@@ -155,7 +155,7 @@
       "solsSOTJobTitle": "job title",
       "deceasedMaritalStatus": "status",
       "paymentTaken": "Yes",
-      "serviceRequestReference": "2000-1234567890"
+      "totalFee" : "8000"
     },
     "data_classification": {
       "otherExecutorExists": "PUBLIC",

@@ -156,7 +156,7 @@
       "solsEntitledMinority": "null",
       "solsDiedOrNotApplying": "null",
       "paymentTaken": "Yes",
-      "serviceRequestReference": "2000-1234567890"
+      "totalFee" : "8000"
     }
   }
 }

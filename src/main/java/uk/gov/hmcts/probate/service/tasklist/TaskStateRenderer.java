@@ -196,7 +196,6 @@ public class TaskStateRenderer {
 
     private String renderPaymentHintText(TaskListState currState, CaseDetails details) {
         if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
-                && details.getData().getServiceRequestReference() == null
                 && (details.getData().getTotalFee() == null
                 || details.getData().getTotalFee().compareTo(BigDecimal.ZERO) == 0)) {
             return NO_PAYMENT_REQUIRED_TEXT;
