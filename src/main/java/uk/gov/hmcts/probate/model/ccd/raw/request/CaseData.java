@@ -580,6 +580,7 @@ public class CaseData extends CaseDataParent {
     private LocalDate lastEvidenceAddedDate;
     private String documentUploadedAfterCaseStopped;
     private String documentsReceivedNotificationSent;
+    private String uniqueProbateCodeId;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();

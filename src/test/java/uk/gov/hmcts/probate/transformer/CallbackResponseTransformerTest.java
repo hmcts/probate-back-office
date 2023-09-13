@@ -401,6 +401,7 @@ class CallbackResponseTransformerTest {
     public static final String DAMAGE_CULPRIT_LN = "Damage Culprit LN";
     public static final String DAMAGE_DATE = "9/2021";
     private static final String SERVICE_REQUEST_REFEREMCE = "Service Request Ref";
+    private static final String UNIQUE_PROBATE_CODE_ID = "CTS04052311043tpps8e9";
 
     @InjectMocks
     private CallbackResponseTransformer underTest;
@@ -638,7 +639,8 @@ class CallbackResponseTransformerTest {
             .codicilsDamageDateKnown(YES)
             .codicilsDamageDate(DAMAGE_DATE)
             .deceasedWrittenWishes(YES)
-            .documentsReceivedNotificationSent(YES);
+            .documentsReceivedNotificationSent(YES)
+                .uniqueProbateCodeId(UNIQUE_PROBATE_CODE_ID);
         ;
 
         bulkScanGrantOfRepresentationData = GrantOfRepresentationData.builder()
@@ -3876,6 +3878,22 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         callbackResponse = underTest.updateTaskList(callbackRequestMock);
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
+    @Test
+    void shouldTransformUniqueProbateCodeId() {
+        CaseData caseData = caseDataBuilder
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("Yes", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+
+        caseData = caseDataBuilder
+                .uniqueProbateCodeId(UNIQUE_PROBATE_CODE_ID)
+                .build();
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+        callbackResponse = underTest.updateTaskList(callbackRequestMock);
+        assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
