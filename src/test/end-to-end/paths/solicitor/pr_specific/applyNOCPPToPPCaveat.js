@@ -138,5 +138,4 @@ Scenario(scenarioName, async function ({I}) {
     await I.waitForText(nocConfig.nocWaitForText, testConfig.WaitForTextTimeout);
     await I.see(nocConfig.nocWaitForText);
     await I.dontSee(caseRef)
-}).tag('@crossbrowser')
-    .retry(testConfig.TestRetryScenarios);
+}).retry(testConfig.TestRetryScenarios);
