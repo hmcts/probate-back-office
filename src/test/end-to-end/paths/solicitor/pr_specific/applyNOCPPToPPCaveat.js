@@ -30,7 +30,7 @@ const {
     convertTokens
 } = require('@date-fns/upgrade/v2');
 
-Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
+Feature('Solicitor - Apply NOC Caveat').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Apply Caveat';
 Scenario(scenarioName, async function ({I}) {
 
