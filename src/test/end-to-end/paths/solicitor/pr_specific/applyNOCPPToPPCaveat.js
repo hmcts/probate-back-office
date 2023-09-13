@@ -16,11 +16,13 @@ const notificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/so
 const deceasedDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/deceasedDetailsTabConfig');
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
-const nocApplicantDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfig')
-const changeOfRepresentativesTabConfig = require('src/test/end-to-end/pages/noticeOfChange/nocChangeOfRepresentativesTabConfig');
-const changeOfRepresentativesDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfig');
-const nocApplicantDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfigAAT')
-const changeOfRepresentativesDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfigAAT');
+const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyCaveat/applicationDetails/applicationDetails');
+const changeOfRepresentativesTabConfig = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativeCaveatTabConfig');
+const changeOfRepresentativesCaveatorDetailsConfigDemo = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesCaveatConfig');
+const postNocCaveatorDetailsTabConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsTabConfig')
+const postNocCaveatorConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsConfig')
+const postNocCaveatorConfigDemo = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsConfigDemo')
+const changeOfRepresentativesCaveatorDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesCaveatConfigAAT');
 const nocConfig = require('src/test/end-to-end/pages/noticeOfChange/noticeOfChangeConfig');
 
 const {
@@ -94,7 +96,7 @@ Scenario(scenarioName, async function ({I}) {
 
     await I.logInfo(scenarioName, 'Login as PP user 2 to perform NoC');
 
-    let env = '';
+    let env = 'AAT';
     let url = testConfig.TestBackOfficeUrl;
     if (url.includes("demo")) {
         env = 'Demo';
@@ -103,26 +105,29 @@ Scenario(scenarioName, async function ({I}) {
     }
 
     nextStepName = 'Apply NoC Decision';
-    endState = 'Awaiting documentation';
+    endState = 'Caveat raised';
     await I.authenticateUserNoc(false);
     await I.nocNavigation();
     await I.nocPage1(caseRef);
-    await I.nocPage2(deceasedDetailsConfig.page1_surname);
-    await I.nocPage3(caseRef, deceasedDetailsConfig.page1_surname);
+    await I.nocPage2(deceasedDetailsConfig.page2_deceased_surname);
+    await I.nocPage3(caseRef, deceasedDetailsConfig.page2_deceased_surname);
     await I.nocConfirmationPage(caseRef);
 
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
-    await I.seeCaseDetails(caseRef, applicantExecutorDetailsTabConfig, gopDtlsAndDcsdDtls);
 
     if (env === 'Demo') {
-        changeOfRepresentativesDetailsConfig.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+        changeOfRepresentativesCaveatorDetailsConfigDemo.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+        await I.seeCaseDetails(caseRef, postNocCaveatorDetailsTabConfig, postNocCaveatorConfigDemo);
         await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
         await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
+        await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesCaveatorDetailsConfigDemo, 'changeOfRepresentative', endState, 90);
     }
     else {
-        changeOfRepresentativesDetailsConfigAAT.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+        changeOfRepresentativesCaveatorDetailsConfigAAT.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
+        await I.seeCaseDetails(caseRef, postNocCaveatorDetailsTabConfig, postNocCaveatorConfig);
         await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
         await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
+        await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesCaveatorDetailsConfigAAT, 'changeOfRepresentative', endState, 90);
     }
 
     await I.signOut();
