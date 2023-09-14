@@ -195,7 +195,6 @@ public class ExceptionRecordController {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         List<String> warnings;
-        log.info("Post code warning {}", exception);
         if (!exception.getWarnings().isEmpty()) {
             warnings = exception.getWarnings();
         } else {
