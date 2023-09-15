@@ -31,7 +31,7 @@ const {
 } = require('@date-fns/upgrade/v2');
 
 Feature('Solicitor - Apply NOC Caveat').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Solicitor - Apply Caveat';
+const scenarioName = 'Solicitor - Apply NOC Caveat';
 Scenario(scenarioName, async function ({I}) {
 
     await I.logInfo(scenarioName, 'Login as Solicitor');

@@ -28,8 +28,8 @@ const nocConfig = require('src/test/end-to-end/pages/noticeOfChange/noticeOfChan
 const dateFns = require("date-fns");
 const {legacyParse, convertTokens} = require("@date-fns/upgrade/v2");
 
-Feature('Solicitor - Notice Of Change').retry(testConfig.TestRetryFeatures);
-const scenarioName = 'Solicitor - Notice Of Change';
+Feature('Solicitor - Notice Of Change GOP').retry(testConfig.TestRetryFeatures);
+const scenarioName = 'Solicitor - Notice Of Change GOP';
 Scenario(scenarioName, async function ({I}) {
     const isSolicitorNamedExecutor = true;
     const isSolicitorApplyingExecutor = true;
