@@ -179,7 +179,7 @@
       "ihtFormEstateValuesCompleted": "Yes",
       "ihtFormEstate": "IHT207",
       "paymentTaken": "Yes",
-      "serviceRequestReference": "abcdef123456"
+      "totalFee" : "8000"
     }
   },
   "event_id": "solicitorReviewAndConfirm"

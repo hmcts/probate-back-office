@@ -30,7 +30,6 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
-import uk.gov.hmcts.probate.validator.ServiceRequestAlreadyCreatedValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +54,6 @@ public class NextStepsController {
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
-    private final ServiceRequestAlreadyCreatedValidationRule serviceRequestAlreadyCreatedValidationRule;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -81,8 +79,6 @@ public class NextStepsController {
                 throw new BadRequestException("Invalid payload", bindingResult);
             }
 
-            serviceRequestAlreadyCreatedValidationRule.validate(callbackRequest.getCaseDetails());
-
             CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
 
             FeesResponse feesResponse = feeService.getAllFeesData(
@@ -90,16 +86,8 @@ public class NextStepsController {
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
             String userId = request.getHeader("user-id");
-            if (feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) > 0) {
-                String serviceRequestReference = paymentsService.createServiceRequest(serviceRequestTransformer
-                        .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
-
-                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, serviceRequestReference, userId);
-            } else {
-                callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, null, userId);
-            }
+            callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
+                        feesResponse, userId);
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -127,6 +115,16 @@ public class NextStepsController {
         }
 
         CCDData ccdData = ccdBeanTransformer.transform(callbackRequest);
+
+        FeesResponse feesResponse = feeService.getAllFeesData(
+                ccdData.getIht().getNetValueInPounds(),
+                ccdData.getFee().getExtraCopiesOfGrant(),
+                ccdData.getFee().getOutsideUKGrantCopies());
+
+        if (feesResponse.getTotalAmount().compareTo(BigDecimal.ZERO) > 0) {
+            paymentsService.createServiceRequest(serviceRequestTransformer
+                    .buildServiceRequest(callbackRequest.getCaseDetails(), feesResponse));
+        }
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
             .getNextStepsConfirmation(ccdData, callbackRequest.getCaseDetails().getData());
