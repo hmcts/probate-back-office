@@ -22,11 +22,8 @@ fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-if [ -z "2" ]
-  then
-    export CCD_DEF_AAC_URL=manage-case-assignment:4454
-fi
-
+export CCD_DEF_AAC_URL=$2
+echo CCD_DEF_AAC_URL=$CCD_DEF_AAC_URL
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
 

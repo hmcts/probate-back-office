@@ -6,10 +6,16 @@ conversionFolder=$(dirname "$0")
 configFolder=${conversionFolder}/../configFiles
 environment="$2"
 shutterOption=${3:-false}
+acc="$4"
 
 if [ -z "$1" ]
   then
     echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL"
+    exit 1
+fi
+if [ -z "$4" ]
+  then
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
 
@@ -23,7 +29,7 @@ fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
-export CCD_DEF_AAC_URL=probate-back-office-pr-2385-aac-manage-case-assignment
+export CCD_DEF_AAC_URL=$4
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL,$CCD_DEF_AAC_URL
 
