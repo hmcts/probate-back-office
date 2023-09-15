@@ -179,7 +179,6 @@ public class TestCaseCreator {
     }
 
     private String generateClientCode() throws Exception {
-        log.info("generateClientCode idamUsername : {} --{}", idamUsername,idamPassword);
         final String encoded = Base64.getEncoder().encodeToString((idamUsername + ":" + idamPassword).getBytes());
         JsonNode jsonNode = objectMapper.readValue(RestAssured.given().relaxedHTTPSValidation().baseUri(idamUserBaseUrl)
             .header("Authorization", "Basic " + encoded)

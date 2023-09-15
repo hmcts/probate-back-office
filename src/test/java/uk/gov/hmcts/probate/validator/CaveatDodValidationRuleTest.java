@@ -24,8 +24,12 @@ class CaveatDodValidationRuleTest {
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private CaveatData caveatDataNoException;
+
+    private CaveatData caveatDataTodayNoException;
     private CaveatData caveatDataWithDodException;
     private static final LocalDate DATE_01_JAN_1971 = LocalDate.of(1971, 1, 1);
+
+    private static final LocalDate TODAY = LocalDate.now();
 
     private static final LocalDate DATE_02_JAN_2099 = LocalDate.of(2099, 1, 2);
 
@@ -38,6 +42,11 @@ class CaveatDodValidationRuleTest {
             .deceasedDateOfDeath(DATE_01_JAN_1971)
             .registryLocation("Bristol").build();
 
+        caveatDataTodayNoException = CaveatData.builder()
+                .applicationType(ApplicationType.PERSONAL)
+                .deceasedDateOfDeath(TODAY)
+                .registryLocation("Bristol").build();
+
         caveatDataWithDodException = CaveatData.builder()
                 .applicationType(ApplicationType.PERSONAL)
                 .deceasedDateOfDeath(DATE_02_JAN_2099)
@@ -48,6 +57,13 @@ class CaveatDodValidationRuleTest {
     void shouldNotThrowDodExceptionRaiseCaveatValidate() {
         CaveatDetails caveatDetails =
                 new CaveatDetails(caveatDataNoException, LAST_MODIFIED, CASE_ID);
+        caveatDodValidationRule.validate(caveatDetails);
+    }
+
+    @Test
+    void shouldNotThrowTodayDodExceptionRaiseCaveatValidate() {
+        CaveatDetails caveatDetails =
+                new CaveatDetails(caveatDataTodayNoException, LAST_MODIFIED, CASE_ID);
         caveatDodValidationRule.validate(caveatDetails);
     }
 
