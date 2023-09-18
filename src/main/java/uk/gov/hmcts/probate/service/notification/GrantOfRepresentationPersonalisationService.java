@@ -94,6 +94,15 @@ public class GrantOfRepresentationPersonalisationService {
         return personalisation;
     }
 
+    public Map<String, Object> getDormantPersonalisation(Long caseId, String solicitorName, String deceasedName) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+        personalisation.put(PERSONALISATION_APPLICANT_NAME, solicitorName);
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
+
+        return personalisation;
+    }
+
     private StringBuilder getExelaBuiltData(List<ReturnedCaseDetails> cases) {
         StringBuilder data = new StringBuilder();
 

@@ -231,6 +231,8 @@ notifications:
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          dormantNotification1: "89d3646c-e3da-43c3-a38e-0c5b36783cb0"
+          dormantNotification2: "0eb004b1-2c21-41d4-9383-760f0166d3fd"
         solicitor:
           applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
           applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
@@ -254,6 +256,8 @@ notifications:
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
+          dormantNotification1: "89d3646c-e3da-43c3-a38e-0c5b36783cb0"
+          dormantNotification2: "0eb004b1-2c21-41d4-9383-760f0166d3fd"
       welsh:
         personal:
           applicationReceived: "6e3f4941-fd11-40fc-8480-8e314e85a985"
@@ -277,6 +281,8 @@ notifications:
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
+          dormantNotification1: "89d3646c-e3da-43c3-a38e-0c5b36783cb0"
+          dormantNotification2: "0eb004b1-2c21-41d4-9383-760f0166d3fd"
         solicitor:
           applicationReceived: "2f282002-6799-47d0-92dd-726960b91c98"
           applicationReceivedNoDocs: "60eab724-adec-4d5d-a0a1-aef73ed7da4d"
@@ -300,6 +306,8 @@ notifications:
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
+          dormantNotification1: "89d3646c-e3da-43c3-a38e-0c5b36783cb0"
+          dormantNotification2: "0eb004b1-2c21-41d4-9383-760f0166d3fd"
 
 documents:
   templates:

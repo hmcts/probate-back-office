@@ -12,10 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
-import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
-import uk.gov.hmcts.probate.validator.EmailValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRule;
-import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
+import uk.gov.hmcts.probate.validator.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -61,6 +58,15 @@ public class EventValidationService {
 
         List<FieldErrorResponse> businessErrors = validateEmail(ccdData, rules);
 
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
+    public CallbackResponse validateDormantEmail(CCDData caseData, EmailAddressNotifyApplicantValidationRule
+            emailAddressNotifyApplicantValidationRule) {
+        List<FieldErrorResponse> businessErrors = emailAddressNotifyApplicantValidationRule
+                .validate(caseData);
         return CallbackResponse.builder()
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();

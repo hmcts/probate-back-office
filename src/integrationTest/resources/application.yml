@@ -162,6 +162,8 @@ notifications:
           redeclarationSot: "pa-redeclaration-sot"
           grantDelayed: "pa-grantDelayed"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc"
+          dormantNotification1: "dormant-notification1"
+          dormantNotification2: "dormant-notification2"
         solicitor:
           applicationReceived: "sol-application-received"
           applicationReceivedNoDocs: "sol-application-received-no-docs"
@@ -182,6 +184,8 @@ notifications:
           redeclarationSot: "sols-redeclaration-sot"
           grantDelayed: "sols-grantDelayed"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc"
+          dormantNotification1: "dormant-notification1"
+          dormantNotification2: "dormant-notification2"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -203,6 +207,8 @@ notifications:
           redeclarationSot: "pa-redeclaration-sot-welsh"
           grantDelayed: "pa-grantDelayed-welsh"
           grantAwaitingDocumentation: "pa-grantAwaitingDoc-welsh"
+          dormantNotification1: "dormant-notification1"
+          dormantNotification2: "dormant-notification2"
         solicitor:
           applicationReceived: "sol-application-received-welsh"
           applicationReceivedNoDocs: "sol-application-received-no-docs-welsh"
@@ -222,6 +228,8 @@ notifications:
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
+          dormantNotification1: "dormant-notification1"
+          dormantNotification2: "dormant-notification2"
 
 documents:
   templates:

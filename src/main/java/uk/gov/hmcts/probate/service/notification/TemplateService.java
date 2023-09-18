@@ -70,6 +70,10 @@ public class TemplateService {
                 } else {
                     return emailTemplates.getGrantRaised();
                 }
+            case DORMANT_NOTIFICATION1:
+                return emailTemplates.getDormantNotification1();
+            case DORMANT_NOTIFICATION2:
+                return emailTemplates.getDormantNotification2();
             case CAVEAT_RAISED:
                 return emailTemplates.getCaveatRaised();
             case CAVEAT_EXTEND:

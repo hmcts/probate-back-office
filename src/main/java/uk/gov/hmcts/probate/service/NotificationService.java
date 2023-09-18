@@ -391,6 +391,67 @@ public class NotificationService {
         }
     }
 
+    public Document sendDormantEmailNotification1(State state, ReturnedCaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+        String emailAddress = getEmail(caseData);
+        String applicantName = getApplicantName(caseData);
+        String reference = caseData.getSolsSolicitorAppReference();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getDormantPersonalisation(caseDetails.getId(),
+                        applicantName, deceasedName);
+
+        String emailReplyToId = registry.getEmailReplyToId();
+        log.info("Personalisation complete now get the email response");
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                        caseDetails.getId());
+
+        return getSentEmailDocument(state, emailAddress, response);
+    }
+
+    public Document sendDormantEmailNotification2(State state, ReturnedCaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+        String emailAddress = getEmail(caseData);
+        String applicantName = getApplicantName(caseData);
+        String reference = caseData.getSolsSolicitorAppReference();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getDormantPersonalisation(caseDetails.getId(),
+                        applicantName, deceasedName);
+
+        String emailReplyToId = registry.getEmailReplyToId();
+        log.info("Personalisation complete now get the email response");
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                        caseDetails.getId());
+
+        return getSentEmailDocument(state, emailAddress, response);
+    }
+
+    private String getApplicantName(CaseData caseData) {
+        String applicantName = caseData.getPrimaryApplicantFullName();;
+        if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
+            if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
+                applicantName = caseData.getSolsSOTName();
+            } else if (!StringUtils.isEmpty(caseData.getSolsSOTForenames()) && !StringUtils
+                    .isEmpty(caseData.getSolsSOTSurname())) {
+                applicantName = String.join(" ", caseData.getSolsSOTForenames(), caseData.getSolsSOTSurname());
+            }
+        }
+        return applicantName;
+    }
+
     private Document getGeneratedSentEmailDocmosisDocument(SendEmailResponse response,
                                                            String emailAddress, DocumentType docType) {
         SentEmail sentEmail = SentEmail.builder()

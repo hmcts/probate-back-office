@@ -28,4 +28,6 @@ public class EmailTemplates {
     private String grantDelayed;
     private String grantAwaitingDocumentation;
     private String hmrcExtract;
+    private String dormantNotification1;
+    private String dormantNotification2;
 }
