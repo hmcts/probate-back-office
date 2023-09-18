@@ -310,5 +310,6 @@
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOReadyToIssue", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BORedecNotificationSent", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
   {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BOCaseWorkerEscalation", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
-  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Dormant", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "Dormant", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"LiveFrom": "01/01/2017", "LiveTo": "01/01/2020", "CaseTypeID": "GrantOfRepresentation", "CaseStateID": "BORegistrarEscalation", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
 ]
