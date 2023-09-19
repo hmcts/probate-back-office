@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
@@ -24,7 +25,7 @@ public class CaseDataTransformer {
     private final EvidenceHandledTransformer evidenceHandledTransformer;
     private final AttachDocumentsTransformer attachDocumentsTransformer;
 
-    public void transformCaseDataForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
+    public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
         final var caseData = callbackRequest.getCaseDetails().getData();
         resetCaseDataTransformer.resetExecutorLists(caseData);
@@ -34,6 +35,14 @@ public class CaseDataTransformer {
 
         // Remove the solicitor exec lists. Will not be needed now mapped onto caseworker exec lists.
         solicitorApplicationCompletionTransformer.clearSolicitorExecutorLists(caseData);
+    }
+
+    public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest,
+                                                           BigDecimal totalAmount) {
+
+        transformForSolicitorApplicationCompletion(callbackRequest);
+        solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(callbackRequest.getCaseDetails(),
+                totalAmount);
     }
 
 

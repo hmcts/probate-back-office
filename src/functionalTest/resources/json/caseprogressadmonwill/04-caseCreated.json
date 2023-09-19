@@ -154,7 +154,9 @@
       "solsLifeInterest": "null",
       "solsResiduary": "null",
       "solsEntitledMinority": "null",
-      "solsDiedOrNotApplying": "null"
+      "solsDiedOrNotApplying": "null",
+      "paymentTaken": "Yes",
+      "totalFee" : "8000"
     }
   }
 }

@@ -58,7 +58,7 @@
 
 {% macro primaryApplicantNameAndAddress(cd) %}
 <strong>
-    <span class="capitalize">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
+    <span style="text-transform: capitalize;">{{cd.primaryApplicantForenames}} {{cd.primaryApplicantSurname}}</span> </strong> of {{primaryApplicantAddress(cd)}}
 {% endmacro %}
 
 {% macro executorAnd(cd) %}
@@ -72,7 +72,9 @@
 {% endif %}
 <strong>
     <span style="text-transform: capitalize;">
-        {% if executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
+        {% if cd.applicationType == "Personal" and cd.legalStatement != null and executor.value.applyingExecutorOtherNames != null and executor.value
+        .applyingExecutorOtherNames != ""%}{{executor.value.applyingExecutorOtherNames}}
+        {% elseif executor.value.applyingExecutorName != null and executor.value.applyingExecutorName != ""%}{{executor.value.applyingExecutorName}}{% else %}{{executor.value.applyingExecutorFirstName}} {{executor.value.applyingExecutorLastName}}{% endif %}
     </span>
 </strong> of {{executorAddress(executor)}}
 {% endmacro %}
@@ -97,9 +99,17 @@ Died on
 <strong>{{cd.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if cd.domicilityCountry != null and cd.domicilityCountry != "" %}{{cd.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
 {% endmacro %}
 
+{% macro codicils(cd) %}
+{% if cd.codicilAddedDateList|length == 1 %} with one codicil{% endif %}
+{% if cd.codicilAddedDateList|length == 2 %} with two codicils{% endif %}
+{% if cd.codicilAddedDateList|length == 3 %} with three codicils{% endif %}
+{% if cd.codicilAddedDateList|length == 4 %} with four codicils{% endif %}
+{% if cd.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
+{% endmacro %}
+
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
 <p>The Last Will and Testament <strong>
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{{ codicils(cd) }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 
@@ -335,7 +345,7 @@ Died on
             {% endif %}
             {% set primaryApplicantApplying = false %}
             {% set applyingExecCounter = 0 %}
-            {% if (case_details.case_data.primaryApplicantIsApplying != "No" and isTc == false) or
+            {% if (case_details.case_data.primaryApplicantIsApplying == "Yes" and isTc == false) or
                 (isTc == true and case_details.case_data.solsSolicitorIsExec == "Yes" and case_details.case_data.solsSolicitorIsApplying == "Yes") %}
                 {% set primaryApplicantApplying = true %}
                 {% set applyingExecCounter = 1 %}
@@ -350,7 +360,7 @@ Died on
             {% endfor %}
             {{ lastWillAndTestamentParagraph(case_details.case_data, applyingExecCounter) }}
             {% if primaryApplicantApplying == true %}
-                {{ primaryApplicantNameAndAddress(case_details.case_data) }}
+            {{ primaryApplicantNameAndAddress(case_details.case_data) }}
             {% endif %}
             {% if isTc == true %}
                 {{ trustCorp(case_details.case_data, primaryApplicantApplying) }}

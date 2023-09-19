@@ -5,11 +5,14 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
+import java.math.BigDecimal;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Component
@@ -17,6 +20,8 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 // Handles some casedata mappings for when a solicitor application becomes a case
 // for caseworker or solicitor journeys
 public class SolicitorApplicationCompletionTransformer extends LegalStatementExecutorTransformer {
+
+    private static final String NOT_APPLICABLE = "NotApplicable";
 
     public SolicitorApplicationCompletionTransformer(ExecutorListMapperService executorListMapperService,
                                                      DateFormatterService dateFormatterService) {
@@ -49,6 +54,13 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         if (NO.equals(caseData.getWillHasCodicils())) {
             caseData.setCodicilAddedDateList(null);
             caseData.setCodicilAddedFormattedDateList(null);
+        }
+    }
+
+    public void setFieldsOnServiceRequest(CaseDetails caseDetails, BigDecimal totalAmount) {
+        if (totalAmount.compareTo(BigDecimal.ZERO) == 0) {
+            caseDetails.getData().setPaymentTaken(NOT_APPLICABLE);
+            caseDetails.setState(CASE_PRINTED.getId());
         }
     }
 }

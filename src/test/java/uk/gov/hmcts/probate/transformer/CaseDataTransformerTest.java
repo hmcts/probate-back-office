@@ -8,6 +8,11 @@ import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
+import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
+
+import java.math.BigDecimal;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -17,26 +22,75 @@ import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_P
 class CaseDataTransformerTest {
 
     @Mock
+    private EvidenceHandledTransformer evidenceHandledTransformer;
+    @Mock
+    private AttachDocumentsTransformer attachDocumentsTransformer;
+    @Mock
+    private ResetCaseDataTransformer resetCaseDataTransformer;
+    @Mock
+    private SolicitorApplicationCompletionTransformer solicitorApplicationCompletionTransformer;
+    @Mock
+    private LegalStatementExecutorTransformer legalStatementExecutorTransformer;
+
+    @Mock
     private CallbackRequest callbackRequestMock;
     @Mock
     private CaseDetails caseDetailsMock;
     @Mock
     private CaseData caseDataMock;
-    @Mock
-    private EvidenceHandledTransformer evidenceHandledTransformer;
-    @Mock
-    private AttachDocumentsTransformer attachDocumentsTransformer;
-
 
     @InjectMocks
     private CaseDataTransformer caseDataTransformer;
 
     @BeforeEach
-    public void setup() {
+    public void setUp() {
         MockitoAnnotations.openMocks(this);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
 
+    }
+
+    @Test
+    void shouldTransformForSolicitorCompletion() {
+        caseDataTransformer.transformForSolicitorApplicationCompletion(callbackRequestMock);
+
+        verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer)
+                .setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).mapSolicitorExecutorFieldsOnCompletion(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).clearSolicitorExecutorLists(caseDataMock);
+    }
+
+    @Test
+    void shouldTransformForSolicitorCompletionWithServiceRequestReference() {
+        BigDecimal totalAmount = BigDecimal.valueOf(100000);
+        caseDataTransformer.transformForSolicitorApplicationCompletion(callbackRequestMock,totalAmount);
+
+        verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer)
+                .setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).mapSolicitorExecutorFieldsOnCompletion(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).clearSolicitorExecutorLists(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).setFieldsOnServiceRequest(caseDetailsMock,
+                totalAmount);
+    }
+
+    @Test
+    void shouldTransformForValidateProbate() {
+        caseDataTransformer.transformCaseDataForValidateProbate(callbackRequestMock);
+
+        verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer)
+                .setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).mapSolicitorExecutorFieldsOnAppDetailsComplete(caseDataMock);
+        verify(solicitorApplicationCompletionTransformer).eraseCodicilAddedDateIfWillHasNoCodicils(caseDataMock);
+    }
+
+    @Test
+    void shouldTransformCaseDataForSolicitorExecutorNames() {
+        caseDataTransformer.transformCaseDataForSolicitorExecutorNames(callbackRequestMock);
+
+        verify(resetCaseDataTransformer).resetExecutorLists(caseDataMock);
     }
 
     @Test

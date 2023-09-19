@@ -25,7 +25,7 @@ springdoc:
   packagesToScan: uk.gov.hmcts.probate.controller
   pathsToMatch: /**
 
-authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator
+authorised.services: probate_backend,ccd_data,ccd-datamgmt-api,ccd_ps,ccd,bulk_scan_processor,bulk_scan_orchestrator,payment_app
 auth.provider.service.client:
   key: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
   baseUrl: ${S2S_AUTH_URL:http://localhost:4502}
@@ -50,18 +50,15 @@ pdf.service:
   hmctsFamilyLogoBase64File: signatures/hmctsFamilyLogo.png.b64
 
 payment:
-  url: ${PAYMENT_URL:http://localhost:8991}
-  api: /credit-account-payments
-  currency: GBP
   pba:
     siteId: ABA6
-  service: PROBATE
-
-pba:
-  retrieval:
-    url: ${PRD_API_URL:http://localhost:8991}
-    health.url: ${pba.retrieval.url}/health
-    api: /refdata/external/v1/organisations/pbas
+  serviceRequest:
+    url: ${PAYMENT_URL:http://localhost:8080}
+    api: /service-request
+    hmctsOrgId: ABA6
+    baseUrl: ${BACK_OFFICE_BASEURL:http://localhost:4104}
+    GrantOfRepresentationCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/gor-payment-request-update
+    CaveatCallbackUrl: ${payment.serviceRequest.baseUrl}/payment/caveat-payment-request-update
 
 prd:
   organisations:
@@ -89,17 +86,17 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GNO-ENG-00061.doc
+      templateName: FL-PRB-GRP-ENG-01290.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -113,29 +110,29 @@ docmosis:
     blankLetter:
       templateName: FL-PRB-GNO-ENG-01040.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshDigitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshDigitalGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshIntestacyGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
     welshAdmonWillGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00226.doc
+      templateName: FL-PRB-GRP-WEL-00229.doc
 
 fee.api:
   url: http://localhost:4411
@@ -222,12 +219,16 @@ idam:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
+    services-allowed-to-payment-update: ${SERVICES_ALLOWED_TO_PAYMENT_UPDATE:payment_app}
 
 azure:
   app_insights_key: ${APPINSIGHTS_INSTRUMENTATIONKEY:false}
   application-insights:
     instrumentation-key: ${APPINSIGHTS_INSTRUMENTATIONKEY:00000000-0000-0000-0000-000000000000}
 
+extract:
+  templates:
+    hmrcExtract: "72dfad41-fed8-431f-896e-3151775dbe8f"
 notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
@@ -297,8 +298,7 @@ notifications:
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
           grantRaised: "5da8b831-b1cf-48a7-832b-7bae2a15423f"
           grantRaisedPaperFormBulkScan: "727981ab-eec0-46c1-a261-9e90ae10cabd"
-          caveatRaised: "dd2a2e85-20c1-4a3a-b4e7-461c51a1003a"
-          caveatRaisedCtsc: "2b33caf6-66c8-4d2c-9115-dae3ce6b4c3d"
+          caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           requestInformation: "67ddef82-707d-418d-a7a1-4af42b9910c5"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
@@ -320,8 +320,7 @@ notifications:
           smeeAndFordData: "e0208111-4cbf-4a87-bac5-ff1723f0c65d"
           grantRaised: "5da8b831-b1cf-48a7-832b-7bae2a15423f"
           grantRaisedPaperFormBulkScan: "727981ab-eec0-46c1-a261-9e90ae10cabd"
-          caveatRaised: "d1f19ccd-5946-497d-a8ef-fa0ad2d374a5"
-          caveatRaisedCtsc: "ba3d59f9-4d64-4265-9c06-b9716e5b283d"
+          caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
           requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
@@ -505,6 +504,8 @@ data-extract:
 
 smeeAndFordEmail: ${SMEE_AND_FORD_EMAIL:smeeAndFordData@probate-test.com}
 
+hmrcEmail: ${HMRC_EMAIL:hmrc@probate-test.com}
+
 welsh:
   months:
     1: "Ionawr"
@@ -528,6 +529,7 @@ blobstorage:
 
 adhocSchedulerJobDate: ${ADHOC_JOB_DATE:}
 adhocSchedulerJobToDate: ${ADHOC_JOB_TO_DATE:}
+shcedulerTimerShutdownDelayMinutes: ${JOB_SHUTDOWN_DELAY:0}
 
 feature:
   blobstorage:

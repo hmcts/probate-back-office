@@ -7,9 +7,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ObjectUtils;
+import uk.gov.hmcts.probate.exception.model.InvalidTokenException;
 import uk.gov.hmcts.probate.service.IdamApi;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.ServiceAndUserDetails;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
+import uk.gov.hmcts.reform.authorisation.validators.AuthTokenValidator;
 import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
@@ -18,7 +20,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Objects;
+
+import static com.microsoft.applicationinsights.boot.dependencies.apachecommons.lang3.StringUtils.isBlank;
 
 @Component
 @Slf4j
@@ -26,9 +31,9 @@ import java.util.Objects;
 public class SecurityUtils {
 
     private final AuthTokenGenerator authTokenGenerator;
+    private final AuthTokenValidator authTokenValidator;
 
     private final HttpServletRequest httpServletRequest;
-
     private final IdamApi idamApi;
 
     private static final String USER_ID = "user-id";
@@ -60,6 +65,9 @@ public class SecurityUtils {
     @Value("${probate.scheduler.password}")
     private String schedulerPassword;
 
+    @Value("${idam.s2s-auth.services-allowed-to-payment-update}")
+    private List<String> allowedToUpdateDetails;
+
     public SecurityDTO getSecurityDTO() {
         return SecurityDTO.builder()
             .authorisation(httpServletRequest.getHeader(AUTHORIZATION))
@@ -78,6 +86,15 @@ public class SecurityUtils {
 
     public SecurityDTO getUserBySchedulerTokenAndServiceSecurityDTO() {
         String token = getSchedulerToken();
+        return SecurityDTO.builder()
+                .authorisation(token)
+                .serviceAuthorisation(generateServiceToken())
+                .userId(getUserId(token))
+                .build();
+    }
+
+    public SecurityDTO getUserByCaseworkerTokenAndServiceSecurityDTO() {
+        String token = getCaseworkerToken();
         return SecurityDTO.builder()
                 .authorisation(token)
                 .serviceAuthorisation(generateServiceToken())
@@ -184,6 +201,34 @@ public class SecurityUtils {
                 ));
         cacheTokenResponse = tokenResponse;
         return cacheTokenResponse;
+    }
+
+    public Boolean checkIfServiceIsAllowed(String token) throws InvalidTokenException {
+        String serviceName = this.authenticate(token);
+        if (Objects.nonNull(serviceName)) {
+            return allowedToUpdateDetails.contains(serviceName);
+        } else {
+            log.info("Service name from token is null");
+            return Boolean.FALSE;
+        }
+    }
+
+    public String getBearerToken(String token) {
+        if (isBlank(token)) {
+            return token;
+        }
+
+        return token.startsWith(BEARER) ? token : BEARER.concat(token);
+    }
+
+    public String authenticate(String authHeader) throws InvalidTokenException {
+        if (isBlank(authHeader)) {
+            throw new InvalidTokenException("Provided S2S token is missing or invalid");
+        }
+        String bearerAuthToken = getBearerToken(authHeader);
+        log.info("S2S token found in the request");
+
+        return authTokenValidator.getServiceName(bearerAuthToken);
     }
 
     private boolean isExpired(TokenResponse tokenResponse) {
