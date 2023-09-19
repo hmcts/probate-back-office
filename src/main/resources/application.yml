@@ -564,7 +564,7 @@ make_dormant:
   add_time_minutes: 5
 
 reactivate_dormant:
-  minus_days: 0
+  minus_days: 1
 
 grand_delay:
   number_of_weeks: 16
