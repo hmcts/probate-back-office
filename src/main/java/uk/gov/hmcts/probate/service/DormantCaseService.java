@@ -125,6 +125,7 @@ public class DormantCaseService {
                             returnedCaseDetails.getLastModified());
                     }
                     else if (reactivateDate.equals(moveToDormantDateTime.plusMonths(0).toLocalDate())) {
+                        log.info("second Notification 3+");
                         sendSecondNotification(returnedCaseDetails);
                     }
                     else if (reactivateDate.equals(moveToDormantDateTime.plusMonths(6).toLocalDate())) {

@@ -564,13 +564,13 @@ document_management:
 
 dormancy:
   period_months: 0
-  start_date: 1900-01-01
+  start_date: 2023-09-17
 
 make_dormant:
   add_time_minutes: 5
 
 reactivate_dormant:
-  minus_days: 1
+  minus_days: 0
 
 grand_delay:
   number_of_weeks: 16
