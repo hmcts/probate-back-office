@@ -166,6 +166,8 @@ public class CaseData extends CaseDataParent {
         ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
     private final String solsWillType;
 
+    private final String solsWillTypeReason;
+
     // EVENT = solicitorUpdateProbate and Admon
     @NotBlank(groups = {ApplicationProbateGroup.class, ApplicationAdmonGroup.class}, message = "{willAsOriginalIsNull}")
     private final String willAccessOriginal;

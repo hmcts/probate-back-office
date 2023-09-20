@@ -229,6 +229,7 @@ idam:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
+    services-allowed-to-payment-update: ${SERVICES_ALLOWED_TO_PAYMENT_UPDATE:payment_app}
   s2s-authorised:
     services: ${S2S_NAMES_WHITELIST:probate_backend,bulk_scan_processor,bulk_scan_orchestrator,payment_app}
 

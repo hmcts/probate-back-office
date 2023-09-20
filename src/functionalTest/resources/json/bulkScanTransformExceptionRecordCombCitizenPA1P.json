@@ -167,6 +167,8 @@
     { "name": "ihtReferenceNumber", "value": "" },
     { "name": "ihtFormId", "value": "IHT207" },
     { "name": "ihtGrossValue", "value": "160,000" },
-    { "name": "ihtNetValue", "value": "140,000" }
+    { "name": "ihtNetValue", "value": "140,000" },
+    { "name": "solsWillType", "value": ""},
+    { "name": "solsWillTypeReason", "value": ""}
   ]
 }

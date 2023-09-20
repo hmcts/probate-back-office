@@ -82,8 +82,8 @@ public class OCRToCCDMandatoryField {
             pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         } else {
             pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+            pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         }
-        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
         return warnings;
     }

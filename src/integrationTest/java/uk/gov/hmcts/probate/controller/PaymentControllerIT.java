@@ -12,9 +12,12 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.util.TestUtils;
 
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -32,8 +35,12 @@ class PaymentControllerIT {
     @MockBean
     private PaymentsService paymentsService;
 
+    @MockBean
+    private SecurityUtils authS2sUtil;
+
     @Autowired
     private WebApplicationContext webApplicationContext;
+
 
     @BeforeEach
     public void setup() {
@@ -44,9 +51,10 @@ class PaymentControllerIT {
     void shouldInvokeSolicitorGrantPaymentCallback() throws Exception {
 
         String solicitorPaymentCallbackPayload = testUtils.getStringFromFile("solicitorPaymentCallbackPayload.json");
+        when(authS2sUtil.checkIfServiceIsAllowed(anyString())).thenReturn(true);
 
         mockMvc.perform(put("/payment/gor-payment-request-update")
-                        .header("Authorization", "AUTH_TOKEN")
+                        .header("ServiceAuthorization", "AUTH_TOKEN")
                         .content(solicitorPaymentCallbackPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -56,9 +64,10 @@ class PaymentControllerIT {
     void shouldInvokeSolicitorCaveatPaymentCallback() throws Exception {
 
         String solicitorPaymentCallbackPayload = testUtils.getStringFromFile("solicitorPaymentCallbackPayload.json");
+        when(authS2sUtil.checkIfServiceIsAllowed(anyString())).thenReturn(true);
 
         mockMvc.perform(put("/payment/caveat-payment-request-update")
-                        .header("Authorization", "AUTH_TOKEN")
+                        .header("ServiceAuthorization", "AUTH_TOKEN")
                         .content(solicitorPaymentCallbackPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

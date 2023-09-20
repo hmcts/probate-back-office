@@ -35,6 +35,28 @@ public class OCRFieldTestUtils {
         return ocrFields;
     }
 
+    public List<OCRField> addIHTMandatoryFieldsV2() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        OCRField field1 = OCRField.builder()
+            .name("iht400421completed")
+            .value("false")
+            .description("Did you complete an IHT400 and IHT421 form?").build();
+        OCRField field2 = OCRField.builder()
+            .name("ihtGrossValue")
+            .value("220.30")
+            .description("Enter the gross value of the estate").build();
+        OCRField field3 = OCRField.builder()
+            .name("ihtNetValue")
+            .value("215.50")
+            .description("Enter the net value of the estate").build();
+
+        ocrFields.add(field1);
+        ocrFields.add(field2);
+        ocrFields.add(field3);
+
+        return ocrFields;
+    }
+
     public List<OCRField> addPrimaryApplicantFields() {
         List<OCRField> ocrFields = new ArrayList<>();
         OCRField field1 = OCRField.builder()
@@ -109,9 +131,19 @@ public class OCRFieldTestUtils {
         return ocrFields;
     }
 
+    //original is version1
     public List<OCRField> addAllMandatoryGORCitizenFields() {
+        return addAllMandatoryGORCitizenFields(1);
+    }
+
+    public List<OCRField> addAllMandatoryGORCitizenFields(int version) {
         List<OCRField> ocrFields = new ArrayList<>();
-        ocrFields.addAll(addIHTMandatoryFields());
+        if (2 == version) {
+            ocrFields.addAll(addIHTMandatoryFieldsV2());
+            addAllV2Data(ocrFields);
+        } else {
+            ocrFields.addAll(addIHTMandatoryFields());
+        }
         ocrFields.addAll(addDeceasedMandatoryFields());
         ocrFields.addAll(addPrimaryApplicantFields());
         ocrFields.addAll(addExecutorNotApplyingFields());
