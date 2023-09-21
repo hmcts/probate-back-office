@@ -1,7 +1,7 @@
 {
   "connectionString": "${file:/mnt/secrets/probate/app-insights-connection-string}",
   "role": {
-    "name": "rpe-demo"
+    "name": "HMCTS Probate Backoffice"
   },
   "preview": {
     "sampling": {
