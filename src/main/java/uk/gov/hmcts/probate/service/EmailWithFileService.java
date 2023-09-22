@@ -77,7 +77,8 @@ public class EmailWithFileService {
                     null,
                     null);
                 if (null != response) {
-                    log.info("HMRC email to: {} response: {}", new String(Base64.getEncoder().encode(email.getBytes())),response.toString());
+                    log.info("HMRC email to: {} response: {}",
+                        new String(Base64.getEncoder().encode(email.getBytes())),response.toString());
                 }
             }
         } catch (NotificationClientException e) {
