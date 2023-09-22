@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.CcdCaseType;
 import uk.gov.hmcts.probate.model.ccd.EventId;
@@ -66,31 +67,10 @@ public class DormantCaseService {
                             securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(), DORMANT_SUMMARY,
                         DORMANT_SUMMARY);
                 log.info("Updated case to Dormant in CCD by scheduler for case id : {}", returnedCaseDetails.getId());
-                sendNotification(returnedCaseDetails);
             } catch (Exception e) {
                 log.error("Dormant case error: Case:{}, cannot be moved in Dormant state {}",
                         returnedCaseDetails.getId(),e.getMessage());
             }
-        }
-    }
-
-    private void sendNotification(ReturnedCaseDetails caseDetails) throws NotificationClientException {
-        log.info("Preparing to send email notification for case moved to Dormant");
-        CaseData caseData = caseDetails.getData();
-        CallbackResponse response;
-        List<Document> documents = new ArrayList<>();
-        CCDData emailAddressData = dataForEmailAddress(caseData);
-        response = eventValidationService.validateDormantEmail(emailAddressData,
-                emailAddressNotifyApplicantValidationRule);
-        if (response.getErrors().isEmpty()) {
-            log.info("Initiate call to notify Solicitor for case id {} ",
-                    caseDetails.getId());
-            Document dormantSentEmail = notificationService.sendDormantEmailNotification1(DORMANT_NOTIFICATION1, caseDetails);
-            documents.add(dormantSentEmail);
-            log.info("Successful response from notify for case id {} ",
-                    caseDetails.getId());
-        } else {
-            log.info("No email sent or document returned to case: {}", caseDetails.getId());
         }
     }
 
@@ -115,7 +95,8 @@ public class DormantCaseService {
                     LocalDateTime moveToDormantDateTime = LocalDateTime.parse(returnedCaseDetails.getData()
                             .getMoveToDormantDateTime(), DATE_FORMAT);
                     log.info("plus 3 month {}",moveToDormantDateTime.plusMonths(0).toLocalDate());
-                    if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
+                    if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime) &&
+                            Constants.NO.equals(returnedCaseDetails.getData().getDormantNotificationSent())) {
                         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                                 .evidenceHandled(false)
                                 .build();
@@ -126,7 +107,12 @@ public class DormantCaseService {
                     }
                     else if (reactivateDate.equals(moveToDormantDateTime.plusMonths(0).toLocalDate())) {
                         log.info("second Notification 3+");
-                        sendSecondNotification(returnedCaseDetails);
+                        GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
+                                .dormantNotificationSent(true)
+                                .build();
+                        updateCaseDormantAsCaseworker(returnedCaseDetails.getId().toString(), grantOfRepresentationData,
+                                returnedCaseDetails.getLastModified());
+                        //sendSecondNotification(returnedCaseDetails);
                     }
                     else if (reactivateDate.equals(moveToDormantDateTime.plusMonths(6).toLocalDate())) {
                         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
@@ -154,8 +140,8 @@ public class DormantCaseService {
         if (response.getErrors().isEmpty()) {
             log.info("Initiate call to notify Solicitor for case id {} ",
                     caseDetails.getId());
-            Document dormantSentEmail = notificationService.sendDormantEmailNotification2(DORMANT_NOTIFICATION2, caseDetails);
-            documents.add(dormantSentEmail);
+            //Document dormantSentEmail = notificationService.sendDormantEmailNotification2(DORMANT_NOTIFICATION2, caseDetails);
+           // documents.add(dormantSentEmail);
             log.info("Successful response from notify for case id {} ",
                     caseDetails.getId());
         } else {
@@ -171,6 +157,20 @@ public class DormantCaseService {
                     securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
                     REACTIVATE_DORMANT_SUMMARY, REACTIVATE_DORMANT_SUMMARY);
             log.info("Updated case to Stopped from Dormant in CCD by scheduler for case id : {}", caseId);
+        } catch (Exception e) {
+            log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}", caseId,
+                    e.getMessage());
+        }
+    }
+
+    private void updateCaseDormantAsCaseworker(String caseId, GrantOfRepresentationData grantOfRepresentationData,
+                                        LocalDateTime lastModifiedDate) {
+        try {
+            ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, caseId,
+                    lastModifiedDate, grantOfRepresentationData, EventId.STILL_DORMANT,
+                    securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO(),
+                    DORMANT_SUMMARY, DORMANT_SUMMARY);
+            log.info("sent notification for Dormant in CCD by scheduler for case id : {}", caseId);
         } catch (Exception e) {
             log.error("Dormant case error: Case:{} ,cannot be reactivated from Dormant state {}", caseId,
                     e.getMessage());

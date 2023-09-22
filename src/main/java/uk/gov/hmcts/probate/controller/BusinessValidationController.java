@@ -587,6 +587,7 @@ public class BusinessValidationController {
         @RequestBody CallbackRequest callbackRequest) {
         log.info("Reactivating case - " + callbackRequest.getCaseDetails().getId().toString());
         caseStoppedService.setEvidenceHandledNo(callbackRequest.getCaseDetails());
+        caseStoppedService.setDormantNotificationNo(callbackRequest.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 

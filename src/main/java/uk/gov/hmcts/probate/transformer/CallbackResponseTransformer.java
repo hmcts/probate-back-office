@@ -345,6 +345,24 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse addDormantDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addDormantDocuments2(CallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addBulkPrintInformationForReprint(CallbackRequest callbackRequest, Document document,
                                                               String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -1089,6 +1107,7 @@ public class CallbackResponseTransformer {
             .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent())
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken())
+            .dormantNotificationSent(caseData.getDormantNotificationSent())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {

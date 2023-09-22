@@ -391,7 +391,7 @@ public class NotificationService {
         }
     }
 
-    public Document sendDormantEmailNotification1(State state, ReturnedCaseDetails caseDetails) throws NotificationClientException {
+    public Document sendDormantEmailNotification1(State state, CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
         String emailAddress = getEmail(caseData);
@@ -415,7 +415,7 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-    public Document sendDormantEmailNotification2(State state, ReturnedCaseDetails caseDetails) throws NotificationClientException {
+    public Document sendDormantEmailNotification2(State state, CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
         String emailAddress = getEmail(caseData);

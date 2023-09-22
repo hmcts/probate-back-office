@@ -564,7 +564,7 @@ document_management:
 
 dormancy:
   period_months: 0
-  start_date: 2023-09-17
+  start_date: 2023-09-22
 
 make_dormant:
   add_time_minutes: 5

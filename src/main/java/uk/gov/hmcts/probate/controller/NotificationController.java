@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.GrantScheduleResponse;
+import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -39,6 +40,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.EmailAddressNotifyApplicantValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -51,11 +53,7 @@ import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
-import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
-import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.*;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
@@ -87,6 +85,7 @@ public class NotificationController {
     private final GrantNotificationService grantNotificationService;
     private final CaseDataTransformer caseDataTransformer;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -241,6 +240,7 @@ public class NotificationController {
             document = notificationService.sendEmail(DOCUMENTS_RECEIVED, callbackRequest.getCaseDetails());
             caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequest);
         }
+        caseDataTransformer.transformCaseDataForDormantNotificationSent(callbackRequest);
         CallbackResponse response = callbackResponseTransformer
                 .transformCaseForAttachScannedDocs(callbackRequest, document);
         return ResponseEntity.ok(response);
@@ -269,6 +269,63 @@ public class NotificationController {
 
     }
 
+    @PostMapping(path = "/dormant-notification1")
+    public ResponseEntity<CallbackResponse> sendDormantNotification1(
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        log.info("Preparing to send email notification for case moved to Dormant");
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        CCDData emailAddressData = dataForEmailAddress(caseData);
+        response = eventValidationService.validateDormantEmail(emailAddressData, emailAddressNotifyApplicantValidationRule);
+        if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to notify user for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            Document dormantSentEmail = notificationService.sendDormantEmailNotification1(DORMANT_NOTIFICATION1, caseDetails);
+            documents.add(dormantSentEmail);
+            log.info("Successful response from notify for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            response = callbackResponseTransformer.addDormantDocuments(callbackRequest, documents);
+        } else {
+            log.info("No email sent or document returned to case: {}", caseDetails.getId());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/dormant-notification2")
+    public ResponseEntity<CallbackResponse> sendDormantNotification2(
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        log.info("Preparing to send email notification for case still in Dormant");
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        CCDData emailAddressData = dataForEmailAddress(caseData);
+        response = eventValidationService.validateDormantEmail(emailAddressData, emailAddressNotifyApplicantValidationRule);
+        if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to notify user for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            Document dormantSentEmail2 = notificationService.sendDormantEmailNotification2(DORMANT_NOTIFICATION2, caseDetails);
+            documents.add(dormantSentEmail2);
+            log.info("Successful response from notify for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            response = callbackResponseTransformer.addDormantDocuments2(callbackRequest, documents);
+        } else {
+            log.info("No email sent or document returned to case: {}", caseDetails.getId());
+        }
+        return ResponseEntity.ok(response);
+    }
+
+    private CCDData dataForEmailAddress(CaseData data) {
+        return CCDData.builder()
+                .applicationType(data.getApplicationType().name())
+                .primaryApplicantEmailAddress(data.getPrimaryApplicantEmailAddress())
+                .solsSolicitorEmail(data.getSolsSolicitorEmail())
+                .build();
+    }
 
     private boolean isAnEmailAddressPresent(CaseData caseData) {
         return caseData.isDocsReceivedEmailNotificationRequested();

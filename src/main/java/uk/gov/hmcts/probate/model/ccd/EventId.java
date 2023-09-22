@@ -24,6 +24,7 @@ public enum EventId {
     DEATH_RECORD_VERIFICATION_FAILED("deathRecordVerificationFailed"),
     MAKE_CASE_DORMANT("makeCaseDormant"),
     REACTIVATE_DORMANT_CASE("reactivateDormantCase"),
+    STILL_DORMANT("StillDormant"),
     WITHDRAWN("withdrawnCase"),
     RESEND_DATA("dataExtractResendData");
     @Getter

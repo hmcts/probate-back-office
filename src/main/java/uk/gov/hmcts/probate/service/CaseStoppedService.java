@@ -25,6 +25,10 @@ public class CaseStoppedService {
         caseDetails.getData().setEvidenceHandled(Constants.NO);
     }
 
+    public void setDormantNotificationNo(CaseDetails caseDetails) {
+        caseDetails.getData().setDormantNotificationSent(Constants.NO);
+    }
+
     public void caseResolved(CaseDetails caseDetails) {
         log.info("Case resolved: {} ", caseDetails.getId());
 
