@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.service;
 import java.io.File;
 import java.io.IOException;
 import java.time.temporal.ChronoUnit;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,6 +43,13 @@ public class EmailWithFileService {
         byte[] fileContents;
         try {
             fileContents = FileUtils.readFileToByteArray(file);
+            //check file size as there is a 2mb limit
+            long totalSpace = fileContents.length / 1048576L;
+            log.info("HMRC file is {}MB", totalSpace);
+            if (totalSpace > 2L) {
+                //not expecting this size, service will error but we'll log additional error too
+                log.error("HMRC File is over 2MB");
+            }
         } catch (IOException e) {
             log.error("Error reading HMRC file {}", e.getMessage());
             return false;
@@ -69,7 +77,7 @@ public class EmailWithFileService {
                     null,
                     null);
                 if (null != response) {
-                    log.info("HMRC email response: {}", response.toString());
+                    log.info("HMRC email to: {} response: {}", new String(Base64.getEncoder().encode(email.getBytes())),response.toString());
                 }
             }
         } catch (NotificationClientException e) {
