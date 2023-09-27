@@ -15,14 +15,14 @@ plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.0'
   id 'org.springframework.boot' version '3.1.1'
-  id 'uk.gov.hmcts.java' version '0.12.43'
+  id 'uk.gov.hmcts.java' version '0.12.45'
   id 'com.github.ben-manes.versions' version '0.46.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.1'
   id 'info.solidsoft.pitest' version '1.9.11'
   id 'jacoco'
   id 'au.com.dius.pact' version '4.6.1' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '4.0.0.2929'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.733'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.809'
 }
 
 apply plugin: 'project-report'
@@ -237,7 +237,7 @@ dependencyManagement {
   }
   dependencies {
     // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '4.1.94.Final') {
+    dependencySet(group: 'io.netty', version: '4.1.98.Final') {
       entry 'netty-buffer'
       entry 'netty-codec'
       entry 'netty-codec-dns'
@@ -328,7 +328,7 @@ dependencies {
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.0'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.1'
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '12.3'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
@@ -406,9 +406,9 @@ dependencies {
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.3")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.9.3')
-  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.9.3'
+  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.7.1')
+  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.7.0'
   contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.0'
 
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'

@@ -5015,7 +5015,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mkdirp@npm:^1.0.3, mkdirp@npm:^1.0.4, mkdirp@npm:~1.0.4":
+"mkdirp@npm:^1.0.3, mkdirp@npm:^1.0.4":
   version: 1.0.4
   resolution: "mkdirp@npm:1.0.4"
   bin:
@@ -5030,6 +5030,15 @@ __metadata:
   bin:
     mkdirp: dist/cjs/src/bin.js
   checksum: 039998e3a55f056f48dbd025ad1f5095c78464ed62bd666fcaf78d07fd15b73218aabe3237e7a500b3f6cacdce684f6bbbc9a773792dce7cceab0dc266e95238
+  languageName: node
+  linkType: hard
+
+"mkdirp@npm:^3.0.0":
+  version: 3.0.1
+  resolution: "mkdirp@npm:3.0.1"
+  bin:
+    mkdirp: dist/cjs/src/bin.js
+  checksum: 972deb188e8fb55547f1e58d66bd6b4a3623bf0c7137802582602d73e6480c1c2268dcbafbfb1be466e00cc7e56ac514d7fd9334b7cf33e3e2ab547c16f83a8d
   languageName: node
   linkType: hard
 
@@ -5062,17 +5071,17 @@ __metadata:
   linkType: hard
 
 "mocha-junit-reporter@npm:^2.0.0":
-  version: 2.2.0
-  resolution: "mocha-junit-reporter@npm:2.2.0"
+  version: 2.2.1
+  resolution: "mocha-junit-reporter@npm:2.2.1"
   dependencies:
     debug: ^4.3.4
     md5: ^2.3.0
-    mkdirp: ~1.0.4
+    mkdirp: ^3.0.0
     strip-ansi: ^6.0.1
     xml: ^1.0.1
   peerDependencies:
     mocha: ">=2.2.5"
-  checksum: 476dc12b676b8313ddac8ed27c5b43c86d6d54770efa0081a35a58f3a6717a504cc871058850da0611e7fc42e17201332390dc516096d51a189f12ff2141d420
+  checksum: 752c30b1ef7c99eff6d82104f1b7a8179a21f3afefa3df38edb4e2478986a7c74d28b6c4525da5109cba8a4bf31cf697f4cff7584a3784fb9fc40be804fd7351
   languageName: node
   linkType: hard
 
@@ -5272,14 +5281,14 @@ __metadata:
   linkType: hard
 
 "nock@npm:^13.0.7":
-  version: 13.3.0
-  resolution: "nock@npm:13.3.0"
+  version: 13.3.3
+  resolution: "nock@npm:13.3.3"
   dependencies:
     debug: ^4.1.0
     json-stringify-safe: ^5.0.1
     lodash: ^4.17.21
     propagate: ^2.0.0
-  checksum: 118d04e95a17f493898a82b5dfecc03762776e1980d9c3b2077479747e60b77109c5f7c0df969d1a8f6039260abe5961733553a5841f0f627bb35238576a0009
+  checksum: e3e4f0fb777ac63d74f89bbb7aebe8e815b891b64ac71983d91686f725fdab856fe189cf2fe23d4add9f5dd5da53f3568106a61116a771ce0f4ed0f5ad7b035b
   languageName: node
   linkType: hard
 
