@@ -72,6 +72,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String solsSolicitorIsApplying;
     private final String solsSolicitorNotApplyingReason;
     private final String solsWillType;
+    private final String solsWillTypeReason;
     private final String solsApplicantRelationshipToDeceased;
     private final String solsSpouseOrCivilRenouncing;
     private final String solsAdoptedEnglandOrWales;

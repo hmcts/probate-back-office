@@ -79,6 +79,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Collections.emptyList;
@@ -446,6 +447,8 @@ class CallbackResponseTransformerTest {
 
     private GrantOfRepresentationData bulkScanGrantOfRepresentationData;
 
+    private GrantOfRepresentationData bulkScanGrantOfRepresentationDataSols;
+
     @Mock
     private FeesResponse feesResponse;
 
@@ -764,6 +767,128 @@ class CallbackResponseTransformerTest {
             .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
             .build();
 
+        bulkScanGrantOfRepresentationDataSols = GrantOfRepresentationData.builder()
+            .deceasedForenames(DECEASED_FIRSTNAME)
+            .deceasedSurname(DECEASED_LASTNAME)
+            .deceasedDateOfBirth(DOB)
+            .deceasedDateOfDeath(DOD)
+            .willHasCodicils(TRUE)
+            .willNumberOfCodicils(Long.valueOf(NUM_CODICILS))
+            .ihtFormId(IhtFormType.optionIHT205)
+            .ihtGrossValue(IHT_GROSS.longValue())
+            .ihtNetValue(IHT_NET.longValue())
+            .primaryApplicantForenames(APPLICANT_FORENAME)
+            .primaryApplicantSurname(APPLICANT_SURNAME)
+            .primaryApplicantEmailAddress(APPLICANT_EMAIL_ADDRESS)
+            .primaryApplicantIsApplying(TRUE)
+            .primaryApplicantHasAlias(TRUE)
+            .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+            .deceasedAddress(BSP_DECEASED_ADDRESS)
+            .deceasedAnyOtherNames(TRUE)
+            .primaryApplicantAddress(BSP_APPLICANT_ADDRESS)
+            .boSendToBulkPrintRequested(TRUE)
+            .grantType(GrantType.GRANT_OF_PROBATE)
+            .willExists(TRUE)
+            .executorsApplying(BSP_ADDITIONAL_EXEC_LIST_APP)
+            .executorsNotApplying(BSP_ADDITIONAL_EXEC_LIST_NOT_APP)
+            .ihtReferenceNumber(IHT_REFERENCE)
+            .ihtFormCompletedOnline(TRUE)
+            .scannedDocuments(BSP_SCANNED_DOCUMENTS_LIST)
+            .deceasedDivorcedInEnglandOrWales(TRUE)
+            .primaryApplicantAdoptionInEnglandOrWales(Boolean.FALSE)
+            .deceasedOtherChildren(TRUE)
+            .deceasedHasAssetsOutsideUK(TRUE)
+            .boEmailRequestInfoNotificationRequested(Boolean.FALSE)
+            .boSendToBulkPrintRequested(Boolean.FALSE)
+            .primaryApplicantSecondPhoneNumber(EXEC_PHONE)
+            .primaryApplicantRelationshipToDeceased(Relationship.OTHER)
+            .paRelationshipToDeceasedOther("cousin")
+            .deceasedMaritalStatus(MaritalStatus.NEVER_MARRIED)
+            .dateOfMarriageOrCP(null)
+            .dateOfDivorcedCPJudicially(null)
+            .willsOutsideOfUK(TRUE)
+            .courtOfDecree("Random Court Name")
+            .willGiftUnderEighteen(Boolean.FALSE)
+            .applyingAsAnAttorney(TRUE)
+            .attorneyOnBehalfOfNameAndAddress(null)
+            .mentalCapacity(TRUE)
+            .courtOfProtection(TRUE)
+            .epaOrLpa(Boolean.FALSE)
+            .epaRegistered(Boolean.FALSE)
+            .domicilityCountry("Spain")
+            .adopted(TRUE)
+            .adoptiveRelatives(null)
+            .domicilityIHTCert(TRUE)
+            .foreignAsset(TRUE)
+            .foreignAssetEstateValue(Long.valueOf("123"))
+            .grantType(GrantType.INTESTACY)
+            .childrenSurvived(TRUE)
+            .childrenOverEighteenSurvivedText(NUM_CODICILS)
+            .childrenUnderEighteenSurvivedText(NUM_CODICILS)
+            .childrenDied(TRUE)
+            .childrenDiedOverEighteenText(NUM_CODICILS)
+            .childrenDiedUnderEighteenText(NUM_CODICILS)
+            .grandChildrenSurvived(TRUE)
+            .grandChildrenSurvivedOverEighteenText(NUM_CODICILS)
+            .grandChildrenSurvivedUnderEighteenText(NUM_CODICILS)
+            .parentsExistSurvived(TRUE)
+            .parentsExistOverEighteenSurvived(NUM_CODICILS)
+            .parentsExistUnderEighteenSurvived(NUM_CODICILS)
+            .wholeBloodSiblingsSurvived(TRUE)
+            .wholeBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
+            .wholeBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
+            .wholeBloodSiblingsDied(TRUE)
+            .wholeBloodSiblingsDiedOverEighteen(NUM_CODICILS)
+            .wholeBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
+            .wholeBloodNeicesAndNephews(TRUE)
+            .wholeBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
+            .wholeBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
+            .halfBloodSiblingsSurvived(TRUE)
+            .halfBloodSiblingsSurvivedOverEighteen(NUM_CODICILS)
+            .halfBloodSiblingsSurvivedUnderEighteen(NUM_CODICILS)
+            .halfBloodSiblingsDied(TRUE)
+            .halfBloodSiblingsDiedOverEighteen(NUM_CODICILS)
+            .halfBloodSiblingsDiedUnderEighteen(NUM_CODICILS)
+            .halfBloodNeicesAndNephews(TRUE)
+            .halfBloodNeicesAndNephewsOverEighteen(NUM_CODICILS)
+            .halfBloodNeicesAndNephewsUnderEighteen(NUM_CODICILS)
+            .grandparentsDied(TRUE)
+            .grandparentsDiedOverEighteen(NUM_CODICILS)
+            .grandparentsDiedUnderEighteen(NUM_CODICILS)
+            .wholeBloodUnclesAndAuntsSurvived(TRUE)
+            .wholeBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
+            .wholeBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
+            .wholeBloodUnclesAndAuntsDied(TRUE)
+            .wholeBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
+            .wholeBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
+            .wholeBloodCousinsSurvived(TRUE)
+            .wholeBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
+            .wholeBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
+            .halfBloodUnclesAndAuntsSurvived(TRUE)
+            .halfBloodUnclesAndAuntsSurvivedOverEighteen(NUM_CODICILS)
+            .halfBloodUnclesAndAuntsSurvivedUnderEighteen(NUM_CODICILS)
+            .halfBloodUnclesAndAuntsDied(TRUE)
+            .halfBloodUnclesAndAuntsDiedOverEighteen(NUM_CODICILS)
+            .halfBloodUnclesAndAuntsDiedUnderEighteen(NUM_CODICILS)
+            .halfBloodCousinsSurvived(TRUE)
+            .halfBloodCousinsSurvivedOverEighteen(NUM_CODICILS)
+            .halfBloodCousinsSurvivedUnderEighteen(NUM_CODICILS)
+            .applicationFeePaperForm(Long.valueOf("0"))
+            .feeForCopiesPaperForm(Long.valueOf("0"))
+            .totalFeePaperForm(Long.valueOf("0"))
+            .paperPaymentMethod("debitOrCredit")
+            .paymentReferenceNumberPaperform(IHT_REFERENCE)
+            .paperForm(TRUE)
+            .bulkScanCaseReference(BULK_SCAN_REFERENCE)
+            .grantDelayedNotificationDate(GRANT_DELAYED_DATE)
+            .grantStoppedDate(GRANT_STOPPED_DATE)
+            .grantDelayedNotificationSent(TRUE)
+            .grantAwaitingDocumentationNotificationDate(GRANT_AWAITING_DOCS_DATE)
+            .grantAwaitingDocumentatioNotificationSent(TRUE)
+            .bulkScanEnvelopes(BULK_SCAN_ENVELOPES)
+            .languagePreferenceWelsh(FALSE)
+            .applicationType(uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS)
+            .build();
         additionalExecutorsApplyingMock = new ArrayList<>();
         additionalExecutorsNotApplyingMock = new ArrayList<>();
         solAdditionalExecutorsApplyingMock = new ArrayList<>();
@@ -3407,6 +3532,27 @@ class CallbackResponseTransformerTest {
         CaseCreationDetails grantOfRepresentationDetails
             = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationData);
         assertBulkScanCaseCreationDetails(grantOfRepresentationDetails);
+    }
+
+
+    @Test
+    void bulkScanGrantOfRepresentationTransformSolsCaseEnglish() {
+        CaseCreationDetails grantOfRepresentationDetails
+            = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
+        GrantOfRepresentationData grantOfRepresentationData =
+            (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
+        assertEquals(RegistryLocation.NEWCASTLE,grantOfRepresentationData.getRegistryLocation());
+    }
+
+    @Test
+    void bulkScanGrantOfRepresentationTransformSolsCaseWelsh() {
+        bulkScanGrantOfRepresentationDataSols.setLanguagePreferenceWelsh(TRUE);
+        CaseCreationDetails grantOfRepresentationDetails
+            = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
+        GrantOfRepresentationData grantOfRepresentationData =
+            (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
+        assertEquals(RegistryLocation.CARDIFF,grantOfRepresentationData.getRegistryLocation());
+        bulkScanGrantOfRepresentationDataSols.setLanguagePreferenceWelsh(FALSE);
     }
 
     @Test

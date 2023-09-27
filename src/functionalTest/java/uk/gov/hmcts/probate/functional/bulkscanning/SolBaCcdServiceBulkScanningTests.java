@@ -32,17 +32,28 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     private static final String DOB_MISSING = "Deceased date of birth (deceasedDateOfBirth) is mandatory.";
     private static final String DOD_MISSING = "Deceased date of death (deceasedDateOfDeath) is mandatory.";
     private static final String SOLICITOR_EMAIL_MISSING = "Solictor email address (solsSolicitorEmail) is mandatory.";
-    private static final String SOLICITOR_FLAG = "The form has been flagged as a Solictor case.";
     private static final String VALIDATE_OCR_DATA = "/forms/%s/validate-ocr";
     private static final String PA1A = "PA1A";
     private static final String PA1P = "PA1P";
-    private static final String PA8A = "PA8A";
+
     private static final String VALIDATE_OCR_DATA_UNKNOWN_FORM_TYPE = "/forms/XZY/validate-ocr";
     private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-scanned-data";
     private static final String UPDATE_CASE_FROM_EXCEPTON_RECORD = "/update-case";
     private static final DateTimeFormatter CCD_DATE_FORMAT = CaveatCallbackResponseTransformer.dateTimeFormatter;
-    private String jsonRequest;
-    private String jsonResponse;
+    public static final String TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON = "bulkScanTransformExceptionRecordPA8A.json";
+    public static final String APPLICATION_SUBMITTED_DATE = "\"applicationSubmittedDate\":\"";
+    public static final String APPLICATION_SUBMITTED_DATE_0_9 = "\"applicationSubmittedDate\":\"[0-9-]+\"";
+    public static final String EXPIRY_DATE = "\"expiryDate\":\"";
+    public static final String EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON =
+        "bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json";
+    public static final String EXPIRY_DATE_0_9 = "\"expiryDate\":\"[0-9-]+\"";
+    public static final String SENT_EMAIL = "sentEmail";
+    public static final String EXCEPTION_RECORD_OUTPUT_ERROR_JSON =
+        "expectedBulkScanTransformExceptionRecordOutputError.json";
+    public static final String EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON =
+        "bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json";
+    public static final String EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON =
+        "bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json";
 
     @Before
     public void setUp() {
@@ -96,7 +107,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             .and().body(containsString(containsText));
     }
 
-    private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) throws IOException {
+    private JsonPath fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(String bodyText) {
         final ValidatableResponse response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -109,34 +120,32 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     @Test
     public void testAllMandatoryFieldsPresentReturnNoWarnings() throws IOException {
-        jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
+        String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
     }
 
     @Test
     public void testMissingMandatoryFieldsReturnWarnings() throws IOException {
-        jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
+        String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
     }
 
     @Test
     public void testMissingSolicitorEmailPA1AReturnsWarning() throws IOException {
-        jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
-        validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 2, 0);
-        validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);
+        String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
+        validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
     }
 
     @Test
     public void testMissingSolicitorEmailPA1PReturnsWarning() throws IOException {
-        jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 2, 0);
-        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_FLAG, 2, 1);
+        String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
+        validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
     }
 
     @Test
     public void testInvalidEmailFieldsReturnWarnings() throws IOException {
-        jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
+        String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS,
             format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Primary applicant email address",
                 "primaryApplicantEmailAddress"), 3, 0);
@@ -150,17 +159,17 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     @Test
     public void testInvalidFormTypeReturnError() throws IOException {
-        jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
+        String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
         validateOCRDataPostError(jsonRequest);
     }
 
     @Test
     public void testTransformPA8AReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8A.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile(TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON);
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -168,10 +177,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA8Av2ReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8Av2.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8Av2.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8Av2.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8Av2.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
             applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -179,11 +188,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedCitizenPA8Av2ReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA8Av2.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -191,11 +200,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedSolicitorPA8AReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8A.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8A.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -203,10 +212,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA1PReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1P.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1P.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -214,11 +223,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedCitizenPA1PReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1P.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1P.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -226,11 +235,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedSolicitorPA1PReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1P.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1P.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -238,11 +247,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformSolicitorPA1PReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1P.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1P.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -250,10 +259,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformMissingMandatoryPA1PReturnUnprocessedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1P.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1P.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1P.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
@@ -261,18 +270,18 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformMissingMandatoryPA1AReturnUnprocessedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1A.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1A.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1A.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformCitizenPA1PReturnUnprocessedJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PUnprocessed.json");
-        jsonResponse = utils.getJsonFromFile(
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PUnprocessed.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputPA1PUnprocessed.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
@@ -280,10 +289,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA1AReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1A.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1A.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -294,9 +303,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
             LocalDate.now().plusDays(7).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String expectedExpiryDate6MonthsFromNow =
             LocalDate.now().plusDays(7).plusMonths(6).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
-        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expiryDate);
+        final String expiryDate = EXPIRY_DATE + expiryDate7DaysFromNow + "\"";
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
+        jsonRequest = jsonRequest.replaceAll(EXPIRY_DATE_0_9, expiryDate);
         final JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
 
         // Unable to use static file as documents are generated in the response, picking out specific values instead.
@@ -320,16 +329,16 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         // Checked Generated Notification Documents
         Assert.assertEquals("Correct number generated notifications", 2,
             jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
-        Assert.assertEquals("Correct DocumentType Doc 1", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 1", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
-        Assert.assertEquals("Correct DocumentType Doc 2", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 2", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
     }
 
     @Test
     public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
-        jsonResponse = utils.getJsonFromFile(
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -338,10 +347,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorJSON() throws IOException {
         final String expiryDate3MonthsFromNow =
             LocalDate.now().plusMonths(3).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expireDate = "\"expiryDate\":\"" + expiryDate3MonthsFromNow + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8A.json");
-        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expireDate);
-        jsonResponse = utils.getJsonFromFile(
+        final String expireDate = EXPIRY_DATE + expiryDate3MonthsFromNow + "\"";
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
+        jsonRequest = jsonRequest.replaceAll(EXPIRY_DATE_0_9, expireDate);
+        String jsonResponse = utils.getJsonFromFile(
                     "expectedBulkScanUpdateCaseExceptionRecordExpiryOutsideOneMonthErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -349,11 +358,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedCitizenPA1AReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1A.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1A.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -361,43 +370,43 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedSolicitorPA1AReturnSuccessfulJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1A.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1A.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformPA8AReturnTransformErrorJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformSolicitorPA8AReturnTransformErrorJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordError.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordError.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformSolicitorPA8AReturnTransformErrorAutomatedJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8AAutomated.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8AAutomated.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -405,11 +414,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedCitizenPA8Av2ReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2Automated.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2Automated.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA8Av2.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -417,11 +426,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedSolicitorPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8AAutomated.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8AAutomated.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -429,10 +438,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PAutomated.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PAutomated.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -440,11 +449,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedCitizenPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1PAutomated.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1PAutomated.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -452,11 +461,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedSolicitorPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -464,11 +473,11 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformSolicitorPA1PSingleExecReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
-        jsonResponse = utils.getJsonFromFile(
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
+        String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -476,10 +485,10 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformPA1AReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1AAutomated.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
-        jsonResponse = jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"",
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1AAutomated.json");
+        String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
+        jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
                 applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -488,9 +497,9 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testUpdateCaseExtendCaveatPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         final String expiryDate7DaysFromNow = LocalDate.now().plusDays(7).format(
             CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expiryDate = "\"expiryDate\":\"" + expiryDate7DaysFromNow + "\"";
-        jsonRequest = utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json");
-        jsonRequest = jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expiryDate);
+        final String expiryDate = EXPIRY_DATE + expiryDate7DaysFromNow + "\"";
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
+        jsonRequest = jsonRequest.replaceAll(EXPIRY_DATE_0_9, expiryDate);
         JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
         String expectedExpiryDate6MonthsFromNow = LocalDate.now().plusDays(7).plusMonths(6).format(
                 CaveatCallbackResponseTransformer.dateTimeFormatter);
@@ -515,17 +524,17 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         // Checked Generated Notification Documents
         Assert.assertEquals("Correct number generated notifications", 2,
             jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
-        Assert.assertEquals("Correct DocumentType Doc 1", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 1", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
-        Assert.assertEquals("Correct DocumentType Doc 2", "sentEmail",
+        Assert.assertEquals("Correct DocumentType Doc 2", SENT_EMAIL,
             jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
     }
 
     @Test
     public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorAutomatedJSON() throws IOException {
-        jsonRequest =
-            utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json");
-        jsonResponse =
+        String jsonRequest =
+            utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
+        String jsonResponse =
             utils.getJsonFromFile("expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
     }
@@ -534,12 +543,12 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorAutomatedJSON() throws IOException {
         final String expiryDate3MonthsFromNow = LocalDate.now().plusMonths(3).format(
             CaveatCallbackResponseTransformer.dateTimeFormatter);
-        final String expireDate = "\"expiryDate\":\"" + expiryDate3MonthsFromNow + "\"";
+        final String expireDate = EXPIRY_DATE + expiryDate3MonthsFromNow + "\"";
+        String jsonRequest =
+            utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
         jsonRequest =
-            utils.getJsonFromFile("bulkScanUpdateCaseExceptionRecordExtendExpiryPA8AAutomated.json");
-        jsonRequest =
-            jsonRequest.replaceAll("\"expiryDate\":\"[0-9-]+\"", expireDate);
-        jsonResponse =
+            jsonRequest.replaceAll(EXPIRY_DATE_0_9, expireDate);
+        String jsonResponse =
             utils.getJsonFromFile(
                 "expectedBulkScanUpdateCaseExceptionRecordExpiryOutsideOneMonthErrorPA8A.json");
         updateCaseFromExceptionPostSuccess(jsonRequest, jsonResponse);
@@ -548,57 +557,57 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     @Test
     public void testTransformCombinedCitizenPA1AReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest =
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest =
             utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1AAutomated.json");
-        jsonResponse =
+        String jsonResponse =
             utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1A.json");
         jsonResponse =
-            jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+            jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9, applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformCombinedSolicitorPA1AReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
-        final String applicationSubmittedDate = "\"applicationSubmittedDate\":\"" + currentDate + "\"";
-        jsonRequest =
-            utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
-        jsonResponse =
+        final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
+        String jsonRequest =
+            utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
+        String jsonResponse =
             utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1A.json");
         jsonResponse =
-            jsonResponse.replaceAll("\"applicationSubmittedDate\":\"[0-9-]+\"", applicationSubmittedDate);
+            jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9, applicationSubmittedDate);
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformPA8AReturnTransformErrorAutomatedJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordErrorAutomated.json");
-        jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputError.json");
+        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordErrorAutomated.json");
+        String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
     public void testTransformPA1AReturnTransformForbiddenJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         transformExceptionPostForbidden(jsonRequest);
     }
 
     @Test
     public void testUpdatePA1AReturnTransformForbiddenJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         updateExceptionPostForbidden(jsonRequest);
     }
 
     @Test
     public void testTransformPA8AReturnTransformForbiddenJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8A.json");
+        String jsonRequest = utils.getJsonFromFile(TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON);
         transformExceptionPostForbidden(jsonRequest);
     }
 
     @Test
     public void testUpdatePA8AReturnTransformForbiddenJSON() throws IOException {
-        jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8A.json");
+        String jsonRequest = utils.getJsonFromFile(TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON);
         updateExceptionPostForbidden(jsonRequest);
     }
 

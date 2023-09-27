@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -84,6 +85,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSU
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -105,7 +107,7 @@ public class CallbackResponseTransformer {
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
-    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
+    private static final String CASE_MATCHING_ISSUE_GRANT = "BOCaseMatchingIssueGrant";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
@@ -1659,6 +1661,14 @@ public class CallbackResponseTransformer {
 
         if (grantOfRepresentationData.getEvidenceHandled() == null) {
             grantOfRepresentationData.setEvidenceHandled(false);
+        }
+
+        if (SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
+            if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
+                grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
+            } else {
+                grantOfRepresentationData.setRegistryLocation(RegistryLocation.NEWCASTLE);
+            }
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
