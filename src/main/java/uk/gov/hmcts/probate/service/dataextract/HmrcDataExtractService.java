@@ -59,13 +59,6 @@ public class HmrcDataExtractService {
 
     private void emailHmrcFile(String date, File hmrcFile) {
 
-        //check file size as there is a 2mb limit
-        long totalSpace = hmrcFile.length() / 1048576L;
-        log.info("HMRC file is {}MB", totalSpace);
-        if (totalSpace > 2L) {
-            //not expecting this size, service will error but we'll log additional error too
-            log.error("File is over 2MB");
-        }
         boolean isSuccess = emailWithFileService.emailFile(hmrcFile, date);
         if (!isSuccess) {
             log.error("Failed to email hmrc file:" + hmrcFile.getName());
