@@ -479,5 +479,11 @@ make_dormant:
 reactivate_dormant:
   minus_days: 1
 
+dormant_notification:
+  minus_months: 3
+
+withdrawal_dormant:
+  minus_months: 6
+
 grand_delay:
   number_of_weeks: 16
