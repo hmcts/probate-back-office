@@ -114,8 +114,6 @@
     { "name": "courtOfDecree", "value": "Manchester" },
     { "name": "foreignAsset", "value": "true" },
     { "name": "foreignAssetEstateValue", "value": "20,000" },
-    { "name": "solsWillType", "value": "Grant of Probate" },
-    { "name": "solsWillTypeReason", "value": "Because they died…" },
     { "name": "bilingualGrantRequested", "value": "false" },
     { "name": "spouseOrPartner", "value": "true" },
     { "name": "childrenUnderEighteenSurvived", "value": "1" },
