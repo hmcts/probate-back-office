@@ -21,7 +21,7 @@ const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicito
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
 
-Feature('Solicitor - Apply Grant of probate Excepted Estates').retry(testConfig.TestRetryFeatures);
+Feature('Solicitor - Apply Grant of probate Excepted Estates 1').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Apply Grant of probate Single Executor for Excepted Estates';
 Scenario(scenarioName, async function ({I}) {
     const isSolicitorNamedExecutor = true;
