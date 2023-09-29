@@ -453,6 +453,7 @@ idam:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
+    services-allowed-to-payment-update: ${SERVICES_ALLOWED_TO_PAYMENT_UPDATE:payment_app}
 
 send-letter:
   url: ${SEND_LETTER_SERIVCE_BASEURL:http://localhost:8486}
