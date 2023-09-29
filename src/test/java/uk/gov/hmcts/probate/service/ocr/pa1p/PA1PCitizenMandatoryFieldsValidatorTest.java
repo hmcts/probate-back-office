@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 class PA1PCitizenMandatoryFieldsValidatorTest {
@@ -41,10 +39,22 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    void testAllMandatoryFieldsPresentPA1PCitizen() {
+    void testAllMandatoryFieldsPresentPA1PCitizenV1() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
+        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(0, warnings.size());
+    }
+
+    @Test
+    void testAllMandatoryFieldsPresentPA1PCitizenV2() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields(2);
+
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
         assertEquals(0, warnings.size());
@@ -62,7 +72,7 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    void testFieldDescriptionIsAddedToMissingValueListForPA1P() {
+    void testFieldDescriptionIsAddedToMissingValueListForPA1Pv1() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("solsSolicitorIsApplying");
@@ -75,30 +85,59 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
-    void testAllMandatoryFieldsPresentPA1PCitizenV2() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        ocrFieldTestUtils.addAllV2Data(ocrFields);
+    void testFieldDescriptionIsAddedToMissingValueListForPA1Pv2() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields(2);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        ocrFieldValues.remove("solsSolicitorIsApplying");
         when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
-
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
-        assertEquals(0, warnings.size());
+        assertEquals(1, warnings.size());
+        assertEquals("Do you have legal representative acting for you? (solsSolicitorIsApplying) is mandatory.",
+            warnings.get(0));
     }
 
     @Test
-    void testMissingMandatoryFieldsForPA1PCitizenV2() {
+    void testMissingIHT400421CompletedMandatoryFieldReturnSuccessfullyForPA1Pv2() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields(2);
+
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        ocrFieldValues.remove("iht400421completed");
+        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
+        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(1, warnings.size());
+        assertEquals("Did you complete an IHT400 and IHT421 form? (iht400421completed) is mandatory.", warnings.get(0));
+    }
+
+    @Test
+    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1Pv1() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
+        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
+
+        ocrFieldValues.remove("ihtFormId");
+        ocrFieldValues.put("formVersion", "1");
+        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(1, warnings.size());
+        assertEquals("IHT form id (ihtFormId) is mandatory.", warnings.get(0));
+    }
+
+    @Test
+    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1Pv1() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(false);
+
+        ocrFieldValues.remove("ihtReferenceNumber");
+        ocrFieldValues.put("ihtFormCompletedOnline", "true");
+        ocrFieldValues.put("formVersion", "1");
 
         pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
 
-        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
         assertEquals(1, warnings.size());
-        assertEquals("Did you complete an IHT400 and IHT421 form? (iht400421completed) is mandatory.", warnings.get(0));
-
+        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", warnings.get(0));
     }
 
     @Test

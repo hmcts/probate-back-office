@@ -21,7 +21,6 @@ public enum GORSolicitorMandatoryFields {
     SOLICITOR_APP_REFERENCE("solsSolicitorAppReference", "Solictor application reference"),
     SOLICITOR_EMAIL_ADDRESS("solsSolicitorEmail", "Solictor email address"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_FORM_COMPLETED_ONLINE("ihtFormCompletedOnline", "IHT form completed online?"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate"),
     IHT_NET_VALUE("ihtNetValue", "Net value of the estate");
 

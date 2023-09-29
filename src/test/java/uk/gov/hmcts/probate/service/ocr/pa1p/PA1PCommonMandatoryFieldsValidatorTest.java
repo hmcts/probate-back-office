@@ -50,32 +50,4 @@ class PA1PCommonMandatoryFieldsValidatorTest {
             warnings.get(0));
     }
 
-    @Test
-    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-
-        ocrFieldValues.remove("ihtFormId");
-        ocrFieldValues.put("formVersion", "1");
-        pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("IHT form id (ihtFormId) is mandatory.", warnings.get(0));
-    }
-
-    @Test
-    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1P() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-
-        ocrFieldValues.remove("ihtFormId");
-        ocrFieldValues.put("ihtFormCompletedOnline", "true");
-        ocrFieldValues.put("formVersion", "1");
-
-        pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
-        assertEquals(1, warnings.size());
-        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", warnings.get(0));
-    }
-
 }
