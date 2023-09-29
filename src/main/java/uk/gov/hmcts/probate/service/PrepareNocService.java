@@ -47,10 +47,10 @@ public class PrepareNocService {
         Map<String, Object> caseData = caseDetails.getData();
         ChangeOrganisationRequest changeOrganisationRequest = getChangeOrganisationRequest(caseData);
         List<CollectionMember<ChangeOfRepresentative>> representatives = getChangeOfRepresentations(caseData);
-        log.info("Change of Representatives before for case {} : {} ", caseDetails.getId().toString(), representatives);
+        log.info("Change of Representatives before for case {} ", caseDetails.getId().toString());
         ChangeOfRepresentative representative = buildChangeOfRepresentative(caseData, changeOrganisationRequest);
         representatives.add(new CollectionMember<>(null, representative));
-        log.info("Change of Representatives after for case {} : {} ", caseDetails.getId().toString(), representatives);
+        log.info("Change of Representatives after for case {} ", caseDetails.getId().toString());
         representatives.sort((m1, m2) -> {
             LocalDateTime dt1 = m1.getValue().getAddedDateTime();
             LocalDateTime dt2 = m2.getValue().getAddedDateTime();
