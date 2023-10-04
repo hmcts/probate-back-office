@@ -53,7 +53,7 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
 
         pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(9, warnings.size());
+        assertEquals(8, warnings.size());
     }
 
     @Test

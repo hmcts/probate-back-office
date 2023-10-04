@@ -18,7 +18,6 @@ public enum GORCitizenMandatoryFields {
     DECEASED_DOMICILE_IN_ENG_WALES("deceasedDomicileInEngWales",
             "Was the deceased domiciled in England or Wales at the time of their death?"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_FORM_COMPLETED_ONLINE("ihtFormCompletedOnline", "IHT form completed online?", "1"),
     IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate"),
     IHT_NET_VALUE("ihtNetValue", "Net value of the estate"),
     SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
