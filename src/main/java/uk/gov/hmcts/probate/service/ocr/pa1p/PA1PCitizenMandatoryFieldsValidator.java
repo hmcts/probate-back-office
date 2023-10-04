@@ -55,12 +55,13 @@ public class PA1PCitizenMandatoryFieldsValidator {
                 warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING,
                         DEPENDANT_DESC_IHTFORMCOMPLETEDONLINE, DEPENDANT_KEY_IHTFORMCOMPLETEDONLINE));
             } else {
-                boolean result = BooleanUtils.toBoolean(ocrFieldValues.get(DEPENDANT_KEY_IHTFORMCOMPLETEDONLINE));
-                if (result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
+                boolean formCompletedOnlineResult =
+                        BooleanUtils.toBoolean(ocrFieldValues.get(DEPENDANT_KEY_IHTFORMCOMPLETEDONLINE));
+                if (formCompletedOnlineResult && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTREFERENCENUMBER)) {
                     log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTREFERENCENUMBER);
                     warnings.add(String.format(MANDATORY_FIELD_WARNING_STRING,
                             DEPENDANT_DESC_IHTREFERENCENUMBER, DEPENDANT_KEY_IHTREFERENCENUMBER));
-                } else if (!result && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
+                } else if (!formCompletedOnlineResult && !ocrFieldValues.containsKey(DEPENDANT_KEY_IHTFORMID)) {
                     log.warn(MANDATORY_FIELD_NOT_FOUND_LOG, DEPENDANT_KEY_IHTFORMID);
                     warnings.add(
                             String.format(MANDATORY_FIELD_WARNING_STRING,
