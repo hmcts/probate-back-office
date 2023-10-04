@@ -188,7 +188,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsLegalStatementDocument", "Label": "Legal statement", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsNextStepsDocument", "Label": "Next Steps Document", "FieldType": "Document", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsCoversheetDocument", "Label": "Coversheet", "FieldType": "Document", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsWillType", "Label": "Application type", "FieldType": "FixedRadioList", "FieldTypeParameter": "solsWillTypes", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsWillType", "Label": "What kind of application are you making?", "FieldType": "FixedRadioList", "FieldTypeParameter": "solsWillTypes", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "solsWillTypeReason", "Label": "Application type reason", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "willDispose", "Label": "Does the will dispose of the estate in England and Wales (or if will is in English, does it appoint an executor), or is the deceased a British National?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "noProofEntitlement", "Label": "The will is not entitled to proof in England and Wales.", "FieldType": "Label", "SecurityClassification": "Public"},
@@ -476,5 +476,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "FixedList", "FieldTypeParameter": "paymentTaken", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationSubmittedBy", "Label": "Application Submitted By", "FieldType": "Text", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "valueOfAssetSection", "Label": "Value of assets for Probate", "HintText": "The values you enter must be whole numbers, and must not include decimals, fullstops and commas.For example 25000, not 25,000.", "FieldType": "Label", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "valueOfAssetSection", "Label": "The values you enter must be whole numbers, and must not include decimals, fullstops and commas.For example 25000, not 25,000.", "FieldType": "Label", "SecurityClassification": "Public"}
 ]
