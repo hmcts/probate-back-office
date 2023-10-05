@@ -373,4 +373,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     //transient in-event vars
     private final OriginalDocuments originalDocuments;
     private final String documentsReceivedNotificationSent;
+    private final String uniqueProbateCodeId;
 }

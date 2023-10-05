@@ -477,5 +477,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "applicationSubmittedBy", "Label": "Application Submitted By", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "valueOfAssetSection", "Label": "The values you enter must be whole numbers, and must not include decimals, fullstops and commas.For example 25000, not 25,000.", "FieldType": "Label", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "hmrcLetter", "Label": "Have you received a letter from HMRC with a unique probate code relating to this application?", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "hmrcLetterId", "Label": "Have you received a letter from HMRC with a unique probate code relating to this application?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "uniqueProbateCodeId", "Label": "HMRC code", "FieldType": "Text", "SecurityClassification": "Public"}
 ]

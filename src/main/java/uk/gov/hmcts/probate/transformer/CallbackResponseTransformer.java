@@ -1091,6 +1091,7 @@ public class CallbackResponseTransformer {
             .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent())
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken())
+            .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
