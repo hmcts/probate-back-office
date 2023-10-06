@@ -157,6 +157,8 @@ class BusinessValidationControllerIT {
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
+    private static final String UNIQUE_CODE = "/case/validate-unique-code";
+    private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
 
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
@@ -1186,6 +1188,17 @@ class BusinessValidationControllerIT {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(REGISTRARS_DECISION).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldValidateUniqueCode() throws Exception {
+        caseDataBuilder.uniqueProbateCodeId(uniqueCode);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(UNIQUE_CODE).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }
