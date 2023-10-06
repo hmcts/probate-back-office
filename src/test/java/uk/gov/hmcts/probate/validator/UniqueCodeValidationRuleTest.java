@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.validator;
 
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -11,9 +10,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 class UniqueCodeValidationRuleTest {
@@ -40,11 +37,12 @@ class UniqueCodeValidationRuleTest {
 
     @Test
     void shouldReturnNoErrorForCorrectUniqueCode() {
-
-        Assertions.assertThatThrownBy(() -> {
+        dataMock = CaseData.builder()
+                .uniqueProbateCodeId(uniqueCode).build();
+        detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
+        assertDoesNotThrow(() -> {
             uniqueCodeValidationRule.validate(detailsMock);
-        }).isInstanceOf(BusinessValidationException.class).hasMessage(
-                        "Unique Probate code is invalid: 12345678987654321");
+            });
     }
 
     @Test

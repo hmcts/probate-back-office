@@ -32,6 +32,6 @@ public class UniqueCodeValidationRule {
     }
 
     private boolean removeSpaces(String uniqueCode) {
-        return uniqueCodeLength == uniqueCode.replaceAll(REMOVE_SPACE_REGEX_PATTERN, "").length() - 1;
+        return uniqueCodeLength == uniqueCode.replaceAll(REMOVE_SPACE_REGEX_PATTERN, "").length();
     }
 }
