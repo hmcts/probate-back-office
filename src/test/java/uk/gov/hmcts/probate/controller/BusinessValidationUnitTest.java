@@ -52,6 +52,7 @@ import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -164,6 +165,8 @@ class BusinessValidationUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformer;
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
+    @Mock
+    private UniqueCodeValidationRule uniqueCodeValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -195,6 +198,7 @@ class BusinessValidationUnitTest {
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
             ihtValidationRule,
+            uniqueCodeValidationRule,
             solicitorPostcodeValidationRule,
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
@@ -907,6 +911,18 @@ class BusinessValidationUnitTest {
                 underTest.changeCaseState(callbackRequestMock,httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
                 .transferToState(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformUniqueCode() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateUniqueProbateCode(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transformUniqueProbateCode(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

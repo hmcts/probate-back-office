@@ -462,6 +462,14 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse transformUniqueProbateCode(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
+                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", ""));
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                                           String userId) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()

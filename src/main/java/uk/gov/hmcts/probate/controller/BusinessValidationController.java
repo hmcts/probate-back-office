@@ -57,6 +57,7 @@ import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -106,6 +107,7 @@ public class BusinessValidationController {
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
+    private final UniqueCodeValidationRule uniqueCodeValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
@@ -447,6 +449,15 @@ public class BusinessValidationController {
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started");
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-unique-code")
+    public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformUniqueProbateCode(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
