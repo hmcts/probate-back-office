@@ -583,6 +583,7 @@ public class CaseData extends CaseDataParent {
     private String documentUploadedAfterCaseStopped;
     private String documentsReceivedNotificationSent;
     private String uniqueProbateCodeId;
+    private String hmrcLetterId;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
