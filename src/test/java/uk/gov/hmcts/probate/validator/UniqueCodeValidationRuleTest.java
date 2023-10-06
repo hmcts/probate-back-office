@@ -45,7 +45,7 @@ class UniqueCodeValidationRuleTest {
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
         assertDoesNotThrow(() -> {
             uniqueCodeValidationRule.validate(detailsMock);
-            });
+        });
     }
 
     @Test
