@@ -86,7 +86,7 @@ class UniqueCodeValidationRuleTest {
     @Test
     void shouldReturnErrorForLessCharacters() {
         dataMock = CaseData.builder()
-                .uniqueProbateCodeId(uniqueCode.substring(0, uniqueCode.length()-3)).build();
+                .uniqueProbateCodeId(uniqueCode.substring(0, uniqueCode.length() - 3)).build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
 
         BusinessValidationException exception = assertThrows(BusinessValidationException.class, () -> {
