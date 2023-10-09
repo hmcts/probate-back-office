@@ -466,7 +466,8 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
-                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", ""));
+                .getData().getUniqueProbateCodeId() != null ? callbackRequest.getCaseDetails()
+                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
