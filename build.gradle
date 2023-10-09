@@ -200,7 +200,7 @@ def versions = [
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
         lombok                          : '1.18.26',
-        springDocOpenUi                 : '1.6.6',
+        springDocOpenUi                 : '1.7.0',
         springSecurityVersion           : '5.7.3',
         probateCommonsVersion           : '1.4.20',
         ccdClient                       : '4.7.5',
