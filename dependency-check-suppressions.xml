@@ -171,6 +171,7 @@
         <notes>netty</notes>
         <cve>CVE-2022-41881</cve>
         <cve>CVE-2022-41915</cve>
+        <cve>CVE-2023-4586</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
