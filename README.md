@@ -518,7 +518,7 @@ testusername@test.com/Pa55word11
 add a dev.yaml file to the /config folder with contents
 ```
 featureToggles:
-  launchDarklyKey: 'sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844'
+  launchDarklyKey: Located in lower env keyvaults with name launchdarkly-key
 ```
 emails can be monitored at:
 ```
