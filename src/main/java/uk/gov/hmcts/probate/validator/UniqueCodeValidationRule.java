@@ -28,7 +28,7 @@ public class UniqueCodeValidationRule {
                     .getMessage("uniqueProbateCode", null, Locale.UK);
             throw new BusinessValidationException(userMessage,
                     "Unique Probate code is invalid: " + caseDetails.getId());
-            }
+        }
     }
 
     private boolean removeSpaces(String uniqueCode) {
