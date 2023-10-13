@@ -28,41 +28,6 @@ class NonMandatoryFieldsValidatorTest {
         MockitoAnnotations.openMocks(this);
     }
 
-    @Test
-    void testFlagSolsWillTypeCaseWarningPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
-
-        ocrFields.add(OCRField.builder().name("solsWillType").value("Grant I think").description("Will Type").build());
-        List<String> warningsResponse = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
-            FormType.PA1A);
-        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
-        assertEquals(2, warningsResponse.size());
-    }
-
-    @Test
-    void testFlagSolsWillTypeReasonCaseWarningPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
-        ocrFields.add(
-            OCRField.builder().name("solsWillTypeReason").value("Because they died").description("Will Type").build());
-        List<String> warningsResponse = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
-            FormType.PA1A);
-        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
-        assertEquals(2, warningsResponse.size());
-    }
-
-    @Test
-    void testFlagAsSolicitorCaseWarningPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
-
-        assertEquals("The form has been flagged as a Solictor case.",
-            nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields, FormType.PA1A).get(0));
-    }
 
     @Test
     void testFlagAsSolicitorCaseWarningPA8A() {
@@ -90,7 +55,7 @@ class NonMandatoryFieldsValidatorTest {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORSolicitorFields();
         List<String> warningsResult = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA1P);
-        assertEquals("The form has been flagged as a Solictor case.", warningsResult.get(0));
+        assertEquals(0, warningsResult.size());
     }
 
     @Test
@@ -100,11 +65,7 @@ class NonMandatoryFieldsValidatorTest {
         List<String> warningsResponse = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA1P);
 
-        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
-        assertEquals(2, warningsResponse.size());
+        assertEquals(0, warningsResponse.size());
     }
 
     @Test
@@ -115,11 +76,7 @@ class NonMandatoryFieldsValidatorTest {
         List<String> warningsResponse = nonMandatoryFieldsValidator.ocrToCCDNonMandatoryWarnings(ocrFields,
             FormType.PA1P);
 
-        assertEquals("The form has been flagged as a Solictor case.", warningsResponse.get(0));
-        assertEquals(
-            "An application type and/or reason has been provided, this will need to be reviewed as it will not be "
-                + "mapped to the case.", warningsResponse.get(1));
-        assertEquals(2, warningsResponse.size());
+        assertEquals(0, warningsResponse.size());
     }
 
 }

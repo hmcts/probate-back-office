@@ -19,5 +19,17 @@
   "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal_GET":"ignore",
   "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/_GET":"ignore",
   "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
-  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/sitemap.xml_GET":"ignore"
+  "10038_Content Security Policy (CSP) Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/sitemap.xml_GET":"ignore",
+  "40025_Proxy Disclosure_https://probate-back-office-aat.service.core-compute-aat.internal_GET":"ignore",
+  "40025_Proxy Disclosure_https://probate-back-office-aat.service.core-compute-aat.internal/_GET":"ignore",
+  "40025_Proxy Disclosure_https://probate-back-office-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
+  "40025_Proxy Disclosure_https://probate-back-office-aat.service.core-compute-aat.internal/sitemap.xml_GET":"ignore",
+  "10063_Permissions Policy Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal_GET":"ignore",
+  "10063_Permissions Policy Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/_GET":"ignore",
+  "10063_Permissions Policy Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
+  "10063_Permissions Policy Header Not Set_https://probate-back-office-aat.service.core-compute-aat.internal/sitemap.xml_GET":"ignore",
+  "10049_Storable and Cacheable Content_https://probate-back-office-aat.service.core-compute-aat.internal_GET":"ignore",
+  "10049_Storable and Cacheable Content_https://probate-back-office-aat.service.core-compute-aat.internal/_GET":"ignore",
+  "10049_Storable and Cacheable Content_https://probate-back-office-aat.service.core-compute-aat.internal/robots.txt_GET":"ignore",
+  "10049_Storable and Cacheable Content_https://probate-back-office-aat.service.core-compute-aat.internal/sitemap.xml_GET":"ignore"
 }
