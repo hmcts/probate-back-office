@@ -22,12 +22,12 @@ public class UniqueCodeValidationRule {
 
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-            if (caseData.getUniqueProbateCodeId() != null && (!caseData.getUniqueProbateCodeId()
-                    .matches(UNIQUE_CODE_REGEX_PATTERN) || !removeSpaces(caseData.getUniqueProbateCodeId()))) {
-                String userMessage = businessValidationMessageRetriever
-                        .getMessage("uniqueProbateCode", null, Locale.UK);
-                throw new BusinessValidationException(userMessage,
-                        "Unique Probate code is invalid: " + caseDetails.getId());
+        if (caseData.getUniqueProbateCodeId() != null && (!caseData.getUniqueProbateCodeId()
+                .matches(UNIQUE_CODE_REGEX_PATTERN) || !removeSpaces(caseData.getUniqueProbateCodeId()))) {
+            String userMessage = businessValidationMessageRetriever
+                    .getMessage("uniqueProbateCode", null, Locale.UK);
+            throw new BusinessValidationException(userMessage,
+                    "Unique Probate code is invalid: " + caseDetails.getId());
             }
     }
 
