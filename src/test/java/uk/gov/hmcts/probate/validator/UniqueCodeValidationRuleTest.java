@@ -95,4 +95,14 @@ class UniqueCodeValidationRuleTest {
         });
         assertEquals("Unique Probate code is invalid: 12345678987654321", exception.getMessage());
     }
+
+    @Test
+    void shouldReturnNoErrorForNullUniqueCode() {
+        dataMock = CaseData.builder()
+                .uniqueProbateCodeId(null).build();
+        detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
+        assertDoesNotThrow(() -> {
+            uniqueCodeValidationRule.validate(detailsMock);
+        });
+    }
 }
