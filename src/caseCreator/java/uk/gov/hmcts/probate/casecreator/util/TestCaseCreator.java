@@ -71,10 +71,10 @@ public class TestCaseCreator {
     private RelaxedServiceAuthTokenGenerator relaxedServiceAuthTokenGenerator;
     private ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
 
-    /*{
+    {
         System.setProperty("socksProxyHost", "localhost");
         System.setProperty("socksProxyPort", "9090");
-    }*/
+    }
 
     public TestCaseCreator() {
         this.springIntegration = new SpringIntegrationMethodRule();
