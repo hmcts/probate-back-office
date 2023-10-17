@@ -1,7 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const noticeOfChangeConfig = require("../noticeOfChange/noticeOfChangeConfig.json");
+const noticeOfChangeConfig = require('../noticeOfChange/noticeOfChangeConfig.json');
 
 module.exports = async function (caseRef, deceasedSurname) {
 
@@ -15,9 +15,9 @@ module.exports = async function (caseRef, deceasedSurname) {
     const checkAffirmationLocator = noticeOfChangeConfig.affirmationLocator;
     const checkNotifyLocator = noticeOfChangeConfig.notifyCheckboxLocator;
     await I.waitForEnabled({css: checkAffirmationLocator});
-    await I.click(`#affirmation`);
+    await I.click('#affirmation');
     await I.waitForEnabled({css: checkNotifyLocator});
-    await I.click(`#notifyEveryParty`);
+    await I.click('#notifyEveryParty');
     await I.wait(testConfig.CreateCaseDelay);
     await I.click(noticeOfChangeConfig.continueButtonLocator);
 };
