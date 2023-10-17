@@ -15,6 +15,7 @@ public class OCRFieldMartialStatusMapper {
     private static final String MARRIED_CIVIL_PARTNERSHIP = "marriedCivilPartnership";
     private static final String DIVORCED_CIVIL_PARTNERSHIP = "divorcedCivilPartnership";
     private static final String JUDICIALLY = "judicially";
+    private static final String DECEASED_MARITAL_STATUS_FIELD = "deceasedMartialStatus";
 
     @SuppressWarnings("squid:S1168")
     @ToMartialStatus
@@ -37,7 +38,7 @@ public class OCRFieldMartialStatusMapper {
                     return MaritalStatus.JUDICIALLY_SEPARATED;
                 default:
                     String errorMessage = "Martial status 'neverMarried', 'widowed', 'marriedCivilPartnership', "
-                        + "'divorcedCivilPartnership' or 'judicially' expected but got '" + martialStatusValue + "'";
+                        + "'divorcedCivilPartnership' or 'judicially' expected but got for " + DECEASED_MARITAL_STATUS_FIELD +":" + martialStatusValue + "";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }
