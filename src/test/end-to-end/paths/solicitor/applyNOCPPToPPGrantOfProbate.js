@@ -19,14 +19,14 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
-const nocApplicantDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfig')
+const nocApplicantDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfig');
 const changeOfRepresentativesTabConfig = require('src/test/end-to-end/pages/noticeOfChange/nocChangeOfRepresentativesTabConfig');
 const changeOfRepresentativesDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfig');
-const nocApplicantDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfigAAT')
+const nocApplicantDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfigAAT');
 const changeOfRepresentativesDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfigAAT');
 const nocConfig = require('src/test/end-to-end/pages/noticeOfChange/noticeOfChangeConfig');
-const dateFns = require("date-fns");
-const {legacyParse, convertTokens} = require("@date-fns/upgrade/v2");
+const dateFns = require('date-fns');
+const {legacyParse, convertTokens} = require('@date-fns/upgrade/v2');
 
 Feature('Solicitor - Notice Of Change GOP').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Notice Of Change GOP';
@@ -123,8 +123,8 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'Login as PP user 2 to perform NoC');
 
     let env = '';
-    let url = testConfig.TestBackOfficeUrl;
-    if (url.includes("demo")) {
+    const url = testConfig.TestBackOfficeUrl;
+    if (url.includes('demo')) {
         env = 'Demo';
     } else {
         env = 'AAT';
@@ -146,8 +146,7 @@ Scenario(scenarioName, async function ({I}) {
         changeOfRepresentativesDetailsConfig.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
         await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfig, false);
         await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesDetailsConfig);
-    }
-    else {
+    } else {
         changeOfRepresentativesDetailsConfigAAT.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
         await I.seeUpdatesOnCase(caseRef, applicantDetailsTabConfig, 'SolicitorMainApplicantAndExecutor', nocApplicantDetailsConfigAAT, false);
         await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesDetailsConfigAAT);

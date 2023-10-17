@@ -19,9 +19,9 @@ const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDet
 const deceasedDetailsConfig = require('src/test/end-to-end/pages/solicitorApplyCaveat/applicationDetails/applicationDetails');
 const changeOfRepresentativesTabConfig = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativeCaveatTabConfig');
 const changeOfRepresentativesCaveatorDetailsConfigDemo = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesCaveatConfig');
-const postNocCaveatorDetailsTabConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsTabConfig')
-const postNocCaveatorConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsConfig')
-const postNocCaveatorConfigDemo = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsConfigDemo')
+const postNocCaveatorDetailsTabConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsTabConfig');
+const postNocCaveatorConfig = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsConfig');
+const postNocCaveatorConfigDemo = require('src/test/end-to-end/pages/noticeOfChange/postNocCaveatorDetailsConfigDemo');
 const changeOfRepresentativesCaveatorDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesCaveatConfigAAT');
 const nocConfig = require('src/test/end-to-end/pages/noticeOfChange/noticeOfChangeConfig');
 
@@ -97,8 +97,8 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, 'Login as PP user 2 to perform NoC');
 
     let env = 'AAT';
-    let url = testConfig.TestBackOfficeUrl;
-    if (url.includes("demo")) {
+    const url = testConfig.TestBackOfficeUrl;
+    if (url.includes('demo')) {
         env = 'Demo';
     } else {
         env = 'AAT';
@@ -121,8 +121,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
         await I.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
         await I.seeCaseDetails(caseRef, changeOfRepresentativesTabConfig, changeOfRepresentativesCaveatorDetailsConfigDemo, 'changeOfRepresentative', endState, 90);
-    }
-    else {
+    } else {
         changeOfRepresentativesCaveatorDetailsConfigAAT.nocTriggeredDate = dateFns.format(legacyParse(new Date()), convertTokens('D MMM YYYY'));
         await I.seeCaseDetails(caseRef, postNocCaveatorDetailsTabConfig, postNocCaveatorConfig);
         await I.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
@@ -137,5 +136,5 @@ Scenario(scenarioName, async function ({I}) {
     await I.navigateToCase(caseRef);
     await I.waitForText(nocConfig.nocWaitForText, testConfig.WaitForTextTimeout);
     await I.see(nocConfig.nocWaitForText);
-    await I.dontSee(caseRef)
+    await I.dontSee(caseRef);
 }).retry(testConfig.TestRetryScenarios);
