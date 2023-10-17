@@ -28,4 +28,5 @@ public class EmailTemplates {
     private String grantDelayed;
     private String grantAwaitingDocumentation;
     private String hmrcExtract;
+    private String noticeOfChangeReceived;
 }

@@ -901,5 +901,11 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "reactivateDormantCase", "UserRole": "citizen", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRobotUploadDocuments", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "handleEvidence", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRedeclarationComplete", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boRedeclarationComplete", "UserRole": "caseworker-probate-rparobot", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-issuer", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "nocRequest", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "applyNocDecision", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"}
 ]

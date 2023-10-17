@@ -739,3 +739,20 @@ Generate a shuttered CCD config xlsx in local
 ````
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 true
 ````
+
+#DTSPB-3312 notes
+#####REMEMBER: 
+This branch contains all the code changes from DTSPB-1172 SPIKE. You may want to discard some of that setup
+https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-case-auto-assignment-on-bulkScan
+###Scenario 1: PP -> PP
+
+1. Goto https://xui-probate-back-office-pr-2347.preview.platform.hmcts.net
+2. Login as PP1 = as probatesolicitortestorgtest1@gmail.com
+3. Create/Complete a PP case 
+6. Logout. Login as PP2 = probatesolicitortestorg2test1@gmail.com 
+7. got to /noc pages 
+8. enter case ref, answer challenge question, confirm
+9. PP2 can now see the case
+10. As an added check logout. Longin as CW. Progress case to Grant Issued
+
+

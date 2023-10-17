@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
@@ -56,6 +57,7 @@ import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.NOC;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.INTESTACY_NAME;
 
@@ -87,6 +89,7 @@ public class NotificationController {
     private final GrantNotificationService grantNotificationService;
     private final CaseDataTransformer caseDataTransformer;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule;
 
     @PostMapping(path = "/application-received")
     public ResponseEntity<ProbateDocument> sendApplicationReceivedNotification(
@@ -269,6 +272,29 @@ public class NotificationController {
 
     }
 
+    @PostMapping(path = "/noc-notification")
+    public ResponseEntity<CallbackResponse> sendNOCEmailNotification(
+            @RequestBody CallbackRequest callbackRequest) throws NotificationClientException {
+        log.info("Preparing to send email notification for NOC");
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        CallbackResponse response;
+
+        List<Document> documents = new ArrayList<>();
+        response = eventValidationService.validateNocEmail(caseData, nocEmailAddressNotifyValidationRule);
+        if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to notify Solicitor for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
+            documents.add(nocSentEmail);
+            log.info("Successful response from notify for case id {} ",
+                    callbackRequest.getCaseDetails().getId());
+            response = callbackResponseTransformer.addNocDocuments(callbackRequest, documents);
+        } else {
+            log.info("No email sent or document returned to case: {}", caseDetails.getId());
+        }
+        return ResponseEntity.ok(response);
+    }
 
     private boolean isAnEmailAddressPresent(CaseData caseData) {
         return caseData.isDocsReceivedEmailNotificationRequested();
