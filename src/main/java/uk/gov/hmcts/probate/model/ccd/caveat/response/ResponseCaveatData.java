@@ -11,12 +11,15 @@ import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkScanEnvelope;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 
@@ -109,4 +112,9 @@ public class ResponseCaveatData {
     private final String serviceRequestReference;
     private final String paymentTaken;
     private final String applicationSubmittedBy;
+
+    private final List<CollectionMember<ChangeOfRepresentative>> changeOfRepresentatives;
+    private final ChangeOfRepresentative changeOfRepresentative;
+    private final RemovedRepresentative removedRepresentative;
+    private final ChangeOrganisationRequest changeOrganisationRequestField;
 }

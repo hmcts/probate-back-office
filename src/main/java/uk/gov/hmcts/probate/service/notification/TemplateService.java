@@ -70,6 +70,8 @@ public class TemplateService {
                 } else {
                     return emailTemplates.getGrantRaised();
                 }
+            case NOC:
+                return emailTemplates.getNoticeOfChangeReceived();
             case CAVEAT_RAISED:
                 return emailTemplates.getCaveatRaised();
             case CAVEAT_EXTEND:
