@@ -1,7 +1,7 @@
 'use strict';
 
 const testConfig = require('src/test/config.js');
-const noticeOfChangeConfig = require("../noticeOfChange/noticeOfChangeConfig.json");
+const noticeOfChangeConfig = require('../noticeOfChange/noticeOfChangeConfig.json');
 
 module.exports = async function (deceasedSurname) {
 

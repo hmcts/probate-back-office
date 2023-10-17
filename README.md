@@ -749,10 +749,15 @@ https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-cas
 1. Goto https://xui-probate-back-office-pr-2347.preview.platform.hmcts.net
 2. Login as PP1 = as probatesolicitortestorgtest1@gmail.com
 3. Create/Complete a PP case 
-6. Logout. Login as PP2 = probatesolicitortestorg2test1@gmail.com 
-7. got to /noc pages 
-8. enter case ref, answer challenge question, confirm
-9. PP2 can now see the case
-10. As an added check logout. Longin as CW. Progress case to Grant Issued
+4. Logout. Login as PP2 = probatesolicitortestorg2test1@gmail.com 
+5. got to /noc pages 
+6. enter case ref, answer challenge question, confirm
+7. PP2 can now see the case
+8. As an added check logout. Longin as CW. Progress case to Grant Issued
+
+#Upload spreadsheet on Demo with below:
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-demo.service.core-compute-demo.internal aac-manage-case-assignment-demo.service.core-compute-demo.internal
+https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
+
 
 
