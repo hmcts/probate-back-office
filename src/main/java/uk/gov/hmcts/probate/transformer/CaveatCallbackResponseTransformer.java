@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData.ResponseCaveatDataBuilder;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
@@ -213,6 +214,16 @@ public class CaveatCallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CaveatCallbackResponse addNocDocuments(CaveatCallbackRequest caveatCallbackRequest,
+                                                  List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(caveatCallbackRequest, document));
+
+        ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
+                getResponseCaveatData(caveatCallbackRequest.getCaseDetails());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     private CaveatCallbackResponse transformResponse(ResponseCaveatData responseCaveatData) {
         return CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
     }
@@ -285,7 +296,10 @@ public class CaveatCallbackResponseTransformer {
             .registrarDirections(getNullForEmptyRegistrarDirections(caveatData.getRegistrarDirections()))
             .serviceRequestReference(caveatData.getServiceRequestReference())
             .paymentTaken(caveatData.getPaymentTaken())
-            .applicationSubmittedBy(caveatData.getApplicationSubmittedBy());
+            .applicationSubmittedBy(caveatData.getApplicationSubmittedBy())
+            .removedRepresentative(caveatData.getRemovedRepresentative())
+            .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()));
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
@@ -378,4 +392,11 @@ public class CaveatCallbackResponseTransformer {
         return collectionMembers;
     }
 
+    private List<CollectionMember<ChangeOfRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
 }
