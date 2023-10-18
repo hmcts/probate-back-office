@@ -168,9 +168,8 @@ public class OCRFieldAddressMapper {
 
     private void validatePostCode(final String postCode, String postCodeField) {
         if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {
-            String errorMessage =
-                    "An invalid postcode has been found for " + postCodeField + ":" + postCode + ", " +
-                            "please provide a valid postcode";
+            String errorMessage = postCodeField +
+                    ": An invalid postcode has been found '" + postCode + "', please provide a valid postcode";
             log.error(errorMessage);
             throw new OCRMappingException(errorMessage);
         }

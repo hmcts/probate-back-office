@@ -35,7 +35,7 @@ public class OCRFieldPaymentMethodMapper {
                 case "PBA":
                     return null;
                 default:
-                    String errorMessage = "Payment method debitOrCredit, cheque, feeAccount or cash expected but got '"
+                    String errorMessage = "paperPaymentMethod: debitOrCredit, cheque, feeAccount or cash expected but got '"
                         + paymentMethod + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
