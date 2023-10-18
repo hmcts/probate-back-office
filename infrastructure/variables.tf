@@ -12,6 +12,10 @@ variable database_name_v11 {
   default = "probatemandb"
 }
 
+variable database_name_v14 {
+  default = "probatemandbv14"
+}
+
 variable "location" {
   default = "UK South"
 }

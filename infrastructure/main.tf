@@ -22,3 +22,31 @@ module "db-v11" {
   storage_mb         = 61440
   subscription       = var.subscription
 }
+
+module "postgresql" {
+  providers = {
+    azurerm.postgres_network = azurerm.cft_vnet
+  }
+
+  source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
+  env    = var.env
+
+  product       = var.product
+  component     = var.component
+  business_area = "cft"
+
+
+  common_tags = var.common_tags
+  name        = "${var.database_name_v14}-postgres-db-v14"
+  pgsql_databases = [
+    {
+      name : var.database_name_v14
+    }
+  ]
+
+  pgsql_version = "14"
+
+  admin_user_object_id = var.jenkins_AAD_objectId
+}
+
+
