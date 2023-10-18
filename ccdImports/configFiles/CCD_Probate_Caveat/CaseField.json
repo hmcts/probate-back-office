@@ -76,5 +76,10 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestReference", "Label": "Service request reference", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "paymentTaken", "Label": "Payment has been taken", "FieldType": "FixedList", "FieldTypeParameter": "paymentTaken", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "serviceRequestWaysToPay", "Label": "Service request", "FieldType": "WaysToPay", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationSubmittedBy", "Label": "Application Submitted By", "FieldType": "Text", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "applicationSubmittedBy", "Label": "Application Submitted By", "FieldType": "Text", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "changeOrganisationRequestField", "Label": "Change Organisation Request", "FieldType": "ChangeOrganisationRequest", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "nocPreparedDate", "Label": "Noc prepared date", "FieldType": "Date", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "removedRepresentative", "Label": "Removed Representative", "FieldType": "RemovedRepresentative", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "changeOfRepresentatives", "Label": "Change Of Representatives", "FieldType": "Collection", "FieldTypeParameter": "ChangeOfRepresentative", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "Caveat", "ID": "changeOfRepresentative", "Label": "Change Of Representative", "FieldType": "ChangeOfRepresentative", "SecurityClassification": "Public"}
 ]

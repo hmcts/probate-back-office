@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -111,6 +112,9 @@ public class CallbackResponseTransformer {
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+    private static final String SOL_AS_EXEC_ID = "solicitor";
+    private static final String PBA_PAYMENT_METHOD = "pba";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
 
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
@@ -347,6 +351,15 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse addNocDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addBulkPrintInformationForReprint(CallbackRequest callbackRequest, Document document,
                                                               String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -445,7 +458,6 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
-
 
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
@@ -1087,6 +1099,9 @@ public class CallbackResponseTransformer {
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
+            .removedRepresentative(caseData.getRemovedRepresentative())
+            .changeOrganisationRequestField(caseData.getChangeOrganisationRequestField())
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caseData.getChangeOfRepresentatives()))
             .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
             .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent())
             .serviceRequestReference(caseData.getServiceRequestReference())
@@ -1107,7 +1122,7 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
+    OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
         CaseData caseData = caseDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
         if (null != authToken) {
@@ -1677,6 +1692,14 @@ public class CallbackResponseTransformer {
 
     private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
             List<CollectionMember<RegistrarDirection>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
+
+    private List<CollectionMember<ChangeOfRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
         }

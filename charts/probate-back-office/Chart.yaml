@@ -2,8 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.40
-
+version: 1.0.41
 maintainers:
   - name: HMCTS Probate Team
     email: probate-action-group@HMCTS.NET
@@ -20,6 +19,10 @@ dependencies:
     version: ~0.2.13
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: xui-webapp.enabled
+  - name: aac-manage-case-assignment
+    version: ~0.2.0
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
+    condition: aac-manage-case-assignment.enabled
   - name: idam-pr
     version: 2.3.0
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'

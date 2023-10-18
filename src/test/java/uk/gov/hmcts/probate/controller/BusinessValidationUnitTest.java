@@ -164,7 +164,6 @@ class BusinessValidationUnitTest {
     private HandOffLegacyTransformer handOffLegacyTransformer;
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
-
     @Mock
     private CaseEscalatedService caseEscalatedService;
     private BusinessValidationController underTest;
@@ -201,8 +200,7 @@ class BusinessValidationUnitTest {
             furtherEvidenceForApplicationValidationRule,
             changeToSameStateValidationRule,
             handOffLegacyTransformer,
-            registrarDirectionServiceMock
-            );
+            registrarDirectionServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -895,8 +893,6 @@ class BusinessValidationUnitTest {
         verify(caseEscalatedServiceMock, times(1)).setResolveCaseWorkerEscalatedDate(caseDetailsMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
-
-
 
     @Test
     void shouldChangeCaseState() {

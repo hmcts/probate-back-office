@@ -8,4 +8,4 @@ if [[ ${environment} != "prod" && ${environment} != "aat" && ${environment} != "
   echo "Environment '${environment}' is not supported!"
   exit 1
 fi
-.././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-${1}.service.core-compute-${1}.internal ${1} ${2}
+.././ccdImports/conversionScripts/createAllXLS-pipeline.sh probate-back-office-${1}.service.core-compute-${1}.internal ${1} ${2} aac-manage-case-assignment-${1}.service.core-compute-${1}.internal
