@@ -24,10 +24,6 @@ module "db-v11" {
 }
 
 module "postgresql" {
-  providers = {
-    azurerm.postgres_network = azurerm.cft_vnet
-  }
-
   source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
   env    = var.env
 
