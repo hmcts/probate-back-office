@@ -2,6 +2,13 @@ provider "azurerm" {
   features {}
 }
 
+provider "azurerm" {
+  features {}
+  skip_provider_registration = true
+  alias                      = "cft_vnet"
+  subscription_id            = var.aks_subscription_id
+}
+
 locals {
   vaultName = "${var.product}-${var.env}"
 }
@@ -24,6 +31,10 @@ module "db-v11" {
 }
 
 module "postgresql" {
+  providers = {
+    azurerm.postgres_network = azurerm.cft_vnet
+  }
+
   source = "git@github.com:hmcts/terraform-module-postgresql-flexible?ref=master"
   env    = var.env
 
