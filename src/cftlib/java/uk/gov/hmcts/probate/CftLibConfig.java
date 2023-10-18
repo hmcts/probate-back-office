@@ -39,7 +39,8 @@ public class CftLibConfig implements CFTLibConfigurer {
             "caseworker-probate-charity",
             "citizen",
             "caseworker-caa",
-            "caseworker-probate-rparobot"
+            "caseworker-probate-rparobot",
+            "caseworker-approver"
         );
 
         try {
