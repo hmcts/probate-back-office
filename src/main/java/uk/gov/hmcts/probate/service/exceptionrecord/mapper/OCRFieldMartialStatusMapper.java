@@ -36,8 +36,9 @@ public class OCRFieldMartialStatusMapper {
                 case JUDICIALLY:
                     return MaritalStatus.JUDICIALLY_SEPARATED;
                 default:
-                    String errorMessage = "deceasedMartialStatus: 'neverMarried', 'widowed', 'marriedCivilPartnership', "
-                            + "'divorcedCivilPartnership' or 'judicially' expected but got '" + martialStatusValue + "'";
+                    String errorMessage = "deceasedMartialStatus: 'neverMarried', 'widowed', "
+                            + "'marriedCivilPartnership', 'divorcedCivilPartnership' or 'judicially' "
+                            + "expected but got '" + martialStatusValue + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }

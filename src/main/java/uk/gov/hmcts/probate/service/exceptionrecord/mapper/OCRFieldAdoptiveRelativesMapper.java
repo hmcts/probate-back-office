@@ -111,8 +111,8 @@ public class OCRFieldAdoptiveRelativesMapper {
             } else if (!matchesIn && matchesOut) {
                 return InOut.OUT;
             } else {
-                String errorMessage = fieldName +
-                        ": '" + adoptedInOutValue + "' could not be mapped to 'in' or 'out' values";
+                String errorMessage = fieldName
+                        + ": '" + adoptedInOutValue + "' could not be mapped to 'in' or 'out' values";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
             }

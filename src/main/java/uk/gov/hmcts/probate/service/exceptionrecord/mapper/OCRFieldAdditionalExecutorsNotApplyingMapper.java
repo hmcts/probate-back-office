@@ -108,8 +108,8 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
             case "F":
                 return ExecutorNotApplyingReason.MENTALLY_INCAPABLE;
             default:
-                String errorMessage = fieldName +
-                        ": Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
+                String errorMessage = fieldName
+                        + ": Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
         }
