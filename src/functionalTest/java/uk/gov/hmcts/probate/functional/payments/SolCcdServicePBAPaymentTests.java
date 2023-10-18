@@ -16,12 +16,12 @@ public class SolCcdServicePBAPaymentTests extends IntegrationTestBase {
     @Test
     public void shouldValidateForGrantPaymentCallback() throws IOException {
         //@TODO 500 here because we dont have a case that will exist in this state
-        validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/gor-payment-request-update", 500);
+        validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/gor-payment-request-update", 403);
     }
 
     @Test
     public void shouldValidateForCaveatCallback() throws IOException {
         //@TODO 500 here because we dont have a case that will exist in this state
-        validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/caveat-payment-request-update", 500);
+        validatePutSuccess("solicitorPaymentCallbackPayload.json", "/payment/caveat-payment-request-update", 403);
     }
 }

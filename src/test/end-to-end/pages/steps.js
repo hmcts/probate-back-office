@@ -150,6 +150,12 @@ module.exports = function () {
         verifyShareCase: steps.shareCase.verifyShareCase,
         shareCaseVerifyUserRemove: steps.shareCase.shareCaseVerifyUserRemove,
         shareCaseDelete: steps.shareCase.shareCaseDelete,
+        authenticateUserNoc: steps.IDAM.signInNoC,
+        nocNavigation: steps.noticeOfChange.navigateToNoc,
+        nocPage1: steps.noticeOfChange.nocPage1,
+        nocPage2: steps.noticeOfChange.nocPage2,
+        nocPage3: steps.noticeOfChange.nocPage3,
+        nocConfirmationPage: steps.noticeOfChange.nocConfirmationPage,
         chooseResolveStop: steps.resolveStop.resolveStop,
         probateStopCase: steps.stopCaseProbate.stopCaseProbate
     });

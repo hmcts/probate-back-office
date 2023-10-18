@@ -182,6 +182,7 @@ notifications:
           redeclarationSot: "sols-redeclaration-sot"
           grantDelayed: "sols-grantDelayed"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc"
+          noticeOfChangeReceived: "sols-noc"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -222,6 +223,7 @@ notifications:
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
+          noticeOfChangeReceived: "sols-noc"
 
 documents:
   templates:
@@ -387,6 +389,7 @@ idam:
     url: ${S2S_AUTH_URL:http://localhost:4502}
     totp_secret: ${S2S_AUTH_TOTP_SECRET:AAAAAAAAAAAAAAAA}
     microservice: probate_backend
+    services-allowed-to-payment-update: ${SERVICES_ALLOWED_TO_PAYMENT_UPDATE:payment_app}
   service:
     host: ${S2S_AUTH_URL:http://localhost:4502}
   api:

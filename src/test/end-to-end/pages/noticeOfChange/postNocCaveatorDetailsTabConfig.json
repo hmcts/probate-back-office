@@ -1,0 +1,29 @@
+{
+  "tabName": "Caveator details",
+  "fields": [
+    "Building and Street",
+    "Address Line 2",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Email address"
+  ],
+  "dataKeys": [
+    "page2_caveator_email",
+    "address_line1",
+    "address_line2",
+    "address_town",
+    "address_county",
+    "address_postcode"
+  ],
+  "caveatorApplicationDetails": {
+    "fields": [
+      "Forename(s)",
+      "Surname(s)"
+    ],
+    "dataKeys": [
+      "page1_caveator_surname",
+      "page1_caveator_forename"
+    ]
+  }
+}

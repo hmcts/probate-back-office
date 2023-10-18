@@ -2,5 +2,13 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "OrgPolicyCaseAssignedRole", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "OrgPolicyReference", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationID", "UserRole": "caseworker-caa", "CRUD": "CRUD"}
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationID", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationName", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "PrepopulateToUsersOrganisation", "UserRole": "caseworker-caa", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "OrgPolicyCaseAssignedRole", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "OrgPolicyReference", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationID", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "Organisation.OrganisationName", "UserRole": "caseworker-approver", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicantOrganisationPolicy", "ListElementCode": "PrepopulateToUsersOrganisation", "UserRole": "caseworker-approver", "CRUD": "CRUD"}
 ]
