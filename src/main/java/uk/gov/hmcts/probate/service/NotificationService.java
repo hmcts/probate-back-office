@@ -53,6 +53,7 @@ import java.util.Map;
 import java.util.Optional;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
@@ -162,6 +163,54 @@ public class NotificationService {
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
                 caseDetails.getId());
+
+        return getSentEmailDocument(state, emailAddress, response);
+    }
+
+    public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+        String emailAddress = caseData.getRemovedRepresentative() != null
+                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
+        String solicitorName = removedSolicitorNameForPersonalisation(caseData);
+        String reference = caseData.getSolsSolicitorAppReference();
+        String deceasedName = caseData.getDeceasedFullName();
+
+        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(caseDetails.getId(),
+                        solicitorName, deceasedName);
+        String emailReplyToId = registry.getEmailReplyToId();
+        log.info("Personlisation complete now get the email response");
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                        caseDetails.getId());
+
+        return getSentEmailDocument(state, emailAddress, response);
+    }
+
+    public Document sendCaveatNocEmail(State state, CaveatDetails caveatDetails) throws
+            NotificationClientException {
+        CaveatData caveatData = caveatDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caveatData.getRegistryLocation().toLowerCase());
+        String emailAddress = caveatData.getRemovedRepresentative() != null
+                ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
+        String deceasedName = caveatData.getDeceasedFullName();
+
+        String templateId = templateService.getTemplateId(state, caveatData.getApplicationType(),
+                caveatData.getRegistryLocation(), caveatData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getNocPersonalisation(caveatDetails.getId(),
+                        CAVEAT_SOLICITOR_NAME, deceasedName);
+        String emailReplyToId = registry.getEmailReplyToId();
+        String reference = caveatData.getSolsSolicitorAppReference();
+        log.info("Personlisation complete now get the email response");
+
+        SendEmailResponse response =
+                getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
+                        caveatDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
     }
@@ -445,4 +494,9 @@ public class NotificationService {
         }
     }
 
+    private String removedSolicitorNameForPersonalisation(CaseData caseData) {
+        return caseData.getRemovedRepresentative() != null
+                ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
+                caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+    }
 }

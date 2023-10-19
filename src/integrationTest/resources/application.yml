@@ -182,6 +182,7 @@ notifications:
           redeclarationSot: "sols-redeclaration-sot"
           grantDelayed: "sols-grantDelayed"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc"
+          noticeOfChangeReceived: "sols-noc"
       welsh:
         personal:
           applicationReceived: "pa-application-received-welsh"
@@ -222,6 +223,7 @@ notifications:
           redeclarationSot: "sols-redeclaration-sot-welsh"
           grantDelayed: "sols-grantDelayed-welsh"
           grantAwaitingDocumentation: "sols-grantAwaitingDoc-welsh"
+          noticeOfChangeReceived: "sols-noc"
 
 documents:
   templates:
