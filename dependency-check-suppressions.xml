@@ -88,6 +88,9 @@
         <cve>CVE-2023-42794</cve>
         <cve>CVE-2023-42795</cve>
         <cve>CVE-2023-45648</cve>
+        <cve>CVE-2023-42794</cve>
+        <cve>CVE-2023-42795</cve>
+        <cve>CVE-2023-44487</cve>
     </suppress>
     <suppress>
         <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-api@.*$</packageUrl>
@@ -440,10 +443,11 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: json-20210307.jar
+   file name: json-20230227.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
         <cve>CVE-2022-45688</cve>
+        <cve>CVE-2023-5072</cve>
     </suppress>
     <suppress>
         <notes><![CDATA[
@@ -461,7 +465,7 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-core-2.13.2.jar
+   file name: jackson-core-2.15.3.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
         <cve>CVE-2022-45688</cve>
