@@ -518,7 +518,7 @@ testusername@test.com/Pa55word11
 add a dev.yaml file to the /config folder with contents
 ```
 featureToggles:
-  launchDarklyKey: 'sdk-4d50eb6e-8400-4aa7-b4c5-8bdfc8b1d844'
+  launchDarklyKey: Located in lower env keyvaults with name launchdarkly-key
 ```
 emails can be monitored at:
 ```
@@ -739,3 +739,25 @@ Generate a shuttered CCD config xlsx in local
 ````
 ./ccdImports/conversionScripts/createAllXLS.sh probate-back-office:4104 true
 ````
+
+#DTSPB-3312 notes
+#####REMEMBER: 
+This branch contains all the code changes from DTSPB-1172 SPIKE. You may want to discard some of that setup
+https://github.com/hmcts/probate-back-office/tree/DTSPB-1172-investigate-sol-case-auto-assignment-on-bulkScan
+###Scenario 1: PP -> PP
+
+1. Goto https://xui-probate-back-office-pr-2347.preview.platform.hmcts.net
+2. Login as PP1 = as probatesolicitortestorgtest1@gmail.com
+3. Create/Complete a PP case 
+4. Logout. Login as PP2 = probatesolicitortestorg2test1@gmail.com 
+5. got to /noc pages 
+6. enter case ref, answer challenge question, confirm
+7. PP2 can now see the case
+8. As an added check logout. Longin as CW. Progress case to Grant Issued
+
+#Upload spreadsheet on Demo with below:
+./ccdImports/conversionScripts/createAllXLS.sh probate-back-office-demo.service.core-compute-demo.internal aac-manage-case-assignment-demo.service.core-compute-demo.internal
+https://idam-web-public.demo.platform.hmcts.net/login/?response_type=code&client_id=ccd_admin&redirect_uri=https%3A%2F%2Fccd-admin-web.demo.platform.hmcts.net%2Foauth2redirect
+
+
+

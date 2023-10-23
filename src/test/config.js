@@ -17,6 +17,8 @@ module.exports = {
     //  probatesolicitortestorg2test1@gmail.com   Pass- Probate123
     TestEnvProfUserSAC: 'probatesolicitortestorgtest2@gmail.com',
     TestEnvProfPasswordSAC: 'Pa55wordTest',
+    TestEnvProfUserNoc: 'probate.pp1.org2@gmail.com',
+    TestEnvProfPasswordNoc: 'Probate123',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
     //TestForCrossBrowser: process.env.TESTS_FOR_CROSS_BROWSER === 'true'
     // only used when running locally, not in pipeline (where autodelay is on) - other than case matching

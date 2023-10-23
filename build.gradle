@@ -22,7 +22,7 @@ plugins {
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '3.3'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.809'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.538'
 }
 
 apply plugin: 'project-report'
@@ -236,7 +236,7 @@ dependencyManagement {
   }
   dependencies {
     // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '4.1.98.Final') {
+    dependencySet(group: 'io.netty', version: '4.1.100.Final') {
       entry 'netty-buffer'
       entry 'netty-codec'
       entry 'netty-codec-dns'
@@ -519,8 +519,9 @@ task buildBackOfficeXlsx(type: Exec) {
 // Build the all excel files.
 task buildAllXlsx(type: Exec) {
   def input = 'localhost:4104'
+  def input2 = 'aac-manage-case-assignment-aat.service.core-compute-aat.internal'
   commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
-  args input
+  args input, input2
   // Register the inputs and outputs so Gradle can skip if up-to-date.
   outputs.dir project.file('jsonToXLS')
 }
@@ -528,8 +529,9 @@ task buildAllXlsx(type: Exec) {
 // Force Build the all excel files.
 task forceBuildAllXlsx(type: Exec) {
   def input = 'localhost:4104'
+  def input2 = 'aac-manage-case-assignment-aat.service.core-compute-aat.internal'
   commandLine project.file("ccdImports/conversionScripts/createAllXLS.sh")
-  args input
+  args input, input2
 }
 
 //import all excel files.

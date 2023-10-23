@@ -8,7 +8,7 @@ shutterOption=${2:-false}
 
 if [ -z "$1" ]
   then
-    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL"
+    echo "Usage: ./ccdImports/conversionScripts/createAllXLS.sh CCD_DEF_CASE_SERVICE_BASE_URL CCD_DEF_AAC_URL"
     exit 1
 fi
 
@@ -22,6 +22,8 @@ fi
 echo excludedFilenamePatterns = $excludedFilenamePatterns
 
 export CCD_DEF_CASE_SERVICE_BASE_URL=$1
+export CCD_DEF_AAC_URL=$2
+echo CCD_DEF_AAC_URL=$CCD_DEF_AAC_URL
 
 echo using url = $CCD_DEF_CASE_SERVICE_BASE_URL
 

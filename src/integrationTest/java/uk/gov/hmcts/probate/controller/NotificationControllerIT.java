@@ -197,6 +197,7 @@ class NotificationControllerIT {
         when(documentGeneratorService.generateCoversheet(any())).thenReturn(EMPTY_DOC);
 
         when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any()))
@@ -614,5 +615,30 @@ class NotificationControllerIT {
         when(grantNotificationService.handleAwaitingDocumentationNotification("aDate")).thenReturn(response);
         mockMvc.perform(post(GRANT_AWAITING_DOCS).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldReturnSuccessfulResponseForNoc() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorNocPayloadNotifications.json");
+
+        mockMvc.perform(post("/notify/noc-notification")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    void shouldReturnUnSuccessfulForNocEmail() throws Exception {
+        String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
+
+        mockMvc.perform(post("/notify/noc-notification").content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("There is no email address for this solicitor. "
+                                + "Add an email address or contact them by post."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
     }
 }
