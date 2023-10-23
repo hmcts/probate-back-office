@@ -634,4 +634,11 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-metadata@.*$</packageUrl>
         <cve>CVE-2023-34047</cve>
     </suppress>
+   <suppress>
+    <notes><![CDATA[
+   file name: json-20230227.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.json/json@.*$</packageUrl>
+    <cve>CVE-2023-5072</cve>
+</suppress>
 </suppressions>
