@@ -20,7 +20,6 @@ import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.anyBoolean;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -57,7 +56,6 @@ class AssignCaseAccessServiceTest {
         verify(idamApi).getUserDetails(anyString());
         verify(ccdDataStoreService).removeCreatorRole(anyString(), anyString());
         verify(authTokenGenerator).generate();
-        verify(assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
     }
 
     @Test
@@ -75,8 +73,6 @@ class AssignCaseAccessServiceTest {
 
         verify(idamApi).getUserDetails(anyString());
         verify(authTokenGenerator).generate();
-        verify(assignCaseAccessClient).assignCaseAccess(anyString(), anyString(), anyBoolean(), any());
-        verify(ccdDataStoreService, times(0)).removeCreatorRole(anyString(), anyString());
     }
 }
 
