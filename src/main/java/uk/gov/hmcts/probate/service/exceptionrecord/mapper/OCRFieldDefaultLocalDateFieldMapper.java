@@ -17,7 +17,7 @@ public class OCRFieldDefaultLocalDateFieldMapper {
 
     @SuppressWarnings("squid:S1168")
     @ToDefaultLocalDate
-    public LocalDate toDefaultDateFieldMember(String dateValue) {
+    public static LocalDate toDefaultDateFieldMember(String fieldName, String dateValue) {
         log.info("Beginning mapping for Date value: {}", dateValue);
         if (dateValue == null || dateValue.isEmpty()) {
             return null;
@@ -31,7 +31,8 @@ public class OCRFieldDefaultLocalDateFieldMapper {
             log.info("LocalDate ISO_LOCAL_DATE string {}", localDate);
 
         } catch (DateTimeParseException dtpe) {
-            String errorMessage = "Date field '" + dateValue + "' not in expected format " + OCR_DATE_FORMAT;
+            String errorMessage = fieldName
+                    + ": Date field '" + dateValue + "' not in expected format " + OCR_DATE_FORMAT;
             log.error(errorMessage);
             throw new OCRMappingException(errorMessage);
         }

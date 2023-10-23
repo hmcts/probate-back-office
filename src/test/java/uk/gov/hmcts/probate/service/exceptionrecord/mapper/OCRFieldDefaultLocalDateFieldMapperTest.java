@@ -18,20 +18,23 @@ class OCRFieldDefaultLocalDateFieldMapperTest {
 
     @Test
     void testOcrDateFormatCorrect() {
-        LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("25122018");
+        LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember(
+                "deceasedDateOfBirth","25122018");
         assertEquals(LocalDate.parse("2018-12-25", DateTimeFormatter.ofPattern("yyyy-MM-dd")), response);
     }
 
     @Test
     void testOcrDateFormatCorrectWithSlashes() {
-        LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("25/12/2018");
+        LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember(
+                "deceasedDateOfBirth","25/12/2018");
         assertEquals(LocalDate.parse("2018-12-25", DateTimeFormatter.ofPattern("yyyy-MM-dd")), response);
     }
 
     @Test
     void testOcrDateFormatError() {
         assertThrows(OCRMappingException.class, () -> {
-            LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("Garbage");
+            LocalDate response = ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember(
+                    "deceasedDateOfBirth","Garbage");
         });
     }
 }

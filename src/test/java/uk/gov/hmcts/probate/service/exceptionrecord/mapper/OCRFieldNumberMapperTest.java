@@ -14,20 +14,20 @@ class OCRFieldNumberMapperTest {
 
     @Test
     void testStringReturnedAsLong() {
-        Long response = ocrFieldNumberMapper.stringToLong("3423");
+        Long response = ocrFieldNumberMapper.stringToLong("extraCopiesOfGrant", "3423");
         assertEquals(Long.valueOf(3423L), response);
     }
 
     @Test
     void testEmptyStringRetunsNull() {
-        Long response = ocrFieldNumberMapper.stringToLong("");
+        Long response = ocrFieldNumberMapper.stringToLong("extraCopiesOfGrant", "");
         assertEquals(null, response);
     }
 
     @Test
     void testInvalidStringThrowsException() {
         assertThrows(OCRMappingException.class, () -> {
-            long response = ocrFieldNumberMapper.stringToLong("Not a number");
+            long response = ocrFieldNumberMapper.stringToLong("extraCopiesOfGrant", "Not a number");
         });
     }
 }

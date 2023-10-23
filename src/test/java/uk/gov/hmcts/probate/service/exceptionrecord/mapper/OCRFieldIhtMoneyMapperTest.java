@@ -16,16 +16,16 @@ class OCRFieldIhtMoneyMapperTest {
 
     @Test
     void testPoundsToPennies() {
-        Long response = ocrFieldIhtMoneyMapper.poundsToPennies(MONETARY_TEST_VALUE_INPUT);
+        Long response = ocrFieldIhtMoneyMapper.poundsToPennies("applicationFeePaperForm", MONETARY_TEST_VALUE_INPUT);
         assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
     }
 
     @Test
     void testExceptionForToPenniesNotNumeric() throws Exception {
         OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
-            ocrFieldIhtMoneyMapper.poundsToPennies(MONETARY_TEST_UNKNOWN_VALUE);
+            ocrFieldIhtMoneyMapper.poundsToPennies("applicationFeePaperForm", MONETARY_TEST_UNKNOWN_VALUE);
         });
-        assertEquals("Monetary field '" + MONETARY_TEST_UNKNOWN_VALUE
+        assertEquals("applicationFeePaperForm: Monetary field '" + MONETARY_TEST_UNKNOWN_VALUE
                 + "' could not be converted to a number", expectedEx.getMessage());
 
     }
