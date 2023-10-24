@@ -66,6 +66,11 @@
       "description": "Was the deceased domiciled in England or Wales at the time of their death?"
     },
     {
+      "name": "formVersion",
+      "value": "1",
+      "description": "Form version"
+    },
+    {
       "name": "ihtFormCompletedOnline",
       "value": "true",
       "description": "IHT form completed online?"
