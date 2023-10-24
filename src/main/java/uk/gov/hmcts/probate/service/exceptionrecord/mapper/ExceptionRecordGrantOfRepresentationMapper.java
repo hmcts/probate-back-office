@@ -112,7 +112,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "deceasedAnyOtherNames",
             expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"deceasedAnyOtherNames\"), "
                     + "ocrFields.getDeceasedAnyOtherNames()))", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "deceasedDomicileInEngWales", source = "ocrFields.deceasedDomicileInEngWales", qualifiedBy = {
+    @Mapping(target = "deceasedDomicileInEngWales", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"deceasedDomicileInEngWales\"), ocrFields.getDeceasedDomicileInEngWales()))", qualifiedBy = {
         ToYesOrNo.class})
     @Mapping(target = "deceasedMaritalStatus", source = "ocrFields.deceasedMartialStatus", qualifiedBy = {
         ToMartialStatus.class})
