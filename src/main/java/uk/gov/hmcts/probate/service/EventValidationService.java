@@ -9,11 +9,13 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.EmailValidationRule;
+import uk.gov.hmcts.probate.validator.NocEmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRuleCaveats;
 
@@ -64,6 +66,36 @@ public class EventValidationService {
         return CallbackResponse.builder()
                 .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
                 .build();
+    }
+
+    public CallbackResponse validateNocEmail(CaseData caseData,
+                                             NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule) {
+        String solicitorEmail = getRemovedSolicitorEmail(caseData);
+        List<FieldErrorResponse> businessErrors = nocEmailAddressNotifyValidationRule
+                .validate(caseData.getApplicationType(), solicitorEmail);
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
+    private String getRemovedSolicitorEmail(CaseData caseData) {
+        return caseData.getRemovedRepresentative() != null
+                ? caseData.getRemovedRepresentative().getSolicitorEmail() : null;
+    }
+
+    public CaveatCallbackResponse validateCaveatNocEmail(CaveatData caveatData,
+                                             NocEmailAddressNotifyValidationRule nocEmailAddressNotifyValidationRule) {
+        String solicitorEmail = getCaveatRemovedSolicitorEmail(caveatData);
+        List<FieldErrorResponse> businessErrors = nocEmailAddressNotifyValidationRule
+                .validate(caveatData.getApplicationType(), solicitorEmail);
+        return CaveatCallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
+    }
+
+    private String getCaveatRemovedSolicitorEmail(CaveatData caveatData) {
+        return caveatData.getRemovedRepresentative() != null
+                ? caveatData.getRemovedRepresentative().getSolicitorEmail() : null;
     }
 
     public CaveatCallbackResponse validateCaveatRequest(CaveatCallbackRequest callbackRequest,

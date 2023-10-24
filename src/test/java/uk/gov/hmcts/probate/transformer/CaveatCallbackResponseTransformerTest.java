@@ -412,6 +412,21 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldConvertRequestToDataBeanWithCaveatNoc() {
+        setupMocks();
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.SENT_EMAIL)
+                .build();
+        documents.add(0, document);
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.addNocDocuments(caveatCallbackRequestMock, documents);
+
+        assertCommon(caveatCallbackResponse);
+    }
+
+    @Test
     void shouldConvertRequestToDataBeanWithCaveatExpiryWithNoDocuments() {
         setupMocks();
         List<Document> documents = new ArrayList<>();
