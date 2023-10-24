@@ -107,4 +107,20 @@ class PA1ACitizenMandatoryFieldsValidatorTest {
 
     }
 
+    @Test
+    void testMissingFormVersionMandatoryFieldsForPA1ACitizenV2() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        ocrFieldTestUtils.addAllV2Data(ocrFields);
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        when(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)).thenReturn(true);
+        ocrFieldValues.remove("formVersion");
+
+        pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        verify(citizenMandatoryFieldsValidatorV2).addWarnings(any(), any());
+        assertEquals(1, warnings.size());
+        assertEquals("Form version (formVersion) is mandatory.", warnings.get(0));
+
+    }
+
 }
