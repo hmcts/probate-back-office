@@ -42,6 +42,7 @@ class PA1ACommonMandatoryFieldsValidatorTest {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
+        ocrFieldValues.put("formVersion","1");
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(1, warnings.size());
@@ -54,11 +55,35 @@ class PA1ACommonMandatoryFieldsValidatorTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         ocrFieldValues.remove("ihtFormId");
         ocrFieldValues.put("ihtFormCompletedOnline","true");
+        ocrFieldValues.put("formVersion","1");
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(1, warnings.size());
         assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", warnings.get(0));
     }
 
+    @Test
+    void testMissingIHTCompletedOnlineMandatoryFieldReturnSuccessfullyForPA1A() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        ocrFieldValues.remove("ihtFormCompletedOnline");
+        ocrFieldValues.put("formVersion","1");
 
+        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+        assertEquals(1, warnings.size());
+        assertEquals("IHT form completed online (ihtFormCompletedOnline) is mandatory.", warnings.get(0));
+    }
+
+    @Test
+    void testNoIHTCompletedOnlineMandatoryFormVersionZeroForPA1Pv1() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+
+        ocrFieldValues.remove("ihtFormCompletedOnline");
+        ocrFieldValues.put("formVersion", "0");
+
+        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(0, warnings.size());
+    }
 }
