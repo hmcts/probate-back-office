@@ -205,17 +205,23 @@ class IronMountainFileServiceTest {
     @Test
     void testGetApplyingExecutorNameWhenExecutorNameNotPopulated() throws IOException {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
-                new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
-                        .applyingExecutorAddress(SolsAddress.builder().addressLine1("123 Fake street")
-                                .addressLine3("North West East Field")
-                                .postCode("AB2 3CD")
-                                .build()).build());
+                new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorFirstName("Bob")
+                        .applyingExecutorLastName("Smith")
+                        .applyingExecutorAddress(SolsAddress.builder().build()).build());
         List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors = new ArrayList<>(1);
         additionalExecutors.add(additionalExecutor);
+
+        caseData.boDeceasedTitle("")
+                .deceasedAddress(SolsAddress.builder().build())
+                .primaryApplicantAddress(SolsAddress.builder().build())
+                .boDeceasedTitle("")
+                .primaryApplicantAddress(SolsAddress.builder().build())
+                .additionalExecutorsApplying(additionalExecutors);
         builtData = caseData.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
         caseList.add(createdCase);
-        assertEquals("Bob Smith", additionalExecutors.get(0).getValue().getApplyingExecutorName());
+        assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));
     }
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
