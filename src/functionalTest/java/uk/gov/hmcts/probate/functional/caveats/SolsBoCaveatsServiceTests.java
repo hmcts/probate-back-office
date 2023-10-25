@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -20,6 +21,9 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
@@ -28,6 +32,8 @@ import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
     private static final String CAVEAT_RAISED = "/caveat/raise";
+
+    private static final String RAISED_CAVEAT_VALIDATE = "/caveat/raise-caveat-validate";
     private static final String CAVEAT_DEFAULT_VALUES = "/caveat/defaultValues";
     private static final String CAVEAT_GENERAL_MESSAGE = "/caveat/general-message";
     private static final String CAVEAT_CONFIRMATION = "/caveat/confirmation";
@@ -68,6 +74,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB = "/caveat/caveatSolicitorValidateNoDOB.json";
     private static final String CAVEAT_VALIDATE_EXTEND_PAYLOAD = "/caveat/caveatValidateExtend.json";
     private static final String CAVEAT_CASE_WITHDRAW_PAYLOAD = "/caveat/caveatCaseWithdraw.json";
+
+    private static final String RAISE_CAVEAT_VALIDATE_FUTURE_DOD = "/caveat/raiseCaveatCaseValidateFutureDOD.json";
+
     private static final String YES = "Yes";
     private static final String NO = "No";
     private static final String EXPIRY_DATE_KEY = "EXPIRY_DATE_KEY";
@@ -83,6 +92,17 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     @Test
     public void verifyCaveatRaisedShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_RAISED);
+    }
+
+    @Test
+    public void verifyRaisedCaveatValidateShouldReturnOkResponseCode() throws IOException {
+        validatePostSuccess(DEFAULT_PAYLOAD, RAISED_CAVEAT_VALIDATE);
+    }
+
+    @Test
+    public void verifyRequestWithDobNullReturnsError() throws IOException {
+        validatePostFailure(RAISE_CAVEAT_VALIDATE_FUTURE_DOD, "Date of death cannot be in the future",
+                200, RAISED_CAVEAT_VALIDATE);
     }
 
     @Test
@@ -468,5 +488,34 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
             .when().post(path).andReturn();
 
         return jsonResponse.getBody().asString();
+    }
+
+    private void validatePostFailure(String jsonFileName, String errorMessage, Integer statusCode, String url)
+            throws IOException {
+        final String payload = utils.getJsonFromFile(jsonFileName);
+        validatePostFailureWithPayload(payload, errorMessage, statusCode, url);
+    }
+
+    private void validatePostFailureWithPayload(String payload, String errorMessage, Integer statusCode, String url) {
+        final Response response = RestAssured.given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(payload)
+                .when().post(url)
+                .thenReturn();
+
+        if (statusCode == 200) {
+            response.then().assertThat().statusCode(statusCode)
+                    .and().body("errors", hasSize(greaterThanOrEqualTo(1)))
+                    .and().body("errors", hasItem(Matchers.containsString(errorMessage)));
+        } else if (statusCode == 400) {
+            response.then().assertThat().statusCode(statusCode)
+                    .and().body("error", Matchers.equalTo("Invalid Request"))
+                    .and().body("fieldErrors", hasSize(greaterThanOrEqualTo(1)))
+                    .and().body("fieldErrors[0].message", Matchers.equalTo(errorMessage));
+        } else {
+            assert false;
+        }
     }
 }

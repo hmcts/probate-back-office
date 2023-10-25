@@ -25,7 +25,6 @@ import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
-import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
@@ -77,10 +76,9 @@ class CaveatControllerIT {
     @MockBean
     private ServiceRequestTransformer serviceRequestTransformer;
 
-    private CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
-
     @Autowired
     private WebApplicationContext webApplicationContext;
+
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;
@@ -193,7 +191,36 @@ class CaveatControllerIT {
     }
 
     @Test
+    void raiseCaveatValidateShouldReturnDataPayloadOkResponseCode() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+
+        mockMvc.perform(post("/caveat/raise-caveat-validate")
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    void raiseCaveatValidateShouldThrowException() throws Exception {
+
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotifications.json");
+        DateTimeFormatter caveatDateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate futureDoD = LocalDate.now().plusDays(1);
+        caveatPayload = caveatPayload.replace("2017-12-31", caveatDateFormatter.format(futureDoD));
+
+        mockMvc.perform(post("/caveat/raise-caveat-validate")
+                        .content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Date of death cannot be in the future"));
+    }
+
+    @Test
     void personalCaveatRaisedNoValidResponseFromBulkPrintReturnDataPayloadOkResponseCode() throws Exception {
+
         String personalPayload = testUtils.getStringFromFile("caveatPayloadNotificationsBulkPrint.json");
 
         mockMvc.perform(post("/caveat/raise")
