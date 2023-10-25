@@ -95,9 +95,6 @@ class IronMountainFileServiceTest {
                 .registryLocation("Oxford")
                 .grantIssuedDate("2019-02-18")
                 .applicationType(ApplicationType.PERSONAL);
-
-
-
     }
 
     @Test
