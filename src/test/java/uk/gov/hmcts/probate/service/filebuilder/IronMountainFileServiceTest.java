@@ -1,5 +1,4 @@
 package uk.gov.hmcts.probate.service.filebuilder;
-
 import com.google.common.collect.ImmutableList;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -26,8 +25,7 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_NAME;
+
 
 class IronMountainFileServiceTest {
 
@@ -202,6 +200,7 @@ class IronMountainFileServiceTest {
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt")));
     }
+
     @Test
     void testGetApplyingExecutorNameWhenExecutorNameNotPopulated() throws IOException {
         CollectionMember<AdditionalExecutorApplying> additionalExecutor =
@@ -223,6 +222,7 @@ class IronMountainFileServiceTest {
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainFileEmptyOptionals.txt")));
     }
+
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);
