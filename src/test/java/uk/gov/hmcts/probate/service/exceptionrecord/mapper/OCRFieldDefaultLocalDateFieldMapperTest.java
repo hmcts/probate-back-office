@@ -37,4 +37,14 @@ class OCRFieldDefaultLocalDateFieldMapperTest {
                     "deceasedDateOfBirth","Garbage");
         });
     }
+
+    @Test
+    void testInvalidDOBExceptionMessage() {
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
+            ocrFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("deceasedDateOfBirth",
+                    "2511");
+        });
+        assertEquals("deceasedDateOfBirth"
+                + ": Date field '" + "2511" + "' not in expected format " + OCR_DATE_FORMAT, expectedEx.getMessage());
+    }
 }

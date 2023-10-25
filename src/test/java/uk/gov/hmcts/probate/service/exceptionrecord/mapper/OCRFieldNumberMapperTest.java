@@ -30,4 +30,14 @@ class OCRFieldNumberMapperTest {
             long response = ocrFieldNumberMapper.stringToLong("extraCopiesOfGrant", "Not a number");
         });
     }
+
+    @Test
+    void testInvalidStringExceptionMessage() {
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
+            ocrFieldNumberMapper.stringToLong("extraCopiesOfGrant", "Not a number");
+        });
+        assertEquals("extraCopiesOfGrant"
+                        + ": Numerical field 'Not a number' could not be converted to a Long number: "
+                + "For input string: \"Not a number\"", expectedEx.getMessage());
+    }
 }

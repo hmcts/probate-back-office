@@ -56,4 +56,13 @@ class OCRFieldYesOrNoMapperTest {
             assertTrue(false);
         });
     }
+
+    @Test
+    void testYesNoException() {
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
+            yesOrNoMapper.toYesOrNo("willHasCodicils", "notfound");
+        });
+        assertEquals("willHasCodicils: Yes, no, true or false values expected but got '" + "notfound" + "'",
+                expectedEx.getMessage());
+    }
 }
