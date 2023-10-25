@@ -26,6 +26,8 @@ import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static uk.gov.hmcts.probate.util.CommonVariables.EXEC_NAME;
 
 class IronMountainFileServiceTest {
 
@@ -94,6 +96,8 @@ class IronMountainFileServiceTest {
                 .registryLocation("Oxford")
                 .grantIssuedDate("2019-02-18")
                 .applicationType(ApplicationType.PERSONAL);
+
+
 
     }
 
@@ -198,7 +202,21 @@ class IronMountainFileServiceTest {
         assertThat(createFile(ironmountainFileService.createIronMountainFile(caseList.build(), FILE_NAME)),
             is(FileUtils.getStringFromFile("expectedGeneratedFiles/ironMountainExceptionCase.txt")));
     }
-
+    @Test
+    void testGetApplyingExecutorNameWhenExecutorNameNotPopulated() throws IOException {
+        CollectionMember<AdditionalExecutorApplying> additionalExecutor =
+                new CollectionMember<>(AdditionalExecutorApplying.builder().applyingExecutorName("Bob Smith")
+                        .applyingExecutorAddress(SolsAddress.builder().addressLine1("123 Fake street")
+                                .addressLine3("North West East Field")
+                                .postCode("AB2 3CD")
+                                .build()).build());
+        List<CollectionMember<AdditionalExecutorApplying>> additionalExecutors = new ArrayList<>(1);
+        additionalExecutors.add(additionalExecutor);
+        builtData = caseData.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 1234567890876L);
+        caseList.add(createdCase);
+        assertEquals("Bob Smith", additionalExecutors.get(0).getValue().getApplyingExecutorName());
+    }
     private String createFile(File file) throws IOException {
         file.deleteOnExit();
         return new String(Files.readAllBytes(Paths.get(file.getName())), StandardCharsets.UTF_8);
