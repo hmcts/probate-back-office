@@ -67,6 +67,7 @@
         <cve>CVE-2021-37137</cve>
         <cve>CVE-2021-43797</cve>
         <cve>CVE-2022-24823</cve>
+        <cve>CVE-2023-4586</cve>
     </suppress>
     <suppress>
         <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@.*$</packageUrl>
@@ -463,7 +464,7 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: jackson-core-2.13.2.jar
+   file name: jackson-core-2.15.3.jar
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/com\.fasterxml\.jackson\.core/jackson\-core@.*$</packageUrl>
         <cve>CVE-2022-45688</cve>

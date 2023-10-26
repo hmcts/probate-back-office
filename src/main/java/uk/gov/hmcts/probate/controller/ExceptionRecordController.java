@@ -11,7 +11,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -190,6 +192,8 @@ public class ExceptionRecordController {
     public ResponseEntity<ExceptionRecordErrorResponse> handle(OCRMappingException exception) {
         log.error("An error has occured during the bulk scanning OCR transformation process: {}",
             exception.getMessage(), exception);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
         List<String> warnings;
         if (!exception.getWarnings().isEmpty()) {
             warnings = exception.getWarnings();
@@ -198,7 +202,7 @@ public class ExceptionRecordController {
         }
         List<String> errors = Arrays.asList(OCR_EXCEPTION_ERROR);
         ExceptionRecordErrorResponse errorResponse = new ExceptionRecordErrorResponse(errors, warnings);
-        return new ResponseEntity(errorResponse, HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(errorResponse, headers, HttpStatus.UNPROCESSABLE_ENTITY);
     }
 
     private void logRequest(CaveatCaseUpdateRequest caveatCaseUpdateRequest) {
