@@ -159,10 +159,15 @@ public class OCRFieldTestUtils {
             .name("solsSolicitorIsApplying")
             .value("False")
             .description("Solicitor Applying").build();
+        OCRField field4 = OCRField.builder()
+                .name("formVersion")
+                .value("2")
+                .description("Form version").build();
 
         ocrFields.add(field1);
         ocrFields.add(field2);
         ocrFields.add(field3);
+        ocrFields.add(field4);
 
         return ocrFields;
     }
@@ -177,7 +182,12 @@ public class OCRFieldTestUtils {
             .name("solsSolicitorIsApplying")
             .value("False")
             .description("Solicitor Applying").build();
+        OCRField field2 = OCRField.builder()
+                .name("formVersion")
+                .value("2")
+                .description("Form version").build();
         ocrFields.add(field1);
+        ocrFields.add(field2);
 
         return ocrFields;
 

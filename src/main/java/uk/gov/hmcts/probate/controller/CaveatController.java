@@ -37,6 +37,7 @@ import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -53,6 +54,7 @@ public class CaveatController {
 
     private final List<CaveatsEmailValidationRule> validationRuleCaveats;
     private final List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
+    private final CaveatDodValidationRule caveatDodValidationRule;
     private final CaveatDataTransformer caveatDataTransformer;
     private final CaveatCallbackResponseTransformer caveatCallbackResponseTransformer;
     private final ServiceRequestTransformer serviceRequestTransformer;
@@ -74,6 +76,14 @@ public class CaveatController {
         CaveatCallbackResponse caveatCallbackResponse = caveatNotificationService.caveatRaise(caveatCallbackRequest);
 
         return ResponseEntity.ok(caveatCallbackResponse);
+    }
+
+    @PostMapping(path = "/raise-caveat-validate")
+    public ResponseEntity<CaveatCallbackResponse> raiseCaveatValidate(
+            @RequestBody CaveatCallbackRequest caveatCallbackRequest) {
+        caveatDodValidationRule.validate(caveatCallbackRequest.getCaseDetails());
+        return ResponseEntity.ok(
+                caveatCallbackResponseTransformer.transformResponseWithNoChanges(caveatCallbackRequest));
     }
 
     @PostMapping(path = "/defaultValues")

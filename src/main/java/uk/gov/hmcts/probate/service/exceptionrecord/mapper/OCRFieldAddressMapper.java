@@ -162,11 +162,13 @@ public class OCRFieldAddressMapper {
     }
 
     private void validatePostCode(final String postCode) {
+        ArrayList<String> warnings = new ArrayList<>();
         if (!postCode.matches(POSTCODE_REGEX_PATTERN)) {
             String errorMessage =
                 "An invalid postcode has been found '" + postCode + "', please provide a valid postcode";
             log.error(errorMessage);
-            throw new OCRMappingException(errorMessage);
+            warnings.add(errorMessage);
+            throw new OCRMappingException(errorMessage, warnings);
         }
     }
 }
