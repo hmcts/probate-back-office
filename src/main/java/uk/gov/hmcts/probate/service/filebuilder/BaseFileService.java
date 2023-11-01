@@ -102,7 +102,16 @@ public abstract class BaseFileService {
     private String getApplyingExecutorName(CaseData caseData, int index) {
         if (caseData.getAdditionalExecutorsApplying() != null
                 && caseData.getAdditionalExecutorsApplying().size() >= (index + 1)) {
-            return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
+            if (caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName() != null
+                    && caseData.getAdditionalExecutorsApplying()
+                    .get(index).getValue().getApplyingExecutorName().length() > 0) {
+                return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorName();
+            } else {
+                return caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorFirstName()
+                        + " "
+                        + caseData.getAdditionalExecutorsApplying().get(index).getValue().getApplyingExecutorLastName();
+            }
+
         }
         return "";
     }
