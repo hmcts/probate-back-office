@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
@@ -69,6 +70,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -197,12 +199,14 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
-        if (response.getErrors().isEmpty()) {
-            Optional<String> newState =
-                stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
+        CaseDetails details = callbackRequest.getCaseDetails();
+        if (YES.equals(details.getData().getHmrcLetterId())) {
+            if (response.getErrors().isEmpty()) {
+                Optional<String> newState =
+                        stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
+                response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
+            }
         }
-
         return ResponseEntity.ok(response);
     }
 
