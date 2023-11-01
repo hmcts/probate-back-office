@@ -168,6 +168,7 @@
     { "name": "domicilityCountry", "value": "Brazil" },
     { "name": "domicilityEntrustingDocument", "value": "true" },
     { "name": "domicilitySuccessionIHTCert", "value": "false" },
+    { "name": "formVersion", "value": "1" },
     { "name": "ihtFormCompletedOnline", "value": "true" },
     { "name": "ihtReferenceNumber", "value": "ONLINE-123434" },
     { "name": "ihtFormId", "value": "" },

@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -53,6 +54,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -71,6 +73,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
@@ -85,6 +88,7 @@ import static uk.gov.hmcts.probate.model.State.GENERAL_CAVEAT_MESSAGE;
 import static uk.gov.hmcts.probate.model.State.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.State.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
+import static uk.gov.hmcts.probate.model.State.NOC;
 import static uk.gov.hmcts.probate.model.State.REDECLARATION_SOT;
 
 @ExtendWith(SpringExtension.class)
@@ -128,6 +132,9 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
     private static final String PERSONALISATION_DATE_OF_DEATH = "deceased_date_of_death";
     private static final String PERSONALISATION_WELSH_DATE_OF_DEATH = "deceased_date_of_death_welsh";
+    private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+    private static final String PERSONALISATION_OLD_SOLICITOR_NAME = "old_solicitor_name";
+    private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @Autowired
     private NotificationService notificationService;
@@ -2047,6 +2054,77 @@ class NotificationServiceIT {
         verify(notificationClient).sendEmail(
                 eq("sol-application-received"),
                 eq("solicitor@probate-test.com"),
+                eq(personalisation),
+                eq("1234-5678-9012"),
+                eq(""));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    void verifySendNocEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendNocEmail(NOC, caseDetails);
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+
+        verify(notificationClient).sendEmail(
+                eq("sols-noc"),
+                eq("solicitor@gmail.com"),
+                eq(personalisation),
+                eq("1234-5678-9012"),
+                eq(""));
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    void verifySendCaveatNocEmail()
+            throws NotificationClientException, BadRequestException {
+
+        CaveatDetails caveatDetails = new CaveatDetails(CaveatData.builder()
+                .applicationType(SOLICITOR)
+                .registryLocation("Manchester")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        notificationService.sendCaveatNocEmail(NOC, caveatDetails);
+
+        HashMap<String, String> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, CAVEAT_SOLICITOR_NAME);
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caveatDetails.getId().toString());
+        personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, NOC_DATE.format(LocalDateTime.now()));
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caveatDetails.getData().getDeceasedFullName());
+
+        verify(notificationClient).sendEmail(
+                eq("sols-noc"),
+                eq("solicitor@gmail.com"),
                 eq(personalisation),
                 eq("1234-5678-9012"),
                 eq(""));

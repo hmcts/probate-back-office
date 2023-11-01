@@ -989,6 +989,19 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldAddNocToGeneratedDocuments() {
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .build();
+
+        CallbackResponse callbackResponse =
+                underTest.addNocDocuments(callbackRequestMock, Arrays.asList(document));
+
+        assertCommon(callbackResponse);
+    }
+
+    @Test
     void shouldConvertRequestToDataBeanForPaymentWithFeeAccount() {
         CaseData caseData = caseDataBuilder.solsPaymentMethods(SOL_PAY_METHODS_FEE)
             .solsFeeAccountNumber(FEE_ACCT_NUMBER)
@@ -2255,6 +2268,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        when(caseDataMock.getApplicationType()).thenReturn(SOLICITOR);
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequestMock, document);
         assertSolsDetails(callbackResponse);
     }
@@ -2294,6 +2308,7 @@ class CallbackResponseTransformerTest {
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         Document document = Document.builder().documentType(DIGITAL_GRANT).build();
+        when(caseDataMock.getApplicationType()).thenReturn(SOLICITOR);
         CallbackResponse callbackResponse = underTest.paperForm(callbackRequest, document);
         assertNull(callbackResponse.getData().getIhtFormId());
     }
@@ -2301,7 +2316,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldSetSolicitorsInfoWhenApplicationTypeIhtIsEmpty() {
         CaseData.CaseDataBuilder caseDataBuilder2;
-        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("");
+        caseDataBuilder2 = CaseData.builder().ihtReferenceNumber("").applicationType(APPLICATION_TYPE.SOLICITOR);
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder2.build(), LAST_MODIFIED_STR, 1L);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
@@ -3780,7 +3795,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldGetPaperGOPApplicationWithDocumentPaperFormNo() {
+    void shouldGetSolicitorPaperGOPApplicationWithDocumentPaperFormNo() {
         caseDataBuilder.applicationType(ApplicationType.SOLICITOR);
         caseDataBuilder.caseType(GRANT_OF_PROBATE_NAME);
         caseDataBuilder.solsWillType(WILL_TYPE_PROBATE);
@@ -3825,22 +3840,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void testBuildOrganisationPolicy() {
-        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString()))
-            .thenReturn(new OrganisationEntityResponse());
-
-        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
-    }
-
-    @Test
-    void testBuildOrganisationPolicyNullWhenRetrievalServiceNull() {
-        when(organisationsRetrievalService.getOrganisationEntity(anyString(), anyString())).thenReturn(null);
-        assertNull(this.underTest.buildOrganisationPolicy(caseDetailsMock, "ABC123"));
-        verify(this.organisationsRetrievalService).getOrganisationEntity(anyString(), anyString());
-    }
-
-    @Test
     void testBuildOrganisationPolicyValues() {
 
         OrganisationEntityResponse organisationEntityResponse = new OrganisationEntityResponse();
@@ -3854,6 +3853,7 @@ class CallbackResponseTransformerTest {
         when(organisationPolicy.getOrgPolicyReference()).thenReturn("Org Policy Reference");
 
         CaseData caseData = CaseData.builder().applicantOrganisationPolicy(organisationPolicy)
+                .applicationType(APPLICATION_TYPE.SOLICITOR)
             .build();
         when(caseDetailsMock.getData()).thenReturn(caseData);
         OrganisationPolicy actualBuildOrganisationPolicyResult = this.underTest

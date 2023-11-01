@@ -45,6 +45,8 @@ public class GrantOfRepresentationPersonalisationService {
     private static final String PERSONALISATION_CASE_DATA = "caseData";
     private static final String PERSONALISATION_ADDRESSEE = "addressee";
     private static final String PERSONALISATION_WELSH_DECEASED_DATE_OF_DEATH = "welsh_deceased_date_of_death";
+    private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
+    private static final String PERSONALISATION_OLD_SOLICITOR_NAME = "old_solicitor_name";
     private final LocalDateToWelshStringConverter localDateToWelshStringConverter;
 
     public Map<String, Object> getPersonalisation(CaseDetails caseDetails, Registry registry) {
@@ -64,6 +66,17 @@ public class GrantOfRepresentationPersonalisationService {
 
         personalisation.put(PERSONALISATION_EXELA_NAME, LocalDateTime.now().format(EXELA_DATE) + "will");
         personalisation.put(PERSONALISATION_CASE_DATA, data.toString());
+
+        return personalisation;
+    }
+
+    public Map<String, Object> getNocPersonalisation(Long caseId, String solicitorName, String deceasedName) {
+        HashMap<String, Object> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, solicitorName);
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseId.toString());
+        personalisation.put(PERSONALISATION_NOC_SUBMITTED_DATE, EXELA_CONTENT_DATE.format(LocalDateTime.now()));
+        personalisation.put(PERSONALISATION_DECEASED_NAME, deceasedName);
 
         return personalisation;
     }

@@ -35,6 +35,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.PrepareNocService;
+import uk.gov.hmcts.probate.service.caseaccess.CcdDataStoreService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
@@ -157,9 +159,9 @@ class BusinessValidationControllerIT {
     private static final String SOLS_VALIDATE_FURTHER_EVIDENCE_URL = "/case/validate-further-evidence";
     private static final String CASE_WORKER_ESCALATED = "/case/case-worker-escalated";
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
+    private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
     private static final String UNIQUE_CODE = "/case/validate-unique-code";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
-
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
@@ -204,7 +206,11 @@ class BusinessValidationControllerIT {
     @MockBean
     private CaseDataTransformer caseDataTransformer;
     @MockBean
+    private CcdDataStoreService ccdDataStoreService;
+    @MockBean
     private RegistrarDirectionService registrarDirectionService;
+    @MockBean
+    private PrepareNocService prepareNocService;
 
     @SpyBean
     OrganisationsRetrievalService organisationsRetrievalService;

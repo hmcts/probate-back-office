@@ -86,17 +86,17 @@ docmosis:
     grantCoversheet:
       templateName: FL-PRB-GNO-ENG-00024.docx
     digitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01290.doc
+      templateName: FL-PRB-GRP-ENG-01291.doc
     intestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01290.doc
+      templateName: FL-PRB-GRP-ENG-01291.doc
     admonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-ENG-01290.doc
+      templateName: FL-PRB-GRP-ENG-01291.doc
     digitalGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01290.doc
+      templateName: FL-PRB-GRP-ENG-01291.doc
     intestacyGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01290.doc
+      templateName: FL-PRB-GRP-ENG-01291.doc
     admonWillGrantReissue:
-      templateName: FL-PRB-GRP-ENG-01290.doc
+      templateName: FL-PRB-GRP-ENG-01291.doc
     sotInformationRequest:
       templateName: FL-PRB-GNO-ENG-00085.doc
     sentEmail:
@@ -283,6 +283,7 @@ notifications:
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
+          noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
       welsh:
         personal:
           applicationReceived: "6e3f4941-fd11-40fc-8480-8e314e85a985"
@@ -329,6 +330,7 @@ notifications:
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "638395bf-805f-48a7-97b1-d26ea9e9334e"
+          noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
 
 documents:
   templates:
