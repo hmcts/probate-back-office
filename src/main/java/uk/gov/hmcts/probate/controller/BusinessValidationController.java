@@ -206,7 +206,7 @@ public class BusinessValidationController {
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
-                log.info("No to Hmrc letter");
+                log.info("selected No to Hmrc letter");
                 response = callbackResponseTransformer.transformCase(callbackRequest);
             }
         }
