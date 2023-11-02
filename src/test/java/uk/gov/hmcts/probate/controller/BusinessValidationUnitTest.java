@@ -71,6 +71,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -218,6 +220,7 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(YES);
         when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
         when(callbackResponseTransformerMock
             .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
@@ -259,6 +262,7 @@ class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails().getData().getHmrcLetterId()).thenReturn(YES);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
@@ -424,12 +428,32 @@ class BusinessValidationUnitTest {
         when(callbackResponseMock.getErrors())
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(YES);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
             bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
+    @Test
+    void shouldValidateHmrcNoWithBusinessErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors())
+                .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(NO);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test

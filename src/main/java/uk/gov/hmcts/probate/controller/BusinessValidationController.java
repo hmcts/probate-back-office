@@ -206,6 +206,8 @@ public class BusinessValidationController {
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             }
+        } else {
+            response = callbackResponseTransformer.transformCase(callbackRequest);
         }
         return ResponseEntity.ok(response);
     }
