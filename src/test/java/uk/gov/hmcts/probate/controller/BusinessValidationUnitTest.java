@@ -454,6 +454,7 @@ class BusinessValidationUnitTest {
                 bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
     }
 
     @Test

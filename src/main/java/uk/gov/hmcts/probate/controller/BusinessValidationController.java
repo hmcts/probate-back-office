@@ -200,14 +200,15 @@ public class BusinessValidationController {
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         CaseDetails details = callbackRequest.getCaseDetails();
-        if (YES.equals(details.getData().getHmrcLetterId())) {
-            if (response.getErrors().isEmpty()) {
+        if (response.getErrors().isEmpty()) {
+            if (YES.equals(details.getData().getHmrcLetterId())) {
                 Optional<String> newState =
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
+            } else {
+                log.info("No to Hmrc letter");
+                response = callbackResponseTransformer.transformCase(callbackRequest);
             }
-        } else {
-            response = callbackResponseTransformer.transformCase(callbackRequest);
         }
         return ResponseEntity.ok(response);
     }
