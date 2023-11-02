@@ -60,7 +60,7 @@ java:
           alias: azure.application-insights.instrumentation-key
         - name: app-insights-connection-string
           alias: app-insights-connection-string
-        - name: probatemandb-POSTGRES-PASS
+        - name: probatemandb-POSTGRES-PASS-FLEX
           alias: spring.datasource.password
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret
