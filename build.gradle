@@ -193,7 +193,7 @@ def versions = [
         serenityreporter                : '2.6.0',
         springBootVersion               : '2.7.14',
         springBootStarterHateoas        : '2.7.14',
-        hmctsJavaLogging                : '5.1.7',
+        hmctsJavaLogging                : '6.0.1',
         authCheckerLib                  : '2.1.4',
         jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
@@ -297,10 +297,10 @@ dependencies {
 
   implementation group: 'com.google.guava', name: 'guava', version: '32.0.1-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
-  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: '6.0.1'
+  //implementation group: 'uk.gov.hmcts.reform', name: 'logging-spring', version: versions.hmctsJavaLogging
+  //implementation group: 'uk.gov.hmcts.reform', name: 'logging-httpcomponents', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
+  implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
   implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'

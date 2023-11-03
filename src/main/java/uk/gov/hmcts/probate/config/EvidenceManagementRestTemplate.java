@@ -22,8 +22,7 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestIdSettingInterceptor;
-import uk.gov.hmcts.reform.logging.httpcomponents.OutboundRequestLoggingInterceptor;
+
 
 import java.nio.charset.Charset;
 
@@ -78,9 +77,6 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
         CloseableHttpClient client = HttpClientBuilder
                 .create()
                 .useSystemProperties()
-                .addInterceptorFirst(new OutboundRequestIdSettingInterceptor())
-                .addInterceptorFirst((HttpRequestInterceptor) new OutboundRequestLoggingInterceptor())
-                .addInterceptorLast((HttpResponseInterceptor) new OutboundRequestLoggingInterceptor())
                 .setDefaultRequestConfig(config)
                 .build();
 
