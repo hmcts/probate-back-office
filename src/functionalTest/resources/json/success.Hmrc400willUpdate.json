@@ -22,6 +22,8 @@
       "solsAdditionalInfo": "Additional Info",
       "deceasedDateOfBirth": "1987-01-01",
       "willHasCodicils": "Yes",
+      "uniqueProbateCodeId": "CTS04052311043tpps8e9",
+      "hmrcLetterId": "Yes",
       "solsDeceasedAliasNamesList": [
         {
           "value": {
@@ -69,7 +71,7 @@
         }
       ],
       "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "90009",
+      "ihtNetValue": "500001",
       "deceasedSurname": "decln",
       "solsAdditionalExecutorList": [
         {
@@ -90,15 +92,15 @@
         "AddressLine3": "SolAddLn3",
         "PostTown": "SolAddPT",
         "County": "SolAddCounty",
-        "PostCode": "A11 1AA",
+        "PostCode": "firmpc",
         "Country": "SolAddCo"
       },
       "deceasedForenames": "decfn",
       "willNumberOfCodicils": "1",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "Yes",
-      "ihtFormId": "IHT205",
-      "ihtGrossValue": "",
+      "ihtFormId": "IHT400",
+      "ihtGrossValue": "600001",
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
