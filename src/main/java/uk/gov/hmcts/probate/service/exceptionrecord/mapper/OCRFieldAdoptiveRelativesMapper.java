@@ -15,12 +15,12 @@ import java.util.List;
 @Slf4j
 @Component
 public class OCRFieldAdoptiveRelativesMapper {
-    private static final String ADOPTIVE_RELATIVES_0_IN_OR_OUT = "adoptiveRelatives0adoptedInOrOut";
-    private static final String ADOPTIVE_RELATIVES_1_IN_OR_OUT = "adoptiveRelatives1adoptedInOrOut";
-    private static final String ADOPTIVE_RELATIVES_2_IN_OR_OUT = "adoptiveRelatives2adoptedInOrOut";
-    private static final String ADOPTIVE_RELATIVES_3_IN_OR_OUT = "adoptiveRelatives3adoptedInOrOut";
-    private static final String ADOPTIVE_RELATIVES_4_IN_OR_OUT = "adoptiveRelatives4adoptedInOrOut";
-    private static final String ADOPTIVE_RELATIVES_5_IN_OR_OUT = "adoptiveRelatives5adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_0_IN_OR_OUT = "adoptiveRelatives_0_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_1_IN_OR_OUT = "adoptiveRelatives_1_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_2_IN_OR_OUT = "adoptiveRelatives_2_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_3_IN_OR_OUT = "adoptiveRelatives_3_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_4_IN_OR_OUT = "adoptiveRelatives_4_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_5_IN_OR_OUT = "adoptiveRelatives_5_adoptedInOrOut";
 
     @SuppressWarnings("squid:S1168")
     @ToAdoptiveRelatives
