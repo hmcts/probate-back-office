@@ -235,6 +235,25 @@ class BusinessValidationUnitTest {
     }
 
     @Test
+    void shouldValidateWithNoErrorsWithNoHmrcCode() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(NO);
+        when(callbackResponseTransformerMock.transformCase(callbackRequestMock)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
     void shouldVerifySolsAccessWithNoErrors() {
         when(callbackRequestMock.getCaseDetails())
                 .thenReturn(caseDetailsMock);
