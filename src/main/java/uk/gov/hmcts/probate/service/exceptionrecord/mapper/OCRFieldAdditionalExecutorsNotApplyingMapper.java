@@ -17,7 +17,7 @@ import java.util.List;
 public class OCRFieldAdditionalExecutorsNotApplyingMapper {
 
     private static final String EXECUTORS_NOT_APPLYING_0_NOT_APPLYING_EXECUTOR_REASON =
-        "executorsNotApplying-0_notApplyingExecutorReason";
+        "executorsNotApplying_0_notApplyingExecutorReason";
     private static final String EXECUTORS_NOT_APPLYING_1_NOT_APPLYING_EXECUTOR_REASON =
         "executorsNotApplying_1_notApplyingExecutorReason";
     private static final String EXECUTORS_NOT_APPLYING_2_NOT_APPLYING_EXECUTOR_REASON =
