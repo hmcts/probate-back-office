@@ -19,6 +19,7 @@ public class CcdReferenceFormatterService {
                 + caseId.substring(12, 16);
         }
     }
+
     public static boolean isAlreadyFormattedWithHyphens(String input) {
         // Define a regular expression to match the specified format
         String regex = "\\d{4}-\\d{4}-\\d{4}-\\d{4}";
