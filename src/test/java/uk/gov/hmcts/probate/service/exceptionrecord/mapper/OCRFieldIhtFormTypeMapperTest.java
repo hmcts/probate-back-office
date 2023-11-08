@@ -170,4 +170,92 @@ class OCRFieldIhtFormTypeMapperTest {
         IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
         assertNull(response);
     }
+
+    @Test
+    void shouldMapIHT400Version3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("true")
+            .iht400Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT400, response);
+    }
+
+    @Test
+    void shouldMapIHT400421Version3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("true")
+            .iht400421Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT400421, response);
+    }
+
+    @Test
+    void shouldMapExceptedEstateVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("true")
+            .exceptedEstate("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionNotRequired, response);
+    }
+
+    @Test
+    void shouldMapIHT207Version3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("true")
+            .iht207Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT207, response);
+    }
+
+    @Test
+    void shouldMapIHT205BeforeSwitchDateVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("false")
+            .iht205Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT205, response);
+    }
+
+    @Test
+    void shouldMapIHT207BeforeSwitchDateVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("false")
+            .iht207Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT207, response);
+    }
+
+    @Test
+    void shouldMapIHT400BeforeSwitchDateVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("false")
+            .iht400Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT400, response);
+    }
+
+    @Test
+    void shouldMapIHT400421BeforeSwitchDateVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .deceasedDiedOnAfterSwitchDate("false")
+            .iht400421Completed("true")
+            .build();
+        IhtFormType response = ocrFieldIhtFormTypeMapper.ihtFormType(ocrFields);
+        assertEquals(IhtFormType.optionIHT400421, response);
+    }
 }

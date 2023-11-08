@@ -63,6 +63,7 @@ class OCRFieldIhtFormCompletedOnlineMapperTest {
     void shouldReturnUseYesNoMapperForExistingFormFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline("false")
+            .formVersion("1")
             .build();
         Boolean response = ocrFieldIhtFormCompletedOnlineMapper.ihtFormCompletedOnline(ocrFields);
         assertFalse(response);
@@ -72,8 +73,18 @@ class OCRFieldIhtFormCompletedOnlineMapperTest {
     void shouldReturnUseYesNoMapperForExistingFormTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline("true")
+            .formVersion("1")
             .build();
         Boolean response = ocrFieldIhtFormCompletedOnlineMapper.ihtFormCompletedOnline(ocrFields);
         assertTrue(response);
+    }
+
+    @Test
+    void shouldReturnNullVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("3")
+                .build();
+        Boolean response = ocrFieldIhtFormCompletedOnlineMapper.ihtFormCompletedOnline(ocrFields);
+        assertNull(response);
     }
 }

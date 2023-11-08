@@ -3,7 +3,9 @@ package uk.gov.hmcts.probate.service.ocr;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,13 +19,15 @@ import static uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields.IHT_N
 class MandatoryFieldsValidatorUtilsTest {
 
     private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
+    @Mock
+    private IhtEstateValidationRule ihtEstateValidationRule;
     private List<String> warnings;
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
     private List<OCRField> ocrFields;
 
     @BeforeEach
     public void setup() {
-        mandatoryFieldsValidatorUtils = new MandatoryFieldsValidatorUtils();
+        mandatoryFieldsValidatorUtils = new MandatoryFieldsValidatorUtils(ihtEstateValidationRule);
         warnings = new ArrayList<>();
         ocrFields = new ArrayList<>();
     }
@@ -63,5 +67,17 @@ class MandatoryFieldsValidatorUtilsTest {
         ocrFields.add(formVersion);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         assertTrue(mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues));
+    }
+
+    @Test
+    void shouldReturnTrueIfVersion3() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        OCRField formVersion = OCRField.builder()
+                .name("formVersion")
+                .value("3")
+                .build();
+        ocrFields.add(formVersion);
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        assertTrue(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues));
     }
 }

@@ -3,9 +3,12 @@ package uk.gov.hmcts.probate.service.ocr;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.keyvalue.DefaultKeyValue;
+import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORCitizenMandatoryFields;
+import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -18,7 +21,12 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_F
 @Service
 @RequiredArgsConstructor
 public class MandatoryFieldsValidatorUtils {
-    private static final String VERSION2_KEY = "formVersion";
+
+    private final IhtEstateValidationRule ihtEstateValidationRule;
+    private static final String VERSION_KEY = "formVersion";
+    public static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMartialStatus";
+    public static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
+    public static final String IHT_ESTATE_NET_QUALIFYING_VALUE = "ihtEstateNetQualifyingValue";
 
     public void addWarningIfEmpty(Map<String, String> ocrFieldValues, List<String> warnings,
                                   DefaultKeyValue keyValue) {
@@ -45,6 +53,30 @@ public class MandatoryFieldsValidatorUtils {
     }
 
     public boolean isVersion2(Map<String, String> ocrFieldValues) {
-        return "2".equals(ocrFieldValues.get(VERSION2_KEY));
+        return "2".equals(ocrFieldValues.get(VERSION_KEY));
+    }
+
+    public boolean isVersion3(Map<String, String> ocrFieldValues) {
+        return "3".equals(ocrFieldValues.get(VERSION_KEY));
+    }
+
+    public boolean nqvBetweenThresholds(Map<String, String> ocrFieldValues) {
+        String ihtEstateNetQualifyingValue = ocrFieldValues.get(IHT_ESTATE_NET_QUALIFYING_VALUE);
+        if (ihtEstateNetQualifyingValue != null) {
+            String numericalMonetaryValue = ihtEstateNetQualifyingValue.replaceAll("[^\\d^\\.]","");
+            if (NumberUtils.isCreatable((numericalMonetaryValue))) {
+                BigDecimal nqv = new BigDecimal(numericalMonetaryValue).multiply(BigDecimal.valueOf(100));
+                return ihtEstateValidationRule.isNqvBetweenValues(nqv);
+            }
+        }
+        return false;
+    }
+
+    public boolean hasLateSpouseCivilPartner(Map<String, String> ocrFieldValues) {
+        String deceasedMaritalStatus = ocrFieldValues.get(DECEASED_MARITAL_STATUS_KEY);
+        if (deceasedMaritalStatus != null) {
+            return DECEASED_MARITAL_STATUS_WIDOWED.equals(deceasedMaritalStatus);
+        }
+        return false;
     }
 }

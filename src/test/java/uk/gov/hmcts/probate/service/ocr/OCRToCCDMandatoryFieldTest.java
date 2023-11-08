@@ -107,7 +107,7 @@ class OCRToCCDMandatoryFieldTest {
         verifyNoInteractions(pa1PCommonMandatoryFieldsValidator);
         verifyNoInteractions(pa1ACitizenMandatoryFieldsValidator);
         verify(pa1ASolicitorMandatoryFieldsValidator).addWarnings(any(), any());
-        verifyNoInteractions(pa1ACommonMandatoryFieldsValidator);
+        verify(pa1ACommonMandatoryFieldsValidator).addWarnings(any(), any());
         verifyNoInteractions(pa8ACitizenMandatoryFieldsValidator);
         verifyNoInteractions(pa8ASolicitorMandatoryFieldsValidator);
     }
