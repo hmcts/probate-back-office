@@ -58,7 +58,7 @@ public class OCRFieldIhtFormTypeMapper {
                 case FORM_IHT400:
                     return IhtFormType.optionIHT400421;
                 default:
-                    String errorMessage = "Form type IHT205, IHT207 or IHT400421 expected but got '" + ihtFormId + "'";
+                    String errorMessage = "ihtFormId: IHT205, IHT207 or IHT400421 expected but got '" + ihtFormId + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }

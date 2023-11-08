@@ -62,14 +62,17 @@ import java.util.List;
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
-    @Mapping(target = "extraCopiesOfGrant", source = "ocrFields.extraCopiesOfGrant", qualifiedBy = {ToLong.class})
-    @Mapping(target = "outsideUkGrantCopies", source = "ocrFields.outsideUKGrantCopies", qualifiedBy = {ToLong.class})
+    @Mapping(target = "extraCopiesOfGrant", expression = "java(OCRFieldNumberMapper.stringToLong(new String("
+            + "\"extraCopiesOfGrant\"), ocrFields.getExtraCopiesOfGrant()))", qualifiedBy = {ToLong.class})
+    @Mapping(target = "outsideUkGrantCopies", expression = "java(OCRFieldNumberMapper.stringToLong(new String("
+            + "\"outsideUKGrantCopies\"), ocrFields.getOutsideUKGrantCopies()))", qualifiedBy = {ToLong.class})
 
-    @Mapping(target = "applicationFeePaperForm", source = "ocrFields.applicationFeePaperForm", qualifiedBy = {
-        ToPennies.class})
-    @Mapping(target = "feeForCopiesPaperForm", source = "ocrFields.feeForCopiesPaperForm", qualifiedBy = {
-        ToPennies.class})
-    @Mapping(target = "totalFeePaperForm", source = "ocrFields.totalFeePaperForm", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "applicationFeePaperForm", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"applicationFeePaperForm\"), ocrFields.getApplicationFeePaperForm()))", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "feeForCopiesPaperForm", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"feeForCopiesPaperForm\"), ocrFields.getFeeForCopiesPaperForm()))", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "totalFeePaperForm", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"totalFeePaperForm\"), ocrFields.getTotalFeePaperForm()))", qualifiedBy = {ToPennies.class})
     @Mapping(target = "paperPaymentMethod", source = "ocrFields.paperPaymentMethod", qualifiedBy = {
         ToPaperPaymentMethod.class})
     @Mapping(target = "paymentReferenceNumberPaperform", source = "ocrFields.paymentReferenceNumberPaperform")
@@ -80,14 +83,16 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "primaryApplicantPhoneNumber", source = "ocrFields.primaryApplicantPhoneNumber")
     @Mapping(target = "primaryApplicantEmailAddress", source = "ocrFields.primaryApplicantEmailAddress")
     @Mapping(target = "primaryApplicantSecondPhoneNumber", source = "ocrFields.primaryApplicantSecondPhoneNumber")
-    @Mapping(target = "primaryApplicantHasAlias", source = "ocrFields.primaryApplicantHasAlias", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "primaryApplicantHasAlias", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"primaryApplicantHasAlias\"), ocrFields.getPrimaryApplicantHasAlias()))",
+            qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "primaryApplicantAlias", source = "ocrFields.primaryApplicantAlias")
 
     @Mapping(target = "executorsApplying", source = "ocrFields", qualifiedBy = {ToAdditionalExecutorsApplying.class})
 
-    @Mapping(target = "solsSolicitorIsApplying", source = "ocrFields.solsSolicitorIsApplying", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "solsSolicitorIsApplying", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"solsSolicitorIsApplying\"), ocrFields.getSolsSolicitorIsApplying()))",
+            qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "solsSolicitorAddress", source = "ocrFields", qualifiedBy = {ToSolicitorAddress.class})
     @Mapping(target = "solsSolicitorFirmName", source = "ocrFields.solsSolicitorFirmName")
     @Mapping(target = "solsSolicitorAppReference", source = "ocrFields.solsSolicitorAppReference")
@@ -98,30 +103,42 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "deceasedForenames", source = "ocrFields.deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "ocrFields.deceasedSurname")
     @Mapping(target = "deceasedAddress", source = "ocrFields", qualifiedBy = {ToDeceasedAddress.class})
-    @Mapping(target = "deceasedDateOfBirth", source = "ocrFields.deceasedDateOfBirth", qualifiedBy = {
-        ToDefaultLocalDate.class})
-    @Mapping(target = "deceasedDateOfDeath", source = "ocrFields.deceasedDateOfDeath", qualifiedBy = {
-        ToDefaultLocalDate.class})
-    @Mapping(target = "deceasedAnyOtherNames", source = "ocrFields.deceasedAnyOtherNames", qualifiedBy = {
-        ToYesOrNo.class})
-    @Mapping(target = "deceasedDomicileInEngWales", source = "ocrFields.deceasedDomicileInEngWales", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "deceasedDateOfBirth", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
+            + ".toDefaultDateFieldMember(new String(\"deceasedDateOfBirth\"), ocrFields.getDeceasedDateOfBirth()))",
+            qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "deceasedDateOfDeath", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
+            + ".toDefaultDateFieldMember(new String(\"deceasedDateOfDeath\"), ocrFields.getDeceasedDateOfDeath()))",
+            qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "deceasedAnyOtherNames",
+            expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"deceasedAnyOtherNames\"), "
+                    + "ocrFields.getDeceasedAnyOtherNames()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "deceasedDomicileInEngWales", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"deceasedDomicileInEngWales\"), ocrFields.getDeceasedDomicileInEngWales()))", qualifiedBy = {
+                ToYesOrNo.class})
     @Mapping(target = "deceasedMaritalStatus", source = "ocrFields.deceasedMartialStatus", qualifiedBy = {
         ToMartialStatus.class})
 
-    @Mapping(target = "dateOfMarriageOrCP", source = "ocrFields.dateOfMarriageOrCP", qualifiedBy = {
-        ToDefaultLocalDate.class})
-    @Mapping(target = "dateOfDivorcedCPJudicially", source = "ocrFields.dateOfDivorcedCPJudicially", qualifiedBy = {
-        ToDefaultLocalDate.class})
+    @Mapping(target = "dateOfMarriageOrCP", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
+            + ".toDefaultDateFieldMember(new String(\"dateOfMarriageOrCP\"), ocrFields.getDateOfMarriageOrCP()))",
+            qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "dateOfDivorcedCPJudicially", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
+            + ".toDefaultDateFieldMember(new String(\"dateOfDivorcedCPJudicially\"), "
+            + "ocrFields.getDateOfDivorcedCPJudicially()))", qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "courtOfDecree", source = "ocrFields.courtOfDecree")
 
-    @Mapping(target = "foreignAsset", source = "ocrFields.foreignAsset", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "foreignAssetEstateValue", source = "ocrFields.foreignAssetEstateValue", qualifiedBy = {
-        ToPennies.class})
+    @Mapping(target = "foreignAsset", expression =
+            "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"foreignAsset\"), ocrFields.getForeignAsset()))",
+            qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "foreignAssetEstateValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"foreignAssetEstateValue\"), ocrFields.getForeignAssetEstateValue()))", qualifiedBy = {ToPennies.class})
 
-    @Mapping(target = "adopted", source = "ocrFields.adopted", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "adopted", expression =
+            "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"adopted\"), ocrFields.getAdopted()))",
+            qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "adoptiveRelatives", source = "ocrFields", qualifiedBy = {ToAdoptiveRelatives.class})
-    @Mapping(target = "spouseOrPartner", source = "ocrFields.spouseOrPartner", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "spouseOrPartner", expression =
+            "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"spouseOrPartner\"), ocrFields.getSpouseOrPartner()))",
+            qualifiedBy = {ToYesOrNo.class})
 
     // Following fields captured as text but used as booleans in orchestrator
     @Mapping(target = "childrenSurvived", ignore = true)
@@ -192,14 +209,18 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
 
     @Mapping(target = "solsSOTName", source = "ocrFields.solsSolicitorRepresentativeName")
-    @Mapping(target = "applyingAsAnAttorney", source = "ocrFields.applyingAsAnAttorney", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "applyingAsAnAttorney", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"applyingAsAnAttorney\"), ocrFields.getApplyingAsAnAttorney()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "attorneyOnBehalfOfNameAndAddress", source = "ocrFields", qualifiedBy = {
         ToAttorneyOnBehalfOfAddress.class})
-    @Mapping(target = "mentalCapacity", source = "ocrFields.mentalCapacity", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "courtOfProtection", source = "ocrFields.courtOfProtection", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "epaOrLpa", source = "ocrFields.epaOrLpa", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "epaRegistered", source = "ocrFields.epaRegistered", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "mentalCapacity", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"mentalCapacity\"), ocrFields.getMentalCapacity()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "courtOfProtection", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"courtOfProtection\"), ocrFields.getCourtOfProtection()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "epaOrLpa", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"epaOrLpa\"), "
+            + "ocrFields.getEpaOrLpa()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "epaRegistered", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"epaRegistered\"), ocrFields.getEpaRegistered()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "domicilityCountry", source = "ocrFields.domicilityCountry")
 
     // domicilityIHTCert defined in after mapping section If domicilityEntrustingDocument or
@@ -208,37 +229,50 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
 
     @Mapping(target = "executorsNotApplying", source = "ocrFields", qualifiedBy = {
         ToAdditionalExecutorsNotApplying.class})
-    @Mapping(target = "willHasCodicils", source = "ocrFields.willHasCodicils", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate", source = "ocrFields"
-        + ".deceasedMarriedAfterWillOrCodicilDate",
+    @Mapping(target = "willHasCodicils", expression =
+            "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"willHasCodicils\"), ocrFields.getWillHasCodicils()))",
+            qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate",
+            expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"deceasedMarriedAfterWillOrCodicilDate\"), "
+                    + "ocrFields.getDeceasedMarriedAfterWillOrCodicilDate()))",
         qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "languagePreferenceWelsh", source = "ocrFields.bilingualGrantRequested", qualifiedBy = {
-        ToYesOrNo.class})
-    @Mapping(target = "willDate", source = "ocrFields.willDate", qualifiedBy = {ToDefaultLocalDate.class})
-    @Mapping(target = "willsOutsideOfUK", source = "ocrFields.willsOutsideOfUK", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "willGiftUnderEighteen", source = "ocrFields.willGiftUnderEighteen", qualifiedBy = {
-        ToYesOrNo.class})
-    @Mapping(target = "notifiedApplicants", source = "ocrFields.notifiedApplicants", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "languagePreferenceWelsh", expression =
+            "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"bilingualGrantRequested\"), "
+                    + "ocrFields.getBilingualGrantRequested()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "willDate", expression = "java(OCRFieldDefaultLocalDateFieldMapper.toDefaultDateFieldMember("
+            + "new String(\"willDate\"), ocrFields.getWillDate()))", qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "willsOutsideOfUK", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"willsOutsideOfUK\"), ocrFields.getWillsOutsideOfUK()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "willGiftUnderEighteen", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"willGiftUnderEighteen\"), ocrFields.getWillGiftUnderEighteen()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "notifiedApplicants", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"notifiedApplicants\"), ocrFields.getNotifiedApplicants()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields", qualifiedBy = {
         ToIHTFormCompletedOnline.class})
     @Mapping(target = "ihtReferenceNumber", source = "ocrFields.ihtReferenceNumber")
     @Mapping(target = "ihtFormId", source = "ocrFields", qualifiedBy = {ToIHTFormId.class})
-    @Mapping(target = "ihtGrossValue", source = "ocrFields.ihtGrossValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtNetValue", source = "ocrFields.ihtNetValue", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtGrossValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"ihtGrossValue\"), ocrFields.getIhtGrossValue()))", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtNetValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"ihtNetValue\"), ocrFields.getIhtNetValue()))", qualifiedBy = {ToPennies.class})
 
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {
         ToApplicationTypeGrantOfRepresentation.class})
     @Mapping(target = "ihtFormEstate", source = "ocrFields", qualifiedBy = {ToIHTFormEstate.class})
-    @Mapping(target = "ihtEstateGrossValue", source = "ocrFields.ihtEstateGrossValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtEstateNetValue", source = "ocrFields.ihtEstateNetValue", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtEstateNetQualifyingValue",
-        source = "ocrFields.ihtEstateNetQualifyingValue", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtEstateGrossValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"ihtEstateGrossValue\"), ocrFields.getIhtEstateGrossValue()))", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtEstateNetValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
+            + "\"ihtEstateNetValue\"), ocrFields.getIhtEstateNetValue()))", qualifiedBy = {ToPennies.class})
+    @Mapping(target = "ihtEstateNetQualifyingValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies("
+            + "new String(\"ihtEstateNetQualifyingValue\"), ocrFields.getIhtEstateNetQualifyingValue()))",
+            qualifiedBy = {ToPennies.class})
     @Mapping(target = "deceasedHadLateSpouseOrCivilPartner",
         source = "ocrFields", qualifiedBy = {
             ToDeceasedHadLateSpouseOrCivilPartner.class})
-    @Mapping(target = "ihtUnusedAllowanceClaimed", source = "ocrFields.ihtUnusedAllowanceClaimed", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "ihtUnusedAllowanceClaimed",
+            expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"ihtUnusedAllowanceClaimed\"), "
+                    + "ocrFields.getIhtUnusedAllowanceClaimed()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
     @Mapping(target = "solsWillType", source = "ocrFields", qualifiedBy = {ToSolicitorWillType.class})

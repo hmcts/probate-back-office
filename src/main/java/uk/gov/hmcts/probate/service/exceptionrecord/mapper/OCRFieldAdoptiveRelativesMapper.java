@@ -15,6 +15,12 @@ import java.util.List;
 @Slf4j
 @Component
 public class OCRFieldAdoptiveRelativesMapper {
+    private static final String ADOPTIVE_RELATIVES_0_IN_OR_OUT = "adoptiveRelatives_0_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_1_IN_OR_OUT = "adoptiveRelatives_1_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_2_IN_OR_OUT = "adoptiveRelatives_2_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_3_IN_OR_OUT = "adoptiveRelatives_3_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_4_IN_OR_OUT = "adoptiveRelatives_4_adoptedInOrOut";
+    private static final String ADOPTIVE_RELATIVES_5_IN_OR_OUT = "adoptiveRelatives_5_adoptedInOrOut";
 
     @SuppressWarnings("squid:S1168")
     @ToAdoptiveRelatives
@@ -29,7 +35,7 @@ public class OCRFieldAdoptiveRelativesMapper {
             collectionMemberList.add(buildExecutor(
                 ocrFields.getAdoptiveRelatives0name(),
                 ocrFields.getAdoptiveRelatives0relationship(),
-                getInOutValue(ocrFields.getAdoptiveRelatives0adoptedInOrOut())
+                getInOutValue(ocrFields.getAdoptiveRelatives0adoptedInOrOut(), ADOPTIVE_RELATIVES_0_IN_OR_OUT)
             ));
         }
 
@@ -38,7 +44,7 @@ public class OCRFieldAdoptiveRelativesMapper {
             collectionMemberList.add(buildExecutor(
                 ocrFields.getAdoptiveRelatives1name(),
                 ocrFields.getAdoptiveRelatives1relationship(),
-                getInOutValue(ocrFields.getAdoptiveRelatives1adoptedInOrOut())
+                getInOutValue(ocrFields.getAdoptiveRelatives1adoptedInOrOut(), ADOPTIVE_RELATIVES_1_IN_OR_OUT)
             ));
         }
 
@@ -47,7 +53,7 @@ public class OCRFieldAdoptiveRelativesMapper {
             collectionMemberList.add(buildExecutor(
                 ocrFields.getAdoptiveRelatives2name(),
                 ocrFields.getAdoptiveRelatives2relationship(),
-                getInOutValue(ocrFields.getAdoptiveRelatives2adoptedInOrOut())
+                getInOutValue(ocrFields.getAdoptiveRelatives2adoptedInOrOut(), ADOPTIVE_RELATIVES_2_IN_OR_OUT)
             ));
         }
 
@@ -56,7 +62,7 @@ public class OCRFieldAdoptiveRelativesMapper {
             collectionMemberList.add(buildExecutor(
                 ocrFields.getAdoptiveRelatives3name(),
                 ocrFields.getAdoptiveRelatives3relationship(),
-                getInOutValue(ocrFields.getAdoptiveRelatives3adoptedInOrOut())
+                getInOutValue(ocrFields.getAdoptiveRelatives3adoptedInOrOut(), ADOPTIVE_RELATIVES_3_IN_OR_OUT)
             ));
         }
 
@@ -65,7 +71,7 @@ public class OCRFieldAdoptiveRelativesMapper {
             collectionMemberList.add(buildExecutor(
                 ocrFields.getAdoptiveRelatives4name(),
                 ocrFields.getAdoptiveRelatives4relationship(),
-                getInOutValue(ocrFields.getAdoptiveRelatives4adoptedInOrOut())
+                getInOutValue(ocrFields.getAdoptiveRelatives4adoptedInOrOut(), ADOPTIVE_RELATIVES_4_IN_OR_OUT)
             ));
         }
 
@@ -74,7 +80,7 @@ public class OCRFieldAdoptiveRelativesMapper {
             collectionMemberList.add(buildExecutor(
                 ocrFields.getAdoptiveRelatives5name(),
                 ocrFields.getAdoptiveRelatives5relationship(),
-                getInOutValue(ocrFields.getAdoptiveRelatives5adoptedInOrOut())
+                getInOutValue(ocrFields.getAdoptiveRelatives5adoptedInOrOut(), ADOPTIVE_RELATIVES_5_IN_OR_OUT)
             ));
         }
 
@@ -94,7 +100,7 @@ public class OCRFieldAdoptiveRelativesMapper {
         return new CollectionMember<>(null, adoptiveRelative);
     }
 
-    private InOut getInOutValue(String adoptedInOutValue) {
+    private InOut getInOutValue(String adoptedInOutValue, String fieldName) {
         if (adoptedInOutValue == null || adoptedInOutValue.isEmpty()) {
             return null;
         } else {
@@ -105,8 +111,8 @@ public class OCRFieldAdoptiveRelativesMapper {
             } else if (!matchesIn && matchesOut) {
                 return InOut.OUT;
             } else {
-                String errorMessage =
-                    "Adopted In or Out field '" + adoptedInOutValue + "' could not be mapped to 'in' or 'out' values";
+                String errorMessage = fieldName
+                        + ": '" + adoptedInOutValue + "' could not be mapped to 'in' or 'out' values";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
             }

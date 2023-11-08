@@ -130,4 +130,13 @@ class OCRFieldAdoptiveRelativesMapperTest {
                     = ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);
         });
     }
+
+    @Test
+    void testExceptionWithInvalidInOutValue() {
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
+            ocrFieldAdoptiveRelativesMapper.toAdoptiveRelativesCollectionMember(ocrFieldsInOutError);
+        });
+        assertEquals("adoptiveRelatives_0_adoptedInOrOut: 'this is not in or out' could not be mapped "
+                + "to 'in' or 'out' values", expectedEx.getMessage());
+    }
 }
