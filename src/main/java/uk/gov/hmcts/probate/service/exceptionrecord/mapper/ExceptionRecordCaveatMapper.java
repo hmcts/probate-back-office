@@ -24,7 +24,7 @@ import uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData;
     uses = {ApplicationTypeMapper.class,
         OCRFieldAddressMapper.class,
         OCRFieldDefaultLocalDateFieldMapper.class,
-        OCRFieldProbateFeeMapper.class, 
+        OCRFieldProbateFeeMapper.class,
         OCRFieldProbateFeeNotIncludedReasonMapper.class,
         OCRFieldYesOrNoMapper.class},
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
@@ -36,23 +36,30 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "deceasedForenames", source = "deceasedForenames")
     @Mapping(target = "deceasedSurname", source = "deceasedSurname")
     @Mapping(target = "deceasedAddress", source = "ocrFields", qualifiedBy = {ToDeceasedAddress.class})
-    @Mapping(target = "deceasedDateOfDeath", source = "deceasedDateOfDeath", qualifiedBy = {ToDefaultLocalDate.class})
-    @Mapping(target = "deceasedDateOfBirth", source = "deceasedDateOfBirth", qualifiedBy = {ToDefaultLocalDate.class})
-    @Mapping(target = "deceasedAnyOtherNames", source = "deceasedAnyOtherNames", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "deceasedDateOfDeath", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
+            + ".toDefaultDateFieldMember(new String(\"deceasedDateOfDeath\"), ocrFields.getDeceasedDateOfDeath()))",
+            qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "deceasedDateOfBirth", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
+            + ".toDefaultDateFieldMember(new String(\"deceasedDateOfBirth\"), ocrFields.getDeceasedDateOfBirth()))",
+            qualifiedBy = {ToDefaultLocalDate.class})
+    @Mapping(target = "deceasedAnyOtherNames", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"deceasedAnyOtherNames\"), ocrFields.getDeceasedAnyOtherNames()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "solsSolicitorRepresentativeName", source = "solsSolicitorRepresentativeName")
     @Mapping(target = "dxNumber", source = "dxNumber")
-    @Mapping(target = "practitionerAcceptsServiceByEmail", source = "practitionerAcceptsServiceByEmail", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "practitionerAcceptsServiceByEmail", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo("
+            + "new String(\"practitionerAcceptsServiceByEmail\"), "
+            + "ocrFields.getPractitionerAcceptsServiceByEmail()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "solsSolicitorFirmName", source = "solsSolicitorFirmName")
     @Mapping(target = "solsSolicitorAppReference", source = "solsSolicitorAppReference")
     @Mapping(target = "solsFeeAccountNumber", source = "solsFeeAccountNumber")
     @Mapping(target = "solsPaymentMethods", ignore = true)
-    @Mapping(target = "languagePreferenceWelsh", source = "bilingualCorrespondenceRequested", qualifiedBy = {
-        ToYesOrNo.class})
+    @Mapping(target = "languagePreferenceWelsh", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
+            + "\"bilingualCorrespondenceRequested\"), ocrFields.getBilingualCorrespondenceRequested()))",
+            qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "solsSolicitorPhoneNumber", source = "solsSolicitorPhoneNumber")
     @Mapping(target = "caveatorPhoneNumber", source = "caveatorPhoneNumber")
     @Mapping(target = "probateFee", source = "probateFee", qualifiedBy = {ToProbateFee.class})
-    @Mapping(target = "probateFeeNotIncludedReason", source = "probateFeeNotIncludedReason", 
+    @Mapping(target = "probateFeeNotIncludedReason", source = "probateFeeNotIncludedReason",
             qualifiedBy = {ToProbateFeeNotIncludedReason.class})
     @Mapping(target = "helpWithFeesReference", source = "helpWithFeesReference")
     @Mapping(target = "probateFeeNotIncludedExplanation", source = "probateFeeNotIncludedExplanation")
@@ -70,7 +77,7 @@ public interface ExceptionRecordCaveatMapper {
             caseData.setLanguagePreferenceWelsh(Boolean.FALSE);
         }
     }
-    
+
     @AfterMapping
     default void setSolsPaymentMethod(
         @MappingTarget CaveatData caseData, ExceptionRecordOCRFields ocrField) {

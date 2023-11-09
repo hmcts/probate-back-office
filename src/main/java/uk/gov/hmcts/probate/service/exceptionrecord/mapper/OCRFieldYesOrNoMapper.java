@@ -11,7 +11,7 @@ public class OCRFieldYesOrNoMapper {
 
     @SuppressWarnings({"squid:S1168", "squid:S2447"})
     @ToYesOrNo
-    public Boolean toYesOrNo(String booleanValue) {
+    public static Boolean toYesOrNo(String fieldName, String booleanValue) {
         log.info("Beginning mapping for Yes or No value: {}", booleanValue);
 
         if (booleanValue == null || booleanValue.isEmpty()) {
@@ -27,7 +27,8 @@ public class OCRFieldYesOrNoMapper {
                 case "FALSE":
                     return false;
                 default:
-                    String errorMessage = "Yes, no, true or false values expected but got '" + booleanValue + "'";
+                    String errorMessage = fieldName
+                            + ": Yes, no, true or false values expected but got '" + booleanValue + "'";
                     log.error(errorMessage);
                     throw new OCRMappingException(errorMessage);
             }

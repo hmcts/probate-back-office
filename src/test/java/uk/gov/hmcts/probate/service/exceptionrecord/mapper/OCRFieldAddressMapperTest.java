@@ -31,7 +31,7 @@ class OCRFieldAddressMapperTest {
     private static final String ADDRESS_POST_CODE_ERROR = "NW1";
 
     private static final String ADDRESS_POST_CODE_CORRECT_ERROR_MESSAGE =
-        "An invalid postcode has been found 'NW1', please provide a valid postcode";
+        "primaryApplicantAddressPostCode: An invalid postcode has been found 'NW1', please provide a valid postcode";
 
     private OCRFieldAddressMapper addressMapper = new OCRFieldAddressMapper();
 

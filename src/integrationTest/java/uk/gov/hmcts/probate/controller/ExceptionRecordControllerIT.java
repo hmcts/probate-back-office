@@ -394,7 +394,8 @@ class ExceptionRecordControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                            + "deceasedDateOfDeath: Date field '02022' not in expected format ddMMyyyy\"]")))
                 .andExpect(content().string(containsString(
                     "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
@@ -408,7 +409,8 @@ class ExceptionRecordControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                            + "deceasedDateOfDeath: Date field '02022' not in expected format ddMMyyyy\"]")))
                 .andExpect(content().string(containsString(
                     "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
@@ -423,7 +425,8 @@ class ExceptionRecordControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isUnprocessableEntity())
                 .andExpect(content().string(containsString(
-                    "\"warnings\":[\"OCR Data Mapping Error: Date field '02022' not in expected format ddMMyyyy\"]")))
+                    "\"warnings\":[\"OCR Data Mapping Error: "
+                            + "deceasedDateOfDeath: Date field '02022' not in expected format ddMMyyyy\"]")))
                 .andExpect(content().string(containsString(
                     "\"errors\":[\"OCR fields could not be mapped to a case\"]")));
     }
