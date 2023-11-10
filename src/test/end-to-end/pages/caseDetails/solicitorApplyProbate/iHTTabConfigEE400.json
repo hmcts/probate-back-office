@@ -5,7 +5,7 @@
     "Which IHT forms did you complete to report the estate’s value?"
   ],
   "dataKeys": [
-    "EE_ihtFormEstateValueCompletedYes",
-    "EE_ihtFormEstate400"
+    "optionYes",
+    "page2_solsIHTTab400FormLabel"
   ]
 }

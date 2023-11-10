@@ -111,7 +111,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.waitForText(createGrantOfProbateConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
         await I.click(`#ihtFormEstateValuesCompleted_${createGrantOfProbateConfig.EE_ihtFormEstateValueCompletedYes}`);
 
-        await I.click(`#ihtFormEstate-${createGrantOfProbateConfig.EE_ihtFormEstate207}`);
+        await I.click(`#ihtFormEstate-${createGrantOfProbateConfig.EE_ihtFormEstate400}`);
 
         await I.waitForNavigationToComplete(commonConfig.continueButton);
 

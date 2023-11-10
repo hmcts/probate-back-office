@@ -12,11 +12,12 @@ const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/gran
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
+const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
 
 Feature('Back Office').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Caseworker Grant of Representation - probateman case match';
 Scenario(scenarioName, async function ({I}) {
-    if (testConfig.TestBackOfficeUrl.includes('demo') || testConfig.TestBackOfficeUrl.includes('aat')) {
+    if (testConfig.TestBackOfficeUrl.includes('pr') || testConfig.TestBackOfficeUrl.includes('aat')) {
         let endState;
         await I.logInfo(scenarioName, 'Login as Caseworker');
         await I.authenticateWithIdamIfAvailable(false);
@@ -31,6 +32,7 @@ Scenario(scenarioName, async function ({I}) {
         await I.enterGrantOfProbateManualForProbateManPage1('create');
         await I.logInfo(scenarioName, 'enterGrantOfProbateManualForProbateManPage2');
         await I.enterGrantOfProbateManualForProbateManPage2('create');
+        await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
         await I.logInfo(scenarioName, 'enterGrantOfProbateManualForProbateManPage3');
         await I.enterGrantOfProbateManualForProbateManPage3('create');
         await I.checkMyAnswers(nextStepName);
