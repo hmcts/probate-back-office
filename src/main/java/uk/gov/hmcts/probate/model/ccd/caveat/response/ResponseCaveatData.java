@@ -37,6 +37,7 @@ public class ResponseCaveatData {
     private final String deceasedForenames;
     private final String deceasedSurname;
     private final String deceasedDateOfDeath;
+    private final String deceasedDateOfBirth;
     private final String deceasedAnyOtherNames;
     private final List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
     private final ProbateAddress deceasedAddress;
