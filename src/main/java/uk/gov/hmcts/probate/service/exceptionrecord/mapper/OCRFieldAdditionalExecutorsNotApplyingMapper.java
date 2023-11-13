@@ -16,6 +16,13 @@ import java.util.List;
 @Component
 public class OCRFieldAdditionalExecutorsNotApplyingMapper {
 
+    private static final String EXECUTORS_NOT_APPLYING_0_NOT_APPLYING_EXECUTOR_REASON =
+        "executorsNotApplying_0_notApplyingExecutorReason";
+    private static final String EXECUTORS_NOT_APPLYING_1_NOT_APPLYING_EXECUTOR_REASON =
+        "executorsNotApplying_1_notApplyingExecutorReason";
+    private static final String EXECUTORS_NOT_APPLYING_2_NOT_APPLYING_EXECUTOR_REASON =
+        "executorsNotApplying_2_notApplyingExecutorReason";
+
     @SuppressWarnings("squid:S1168")
     @ToAdditionalExecutorsNotApplying
     public List<CollectionMember<ExecutorNotApplying>> toAdditionalCollectionMember(
@@ -29,7 +36,8 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
             log.info("Adding Executor 1");
             collectionMemberList.add(buildExecutorNotApplying(
                 ocrFields.getExecutorsNotApplying0notApplyingExecutorName(),
-                ocrFields.getExecutorsNotApplying0notApplyingExecutorReason()
+                ocrFields.getExecutorsNotApplying0notApplyingExecutorReason(),
+                    EXECUTORS_NOT_APPLYING_0_NOT_APPLYING_EXECUTOR_REASON
             ));
         }
 
@@ -38,7 +46,8 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
             log.info("Adding Executor 2");
             collectionMemberList.add(buildExecutorNotApplying(
                 ocrFields.getExecutorsNotApplying1notApplyingExecutorName(),
-                ocrFields.getExecutorsNotApplying1notApplyingExecutorReason()
+                ocrFields.getExecutorsNotApplying1notApplyingExecutorReason(),
+                    EXECUTORS_NOT_APPLYING_1_NOT_APPLYING_EXECUTOR_REASON
             ));
         }
 
@@ -47,7 +56,8 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
             log.info("Adding Executor 3");
             collectionMemberList.add(buildExecutorNotApplying(
                 ocrFields.getExecutorsNotApplying2notApplyingExecutorName(),
-                ocrFields.getExecutorsNotApplying2notApplyingExecutorReason()
+                ocrFields.getExecutorsNotApplying2notApplyingExecutorReason(),
+                    EXECUTORS_NOT_APPLYING_2_NOT_APPLYING_EXECUTOR_REASON
             ));
         }
 
@@ -56,9 +66,9 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
 
     private CollectionMember<ExecutorNotApplying> buildExecutorNotApplying(
         String executorNotApplyingName,
-        String executorNotApplyingReason
+        String executorNotApplyingReason, String fieldName
     ) {
-        ExecutorNotApplyingReason notApplyingReason = identifyReason(executorNotApplyingReason);
+        ExecutorNotApplyingReason notApplyingReason = identifyReason(executorNotApplyingReason, fieldName);
         ExecutorNotApplying notApplying = ExecutorNotApplying.builder()
             .notApplyingExecutorName(executorNotApplyingName)
             .notApplyingExecutorReason(notApplyingReason)
@@ -79,7 +89,7 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
         return new CollectionMember<>(null, notApplying);
     }
 
-    private ExecutorNotApplyingReason identifyReason(String reasonValue) {
+    private ExecutorNotApplyingReason identifyReason(String reasonValue, String fieldName) {
         if (reasonValue == null || reasonValue.isEmpty()) {
             reasonValue = "";
         }
@@ -98,8 +108,8 @@ public class OCRFieldAdditionalExecutorsNotApplyingMapper {
             case "F":
                 return ExecutorNotApplyingReason.MENTALLY_INCAPABLE;
             default:
-                String errorMessage =
-                    "Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
+                String errorMessage = fieldName
+                        + ": Not applying reason A, B, C, D, E, or F values expected but got '" + reasonValue + "'";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
         }

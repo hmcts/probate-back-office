@@ -15,7 +15,7 @@ public class OCRFieldIhtMoneyMapper {
     private static final BigDecimal ONE_HUNDRED = BigDecimal.valueOf(100);
 
     @ToPennies
-    public Long poundsToPennies(final String monetaryValue) {
+    public static Long poundsToPennies(final String fieldName, final String monetaryValue) {
         log.info("Beginning mapping for monetary value: {}", monetaryValue);
         Long returnValue;
 
@@ -26,7 +26,8 @@ public class OCRFieldIhtMoneyMapper {
             try {
                 returnValue = new BigDecimal(numericalMonetaryValue).multiply(ONE_HUNDRED).longValue();
             } catch (Exception e) {
-                String errorMessage = "Monetary field '" + monetaryValue + "' could not be converted to a number";
+                String errorMessage = fieldName
+                        + ": Monetary field '" + monetaryValue + "' could not be converted to a number";
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
             }

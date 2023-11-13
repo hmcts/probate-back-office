@@ -129,4 +129,12 @@ class OCRFieldAdditionalExecutorsNotApplyingMapperTest {
                     = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);
         });
     }
+
+    @Test
+    void testInvalidReasonExecutorNotApplyingException() {
+        assertThrows(OCRMappingException.class, () -> {
+            List<CollectionMember<ExecutorNotApplying>> response
+                    = ocrFieldAdditionalExecutorsNotApplyingMapper.toAdditionalCollectionMember(ocrFields6);
+        });
+    }
 }

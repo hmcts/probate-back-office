@@ -41,7 +41,7 @@ public class OCRFieldSolicitorWillTypeMapper {
                 || solsWillType.contains(GRANT_TYPE_INTESTACY_VALUE.toUpperCase())) {
             return GRANT_TYPE_INTESTACY;
         } else {
-            String errorMessage = "SolicitorWillType WillLeft/Probate, WillLeftAnnexed/Admon or NoWill/Intestacy "
+            String errorMessage = "solsWillType: WillLeft/Probate, WillLeftAnnexed/Admon or NoWill/Intestacy "
                 + "expected but got '" + solsWillType + "'";
             log.error(errorMessage);
             throw new OCRMappingException(errorMessage);
