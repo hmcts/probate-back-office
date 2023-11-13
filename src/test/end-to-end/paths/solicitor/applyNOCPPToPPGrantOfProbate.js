@@ -24,6 +24,7 @@ const changeOfRepresentativesTabConfig = require('src/test/end-to-end/pages/noti
 const changeOfRepresentativesDetailsConfig = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfig');
 const nocApplicantDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/postNocApplicantDetailsConfigAAT');
 const changeOfRepresentativesDetailsConfigAAT = require('src/test/end-to-end/pages/noticeOfChange/changeOfRepresentativesConfigAAT');
+const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
 const nocConfig = require('src/test/end-to-end/pages/noticeOfChange/noticeOfChangeConfig');
 const dateFns = require('date-fns');
 const {legacyParse, convertTokens} = require('@date-fns/upgrade/v2');
@@ -60,6 +61,8 @@ Scenario(scenarioName, async function ({I}) {
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
+    await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
+    await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();
@@ -100,7 +103,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
-    await I.completeApplicationPage2();
+    //await I.completeApplicationPage2();
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();
