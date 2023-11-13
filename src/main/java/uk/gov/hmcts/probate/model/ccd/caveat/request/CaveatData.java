@@ -58,7 +58,6 @@ public class CaveatData {
     private String deceasedSurname;
     @NotNull(groups = {CaveatUpdatedGroup.class}, message = "{deceasedDateOfDeathIsNull}")
     private LocalDate deceasedDateOfDeath;
-    private LocalDate deceasedDateOfBirth;
     @NotBlank(groups = {CaveatUpdatedGroup.class}, message = "{deceasedFullAliasNameListIsNull}")
     private String deceasedAnyOtherNames;
     private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
