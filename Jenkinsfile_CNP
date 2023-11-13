@@ -195,7 +195,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
-  syncBranchesWithMaster(branchesToSync)
+  //syncBranchesWithMaster(branchesToSync)
 
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'
