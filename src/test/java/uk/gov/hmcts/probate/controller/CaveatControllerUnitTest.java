@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.service.notify.NotificationClientException;
@@ -45,6 +46,9 @@ class CaveatControllerUnitTest {
     private List<CaveatsEmailValidationRule> validationRuleCaveats;
     @Mock
     private List<CaveatsExpiryValidationRule> validationRuleCaveatsExpiry;
+
+    @Mock
+    private CaveatDodValidationRule caveatDodValidationRule;
     @Mock
     private CaveatDataTransformer caveatDataTransformer;
     @Mock
@@ -92,11 +96,10 @@ class CaveatControllerUnitTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDataTransformer,
-            caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService, notificationService,
-            caveatNotificationService, confirmationResponseService, paymentsService, feeService,
+        underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDodValidationRule,
+            caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
+            notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
             registrarDirectionService, documentGeneratorService);
-
     }
 
     @Test

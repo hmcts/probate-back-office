@@ -62,4 +62,13 @@ class OCRFieldPaymentMethodMapperTest {
             assertTrue(false);
         });
     }
+
+    @Test
+    void testPaymentMethodException() {
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
+            paymentMethodMapper.validateKnownPaymentMethod("notfound");
+        });
+        assertEquals("paperPaymentMethod: debitOrCredit, cheque, feeAccount or cash expected "
+                + "but got 'notfound'", expectedEx.getMessage());
+    }
 }

@@ -62,7 +62,7 @@ def secrets = [
                 secret('levDeathUrl', 'LEV_DEATH_URL'),
                 secret('definition-importer-username', 'CCD_CONFIGURER_IMPORTER_USERNAME'),
                 secret('definition-importer-password', 'CCD_CONFIGURER_IMPORTER_PASSWORD'),
-                secret('probate-storage-account-primary-connection-string', 'PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
+                secret('probate-storage-account-primary-connection-string','PROBATE_STORAGE_ACCOUNT_PRIMARY_CONNECTION_STRING')
         ],
         's2s-${env}'      : [
                 secret('microservicekey-ccd-data', 'DATA_STORE_S2S_KEY'),
@@ -76,7 +76,19 @@ def secrets = [
                 secret('idam-data-store-system-user-username','IDAM_DATA_STORE_SYSTEM_USER_USERNAME'),
                 secret('idam-data-store-system-user-password','IDAM_DATA_STORE_SYSTEM_USER_PASSWORD'),
                 secret('postcode-info-address-lookup-token', 'ADDRESS_LOOKUP_TOKEN')
+        ],
+        'aac-${env}': [
+                secret('idam-mca-client-secret', 'IDAM_CLIENT_SECRET'),
+                secret('idam-mca-system-user-username', 'BEFTA_IDAM_CAA_USERNAME'),
+                secret('idam-mca-system-user-password', 'BEFTA_IDAM_CAA_PASSWORD'),
+                secret('idam-noc-approver-username', 'BEFTA_IDAM_NOC_APPROVER_USERNAME'),
+                secret('idam-noc-approver-password', 'BEFTA_IDAM_NOC_APPROVER_PASSWORD'),
+                secret('aac-manage-case-s2s-secret', 'MANAGE_CASE_S2S_KEY')
+        ],
+        'am-${env}': [
+                secret('role-assignment-service-LD-SDK-KEY', 'LD_SDK_AM_KEY')
         ]
+
 ]
 static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   [ $class: 'AzureKeyVaultSecret',
@@ -183,7 +195,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
-  syncBranchesWithMaster(branchesToSync)
+  //syncBranchesWithMaster(branchesToSync)
 
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'

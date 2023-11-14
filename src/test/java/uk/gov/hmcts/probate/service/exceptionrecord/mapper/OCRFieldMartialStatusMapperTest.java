@@ -70,4 +70,15 @@ class OCRFieldMartialStatusMapperTest {
             assertTrue(false);
         });
     }
+
+    @Test
+    void testMartialStatusExceptionMessage() {
+        OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
+            martialStatusMapper.toMartialStatus("notfound");
+        });
+        assertEquals("deceasedMartialStatus: 'neverMarried', 'widowed', "
+                        + "'marriedCivilPartnership', 'divorcedCivilPartnership' or 'judicially' "
+                        + "expected but got 'notfound'",
+                expectedEx.getMessage());
+    }
 }

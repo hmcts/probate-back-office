@@ -96,6 +96,11 @@
       "description": "Did you complete the IHT205 online with HMRC?"
     },
     {
+      "name": "formVersion",
+      "value": "1",
+      "description": "Form version"
+    },
+    {
       "name": "ihtFormCompletedOnline",
       "value": "true",
       "description": "Did you complete the IHT205 online with HMRC?"

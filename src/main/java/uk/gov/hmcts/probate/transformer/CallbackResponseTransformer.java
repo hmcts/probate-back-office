@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
@@ -49,6 +50,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static java.lang.Boolean.TRUE;
 import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
@@ -84,6 +86,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT_REISSU
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_STATEMENT_OF_TRUTH;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.Constants.GRANT_OF_PROBATE_NAME;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType.INTESTACY;
 
@@ -105,10 +108,13 @@ public class CallbackResponseTransformer {
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
-    private static final String CASE_MATCHING_ISSUE_GRANT  = "BOCaseMatchingIssueGrant";
+    private static final String CASE_MATCHING_ISSUE_GRANT = "BOCaseMatchingIssueGrant";
     private static final String CASE_PRINTED = "CasePrinted";
     private static final String READY_FOR_ISSUE = "BOReadyToIssue";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+    private static final String SOL_AS_EXEC_ID = "solicitor";
+    private static final String PBA_PAYMENT_METHOD = "pba";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
 
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
@@ -345,6 +351,15 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse addNocDocuments(CallbackRequest callbackRequest, List<Document> documents) {
+        documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addBulkPrintInformationForReprint(CallbackRequest callbackRequest, Document document,
                                                               String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -443,7 +458,6 @@ public class CallbackResponseTransformer {
         }
         return transformResponse(responseCaseDataBuilder.build());
     }
-
 
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
@@ -1085,6 +1099,9 @@ public class CallbackResponseTransformer {
             .moveToDormantDateTime(caseData.getMoveToDormantDateTime())
             .lastEvidenceAddedDate(caseData.getLastEvidenceAddedDate())
             .registrarDirections(getNullForEmptyRegistrarDirections(caseData.getRegistrarDirections()))
+            .removedRepresentative(caseData.getRemovedRepresentative())
+            .changeOrganisationRequestField(caseData.getChangeOrganisationRequestField())
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caseData.getChangeOfRepresentatives()))
             .documentUploadedAfterCaseStopped(caseData.getDocumentUploadedAfterCaseStopped())
             .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent())
             .serviceRequestReference(caseData.getServiceRequestReference())
@@ -1105,7 +1122,7 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    public OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
+    OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
         CaseData caseData = caseDetails.getData();
         OrganisationEntityResponse organisationEntityResponse = null;
         if (null != authToken) {
@@ -1660,6 +1677,14 @@ public class CallbackResponseTransformer {
             grantOfRepresentationData.setEvidenceHandled(false);
         }
 
+        if (SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
+            if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
+                grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
+            } else {
+                grantOfRepresentationData.setRegistryLocation(RegistryLocation.NEWCASTLE);
+            }
+        }
+
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData)
                 .caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
@@ -1667,6 +1692,14 @@ public class CallbackResponseTransformer {
 
     private List<CollectionMember<RegistrarDirection>> getNullForEmptyRegistrarDirections(
             List<CollectionMember<RegistrarDirection>> collectionMembers) {
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
+
+    private List<CollectionMember<ChangeOfRepresentative>> getNullForEmptyRepresentatives(
+            List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
         }

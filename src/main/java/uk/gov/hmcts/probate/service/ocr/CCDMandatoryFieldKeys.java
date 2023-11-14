@@ -8,6 +8,8 @@ public interface CCDMandatoryFieldKeys {
     String MANDATORY_FIELD_NOT_FOUND_LOG = "{} was not found in ocr fields";
     String DEPENDANT_KEY_PRIMARYAPPLICANTALIAS = "primaryApplicantAlias";
     String DEPENDANT_DESC_PRIMARYAPPLICANTALIAS = "Primary applicant alias";
+    String DEPENDANT_KEY_IHTFORMCOMPLETEDONLINE = "ihtFormCompletedOnline";
+    String DEPENDANT_DESC_IHTFORMCOMPLETEDONLINE = "IHT form completed online";
     String DEPENDANT_KEY_IHTREFERENCENUMBER = "ihtReferenceNumber";
     String DEPENDANT_DESC_IHTREFERENCENUMBER = "IHT reference number";
     String DEPENDANT_KEY_IHTFORMID = "ihtFormId";
@@ -25,8 +27,8 @@ public interface CCDMandatoryFieldKeys {
         "Executor %s not applying reason";
     String MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS =
         GORSolicitorMandatoryFields.PRIMARY_APPLICANT_HAS_ALIAS.getKey();
-    String MANDATORY_KEY_IHTFORMCOMPLETEDONLINE =
-        GORSolicitorMandatoryFields.IHT_FORM_COMPLETED_ONLINE.getKey();
+    String MANDATORY_KEY_FORM_VERSION =
+            GORSolicitorMandatoryFields.FORM_VERSION.getKey();
     String SOLICTOR_KEY_IS_APPLYING = "solsSolicitorIsApplying";
     String SOLICTOR_KEY_REPRESENTATIVE_NAME = "solsSolicitorRepresentativeName";
     String SOLICTOR_KEY_FIRM_NAME = "solsSolicitorFirmName";

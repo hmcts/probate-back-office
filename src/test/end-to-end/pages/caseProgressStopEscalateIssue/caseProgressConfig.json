@@ -34,5 +34,7 @@
     "JobTitle": "Solicitor",
     "FeeAccount": "1: fee account",
     "PBAANumber": "PBA0082126",
-    "PaymentReference": "E2E Case Progress PBA Payment Reference"
+    "PaymentReference": "E2E Case Progress PBA Payment Reference",
+    "documentType": "Digital Grant",
+    "filename": "digitalGrant.pdf"
 }

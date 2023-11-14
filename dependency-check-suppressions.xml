@@ -67,6 +67,7 @@
         <cve>CVE-2021-37137</cve>
         <cve>CVE-2021-43797</cve>
         <cve>CVE-2022-24823</cve>
+        <cve>CVE-2023-4586</cve>
     </suppress>
     <suppress>
         <packageUrl regex="true">^pkg:maven/org.apache.tomcat.embed/tomcat-embed-core@.*$</packageUrl>
@@ -84,6 +85,10 @@
         <cve>CVE-2022-45143</cve>
         <cve>CVE-2023-28708</cve>
         <cve>CVE-2023-41080</cve>
+        <cve>CVE-2023-45648</cve>
+        <cve>CVE-2023-42794</cve>
+        <cve>CVE-2023-42795</cve>
+        <cve>CVE-2023-44487</cve>
     </suppress>
     <suppress>
         <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-api@.*$</packageUrl>
@@ -625,9 +630,9 @@
     </suppress>
     <suppress>
         <notes><![CDATA[
-   file name: tomcat-embed-websocket-9.0.78.jar
+   file name: spring-plugin-metadata-1.2.0.RELEASE.jar
    ]]></notes>
-        <packageUrl regex="true">^pkg:maven/org\.apache\.tomcat\.embed/tomcat\-embed\-websocket@.*$</packageUrl>
-        <cve>CVE-2023-41080</cve>
+        <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-metadata@.*$</packageUrl>
+        <cve>CVE-2023-34047</cve>
     </suppress>
 </suppressions>

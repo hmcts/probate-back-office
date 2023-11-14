@@ -113,6 +113,7 @@ public final class Constants {
     // >, >=, <=, < comparisions etc, converting to numeric
     public static final String LATEST_SCHEMA_VERSION = "2.0.0";
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final String CAVEAT_SOLICITOR_NAME = "Sir/Madam";
 
     public static List<String> getNonTrustPtnrTitleClearingTypes() {
         return new ArrayList<>(asList(

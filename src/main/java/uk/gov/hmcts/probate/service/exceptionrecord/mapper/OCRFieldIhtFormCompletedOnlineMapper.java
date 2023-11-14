@@ -23,7 +23,8 @@ public class OCRFieldIhtFormCompletedOnlineMapper {
                 return null;
             }
         } else {
-            return ocrFieldYesOrNoMapper.toYesOrNo(ocrFields.getIhtFormCompletedOnline());
+            return ocrFieldYesOrNoMapper.toYesOrNo("ihtFormCompletedOnline",
+                    ocrFields.getIhtFormCompletedOnline());
         }
     }
 }
