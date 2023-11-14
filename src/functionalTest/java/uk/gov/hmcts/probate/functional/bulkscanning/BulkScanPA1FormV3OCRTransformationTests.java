@@ -26,51 +26,51 @@ public class BulkScanPA1FormV3OCRTransformationTests extends IntegrationTestBase
     }
 
     @Test
-    public void shouldSetIht400CompletedBeforeSwitchDate() {
+    public void shouldSetIht400BeforeSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_PRE_EE.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.iht400completed","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT400");
     }
 
     @Test
-    public void shouldSetIht400CompletedAfterSwitchDate() {
+    public void shouldSetIht400AfterSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_POST_EE.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.iht400completed","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT400");
     }
 
     @Test
-    public void shouldSetIht205Completed() {
+    public void shouldSetIht205() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT205_PRE_EE.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.iht205completed","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT205");
     }
 
     @Test
-    public void shouldSetIht207Completed() {
+    public void shouldSetIht207() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT207.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.iht207completed","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT207");
     }
 
     @Test
-    public void shouldSetIht400421Completed() {
+    public void shouldSetIht400421() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400421.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.iht400421completed","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","IHT400421");
     }
 
     @Test
-    public void shouldSetExceptedEstates() {
+    public void shouldSetIHTNotRequiredExceptedEstate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_Excepted_Estates.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.exceptedEstate","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtFormId","NOT_REQUIRED");
     }
 
     @Test
-    public void shouldSetIht400Process() {
+    public void shouldSetHmrcLetter() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_Process.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.iht400process","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.hmrcLetterId","Yes");
     }
 
     @Test
-    public void shouldSetIht400Code() {
+    public void shouldSetUniqueProbateCode() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHTCode.json");
-        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.ihtCode","Yes");
+        transformExceptionPostSuccess(jsonRequest, "case_creation_details.case_data.uniqueProbateCodeId","CTS_CODE");
     }
 
     private void transformExceptionPostSuccess(String bodyText, String field, String expected) {
