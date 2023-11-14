@@ -157,7 +157,7 @@
     { "name": "iht207completed", "value": "false"},
     { "name": "iht400completed", "value": "true"},
     { "name": "ihtCode", "value": "CTS_CODE"},
-    { "name": "iht400process", "value": "true"},
+    { "name": "iht400process", "value": "TRUE"},
     { "name": "probateGrossValueIht400", "value": "251,765.50"},
     { "name": "probateNetValueIht400", "value": "199,435.00"}
   ]

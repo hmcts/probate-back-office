@@ -275,7 +275,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
                     + "ocrFields.getIhtUnusedAllowanceClaimed()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
-    @Mapping(target = "hmrcLetterId", source = "ocrFields.iht400process", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "hmrcLetterId",
+            expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"iht400process\"), "
+                    + "ocrFields.getIht400process()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "uniqueProbateCodeId", source = "ocrFields.ihtCode")
     @Mapping(target = "solsWillType", source = "ocrFields", qualifiedBy = {ToSolicitorWillType.class})
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
