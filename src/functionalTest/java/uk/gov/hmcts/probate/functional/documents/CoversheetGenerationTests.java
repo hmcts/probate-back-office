@@ -86,6 +86,13 @@ public class CoversheetGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
+    public void verifyCoverSheetGenerateSolsGopExpectedEstatesCompletedYes400() throws IOException {
+        String dir = "/coversheet/exceptedEstates/ihtEstateCompletedYes400/";
+        String payload = dir + "caseCreate.json";
+        assertNotNull(validatePostSuccess(payload, NEXTSTEPS_VALIDATE_URL));
+    }
+
+    @Test
     public void verifyGenerateSolsCoverSheetGopTcResolutionLodgedWithinApplication() throws IOException {
         String payload = "/coversheet/caseprogress/04e-caseCreated.json";
         assertNotNull(validatePostSuccess(payload, NEXTSTEPS_VALIDATE_URL));
