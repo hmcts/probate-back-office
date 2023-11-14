@@ -16,16 +16,14 @@ public class OCRFieldIhtFormCompletedOnlineMapper {
     @SuppressWarnings({"squid:S2447"})
     @ToIHTFormCompletedOnline
     public Boolean ihtFormCompletedOnline(ExceptionRecordOCRFields ocrFields) {
-        if ("2".equals(ocrFields.getFormVersion())) {
-            if ("true".equalsIgnoreCase(ocrFields.getIht205completedOnline())) {
-                return true;
-            } else {
-                return null;
-            }
-        } else {
-            return ocrFieldYesOrNoMapper.toYesOrNo("ihtFormCompletedOnline",
-                    ocrFields.getIhtFormCompletedOnline());
+        if (null == ocrFields.getFormVersion()) {
+            return null;
         }
+        return switch (ocrFields.getFormVersion()) {
+            case "3" -> null;
+            case "2" -> "true".equalsIgnoreCase(ocrFields.getIht205completedOnline()) ? true : null;
+            default -> ocrFieldYesOrNoMapper.toYesOrNo("ihtFormCompletedOnline", ocrFields.getIhtFormCompletedOnline());
+        };
     }
 }
 

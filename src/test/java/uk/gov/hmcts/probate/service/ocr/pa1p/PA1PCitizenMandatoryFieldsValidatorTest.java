@@ -63,6 +63,17 @@ class PA1PCitizenMandatoryFieldsValidatorTest {
     }
 
     @Test
+    void testAllMandatoryFieldsPresentPA1PCitizenV3() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields(3);
+
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        when(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)).thenReturn(true);
+        pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+
+        assertEquals(0, warnings.size());
+    }
+
+    @Test
     void testOptionalFieldsNotAddedForPA1P() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryGORCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);

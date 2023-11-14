@@ -45,7 +45,7 @@ class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
             .iht207Completed("false")
             .build();
         Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
-            .decasedHadLateSpouseOrCivilPartner(ocrFields);
+            .deceasedHadLateSpouseOrCivilPartner(ocrFields);
         assertTrue(response);
     }
 
@@ -59,7 +59,36 @@ class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
             .iht207Completed("false")
             .build();
         Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
-            .decasedHadLateSpouseOrCivilPartner(ocrFields);
+            .deceasedHadLateSpouseOrCivilPartner(ocrFields);
+        assertFalse(response);
+    }
+
+    @Test
+    void shouldReturnTrueVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("3")
+                .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+                .deceasedMartialStatus("widowed")
+                .iht400421Completed("false")
+                .iht207Completed("false")
+                .iht400Completed("false")
+                .build();
+        Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
+                .deceasedHadLateSpouseOrCivilPartner(ocrFields);
+        assertTrue(response);
+    }
+
+    @Test
+    void shouldReturnFalseV3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("2")
+                .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+                .deceasedMartialStatus("divorced")
+                .iht400421Completed("false")
+                .iht207Completed("false")
+                .build();
+        Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
+                .deceasedHadLateSpouseOrCivilPartner(ocrFields);
         assertFalse(response);
     }
 
@@ -68,7 +97,7 @@ class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();
         Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
-            .decasedHadLateSpouseOrCivilPartner(ocrFields);
+            .deceasedHadLateSpouseOrCivilPartner(ocrFields);
         assertNull(response);
     }
 }
