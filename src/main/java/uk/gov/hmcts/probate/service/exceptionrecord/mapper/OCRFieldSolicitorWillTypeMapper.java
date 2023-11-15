@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWi
 
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_ADMON_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_INTESTACY_VALUE;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_PROBATE_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_PROBATE;

@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetails;
@@ -131,11 +130,11 @@ public class ExceptionRecordService {
                 .collect(toList()));
 
             // Add grant type
-            if (grantOfRepresentationData.getApplicationType().equals(SOLICITORS) &&
-                    grantOfRepresentationData.getSolsWillType().equals(GRANT_TYPE_ADMON)
+            if (grantOfRepresentationData.getApplicationType().equals(SOLICITORS)
+                    && grantOfRepresentationData.getSolsWillType().equals(GRANT_TYPE_ADMON)
             ) {
                 grantOfRepresentationData.setGrantType(GrantType.ADMON_WILL);
-            }else{
+            } else {
                 grantOfRepresentationData.setGrantType(grantType);
             }
 
