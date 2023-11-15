@@ -2921,6 +2921,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "documentsReceivedNotificationSent", "UserRole": "caseworker-probate-solicitor", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "labelIhtEstate", "UserRole": "caseworker-probate-solicitor", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "citizen", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationID", "UserRole": "citizen", "CRUD": "CR"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "applicationSubmittedDate", "UserRole": "citizen", "CRUD": "CRU"},
