@@ -12,6 +12,10 @@ variable database_name_v11 {
   default = "probatemandb"
 }
 
+variable database_name {
+  default = "probatemandb"
+}
+
 variable "location" {
   default = "UK South"
 }
@@ -19,6 +23,8 @@ variable "location" {
 variable "env" {}
 
 variable "subscription" {}
+
+variable "aks_subscription_id" {}
 
 // CNP settings
 variable "jenkins_AAD_objectId" {
