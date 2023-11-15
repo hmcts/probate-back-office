@@ -96,13 +96,12 @@ public class NextStepsController {
             Document sentEmail = null;
             Document coversheet = null;
             if (BigDecimal.ZERO.compareTo(feesResponse.getTotalAmount()) == 0) {
-
                 if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
                     notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
-                    sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED,callbackRequest.getCaseDetails());
+                    sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails());
                 } else {
                     sentEmail = notificationService
-                            .sendEmail(APPLICATION_RECEIVED_NO_DOCS,callbackRequest.getCaseDetails());
+                            .sendEmail(APPLICATION_RECEIVED_NO_DOCS, callbackRequest.getCaseDetails());
                 }
                 coversheet = pdfManagementService
                         .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);

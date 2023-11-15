@@ -167,8 +167,7 @@ class NextStepsUnitTest {
             when(bindingResultMock.hasErrors()).thenReturn(true);
             when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
 
-            underTest.validate(callbackRequestMock,
-                    bindingResultMock, httpServletRequestMock);
+            underTest.validate(callbackRequestMock, bindingResultMock, httpServletRequestMock);
         });
     }
 
@@ -180,8 +179,7 @@ class NextStepsUnitTest {
             when(stateChangeServiceMock.getChangedStateForCaseReview(caseDataMock)).thenReturn(Optional.empty());
             when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenThrow(JsonProcessingException.class);
 
-            underTest.validate(callbackRequestMock,
-                    bindingResultMock, httpServletRequestMock);
+            underTest.validate(callbackRequestMock, bindingResultMock, httpServletRequestMock);
         });
     }
 
