@@ -32,8 +32,7 @@ public class OCRFieldSolicitorWillTypeMapper {
         String solsWillType = ocrFields.getSolsWillType().replaceAll("\\s+","").toUpperCase();
         log.info("Beginning mapping for Solicitor Will Type value: {}", solsWillType);
 
-        if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)
-                || solsWillType.contains(GRANT_TYPE_PROBATE_VALUE.toUpperCase())) {
+        if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)) {
             return GRANT_TYPE_PROBATE;
         } else if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
             return GRANT_TYPE_ADMON;

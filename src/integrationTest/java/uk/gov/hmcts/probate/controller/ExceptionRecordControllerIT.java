@@ -60,7 +60,10 @@ class ExceptionRecordControllerIT {
     private String exceptionRecordPayloadCitizenPA8A;
     private String exceptionRecordPayloadSolicitorPA8A;
     private String exceptionRecordPayloadCitizenSingleExecutorPA1P;
+
     private String exceptionRecordPayloadSolicitorSingleExecutorPA1P;
+
+    private String exceptionRecordPayloadSolicitorSingleExecutorAdmonWillPA1P;
     private String exceptionRecordPayloadCitizenMultipleExecutorPA1P;
     private String exceptionRecordPayloadSolicitorMultipleExecutorPA1P;
     private String exceptionRecordPayloadSolicitorPA1A;
@@ -82,6 +85,8 @@ class ExceptionRecordControllerIT {
                 testUtils.getStringFromFile("expectedExceptionRecordDataCitizenSingleExecutorPA1P.json");
         exceptionRecordPayloadSolicitorSingleExecutorPA1P =
                 testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1P.json");
+        exceptionRecordPayloadSolicitorSingleExecutorAdmonWillPA1P =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorAdmonWillPA1P.json");
         exceptionRecordPayloadCitizenPA1A =
                 testUtils.getStringFromFile("expectedExceptionRecordDataCitizenPA1A.json");
         exceptionRecordPayloadCitizenMultipleExecutorPA1P =
@@ -215,6 +220,22 @@ class ExceptionRecordControllerIT {
     }
 
     @Test
+    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorAdmonWillPA1P() throws Exception {
+        mockMvc.perform(post("/transform-scanned-data")
+                        .content(exceptionRecordPayloadSolicitorSingleExecutorAdmonWillPA1P)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("\"bulkScanCaseReference\":\"1002\"")))
+                .andExpect(content().string(containsString("\"case_type_id\":\"GrantOfRepresentation\"")))
+                .andExpect(content().string(containsString("\"applicationType\":\"Solicitor\"")))
+                .andExpect(content().string(containsString("\"caseType\":\"admonWill\"")))
+                .andExpect(content().string(containsString("\"deceasedSurname\":\"Smith\"")))
+                .andExpect(content().string(containsString("\"warnings\":[]")))
+                .andExpect(content().string(containsString("\"caseHandedOffToLegacySite\":\"Yes\"")))
+                .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
+
+    }
+    @Test
     void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                 .content(exceptionRecordPayloadCitizenPA1A)
@@ -228,6 +249,7 @@ class ExceptionRecordControllerIT {
                 .andExpect(content().string(containsString("\"warnings\":[]")))
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));;
     }
+
 
     @Test
     void testMissingFormType() throws Exception {
