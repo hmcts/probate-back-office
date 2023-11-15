@@ -220,7 +220,7 @@ class ExceptionRecordControllerIT {
     }
 
     @Test
-    void testNoWarningsReturnOkResponseAndSuccessResponseStateForSolicitorSingleExecutorAdmonWillPA1P() throws Exception {
+    void testNoWarningsReturnOkAndSuccessResponseStateForSolicitorSingleExecutorAdmonWillPA1P() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
                         .content(exceptionRecordPayloadSolicitorSingleExecutorAdmonWillPA1P)
                         .contentType(MediaType.APPLICATION_JSON))
@@ -235,6 +235,7 @@ class ExceptionRecordControllerIT {
                 .andExpect(content().string(containsString("\"evidenceHandled\":\"No\"")));
 
     }
+
     @Test
     void testNoWarningsReturnOkResponseAndSuccessResponseStateForPA1A() throws Exception {
         mockMvc.perform(post("/transform-scanned-data")
