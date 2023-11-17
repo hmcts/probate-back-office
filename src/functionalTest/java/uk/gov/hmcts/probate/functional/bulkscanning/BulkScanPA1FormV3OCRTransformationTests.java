@@ -6,9 +6,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
-
-import java.time.format.DateTimeFormatter;
 
 import static org.hamcrest.Matchers.equalTo;
 
