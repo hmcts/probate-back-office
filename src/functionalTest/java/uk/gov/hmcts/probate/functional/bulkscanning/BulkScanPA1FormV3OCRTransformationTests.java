@@ -17,9 +17,8 @@ public class BulkScanPA1FormV3OCRTransformationTests extends IntegrationTestBase
 
     private static final String TRANSFORM_EXCEPTON_RECORD = "/transform-scanned-data";
     private static final String IHT_FORM_ID = "case_creation_details.case_data.ihtFormId";
-    private static final DateTimeFormatter CCD_DATE_FORMAT = CaveatCallbackResponseTransformer.dateTimeFormatter;
+    private static final String IHT_FORM_ESTATE = "case_creation_details.case_data.ihtFormEstate";
     private String jsonRequest;
-    private String jsonResponse;
 
     @Before
     public void setUp() {
@@ -27,39 +26,45 @@ public class BulkScanPA1FormV3OCRTransformationTests extends IntegrationTestBase
     }
 
     @Test
-    public void shouldSetIht400BeforeSwitchDate() {
-        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_PRE_EE.json");
-        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT400");
-    }
-
-    @Test
     public void shouldSetIht400AfterSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_POST_EE.json");
-        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT400");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ESTATE,"IHT400");
     }
 
     @Test
-    public void shouldSetIht205() {
+    public void shouldSetIht205BeforeSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT205_PRE_EE.json");
         transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT205");
     }
 
     @Test
-    public void shouldSetIht207() {
-        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT207.json");
+    public void shouldSetIht207BeforeSwitchDate() {
+        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT207_PRE_EE.json");
         transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT207");
     }
 
     @Test
-    public void shouldSetIht400421() {
-        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400421.json");
+    public void shouldSetIht207AfterSwitchDate() {
+        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT207_POST_EE.json");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ESTATE,"IHT207");
+    }
+
+    @Test
+    public void shouldSetIht400421BeforeSwitchDate() {
+        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400421_PRE_EE.json");
         transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT400421");
     }
 
     @Test
-    public void shouldSetIHTNotRequiredExceptedEstate() {
+    public void shouldSetIht400421AfterSwitchDate() {
+        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400421_POST_EE.json");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ESTATE,"IHT400421");
+    }
+
+    @Test
+    public void shouldSetNullNotSubmittedFormAfterSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_Excepted_Estates.json");
-        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"NOT_REQUIRED");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,null);
     }
 
     @Test

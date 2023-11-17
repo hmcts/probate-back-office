@@ -39,10 +39,10 @@ public class OCRFieldIhtFormTypeMapper {
 
     private IhtFormType processVersion3(ExceptionRecordOCRFields ocrFields) {
         boolean diedAfterSwitch = TRUE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate());
-        if (diedAfterSwitch && TRUE.equalsIgnoreCase(ocrFields.getExceptedEstate())) {
-            return IhtFormType.optionNotRequired;
+        if (diedAfterSwitch) {
+             return null;
         }
-        return getIhtFormType(ocrFields, diedAfterSwitch);
+        return getIhtFormType(ocrFields);
     }
 
     private IhtFormType processVersion2(ExceptionRecordOCRFields ocrFields) {
@@ -51,7 +51,7 @@ public class OCRFieldIhtFormTypeMapper {
         if (diedAfterSwitch) {
             return null;
         }
-        return getIhtFormType(ocrFields, diedAfterSwitch);
+        return getIhtFormType(ocrFields);
     }
 
     private IhtFormType processVersion1(ExceptionRecordOCRFields ocrFields) {
@@ -70,16 +70,15 @@ public class OCRFieldIhtFormTypeMapper {
         };
     }
 
-    private IhtFormType getIhtFormType(ExceptionRecordOCRFields ocrFields, boolean diedAfterSwitch) {
+    private IhtFormType getIhtFormType(ExceptionRecordOCRFields ocrFields) {
         if (TRUE.equalsIgnoreCase(ocrFields.getIht400421Completed())) {
             return IhtFormType.optionIHT400421;
         } else if (TRUE.equalsIgnoreCase(ocrFields.getIht207Completed())) {
             return IhtFormType.optionIHT207;
         } else if (TRUE.equalsIgnoreCase(ocrFields.getIht400Completed())) {
             return IhtFormType.optionIHT400;
-        } else if (!diedAfterSwitch
-                && (TRUE.equalsIgnoreCase(ocrFields.getIht205Completed())
-                || FALSE.equalsIgnoreCase(ocrFields.getIht205completedOnline()))) {
+        } else if (TRUE.equalsIgnoreCase(ocrFields.getIht205Completed())
+                || FALSE.equalsIgnoreCase(ocrFields.getIht205completedOnline())) {
             return IhtFormType.optionIHT205;
         }
         return null;

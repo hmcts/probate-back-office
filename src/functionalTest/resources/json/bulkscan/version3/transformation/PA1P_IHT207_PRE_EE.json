@@ -85,7 +85,7 @@
     { "name": "deceasedAddressCounty", "value": "" },
     { "name": "deceasedAddressPostCode", "value": "LA5 6TE" },
     { "name": "deceasedDateOfBirth", "value": "12031950" },
-    { "name": "deceasedDateOfDeath", "value": "01012022" },
+    { "name": "deceasedDateOfDeath", "value": "01012021" },
     { "name": "deceasedAnyOtherNames", "value": "true" },
     { "name": "deceasedDomicileInEngWales", "value": "true" },
     { "name": "deceasedMartialStatus", "value": "neverMarried" },
@@ -152,7 +152,7 @@
     { "name": "iht207netValue", "value": "199,435.00" },
     { "name": "solsSolicitorIsApplying", "value": "False" },
     { "name": "formVersion", "value": "3"},
-    { "name": "deceasedDiedOnAfterSwitchDate", "value": "true"},
+    { "name": "deceasedDiedOnAfterSwitchDate", "value": "false"},
     { "name": "iht400421completed", "value": "false"},
     { "name": "iht207completed", "value": "true"}
   ]
