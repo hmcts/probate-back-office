@@ -40,7 +40,7 @@ public class OCRFieldIhtFormTypeMapper {
     private IhtFormType processVersion3(ExceptionRecordOCRFields ocrFields) {
         boolean diedAfterSwitch = TRUE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate());
         if (diedAfterSwitch) {
-             return null;
+            return null;
         }
         return getIhtFormType(ocrFields);
     }
