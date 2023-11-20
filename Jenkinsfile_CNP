@@ -103,7 +103,9 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
 env.PACT_BROKER_FULL_URL = 'https://pact-broker.platform.hmcts.net'
 
 // Configure branches to sync with master branch
-def branchesToSync = ['demo', 'ithc', 'perftest']
+// diable sync branch for postgres upgrade
+//def branchesToSync = ['demo', 'ithc', 'perftest']
+def branchesToSync = []
 
 def checkForEnableNightlyLabel(branch_name) {
   return new GithubAPI(this).getLabelsbyPattern(branch_name, "nightly").contains("nightly")
@@ -195,7 +197,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
-  //syncBranchesWithMaster(branchesToSync)
+  syncBranchesWithMaster(branchesToSync)
 
   afterAlways('test') {
     junit 'build/test-results/test/**/*.xml'

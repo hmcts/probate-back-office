@@ -484,7 +484,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
-                                                          String userId) {
+                                                          Document sentEmail, Document coversheet, String userId) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
             .getFeeAmount());
         final var feeForUkCopies = transformMoneyGBPToString(feesResponse.getUkCopiesFeeResponse().getFeeAmount());
@@ -496,6 +496,9 @@ public class CallbackResponseTransformer {
         caseDataTransformer
                 .transformForSolicitorApplicationCompletion(callbackRequest, feesResponse.getTotalAmount());
         caseDataTransformer.transformCaseDataForEvidenceHandled(callbackRequest);
+        if (sentEmail != null) {
+            documentTransformer.addDocument(callbackRequest, sentEmail, false);
+        }
 
         ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
@@ -508,6 +511,7 @@ public class CallbackResponseTransformer {
             .applicationSubmittedDate(applicationSubmittedDate)
             .boDocumentsUploaded(addLegalStatementDocument(callbackRequest))
             .applicationSubmittedBy(userId)
+            .solsCoversheetDocument(coversheet == null ? null : coversheet.getDocumentLink())
             .build();
 
 
