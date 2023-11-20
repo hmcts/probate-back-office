@@ -19,6 +19,7 @@ import static org.mockito.Mockito.when;
 class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
 
     private static final String POST_EE_DECEASED_DATE_OF_DEATH = "01012022";
+    private static final String PRE_EE_DECEASED_DATE_OF_DEATH = "01012021";
 
     @Mock
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
@@ -27,6 +28,8 @@ class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
     public void setUp() {
         when(exceptedEstateDateOfDeathChecker
             .isOnOrAfterSwitchDate(POST_EE_DECEASED_DATE_OF_DEATH)).thenReturn(true);
+        when(exceptedEstateDateOfDeathChecker
+                .isOnOrAfterSwitchDate(PRE_EE_DECEASED_DATE_OF_DEATH)).thenReturn(false);
     }
 
     @InjectMocks
@@ -64,6 +67,29 @@ class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
     }
 
     @Test
+    void shouldReturnNullAfterSwitchDateAndSubmittedFormV2() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("2")
+                .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+                .iht400421Completed("true")
+                .iht207Completed("false")
+                .build();
+        Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
+                .deceasedHadLateSpouseOrCivilPartner(ocrFields);
+        assertNull(response);
+    }
+
+    @Test
+    void shouldReturnNullBeforeSwitchDate() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
+                .build();
+        Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
+                .deceasedHadLateSpouseOrCivilPartner(ocrFields);
+        assertNull(response);
+    }
+
+    @Test
     void shouldReturnTrueVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .formVersion("3")
@@ -90,6 +116,19 @@ class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapperTest {
         Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
                 .deceasedHadLateSpouseOrCivilPartner(ocrFields);
         assertFalse(response);
+    }
+
+    @Test
+    void shouldReturnNullAfterSwitchDateAndSubmittedFormV3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("2")
+                .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+                .iht400Completed("true")
+                .iht207Completed("false")
+                .build();
+        Boolean response = ocrFieldDeceasedHadLateSpouseOrCivilPartnerMapper
+                .deceasedHadLateSpouseOrCivilPartner(ocrFields);
+        assertNull(response);
     }
 
     @Test

@@ -42,6 +42,16 @@ class PA1ASolicitorMandatoryFieldsValidatorTest {
     }
 
     @Test
+    void testSolicitorAllMandatoryFieldsPresentPA1AV3() {
+        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        ocrFieldValues.put("formVersion", "3");
+
+        pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
+        assertEquals(0, warnings.size());
+    }
+
+    @Test
     void testSolicitorMissingMandatoryFieldsPA1A() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);

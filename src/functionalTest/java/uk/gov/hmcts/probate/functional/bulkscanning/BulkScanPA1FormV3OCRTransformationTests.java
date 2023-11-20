@@ -23,6 +23,12 @@ public class BulkScanPA1FormV3OCRTransformationTests extends IntegrationTestBase
     }
 
     @Test
+    public void shouldSetIht400BeforeSwitchDate() {
+        jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_PRE_EE.json");
+        transformExceptionPostSuccess(jsonRequest, IHT_FORM_ID,"IHT400");
+    }
+
+    @Test
     public void shouldSetIht400AfterSwitchDate() {
         jsonRequest = utils.getStringFromFile("/json/bulkscan/version3/transformation/PA1P_IHT400_POST_EE.json");
         transformExceptionPostSuccess(jsonRequest, IHT_FORM_ESTATE,"IHT400");

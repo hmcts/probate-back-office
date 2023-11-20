@@ -24,9 +24,9 @@ public class MandatoryFieldsValidatorUtils {
 
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private static final String VERSION_KEY = "formVersion";
-    public static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMartialStatus";
-    public static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
-    public static final String IHT_ESTATE_NET_QUALIFYING_VALUE = "ihtEstateNetQualifyingValue";
+    private static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMartialStatus";
+    private static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
+    private static final String IHT_ESTATE_NET_QUALIFYING_VALUE = "ihtEstateNetQualifyingValue";
 
     public void addWarningIfEmpty(Map<String, String> ocrFieldValues, List<String> warnings,
                                   DefaultKeyValue keyValue) {

@@ -56,11 +56,25 @@ class OCRFieldIhtGrossValueMapperTest {
     }
 
     @Test
-    void shouldConvertIHT400GrossDiedAfterSwitchDateVersion3() {
+    void shouldConvertIHT400GrossDiedAfterSwitchDateReceivedHmrcLetterVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .deceasedDiedOnAfterSwitchDate(TRUE)
                 .iht400Completed(TRUE)
+                .iht400process(TRUE)
                 .probateGrossValueIht400(MONETARY_TEST_VALUE_INPUT)
+                .formVersion(VERSION_3)
+                .build();
+        Long response = ocrFieldIhtGrossValueMapper.toIHTGrossValue(ocrFields);
+        assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
+    }
+
+    @Test
+    void shouldConvertIHT400GrossDiedAfterSwitchDateNotReceivedHmrcLetterVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .deceasedDiedOnAfterSwitchDate(TRUE)
+                .iht400Completed(TRUE)
+                .iht400process(FALSE)
+                .iht421grossValue(MONETARY_TEST_VALUE_INPUT)
                 .formVersion(VERSION_3)
                 .build();
         Long response = ocrFieldIhtGrossValueMapper.toIHTGrossValue(ocrFields);
@@ -116,11 +130,25 @@ class OCRFieldIhtGrossValueMapperTest {
     }
 
     @Test
-    void shouldConvertIHT400GrossDiedBeforeSwitchDateVersion3() {
+    void shouldConvertIHT400GrossDiedBeforeSwitchDateReceivedHmrcLetterVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .deceasedDiedOnAfterSwitchDate(FALSE)
                 .iht400Completed(TRUE)
+                .iht400process(TRUE)
                 .probateGrossValueIht400(MONETARY_TEST_VALUE_INPUT)
+                .formVersion(VERSION_3)
+                .build();
+        Long response = ocrFieldIhtGrossValueMapper.toIHTGrossValue(ocrFields);
+        assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
+    }
+
+    @Test
+    void shouldConvertIHT400GrossDiedBeforeSwitchDateNotReceivedHmrcLetterVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .deceasedDiedOnAfterSwitchDate(FALSE)
+                .iht400Completed(TRUE)
+                .iht400process(FALSE)
+                .iht421grossValue(MONETARY_TEST_VALUE_INPUT)
                 .formVersion(VERSION_3)
                 .build();
         Long response = ocrFieldIhtGrossValueMapper.toIHTGrossValue(ocrFields);

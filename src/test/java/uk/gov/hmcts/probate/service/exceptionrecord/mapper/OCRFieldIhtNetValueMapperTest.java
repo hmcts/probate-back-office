@@ -56,10 +56,24 @@ class OCRFieldIhtNetValueMapperTest {
     }
 
     @Test
-    void shouldConvertIHT400NetDiedAfterSwitchDateVersion3() {
+    void shouldConvertIHT400NetDiedAfterSwitchDateNotReceivedHmrcLetterVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .deceasedDiedOnAfterSwitchDate(TRUE)
                 .iht400Completed(TRUE)
+                .iht400process(FALSE)
+                .iht421netValue(MONETARY_TEST_VALUE_INPUT)
+                .formVersion(VERSION_3)
+                .build();
+        Long response = ocrFieldIhtNetValueMapper.toIHTNetValue(ocrFields);
+        assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
+    }
+
+    @Test
+    void shouldConvertIHT400NetDiedAfterSwitchDateReceivedHmrcLetterVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .deceasedDiedOnAfterSwitchDate(TRUE)
+                .iht400Completed(TRUE)
+                .iht400process(TRUE)
                 .probateNetValueIht400(MONETARY_TEST_VALUE_INPUT)
                 .formVersion(VERSION_3)
                 .build();
@@ -116,11 +130,25 @@ class OCRFieldIhtNetValueMapperTest {
     }
 
     @Test
-    void shouldConvertIHT400NetDiedBeforeSwitchDateVersion3() {
+    void shouldConvertIHT400NetDiedBeforeSwitchDateReceivedHmrcLetterVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .deceasedDiedOnAfterSwitchDate(FALSE)
                 .iht400Completed(TRUE)
+                .iht400process(TRUE)
                 .probateNetValueIht400(MONETARY_TEST_VALUE_INPUT)
+                .formVersion(VERSION_3)
+                .build();
+        Long response = ocrFieldIhtNetValueMapper.toIHTNetValue(ocrFields);
+        assertEquals(MONETARY_TEST_VALUE_PENNIES, response);
+    }
+
+    @Test
+    void shouldConvertIHT400NetDiedBeforeSwitchDateNotReceivedHmrcLetterVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .deceasedDiedOnAfterSwitchDate(FALSE)
+                .iht400Completed(TRUE)
+                .iht400process(FALSE)
+                .iht421netValue(MONETARY_TEST_VALUE_INPUT)
                 .formVersion(VERSION_3)
                 .build();
         Long response = ocrFieldIhtNetValueMapper.toIHTNetValue(ocrFields);

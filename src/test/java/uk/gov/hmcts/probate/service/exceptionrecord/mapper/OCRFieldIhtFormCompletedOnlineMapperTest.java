@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
@@ -21,8 +20,6 @@ class OCRFieldIhtFormCompletedOnlineMapperTest {
 
     @Mock
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    @Spy
-    OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
 
     @InjectMocks
     OCRFieldIhtFormCompletedOnlineMapper ocrFieldIhtFormCompletedOnlineMapper
