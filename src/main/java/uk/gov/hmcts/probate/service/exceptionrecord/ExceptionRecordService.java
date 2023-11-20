@@ -131,8 +131,7 @@ public class ExceptionRecordService {
 
             // Add grant type
             if (grantOfRepresentationData.getApplicationType().equals(SOLICITORS)
-                    && GRANT_TYPE_ADMON.equals(grantOfRepresentationData.getSolsWillType())
-            ) {
+                    && GRANT_TYPE_ADMON.equals(grantOfRepresentationData.getSolsWillType())) {
                 grantOfRepresentationData.setGrantType(GrantType.ADMON_WILL);
             } else {
                 grantOfRepresentationData.setGrantType(grantType);

@@ -23,6 +23,8 @@ public class OCRFieldSolicitorWillTypeMapper {
     private static final String ADMON = "ADMON";
     private static final String INTESTACY = "INTESTACY";
 
+    private static final String ADMINISTRATION = "ADMINISTRATION";
+
     @ToSolicitorWillType
     public SolicitorWillType toSolicitorWillType(ExceptionRecordOCRFields ocrFields) {
         if (ocrFields.getSolsWillType() == null || ocrFields.getSolsWillType().isEmpty()) {
@@ -31,10 +33,12 @@ public class OCRFieldSolicitorWillTypeMapper {
         String solsWillType = ocrFields.getSolsWillType().replaceAll("\\s+","").toUpperCase();
         log.info("Beginning mapping for Solicitor Will Type value: {}", solsWillType);
 
-        if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)) {
-            return GRANT_TYPE_PROBATE;
-        } else if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
+
+        if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())
+                || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
             return GRANT_TYPE_ADMON;
+        } else if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)) {
+            return GRANT_TYPE_PROBATE;
         } else if (solsWillType.contains(INTESTACY)
                 || solsWillType.contains(GRANT_TYPE_INTESTACY_VALUE.toUpperCase())) {
             return GRANT_TYPE_INTESTACY;
