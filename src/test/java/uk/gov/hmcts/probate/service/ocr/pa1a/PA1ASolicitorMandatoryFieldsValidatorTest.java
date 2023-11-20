@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.when;
 
 class PA1ASolicitorMandatoryFieldsValidatorTest {
     private OCRFieldTestUtils ocrFieldTestUtils = new OCRFieldTestUtils();
@@ -45,7 +46,8 @@ class PA1ASolicitorMandatoryFieldsValidatorTest {
     void testSolicitorAllMandatoryFieldsPresentPA1AV3() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacySolicitorFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.put("formVersion", "3");
+        ocrFieldValues.put("deceasedDiedOnAfterSwitchDate", "True");
+        when(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)).thenReturn(true);
 
         pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
