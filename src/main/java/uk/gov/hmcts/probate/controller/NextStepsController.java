@@ -16,18 +16,21 @@ import uk.gov.hmcts.probate.controller.validation.ApplicationReviewedGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationUpdatedGroup;
 import uk.gov.hmcts.probate.controller.validation.NextStepsConfirmationGroup;
 import uk.gov.hmcts.probate.exception.BadRequestException;
+import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 import uk.gov.hmcts.probate.service.payments.PaymentsService;
+import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
-import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.service.notify.NotificationClientException;
@@ -37,6 +40,9 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
+import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 
 @Slf4j
 @Controller
@@ -48,12 +54,13 @@ public class NextStepsController {
     private final ConfirmationResponseService confirmationResponseService;
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final ServiceRequestTransformer serviceRequestTransformer;
-    private final CaseDataTransformer caseDataTransformer;
     private final ObjectMapper objectMapper;
     private final FeeService feeService;
     private final StateChangeService stateChangeService;
     private final PaymentsService paymentsService;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
+    private final PDFManagementService pdfManagementService;
+    private final NotificationService notificationService;
 
     public static final String CASE_ID_ERROR = "Case Id: {} ERROR: {}";
 
@@ -86,8 +93,21 @@ public class NextStepsController {
                 ccdData.getFee().getExtraCopiesOfGrant(),
                 ccdData.getFee().getOutsideUKGrantCopies());
             String userId = request.getHeader("user-id");
+            Document sentEmail = null;
+            Document coversheet = null;
+            if (BigDecimal.ZERO.compareTo(feesResponse.getTotalAmount()) == 0) {
+                if (!NO.equals(callbackRequest.getCaseDetails().getData().getEvidenceHandled())) {
+                    notificationService.startAwaitingDocumentationNotificationPeriod(callbackRequest.getCaseDetails());
+                    sentEmail = notificationService.sendEmail(APPLICATION_RECEIVED, callbackRequest.getCaseDetails());
+                } else {
+                    sentEmail = notificationService
+                            .sendEmail(APPLICATION_RECEIVED_NO_DOCS, callbackRequest.getCaseDetails());
+                }
+                coversheet = pdfManagementService
+                        .generateAndUpload(callbackRequest, DocumentType.SOLICITOR_COVERSHEET);
+            }
             callbackResponse = callbackResponseTransformer.transformForSolicitorComplete(callbackRequest,
-                        feesResponse, userId);
+                        feesResponse, sentEmail, coversheet, userId);
         }
 
         return ResponseEntity.ok(callbackResponse);
