@@ -31,12 +31,14 @@ public class PA1PCitizenMandatoryFieldsValidator {
     private final CitizenMandatoryFieldsValidatorV2 citizenMandatoryFieldsValidatorV2;
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
-        if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
-            addWarningsFormVersion3(ocrFieldValues, warnings);
-        } else if (mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)) {
-            addWarningsFormVersion2(ocrFieldValues, warnings);
-        } else {
-            addWarningsFormVersion1(ocrFieldValues, warnings);
+        if (!mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings)) {
+            if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
+                addWarningsFormVersion3(ocrFieldValues, warnings);
+            } else if (mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)) {
+                addWarningsFormVersion2(ocrFieldValues, warnings);
+            } else {
+                addWarningsFormVersion1(ocrFieldValues, warnings);
+            }
         }
     }
 

@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.service.ocr.pa1p;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.collections.keyvalue.DefaultKeyValue;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.ccd.ocr.GORSolicitorMandatoryFields;
@@ -23,14 +24,19 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_F
 @RequiredArgsConstructor
 public class PA1PSolicitorMandatoryFieldsValidator {
     private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
+    public static final DefaultKeyValue F = new DefaultKeyValue("iht207completed",
+            "Did you complete an IHT207 form?");
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
-        if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
-            addWarningsFormVersion3(ocrFieldValues, warnings);
-        } else {
-            addWarningsFormVersion1And2(ocrFieldValues, warnings);
+        if (!mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings)) {
+            if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
+                addWarningsFormVersion3(ocrFieldValues, warnings);
+            } else {
+                addWarningsFormVersion1And2(ocrFieldValues, warnings);
+            }
         }
         addWarningsAllFormVersion(ocrFieldValues, warnings);
+
     }
 
     private void addWarningsFormVersion1And2(Map<String, String> ocrFieldValues, List<String> warnings) {

@@ -24,6 +24,7 @@ public class MandatoryFieldsValidatorUtils {
 
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private static final String VERSION_KEY = "formVersion";
+    private static final String VERSION_DESCRIPTION = "Form version";
     private static final String DECEASED_MARITAL_STATUS_KEY = "deceasedMartialStatus";
     private static final String DECEASED_MARITAL_STATUS_WIDOWED = "widowed";
     private static final String IHT_ESTATE_NET_QUALIFYING_VALUE = "ihtEstateNetQualifyingValue";
@@ -50,6 +51,16 @@ public class MandatoryFieldsValidatorUtils {
     public void addWarning(String warning, List<String> warnings) {
         log.warn(warning);
         warnings.add(warning);
+    }
+
+    public boolean addWarningForNoFormVersion(Map<String, String> ocrFieldValues, List<String> warnings) {
+        if (isEmpty(ocrFieldValues.get(VERSION_KEY))) {
+            log.warn("{} was not found in ocr fields when expected", VERSION_KEY);
+            warnings.add(format(MANDATORY_FIELD_WARNING_STRING, VERSION_DESCRIPTION,
+                    VERSION_KEY));
+            return true;
+        }
+        return false;
     }
 
     public boolean isVersion2(Map<String, String> ocrFieldValues) {

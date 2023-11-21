@@ -25,10 +25,12 @@ public class PA1ASolicitorMandatoryFieldsValidator {
     private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
-        if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
-            addWarningsFormVersion3(ocrFieldValues, warnings);
-        } else {
-            addWarningsFormVersion1And2(ocrFieldValues, warnings);
+        if (!mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings)) {
+            if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
+                addWarningsFormVersion3(ocrFieldValues, warnings);
+            } else {
+                addWarningsFormVersion1And2(ocrFieldValues, warnings);
+            }
         }
         addWarningsAllFormVersion(ocrFieldValues, warnings);
     }

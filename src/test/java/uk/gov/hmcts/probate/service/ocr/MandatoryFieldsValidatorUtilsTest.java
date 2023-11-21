@@ -120,4 +120,23 @@ class MandatoryFieldsValidatorUtilsTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         assertFalse(mandatoryFieldsValidatorUtils.nqvBetweenThresholds(ocrFieldValues));
     }
+
+    @Test
+    void shouldReturnTrueIfNoFormVersion() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        assertTrue(mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings));
+    }
+
+    @Test
+    void shouldReturnFalseIfFormVersionProvided() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        OCRField formVersion = OCRField.builder()
+                .name("formVersion")
+                .value("3")
+                .build();
+        ocrFields.add(formVersion);
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        assertFalse(mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings));
+    }
 }
