@@ -35,7 +35,7 @@ public class OCRFieldSolicitorWillTypeMapper {
 
 
         if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())
-                || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
+                || solsWillType.contains(ADMINISTRATION)) {
             return GRANT_TYPE_ADMON;
         } else if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)) {
             return GRANT_TYPE_PROBATE;
