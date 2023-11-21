@@ -55,9 +55,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.*;
 
 class ConfirmationResponseServiceTest {
 
@@ -592,6 +590,33 @@ class ConfirmationResponseServiceTest {
         when(ccdDataMock.getIht().getFormName()).thenReturn(null);
         when(ccdDataMock.getIht().getIhtFormEstateValuesCompleted()).thenReturn(YES);
         when(ccdDataMock.getIht().getIhtFormEstate()).thenReturn(IHT400_VALUE);
+
+        when(markdownSubstitutionServiceMock
+                .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
+                .thenReturn(willBodyTemplateResponseMock);
+
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
+                caseDataMock);
+
+        assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
+        assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
+        Map<String, String> nextStepsValues = nextStepsKeyValueMap.getValue();
+        assertEquals("31/12/2000", nextStepsValues.get("{{caseSubmissionDate}}"));
+        assertConfirmationValues(nextStepsValues);
+        assertEquals("", nextStepsValues.get("{{ihtForm}}"));
+        assertEquals("", nextStepsValues.get("{{ihtText}}"));
+        assertFeeConfirmationValues(nextStepsValues);
+        assertLegalStatement(nextStepsValues);
+    }
+
+    @Test
+    void shouldGetExceptedEstateYesNAConfirmation() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getIhtFormId()).thenReturn(NOT_APPLICABLE_VALUE);
+        CCDData ccdDataMock = getCcdDataForConfirmation();
+        when(ccdDataMock.getIht().getFormName()).thenReturn(null);
+        when(ccdDataMock.getIht().getIhtFormEstate()).thenReturn(NOT_APPLICABLE_VALUE);
 
         when(markdownSubstitutionServiceMock
                 .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
