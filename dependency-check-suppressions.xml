@@ -637,4 +637,18 @@
         <packageUrl regex="true">^pkg:maven/org\.springframework\.plugin/spring\-plugin\-metadata@.*$</packageUrl>
         <cve>CVE-2023-34047</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: azure-core-1.31.0.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-core@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: azure-core-http-netty-1.12.4.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/com\.azure/azure\-core\-http\-netty@.*$</packageUrl>
+        <cve>CVE-2023-36052</cve>
+    </suppress>
 </suppressions>
