@@ -98,7 +98,7 @@
                     {% endif %}
                 {% endif %}
                 {% if case_details.case_data.ihtFormId != null %}
-                    {% if case_details.case_data.ihtFormId != "IHT400421" and case_details.case_data.ihtFormId != "IHT400" %}
+                    {% if case_details.case_data.ihtFormId != "IHT400421" and case_details.case_data.ihtFormId != "IHT400" and case_details.case_data.ihtFormId != "NA" %}
                         <li>
                             the inheritance tax form
                             {% if case_details.case_data.iht217 == "Yes" %}IHT205 and IHT217
