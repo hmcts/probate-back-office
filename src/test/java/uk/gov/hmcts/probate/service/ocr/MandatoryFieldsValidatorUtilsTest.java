@@ -139,4 +139,22 @@ class MandatoryFieldsValidatorUtilsTest {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         assertFalse(mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings));
     }
+
+    @Test
+    void shouldReturnTrueForWidowed() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        OCRField deceasedMartialStatus = OCRField.builder()
+                .name("deceasedMartialStatus")
+                .value("widowed")
+                .build();
+        ocrFields.add(deceasedMartialStatus);
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        assertTrue(mandatoryFieldsValidatorUtils.hasLateSpouseCivilPartner(ocrFieldValues));
+    }
+
+    @Test
+    void shouldReturnFalseForNullDeceasedMartialStatus() {
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        assertFalse(mandatoryFieldsValidatorUtils.hasLateSpouseCivilPartner(ocrFieldValues));
+    }
 }
