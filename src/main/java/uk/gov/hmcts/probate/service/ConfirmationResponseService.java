@@ -44,7 +44,9 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.*;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
 
 @Component
 @RequiredArgsConstructor

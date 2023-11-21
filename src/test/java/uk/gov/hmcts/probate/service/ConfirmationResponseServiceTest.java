@@ -55,7 +55,10 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.*;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT207_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
 
 class ConfirmationResponseServiceTest {
 
