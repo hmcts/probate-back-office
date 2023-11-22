@@ -449,7 +449,7 @@ class CommonMandatoryFieldsValidatorV3Test {
         List<String> argumentCaptorValues = argumentCaptor.getAllValues();
         assertEquals(1, argumentCaptorValues.size());
         assertEquals("Option \"I did not have to submit any forms to HMRC.\" (exceptedEstate) is not applicable"
-                        + " to deceased died before 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                    + " to deceased died before 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
                 argumentCaptorValues.get(0));
     }
 
@@ -479,7 +479,7 @@ class CommonMandatoryFieldsValidatorV3Test {
         List<String> argumentCaptorValues = argumentCaptor.getAllValues();
         assertEquals(1, argumentCaptorValues.size());
         assertEquals("Option \"IHT205\" (iht205completed) is not applicable"
-                        + " to deceased died on or after 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                + " to deceased died on or after 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
                 argumentCaptorValues.get(0));
     }
 

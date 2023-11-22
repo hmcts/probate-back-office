@@ -109,7 +109,7 @@ public class CommonMandatoryFieldsValidatorV3 {
             } else {
                 mandatoryFieldsValidatorUtils.addWarning(
                         "Option \"IHT205\" (iht205completed) is not applicable"
-                    + " to deceased died on or after 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                + " to deceased died on or after 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
                         warnings);
             }
             submittedForm.add(IHT205_COMPLETED);
