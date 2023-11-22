@@ -930,9 +930,7 @@ public class CallbackResponseTransformer {
             .boDeceasedTitle(caseData.getBoDeceasedTitle())
             .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-            .ihtFormCompletedOnline(
-                caseData.getIhtFormCompletedOnline() == null && caseData.getIhtFormId() != null ? NO :
-                    caseData.getIhtFormCompletedOnline())
+            .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
             .boWillMessage(caseData.getBoWillMessage())
             .boExecutorLimitation(caseData.getBoExecutorLimitation())

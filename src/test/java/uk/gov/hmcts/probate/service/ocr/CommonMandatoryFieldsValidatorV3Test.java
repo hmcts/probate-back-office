@@ -324,7 +324,7 @@ class CommonMandatoryFieldsValidatorV3Test {
                 .description("deceasedDiedOnAfterSwitchDate").build();
         OCRField deceasedDateOfDeath = OCRField.builder()
                 .name("deceasedDateOfDeath")
-                .value("01012021")
+                .value("01012022")
                 .description("deceasedDateOfDeath").build();
         OCRField exceptedEstate = OCRField.builder()
                 .name("exceptedEstate")
@@ -380,7 +380,7 @@ class CommonMandatoryFieldsValidatorV3Test {
                 .description("deceasedDiedOnAfterSwitchDate").build();
         OCRField deceasedDateOfDeath = OCRField.builder()
                 .name("deceasedDateOfDeath")
-                .value("01012021")
+                .value("01012022")
                 .description("deceasedDateOfDeath").build();
         OCRField exceptedEstate = OCRField.builder()
                 .name("exceptedEstate")
@@ -421,6 +421,66 @@ class CommonMandatoryFieldsValidatorV3Test {
                 citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
         assertEquals(GORCitizenMandatoryFields.IHT_NET_VALUE_EXCEPTED_ESTATE.getValue(),
                 citizenMandatoryFieldsArgumentCaptorAllValues.get(4).getValue());
+    }
+
+    @Test
+    void shouldCheckBeforeSwitchDateExceptedEstate() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("false")
+                .description("deceasedDiedOnAfterSwitchDate").build();
+        OCRField deceasedDateOfDeath = OCRField.builder()
+                .name("deceasedDateOfDeath")
+                .value("01012021")
+                .description("deceasedDateOfDeath").build();
+        OCRField exceptedEstate = OCRField.builder()
+                .name("exceptedEstate")
+                .value("true")
+                .description("exceptedEstate").build();
+        ocrFields.add(deceasedDiedOnAfterSwitchDate);
+        ocrFields.add(deceasedDateOfDeath);
+        ocrFields.add(exceptedEstate);
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
+
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(mandatoryFieldsValidatorUtils, times(1)).addWarning(argumentCaptor.capture(), any());
+        List<String> argumentCaptorValues = argumentCaptor.getAllValues();
+        assertEquals(1, argumentCaptorValues.size());
+        assertEquals("Option \"I did not have to submit any forms to HMRC.\" (exceptedEstate) is not applicable"
+                        + " to deceased died before 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                argumentCaptorValues.get(0));
+    }
+
+    @Test
+    void shouldCheckAfterSwitchDateIht205() {
+        List<OCRField> ocrFields = new ArrayList<>();
+        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("true")
+                .description("deceasedDiedOnAfterSwitchDate").build();
+        OCRField deceasedDateOfDeath = OCRField.builder()
+                .name("deceasedDateOfDeath")
+                .value("01012022")
+                .description("deceasedDateOfDeath").build();
+        OCRField iht205completed = OCRField.builder()
+                .name("iht205completed")
+                .value("true")
+                .description("iht205completed").build();
+        ocrFields.add(deceasedDiedOnAfterSwitchDate);
+        ocrFields.add(deceasedDateOfDeath);
+        ocrFields.add(iht205completed);
+        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
+
+        ArgumentCaptor<String> argumentCaptor = ArgumentCaptor.forClass(String.class);
+        verify(mandatoryFieldsValidatorUtils, times(1)).addWarning(argumentCaptor.capture(), any());
+        List<String> argumentCaptorValues = argumentCaptor.getAllValues();
+        assertEquals(1, argumentCaptorValues.size());
+        assertEquals("Option \"IHT205\" (iht205completed) is not applicable"
+                        + " to deceased died on or after 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                argumentCaptorValues.get(0));
     }
 
     @Test

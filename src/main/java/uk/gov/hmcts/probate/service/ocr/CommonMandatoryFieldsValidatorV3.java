@@ -80,8 +80,15 @@ public class CommonMandatoryFieldsValidatorV3 {
     private void addWarningsForSubmittedIHTForm(Map<String, String> ocrFieldValues, List<String> warnings,
                                                 boolean diedOnAfterSwitchDate) {
         List<String> submittedForm = new ArrayList<>();
-        if (diedOnAfterSwitchDate && TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_FORM_NOT_REQUIRED))) {
-            addWarningsForIHTForms(IHT_FORM_NOT_REQUIRED, ocrFieldValues, warnings);
+        if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_FORM_NOT_REQUIRED))) {
+            if (diedOnAfterSwitchDate) {
+                addWarningsForIHTForms(IHT_FORM_NOT_REQUIRED, ocrFieldValues, warnings);
+            } else {
+                mandatoryFieldsValidatorUtils.addWarning(
+                        "Option \"I did not have to submit any forms to HMRC.\" (exceptedEstate) is not applicable"
+                    + " to deceased died before 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                        warnings);
+            }
             submittedForm.add(IHT_FORM_NOT_REQUIRED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT400_COMPLETED))) {
@@ -96,8 +103,15 @@ public class CommonMandatoryFieldsValidatorV3 {
             addWarningsForIHTForms(IHT207_COMPLETED, ocrFieldValues, warnings);
             submittedForm.add(IHT207_COMPLETED);
         }
-        if (!diedOnAfterSwitchDate && TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT205_COMPLETED))) {
-            addWarningsForIHTForms(IHT205_COMPLETED, ocrFieldValues, warnings);
+        if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT205_COMPLETED))) {
+            if (!diedOnAfterSwitchDate) {
+                addWarningsForIHTForms(IHT205_COMPLETED, ocrFieldValues, warnings);
+            } else {
+                mandatoryFieldsValidatorUtils.addWarning(
+                        "Option \"IHT205\" (iht205completed) is not applicable"
+                    + " to deceased died on or after 1 January 2022 (deceasedDateOfDeath)(deceasedDiedOnAfterSwitchDate)",
+                        warnings);
+            }
             submittedForm.add(IHT205_COMPLETED);
         }
         if (submittedForm.size() != 1) {
