@@ -39,6 +39,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import static java.util.stream.Collectors.toList;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
+import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
 
 @Slf4j
 @Service
@@ -131,7 +133,13 @@ public class ExceptionRecordService {
                 .collect(toList()));
 
             // Add grant type
-            grantOfRepresentationData.setGrantType(grantType);
+            if (grantOfRepresentationData.getApplicationType().equals(SOLICITORS)
+                    && GRANT_TYPE_ADMON.equals(grantOfRepresentationData.getSolsWillType())) {
+                grantOfRepresentationData.setGrantType(GrantType.ADMON_WILL);
+            } else {
+                grantOfRepresentationData.setGrantType(grantType);
+            }
+
 
             log.info(
                 "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
