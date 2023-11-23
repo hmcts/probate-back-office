@@ -3,35 +3,30 @@ package uk.gov.hmcts.probate.validator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.BusinessValidationException;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
 import java.util.Locale;
+
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
 
 
 @Component
 @RequiredArgsConstructor
-public class UniqueCodeValidationRule {
+public class NaValidationRule {
 
-    private static final String UNIQUE_CODE_REGEX_PATTERN =
-            "^(cts|CTS) [a-zA-Z0-9]{10} [a-zA-Z0-9]{4} [a-zA-Z0-9]{4}$|^(cts|CTS)[a-zA-Z0-9]{18}$";
-    private static final String REMOVE_SPACE_REGEX_PATTERN = "\\s+";
-    private static final int UNIQUE_CODE_LENGTH = 21;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-        if (caseData.getUniqueProbateCodeId() != null && (!caseData.getUniqueProbateCodeId()
-                .matches(UNIQUE_CODE_REGEX_PATTERN) || !removeSpaces(caseData.getUniqueProbateCodeId()))) {
+        if (YES.equalsIgnoreCase(caseData.getIhtFormEstateValuesCompleted())
+                && NOT_APPLICABLE_VALUE.equalsIgnoreCase(caseData.getIhtFormEstate())) {
             String userMessage = businessValidationMessageRetriever
-                    .getMessage("uniqueProbateCode", null, Locale.UK);
+                    .getMessage("ihtFormEstateNa", null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Unique Probate code is invalid: " + caseDetails.getId());
+                    "NA selection is invalid: " + caseDetails.getId());
         }
-    }
-
-    private boolean removeSpaces(String uniqueCode) {
-        return UNIQUE_CODE_LENGTH == uniqueCode.replaceAll(REMOVE_SPACE_REGEX_PATTERN, "").length();
     }
 }

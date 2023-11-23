@@ -10,16 +10,17 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import static org.junit.jupiter.api.Assertions.*;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
 
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 
-
-class UniqueCodeValidationRuleTest {
+class NaValidationRuleTest {
 
     @InjectMocks
-    private UniqueCodeValidationRule uniqueCodeValidationRule;
+    private NaValidationRule naValidationRule;
 
     @Mock
     private BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -34,75 +35,38 @@ class UniqueCodeValidationRuleTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
         dataMock = CaseData.builder()
-                .uniqueProbateCodeId(uniqueCode).build();
+                .ihtFormEstateValuesCompleted(YES)
+                .ihtFormEstate(IHT400421_VALUE).build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
     }
 
     @Test
     void shouldReturnNoErrorForCorrectUniqueCode() {
-        dataMock = CaseData.builder()
-                .uniqueProbateCodeId(uniqueCode).build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
         assertDoesNotThrow(() -> {
-            uniqueCodeValidationRule.validate(detailsMock);
+            naValidationRule.validate(detailsMock);
         });
     }
 
     @Test
-    void shouldReturnErrorForSpecialCharacter() {
+    void shouldReturnErrorForNaSelection() {
         dataMock = CaseData.builder()
-                .uniqueProbateCodeId(uniqueCode + "@%").build();
+                .ihtFormEstateValuesCompleted(YES)
+                .ihtFormEstate(NOT_APPLICABLE_VALUE).build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
 
         BusinessValidationException exception = assertThrows(BusinessValidationException.class, () -> {
-            uniqueCodeValidationRule.validate(detailsMock);
+            naValidationRule.validate(detailsMock);
         });
-        assertEquals("Unique Probate code is invalid: 12345678987654321", exception.getMessage());
+        assertEquals("NA selection is invalid: 12345678987654321", exception.getMessage());
     }
 
     @Test
-    void shouldReturnErrorForExtraCharacter() {
+    void shouldReturnNoerrorForEstateCompletedNo() {
         dataMock = CaseData.builder()
-                .uniqueProbateCodeId(uniqueCode + "123").build();
+                .ihtFormEstateValuesCompleted(NO).build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
 
-        BusinessValidationException exception = assertThrows(BusinessValidationException.class, () -> {
-            uniqueCodeValidationRule.validate(detailsMock);
-        });
-        assertEquals("Unique Probate code is invalid: 12345678987654321", exception.getMessage());
-    }
-
-    @Test
-    void shouldReturnErrorForIncorrectStartingCharacters() {
-        dataMock = CaseData.builder()
-                .uniqueProbateCodeId("abc" + uniqueCode.substring(4)).build();
-        detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
-
-        BusinessValidationException exception = assertThrows(BusinessValidationException.class, () -> {
-            uniqueCodeValidationRule.validate(detailsMock);
-        });
-        assertEquals("Unique Probate code is invalid: 12345678987654321", exception.getMessage());
-    }
-
-    @Test
-    void shouldReturnErrorForLessCharacters() {
-        dataMock = CaseData.builder()
-                .uniqueProbateCodeId(uniqueCode.substring(0, uniqueCode.length() - 3)).build();
-        detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
-
-        BusinessValidationException exception = assertThrows(BusinessValidationException.class, () -> {
-            uniqueCodeValidationRule.validate(detailsMock);
-        });
-        assertEquals("Unique Probate code is invalid: 12345678987654321", exception.getMessage());
-    }
-
-    @Test
-    void shouldReturnNoErrorForNullUniqueCode() {
-        dataMock = CaseData.builder()
-                .uniqueProbateCodeId(null).build();
-        detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
-        assertDoesNotThrow(() -> {
-            uniqueCodeValidationRule.validate(detailsMock);
-        });
+        naValidationRule.validate(detailsMock);
     }
 }

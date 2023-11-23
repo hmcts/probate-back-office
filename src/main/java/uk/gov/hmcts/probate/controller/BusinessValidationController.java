@@ -468,6 +468,15 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/validate-na")
+    public ResponseEntity<CallbackResponse> validateNaOption(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/stopConfirmation", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> stopWithConfirmation(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
