@@ -47,6 +47,7 @@ import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRul
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -169,6 +170,8 @@ class BusinessValidationUnitTest {
     private RegistrarDirectionService registrarDirectionServiceMock;
     @Mock
     private UniqueCodeValidationRule uniqueCodeValidationRule;
+    @Mock
+    private NaValidationRule naValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -201,6 +204,7 @@ class BusinessValidationUnitTest {
             ihtEstateValidationRule,
             ihtValidationRule,
             uniqueCodeValidationRule,
+            naValidationRule,
             solicitorPostcodeValidationRule,
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,

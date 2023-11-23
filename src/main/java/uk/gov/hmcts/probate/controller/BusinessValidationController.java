@@ -53,6 +53,7 @@ import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRul
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
@@ -110,6 +111,7 @@ public class BusinessValidationController {
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
     private final UniqueCodeValidationRule uniqueCodeValidationRule;
+    private final NaValidationRule naValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
@@ -472,7 +474,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateNaOption(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-        uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
+        naValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
