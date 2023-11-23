@@ -781,6 +781,7 @@ class BusinessValidationUnitTest {
             underTest.validateIhtEstateData(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(ihtEstateValidationRule, times(1)).validate(caseDetailsMock);
+        verify(naValidationRule, times(1)).validate(caseDetailsMock);
         verify(callbackResponseTransformerMock).transform(callbackRequestMock);
     }
 
@@ -968,18 +969,6 @@ class BusinessValidationUnitTest {
                 underTest.validateUniqueProbateCode(callbackRequestMock,httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
                 .transformUniqueProbateCode(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
-
-    @Test
-    void shouldTransformNa() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.validateNaOption(callbackRequestMock,httpServletRequest);
-        verify(callbackResponseTransformerMock, times(1))
-                .transformCase(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

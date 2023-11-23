@@ -132,6 +132,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
+        naValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
@@ -467,15 +468,6 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformUniqueProbateCode(callbackRequest);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/validate-na")
-    public ResponseEntity<CallbackResponse> validateNaOption(@RequestBody CallbackRequest callbackRequest,
-                                                                      HttpServletRequest request) {
-        logRequest(request.getRequestURI(), callbackRequest);
-        naValidationRule.validate(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
