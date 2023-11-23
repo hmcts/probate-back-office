@@ -975,7 +975,7 @@ class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response =
                 underTest.validateNaOption(callbackRequestMock,httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
-                .transformUniqueProbateCode(callbackRequestMock);
+                .transformCase(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
