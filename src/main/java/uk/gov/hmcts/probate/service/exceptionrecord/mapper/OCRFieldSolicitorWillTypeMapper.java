@@ -9,7 +9,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWi
 
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_ADMON_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_INTESTACY_VALUE;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_PROBATE_VALUE;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_PROBATE;
@@ -24,6 +23,8 @@ public class OCRFieldSolicitorWillTypeMapper {
     private static final String ADMON = "ADMON";
     private static final String INTESTACY = "INTESTACY";
 
+    private static final String ADMINISTRATION = "ADMINISTRATION";
+
     @ToSolicitorWillType
     public SolicitorWillType toSolicitorWillType(ExceptionRecordOCRFields ocrFields) {
         if (ocrFields.getSolsWillType() == null || ocrFields.getSolsWillType().isEmpty()) {
@@ -32,11 +33,12 @@ public class OCRFieldSolicitorWillTypeMapper {
         String solsWillType = ocrFields.getSolsWillType().replaceAll("\\s+","").toUpperCase();
         log.info("Beginning mapping for Solicitor Will Type value: {}", solsWillType);
 
-        if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)
-                || solsWillType.contains(GRANT_TYPE_PROBATE_VALUE.toUpperCase())) {
-            return GRANT_TYPE_PROBATE;
-        } else if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())) {
+
+        if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())
+                || solsWillType.contains(ADMINISTRATION)) {
             return GRANT_TYPE_ADMON;
+        } else if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)) {
+            return GRANT_TYPE_PROBATE;
         } else if (solsWillType.contains(INTESTACY)
                 || solsWillType.contains(GRANT_TYPE_INTESTACY_VALUE.toUpperCase())) {
             return GRANT_TYPE_INTESTACY;
