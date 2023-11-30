@@ -42,7 +42,7 @@ module "postgresql" {
   component     = var.component
   business_area = "cft"
 
-  force_user_permissions_trigger = "0"
+  force_user_permissions_trigger = "1"
 
   common_tags = var.common_tags
   name        = "${var.database_name}-postgres-flexible-db"
