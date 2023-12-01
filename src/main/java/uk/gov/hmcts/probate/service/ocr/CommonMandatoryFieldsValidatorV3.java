@@ -164,6 +164,7 @@ public class CommonMandatoryFieldsValidatorV3 {
                 mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
                         IHT_GROSS_VALUE_205, IHT_NET_VALUE_205);
                 break;
+            default:
         }
         return iht421WarningsAdded;
     }

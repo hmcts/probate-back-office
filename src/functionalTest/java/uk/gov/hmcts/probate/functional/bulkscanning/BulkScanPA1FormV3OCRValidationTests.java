@@ -206,7 +206,7 @@ public class BulkScanPA1FormV3OCRValidationTests extends IntegrationTestBase {
     public void shouldWarnForIht400Iht400421completedWithNoIht421Values() {
         String jsonRequest =
                 utils.getStringFromFile("/json/bulkscan/version3/validation/requestPayload/"
-                        + "Post2022PA1PIht400Iht400421CompletedWithNoIht421Values.json");
+                        + "Post2022PA1PIHT400IHT400421CompletedWithNoIHT421Values.json");
         List<String> expectedWarnings =
                 utils.getLinesFromFile(
                 "/json/bulkscan/version3/validation/expectedWarnings/missingIHT421ValuesDuplicateForms.txt");
