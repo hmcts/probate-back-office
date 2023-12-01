@@ -80,9 +80,10 @@ public class CommonMandatoryFieldsValidatorV3 {
     private void addWarningsForSubmittedIHTForm(Map<String, String> ocrFieldValues, List<String> warnings,
                                                 boolean diedOnAfterSwitchDate) {
         List<String> submittedForm = new ArrayList<>();
+        boolean iht421WarningsAdded = false;
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_FORM_NOT_REQUIRED))) {
             if (diedOnAfterSwitchDate) {
-                addWarningsForIHTForms(IHT_FORM_NOT_REQUIRED, ocrFieldValues, warnings);
+                addWarningsForIHTForms(IHT_FORM_NOT_REQUIRED, ocrFieldValues, warnings, iht421WarningsAdded);
             } else {
                 mandatoryFieldsValidatorUtils.addWarning(
                         "Option \"I did not have to submit any forms to HMRC.\" (exceptedEstate) is not applicable"
@@ -92,20 +93,22 @@ public class CommonMandatoryFieldsValidatorV3 {
             submittedForm.add(IHT_FORM_NOT_REQUIRED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT400_COMPLETED))) {
-            addWarningsForIHTForms(IHT400_COMPLETED, ocrFieldValues, warnings);
+            iht421WarningsAdded =
+                    addWarningsForIHTForms(IHT400_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             submittedForm.add(IHT400_COMPLETED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT400421_COMPLETED))) {
-            addWarningsForIHTForms(IHT400421_COMPLETED, ocrFieldValues, warnings);
+            iht421WarningsAdded =
+                    addWarningsForIHTForms(IHT400421_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             submittedForm.add(IHT400421_COMPLETED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT207_COMPLETED))) {
-            addWarningsForIHTForms(IHT207_COMPLETED, ocrFieldValues, warnings);
+            addWarningsForIHTForms(IHT207_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             submittedForm.add(IHT207_COMPLETED);
         }
         if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT205_COMPLETED))) {
             if (!diedOnAfterSwitchDate) {
-                addWarningsForIHTForms(IHT205_COMPLETED, ocrFieldValues, warnings);
+                addWarningsForIHTForms(IHT205_COMPLETED, ocrFieldValues, warnings, iht421WarningsAdded);
             } else {
                 mandatoryFieldsValidatorUtils.addWarning(
                         "Option \"IHT205\" (iht205completed) is not applicable "
@@ -121,7 +124,8 @@ public class CommonMandatoryFieldsValidatorV3 {
         }
     }
 
-    private void addWarningsForIHTForms(String ihtForm, Map<String, String> ocrFieldValues, List<String> warnings) {
+    private boolean addWarningsForIHTForms(String ihtForm, Map<String, String> ocrFieldValues, List<String> warnings,
+                                        boolean iht421WarningsAdded) {
         switch (ihtForm) {
             case IHT_FORM_NOT_REQUIRED:
                 mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
@@ -139,14 +143,18 @@ public class CommonMandatoryFieldsValidatorV3 {
                 if (TRUE.equalsIgnoreCase(ocrFieldValues.get(IHT_400_PROCESS))) {
                     mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
                             IHT_CODE, PROBATE_GROSS_VALUE_IHT_400, PROBATE_NET_VALUE_IHT_400);
-                } else {
+                } else if (!iht421WarningsAdded) {
                     mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
                             IHT_421_GROSS_VALUE, IHT_421_NET_VALUE);
+                    iht421WarningsAdded = true;
                 }
                 break;
             case IHT400421_COMPLETED:
-                mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
-                        IHT_421_GROSS_VALUE, IHT_421_NET_VALUE);
+                if (!iht421WarningsAdded) {
+                    mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
+                            IHT_421_GROSS_VALUE, IHT_421_NET_VALUE);
+                    iht421WarningsAdded = true;
+                }
                 break;
             case IHT207_COMPLETED:
                 mandatoryFieldsValidatorUtils.addWarningsForConditionalFields(ocrFieldValues, warnings,
@@ -157,6 +165,7 @@ public class CommonMandatoryFieldsValidatorV3 {
                         IHT_GROSS_VALUE_205, IHT_NET_VALUE_205);
                 break;
         }
+        return iht421WarningsAdded;
     }
 
 
