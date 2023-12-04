@@ -18,5 +18,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "boCaseStopReasonList", "Label": "Case stop reason", "DisplayOrder": 17},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "caseWorkerEscalationDate", "Label": "SME Referral Date", "DisplayOrder": 18},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "resolveCaseWorkerEscalationDate", "Label": "SME Referral Resolved Date", "DisplayOrder": 19},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "Label": "Payment taken", "DisplayOrder": 18}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentTaken", "Label": "Payment taken", "DisplayOrder": 20},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "channelChoice", "Label": "Channel Choice", "DisplayOrder": 21}
 ]
