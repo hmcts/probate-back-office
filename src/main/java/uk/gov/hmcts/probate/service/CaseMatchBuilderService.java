@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -56,6 +57,13 @@ public class CaseMatchBuilderService {
                 String aliases = c.getData().getSolsDeceasedAliasNamesList().stream()
                         .map(CollectionMember::getValue)
                         .map(AliasName::getSolsAliasname)
+                        .collect(Collectors.joining(", "));
+                caseMatchBuilder.aliases(aliases);
+            }
+            if (c.getData().getDeceasedFullAliasNameList() != null) {
+                String aliases = c.getData().getDeceasedFullAliasNameList().stream()
+                        .map(CollectionMember::getValue)
+                        .map(ProbateFullAliasName::getFullAliasName)
                         .collect(Collectors.joining(", "));
                 caseMatchBuilder.aliases(aliases);
             }

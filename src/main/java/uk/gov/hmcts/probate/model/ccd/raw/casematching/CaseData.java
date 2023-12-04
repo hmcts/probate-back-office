@@ -3,6 +3,7 @@ package uk.gov.hmcts.probate.model.ccd.raw.casematching;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
@@ -24,6 +25,7 @@ public class CaseData {
     private final LocalDate deceasedDateOfBirth;
     private final SolsAddress deceasedAddress;
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
+    private List<CollectionMember<ProbateFullAliasName>> deceasedFullAliasNameList;
 
     @JsonProperty("legacy_case_type")
     private final String legacyCaseType;
