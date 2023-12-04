@@ -658,4 +658,11 @@
         <packageUrl regex="true">^pkg:maven/com\.azure/azure\-json@.*$</packageUrl>
         <cve>CVE-2023-36052</cve>
     </suppress>
+    <suppress>
+        <notes><![CDATA[
+   file name: bcprov-jdk15on-1.68.jar
+   ]]></notes>
+        <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
+        <cve>CVE-2023-33202</cve>
+    </suppress>
 </suppressions>
