@@ -24,18 +24,17 @@ public class PDFServiceConfiguration {
     private String defaultDisplayFilename;
     private String grantSignatureSecretKey;
     private String grantSignatureEncryptedFile;
-    
+
     @Bean
     public PDFServiceClient pdfServiceClient(
             RestTemplate restTemplate,
-            ObjectMapper objectMapper,
-            AuthTokenGenerator serviceAuthTokenGenerator) {
+            ObjectMapper objectMapper) {
 
         URI uri = URI.create(String.format("%s%s", getUrl(), getPdfApi()));
 
         return PDFServiceClient.builder()
                 .restOperations(restTemplate)
                 .objectMapper(objectMapper)
-                .build(serviceAuthTokenGenerator::generate, uri);
+                .build(uri);
     }
 }
