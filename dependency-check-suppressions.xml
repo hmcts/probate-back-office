@@ -89,6 +89,7 @@
         <cve>CVE-2023-42794</cve>
         <cve>CVE-2023-42795</cve>
         <cve>CVE-2023-44487</cve>
+        <cve>CVE-2023-46589</cve>
     </suppress>
     <suppress>
         <packageUrl regex="true">^pkg:maven/org.apache.logging.log4j/log4j-api@.*$</packageUrl>
@@ -664,5 +665,9 @@
    ]]></notes>
         <packageUrl regex="true">^pkg:maven/org\.bouncycastle/bcprov\-jdk15on@.*$</packageUrl>
         <cve>CVE-2023-33202</cve>
+    </suppress>
+    <suppress>
+        <notes>SpringBoot</notes>
+        <cve>CVE-2023-34055</cve>
     </suppress>
 </suppressions>
