@@ -373,7 +373,7 @@ dependencies {
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
   testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
