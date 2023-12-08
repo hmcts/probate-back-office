@@ -3,13 +3,11 @@
   "fields": [
     "Type",
     "Full name",
-    "Date of birth",
     "Date of death",
     "Postcode",
     "Reference"
   ],
   "dataKeys": [
-    "dob",
     "dod",
     "postcode"
   ]
