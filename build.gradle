@@ -194,7 +194,7 @@ def versions = [
         springBootVersion               : '2.7.14',
         springBootStarterHateoas        : '2.7.14',
         hmctsJavaLogging                : '6.0.1',
-        authCheckerLib                  : '2.1.4',
+        authCheckerLib                  : '2.1.5',
         jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
@@ -205,7 +205,7 @@ def versions = [
         probateCommonsVersion           : '1.4.43',
         ccdClient                       : '4.7.5',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '3.0.0',
+        serviceAuthVersion              : '4.1.2',
         pact_version                    : '4.1.34',
         probatePactCommonsVersion       : '1.0.2',
         springCloud                     : '3.1.1',
@@ -299,9 +299,9 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
-  implementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
-  implementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
+  implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
+  implementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
+  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.16'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
@@ -354,7 +354,7 @@ dependencies {
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
-  testImplementation group: 'uk.gov.hmcts.reform.auth', name: 'auth-checker-lib', version: versions.authCheckerLib
+  testImplementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
   testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
   testImplementation 'org.awaitility:awaitility:4.1.0'
   testImplementation 'com.github.hmcts:fortify-client:1.2.2:all'
@@ -372,8 +372,8 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  testFunctionalImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '6.0.0'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -388,7 +388,7 @@ dependencies {
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
   testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
-  testCaseCreatorImplementation group: 'uk.gov.hmcts.reform', name: 'service-auth-provider-client', version: versions.serviceAuthVersion
+  testCaseCreatorImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testCaseCreatorImplementation sourceSets.main.runtimeClasspath
   testCaseCreatorImplementation sourceSets.test.runtimeClasspath
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
