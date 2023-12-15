@@ -65,7 +65,7 @@ public class PdfGeneratorServiceConsumerTest {
             .given("A request to generate a Probate PDF document")
             .uponReceiving("A request to generate a Probate PDF document")
             .method("POST")
-            .headers(SERVICE_AUTHORIZATION_HEADER, someServiceAuthToken)
+            .headers("Accept","application/pdf")
             .body(createJsonObject(
                 buildGenerateDocumentRequest(DocumentType.WILL_LODGEMENT_DEPOSIT_RECEIPT.getTemplateName(),
                     createJsonObjectAsString("willLodgementPayload.json"))),
