@@ -2,7 +2,7 @@
 const testConfig = require('src/test/config.js');
 
 // Case worker - nav back to case
-module.exports = async function (caseRef) {
+module.exports = async function (caseRef, useWaitInUrl = true) {
     const I = this;
 
     const scenarioName = 'Find cases';
@@ -89,7 +89,12 @@ module.exports = async function (caseRef) {
     // await I.wait(testConfig.CaseworkerCaseNavigateDelay);
 
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
-    I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    if (useWaitInUrl) {
+        I.amOnLoadedPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    } else {
+        I.amOnPage(`${testConfig.TestBackOfficeUrl}/cases/case-details/${caseRefNoDashes}`);
+    }
+
     await I.wait(testConfig.ManualDelayMedium);
     await I.rejectCookies();
 };
