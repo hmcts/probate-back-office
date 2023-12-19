@@ -138,7 +138,7 @@ notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-01-01"
   grantAwaitingDocumentationNotificationPeriodDays: 35
-  govNotifyApiKey: "dummy_key"
+  govNotifyApiKey: ${PROBATE_NOTIFY_KEY:dummykey}
   templates:
     email:
       english:
