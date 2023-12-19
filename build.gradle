@@ -289,7 +289,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
-
+  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.1'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
     force = true
