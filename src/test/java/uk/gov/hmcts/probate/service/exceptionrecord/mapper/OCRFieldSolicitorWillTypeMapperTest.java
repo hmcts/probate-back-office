@@ -58,6 +58,15 @@ class OCRFieldSolicitorWillTypeMapperTest {
     }
 
     @Test
+    void testCorrectWillTypeWillLeftAnnexed() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("WillLeftAnnexed")
+                .build();
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        assertEquals(SolicitorWillType.GRANT_TYPE_ADMON, response);
+    }
+
+    @Test
     void shouldReturnNullForEmpty() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .build();

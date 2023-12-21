@@ -45,8 +45,8 @@ java:
     ACA_SERVICE_API_BASEURL: http://aac-manage-case-assignment-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
     CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
 
-    PROBATE_POSTGRESQL_USER: probateman_user@probatemandb-postgres-db-v11-{{ .Values.global.environment }}
-    PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-db-v11-{{ .Values.global.environment }}.postgres.database.azure.com
+    PROBATE_POSTGRESQL_USER: pgadmin
+    PROBATE_POSTGRESQL_HOSTNAME: probatemandb-postgres-flexible-db-{{ .Values.global.environment }}.postgres.database.azure.com
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     PROBATE_POSTGRESQL_PORT: 5432
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
@@ -60,7 +60,7 @@ java:
           alias: azure.application-insights.instrumentation-key
         - name: app-insights-connection-string
           alias: app-insights-connection-string
-        - name: probatemandb-POSTGRES-PASS
+        - name: probatemandb-POSTGRES-PASS-FLEX
           alias: spring.datasource.password
         - name: s2s-probate-backend
           alias: idam.s2s-auth.totp_secret

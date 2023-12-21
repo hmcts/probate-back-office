@@ -10,7 +10,7 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToLong;
 public class OCRFieldNumberMapper {
 
     @ToLong
-    public Long stringToLong(String longString) {
+    public static Long stringToLong(String fieldName, String longString) {
         log.info("Beginning mapping for Long value: {}", longString);
         Long returnValue;
 
@@ -20,8 +20,9 @@ public class OCRFieldNumberMapper {
             try {
                 returnValue = Long.valueOf(longString);
             } catch (Exception e) {
-                String errorMessage =
-                    "Numerical field '" + longString + "' could not be converted to a Long number: " + e.getMessage();
+                String errorMessage = fieldName
+                    + ": Numerical field '" + longString + "' could not be converted to a Long number: "
+                        + e.getMessage();
                 log.error(errorMessage);
                 throw new OCRMappingException(errorMessage);
             }
