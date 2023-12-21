@@ -33,6 +33,7 @@ import uk.gov.hmcts.probate.transformer.CCDDataTransformer;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.math.BigDecimal;
@@ -68,7 +69,7 @@ public class NextStepsController {
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class, ApplicationReviewedGroup.class})
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
-        HttpServletRequest request) {
+        HttpServletRequest request) throws NotificationClientException {
 
         logRequest(request.getRequestURI(), callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
