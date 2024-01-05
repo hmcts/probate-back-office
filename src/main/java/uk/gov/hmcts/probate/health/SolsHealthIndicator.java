@@ -28,7 +28,7 @@ public class SolsHealthIndicator implements HealthIndicator {
         ResponseEntity<String> responseEntity;
 
         try {
-            log.trace("Health Check Received")
+            log.trace("Health Check Received");
             responseEntity = restTemplate.getForEntity(url + endpoint, String.class);
 
         } catch (ResourceAccessException rae) {
