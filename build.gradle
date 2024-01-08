@@ -141,7 +141,25 @@ task smoke(type: Test) {
 }
 
 task functional(type: Test) {
+  // PACT_BRANCH_NAME is only set in non-dev environments
+  if (System.getenv("PACT_BRANCH_NAME") == null) {
+    doFirst() {
+      "sh bin/variables/load-local-environment-variables.sh".execute()
+    }
+    if (project.file('./.aat-env').exists()) {
+      project.file('./.aat-env').readLines().each() {
+        def index = it.indexOf("=")
+        def key = it.substring(0, index)
+        def value = it.substring(index + 1)
+        environment key, value
+      }
+    }
+  }
 
+  description = "Runs functional Tests"
+  testClassesDirs = sourceSets.testFunctional.output.classesDirs
+  classpath = sourceSets.testFunctional.runtimeClasspath
+  finalizedBy aggregate
 }
 
 functional.finalizedBy(aggregate)

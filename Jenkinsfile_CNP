@@ -252,9 +252,9 @@ withPipeline("java", product, component) {
     ]
   }
 
-  afterSuccess('functionalTest:aat') {
-    steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
-    publishHTML target: [
+  //afterSuccess('functionalTest:aat') {
+    //steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/site/serenity/**/*'
+    /*publishHTML target: [
             allowMissing         : true,
             alwaysLinkToLastBuild: true,
             keepAll              : true,
@@ -264,7 +264,7 @@ withPipeline("java", product, component) {
     ]
     env.ENV = 'prod'
     // all the AAT tasks in the master pipeline finished, so we update the env variable to promote to prod tasks
-  }
+  }*/
 
   afterSuccess('highleveldatasetup') {
     if (env.ENV != 'preview') {
