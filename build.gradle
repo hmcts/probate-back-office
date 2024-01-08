@@ -199,8 +199,8 @@ def versions = [
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
-        lombok                          : '1.18.26',
-        springDocOpenUi                 : '1.6.6',
+        lombok                          : '1.18.30',
+        springDocOpenUi                 : '1.7.0',
         springSecurityVersion           : '5.7.3',
         probateCommonsVersion           : '1.4.43',
         ccdClient                       : '4.9.2',
@@ -302,7 +302,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
-  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.16'
+  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.23'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.19.0'
 
