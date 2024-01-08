@@ -162,7 +162,7 @@ task smoke(type: Test) {
   finalizedBy aggregate
 }*/
 
-functional.finalizedBy(aggregate)
+//functional.finalizedBy(aggregate)
 
 
 task caseCreator(type: Test) {
