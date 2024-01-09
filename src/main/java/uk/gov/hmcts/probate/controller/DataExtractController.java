@@ -5,29 +5,22 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.IronMountainDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.SmeeAndFordDataExtractService;
 
-import java.sql.Array;
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
@@ -78,9 +71,10 @@ public class DataExtractController {
         String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
         CallbackResponse callbackResponse = CallbackResponse.builder().build();
         ResponseEntity responseEntity = executeIronMountainExtractForDate(resendDate);
-        if(responseEntity.getStatusCode().equals(ResponseEntity.accepted()) && responseEntity.getBody().equals("Perform Iron Mountain data extract finished")){
+        if (responseEntity.getStatusCode().equals(ResponseEntity.accepted())
+                && responseEntity.getBody().equals("Perform Iron Mountain data extract finished")) {
             return ResponseEntity.ok(callbackResponse);
-        }else{
+        } else {
             return null;
         }
     }
