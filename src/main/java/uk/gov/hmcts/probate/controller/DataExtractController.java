@@ -71,8 +71,7 @@ public class DataExtractController {
         String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
         CallbackResponse callbackResponse = CallbackResponse.builder().build();
         ResponseEntity responseEntity = executeIronMountainExtractForDate(resendDate);
-        if (responseEntity.getStatusCode().equals(ResponseEntity.accepted())
-                && responseEntity.getBody().equals("Perform Iron Mountain data extract finished")) {
+        if (responseEntity.getBody().equals("Perform Iron Mountain data extract finished")) {
             return ResponseEntity.ok(callbackResponse);
         } else {
             return null;
