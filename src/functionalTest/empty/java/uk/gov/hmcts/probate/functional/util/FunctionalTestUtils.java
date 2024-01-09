@@ -15,6 +15,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.uk.gov.hmcts.probate.functional.SolCCDServiceAuthTokenGenerator;
+import java.uk.gov.hmcts.probate.functional.TestContextConfiguration;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -29,8 +31,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.util.ResourceUtils;
-import uk.gov.hmcts.probate.functional.SolCCDServiceAuthTokenGenerator;
-import uk.gov.hmcts.probate.functional.TestContextConfiguration;
 
 @ContextConfiguration(classes = TestContextConfiguration.class)
 @Component
