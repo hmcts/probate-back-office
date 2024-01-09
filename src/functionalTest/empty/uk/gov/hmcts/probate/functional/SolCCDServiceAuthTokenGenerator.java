@@ -1,4 +1,4 @@
-package java.uk.gov.hmcts.probate.functional;
+package uk.gov.hmcts.probate.functional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Claims;
@@ -10,11 +10,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import uk.gov.hmcts.probate.functional.model.ClientAuthorizationCodeResponse;
+import uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.io.IOException;
-import java.uk.gov.hmcts.probate.functional.model.ClientAuthorizationCodeResponse;
-import java.uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
 import java.util.Base64;
 
 import static io.restassured.RestAssured.given;

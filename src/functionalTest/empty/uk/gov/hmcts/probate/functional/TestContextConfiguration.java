@@ -1,4 +1,4 @@
-package java.uk.gov.hmcts.probate.functional;
+package uk.gov.hmcts.probate.functional;
 
 import feign.Feign;
 import feign.jackson.JacksonEncoder;

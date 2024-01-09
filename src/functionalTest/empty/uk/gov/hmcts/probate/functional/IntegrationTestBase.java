@@ -1,4 +1,4 @@
-package java.uk.gov.hmcts.probate.functional;
+package uk.gov.hmcts.probate.functional;
 
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
@@ -15,9 +15,9 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
+import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 
 import java.io.IOException;
-import java.uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.HashMap;

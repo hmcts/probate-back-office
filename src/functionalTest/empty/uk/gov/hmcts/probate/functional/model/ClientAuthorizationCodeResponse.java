@@ -1,4 +1,4 @@
-package java.uk.gov.hmcts.probate.functional.model;
+package uk.gov.hmcts.probate.functional.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
