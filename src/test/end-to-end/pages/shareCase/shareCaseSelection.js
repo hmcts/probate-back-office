@@ -21,10 +21,10 @@ module.exports = async function (sacCaseRefNumber) {
     await I.wait(2);
     await I.fillField('input[role="combobox"]', 'T');
     await I.wait(3);
-    await I.click('//span[contains(text(),"probatesolicitortestorgtest2@gmail")]');
+    await I.click('//span[contains(text(),"probate.practitioner.aat.test@gmail.com")]');
     await I.click('#btn-add-user');
     await I.click('.govuk-accordion__open-all');
-    await I.see('probatesolicitortestorgtest2@gmail');
+    await I.see('probate.practitioner.aat.test@gmail.com');
     await I.see('TO BE ADDED');
     await I.waitForNavigationToComplete('button[title="Continue"]');
     await I.wait(testConfig.CreateCaseDelay);

@@ -13,7 +13,7 @@ module.exports = async function (SacCaseRefNumber) {
     await I.waitForNavigationToComplete('#btn-share-button', 2);
     await I.click('.govuk-accordion__open-all');
     await I.wait(1);
-    await I.click('Remove', '//tr[contains(.,"probatesolicitortestorgtest1@gmail.com")]');
+    await I.click('Remove', '//tr[contains(.,"' + testConfig.TestEnvProfUser + '")]');
     await I.waitForText('TO BE REMOVED', 5);
     await I.waitForNavigationToComplete('button[title="Continue"]');
     await I.waitForNavigationToComplete('button[title="Confirm"]');

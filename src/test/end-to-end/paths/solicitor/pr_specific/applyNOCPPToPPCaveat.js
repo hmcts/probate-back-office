@@ -132,8 +132,10 @@ Scenario(scenarioName, async function ({I}) {
     await I.signOut();
 
     await I.logInfo(scenarioName, 'Login as PP user 1 to verify NoC');
-    await I.authenticateWithIdamIfAvailable(true);
-    await I.navigateToCase(caseRef);
+    await I.authenticateWithIdamIfAvailable(true, testConfig.CaseProgressSignInDelay);
+    await I.waitForText('Your cases', 20);
+    await I.wait(5);
+    await I.navigateToCase(caseRef, false);
     await I.waitForText(nocConfig.nocWaitForText, testConfig.WaitForTextTimeout);
     await I.see(nocConfig.nocWaitForText);
     await I.dontSee(caseRef);

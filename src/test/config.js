@@ -10,13 +10,13 @@ module.exports = {
     TestAutoDelayEnabled: process.env.E2E_AUTO_DELAY_ENABLED === 'true',
     TestEnvCwUser: process.env.CW_USER_EMAIL || 'ProbateSolCW1@gmail.com',
     TestEnvCwPassword: process.env.CW_USER_PASSWORD || 'Pa55word11',
-    TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest1@gmail.com',
-    TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Probate123',
+    TestEnvProfUser: process.env.SOL_USER_EMAIL || 'probatesolicitortestorgtest2@gmail.com',
+    TestEnvProfPassword: process.env.SOL_USER_PASSWORD || 'Pa55wordTest',
     //  TestEnvProfUser2 User for share case e2e only
     //  For Local Environment please use below credential for User2 to run shareCase, you should be able to share that case with the other PP user
     //  probatesolicitortestorg2test1@gmail.com   Pass- Probate123
-    TestEnvProfUserSAC: 'probatesolicitortestorgtest2@gmail.com',
-    TestEnvProfPasswordSAC: 'Pa55wordTest',
+    TestEnvProfUserSAC: 'probate.practitioner.aat.test@gmail.com',
+    TestEnvProfPasswordSAC: 'Probate123',
     TestEnvProfUserNoc: 'probate.pp1.org2@gmail.com',
     TestEnvProfPasswordNoc: 'Probate123',
     TestForAccessibility: process.env.TESTS_FOR_ACCESSIBILITY === 'true',
