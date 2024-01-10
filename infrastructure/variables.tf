@@ -5,13 +5,6 @@ variable "product" {
 
 variable "component" {}
 
-variable postgresql_user_v11 {
-  default = "probateman_user"
-}
-variable database_name_v11 {
-  default = "probatemandb"
-}
-
 variable database_name {
   default = "probatemandb"
 }

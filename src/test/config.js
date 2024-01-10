@@ -15,7 +15,7 @@ module.exports = {
     //  TestEnvProfUser2 User for share case e2e only
     //  For Local Environment please use below credential for User2 to run shareCase, you should be able to share that case with the other PP user
     //  probatesolicitortestorg2test1@gmail.com   Pass- Probate123
-    TestEnvProfUserSAC: 'probatesolicitortestorgtest1@gmail.com',
+    TestEnvProfUserSAC: 'probate.practitioner.aat.test@gmail.com',
     TestEnvProfPasswordSAC: 'Probate123',
     TestEnvProfUserNoc: 'probate.pp1.org2@gmail.com',
     TestEnvProfPasswordNoc: 'Probate123',
