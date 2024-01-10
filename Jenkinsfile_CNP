@@ -121,7 +121,7 @@ def archiveCoreCaseDataDefinitions(env) {
     if("preview" == env){
       shutterOption = "false"
     } else if("demo" == env){
-      shutterOption = "true"
+      shutterOption = "false" //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
     } else if("aat" == env){
       //DO NOT CHANGE THIS, FUNCTIONAL TESTS WILL FAIL
       shutterOption = "false"
