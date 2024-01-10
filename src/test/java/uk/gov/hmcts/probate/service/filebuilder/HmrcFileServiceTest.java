@@ -39,7 +39,8 @@ class HmrcFileServiceTest {
     private static final String FILE_NAME = "1_20190101.dat";
     private static final LocalDateTime LAST_MODIFIED = LocalDateTime.now(ZoneOffset.UTC).minusYears(2);
     private FileExtractDateFormatter fileExtractDateFormatter = Mockito.mock(FileExtractDateFormatter.class);
-    private ExceptedEstateDateOfDeathChecker expectedEstateDateOfDeathChecker = Mockito.mock(ExceptedEstateDateOfDeathChecker.class);
+    private ExceptedEstateDateOfDeathChecker expectedEstateDateOfDeathChecker =
+            Mockito.mock(ExceptedEstateDateOfDeathChecker.class);
     private HmrcFileService hmrcFileService =
         new HmrcFileService(new TextFileBuilderService(), fileExtractDateFormatter, expectedEstateDateOfDeathChecker);
     private ImmutableList.Builder<ReturnedCaseDetails> caseList = new ImmutableList.Builder<>();
@@ -74,10 +75,8 @@ class HmrcFileServiceTest {
             new CollectionMember(null, ProbateAliasName.builder().forenames("Citizen PETRA").lastName("KRENT").build())
         );
         LocalDate dod = LocalDate.of(2018, 8, 17);
-        LocalDate ihtDod = LocalDate.of(2023, 8, 17);
         LocalDate dob = LocalDate.of(1940, 10, 20);
         String grantIssuedDate = "2018-10-24";
-        String grantIssuedDateAfterIht = "2023-10-24";
         caseDataSolictor = CaseData.builder()
             .deceasedForenames("PETAR")
             .deceasedSurname("KRNETA")
@@ -219,6 +218,9 @@ class HmrcFileServiceTest {
             .solsSOTName("John The personal")
             .applicationType(ApplicationType.PERSONAL);
 
+        LocalDate ihtDod = LocalDate.of(2023, 8, 17);
+        String grantIssuedDateAfterIht = "2023-10-24";
+
         caseDataPersonalAfterIht = CaseData.builder()
                 .deceasedForenames("PETAR")
                 .deceasedSurname("KRNETA")
@@ -262,7 +264,8 @@ class HmrcFileServiceTest {
         when(fileExtractDateFormatter.formatDataDate(ihtDod)).thenReturn(("17-AUG-2023"));
         when(fileExtractDateFormatter.formatDataDate(dob)).thenReturn("20-OCT-1940");
         when(fileExtractDateFormatter.formatDataDate(LocalDate.parse(grantIssuedDate))).thenReturn("24-OCT-2018");
-        when(fileExtractDateFormatter.formatDataDate(LocalDate.parse(grantIssuedDateAfterIht))).thenReturn("24-OCT-2023");
+        when(fileExtractDateFormatter.formatDataDate(
+                LocalDate.parse(grantIssuedDateAfterIht))).thenReturn("24-OCT-2023");
         when(fileExtractDateFormatter.getHmrcFormattedFileDate(any(), any())).thenReturn(FILE_DATE);
     }
 
