@@ -292,7 +292,8 @@ class HmrcFileServiceTest {
         builtData = caseDataPersonalAfterIht.build();
         createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
         caseList.add(createdCase);
-        when(expectedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(builtData.getDeceasedDateOfDeath())).thenReturn(true);
+        when(expectedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(
+                builtData.getDeceasedDateOfDeath())).thenReturn(true);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalAfterIht.txt")));
     }
