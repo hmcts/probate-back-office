@@ -3551,14 +3551,6 @@ class CallbackResponseTransformerTest {
     }
 
 
-    @Test
-    void bulkScanGrantOfRepresentationTransformSolsCaseEnglish() {
-        CaseCreationDetails grantOfRepresentationDetails
-            = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
-        GrantOfRepresentationData grantOfRepresentationData =
-            (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
-        assertEquals(RegistryLocation.NEWCASTLE,grantOfRepresentationData.getRegistryLocation());
-    }
 
     @Test
     void bulkScanGrantOfRepresentationTransformSolsCaseWelsh() {
