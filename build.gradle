@@ -95,7 +95,7 @@ sourceSets {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
-      srcDir file('src/functionalTest/empty')
+      srcDir file('src/functionalTest/java')
     }
     resources.srcDir file('src/functionalTest/resources')
   }
@@ -202,7 +202,7 @@ def versions = [
         lombok                          : '1.18.30',
         springDocOpenUi                 : '1.7.0',
         springSecurityVersion           : '5.7.3',
-        probateCommonsVersion           : '1.4.20',
+        probateCommonsVersion           : '1.4.21',
         ccdClient                       : '4.9.2',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '4.1.2',
