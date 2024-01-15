@@ -1684,8 +1684,6 @@ public class CallbackResponseTransformer {
         if (SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
             if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
                 grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
-            } else {
-                grantOfRepresentationData.setRegistryLocation(RegistryLocation.NEWCASTLE);
             }
         }
 
