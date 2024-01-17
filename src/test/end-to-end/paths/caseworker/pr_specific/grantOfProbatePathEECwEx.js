@@ -41,7 +41,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user);
+    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
     await I.enterGrantOfProbateManualPage2('create');
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
@@ -55,7 +55,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user);
+    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
     await I.enterGrantOfProbateManualPage2('create');
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');

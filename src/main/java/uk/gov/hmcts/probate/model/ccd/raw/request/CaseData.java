@@ -155,18 +155,12 @@ public class CaseData extends CaseDataParent {
 
     private final String ihtFormId;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
     private final BigDecimal ihtNetValue;
 
-    @NotNull(groups = {ApplicationUpdatedGroup.class}, message = "{ihtGrossIsNull}")
     @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
-    @NotBlank(groups = {ApplicationUpdatedGroup.class,
-        ApplicationProbateGroup.class,
-        ApplicationIntestacyGroup.class,
-        ApplicationAdmonGroup.class}, message = "{solsWillTypeIsNull}")
     private final String solsWillType;
 
     private final String solsWillTypeReason;
@@ -585,6 +579,8 @@ public class CaseData extends CaseDataParent {
     private LocalDate lastEvidenceAddedDate;
     private String documentUploadedAfterCaseStopped;
     private String documentsReceivedNotificationSent;
+    private String uniqueProbateCodeId;
+    private String hmrcLetterId;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();

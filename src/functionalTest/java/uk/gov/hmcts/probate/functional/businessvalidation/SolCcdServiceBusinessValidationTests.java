@@ -131,18 +131,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithEmptyIhtGrossReturnsError() throws IOException {
-        validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsEmpty.json",
-            "Gross IHT value cannot be empty", 400);
-    }
-
-    @Test
-    public void verifyRequestWithEmptyIhtNetReturnsError() throws IOException {
-        validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsEmpty.json",
-            "Net IHT value cannot be empty", 400);
-    }
-
-    @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
         validatePostFailure("failure.ihtNetIsGreaterThanGross.json",
                 "The gross probate value cannot be less than the net probate value", 200, SOLS_VALIDATE_IHT_ESTATE);

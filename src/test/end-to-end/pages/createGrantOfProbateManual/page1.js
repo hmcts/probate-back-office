@@ -4,7 +4,7 @@ const testConfig = require('src/test/config');
 const createGrantOfProbateConfig = require('./createGrantOfProbateManualConfig');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
 
-module.exports = async function (crud, unique_deceased_user) {
+module.exports = async function (crud, unique_deceased_user, deceasedDODYear) {
 
     const I = this;
 
@@ -73,7 +73,7 @@ module.exports = async function (crud, unique_deceased_user) {
         await I.fillField({css: '#deceasedDateOfBirth-year'}, createGrantOfProbateConfig.page1_deceasedDob_year);
         await I.fillField({css: '#deceasedDateOfDeath-day'}, createGrantOfProbateConfig.page1_deceasedDod_day);
         await I.fillField({css: '#deceasedDateOfDeath-month'}, createGrantOfProbateConfig.page1_deceasedDod_month);
-        await I.fillField({css: '#deceasedDateOfDeath-year'}, createGrantOfProbateConfig.page1_deceasedDod_year);
+        await I.fillField({css: '#deceasedDateOfDeath-year'}, deceasedDODYear);
 
         await I.click(`#deceasedAnyOtherNames_${createGrantOfProbateConfig.page1_deceasedAnyOtherNamesNo}`);
 

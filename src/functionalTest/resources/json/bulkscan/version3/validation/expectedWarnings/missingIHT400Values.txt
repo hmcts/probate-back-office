@@ -1,0 +1,3 @@
+Free text box for HMRC code (ihtCode) is mandatory.
+The probate values from the HMRC letter Gross value (probateGrossValueIht400) is mandatory.
+The probate values from the HMRC letter net value (probateNetValueIht400) is mandatory.

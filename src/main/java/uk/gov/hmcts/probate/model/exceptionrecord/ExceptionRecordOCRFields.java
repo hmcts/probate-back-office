@@ -207,9 +207,26 @@ public class ExceptionRecordOCRFields {
     private final String deceasedHadLateSpouseOrCivilPartner;
     private final String ihtUnusedAllowanceClaimed;
     private final String deceasedDiedOnAfterSwitchDate;
+    private final String iht400Completed;
     private final String iht400421Completed;
     private final String iht207Completed;
+    private final String iht205Completed;
     private final String iht205completedOnline;
+    private final String exceptedEstate;
+    private final String iht400process;
+    private final String ihtCode;
+    private final String ihtGrossValueExceptedEstate;
+    private final String ihtNetValueExceptedEstate;
+    private final String probateGrossValueIht400;
+    private final String probateNetValueIht400;
+    private final String iht421grossValue;
+    private final String iht421netValue;
+    private final String iht207grossValue;
+    private final String iht207netValue;
+    private final String ihtGrossValue205;
+    private final String ihtNetValue205;
+
     //common
     private final String formVersion;
+
 }

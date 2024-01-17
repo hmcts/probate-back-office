@@ -212,7 +212,8 @@ class CitizenMandatoryFieldsValidatorV2Test {
         ocrFields.add(deceasedMaritalStatus);
         ocrFields.add(ihtEstateNetQualifyingValue);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        when(ihtEstateValidationRule.isNqvBetweenValues(any())).thenReturn(true);
+        when(mandatoryFieldsValidatorUtils.nqvBetweenThresholds(any())).thenReturn(true);
+        when(mandatoryFieldsValidatorUtils.hasLateSpouseCivilPartner(any())).thenReturn(true);
 
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
         ArgumentCaptor<DefaultKeyValue> defaultKeyValueArgumentCaptor =

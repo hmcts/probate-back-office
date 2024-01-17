@@ -93,11 +93,6 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyEmptyApplicationFeeReturns400() throws IOException {
-        verifyIncorrectPostRequestReturns400("failure.fee.emptyNetIHT.json", "Net IHT value cannot be empty");
-    }
-
-    @Test
     public void verifyNegativeUKCopiesFeeReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.negativeUKCopies.json", "Uk Grant copies cannot be negative");
     }

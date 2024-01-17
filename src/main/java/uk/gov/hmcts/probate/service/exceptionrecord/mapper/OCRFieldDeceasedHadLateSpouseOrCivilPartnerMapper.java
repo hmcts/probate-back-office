@@ -14,16 +14,26 @@ public class OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper {
     @Autowired
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
+    private static final String FALSE = "false";
+    private static final String WIDOWED = "widowed";
+
     @SuppressWarnings({"squid:S2447"})
     @ToDeceasedHadLateSpouseOrCivilPartner
-    public Boolean decasedHadLateSpouseOrCivilPartner(ExceptionRecordOCRFields ocrFields) {
-        if ("2".equals(ocrFields.getFormVersion())
-            && exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())
-            && "false".equalsIgnoreCase(ocrFields.getIht207Completed())
-            && "false".equalsIgnoreCase(ocrFields.getIht400421Completed())) {
-            return "widowed".equalsIgnoreCase(ocrFields.getDeceasedMartialStatus());
-        } else {
+    public Boolean deceasedHadLateSpouseOrCivilPartner(ExceptionRecordOCRFields ocrFields) {
+        if (null == ocrFields.getFormVersion()) {
             return null;
         }
+        return switch (ocrFields.getFormVersion()) {
+            case "2" -> exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())
+                    && FALSE.equalsIgnoreCase(ocrFields.getIht207Completed())
+                    && FALSE.equalsIgnoreCase(ocrFields.getIht400421Completed())
+                    ? WIDOWED.equalsIgnoreCase(ocrFields.getDeceasedMartialStatus()) : null;
+            case "3" -> exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())
+                    && FALSE.equalsIgnoreCase(ocrFields.getIht207Completed())
+                    && FALSE.equalsIgnoreCase(ocrFields.getIht400421Completed())
+                    && FALSE.equalsIgnoreCase(ocrFields.getIht400Completed())
+                    ? WIDOWED.equalsIgnoreCase(ocrFields.getDeceasedMartialStatus()) : null;
+            default -> null;
+        };
     }
 }
