@@ -26,7 +26,7 @@ module.exports = async function (caseRef, nextStepName) {
     const caseMatchesValidYesLocator = {css: '#caseMatches_%s_valid_Yes'};
     const caseMatchesImportNoLocator = {css: '#caseMatches_%s_doImport_No'};
     let i = numOfElements;
-    await I.logInfo("The number of cases is : ", i);
+    await I.logInfo('The number of cases is : ', i);
     /* eslint-disable no-await-in-loop */
     while (i > 1) {
         const removeBtnLocatorNthChild = removeBtnLocator.css.replace(/%s/g, i);
