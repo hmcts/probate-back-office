@@ -3,8 +3,11 @@ package uk.gov.hmcts.probate.service.ocr.pa1a;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ocr.OCRField;
+import uk.gov.hmcts.probate.service.ocr.CommonMandatoryFieldsValidatorV3;
+import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 import uk.gov.hmcts.probate.service.ocr.OCRFieldTestUtils;
 
 import java.util.ArrayList;
@@ -12,6 +15,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 class PA1ACommonMandatoryFieldsValidatorTest {
 
@@ -21,6 +28,12 @@ class PA1ACommonMandatoryFieldsValidatorTest {
     @InjectMocks
     private PA1ACommonMandatoryFieldsValidator pa1ACommonMandatoryFieldsValidator;
 
+    @Mock
+    private MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
+
+    @Mock
+    private CommonMandatoryFieldsValidatorV3 commonMandatoryFieldsValidatorV3;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
@@ -28,62 +41,24 @@ class PA1ACommonMandatoryFieldsValidatorTest {
     }
 
     @Test
-    void testNoCompletedOnlineKeyReturnSuccessfullyForPA1A() {
+    void testForPA1AFormVersion3() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        ocrFieldTestUtils.removeOCRField(ocrFields, "ihtFormCompletedOnline");
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
+        when(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)).thenReturn(true);
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         assertEquals(0, warnings.size());
+        verify(commonMandatoryFieldsValidatorV3).addWarnings(any(), any());
     }
 
     @Test
-    void testMissingIHTFormIdMandatoryFieldReturnSuccessfullyForPA1A() {
+    void testForPA1AFormNotVersion3() {
         List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("ihtFormId");
-        ocrFieldValues.put("formVersion","1");
+        when(mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)).thenReturn(false);
 
         pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(1, warnings.size());
-        assertEquals("IHT form id (ihtFormId) is mandatory.", warnings.get(0));
-    }
-
-    @Test
-    void testMissingIHTReferenceMandatoryFieldReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("ihtFormId");
-        ocrFieldValues.put("ihtFormCompletedOnline","true");
-        ocrFieldValues.put("formVersion","1");
-
-        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(1, warnings.size());
-        assertEquals("IHT reference number (ihtReferenceNumber) is mandatory.", warnings.get(0));
-    }
-
-    @Test
-    void testMissingIHTCompletedOnlineMandatoryFieldReturnSuccessfullyForPA1A() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-        ocrFieldValues.remove("ihtFormCompletedOnline");
-        ocrFieldValues.put("formVersion","1");
-
-        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-        assertEquals(1, warnings.size());
-        assertEquals("IHT form completed online (ihtFormCompletedOnline) is mandatory.", warnings.get(0));
-    }
-
-    @Test
-    void testNoIHTCompletedOnlineMandatoryFormVersionZeroForPA1Pv1() {
-        List<OCRField> ocrFields = ocrFieldTestUtils.addAllMandatoryIntestacyCitizenFields();
-        HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
-
-        ocrFieldValues.remove("ihtFormCompletedOnline");
-        ocrFieldValues.put("formVersion", "0");
-
-        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-
         assertEquals(0, warnings.size());
+        verifyNoInteractions(commonMandatoryFieldsValidatorV3);
     }
 }

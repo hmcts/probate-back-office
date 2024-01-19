@@ -13,9 +13,12 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
             await I.waitForText(deceasedDetailsConfig.page2_whichIHTFormsLabel);
             await I.waitForText(deceasedDetailsConfig.page2_IHT207Label);
             await I.waitForText(deceasedDetailsConfig.page2_IHT400421Label);
+            await I.waitForText(deceasedDetailsConfig.page2_IHT400Label);
 
             if (whichIHTFormsCompleted === 'IHT207') {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`});
+            } else if (whichIHTFormsCompleted === 'IHT400'){
+                await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400}`});
             } else {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});
             }
@@ -28,6 +31,7 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
             await I.fillField('#ihtEstateGrossValue', deceasedDetailsConfig.page2_grossValueIHTEstate);
             await I.fillField('#ihtEstateNetValue', deceasedDetailsConfig.page2_netValueIHTEstate);
             await I.fillField('#ihtEstateNetQualifyingValue', deceasedDetailsConfig.page2_netQualifyingValueIHTEstate);
+            await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 
             await I.click(`#deceasedHadLateSpouseOrCivilPartner_${deceasedDetailsConfig.optionYes}`);
             await I.click(`#ihtUnusedAllowanceClaimed_${deceasedDetailsConfig.optionYes}`);
@@ -39,9 +43,6 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
     } else {
         await I.click({css: `#ihtFormId-${deceasedDetailsConfig.page2_IHTOption}`});
     }
-
-    await I.fillField('#ihtGrossValue', deceasedDetailsConfig.page2_ihtGrossValue);
-    await I.fillField('#ihtNetValue', deceasedDetailsConfig.page2_ihtNetValue);
 
     await I.waitForNavigationToComplete(commonConfig.continueButton, true);
 };

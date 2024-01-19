@@ -47,10 +47,10 @@
   "page1_deceasedDod_month": "01",
   "page1_deceasedDod_year": "2022",
   "page1_deceasedDod_long": "2 Jan 2022",
-  "page1_deceasedDod_day_update": "01",
+  "page1_deceasedDod_day_update": "02",
   "page1_deceasedDod_month_update": "01",
   "page1_deceasedDod_year_update": "2019",
-  "page1_deceasedDod_long_update": "1 Jan 2019",
+  "page1_deceasedDod_long_update": "2 Jan 2019",
   "page1_deceasedAnyOtherNamesYes": "Yes",
   "page1_deceasedAnyOtherNamesNo": "No",
   "page1_deceasedAlias": "deceased_alias",
@@ -82,10 +82,14 @@
   "page3_waitForText": "PA1P/PA1A/Solicitors Manual",
   "EE_ihtFormEstateValueCompletedNo": "No",
   "EE_ihtFormEstateValueCompletedYes": "Yes",
+  "EE_ihtFormCompleteOnlineNo": "No",
   "EE_ihtFormEstate207": "IHT207",
+  "EE_ihtFormEstate400": "IHT400",
   "EE_ihtEstateGrossValue" : "500",
   "EE_ihtEstateNetValue" : "400",
   "EE_ihtEstateNetQualifyingValue" : "400",
   "EE_deceasedHadLateSpouseOrCivilPartnerNo": "No",
-  "EE_ihtUnusedAllowanceClaimed_No" : "No"
+  "EE_deceasedHadLateSpouseOrCivilPartnerYes": "Yes",
+  "EE_ihtUnusedAllowanceClaimed_No": "No",
+  "ihtHmrcCode": "CTS04052311043tpps8e9"
 }

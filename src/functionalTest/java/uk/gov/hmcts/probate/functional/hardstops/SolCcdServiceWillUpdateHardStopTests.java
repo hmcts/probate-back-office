@@ -42,6 +42,32 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
+    public void validate400WillUpdateProbateWithoutHardStop() throws IOException {
+        given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("success.Hmrc400willUpdate.json"))
+                .post(VALIDATE_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("SolProbateCreated"))
+                .and().body("data.willExists", equalToIgnoringCase("Yes"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
+    }
+
+    @Test
+    public void validateWithNoHmrc400WillUpdateProbateWithoutHardStop() throws IOException {
+        given()
+                .config(config)
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(utils.getJsonFromFile("success.hmrcNo400WillUpdate.json"))
+                .post(VALIDATE_URL).then().statusCode(200)
+                .and().body("data.state", equalToIgnoringCase("SolDraftCase"))
+                .and().body("data.willExists", equalToIgnoringCase("Yes"))
+                .and().body("data.willAccessOriginal", equalToIgnoringCase("Yes"));
+    }
+
+    @Test
     public void validateWillUpdateIntestacyWithoutHardStop() throws IOException {
         given()
             .config(config)

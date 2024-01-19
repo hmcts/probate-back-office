@@ -52,6 +52,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1('EE');
     await I.deceasedDetailsPage2('EE', 'No');
+    await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
     await I.deceasedDetailsPage3('NoWill');
     await I.cyaPage();
 

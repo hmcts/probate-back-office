@@ -14,11 +14,13 @@ public enum IntestacyCitizenMandatoryFields {
     DECEASED_DOB("deceasedDateOfBirth", "Deceased date of birth"),
     DECEASED_DOD("deceasedDateOfDeath", "Deceased date of death"),
     DECEASED_ANY_OTHER_NAMES("deceasedAnyOtherNames", "Did the deceased have assets in any other names?"),
+    DECEASED_DIED_ON_AFTER_SWITCH_DATE("deceasedDiedOnAfterSwitchDate",
+            "Did the person die on or after 1 January 2022?", "3"),
     DECEASED_DOMICILE_IN_ENG_WALES("deceasedDomicileInEngWales",
             "Was the deceased domiciled in England or Wales at the time of their death?"),
     FORM_VERSION("formVersion", "Form version"),
-    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate"),
-    IHT_NET_VALUE("ihtNetValue", "Net value of the estate"),
+    IHT_GROSS_VALUE("ihtGrossValue", "Gross value of the estate", "1", "2"),
+    IHT_NET_VALUE("ihtNetValue", "Net value of the estate", "1", "2"),
     SOLICITOR_APPLYING("solsSolicitorIsApplying","Do you have legal representative acting for you?"),
     IHT_400421_COMPLETED("iht400421completed", "Did you complete an IHT400 and IHT421 form?", "2"),
     IHT_IDENTIFIER("ihtReferenceNumber", "IHT identifier", "0"),
@@ -36,7 +38,7 @@ public enum IntestacyCitizenMandatoryFields {
     IntestacyCitizenMandatoryFields(String key, String value) {
         this.key = key;
         this.value = value;
-        this.formVersions = new String[]{"1", "2"};
+        this.formVersions = new String[]{"1", "2", "3"};
     }
 
     IntestacyCitizenMandatoryFields(String key, String value, String... formVersions) {
@@ -51,6 +53,10 @@ public enum IntestacyCitizenMandatoryFields {
 
     public String getValue() {
         return value;
+    }
+
+    public boolean isVersion3() {
+        return Arrays.stream(formVersions).anyMatch(r -> r.equals("3"));
     }
 
     public boolean isVersion2() {

@@ -11,6 +11,7 @@ const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicit
 const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfig');
 const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
+const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
 
 Feature('Solicitor - Apply Grant of probate Admon Will').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Apply Grant of probate Admon Will (Will left annexed) - Stopped';
@@ -45,6 +46,8 @@ Scenario(scenarioName, async function ({I}) {
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
+    await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
+    await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
     await I.deceasedDetailsPage3(willType);
     await I.cyaPage();
 
