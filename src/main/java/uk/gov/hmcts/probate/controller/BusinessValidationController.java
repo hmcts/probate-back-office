@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.RegistrarDirectionService;
 import uk.gov.hmcts.probate.service.StateChangeService;
+import uk.gov.hmcts.probate.service.SupplementaryDataService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -119,6 +120,7 @@ public class BusinessValidationController {
     private final ChangeToSameStateValidationRule changeToSameStateValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
+    private final SupplementaryDataService supplementaryDataService;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -476,6 +478,7 @@ public class BusinessValidationController {
                                                             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("Rollback Data migration");
+        supplementaryDataService.setSupplementaryData(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.rollback(callbackRequest);
         return ResponseEntity.ok(response);
     }
