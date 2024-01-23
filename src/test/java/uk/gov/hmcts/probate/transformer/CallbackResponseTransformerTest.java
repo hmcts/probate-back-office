@@ -2597,7 +2597,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertEquals(null , callbackResponse.getData().getApplicantOrganisationPolicy());
+        assertEquals(null, callbackResponse.getData().getApplicantOrganisationPolicy());
     }
 
     @Test
