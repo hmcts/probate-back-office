@@ -1,0 +1,2 @@
+Gross value of the estate for probate (ihtGrossValueExceptedEstate) is mandatory.
+Net value of the estate for probate (ihtNetValueExceptedEstate) is mandatory.

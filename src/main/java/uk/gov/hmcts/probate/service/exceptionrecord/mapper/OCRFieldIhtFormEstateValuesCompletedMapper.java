@@ -13,7 +13,7 @@ import static org.apache.commons.lang3.StringUtils.isEmpty;
 @Slf4j
 @Component
 public class OCRFieldIhtFormEstateValuesCompletedMapper {
-    
+
     @Autowired
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
@@ -29,8 +29,9 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
         } else if (
             "true".equalsIgnoreCase(ocrFields.getIht207Completed())
                 || "true".equalsIgnoreCase(ocrFields.getIht400421Completed())
+                || "true".equalsIgnoreCase(ocrFields.getIht400Completed())
         ) {
-            return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath()) 
+            return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())
                 ? Boolean.TRUE : null;
         }
         return null;

@@ -36,9 +36,25 @@ Scenario(scenarioName, async function ({I}) {
             linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
             goToNextStep: true});
 
-        await I.logInfo(scenarioName, 'Deceased details');
+        await I.logInfo(scenarioName, 'Deceased details without HMRC Letter');
         await I.caseProgressDeceasedDetails(caseProgressConfig, unique_deceased_user);
+        await I.caseProgressDeceasedDetailsUntilHmrc(caseProgressConfig, unique_deceased_user);
+        await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionNo);
+        await I.caseProgressHmrcStopPage(caseProgressConfig);
+        await I.caseProgressStandardDeceasedDetailsCheck(unique_deceased_user);
+        await I.caseProgressCheckCaseProgressTab({
+            numCompleted: 1,
+            numInProgress: 1,
+            numNotStarted: 0,
+            linkText: 'Add deceased details',
+            linkUrl: '/trigger/solicitorUpdateApplication/solicitorUpdateApplicationsolicitorUpdateApplicationPage1',
+            goToNextStep: true});
+
+        await I.logInfo(scenarioName, 'Deceased details');
+        await I.caseProgressResumeDeceasedDetails();
         await I.caseProgressDeceasedDetails2(caseProgressConfig, unique_deceased_user);
+        await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
+        await I.provideIhtValues(caseProgressConfig.IHTGross, caseProgressConfig.IHTNet);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
         await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_Yes'}]);
         await I.caseProgressStandardDeceasedDetailsCheck(unique_deceased_user);
