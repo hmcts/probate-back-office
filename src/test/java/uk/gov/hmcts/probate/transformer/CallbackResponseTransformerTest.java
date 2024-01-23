@@ -2582,6 +2582,25 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformApplicantOrganisationPolicy() {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .applicantOrganisationPolicy(policy);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
+        assertEquals(null , callbackResponse.getData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
