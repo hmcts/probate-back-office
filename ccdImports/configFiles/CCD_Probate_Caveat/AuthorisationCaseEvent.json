@@ -597,7 +597,6 @@
   {"CaseTypeID": "Caveat", "CaseEventID": "registrarsDecision", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentSuccess", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseEventID": "serviceRequestPaymentFailed", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
-  {"CaseTypeID": "Caveat", "CaseEventID": "solicitorCreateCaveat", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "Caveat", "CaseEventID": "applyForCaveat", "UserRole": "citizen", "CRUD": "C"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCase", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseEventID": "createCasePaymentFailed", "UserRole": "citizen", "CRUD": "CRU"},
