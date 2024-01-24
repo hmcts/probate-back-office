@@ -20,8 +20,10 @@ public class SupplementaryDataService {
     private final SecurityUtils securityUtils;
 
     public void setSupplementaryData(CaseDetails caseDetails) {
+        Map<String, Object> usersMap = new HashMap<>();
+        usersMap.put("orgs_assigned_users." + "", 0);
         Map<String, Map<String, Map<String, Object>>> supplementaryData = new HashMap<>();
-        supplementaryData.put("supplementary_data_updates", null);
+        supplementaryData.put("supplementary_data_updates", Map.of("$set", usersMap));
         coreCaseDataApi.submitSupplementaryData(securityUtils.getSchedulerToken(), authTokenGenerator.generate(),
                 caseDetails.getId().toString(), supplementaryData);
     }
