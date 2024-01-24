@@ -21,6 +21,7 @@ public class SupplementaryDataService {
 
     public void setSupplementaryData(CaseDetails caseDetails) {
         Map<String, Map<String, Map<String, Object>>> supplementaryData = new HashMap<>();
+        supplementaryData.put("supplementary_data_updates", null );
         coreCaseDataApi.submitSupplementaryData(securityUtils.getSchedulerToken(), authTokenGenerator.generate(),
                 caseDetails.getId().toString(), supplementaryData);
     }
