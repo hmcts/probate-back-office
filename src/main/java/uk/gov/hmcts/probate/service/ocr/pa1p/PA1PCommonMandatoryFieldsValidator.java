@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.stereotype.Service;
+import uk.gov.hmcts.probate.service.ocr.CommonMandatoryFieldsValidatorV3;
+import uk.gov.hmcts.probate.service.ocr.MandatoryFieldsValidatorUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,8 @@ import static uk.gov.hmcts.probate.service.ocr.CCDMandatoryFieldKeys.MANDATORY_K
 @Service
 @RequiredArgsConstructor
 public class PA1PCommonMandatoryFieldsValidator {
+    private final MandatoryFieldsValidatorUtils mandatoryFieldsValidatorUtils;
+    private final CommonMandatoryFieldsValidatorV3 commonMandatoryFieldsValidatorV3;
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
         if (ocrFieldValues.containsKey(MANDATORY_KEY_PRIMARYAPPLICANTHASALIAS)) {
@@ -47,6 +51,10 @@ public class PA1PCommonMandatoryFieldsValidator {
                         executorNotApplyingReasonDesc, executorNotApplyingReasonKey));
                 }
             }
+        }
+
+        if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
+            commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
         }
     }
 }

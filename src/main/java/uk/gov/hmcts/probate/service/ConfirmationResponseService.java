@@ -45,6 +45,8 @@ import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.template.MarkdownTemplate.STOP_BODY;
 import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400421_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
 
 @Component
 @RequiredArgsConstructor
@@ -284,7 +286,8 @@ public class ConfirmationResponseService {
     private String getIhtForm(CCDData ccdData) {
         String ihtFormValue = ccdData.getIht().getFormName();
         String ihtForm = "";
-        if (ihtFormValue != null && !ihtFormValue.contentEquals(IHT400421_VALUE)) {
+        if (ihtFormValue != null && !ihtFormValue.contentEquals(IHT400421_VALUE)
+                && !ihtFormValue.contentEquals(IHT400_VALUE) && !ihtFormValue.contentEquals(NOT_APPLICABLE_VALUE)) {
             if (YES.equals(ccdData.getIht217())) {
                 ihtForm = "IHT205 and IHT217";
             } else {
@@ -306,7 +309,8 @@ public class ConfirmationResponseService {
             if (ihtEstate207BusinessRule.isApplicable(caseData)) {
                 ihtText = "\n*   " + IHT_ESTATE_207_TEXT;
             }
-        } else if (!ihtFormValue.contentEquals(IHT400421_VALUE)) {
+        } else if (!ihtFormValue.contentEquals(IHT400421_VALUE) && !ihtFormValue.contentEquals(IHT400_VALUE)
+                && !ihtFormValue.contentEquals(NOT_APPLICABLE_VALUE)) {
             ihtText = "\n*   the inheritance tax form ";
         }
 

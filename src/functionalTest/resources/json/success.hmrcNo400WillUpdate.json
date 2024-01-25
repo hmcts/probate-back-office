@@ -22,6 +22,7 @@
       "solsAdditionalInfo": "Additional Info",
       "deceasedDateOfBirth": "1987-01-01",
       "willHasCodicils": "Yes",
+      "hmrcLetterId": "No",
       "solsDeceasedAliasNamesList": [
         {
           "value": {
@@ -69,7 +70,7 @@
         }
       ],
       "deceasedDomicileInEngWales": "Yes",
-      "ihtNetValue": "",
+      "ihtNetValue": "500001",
       "deceasedSurname": "decln",
       "solsAdditionalExecutorList": [
         {
@@ -97,8 +98,8 @@
       "willNumberOfCodicils": "1",
       "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "Yes",
-      "ihtFormId": "IHT205",
-      "ihtGrossValue": "100001",
+      "ihtFormId": "IHT400",
+      "ihtGrossValue": "600001",
       "solsExecutorAliasNames": "ex1wn",
       "primaryApplicantSurname": "Ex1ln",
       "solsSolicitorAppReference": "appref",
