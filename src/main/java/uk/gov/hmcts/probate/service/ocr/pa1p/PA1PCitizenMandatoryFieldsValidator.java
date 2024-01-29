@@ -31,12 +31,15 @@ public class PA1PCitizenMandatoryFieldsValidator {
     private final CitizenMandatoryFieldsValidatorV2 citizenMandatoryFieldsValidatorV2;
 
     public void addWarnings(Map<String, String> ocrFieldValues, List<String> warnings) {
-        if (mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)) {
-            addWarningsFormVersion2(ocrFieldValues, warnings);
-        } else {
-            addWarningsFormVersion1(ocrFieldValues, warnings);
+        if (!mandatoryFieldsValidatorUtils.addWarningForNoFormVersion(ocrFieldValues, warnings)) {
+            if (mandatoryFieldsValidatorUtils.isVersion3(ocrFieldValues)) {
+                addWarningsFormVersion3(ocrFieldValues, warnings);
+            } else if (mandatoryFieldsValidatorUtils.isVersion2(ocrFieldValues)) {
+                addWarningsFormVersion2(ocrFieldValues, warnings);
+            } else {
+                addWarningsFormVersion1(ocrFieldValues, warnings);
+            }
         }
-
     }
 
     private void addWarningsFormVersion1(Map<String, String> ocrFieldValues, List<String> warnings) {
@@ -84,4 +87,14 @@ public class PA1PCitizenMandatoryFieldsValidator {
         citizenMandatoryFieldsValidatorV2.addWarnings(ocrFieldValues, warnings);
     }
 
+    private void addWarningsFormVersion3(Map<String, String> ocrFieldValues, List<String> warnings) {
+        Stream.of(GORCitizenMandatoryFields.values()).filter(GORCitizenMandatoryFields::isVersion3)
+                .forEach(field -> {
+                    log.info("Checking v3 {} against ocr fields", field.getKey());
+                    if (!ocrFieldValues.containsKey(field.getKey())) {
+                        log.warn("v3 " + MANDATORY_FIELD_NOT_FOUND_LOG, field.getKey());
+                        warnings.add(format(MANDATORY_FIELD_WARNING_STRING, field.getValue(), field.getKey()));
+                    }
+                });
+    }
 }

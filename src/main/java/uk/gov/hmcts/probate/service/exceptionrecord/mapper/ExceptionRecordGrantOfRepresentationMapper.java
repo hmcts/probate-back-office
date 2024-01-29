@@ -21,6 +21,8 @@ import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormC
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstate;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormId;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTGrossValue;
+import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTNetValue;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToLong;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToMartialStatus;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToPaperPaymentMethod;
@@ -58,7 +60,9 @@ import java.util.List;
         OCRFieldIhtFormEstateValuesCompletedMapper.class,
         OCRFieldIhtFormCompletedOnlineMapper.class,
         OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class,
-        OCRFieldSolicitorWillTypeMapper.class
+        OCRFieldSolicitorWillTypeMapper.class,
+        OCRFieldIhtGrossValueMapper.class,
+        OCRFieldIhtNetValueMapper.class
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
@@ -207,7 +211,6 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationship.class})
     @Mapping(target = "paRelationshipToDeceasedOther",
         source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
-
     @Mapping(target = "solsSOTName", source = "ocrFields.solsSolicitorRepresentativeName")
     @Mapping(target = "applyingAsAnAttorney", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
             + "\"applyingAsAnAttorney\"), ocrFields.getApplyingAsAnAttorney()))", qualifiedBy = {ToYesOrNo.class})
@@ -251,11 +254,8 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         ToIHTFormCompletedOnline.class})
     @Mapping(target = "ihtReferenceNumber", source = "ocrFields.ihtReferenceNumber")
     @Mapping(target = "ihtFormId", source = "ocrFields", qualifiedBy = {ToIHTFormId.class})
-    @Mapping(target = "ihtGrossValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
-            + "\"ihtGrossValue\"), ocrFields.getIhtGrossValue()))", qualifiedBy = {ToPennies.class})
-    @Mapping(target = "ihtNetValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
-            + "\"ihtNetValue\"), ocrFields.getIhtNetValue()))", qualifiedBy = {ToPennies.class})
-
+    @Mapping(target = "ihtGrossValue", source = "ocrFields", qualifiedBy = {ToIHTGrossValue.class})
+    @Mapping(target = "ihtNetValue", source = "ocrFields", qualifiedBy = {ToIHTNetValue.class})
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {
         ToApplicationTypeGrantOfRepresentation.class})
@@ -275,6 +275,10 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
                     + "ocrFields.getIhtUnusedAllowanceClaimed()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
         qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
+    @Mapping(target = "hmrcLetterId",
+            expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"iht400process\"), "
+                    + "ocrFields.getIht400process()))", qualifiedBy = {ToYesOrNo.class})
+    @Mapping(target = "uniqueProbateCodeId", source = "ocrFields.ihtCode")
     @Mapping(target = "solsWillType", source = "ocrFields", qualifiedBy = {ToSolicitorWillType.class})
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 

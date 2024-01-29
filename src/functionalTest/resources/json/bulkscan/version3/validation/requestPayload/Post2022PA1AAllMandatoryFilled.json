@@ -1,0 +1,124 @@
+{
+  "ocr_data_fields": [
+    {
+      "name": "formVersion",
+      "value": "3",
+      "description": "Form version"
+    },
+    {
+      "name": "primaryApplicantForenames",
+      "value": "John",
+      "description": "Primary applicant First name(s)"
+    },
+    {
+      "name": "primaryApplicantSurname",
+      "value": "Johnson",
+      "description": "Primary applicant last name"
+    },
+    {
+      "name": "primaryApplicantAddressLine1",
+      "value": "321 the street",
+      "description": "Primary applicant address line 1"
+    },
+    {
+      "name": "primaryApplicantAddressPostCode",
+      "value": "NW1 3TA",
+      "description": "Primary applicant postcode"
+    },
+    {
+      "name": "deceasedForenames",
+      "value": "Bob",
+      "description": "Deceased first names"
+    },
+    {
+      "name": "deceasedSurname",
+      "value": "Roberts",
+      "description": "Deceased last name"
+    },
+    {
+      "name": "deceasedAddressLine1",
+      "value": "123 Alphabet Street",
+      "description": "Deceased address line 1"
+    },
+    {
+      "name": "deceasedAddressPostCode",
+      "value": "NW1 3TA",
+      "description": "Deceased postcode"
+    },
+    {
+      "name": "deceasedDateOfBirth",
+      "value": "01011900",
+      "description": "Deceased date of birth"
+    },
+    {
+      "name": "deceasedDateOfDeath",
+      "value": "01012022",
+      "description": "Deceased date of death"
+    },
+    {
+      "name": "deceasedAnyOtherNames",
+      "value": "123 Alphabet Street",
+      "description": "Deceased address line 1"
+    },
+    {
+      "name": "deceasedDomicileInEngWales",
+      "value": "true",
+      "description": "Was the deceased domiciled in England or Wales at the time of their death?"
+    },
+    {
+      "name": "deceasedMartialStatus",
+      "value": "WIDOWED",
+      "description": "What was the marital status of the person who has died when they died?"
+    },
+    {
+      "name": "iht400421completed",
+      "value": "false",
+      "description": "Did you complete an IHT400 and IHT421 form?"
+    },
+    {
+      "name": "iht207completed",
+      "value": "false",
+      "description": "IHT207"
+    },
+    {
+      "name": "iht400completed",
+      "value": "true",
+      "description": "IHT400"
+    },
+    {
+      "name": "ihtCode",
+      "value": "CTS 0405231104 3tpp s8e9",
+      "description": "Free text box for HMRC code"
+    },
+    {
+      "name": "iht400process",
+      "value": "true",
+      "description": "Have you received a letter from HMRC with your unique probate code?"
+    },
+    {
+      "name": "probateGrossValueIht400",
+      "value": "251,765.50",
+      "description": "The probate values from the HMRC letter Gross value"
+    },
+    {
+      "name": "probateNetValueIht400",
+      "value": "199,435.00",
+      "description": "The probate values from the HMRC letter Gross value"
+    },
+    {
+      "name": "deceasedDiedOnAfterSwitchDate",
+      "value": "true",
+      "description": "Did the deceased die on or after 1 January 2022?"
+    },
+    {
+      "name": "solsSolicitorIsApplying",
+      "value": "False",
+      "description": "Do you have legal representative acting for you?"
+    },
+    {
+      "name": "deceasedHadLateSpouseOrCivilPartner",
+      "value": "true",
+      "description": "What was the marital status of the person who has died when they died? WIDOWED"
+    }
+  ]
+}

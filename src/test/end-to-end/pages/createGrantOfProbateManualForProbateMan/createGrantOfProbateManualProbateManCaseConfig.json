@@ -60,6 +60,8 @@
   "ForeignAssetYes": "Yes",
 
   "page3_waitForText": "PA1P/PA1A/Solicitors Manual",
+  "ihtForm400": "IHT400",
   "IhtGrossValue" : "500",
-  "IhtNetValue" : "400"
+  "IhtNetValue" : "400",
+  "ihtHmrcCode" : "CTS04052311043tpps8e9"
 }

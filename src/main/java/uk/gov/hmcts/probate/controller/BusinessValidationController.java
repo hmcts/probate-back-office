@@ -28,6 +28,7 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
@@ -52,11 +53,13 @@ import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRul
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -68,6 +71,7 @@ import java.util.Optional;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -106,6 +110,8 @@ public class BusinessValidationController {
     private final IHTFourHundredDateValidationRule ihtFourHundredDateValidationRule;
     private final IhtEstateValidationRule ihtEstateValidationRule;
     private final IHTValidationRule ihtValidationRule;
+    private final UniqueCodeValidationRule uniqueCodeValidationRule;
+    private final NaValidationRule naValidationRule;
     private final SolicitorPostcodeValidationRule solicitorPostcodeValidationRule;
     private final CaseworkersSolicitorPostcodeValidationRule caseworkersSolicitorPostcodeValidationRule;
     private final AssignCaseAccessService assignCaseAccessService;
@@ -126,6 +132,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
+        naValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
@@ -195,12 +202,17 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
+        CaseDetails details = callbackRequest.getCaseDetails();
         if (response.getErrors().isEmpty()) {
-            Optional<String> newState =
-                stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
-            response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
+            if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
+                Optional<String> newState =
+                        stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
+                response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
+            } else {
+                log.info("selected No to Hmrc letter");
+                response = callbackResponseTransformer.transformCase(callbackRequest);
+            }
         }
-
         return ResponseEntity.ok(response);
     }
 
@@ -447,6 +459,15 @@ public class BusinessValidationController {
         changeToSameStateValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("superuser change state  started");
         CallbackResponse response = callbackResponseTransformer.transferToState(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-unique-code")
+    public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.transformUniqueProbateCode(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
