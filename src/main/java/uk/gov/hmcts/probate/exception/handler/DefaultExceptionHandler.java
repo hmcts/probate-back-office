@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.exception.ClientException;
 import uk.gov.hmcts.probate.exception.ConnectionException;
 import uk.gov.hmcts.probate.exception.NotFoundException;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.exception.SocketException;
 import uk.gov.hmcts.probate.exception.model.ErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponse;
 import uk.gov.hmcts.probate.model.ccd.ocr.ValidationResponseStatus;
@@ -36,6 +37,7 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
 
     public static final String INVALID_REQUEST = "Invalid Request";
     public static final String CLIENT_ERROR = "Client Error";
+    public static final String SERVER_ERROR = "Server Error";
     public static final String CONNECTION_ERROR = "Connection error";
     public static final String UNAUTHORISED_DATA_EXTRACT_ERROR = "Unauthorised access to Data-Extract error";
 
@@ -108,6 +110,17 @@ class DefaultExceptionHandler extends ResponseEntityExceptionHandler {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         return new ResponseEntity<>(errorResponse, headers, NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = SocketException.class)
+    public ResponseEntity<CallbackResponse> handle(SocketException exception) {
+        log.warn(exception.getMessage());
+        List<String> userMessages = new ArrayList<>();
+        userMessages.add(exception.getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(userMessages)
+                .build();
+        return ResponseEntity.ok(callbackResponse);
     }
 
     @ExceptionHandler(OCRMappingException.class)
