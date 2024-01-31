@@ -50,7 +50,12 @@ ccd:
     elastic:
       enabled: true
     postgresql:
-      enabled: false
+      enabled: true
+      flexibleserver: sscs-preview
+      setup:
+        databases:
+          - name: "pr-${CHANGE_ID}-data-store"
+          - name: "pr-${CHANGE_ID}-definition-store"
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
@@ -65,6 +70,10 @@ ccd:
     postgresUsername: hmcts
     postgresPassword: hmcts
     devMode: true
+    postgresHostname: "probate-preview.postgres.database.azure.com"
+    postgresSecret: postgres
+    databaseNamePrefix: "pr-${CHANGE_ID}-"
+
 
   ccd-api-gateway-web:
     nodejs:
@@ -87,7 +96,7 @@ ccd:
       devcpuLimits: 2
       devmemoryLimits: 2Gi
       environment:
-        DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -101,7 +110,7 @@ ccd:
         HTTP_CLIENT_MAX_TOTAL: '300'
         HTTP_CLIENT_MAX_CLIENT_PER_ROUTE: '30'
         DATA_STORE_DB_MAX_POOL_SIZE: 80
-        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&ssl=disable&gssEncMode=disable"
+        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&reWriteBatchedInserts=true&sslmode=require"
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
         CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
@@ -118,6 +127,7 @@ ccd:
             - role-assignment-service-LD-SDK-KEY
       environment:
         ROLE_ASSIGNMENT_DB_HOST: ${SERVICE_NAME}-postgresql
+        ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.global.databaseNamePrefix }}role-assignment"
         CCD_DATA_STORE_URL: "http://${SERVICE_NAME}-ccd-data-store-api"
         ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: probate_backend,ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer
         LAUNCH_DARKLY_ENV: pr
@@ -129,7 +139,7 @@ ccd:
         maxReplicas: 2
       imagePullPolicy: Always
       environment:
-        DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DEFINITION_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,xui_webapp,aac_manage_case_assignment
         DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
@@ -142,7 +152,7 @@ ccd:
     java:
       imagePullPolicy: Always
       enviroment:
-        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+        USER_PROFILE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
       keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
 
@@ -172,7 +182,7 @@ ccd:
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
       - name: DATA_STORE_URL
-        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/{{ .Values.global.databaseNamePrefix }}data-store?ssl=require&stringtype=unspecified
       - name: DATA_STORE_USER
         value: hmcts
       - name: DATA_STORE_PASS
