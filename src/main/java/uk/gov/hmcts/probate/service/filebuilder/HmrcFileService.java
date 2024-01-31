@@ -166,8 +166,13 @@ public class HmrcFileService extends BaseFileService {
     private void addExpectedEstateIndicator(ImmutableList.Builder<String> fileData, CaseData data) {
         String type = iht2EstateMap.get("NA");
         if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(data.getDeceasedDateOfDeath())) {
-            if (!StringUtils.isEmpty(data.getIhtFormEstate())) {
-                type = iht2EstateMap.get(data.getIhtFormEstate());
+            if (!StringUtils.isEmpty(data.getIhtFormEstateValuesCompleted()) &&
+                    data.getIhtFormEstateValuesCompleted().equals("Yes")) {
+                if (!StringUtils.isEmpty(data.getIhtFormEstate())) {
+                    type = iht2EstateMap.get(data.getIhtFormEstate());
+                }
+            } else {
+                type = "Y";
             }
         } else {
             if (!StringUtils.isEmpty(data.getIhtFormId())) {
