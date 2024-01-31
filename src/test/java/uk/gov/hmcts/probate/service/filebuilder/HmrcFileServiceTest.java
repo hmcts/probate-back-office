@@ -258,7 +258,8 @@ class HmrcFileServiceTest {
                 .deceasedMaritalStatus("marriedCivilPartnership")
                 .spouseOrPartner("Yes")
                 .childrenUnderEighteenSurvived("1")
-                .childrenOverEighteenSurvived("2");
+                .childrenOverEighteenSurvived("2")
+                .ihtFormEstateValuesCompleted("Yes");
 
         when(fileExtractDateFormatter.formatDataDate(dod)).thenReturn("17-AUG-2018");
         when(fileExtractDateFormatter.formatDataDate(ihtDod)).thenReturn(("17-AUG-2023"));
