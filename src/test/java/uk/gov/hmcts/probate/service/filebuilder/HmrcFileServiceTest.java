@@ -49,6 +49,7 @@ class HmrcFileServiceTest {
     private CaseData.CaseDataBuilder caseDataCarriageReturns;
     private CaseData.CaseDataBuilder caseDataMissingData;
     private CaseData.CaseDataBuilder caseDataPersonalAfterIht;
+    private CaseData.CaseDataBuilder caseDataPersonalAfterIhtEstateEmpty;
     private ReturnedCaseDetails createdCase;
     private CaseData builtData;
 
@@ -261,6 +262,45 @@ class HmrcFileServiceTest {
                 .childrenOverEighteenSurvived("2")
                 .ihtFormEstateValuesCompleted("Yes");
 
+        caseDataPersonalAfterIhtEstateEmpty = CaseData.builder()
+                .deceasedForenames("PETAR")
+                .deceasedSurname("KRNETA")
+                .deceasedDateOfDeath(ihtDod)
+                .deceasedDateOfBirth(dob)
+                .deceasedAddress(SolsAddress.builder()
+                        .addressLine1("7 Pevensey Avenue")
+                        .addressLine3("Leicester")
+                        .postCode("LE5 6XQ").build())
+                .boDeceasedTitle("MR")
+                .deceasedAliasNameList(deceasedProbateAliasNames)
+                .primaryApplicantIsApplying("Yes")
+                .primaryApplicantForenames("ANDJELKA")
+                .primaryApplicantSurname("KOMODROMOS")
+                .primaryApplicantAddress(SolsAddress.builder()
+                        .addressLine1("37 Otter Lane")
+                        .addressLine2("Mountsorrel")
+                        .addressLine3("Loughborough")
+                        .county("Leicestershire")
+                        .postCode("LE12 7GL")
+                        .build())
+                .additionalExecutorsApplying(additionalExecutors)
+                .ihtFormEstate("IHT400")
+                .ihtGrossValue(new BigDecimal(new BigInteger("32500000"), 0))
+                .ihtNetValue(new BigDecimal(new BigInteger("28700000"), 0))
+                .caseType("gop")
+                .registryLocation("Liverpool")
+                .grantIssuedDate(grantIssuedDateAfterIht)
+                .solsSOTName("John The personal")
+                .applicationType(ApplicationType.PERSONAL)
+                .ihtEstateGrossValue(new BigDecimal(new BigInteger("28000000"), 0))
+                .ihtEstateNetValue(new BigDecimal(new BigInteger("25000000"), 0))
+                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("24500000"), 0))
+                .ihtUnusedAllowanceClaimed("Yes")
+                .deceasedMaritalStatus("marriedCivilPartnership")
+                .spouseOrPartner("Yes")
+                .childrenUnderEighteenSurvived("1")
+                .childrenOverEighteenSurvived("2");
+
         when(fileExtractDateFormatter.formatDataDate(dod)).thenReturn("17-AUG-2018");
         when(fileExtractDateFormatter.formatDataDate(ihtDod)).thenReturn(("17-AUG-2023"));
         when(fileExtractDateFormatter.formatDataDate(dob)).thenReturn("20-OCT-1940");
@@ -297,6 +337,17 @@ class HmrcFileServiceTest {
                 builtData.getDeceasedDateOfDeath())).thenReturn(true);
         assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
                 is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalAfterIht.txt")));
+    }
+
+    @Test
+    void testHmrcFileBuiltForPersonalWithEstateValuesEmpty() throws IOException {
+        builtData = caseDataPersonalAfterIhtEstateEmpty.build();
+        createdCase = new ReturnedCaseDetails(builtData, LAST_MODIFIED, 2222333344445555L);
+        caseList.add(createdCase);
+        when(expectedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(
+                builtData.getDeceasedDateOfDeath())).thenReturn(true);
+        assertThat(createFile(hmrcFileService.createHmrcFile(caseList.build(), FILE_NAME)),
+                is(FileUtils.getStringFromFile("expectedGeneratedFiles/hmrcPersonalAfterIhtEstateEmpty.txt")));
     }
 
     @Test
