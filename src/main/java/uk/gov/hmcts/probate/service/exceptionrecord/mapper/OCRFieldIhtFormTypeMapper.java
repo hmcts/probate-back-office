@@ -26,42 +26,61 @@ public class OCRFieldIhtFormTypeMapper {
 
     @ToIHTFormId
     public IhtFormType ihtFormType(ExceptionRecordOCRFields ocrFields) {
-        String ihtFormId = ocrFields.getIhtFormId();
-        log.info("Beginning mapping for IHT Form Type value: {}", ihtFormId);
-        if ("2".equals(ocrFields.getFormVersion())) {
-            if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath())) {
-                if (TRUE.equalsIgnoreCase(ocrFields.getIht400421Completed())) {
-                    return IhtFormType.optionIHT400421;
-                } else if (TRUE.equalsIgnoreCase(ocrFields.getIht207Completed())) {
-                    return IhtFormType.optionIHT207;
-                } else if (FALSE.equalsIgnoreCase(ocrFields.getIht205completedOnline())) {
-                    return IhtFormType.optionIHT205;
-                } else {
-                    return null;
-                }
-            } else {
-                return null;
-            }
+        log.info("Beginning mapping for IHT Form Type");
+
+        if ("3".equals(ocrFields.getFormVersion())) {
+            return processVersion3(ocrFields);
+        } else if ("2".equals(ocrFields.getFormVersion())) {
+            return processVersion2(ocrFields);
         } else {
-            if (ihtFormId == null || ihtFormId.isEmpty()) {
-                return null;
-            }
-            switch (ihtFormId.toUpperCase().trim()) {
-                case FORM_IHT205:
-                    return IhtFormType.optionIHT205;
-                case FORM_IHT207:
-                    return IhtFormType.optionIHT207;
-                case FORM_IHT400421:
-                    return IhtFormType.optionIHT400421;
-                case FORM_IHT421:
-                    return IhtFormType.optionIHT400421;
-                case FORM_IHT400:
-                    return IhtFormType.optionIHT400421;
-                default:
-                    String errorMessage = "ihtFormId: IHT205, IHT207 or IHT400421 expected but got '" + ihtFormId + "'";
-                    log.error(errorMessage);
-                    throw new OCRMappingException(errorMessage);
-            }
+            return processVersion1(ocrFields);
         }
+    }
+
+    private IhtFormType processVersion3(ExceptionRecordOCRFields ocrFields) {
+        boolean diedAfterSwitch = TRUE.equalsIgnoreCase(ocrFields.getDeceasedDiedOnAfterSwitchDate());
+        if (diedAfterSwitch) {
+            return null;
+        }
+        return getIhtFormType(ocrFields);
+    }
+
+    private IhtFormType processVersion2(ExceptionRecordOCRFields ocrFields) {
+        boolean diedAfterSwitch = exceptedEstateDateOfDeathChecker
+                .isOnOrAfterSwitchDate(ocrFields.getDeceasedDateOfDeath());
+        if (diedAfterSwitch) {
+            return null;
+        }
+        return getIhtFormType(ocrFields);
+    }
+
+    private IhtFormType processVersion1(ExceptionRecordOCRFields ocrFields) {
+        String ihtFormId = ocrFields.getIhtFormId();
+        if (null == ihtFormId || ihtFormId.isEmpty()) {
+            return null;
+        }
+
+        return switch (ihtFormId.toUpperCase().trim()) {
+            case FORM_IHT205 -> IhtFormType.optionIHT205;
+            case FORM_IHT207 -> IhtFormType.optionIHT207;
+            case FORM_IHT400421, FORM_IHT421, FORM_IHT400 -> IhtFormType.optionIHT400421;
+            default ->
+                    throw new OCRMappingException("ihtFormId: IHT205, IHT207, or IHT400421 expected but got '"
+                            + ihtFormId + "'");
+        };
+    }
+
+    private IhtFormType getIhtFormType(ExceptionRecordOCRFields ocrFields) {
+        if (TRUE.equalsIgnoreCase(ocrFields.getIht400421Completed())) {
+            return IhtFormType.optionIHT400421;
+        } else if (TRUE.equalsIgnoreCase(ocrFields.getIht207Completed())) {
+            return IhtFormType.optionIHT207;
+        } else if (TRUE.equalsIgnoreCase(ocrFields.getIht400Completed())) {
+            return IhtFormType.optionIHT400;
+        } else if (TRUE.equalsIgnoreCase(ocrFields.getIht205Completed())
+                || FALSE.equalsIgnoreCase(ocrFields.getIht205completedOnline())) {
+            return IhtFormType.optionIHT205;
+        }
+        return null;
     }
 }

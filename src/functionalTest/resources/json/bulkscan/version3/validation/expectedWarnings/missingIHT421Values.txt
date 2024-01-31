@@ -1,0 +1,2 @@
+Enter the gross value of the estate (IHT 400421) (iht421grossValue) is mandatory.
+Enter the net value of the estate (IHT 400421) (iht421netValue) is mandatory.

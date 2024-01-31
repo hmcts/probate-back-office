@@ -11,7 +11,7 @@ const completeApplicationConfig = require('src/test/end-to-end/pages/solicitorAp
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantDetailsTabConfig');
 const applicantExecutorDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/applicantExecDetailsTrustCorpTabConfig');
 const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/deceasedTabConfigEE');
-const iHTTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/iHTTabConfigEE400421');
+const iHTTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/iHTTabConfigEE400');
 const caseDetailsTabDeceasedDtlsConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabDeceasedDtlsConfigEE');
 const caseDetailsTabGopConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabGopTrustCorpConfig');
 const caseDetailsTabUpdatesConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/caseDetailsTabUpdatesConfig');
@@ -20,6 +20,7 @@ const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitor
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/historyTabConfig');
 const serviceRequestTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestTabConfig');
 const serviceRequestReviewTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyProbate/serviceRequestReviewTabConfig');
+const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
 
 Feature('Solicitor - Apply Grant of probate Excepted Estates').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Apply Grant of probate Single Executor for Excepted Estates';
@@ -52,7 +53,9 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.deceasedDetailsPage1('EE');
-    await I.deceasedDetailsPage2('EE', 'Yes');
+    await I.deceasedDetailsPage2('EE', 'Yes', 'IHT400');
+    await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
+    await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue);
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();
@@ -94,7 +97,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
-    await I.completeApplicationPage2();
+    //await I.completeApplicationPage2();
     await I.completeApplicationPage3();
     await I.completeApplicationPage4();
     await I.completeApplicationPage5();

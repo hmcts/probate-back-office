@@ -204,6 +204,54 @@ class TaskStateRendererTest {
     }
 
     @Test
+    void shouldRenderCorrectHtmlForState_DeceasedDtlsWithNoHmrcCode() {
+
+        final String expectedHtml = "<div>Add Probate practitioner details</div>\n"
+                + "<div><a href=\""
+                + UrlConstants.DECEASED_DETAILS_URL_TEMPLATE.replaceFirst("<CASE_ID>", "9999")
+                + "\" class=\"govuk-link\">Add deceased details</a></div>\n"
+                + "<div>Add application details</div>\n"
+                + "<div>Review and sign legal statement and submit application</div>\n"
+                + "<div>Make payment</div>\n"
+                + "<div></div>\n"
+                + "<div></div>\n"
+                + "<div>Authenticate documents</div>\n"
+                + "<div>Examine application</div>\n"
+                + "<div>Issue grant of representation<</div>\n"
+                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
+                + "</p>\n"
+                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>"
+                + "\n"
+                + "</p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
+                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
+                + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
+                + "<p><strong>Authenticated on "
+                + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
+                + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+
+        CaseDataBuilder caseDataBuilder = CaseData.builder()
+                .escalatedDate(LocalDate.of(2020, 1, 1))
+                .hmrcLetterId(NO);
+        caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
+                testHtml, (long) 9999, "WillLeft", "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
     void shouldRenderCorrectHtmlForState_AddAppDtls_Gop_UpdateCase() {
 
         final String expectedHtml = "<div>Add Probate practitioner details</div>\n"

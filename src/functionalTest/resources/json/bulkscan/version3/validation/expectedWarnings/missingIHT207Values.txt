@@ -1,0 +1,2 @@
+Enter the gross value of the estate (IHT207 paper) (iht207grossValue) is mandatory.
+Enter the net value of the estate (IHT207 paper) (iht207netValue) is mandatory.

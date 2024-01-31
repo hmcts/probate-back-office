@@ -187,6 +187,17 @@ class ConfirmationResponseServiceFeatureIT {
     }
 
     @Test
+    void shouldGenerateCorrectConfirmationBodyWithIHT400() throws Exception {
+        CCDData ccdData = createCCDataBuilder().iht(createInheritanceTax("IHT400")).build();
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,
+                caseDataMock);
+
+        String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyWithIHT400421.md");
+
+        assertThat(stopConfirmation.getConfirmationBody(), is(expectedConfirmationBody));
+    }
+
+    @Test
     void shouldGenerateCorrectConfirmationBodyWithTcResolutionLodgedWithinApp() throws Exception {
         CCDData ccdData = createCCDataBuilder().titleAndClearingType("TCTTrustCorpResWithApp").build();
         AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(ccdData,

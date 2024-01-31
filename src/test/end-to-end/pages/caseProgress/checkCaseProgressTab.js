@@ -49,7 +49,7 @@ module.exports = async function (opts) {
     } else {
         await I.seeNumberOfVisibleElements('p.govuk-body-s a', 0);
         const docsText = await I.grabTextFrom('span.govuk-details__summary-text');
-        assert.equal(docsText, '\nView the documents needed by HM Courts and Tribunal Service\n');
+        assert.equal(docsText, '\n      View the documents needed by HM Courts and Tribunal Service\n    ');
     }
 
     await I.seeNumberOfVisibleElements('.govuk-grid-row .govuk-grid-row .govuk-grid-column-one-third img[alt=COMPLETED]', opts.numCompleted);
