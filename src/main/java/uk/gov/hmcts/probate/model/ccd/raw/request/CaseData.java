@@ -155,10 +155,10 @@ public class CaseData extends CaseDataParent {
 
     private final String ihtFormId;
 
-    @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
+    @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtNetValue;
 
-    @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
+    @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
     private final String solsWillType;
