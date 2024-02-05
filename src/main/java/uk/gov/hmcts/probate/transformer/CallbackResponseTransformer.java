@@ -479,8 +479,17 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
                 .getData().getUniqueProbateCodeId() != null ? callbackRequest.getCaseDetails()
-                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null);
+                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null)
+                .ihtFormNetValue(getNetValueLabel(callbackRequest.getCaseDetails().getData()));
         return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    private String getNetValueLabel(CaseData caseData) {
+        if ("IHT400".equals(caseData.getIhtFormId()) || "IHT400".equals(caseData.getIhtFormEstate())) {
+            return "What is the net value for probate?";
+        } else {
+            return "What is the net value of the estate for probate?";
+        }
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
