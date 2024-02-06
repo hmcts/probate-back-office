@@ -971,16 +971,4 @@ class BusinessValidationUnitTest {
                 .transformUniqueProbateCode(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
-
-    @Test
-    void shouldTransformNetValue() {
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(bindingResultMock.hasErrors()).thenReturn(false);
-        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        ResponseEntity<CallbackResponse> response =
-                underTest.ihtNetValueLabel(callbackRequestMock,httpServletRequest);
-        verify(callbackResponseTransformerMock, times(1))
-                .transformIhNetValue(callbackRequestMock);
-        assertThat(response.getStatusCode(), is(HttpStatus.OK));
-    }
 }

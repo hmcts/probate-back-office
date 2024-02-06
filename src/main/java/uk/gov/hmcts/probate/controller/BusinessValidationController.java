@@ -137,7 +137,7 @@ public class BusinessValidationController {
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+            return ResponseEntity.ok(callbackResponseTransformer.transformIhNetValue(request));
         }
         return ResponseEntity.ok(response);
     }
@@ -213,14 +213,6 @@ public class BusinessValidationController {
                 response = callbackResponseTransformer.transformCase(callbackRequest);
             }
         }
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping(path = "/iht-net-value")
-    public ResponseEntity<CallbackResponse> ihtNetValueLabel(@RequestBody CallbackRequest callbackRequest,
-                                                                      HttpServletRequest request) {
-        logRequest(request.getRequestURI(), callbackRequest);
-        CallbackResponse response = callbackResponseTransformer.transformIhNetValue(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
