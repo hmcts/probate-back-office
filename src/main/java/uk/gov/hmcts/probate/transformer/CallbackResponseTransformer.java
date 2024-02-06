@@ -479,8 +479,14 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
                 .getData().getUniqueProbateCodeId() != null ? callbackRequest.getCaseDetails()
-                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null)
-                .ihtNetValue(getNetValueLabel(callbackRequest.getCaseDetails().getData()));
+                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformIhNetValue(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.ihtNetValue(getNetValueLabel(callbackRequest.getCaseDetails().getData()));
         return transformResponse(responseCaseDataBuilder.build());
     }
 

@@ -216,6 +216,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/iht-net-value")
+    public ResponseEntity<CallbackResponse> ihtNetValueLabel(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformIhNetValue(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/sols-validate-probate", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> solsValidateProbate(
         @Validated({ApplicationProbateGroup.class}) @RequestBody CallbackRequest callbackRequest,
