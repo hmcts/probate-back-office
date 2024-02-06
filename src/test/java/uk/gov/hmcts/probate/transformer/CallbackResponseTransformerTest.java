@@ -2582,18 +2582,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformNetValue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .ihtFormNetValue(IHT_NET)
-                .ihtNetValue(null);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transformIhNetValue(callbackRequestMock);
-        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
-    }
-
-    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

@@ -137,7 +137,7 @@ public class BusinessValidationController {
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transformIhNetValue(request));
+            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
         }
         return ResponseEntity.ok(response);
     }
