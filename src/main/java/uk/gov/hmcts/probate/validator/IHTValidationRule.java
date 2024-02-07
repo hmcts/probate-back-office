@@ -40,6 +40,12 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                         }
                     }
 
+                    if (iht.getIhtFormNetValue() != null && iht.getGrossValue() != null) {
+                        if (iht.getIhtFormNetValue().compareTo(iht.getGrossValue()) > 0) {
+                            codes.add(IHT_PROBATE_NET_GREATER_THAN_GROSS);
+                        }
+                    }
+
                     return codes;
                 })
                 .map(List::stream)
