@@ -4046,6 +4046,32 @@ class CallbackResponseTransformerTest {
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
     }
 
+    @Test
+    void shouldTransformForFormNetValue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormNetValue(IHT_NET)
+                .ihtFormId("IHT400")
+                .ihtNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void shouldTransformNoForFormNetValue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT400")
+                .ihtNetValue(IHT_NET)
+                .ihtFormNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
