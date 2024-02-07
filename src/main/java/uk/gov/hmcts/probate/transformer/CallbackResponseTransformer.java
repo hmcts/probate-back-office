@@ -1011,6 +1011,7 @@ public class CallbackResponseTransformer {
             .evidenceHandled(caseData.getEvidenceHandled())
 
             .paperForm(caseData.getPaperForm())
+            .channelChoice(caseData.getChannelChoice())
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
