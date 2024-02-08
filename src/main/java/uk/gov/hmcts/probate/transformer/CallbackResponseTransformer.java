@@ -30,6 +30,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData.ResponseCase
 import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
@@ -129,6 +130,7 @@ public class CallbackResponseTransformer {
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
+    private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
 
@@ -480,6 +482,25 @@ public class CallbackResponseTransformer {
         responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
                 .getData().getUniqueProbateCodeId() != null ? callbackRequest.getCaseDetails()
                         .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformFormSelection(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
+                .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
+                .getData().getIhtFormId() !=null
+                && callbackRequest.getCaseDetails().getData().getIhtFormEstate()!= "IHT400") {
+            responseCaseDataBuilder.ihtFormId(null)
+                    .hmrcLetterId(null);
+        }else if(!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
+                .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
+                .getData().getIhtFormEstate() !=null
+                && callbackRequest.getCaseDetails().getData().getIhtFormId()!= "IHT400"){
+            responseCaseDataBuilder.ihtFormEstate(null)
+                    .hmrcLetterId(null);
+        }
         return transformResponse(responseCaseDataBuilder.build());
     }
 

@@ -46,6 +46,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -486,6 +487,8 @@ class CallbackResponseTransformerTest {
     private Iht400421Defaulter iht400421Defaulter;
     @Mock
     Document coversheetMock;
+    @Mock
+    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @BeforeEach
     public void setup() {
@@ -2580,6 +2583,39 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformUniqueProbateCode(callbackRequestMock);
         assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
     }
+
+    @Test
+    void shouldTransformFormSelection() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedDateOfDeath(DOD)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205")
+                .hmrcLetterId("No");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transformFormSelection(callbackRequestMock);
+        assertNull(callbackResponse.getData().getHmrcLetterId());
+        assertNull(callbackResponse.getData().getIhtFormEstate());
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfter() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedDateOfDeath(DOD)
+                .ihtFormEstate("IHT400421")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformFormSelection(callbackRequestMock);
+        assertNull(callbackResponse.getData().getHmrcLetterId());
+        assertNull(callbackResponse.getData().getIhtFormId());
+    }
+
 
     @Test
     void shouldTransformCaseForLetter() {
