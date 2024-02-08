@@ -30,10 +30,12 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
         return Optional.ofNullable(ccdData.getIht())
                 .map(iht -> {
                     List<String> codes = new ArrayList<>();
-                    if((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
+                    if ((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
                             || (iht.getNetValue() != null && !iht.getNetValue().toPlainString().matches(REGEX_PATTERN))
-                            || (iht.getIhtFormNetValue() != null && !iht.getIhtFormNetValue().toPlainString().matches(REGEX_PATTERN))
-                            || (iht.getIhtEstateGrossValue() != null && !iht.getIhtEstateGrossValue().toPlainString().matches(REGEX_PATTERN))
+                            || (iht.getIhtFormNetValue() != null && !iht.getIhtFormNetValue().toPlainString()
+                            .matches(REGEX_PATTERN))
+                            || (iht.getIhtEstateGrossValue() != null && !iht.getIhtEstateGrossValue().toPlainString()
+                            .matches(REGEX_PATTERN))
                             || (iht.getIhtEstateNetValue() != null && !iht.getIhtEstateNetValue()
                             .toPlainString().matches(REGEX_PATTERN))) {
                         codes.add(IHT_VALUE_VALIDATION);
