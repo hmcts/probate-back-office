@@ -4072,6 +4072,20 @@ class CallbackResponseTransformerTest {
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
+    @Test
+    void shouldTransformNoFormNetValueDifferentFormId() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT205")
+                .ihtFormEstate("IHT400")
+                .ihtNetValue(IHT_NET)
+                .ihtFormNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
