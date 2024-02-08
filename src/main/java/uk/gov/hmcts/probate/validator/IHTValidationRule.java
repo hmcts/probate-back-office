@@ -20,14 +20,24 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
 
     public static final String IHT_PROBATE_NET_GREATER_THAN_GROSS = "ihtProbateNetGreaterThanGross";
     public static final String IHT_ESTATE_NET_GREATER_THAN_GROSS = "ihtEstateNetGreaterThanGross";
+    public static final String IHT_VALUE_VALIDATION = "ihtValueValidation";
 
     private final BusinessValidationMessageService businessValidationMessageService;
+    private static final String REGEX_PATTERN = "^[1-9]\\d*$";
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
         return Optional.ofNullable(ccdData.getIht())
                 .map(iht -> {
                     List<String> codes = new ArrayList<>();
+                    if((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
+                            || (iht.getNetValue() != null && !iht.getNetValue().toPlainString().matches(REGEX_PATTERN))
+                            || (iht.getIhtFormNetValue() != null && !iht.getIhtFormNetValue().toPlainString().matches(REGEX_PATTERN))
+                            || (iht.getIhtEstateGrossValue() != null && !iht.getIhtEstateGrossValue().toPlainString().matches(REGEX_PATTERN))
+                            || (iht.getIhtEstateNetValue() != null && !iht.getIhtEstateNetValue()
+                            .toPlainString().matches(REGEX_PATTERN))) {
+                        codes.add(IHT_VALUE_VALIDATION);
+                    }
                     if (iht.getNetValue() != null && iht.getGrossValue() != null) {
                         if (iht.getNetValue().compareTo(iht.getGrossValue()) > 0) {
                             codes.add(IHT_PROBATE_NET_GREATER_THAN_GROSS);

@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.validator;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -11,6 +13,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
@@ -23,6 +26,7 @@ import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_VALUE_VALIDATION;
 
 class IHTValidationRuleTest {
 
@@ -160,6 +164,44 @@ class IHTValidationRuleTest {
         verify(businessValidationMessageService, times(1))
                 .generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS);
         assertTrue(validationError.contains(businessValidationError));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidValue")
+    void testInvalidGrossAndNetValue(final BigDecimal invalidValue) {
+        when(inheritanceTaxMock.getGrossValue()).thenReturn(invalidValue);
+        when(inheritanceTaxMock.getNetValue()).thenReturn(invalidValue);
+        when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(invalidValue);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_VALUE_VALIDATION))
+                .thenReturn(businessValidationError);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertThat(validationError.isEmpty(), is(false));
+        verify(businessValidationMessageService, times(1))
+                .generateError(BUSINESS_ERROR, IHT_VALUE_VALIDATION);
+        assertTrue(validationError.contains(businessValidationError));
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidValue")
+    void testInvalidEstateGrossAndNetValue(final BigDecimal invalidValue) {
+        when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(invalidValue);
+        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(invalidValue);
+        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_VALUE_VALIDATION))
+                .thenReturn(businessValidationError);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        assertThat(validationError.isEmpty(), is(false));
+        verify(businessValidationMessageService, times(1))
+                .generateError(BUSINESS_ERROR, IHT_VALUE_VALIDATION);
+        assertTrue(validationError.contains(businessValidationError));
+    }
+
+    private static Stream<BigDecimal> invalidValue() {
+        return Stream.of(BigDecimal.valueOf(123.09), BigDecimal.valueOf(-123),
+                BigDecimal.valueOf(123,123), BigDecimal.valueOf(123.));
     }
 
 }
