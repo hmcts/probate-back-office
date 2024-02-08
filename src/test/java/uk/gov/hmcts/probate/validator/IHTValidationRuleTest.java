@@ -30,8 +30,8 @@ import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_VALUE_VALIDAT
 
 class IHTValidationRuleTest {
 
-    private static final BigDecimal HIGHER_VALUE = BigDecimal.valueOf(20f);
-    private static final BigDecimal LOWER_VALUE = BigDecimal.valueOf(1f);
+    private static final BigDecimal HIGHER_VALUE = BigDecimal.valueOf(20);
+    private static final BigDecimal LOWER_VALUE = BigDecimal.valueOf(10);
 
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
