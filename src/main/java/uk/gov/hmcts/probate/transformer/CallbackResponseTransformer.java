@@ -490,14 +490,14 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
                 .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
-                .getData().getIhtFormId() !=null
-                && callbackRequest.getCaseDetails().getData().getIhtFormEstate()!= "IHT400") {
+                .getData().getIhtFormId() != null
+                && callbackRequest.getCaseDetails().getData().getIhtFormEstate() != "IHT400") {
             responseCaseDataBuilder.ihtFormId(null)
                     .hmrcLetterId(null);
-        }else if(!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
+        } else if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
                 .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
-                .getData().getIhtFormEstate() !=null
-                && callbackRequest.getCaseDetails().getData().getIhtFormId()!= "IHT400"){
+                .getData().getIhtFormEstate() != null
+                && callbackRequest.getCaseDetails().getData().getIhtFormId() != "IHT400") {
             responseCaseDataBuilder.ihtFormEstate(null)
                     .hmrcLetterId(null);
         }
