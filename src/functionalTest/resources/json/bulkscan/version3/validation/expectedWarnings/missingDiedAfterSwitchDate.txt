@@ -1,0 +1,1 @@
+Did the deceased die on or after 1 January 2022? (deceasedDiedOnAfterSwitchDate) is mandatory.

@@ -79,7 +79,7 @@ class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     void shouldReturnNullWhenIHT400421PreEEDod() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .deceasedDateOfDeath(PRE_EE_DECEASED_DATE_OF_DEATH)
-            .ihtFormEstate("IHT400421")
+            .iht400421Completed("true")
             .build();
         assertNull(ocrFieldIhtFormEstateValuesCompletedMapper.toIhtFormEstateValuesCompleted(ocrFields));
     }
@@ -91,4 +91,12 @@ class OCRFieldIhtFormEstateValuesCompletedMapperTest {
         assertNull(ocrFieldIhtFormEstateValuesCompletedMapper.toIhtFormEstateValuesCompleted(ocrFields));
     }
 
+    @Test
+    void shouldReturnTrueWhenIHT400PostEEDod() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+                .iht400Completed("true")
+                .build();
+        assertTrue(ocrFieldIhtFormEstateValuesCompletedMapper.toIhtFormEstateValuesCompleted(ocrFields));
+    }
 }

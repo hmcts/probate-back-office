@@ -103,8 +103,7 @@ class DataExtractControllerIT {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(bodyText)
                 .accept(MediaType.APPLICATION_JSON))
-            .andExpect(status().isAccepted())
-            .andExpect(content().string(PERFORM_IM_DATA_EXTRACT_FINISHED));
+            .andExpect(status().isOk());
     }
 
     @Test

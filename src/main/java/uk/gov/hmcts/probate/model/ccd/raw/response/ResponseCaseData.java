@@ -380,4 +380,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final ChangeOfRepresentative changeOfRepresentative;
     private final RemovedRepresentative removedRepresentative;
     private final ChangeOrganisationRequest changeOrganisationRequestField;
+    private final String hmrcLetterId;
+    private final String uniqueProbateCodeId;
 }

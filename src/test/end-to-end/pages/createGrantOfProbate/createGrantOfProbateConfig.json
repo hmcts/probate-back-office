@@ -178,6 +178,7 @@
     "EE_ihtFormEstateValueCompletedNo": "No",
     "EE_ihtFormEstateValueCompletedYes": "Yes",
     "EE_ihtFormEstate207": "IHT207",
+    "EE_ihtFormEstate400": "IHT400",
     "EE_ihtEstateGrossValue" : "500",
     "EE_ihtEstateNetValue" : "400"
 }

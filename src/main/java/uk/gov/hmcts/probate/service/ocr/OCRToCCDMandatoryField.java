@@ -69,7 +69,6 @@ public class OCRToCCDMandatoryField {
         } else {
             pa1PCitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         }
-
         pa1PCommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         return warnings;
     }
@@ -77,21 +76,20 @@ public class OCRToCCDMandatoryField {
     private ArrayList<String> getWarningsForPA1ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm = isSolicitorForm(ocrFieldValues);
-        
+
         if (isSolicitorForm) {
             pa1ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         } else {
             pa1ACitizenMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
-            pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         }
-
+        pa1ACommonMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         return warnings;
     }
 
     private ArrayList<String> getWarningsForPA8ACase(Map<String, String> ocrFieldValues) {
         ArrayList<String> warnings = new ArrayList<>();
         boolean isSolicitorForm =  BooleanUtils.toBoolean(ocrFieldValues.get(LEGAL_REPRESENTATIVE));
-    
+
         if (isSolicitorForm) {
             pa8ASolicitorMandatoryFieldsValidator.addWarnings(ocrFieldValues, warnings);
         } else {
@@ -104,7 +102,6 @@ public class OCRToCCDMandatoryField {
         if (ocrFieldValues.containsKey(SOLICTOR_KEY_IS_APPLYING)) {
             return BooleanUtils.toBoolean(ocrFieldValues.get(SOLICTOR_KEY_IS_APPLYING));
         }
-
         return false;
     }
 

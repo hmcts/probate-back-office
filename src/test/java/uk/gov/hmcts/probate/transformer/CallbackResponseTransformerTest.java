@@ -297,6 +297,7 @@ class CallbackResponseTransformerTest {
     private static final String ORG_ID = "OrgID";
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
+    private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
         new CollectionMember<>(null,
@@ -2567,6 +2568,17 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transferToState(callbackRequestMock);
         assertEquals(CASE_MATCHING_ISSUE_GRANT, callbackResponse.getData().getState());
+    }
+
+    @Test
+    void shouldTransformUniqueCode() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .uniqueProbateCodeId(uniqueCode);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformUniqueProbateCode(callbackRequestMock);
+        assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
     }
 
     @Test

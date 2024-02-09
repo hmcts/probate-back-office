@@ -66,6 +66,10 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     private OCRFieldPaymentMethodMapper ocrFieldPaymentMethodMapper;
     @Autowired
     private ApplicationTypeMapper applicationTypeMapper;
+    @Autowired
+    private OCRFieldIhtGrossValueMapper ocrFieldIhtGrossValueMapper;
+    @Autowired
+    private OCRFieldIhtNetValueMapper ocrFieldIhtNetValueMapper;
 
     @Test
     void testSetSolsPaymentMethodIsSolicitorGrantOfProbate() {
@@ -185,6 +189,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             .ihtFormCompletedOnline(FALSE)
             .ihtReferenceNumber("REF123456789")
             .ihtFormId("IHT205")
+            .formVersion("1")
             .build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -198,6 +203,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
             .ihtFormCompletedOnline(TRUE)
             .ihtReferenceNumber("REF123456789")
             .ihtFormId("IHT205")
+            .formVersion("1")
             .build();
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
@@ -594,6 +600,16 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         @Bean
         public ApplicationTypeMapper applicationTypeMapper() {
             return new ApplicationTypeMapper();
+        }
+
+        @Bean
+        public OCRFieldIhtGrossValueMapper ocrFieldIhtGrossValueMapper() {
+            return new OCRFieldIhtGrossValueMapper();
+        }
+
+        @Bean
+        public OCRFieldIhtNetValueMapper ocrFieldIhtNetValueMapper() {
+            return new OCRFieldIhtNetValueMapper();
         }
 
         @Bean

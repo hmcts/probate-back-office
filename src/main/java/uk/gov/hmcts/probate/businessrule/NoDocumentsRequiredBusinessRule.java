@@ -22,6 +22,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.WI
 public class NoDocumentsRequiredBusinessRule implements BusinessRule {
 
     public static final String IHT400421 = "IHT400421";
+    public static final String IHT400 = "IHT400";
     public static final String SPOUSE_OR_CIVIL = "SpouseOrCivil";
     public static final String CHILD = "Child";
     public static final String CHILD_ADOPTED = "ChildAdopted";
@@ -39,7 +40,10 @@ public class NoDocumentsRequiredBusinessRule implements BusinessRule {
 
         boolean isIntestacyApplication = GRANT_TYPE_INTESTACY.equals(caseData.getSolsWillType());
 
-        boolean iht400421 = IHT400421.equals(caseData.getIhtFormId()) || IHT400421.equals(caseData.getIhtFormEstate());
+        boolean iht400or421 = IHT400421.equals(caseData.getIhtFormId())
+            || IHT400421.equals(caseData.getIhtFormEstate())
+            || IHT400.equals(caseData.getIhtFormId())
+            || IHT400.equals(caseData.getIhtFormEstate());
 
         boolean ihtFormEstateValuesNotCompleted = NO.equals(caseData.getIhtFormEstateValuesCompleted());
 
@@ -59,7 +63,7 @@ public class NoDocumentsRequiredBusinessRule implements BusinessRule {
         boolean legalStatementHasBeenUploaded = null != caseData.getSolsLegalStatementUpload();
 
         return isIntestacyApplication
-            && (iht400421 || exceptedEstate)
+            && (iht400or421 || exceptedEstate)
             && ((applicantIsSpouseOrCivilPartnerOfDeceased && deceasedIsMarriedOrCivilPartner)
                 || (applicantIsChildOrAdoptedChildOfDeceased && deceasedHadNoOtherIssue && deceasedNotMarried))
             && legalStatementHasBeenUploaded;

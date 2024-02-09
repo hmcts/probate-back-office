@@ -49,7 +49,6 @@
     { "name": "deceasedMiddleNames", "value": "Phillip" },
     { "name": "deceasedSurname", "value": "Smith" },
     { "name": "deceasedDateOfDeath", "value": "02022019" },
-    { "name": "deceasedDateOfBirth", "value": "12031950" },
     { "name": "deceasedAnyOtherNames", "value": "False" },
     { "name": "deceasedAddressLine1", "value": "3 Roebuck Close" },
     { "name": "deceasedAddressLine2", "value": "Roebuck Street" },
