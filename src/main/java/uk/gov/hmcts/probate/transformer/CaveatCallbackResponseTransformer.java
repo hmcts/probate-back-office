@@ -186,6 +186,11 @@ public class CaveatCallbackResponseTransformer {
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(request.getCaseDetails());
+        if (!newMatches.isEmpty()) {
+            responseCaseDataBuilder.matches("Possible case matches");
+        } else {
+            responseCaseDataBuilder.matches("no matches found");
+        }
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -299,7 +304,8 @@ public class CaveatCallbackResponseTransformer {
             .applicationSubmittedBy(caveatData.getApplicationSubmittedBy())
             .removedRepresentative(caveatData.getRemovedRepresentative())
             .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
-            .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()));
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()))
+            .matches(caveatData.getMatches());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
