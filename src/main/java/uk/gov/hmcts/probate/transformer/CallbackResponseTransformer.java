@@ -488,7 +488,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformFormSelection(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), true);
         if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
                 .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
                 .getData().getIhtFormId() != null
