@@ -32,8 +32,10 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
         return Optional.ofNullable(ccdData.getIht())
                 .map(iht -> {
                     List<String> codes = new ArrayList<>();
+                    if (iht.getGrossValue() != null) {
                     log.info("Before gross Value {}", iht.getGrossValue());
                     log.info("Before gross Value String {}", iht.getGrossValue().toPlainString());
+                    }
                     if ((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
                             || (iht.getNetValue() != null && !iht.getNetValue().toPlainString().matches(REGEX_PATTERN))
                             || (iht.getIhtFormNetValue() != null && !iht.getIhtFormNetValue().toPlainString()
@@ -42,8 +44,10 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                             .matches(REGEX_PATTERN))
                             || (iht.getIhtEstateNetValue() != null && !iht.getIhtEstateNetValue()
                             .toPlainString().matches(REGEX_PATTERN))) {
-                        log.info("gross Value {}", iht.getGrossValue());
-                        log.info("gross Value String {}", iht.getGrossValue().toPlainString());
+                        if (iht.getGrossValue() != null) {
+                            log.info("gross Value {}", iht.getGrossValue());
+                            log.info("gross Value String {}", iht.getGrossValue().toPlainString());
+                        }
                         codes.add(IHT_VALUE_VALIDATION);
                     }
                     if (iht.getNetValue() != null && iht.getGrossValue() != null) {
