@@ -110,29 +110,29 @@ docmosis:
     blankLetter:
       templateName: FL-PRB-GNO-ENG-01040.docx
     welshDigitalGrant:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshIntestacyGrant:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshAdmonWillGrant:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshDigitalGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshIntestacyGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshAdmonWillGrantDraft:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshDigitalGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshIntestacyGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshAdmonWillGrantReissueDraft:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshDigitalGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshIntestacyGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
     welshAdmonWillGrantReissue:
-      templateName: FL-PRB-GRP-WEL-00229.doc
+      templateName: FL-PRB-GRP-WEL-00230.doc
 
 fee.api:
   url: http://localhost:4411
@@ -233,7 +233,7 @@ notifications:
   grantDelayedNotificationPeriodDays: 49
   grantDelayedNotificationReleaseDate: "2020-05-08"
   grantAwaitingDocumentationNotificationPeriodDays: 35
-  govNotifyApiKey: "probate_back_office_live_test-4809d6a8-a10b-405d-88eb-1fee9b3042e3-682b1c3b-647e-4a32-99b9-98a8b7c7feb7"
+  govNotifyApiKey: ${PROBATE_NOTIFY_KEY:dummykey}
   templates:
     email:
       english:

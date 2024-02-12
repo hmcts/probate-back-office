@@ -25,6 +25,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.MaritalStatus.Constants.WI
 class NoDocumentsRequiredBusinessRuleTest {
     public static final String GRANT_TYPE_INTESTACY = "NoWill";
     public static final String IHT400421 = "IHT400421";
+    public static final String IHT400 = "IHT400";
     public static final String SPOUSE_OR_CIVIL = "SpouseOrCivil";
     public static final String CHILD = "Child";
     public static final String CHILD_ADOPTED = "ChildAdopted";
@@ -211,6 +212,15 @@ class NoDocumentsRequiredBusinessRuleTest {
     @Test
     void shouldBeApplicableWhenAdoptedChildApplyingAndIHT400421DeceasedNeverMarried() {
         when(mockCaseData.getIhtFormId()).thenReturn(IHT400421);
+        when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
+        when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(NEVER_MARRIED_VALUE);
+        when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);
+        assertTrue(underTest.isApplicable(mockCaseData));
+    }
+
+    @Test
+    void shouldBeApplicableWhenAdoptedChildApplyingAndIHT400DeceasedNeverMarried() {
+        when(mockCaseData.getIhtFormId()).thenReturn(IHT400);
         when(mockCaseData.getSolsApplicantRelationshipToDeceased()).thenReturn(CHILD_ADOPTED);
         when(mockCaseData.getDeceasedMaritalStatus()).thenReturn(NEVER_MARRIED_VALUE);
         when(mockCaseData.getSolsApplicantSiblings()).thenReturn(NO);

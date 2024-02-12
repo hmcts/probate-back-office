@@ -114,22 +114,30 @@ public class TaskStateRenderer {
                                   LocalDate authDate, LocalDate submitDate, CaseDetails details) {
 
         final TaskState addSolState = getTaskState(currState, TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState addDeceasedState = getTaskState(currState, TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState addAppState = getTaskState(currState, TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState rvwState = getTaskState(currState, TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState paymentState = getPaymentTaskState(currState, TaskListState.TL_STATE_PAYMENT_ATTEMPTED);
         final TaskState sendDocsState = getTaskState(currState, TaskListState.TL_STATE_SEND_DOCUMENTS,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState authDocsState = getTaskState(currState, TaskListState.TL_STATE_AUTHENTICATE_DOCUMENTS,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState examineState = getTaskState(currState, TaskListState.TL_STATE_EXAMINE_APPLICATION,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
         final TaskState issueState = getTaskState(currState, TaskListState.TL_STATE_ISSUE_GRANT,
-                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments());
+                solSOTNeedToUpdate, details.getData().getEvidenceHandled(), details.getData().getAttachDocuments(),
+                details.getData().getHmrcLetterId());
 
         // the only time caseId will be null is when running unit tests!
         final String caseIdStr = caseId == null ? "" : caseId.toString();
@@ -205,12 +213,18 @@ public class TaskStateRenderer {
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
-                                   String solSOTNeedToUpdate, String evidenceHandled, String attachDocuments) {
+                                   String solSOTNeedToUpdate, String evidenceHandled, String attachDocuments,
+                                   String hmrcLetterId) {
         if (solSOTNeedToUpdate != null && solSOTNeedToUpdate.equals(YES)
                 && renderState.compareTo(TaskListState.TL_STATE_REVIEW_AND_SUBMIT) <= 0) {
             if (currState.compareTo(renderState) > 0) {
                 return TaskState.COMPLETED;
             }
+            return TaskState.IN_PROGRESS;
+        }
+
+        if (currState == TaskListState.TL_STATE_ADD_DECEASED_DETAILS
+                && renderState == TaskListState.TL_STATE_ADD_DECEASED_DETAILS && NO.equals(hmrcLetterId)) {
             return TaskState.IN_PROGRESS;
         }
 

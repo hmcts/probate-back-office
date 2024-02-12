@@ -39,9 +39,6 @@ public interface ExceptionRecordCaveatMapper {
     @Mapping(target = "deceasedDateOfDeath", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
             + ".toDefaultDateFieldMember(new String(\"deceasedDateOfDeath\"), ocrFields.getDeceasedDateOfDeath()))",
             qualifiedBy = {ToDefaultLocalDate.class})
-    @Mapping(target = "deceasedDateOfBirth", expression = "java(OCRFieldDefaultLocalDateFieldMapper"
-            + ".toDefaultDateFieldMember(new String(\"deceasedDateOfBirth\"), ocrFields.getDeceasedDateOfBirth()))",
-            qualifiedBy = {ToDefaultLocalDate.class})
     @Mapping(target = "deceasedAnyOtherNames", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
             + "\"deceasedAnyOtherNames\"), ocrFields.getDeceasedAnyOtherNames()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "solsSolicitorRepresentativeName", source = "solsSolicitorRepresentativeName")

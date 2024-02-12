@@ -82,7 +82,7 @@ public class DataExtractTests extends IntegrationTestBase {
             .body(bodyText)
             .when()
             .post(RESEND_IRONMOUNTAIN_URL)
-            .then().assertThat().statusCode(202);
+            .then().assertThat().statusCode(200);
     }
 
     @Test

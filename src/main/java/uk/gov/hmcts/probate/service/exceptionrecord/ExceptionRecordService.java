@@ -23,6 +23,7 @@ import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordCaveatMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ExceptionRecordGrantOfRepresentationMapper;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.ScannedDocumentMapper;
+import uk.gov.hmcts.probate.service.exceptionrecord.utils.ExceptionRecordCaseDataValidator;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
@@ -118,6 +119,8 @@ public class ExceptionRecordService {
                     erRequest.getExceptionRecordId());
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
+
+            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());

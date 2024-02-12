@@ -54,6 +54,10 @@ withNightlyPipeline("nodejs", product, component) {
     afterAlways('crossBrowserTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
+    after('fortify-scan') {git
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
+
+    }
 
     // enableSlackNotifications('#probate-jenkins')  // can be turned back on once the overnight functionality is working fully
 }

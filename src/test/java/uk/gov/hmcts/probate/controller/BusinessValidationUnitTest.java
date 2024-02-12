@@ -47,11 +47,13 @@ import uk.gov.hmcts.probate.validator.FurtherEvidenceForApplicationValidationRul
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 import uk.gov.hmcts.probate.validator.IHTValidationRule;
 import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
+import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
+import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
@@ -70,6 +72,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -165,6 +169,11 @@ class BusinessValidationUnitTest {
     @Mock
     private RegistrarDirectionService registrarDirectionServiceMock;
     @Mock
+    private UniqueCodeValidationRule uniqueCodeValidationRule;
+    @Mock
+    private NaValidationRule naValidationRule;
+
+    @Mock
     private CaseEscalatedService caseEscalatedService;
     private BusinessValidationController underTest;
 
@@ -194,6 +203,8 @@ class BusinessValidationUnitTest {
             ihtFourHundredDateValidationRule,
             ihtEstateValidationRule,
             ihtValidationRule,
+            uniqueCodeValidationRule,
+            naValidationRule,
             solicitorPostcodeValidationRule,
             caseworkersSolicitorPostcodeValidationRule,
             assignCaseAccessService,
@@ -213,6 +224,7 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(YES);
         when(stateChangeServiceMock.getChangedStateForGrantType(caseDataMock)).thenReturn(STATE_GRANT_TYPE_PROBATE);
         when(callbackResponseTransformerMock
             .transformForDeceasedDetails(callbackRequestMock, STATE_GRANT_TYPE_PROBATE))
@@ -220,6 +232,25 @@ class BusinessValidationUnitTest {
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
             bindingResultMock, httpServletRequest);
+
+        assertThat(response.getBody(), is(callbackResponseMock));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(true));
+    }
+
+    @Test
+    void shouldValidateWithNoErrorsWithNoHmrcCode() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(callbackRequestMock.getCaseDetails())
+                .thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(NO);
+        when(callbackResponseTransformerMock.transformCase(callbackRequestMock)).thenReturn(callbackResponseMock);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
 
         assertThat(response.getBody(), is(callbackResponseMock));
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -254,6 +285,7 @@ class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(callbackRequestMock.getCaseDetails().getData().getHmrcLetterId()).thenReturn(YES);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
             .thenReturn(callbackResponseMock);
         Optional<String> changedState = Optional.of("changedState");
@@ -419,9 +451,30 @@ class BusinessValidationUnitTest {
         when(callbackResponseMock.getErrors())
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(YES);
 
         ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
             bindingResultMock, httpServletRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getErrors().isEmpty(), is(false));
+    }
+
+    @Test
+    void shouldValidateHmrcNoWithBusinessErrors() {
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, validationRules))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getErrors())
+                .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getHmrcLetterId()).thenReturn(NO);
+
+        ResponseEntity<CallbackResponse> response = underTest.solsValidate(callbackRequestMock,
+                bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getErrors().isEmpty(), is(false));
@@ -728,6 +781,7 @@ class BusinessValidationUnitTest {
             underTest.validateIhtEstateData(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(ihtEstateValidationRule, times(1)).validate(caseDetailsMock);
+        verify(naValidationRule, times(1)).validate(caseDetailsMock);
         verify(callbackResponseTransformerMock).transform(callbackRequestMock);
     }
 
@@ -903,6 +957,18 @@ class BusinessValidationUnitTest {
                 underTest.changeCaseState(callbackRequestMock,httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
                 .transferToState(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformUniqueCode() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateUniqueProbateCode(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transformUniqueProbateCode(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

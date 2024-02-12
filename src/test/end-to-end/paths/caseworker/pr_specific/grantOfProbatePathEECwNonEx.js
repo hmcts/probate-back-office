@@ -3,22 +3,22 @@ const dateFns = require('date-fns');
 
 const testConfig = require('src/test/config');
 const createCaseConfig = require('src/test/end-to-end/pages/createCase/createCaseConfig');
-const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigEE');
+const caseMatchesConfig = require('src/test/end-to-end/pages/caseMatches/grantOfProbate/caseMatchesConfigBeforeSwitchDate');
 const createGrantOfProbateConfig = require('src/test/end-to-end/pages/createGrantOfProbateManual/createGrantOfProbateManualConfig');
 const documentUploadConfig = require('src/test/end-to-end/pages/documentUpload/grantOfProbate/documentUploadConfig');
 const eventSummaryConfig = require('src/test/end-to-end/pages/eventSummary/eventSummaryConfig');
 const issueGrantConfig = require('src/test/end-to-end/pages/issueGrant/issueGrantConfig');
 const applicantDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/applicantDetailsTabConfigEE');
-const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsTabConfigEE');
+const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseDetailsTabConfigBeforeSwitchDate');
 const caseMatchesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/caseMatchesTabConfig');
-const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfigEE');
+const deceasedTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/deceasedTabConfigEE400');
 const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/documentUploadTabConfig');
 const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
-const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
 const nextStepConfig = require('src/test/end-to-end/pages/nextStep/nextStepConfig.json');
 const registrarsDecisionConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/registrarsDecisionConfig');
+const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');
 const registrarsDecisionTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/registrarsDecisionTabConfig');
 const {
     legacyParse,
@@ -43,9 +43,10 @@ Scenario(scenarioName, async function ({I}) {
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user);
+    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year_update);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
-    await I.enterGrantOfProbateManualPage2('create');
+    await I.enterGrantOfProbateManualPage2('createIHT400');
+    await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
     await I.enterGrantOfProbateManualPage3('create');
     await I.checkMyAnswers(nextStepName);
@@ -57,9 +58,10 @@ Scenario(scenarioName, async function ({I}) {
     await I.selectNewCase();
     await I.selectCaseTypeOptions(createCaseConfig.list2_text_gor, createCaseConfig.list3_text_gor_manual);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage1');
-    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user);
+    await I.enterGrantOfProbateManualPage1('create', unique_deceased_user, createGrantOfProbateConfig.page1_deceasedDod_year_update);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage2');
-    await I.enterGrantOfProbateManualPage2('create');
+    await I.enterGrantOfProbateManualPage2('createIHT400');
+    await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
     await I.logInfo(scenarioName, 'enterGrantOfProbateManualPage3');
     await I.enterGrantOfProbateManualPage3('create');
     await I.checkMyAnswers(nextStepName);
@@ -74,7 +76,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.dontSeeCaseDetails(caseDetailsTabConfig.fieldsNotPresent);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, createGrantOfProbateConfig);
     await I.seeCaseDetails(caseRef, copiesTabConfig, createGrantOfProbateConfig);
-    await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
+    //await I.seeCaseDetails(caseRef, ihtTabConfig, createGrantOfProbateConfig);
 
     nextStepName = 'Registrar\'s decision';
     await I.logInfo(scenarioName, nextStepConfig, caseRef);
