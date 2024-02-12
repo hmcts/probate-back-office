@@ -138,7 +138,9 @@ public class OCRFieldTestUtils {
 
     public List<OCRField> addAllMandatoryGORCitizenFields(int version) {
         List<OCRField> ocrFields = new ArrayList<>();
-        if (2 == version) {
+        if (3 == version) {
+            addAllV3Data(ocrFields);
+        } else if (2 == version) {
             ocrFields.addAll(addIHTMandatoryFieldsV2());
             addAllV2Data(ocrFields);
         } else {
@@ -404,6 +406,44 @@ public class OCRFieldTestUtils {
         ocrFields.add(ihtEstateNetValue);
         ocrFields.add(ihtEstateNetQualifyingValue);
 
+    }
+
+    public void addAllV3Data(List<OCRField> ocrFields) {
+        OCRField iht400completed = OCRField.builder()
+                .name("iht400completed")
+                .value("true")
+                .description("IHT400").build();
+        OCRField formVersion = OCRField.builder()
+                .name("formVersion")
+                .value("3")
+                .description("Form version").build();
+        OCRField deceasedDiedOnAfterSwitchDate = OCRField.builder()
+                .name("deceasedDiedOnAfterSwitchDate")
+                .value("true")
+                .description("deceasedDiedOnAfterSwitchDate").build();
+        OCRField probateGrossValueiht400 = OCRField.builder()
+                .name("probateGrossValueIht400")
+                .value("1,000,000")
+                .description("The probate values from the HMRC letter Gross value").build();
+        OCRField probateNetValueiht400 = OCRField.builder()
+                .name("probateNetValueIht400")
+                .value("900,000")
+                .description("The probate values from the HMRC letter net value").build();
+        OCRField iht400process = OCRField.builder()
+                .name("iht400process")
+                .value("true")
+                .description("Have you received a letter from HMRC with your unique probate code?").build();
+        OCRField ihtcode = OCRField.builder()
+                .name("ihtCode")
+                .value("CTS 0405231104 3tpp s8e9")
+                .description("Free text box for HMRC code").build();
+        ocrFields.add(iht400completed);
+        ocrFields.add(formVersion);
+        ocrFields.add(deceasedDiedOnAfterSwitchDate);
+        ocrFields.add(probateGrossValueiht400);
+        ocrFields.add(probateNetValueiht400);
+        ocrFields.add(iht400process);
+        ocrFields.add(ihtcode);
     }
 
     public void removeOCRField(List<OCRField> ocrFields, String fieldNameToRemove) {

@@ -26,6 +26,7 @@ import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.fee.FeeService;
 
 import java.math.BigDecimal;
+import java.net.SocketTimeoutException;
 
 import static org.mockito.Mockito.when;
 
@@ -131,7 +132,7 @@ public class FeesRegisterConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "createApplicationFeeFragmentSA")
-    public void verifyApplicationFeeServicePact() throws JSONException {
+    public void verifyApplicationFeeServicePact() throws JSONException, SocketTimeoutException {
 
         FeeResponse result = feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
         Assert.assertTrue(new BigDecimal("200").equals(result.getFeeAmount()));
@@ -140,7 +141,7 @@ public class FeesRegisterConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "createCopiesFeeFragment")
-    public void verifyCopiesFeeServicePact() throws JSONException {
+    public void verifyCopiesFeeServicePact() throws JSONException, SocketTimeoutException {
         FeeResponse result = feeService.getCopiesFeeResponse(3L);
         Assert.assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
 
@@ -148,7 +149,7 @@ public class FeesRegisterConsumerTest {
 
     @Test
     @PactTestFor(pactMethod = "createCopiesNoFeeFragment")
-    public void verifyCopiesNoFeeServicePact() throws JSONException {
+    public void verifyCopiesNoFeeServicePact() throws JSONException, SocketTimeoutException {
         FeeResponse result = feeService.getCopiesFeeResponse(0L);
         Assert.assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
     }

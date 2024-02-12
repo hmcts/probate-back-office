@@ -35,8 +35,10 @@ Scenario(scenarioName, async function ({I}) {
         await I.logInfo(scenarioName, 'Deceased details');
         await I.caseProgressDeceasedDetails(caseProgressConfig, unique_deceased_user);
         await I.caseProgressDeceasedDetails2(caseProgressConfig, unique_deceased_user);
+        await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
+        await I.provideIhtValues(caseProgressConfig.IHTGross, caseProgressConfig.IHTNet);
         await I.caseProgressClickElementsAndContinue([{css: '#solsWillType-WillLeft'}]);
-        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_No'}, {css: '#appointExecNo_No'}]);
+        await I.caseProgressClickElementsAndContinue([{css: '#willDispose_Yes'}, {css: '#englishWill_Yes'}, {css: '#appointExec_Yes'}]);
         await I.caseProgressStandardDeceasedDetailsCheck(unique_deceased_user);
         await I.caseProgressCheckCaseProgressTab({
             numCompleted: 2,

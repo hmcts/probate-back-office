@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
@@ -21,8 +20,6 @@ class OCRFieldIhtFormCompletedOnlineMapperTest {
 
     @Mock
     ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
-    @Spy
-    OCRFieldYesOrNoMapper ocrFieldYesOrNoMapper;
 
     @InjectMocks
     OCRFieldIhtFormCompletedOnlineMapper ocrFieldIhtFormCompletedOnlineMapper
@@ -63,6 +60,7 @@ class OCRFieldIhtFormCompletedOnlineMapperTest {
     void shouldReturnUseYesNoMapperForExistingFormFalse() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline("false")
+            .formVersion("1")
             .build();
         Boolean response = ocrFieldIhtFormCompletedOnlineMapper.ihtFormCompletedOnline(ocrFields);
         assertFalse(response);
@@ -72,8 +70,18 @@ class OCRFieldIhtFormCompletedOnlineMapperTest {
     void shouldReturnUseYesNoMapperForExistingFormTrue() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline("true")
+            .formVersion("1")
             .build();
         Boolean response = ocrFieldIhtFormCompletedOnlineMapper.ihtFormCompletedOnline(ocrFields);
         assertTrue(response);
+    }
+
+    @Test
+    void shouldReturnNullVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("3")
+                .build();
+        Boolean response = ocrFieldIhtFormCompletedOnlineMapper.ihtFormCompletedOnline(ocrFields);
+        assertNull(response);
     }
 }

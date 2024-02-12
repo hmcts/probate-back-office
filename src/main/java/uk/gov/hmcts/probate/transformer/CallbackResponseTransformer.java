@@ -474,6 +474,15 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse transformUniqueProbateCode(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
+                .getData().getUniqueProbateCodeId() != null ? callbackRequest.getCaseDetails()
+                        .getData().getUniqueProbateCodeId().replaceAll("\\s+", "") : null);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                                           Document sentEmail, Document coversheet, String userId) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
@@ -921,9 +930,7 @@ public class CallbackResponseTransformer {
             .boDeceasedTitle(caseData.getBoDeceasedTitle())
             .boDeceasedHonours(caseData.getBoDeceasedHonours())
 
-            .ihtFormCompletedOnline(
-                caseData.getIhtFormCompletedOnline() == null && caseData.getIhtFormId() != null ? NO :
-                    caseData.getIhtFormCompletedOnline())
+            .ihtFormCompletedOnline(caseData.getIhtFormCompletedOnline())
 
             .boWillMessage(caseData.getBoWillMessage())
             .boExecutorLimitation(caseData.getBoExecutorLimitation())
@@ -1110,6 +1117,8 @@ public class CallbackResponseTransformer {
             .documentsReceivedNotificationSent(caseData.getDocumentsReceivedNotificationSent())
             .serviceRequestReference(caseData.getServiceRequestReference())
             .paymentTaken(caseData.getPaymentTaken())
+            .hmrcLetterId(caseData.getHmrcLetterId())
+            .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {

@@ -1,0 +1,2 @@
+Box A (gross value) (ihtGrossValue205) is mandatory.
+Box H (net value) (ihtNetValue205) is mandatory.
