@@ -186,6 +186,7 @@ class IHTValidationRuleTest {
     @ParameterizedTest
     @MethodSource("invalidValue")
     void testInvalidEstateGrossAndNetValue(final BigDecimal invalidValue) {
+        when(inheritanceTaxMock.getGrossValue()).thenReturn(invalidValue);
         when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(invalidValue);
         when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(invalidValue);
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_VALUE_VALIDATION))
