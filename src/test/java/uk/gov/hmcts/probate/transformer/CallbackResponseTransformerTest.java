@@ -2601,6 +2601,22 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformFormSelectionFormEstate400() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedDateOfDeath(DOD)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transformFormSelection(callbackRequestMock);
+        assertNotNull(callbackResponse.getData().getHmrcLetterId());
+        assertNotNull(callbackResponse.getData().getIhtFormEstate());
+    }
+
+    @Test
     void shouldTransformFormSelectionForDiedAfter() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .deceasedDateOfDeath(DOD)
@@ -2614,6 +2630,22 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformFormSelection(callbackRequestMock);
         assertNull(callbackResponse.getData().getHmrcLetterId());
         assertNull(callbackResponse.getData().getIhtFormId());
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfterFormEstate400() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedDateOfDeath(DOD)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformFormSelection(callbackRequestMock);
+        assertNotNull(callbackResponse.getData().getHmrcLetterId());
+        assertNotNull(callbackResponse.getData().getIhtFormId());
     }
 
 
