@@ -6,6 +6,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
@@ -24,6 +26,8 @@ public class CaseDataTransformer {
     private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
     private final EvidenceHandledTransformer evidenceHandledTransformer;
     private final AttachDocumentsTransformer attachDocumentsTransformer;
+    private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private static final String IHT400 = "IHT400";
 
     public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -109,4 +113,17 @@ public class CaseDataTransformer {
     public void transformCaseDataForDocsReceivedNotificationSent(CallbackRequest callbackRequest) {
         attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
     }
+
+    public void transformFormCaseData(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
+                && caseData.getIhtFormId() != null && !IHT400.equals(caseData.getIhtFormEstate())) {
+            CaseData.builder().ihtFormId(null)
+                    .hmrcLetterId(null).build();
+        } else if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
+                && caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
+            CaseData.builder().ihtFormEstate(null).hmrcLetterId(null).build();
+        }
+    }
+
 }

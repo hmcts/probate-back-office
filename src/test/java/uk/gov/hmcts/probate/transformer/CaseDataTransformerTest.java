@@ -5,15 +5,22 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -38,6 +45,8 @@ class CaseDataTransformerTest {
     private CaseDetails caseDetailsMock;
     @Mock
     private CaseData caseDataMock;
+    @Mock
+    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     @InjectMocks
     private CaseDataTransformer caseDataTransformer;
@@ -153,5 +162,56 @@ class CaseDataTransformerTest {
     void shouldTransformDocsReceivedNotificationSent() {
         caseDataTransformer.transformCaseDataForDocsReceivedNotificationSent(callbackRequestMock);
         verify(attachDocumentsTransformer).updateDocsReceivedNotificationSent(caseDataMock);
+    }
+
+    @Test
+    void shouldTransformFormSelection() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT205")
+                .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformFormSelectionFormEstate400() {
+        caseDataMock = CaseData.builder().ihtFormEstate("IHT400")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfter() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400421")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfterFormEstate400() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
     }
 }
