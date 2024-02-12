@@ -116,6 +116,7 @@ public class CallbackResponseTransformer {
     private static final String SOL_AS_EXEC_ID = "solicitor";
     private static final String PBA_PAYMENT_METHOD = "pba";
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
+    private static final String IHT400 = "IHT400";
 
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
@@ -491,13 +492,13 @@ public class CallbackResponseTransformer {
         if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
                 .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
                 .getData().getIhtFormId() != null
-                && callbackRequest.getCaseDetails().getData().getIhtFormEstate() != "IHT400") {
+                && !IHT400.equals(callbackRequest.getCaseDetails().getData().getIhtFormEstate())) {
             responseCaseDataBuilder.ihtFormId(null)
                     .hmrcLetterId(null);
         } else if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(callbackRequest.getCaseDetails()
                 .getData().getDeceasedDateOfDeath()) && callbackRequest.getCaseDetails()
                 .getData().getIhtFormEstate() != null
-                && callbackRequest.getCaseDetails().getData().getIhtFormId() != "IHT400") {
+                && !IHT400.equals(callbackRequest.getCaseDetails().getData().getIhtFormId())) {
             responseCaseDataBuilder.ihtFormEstate(null)
                     .hmrcLetterId(null);
         }
@@ -505,7 +506,7 @@ public class CallbackResponseTransformer {
     }
 
     private BigDecimal getNetValueLabel(CaseData caseData) {
-        if (("IHT400".equals(caseData.getIhtFormId()) || "IHT400".equals(caseData.getIhtFormEstate()))
+        if ((IHT400.equals(caseData.getIhtFormId()) || IHT400.equals(caseData.getIhtFormEstate()))
                 && caseData.getIhtFormNetValue() != null && caseData.getIhtNetValue() == null) {
             return caseData.getIhtFormNetValue();
         } else {
