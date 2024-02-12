@@ -33,8 +33,8 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                 .map(iht -> {
                     List<String> codes = new ArrayList<>();
                     if (iht.getGrossValue() != null) {
-                    log.info("Before gross Value {}", iht.getGrossValue());
-                    log.info("Before gross Value String {}", iht.getGrossValue().toPlainString());
+                        log.info("Before gross Value {}", iht.getGrossValue());
+                        log.info("Before gross Value String {}", iht.getGrossValue().toPlainString());
                     }
                     if ((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
                             || (iht.getNetValue() != null && !iht.getNetValue().toPlainString().matches(REGEX_PATTERN))
