@@ -21,6 +21,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 class CaseDataTransformerTest {
@@ -205,6 +206,20 @@ class CaseDataTransformerTest {
                 .ihtFormEstate("IHT400")
                 .ihtFormId("IHT400")
                 .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfterEE() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No")
+                .ihtFormEstateValuesCompleted(NO).build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);

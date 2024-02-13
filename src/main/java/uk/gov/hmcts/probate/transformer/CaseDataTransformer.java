@@ -13,8 +13,10 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecuto
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 @Component
@@ -116,15 +118,24 @@ public class CaseDataTransformer {
 
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
                 && caseData.getIhtFormId() != null && !IHT400.equals(caseData.getIhtFormEstate())) {
             caseData.setIhtFormId(null);
             caseData.setHmrcLetterId(null);
-        } else if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
+        } else if (!dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
                 && caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
             caseData.setIhtFormEstate(null);
+            caseData.setHmrcLetterId(null);
+        } else if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
+                && caseData.getIhtFormEstateValuesCompleted() != null &&
+                NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
+            caseData.setIhtFormEstate(null);
+            caseData.setIhtFormId(null);
             caseData.setHmrcLetterId(null);
         }
     }
 
+    private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
+        return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(dateOfDeath);
+    }
 }
