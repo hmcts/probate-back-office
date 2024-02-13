@@ -474,11 +474,6 @@ task highLevelDataSetup(type: JavaExec) {
   }
 }
 
-test {
-  maxHeapSize = "1024m"
-  useJUnitPlatform()
-}
-
 check.dependsOn(integration)
 tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
 
