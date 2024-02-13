@@ -6,12 +6,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.CaseData;
 import uk.gov.hmcts.probate.model.probateman.LegacyCaseType;
 
 import java.time.LocalDate;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -99,5 +102,16 @@ class CaseMatchBuilderServiceTest {
 
         assertTrue(caseMatch.getType().contains("CAVEAT"));
         assertEquals("9876", caseMatch.getRecordId());
+    }
+
+    @Test
+    void shouldContainDeceasedList() {
+        when(caseDataMock.getDeceasedFullAliasNameList()).thenReturn(Collections.singletonList(
+                new CollectionMember<>(null, ProbateFullAliasName.builder()
+                        .fullAliasName("First Last").build())));
+
+        CaseMatch caseMatch = caseMatchBuilderService.buildCaseMatch(caseMock);
+
+        assertEquals("First Last", caseMatch.getAliases());
     }
 }
