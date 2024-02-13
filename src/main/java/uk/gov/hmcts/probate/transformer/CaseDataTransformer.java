@@ -118,11 +118,12 @@ public class CaseDataTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
                 && caseData.getIhtFormId() != null && !IHT400.equals(caseData.getIhtFormEstate())) {
-            CaseData.builder().ihtFormId(null)
-                    .hmrcLetterId(null).build();
+            caseData.setIhtFormId(null);
+            caseData.setHmrcLetterId(null);
         } else if (!exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
                 && caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
-            CaseData.builder().ihtFormEstate(null).hmrcLetterId(null).build();
+            caseData.setIhtFormEstate(null);
+            caseData.setHmrcLetterId(null);
         }
     }
 
