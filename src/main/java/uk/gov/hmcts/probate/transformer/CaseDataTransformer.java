@@ -127,8 +127,8 @@ public class CaseDataTransformer {
             caseData.setIhtFormEstate(null);
             caseData.setHmrcLetterId(null);
         } else if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
-                && caseData.getIhtFormEstateValuesCompleted() != null &&
-                NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                && caseData.getIhtFormEstateValuesCompleted() != null
+                && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
             caseData.setIhtFormEstate(null);
             caseData.setIhtFormId(null);
             caseData.setHmrcLetterId(null);
