@@ -138,7 +138,7 @@ public class BusinessValidationController {
         log.info("Validation list in controller {}", ihtValidation);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(callbackRequest);
+            caseDataTransformer.transformFormCaseData(request);
             return ResponseEntity.ok(callbackResponseTransformer.transform(request));
         }
         return ResponseEntity.ok(response);
