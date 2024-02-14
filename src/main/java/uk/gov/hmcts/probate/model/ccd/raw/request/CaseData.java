@@ -581,6 +581,9 @@ public class CaseData extends CaseDataParent {
     private String documentsReceivedNotificationSent;
     private String uniqueProbateCodeId;
     private String hmrcLetterId;
+    private String deceasedAnyOtherNameOnWill;
+    private String deceasedAliasFirstNameOnWill;
+    private String deceasedAliasLastNameOnWill;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();

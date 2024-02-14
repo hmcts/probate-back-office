@@ -382,4 +382,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final ChangeOrganisationRequest changeOrganisationRequestField;
     private final String hmrcLetterId;
     private final String uniqueProbateCodeId;
+    private final String deceasedAnyOtherNameOnWill;
+    private final String deceasedAliasFirstNameOnWill;
+    private final String deceasedAliasLastNameOnWill;
 }
