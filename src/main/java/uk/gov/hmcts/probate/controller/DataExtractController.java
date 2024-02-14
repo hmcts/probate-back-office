@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.probate.service.dataextract.ExelaDataExtractService;
 import uk.gov.hmcts.probate.service.dataextract.HmrcDataExtractService;
@@ -65,10 +66,16 @@ public class DataExtractController {
     @Operation(summary = "Initiate IronMountain data extract with date",
         description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
     @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
-    public ResponseEntity initiateIronMountainExtract(
+    public ResponseEntity<CallbackResponse> initiateIronMountainExtract(
         @RequestBody CallbackRequest callbackRequest) {
         String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();
-        return executeIronMountainExtractForDate(resendDate);
+        CallbackResponse callbackResponse = CallbackResponse.builder().build();
+        ResponseEntity responseEntity = executeIronMountainExtractForDate(resendDate);
+        if (responseEntity.getBody().equals("Perform Iron Mountain data extract finished")) {
+            return ResponseEntity.ok(callbackResponse);
+        } else {
+            return null;
+        }
     }
 
     private ResponseEntity executeIronMountainExtractForDate(String date) {
