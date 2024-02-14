@@ -153,7 +153,7 @@ public class CaseData extends CaseDataParent {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-    private final String ihtFormId;
+    private String ihtFormId;
 
     @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtNetValue;
@@ -559,7 +559,7 @@ public class CaseData extends CaseDataParent {
     private final String willDamageDateKnown;
     private final String willDamageDate;
     private final String ihtFormEstateValuesCompleted;
-    private final String ihtFormEstate;
+    private String ihtFormEstate;
     private final BigDecimal ihtEstateGrossValue;
     private final String ihtEstateGrossValueField;
     private final BigDecimal ihtEstateNetValue;

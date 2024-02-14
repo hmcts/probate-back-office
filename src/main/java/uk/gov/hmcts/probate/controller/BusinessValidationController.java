@@ -138,6 +138,7 @@ public class BusinessValidationController {
         log.info("Validation list in controller {}", ihtValidation);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
+            caseDataTransformer.transformFormCaseData(callbackRequest);
             return ResponseEntity.ok(callbackResponseTransformer.transform(request));
         }
         return ResponseEntity.ok(response);
@@ -210,7 +211,7 @@ public class BusinessValidationController {
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
-                log.info("selected No to Hmrc letter");
+                log.info("Selected No to Hmrc letter");
                 response = callbackResponseTransformer.transformCase(callbackRequest);
             }
         }
