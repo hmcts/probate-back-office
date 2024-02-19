@@ -186,7 +186,7 @@ public class CaveatCallbackResponseTransformer {
 
         ResponseCaveatData.ResponseCaveatDataBuilder responseCaseDataBuilder =
             getResponseCaveatData(request.getCaseDetails());
-        if (!newMatches.isEmpty()) {
+        if (!storedMatches.isEmpty()) {
             responseCaseDataBuilder.matches("Possible case matches");
         } else {
             responseCaseDataBuilder.matches("no matches found");
