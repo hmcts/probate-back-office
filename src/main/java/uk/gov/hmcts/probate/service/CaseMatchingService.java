@@ -22,6 +22,7 @@ public class CaseMatchingService {
     private static final String ES_QUERY = "main_query.json";
     private static final String ES_ALIASES_SUB_QUERY = "aliases_sub_query.json";
     private static final String ES_ALIASES_TO_ALIASES_SUB_QUERY = "aliases_to_aliases_sub_query.json";
+    private static final String ES_ALIASES_TO_ALIASES_NAME_LIST_SUB_QUERY = "aliases_to_aliases_list_sub_query.json";
     private static final String ES_DECEASED_DOB_SUB_QUERY = "deceased_dob_sub_query.json";
     private static final String ES_DECEASED_DOD_SUB_QUERY = "deceased_dod_sub_query.json";
 
@@ -39,6 +40,10 @@ public class CaseMatchingService {
                 .map(alias -> getAliasesToAliasesSubQueryTemplate().replace(":deceasedAliases", alias))
                 .collect(Collectors.joining());
 
+        String optionalAliasesToAliasesNameListQuery = criteria.getDeceasedAliases().stream()
+                .map(alias -> getAliasesToAliasesNameListSubQueryTemplate().replace(":deceasedAliases", alias))
+                .collect(Collectors.joining());
+
         String optionalDeceasedDateOfBirth = Optional.ofNullable(criteria.getDeceasedDateOfBirthRaw())
                 .map(data -> getDoBTemplate().replace(":deceasedDateOfBirth", criteria.getDeceasedDateOfBirth()))
                 .orElse("");
@@ -54,7 +59,8 @@ public class CaseMatchingService {
                 .replace(":optionalDeceasedDateOfBirth", optionalDeceasedDateOfBirth)
                 .replace(":optionalDeceasedDateOfDeath", optionalDeceasedDateOfDeath)
                 .replace(":optionalAliasesToNameQuery", optionalAliasesToNameQuery)
-                .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery);
+                .replace(":optionalAliasesToAliasesQuery", optionalAliasesToAliasesQuery)
+                .replace(":optionalAliasesToAliasesNameListQuery",optionalAliasesToAliasesNameListQuery);
 
         MatchedCases matchedCases = elasticSearchService.runQuery(caseType, jsonQuery);
 
@@ -90,6 +96,11 @@ public class CaseMatchingService {
     private String getAliasesToAliasesSubQueryTemplate() {
         return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
                 + ES_ALIASES_TO_ALIASES_SUB_QUERY);
+    }
+
+    private String getAliasesToAliasesNameListSubQueryTemplate() {
+        return fileSystemResourceService.getFileFromResourceAsString(TEMPLATE_DIRECTORY
+                + ES_ALIASES_TO_ALIASES_NAME_LIST_SUB_QUERY);
     }
 
     private String getDoBTemplate() {
