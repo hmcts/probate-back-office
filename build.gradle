@@ -40,8 +40,6 @@ java {
   }
 }
 
-mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
-
 jacoco {
   toolVersion = '0.8.8'
 }
@@ -194,7 +192,7 @@ def versions = [
         springBootVersion               : '2.7.14',
         springBootStarterHateoas        : '2.7.14',
         hmctsJavaLogging                : '6.0.1',
-        authCheckerLib                  : '2.1.5',
+        authCheckerLib                  : '2.3.0',
         jacksonDatabind                 : '2.14.2',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
@@ -371,7 +369,7 @@ dependencies {
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
-  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+  testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
@@ -387,7 +385,7 @@ dependencies {
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
-  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
+  testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
   testCaseCreatorImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   testCaseCreatorImplementation sourceSets.main.runtimeClasspath
   testCaseCreatorImplementation sourceSets.test.runtimeClasspath
@@ -474,11 +472,6 @@ task highLevelDataSetup(type: JavaExec) {
   onlyIf {
     return false
   }
-}
-
-test {
-  maxHeapSize = "1024m"
-  useJUnitPlatform()
 }
 
 check.dependsOn(integration)
