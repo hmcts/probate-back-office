@@ -486,7 +486,7 @@ public class CallbackResponseTransformer {
 
     private BigDecimal getNetValueLabel(CaseData caseData) {
         if ((IHT400.equals(caseData.getIhtFormId()) || IHT400.equals(caseData.getIhtFormEstate()))
-                && caseData.getIhtFormNetValue() != null && caseData.getIhtNetValue() == null) {
+                && caseData.getIhtFormNetValue() != null) {
             return caseData.getIhtFormNetValue();
         } else {
             return caseData.getIhtNetValue();
