@@ -12,8 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
-import static uk.gov.hmcts.probate.model.Constants.NO;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.*;
 
 class RedeclarationSoTValidationRuleTest {
 
@@ -33,11 +32,13 @@ class RedeclarationSoTValidationRuleTest {
         caseDataPaper = CaseData.builder()
             .applicationType(ApplicationType.PERSONAL)
             .paperForm(YES)
+            .channelChoice(CHANNEL_CHOICE_PAPERFORM)
             .registryLocation("Bristol").build();
 
         caseDataDigital = CaseData.builder()
             .applicationType(ApplicationType.SOLICITOR)
             .paperForm(NO)
+            .channelChoice(CHANNEL_CHOICE_DIGITAL)
             .registryLocation("Bristol").build();
     }
 
