@@ -111,6 +111,7 @@
       "evidenceHandled": null,
       "caseType": "intestacy",
       "paperForm": "Yes",
+      "channelChoice": "Paperform",
       "primaryApplicantSecondPhoneNumber": null,
       "primaryApplicantRelationshipToDeceased": "partner",
       "paRelationshipToDeceasedOther": null,
