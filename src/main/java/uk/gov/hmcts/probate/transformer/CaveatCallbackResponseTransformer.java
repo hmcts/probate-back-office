@@ -189,7 +189,7 @@ public class CaveatCallbackResponseTransformer {
         if (!storedMatches.isEmpty()) {
             responseCaseDataBuilder.matches("Possible case matches");
         } else {
-            responseCaseDataBuilder.matches("no matches found");
+            responseCaseDataBuilder.matches("No matches found");
         }
 
         return transformResponse(responseCaseDataBuilder.build());
