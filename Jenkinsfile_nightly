@@ -55,7 +55,7 @@ withNightlyPipeline("nodejs", product, component) {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
 
-    after('afterSuccess') {git
+    afterSuccess('fortify-scan') {git
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: '**/Fortify Scan/**/*'
 
     }

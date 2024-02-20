@@ -463,7 +463,7 @@ task runAndPublishConsumerPactTests(type: Test){
 }
 
 task fortifyScan(type: JavaExec)  {
-  getMainClass().set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
+  getmainClass().set("uk.gov.hmcts.fortifyclient.FortifyClientMainApp")
   classpath += sourceSets.test.runtimeClasspath
   jvmArgs = ['--add-opens=java.base/java.lang.reflect=ALL-UNNAMED']
 }
