@@ -581,7 +581,6 @@ public class CaseData extends CaseDataParent {
     private String documentsReceivedNotificationSent;
     private String uniqueProbateCodeId;
     private String hmrcLetterId;
-    @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private String ihtFormNetValue;
 
     @Builder.Default
