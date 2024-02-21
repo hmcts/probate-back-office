@@ -7,7 +7,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
+import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CaseLink;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.Case;
 import uk.gov.hmcts.probate.model.ccd.raw.casematching.CaseData;
@@ -23,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.CaseType.CAVEAT;
 import static uk.gov.hmcts.probate.model.CaseType.GRANT_OF_REPRESENTATION;
 
 class CaseMatchingServiceTest {
@@ -91,6 +94,68 @@ class CaseMatchingServiceTest {
         assertEquals("names surname", caseMatches.get(0).getFullName());
         assertEquals("2000-01-01", caseMatches.get(0).getDod());
         assertEquals("SW12 0FA", caseMatches.get(0).getPostcode());
+        assertNull(caseMatches.get(0).getValid());
+        assertNull(caseMatches.get(0).getComment());
+    }
+
+    @Test
+    void findMatchesCaveatWithAlias() {
+        CaseData caseData = CaseData.builder()
+                .deceasedForenames("names")
+                .deceasedSurname("surname")
+                .deceasedDateOfDeath(LocalDate.of(2000, 1, 1))
+                .build();
+
+        when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("names");
+        when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("surname");
+
+        when(caseMock.getData()).thenReturn(caseData);
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .aliases("names surname")
+                .dod("2000-01-01")
+                .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+
+        List<CaseMatch> caseMatches = caseMatchingService.findMatches(CAVEAT, caseMatchingCriteria);
+
+        assertEquals(1, caseMatches.size());
+        assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());
+        assertEquals("2000-01-01", caseMatches.get(0).getDod());
+        assertNull(caseMatches.get(0).getValid());
+        assertNull(caseMatches.get(0).getComment());
+    }
+
+    @Test
+    void findMatchesCaveatAliasesWithAlias() {
+        CaseData caseData = CaseData.builder()
+                .deceasedForenames("OtherFirstName")
+                .deceasedSurname("OtherLastName")
+                .deceasedFullAliasNameList(Collections.singletonList(
+                        new CollectionMember<>(null, ProbateFullAliasName.builder()
+                                .fullAliasName("name surname").build())))
+                .deceasedDateOfDeath(LocalDate.of(2000, 1, 1))
+                .build();
+
+        when(caseMatchingCriteria.getDeceasedForenames()).thenReturn("OtherFirstName");
+        when(caseMatchingCriteria.getDeceasedSurname()).thenReturn("OtherLastName");
+        when(caseMatchingCriteria.getDeceasedFullName()).thenReturn("OtherFirstName OtherLastName");
+        when(caseMatchingCriteria.getDeceasedAliases()).thenReturn(Collections.singletonList("name surname"));
+        when(caseMock.getData()).thenReturn(caseData);
+        CaseMatch caseMatch = CaseMatch.builder()
+                .caseLink(CaseLink.builder().caseReference("1").build())
+                .aliases("name surname")
+                .dod("2000-01-01")
+                .build();
+
+        when(caseMatchBuilderService.buildCaseMatch(caseMock)).thenReturn(caseMatch);
+
+        List<CaseMatch> caseMatches = caseMatchingService.findMatches(CAVEAT, caseMatchingCriteria);
+
+        assertEquals(1, caseMatches.size());
+        assertEquals("1", caseMatches.get(0).getCaseLink().getCaseReference());
+        assertEquals("2000-01-01", caseMatches.get(0).getDod());
         assertNull(caseMatches.get(0).getValid());
         assertNull(caseMatches.get(0).getComment());
     }
