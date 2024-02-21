@@ -28,5 +28,15 @@ public class IhtEstateDefaulter {
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(SWITCH_DATE_FORMATTER_PATTERN);
         LocalDate switchDate = LocalDate.parse(ihtEstateSwitchDate, dateFormatter);
         responseCaseDataBuilder.dateOfDeathAfterEstateSwitch(!dod.isBefore(switchDate) ? YES : NO);
+        if (!dod.isBefore(switchDate)) {
+            if (YES.equals(data.getIhtFormEstateValuesCompleted())) {
+                responseCaseDataBuilder.ihtFormId(null);
+            } else {
+                responseCaseDataBuilder.ihtFormId(null);
+                responseCaseDataBuilder.ihtFormEstate(null);
+            }
+        } else {
+            responseCaseDataBuilder.ihtFormEstate(null);
+        }
     }
 }
