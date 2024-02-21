@@ -129,49 +129,11 @@ class IHTValidationRuleTest {
         assertThat(validationError.isEmpty(), is(true));
     }
 
-    @Test
-    void testValidateWithSuccessForFormNetValue() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
-        when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(LOWER_VALUE);
-
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
-        assertThat(validationError.isEmpty(), is(true));
-    }
-
-    @Test
-    void testValidateWithSuccessWhenEqualForFormNetValue() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(HIGHER_VALUE);
-        when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(HIGHER_VALUE);
-
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
-        assertThat(validationError.isEmpty(), is(true));
-    }
-
-    @Test
-    void testValidateFailureWhenFormNetHigherThanGross() {
-        when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS))
-                .thenReturn(businessValidationError);
-
-        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
-
-        assertThat(validationError.isEmpty(), is(false));
-        verify(businessValidationMessageService, times(1))
-                .generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS);
-        assertTrue(validationError.contains(businessValidationError));
-    }
-
     @ParameterizedTest
     @MethodSource("invalidValue")
     void testInvalidGrossAndNetValue(final BigDecimal invalidValue) {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(invalidValue);
         when(inheritanceTaxMock.getNetValue()).thenReturn(invalidValue);
-        when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(invalidValue);
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_VALUE_VALIDATION))
                 .thenReturn(businessValidationError);
 

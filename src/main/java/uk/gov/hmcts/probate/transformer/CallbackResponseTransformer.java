@@ -484,13 +484,16 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    private BigDecimal getNetValueLabel(CaseData caseData) {
-        if ((IHT400.equals(caseData.getIhtFormId()) || IHT400.equals(caseData.getIhtFormEstate()))
-                && caseData.getIhtFormNetValue() != null) {
-            return caseData.getIhtFormNetValue();
+    public CallbackResponse transformNetValue(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        if (IHT400.equals(caseData.getIhtFormId()) || IHT400.equals(caseData.getIhtFormEstate())) {
+            responseCaseDataBuilder.ihtFormNetValue("What is the net value for probate?");
         } else {
-            return caseData.getIhtNetValue();
+            responseCaseDataBuilder.ihtFormNetValue("What is the net value of the estate for probate?");
         }
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
@@ -901,8 +904,7 @@ public class CallbackResponseTransformer {
             .solsLegalStatementUpload(caseData.getSolsLegalStatementUpload())
 
             .ihtGrossValue(caseData.getIhtGrossValue())
-            .ihtNetValue(getNetValueLabel(caseData))
-            .ihtFormNetValue(caseData.getIhtFormNetValue())
+            .ihtNetValue(caseData.getIhtNetValue())
             .deceasedDomicileInEngWales(caseData.getDeceasedDomicileInEngWales())
             .ihtFormEstateValuesCompleted(caseData.getIhtFormEstateValuesCompleted())
             .ihtFormEstate(caseData.getIhtFormEstate())

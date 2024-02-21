@@ -2582,6 +2582,40 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformNetValueForFormId400() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT400");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformNetValue(callbackRequestMock);
+        assertEquals("What is the net value for probate?", callbackResponse.getData().getIhtFormNetValue());
+    }
+
+    @Test
+    void shouldTransformNetValueForFormEstate400() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformNetValue(callbackRequestMock);
+        assertEquals("What is the net value for probate?", callbackResponse.getData().getIhtFormNetValue());
+    }
+
+    @Test
+    void shouldTransformNetValueForFormId270() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT205");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transformNetValue(callbackRequestMock);
+        assertEquals("What is the net value of the estate for probate?",
+                callbackResponse.getData().getIhtFormNetValue());
+    }
+
+    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -4044,46 +4078,6 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         callbackResponse = underTest.updateTaskList(callbackRequestMock);
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
-    }
-
-    @Test
-    void shouldTransformForFormNetValue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .ihtFormNetValue(IHT_NET)
-                .ihtFormId("IHT400")
-                .ihtNetValue(null);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
-        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
-    }
-
-    @Test
-    void shouldTransformNoForFormNetValue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .ihtFormId("IHT400")
-                .ihtNetValue(IHT_NET)
-                .ihtFormNetValue(null);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
-        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
-    }
-
-    @Test
-    void shouldTransformNoFormNetValueDifferentFormId() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .ihtFormId("IHT205")
-                .ihtFormEstate("IHT400")
-                .ihtNetValue(IHT_NET)
-                .ihtFormNetValue(null);
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
-        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

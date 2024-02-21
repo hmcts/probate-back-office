@@ -38,8 +38,6 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                     }
                     if ((iht.getGrossValue() != null && !iht.getGrossValue().toPlainString().matches(REGEX_PATTERN))
                             || (iht.getNetValue() != null && !iht.getNetValue().toPlainString().matches(REGEX_PATTERN))
-                            || (iht.getIhtFormNetValue() != null && !iht.getIhtFormNetValue().toPlainString()
-                            .matches(REGEX_PATTERN))
                             || (iht.getIhtEstateGrossValue() != null && !iht.getIhtEstateGrossValue().toPlainString()
                             .matches(REGEX_PATTERN))
                             || (iht.getIhtEstateNetValue() != null && !iht.getIhtEstateNetValue()
@@ -59,12 +57,6 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                     if (iht.getIhtEstateNetValue() != null && iht.getIhtEstateGrossValue() != null) {
                         if (iht.getIhtEstateNetValue().compareTo(iht.getIhtEstateGrossValue()) > 0) {
                             codes.add(IHT_ESTATE_NET_GREATER_THAN_GROSS);
-                        }
-                    }
-
-                    if (iht.getIhtFormNetValue() != null && iht.getGrossValue() != null) {
-                        if (iht.getIhtFormNetValue().compareTo(iht.getGrossValue()) > 0) {
-                            codes.add(IHT_PROBATE_NET_GREATER_THAN_GROSS);
                         }
                     }
 
