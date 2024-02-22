@@ -113,7 +113,7 @@ public class NotificationService {
             caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(),
-            caseOriginOptional.orElse(null));
+            caseOriginOptional.orElse(null),caseData.getChannelChoice());
         log.info("Got templateId: {}", templateId);
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
