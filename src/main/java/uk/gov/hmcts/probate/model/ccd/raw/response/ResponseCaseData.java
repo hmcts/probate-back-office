@@ -355,6 +355,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String codicilsDamageDate;
     private final String deceasedWrittenWishes;
     private final String dateOfDeathAfterEstateSwitch;
+    private final String iht400Switch;
     private final String ihtFormEstateValuesCompleted;
     private final String ihtFormEstate;
     private final BigDecimal ihtEstateGrossValue;

@@ -118,22 +118,31 @@ public class CaseDataTransformer {
 
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
-                && caseData.getIhtFormId() != null && !IHT400.equals(caseData.getIhtFormEstate())) {
-            caseData.setIhtFormId(null);
-            caseData.setHmrcLetterId(null);
-        } else if (!dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
-                && caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
-            caseData.setIhtFormEstate(null);
-            caseData.setHmrcLetterId(null);
-        } else if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())
-                && caseData.getIhtFormEstateValuesCompleted() != null
-                && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
-            caseData.setIhtFormEstate(null);
-            caseData.setIhtFormId(null);
-            caseData.setHmrcLetterId(null);
+
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            if (caseData.getIhtFormId() != null && !IHT400.equals(caseData.getIhtFormEstate())) {
+                resetIhtFormId(caseData);
+            } else if (caseData.getIhtFormEstateValuesCompleted() != null
+                    && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                resetIhtFormAndHmrcLetter(caseData);
+            }
+        } else {
+            if (caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
+                resetIhtFormId(caseData);
+            }
         }
     }
+
+    private void resetIhtFormId(CaseData caseData) {
+        caseData.setIhtFormId(null);
+        caseData.setHmrcLetterId(null);
+    }
+
+    private void resetIhtFormAndHmrcLetter(CaseData caseData) {
+        caseData.setIhtFormEstate(null);
+        resetIhtFormId(caseData);
+    }
+
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
         return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(dateOfDeath);

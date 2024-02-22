@@ -206,7 +206,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         CaseDetails details = callbackRequest.getCaseDetails();
         if (response.getErrors().isEmpty()) {
-            //caseDataTransformer.transformFormCaseData(callbackRequest);
+            caseDataTransformer.transformFormCaseData(callbackRequest);
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());

@@ -86,6 +86,7 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtNetValue", "Label": "Net value of the estate for probate", "FieldType": "MoneyGBP", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormNetValue", "Label": "Net value of the estate for probate", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "dateOfDeathAfterEstateSwitch", "Label": "DOD is after switch date", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "iht400Switch", "Label": "IHT400 switch", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "showIht400421Page", "Label": "Show the IHT400421 page", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesCompleted", "Label": "Did you complete Inheritance Tax (IHT) forms to report the estate’s value?", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "ihtFormEstateValuesLabel", "Label": "What are the values of the estate for Inheritance tax?", "FieldType": "Label", "SecurityClassification": "Public"},
