@@ -707,8 +707,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String errors = jsonPath.get("data.errors");
         final String paperForm = jsonPath.get("data.paperForm");
+        final String channelChoice = jsonPath.get("data.channelChoice");
         assertNull(errors);
         assertEquals(paperForm, "No");
+        assertEquals(channelChoice, "Digital");
     }
 
     @Test
