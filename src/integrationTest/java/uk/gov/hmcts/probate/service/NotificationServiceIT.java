@@ -73,8 +73,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.*;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
@@ -397,6 +396,7 @@ class NotificationServiceIT {
             .registryLocation("Oxford")
             .primaryApplicantEmailAddress("primary@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
             .build(), LAST_MODIFIED, ID);
 
         personalGrantRaisedOxfordPaperWelsh = new CaseDetails(CaseData.builder()
@@ -406,6 +406,7 @@ class NotificationServiceIT {
             .primaryApplicantEmailAddress("primary@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .languagePreferenceWelsh("Yes")
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
             .build(), LAST_MODIFIED, ID);
 
         solicitorGrantRaisedOxfordPaper = new CaseDetails(CaseData.builder()
@@ -415,6 +416,7 @@ class NotificationServiceIT {
             .solsSolicitorEmail("solicitor@probate-test.com")
             .solsSolicitorAppReference("1234-5678-9012")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
             .build(), LAST_MODIFIED, ID);
 
         solicitorGrantRaisedOxfordPaperWelsh = new CaseDetails(CaseData.builder()
@@ -425,6 +427,7 @@ class NotificationServiceIT {
             .solsSolicitorAppReference("1234-5678-9012")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .languagePreferenceWelsh("Yes")
+                .channelChoice(CHANNEL_CHOICE_PAPERFORM)
             .build(), LAST_MODIFIED, ID);
 
         exelaCaseData.add(new ReturnedCaseDetails(CaseData.builder()
