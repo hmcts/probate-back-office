@@ -782,7 +782,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(ihtEstateValidationRule, times(1)).validate(caseDetailsMock);
         verify(naValidationRule, times(1)).validate(caseDetailsMock);
-        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
+        verify(callbackResponseTransformerMock).transformNetValue(callbackRequestMock);
     }
 
     @Test
@@ -795,7 +795,7 @@ class BusinessValidationUnitTest {
         ResponseEntity<CallbackResponse> response =
                 underTest.validateIhtEstateData(callbackRequestMock);
         verify(callbackResponseTransformerMock, times(0))
-                .transform(callbackRequestMock);
+                .transformNetValue(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
