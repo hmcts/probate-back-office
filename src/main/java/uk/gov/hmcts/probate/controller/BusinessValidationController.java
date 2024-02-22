@@ -139,7 +139,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
             caseDataTransformer.transformFormCaseData(request);
-            return ResponseEntity.ok(callbackResponseTransformer.transformNetValue(request));
+            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
         }
         return ResponseEntity.ok(response);
     }

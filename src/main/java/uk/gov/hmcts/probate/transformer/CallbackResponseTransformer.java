@@ -484,18 +484,6 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse transformNetValue(CallbackRequest callbackRequest) {
-        CaseData caseData = callbackRequest.getCaseDetails().getData();
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (IHT400.equals(caseData.getIhtFormId()) || IHT400.equals(caseData.getIhtFormEstate())) {
-            responseCaseDataBuilder.ihtFormNetValue("What is the net value for probate?");
-        } else {
-            responseCaseDataBuilder.ihtFormNetValue("What is the net value of the estate for probate?");
-        }
-        return transformResponse(responseCaseDataBuilder.build());
-    }
-
     public CallbackResponse transformForSolicitorComplete(CallbackRequest callbackRequest, FeesResponse feesResponse,
                                                           Document sentEmail, Document coversheet, String userId) {
         final var feeForNonUkCopies = transformMoneyGBPToString(feesResponse.getOverseasCopiesFeeResponse()
