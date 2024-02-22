@@ -12,7 +12,9 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.State;
 
 import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
-import static uk.gov.hmcts.probate.model.Constants.*;
+import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
 
 @Slf4j
 @RequiredArgsConstructor
