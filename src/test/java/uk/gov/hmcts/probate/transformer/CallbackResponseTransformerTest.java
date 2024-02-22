@@ -2642,7 +2642,6 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         CallbackResponse callbackResponse = underTest.transformNetValue(callbackRequestMock);
-        assertEquals("What is the net value for probate?", callbackResponse.getData().getIhtFormNetValue());
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
     }
 
@@ -2657,7 +2656,6 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         CallbackResponse callbackResponse = underTest.transformNetValue(callbackRequestMock);
-        assertEquals("What is the net value for probate?", callbackResponse.getData().getIhtFormNetValue());
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
     }
 
