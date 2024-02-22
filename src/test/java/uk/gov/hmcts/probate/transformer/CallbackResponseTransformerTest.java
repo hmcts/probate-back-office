@@ -2580,6 +2580,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformUniqueProbateCode(callbackRequestMock);
         assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
     }
+
     @Test
     void shouldTransformCaseForLetter() {
 
