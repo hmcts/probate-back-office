@@ -465,6 +465,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/validate-values-page")
+    public ResponseEntity<CallbackResponse> validateValuesPage(@RequestBody CallbackRequest callbackRequest,
+                                                                      HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformValuesPage(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/validate-unique-code")
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {

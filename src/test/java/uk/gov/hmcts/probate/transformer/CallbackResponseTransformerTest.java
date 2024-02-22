@@ -2583,8 +2583,22 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         CallbackResponse callbackResponse = underTest.transformUniqueProbateCode(callbackRequestMock);
         assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
+    }
+
+    @Test
+    void shouldTransformValuesPage() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT400")
+                .hmrcLetterId(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
     }
 
     @Test
