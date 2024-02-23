@@ -139,7 +139,7 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
             caseDataTransformer.transformFormCaseData(request);
-            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+            return ResponseEntity.ok(callbackResponseTransformer.transformValuesPage(request));
         }
         return ResponseEntity.ok(response);
     }
@@ -471,6 +471,14 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformUniqueProbateCode(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-values-page")
+    public ResponseEntity<CallbackResponse> validateValuesPage(@RequestBody CallbackRequest callbackRequest,
+                                                               HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformValuesPage(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
