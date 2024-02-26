@@ -1162,11 +1162,6 @@ public class CallbackResponseTransformer {
         return ANSWER_YES.equals(caseData.getPaperForm());
     }
 
-    private String getChannelChoice(CaseData caseData) {
-        return CHANNEL_CHOICE_PAPERFORM.equals(caseData.getChannelChoice())
-                ? CHANNEL_CHOICE_PAPERFORM : CHANNEL_CHOICE_DIGITAL;
-    }
-
     private boolean willExists(CaseData caseData) {
         if (isIntestacy(caseData)) {
             return false;
@@ -1530,7 +1525,7 @@ public class CallbackResponseTransformer {
                     .paperForm(ANSWER_NO);
         }
 
-        builder.channelChoice(getChannelChoice(caseData));
+        builder.channelChoice(caseData.getChannelChoice());
 
         if (willExists(caseData)) {
             builder
