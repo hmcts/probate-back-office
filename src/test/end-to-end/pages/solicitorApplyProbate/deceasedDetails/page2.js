@@ -17,7 +17,7 @@ module.exports = async function (applicationType, iHTFormsCompleted, whichIHTFor
 
             if (whichIHTFormsCompleted === 'IHT207') {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE207}`});
-            } else if (whichIHTFormsCompleted === 'IHT400'){
+            } else if (whichIHTFormsCompleted === 'IHT400') {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400}`});
             } else {
                 await I.click({css: `#ihtFormEstate-${deceasedDetailsConfig.page2_IHTOptionEE400421}`});

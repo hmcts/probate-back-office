@@ -16,7 +16,6 @@ const documentUploadTabConfig = require('src/test/end-to-end/pages/caseDetails/g
 const grantNotificationsTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/grantNotificationsTabConfig');
 const historyTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/historyTabConfig');
 const copiesTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/copiesTabConfig');
-const ihtTabConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/ihtTabConfig');
 const nextStepConfig = require('src/test/end-to-end/pages/nextStep/nextStepConfig.json');
 const registrarsDecisionConfig = require('src/test/end-to-end/pages/caseDetails/grantOfProbate/registrarsDecisionConfig');
 const caseProgressConfig = require('src/test/end-to-end/pages/caseProgressStandard/caseProgressConfig');

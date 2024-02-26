@@ -5,7 +5,7 @@ module.exports = async function (caseProgressConfig, optionValue) {
     const I = this;
     await I.waitForElement({css: `${caseProgressConfig.ihtHmrcLetter}_${optionValue}`});
     await I.click({css: `${caseProgressConfig.ihtHmrcLetter}_${optionValue}`});
-    if (optionValue === "Yes") {
+    if (optionValue === 'Yes') {
         await I.waitForElement({css: `${caseProgressConfig.hmrcCodeTextBox}`});
         await I.fillField({css: `${caseProgressConfig.hmrcCodeTextBox}`}, caseProgressConfig.uniqueHmrcCode);
     }
