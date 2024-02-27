@@ -584,7 +584,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"paperForm\": null, \"channelChoice\": null",
-                "\"paperForm\": \"Yes\", \"channelChoice\": \"Paper\",");
+                "\"paperForm\": \"Yes\", \"channelChoice\": \"Paperform\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
