@@ -111,7 +111,7 @@
       "evidenceHandled": null,
       "caseType": "intestacy",
       "paperForm": "Yes",
-      "channelChoice": "Bulkscan",
+      "channelChoice": "BulkScan",
       "primaryApplicantSecondPhoneNumber": null,
       "primaryApplicantRelationshipToDeceased": "partner",
       "paRelationshipToDeceasedOther": null,
