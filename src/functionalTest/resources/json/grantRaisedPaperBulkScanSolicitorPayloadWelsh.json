@@ -124,7 +124,7 @@
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
       "boExaminationChecklistRequestQA" : "yes",
-      "channelChoice": "Bulkscan"
+      "channelChoice": "BulkScan"
     }
   }
 }
