@@ -123,7 +123,8 @@
       "solsSOTJobTitle": "job title",
       "boExaminationChecklistQ1": "yes",
       "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA" : "yes"
+      "boExaminationChecklistRequestQA" : "yes",
+      "channelChoice": "Bulkscan"
     }
   }
 }
