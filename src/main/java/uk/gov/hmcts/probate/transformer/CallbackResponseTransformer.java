@@ -62,8 +62,6 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
-import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -1162,11 +1160,6 @@ public class CallbackResponseTransformer {
         return ANSWER_YES.equals(caseData.getPaperForm());
     }
 
-    private String getChannelChoice(CaseData caseData) {
-        return CHANNEL_CHOICE_PAPERFORM.equals(caseData.getChannelChoice())
-                ? CHANNEL_CHOICE_PAPERFORM : CHANNEL_CHOICE_DIGITAL;
-    }
-
     private boolean willExists(CaseData caseData) {
         if (isIntestacy(caseData)) {
             return false;
@@ -1530,7 +1523,7 @@ public class CallbackResponseTransformer {
                     .paperForm(ANSWER_NO);
         }
 
-        builder.channelChoice(getChannelChoice(caseData));
+        builder.channelChoice(caseData.getChannelChoice());
 
         if (willExists(caseData)) {
             builder
