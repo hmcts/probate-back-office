@@ -583,7 +583,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"channelChoice\": null,", "\"channelChoice\": \"PaperForm\",");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
@@ -593,8 +593,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"channelChoice\": null,", "\"channelChoice\": \"Digital\",");
-
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"Digital\",");
+        
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
