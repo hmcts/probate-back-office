@@ -48,7 +48,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, caveatDetailsTabConfig, applyCaveatConfig);
 
     endState = 'Caveat updated';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
+    //await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.caveatApplicationDetailsPage1();
     await I.caveatApplicationDetailsPage2();
