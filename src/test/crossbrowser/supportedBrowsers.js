@@ -24,10 +24,11 @@ const supportedBrowsers = {
     safari: {
         safari_mac: {
             browserName: 'safari',
-            platformName: 'macOS 10.14',
+            platformName: 'LATEST_MAC',
             browserVersion: 'latest',
             'sauce:options': {
                 name: 'Probate Back Office - XUI: MAC_SAFARI',
+                seleniumVersion: '3.141.59',
                 screenResolution: '1400x1050'
             }
         }
