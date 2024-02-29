@@ -46,7 +46,7 @@ withNightlyPipeline("nodejs", product, component) {
     enableFullFunctionalTest(120)
     enableSecurityScan()
     enableFortifyScan('probate-aat')
-    // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
+    enableCrossBrowserTest(['chrome', 'firefox', 'safari'])
     afterAlways('fullFunctionalTest') {
         steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
     }
