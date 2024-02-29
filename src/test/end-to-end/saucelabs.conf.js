@@ -108,8 +108,8 @@ const setupConfig = {
         firefox: {
             browsers: getBrowserConfig('firefox')
         },
-        webkit: {
-            browsers: getBrowserConfig('webkit')
+        safari: {
+            browsers: getBrowserConfig('safari')
         }
     },
     name: 'Probate-ExpertUI Cross-Browser Tests'
