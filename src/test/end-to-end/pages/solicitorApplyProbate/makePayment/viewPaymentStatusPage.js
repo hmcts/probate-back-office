@@ -7,7 +7,8 @@ module.exports = async function (caseRef, appType) {
     const I = this;
     const tabXPath = `//div[contains(text(),"${makePaymentConfig.eventHistoryTab}")]`;
     const caseProgressTabXPath = `//div[contains(text(),"${makePaymentConfig.caseProgressTab}")]`;
-    const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
+    //const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
+    const caseRefNoDashes = caseRef.replace(/-/g, '');
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.paymentStatusConfirmText, testConfig.WaitForTextTimeout);
     await I.see(makePaymentConfig.serviceRequestLink);
