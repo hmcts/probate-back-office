@@ -19,7 +19,7 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
         await I.dontSee(grantOfProbateConfig.page2_prev_identified_execs_text);
     }
     await I.scrollTo(dispNoticeLocator);
-    await I.waitForClickable(dispNoticeLocator);
+    await I.waitForEnabled(dispNoticeLocator);
     await I.click(dispNoticeLocator);
     await I.waitForElement('#titleAndClearingType-TCTNoT', 40);
     if (verifyTrustCorpOpts) {
@@ -29,10 +29,10 @@ module.exports = async function (verifyTrustCorpOpts, isSolicitorNamedExecutor =
         await I.scrollTo({css: '#titleAndClearingType-TCTNoT'});
     }
 
-    await I.waitForClickable({css: '#titleAndClearingType-TCTNoT'});
+    await I.waitForEnabled({css: '#titleAndClearingType-TCTNoT'});
     await I.click({css: '#titleAndClearingType-TCTNoT'});
 
-    await I.waitForClickable({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
+    await I.waitForEnabled({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
     await I.click({css: '#titleAndClearingType-TCTTrustCorpResWithApp'});
 
     await I.click({css: '#titleAndClearingType-TCTPartOthersRenouncing'});
