@@ -26,7 +26,7 @@ Feature('Solicitor - Apply Caveat').retry(testConfig.TestRetryFeatures);
 const scenarioName = 'Solicitor - Apply Caveat';
 Scenario(scenarioName, async function ({I}) {
 
-    await I.logInfo(scenarioName, 'Login as Solicitor');
+    //await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Application details';
@@ -62,13 +62,13 @@ Scenario(scenarioName, async function ({I}) {
     nextStepName = 'Complete application';
     endState = 'Caveat raised';
     const applicationType = 'Caveat';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
+    //await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeCaveatApplicationPage1();
     await I.completeCaveatApplicationPage2();
     await I.completeCaveatApplicationPage3();
 
-    await I.logInfo(scenarioName, 'Payment');
+    //await I.logInfo(scenarioName, 'Payment');
     await I.makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig);
     await I.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
     await I.makePaymentPage2(caseRef);

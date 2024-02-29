@@ -26,7 +26,7 @@ const scenarioName ='Solicitor - Apply Grant of probate Multi Executor for Excep
 Scenario(scenarioName, async function ({I}) {
 
     const willType = 'WillLeft';
-    await I.logInfo(scenarioName, 'Login as Solicitor');
+    //await I.logInfo(scenarioName, 'Login as Solicitor');
     await I.authenticateWithIdamIfAvailable(true);
 
     let nextStepName = 'Deceased details';
@@ -41,7 +41,7 @@ Scenario(scenarioName, async function ({I}) {
 
     const caseRef = await I.getCaseRefFromUrl();
 
-    await I.logInfo(scenarioName, nextStepName, caseRef);
+    //await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState);
     await I.seeCaseDetails(caseRef, applicantDetailsTabConfig, applyProbateConfig);
 
@@ -63,7 +63,7 @@ Scenario(scenarioName, async function ({I}) {
 
     nextStepName = 'Grant of probate details';
     endState = 'Application updated';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
+    //await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.grantOfProbatePage1();
     await I.grantOfProbatePage2(false, true, true);
@@ -87,7 +87,7 @@ Scenario(scenarioName, async function ({I}) {
 
     nextStepName = 'Complete application';
     endState = 'Awaiting documentation';
-    await I.logInfo(scenarioName, nextStepName, caseRef);
+    //await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeApplicationPage1();
     await I.completeApplicationPage3();
@@ -97,7 +97,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.completeApplicationPage7();
     await I.completeApplicationPage8();
 
-    await I.logInfo(scenarioName, 'Payment');
+    //await I.logInfo(scenarioName, 'Payment');
     await I.makePaymentPage1(caseRef, serviceRequestTabConfig);
     await I.reviewPaymentDetails(caseRef, serviceRequestReviewTabConfig);
     await I.makePaymentPage2(caseRef);
