@@ -1,4 +1,4 @@
-const LATEST_MAC = 'macOS 11.00';
+const LATEST_MAC = 'macOS 10.15';
 const LATEST_WINDOWS = 'Windows 10';
 
 const supportedBrowsers = {
@@ -24,7 +24,7 @@ const supportedBrowsers = {
     webkit: {
         webkit_latest: {
             browserName: 'webkit',
-            platformName: LATEST_MAC,
+            platformName: 'macOS 11',
             browserVersion: 'latest',
             'sauce:options': {
                 name: 'Probate Back Office - XUI: MAC_WEBKIT_LATEST',
