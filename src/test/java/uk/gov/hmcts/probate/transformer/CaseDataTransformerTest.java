@@ -22,6 +22,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 class CaseDataTransformerTest {
@@ -192,6 +193,7 @@ class CaseDataTransformerTest {
         caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
                 .ihtFormEstate("IHT400421")
                 .ihtFormId("IHT400")
+                .ihtFormEstateValuesCompleted(YES)
                 .hmrcLetterId("No").build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -205,6 +207,7 @@ class CaseDataTransformerTest {
         caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
                 .ihtFormEstate("IHT400")
                 .ihtFormId("IHT400")
+                .ihtFormEstateValuesCompleted(YES)
                 .hmrcLetterId("No").build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);

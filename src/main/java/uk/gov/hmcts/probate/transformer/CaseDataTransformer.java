@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 @Component
@@ -119,7 +120,8 @@ public class CaseDataTransformer {
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
-            if (caseData.getIhtFormId() != null && !IHT400.equals(caseData.getIhtFormEstate())) {
+            if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())
+                    && !IHT400.equals(caseData.getIhtFormEstate())) {
                 resetIhtFormId(caseData);
             } else if (caseData.getIhtFormEstateValuesCompleted() != null
                     && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
