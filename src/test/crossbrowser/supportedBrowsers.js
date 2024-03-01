@@ -22,14 +22,25 @@ const supportedBrowsers = {
         }
     },
     webkit: {
-        webkit_mac_latest: {
+        webkit_latest: {
             browserName: 'webkit',
-            platformName: 'LATEST_MAC',
+            platformName: LATEST_MAC,
             browserVersion: 'latest',
             'sauce:options': {
                 name: 'Probate Back Office - XUI: MAC_WEBKIT_LATEST',
-                seleniumVersion: '3.141.59',
                 screenResolution: '1400x1050'
+            }
+        }
+    },
+    safari: {
+        safari_mac_latest: {
+            browserName: 'safari',
+            platformName: LATEST_MAC,
+            browserVersion: 'latest',
+            'sauce:options': {
+                name: 'Probate Back Office - XUI: MAC_SAFARI',
+                seleniumVersion: '3.141.59',
+                screenResolution: '1376x1032'
             }
         }
     },
