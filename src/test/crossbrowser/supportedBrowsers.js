@@ -22,7 +22,7 @@ const supportedBrowsers = {
         }
     },
     webkit: {
-        webkit_latest: {
+        webkit_mac_latest: {
             browserName: 'webkit',
             platformName: 'macOS 11',
             browserVersion: 'latest',
