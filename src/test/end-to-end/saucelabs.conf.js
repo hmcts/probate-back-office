@@ -60,7 +60,7 @@ const setupConfig = {
             require: './helpers/SauceLabsReportingHelper.js'
         },
         PlaywrightHelpers: {
-            require: './helpers/playwrightHelper.js',
+            require: './helpers/PlaywrightHelper.js',
         },
         JSWait: {
             require: './helpers/JSWait.js'
