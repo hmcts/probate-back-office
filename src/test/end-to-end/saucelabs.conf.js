@@ -113,7 +113,7 @@ const setupConfig = {
         },
         webkit: {
             browsers: getBrowserConfig('webkit')
-        },
+        }
         // safari: {
         //     browsers: getBrowserConfig('safari')
         // }
