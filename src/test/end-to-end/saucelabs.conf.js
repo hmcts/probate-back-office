@@ -42,7 +42,7 @@ const setupConfig = {
     'tests': testConfig.TestPathToRun,
     'output': `${process.cwd()}/${testConfig.TestOutputDir}`,
     'helpers': {
-        WebDriver: {
+        Playwright: {
             url: testConfig.TestBackOfficeUrl,
             browser,
             smartWait,
