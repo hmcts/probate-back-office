@@ -51,7 +51,7 @@ ccd:
       enabled: true
     postgresql:
       enabled: true
-      flexibleserver: sscs-preview
+      flexibleserver: probate-preview
       setup:
         databases:
           - name: "pr-${CHANGE_ID}-data-store"
