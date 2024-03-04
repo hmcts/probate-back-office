@@ -44,17 +44,17 @@ const supportedBrowsers = {
             }
         }
     },
-    chrome: {
-        chrome_win_latest: {
-            browserName: 'chrome',
+    chromium: {
+        chromium_win_latest: {
+            browserName: 'chromium',
             platformName: LATEST_WINDOWS,
             browserVersion: 'latest',
             'sauce:options': {
                 name: 'Probate Back Office - XUI: WIN_CHROME_LATEST'
             }
         },
-        chrome_mac_latest: {
-            browserName: 'chrome',
+        chromium_mac_latest: {
+            browserName: 'chromium',
             platformName: LATEST_MAC,
             browserVersion: 'latest',
             'sauce:options': {

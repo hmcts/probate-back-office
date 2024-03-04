@@ -105,8 +105,8 @@ const setupConfig = {
         }
     },
     multiple: {
-        chrome: {
-            browsers: getBrowserConfig('chrome')
+        chromium: {
+            browsers: getBrowserConfig('chromium')
         },
         firefox: {
             browsers: getBrowserConfig('firefox')
