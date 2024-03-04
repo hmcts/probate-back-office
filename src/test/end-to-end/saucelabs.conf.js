@@ -53,13 +53,13 @@ const setupConfig = {
             region: 'eu',
             capabilities: {}
         },
-        WebDriverHelper: {
-            require: './helpers/WebDriverHelper.js'
-        },
+        // WebDriverHelper: {
+        //     require: './helpers/WebDriverHelper.js'
+        // },
         SauceLabsReportingHelper: {
             require: './helpers/SauceLabsReportingHelper.js'
         },
-        PlaywrightHelpers: {
+        PlaywrightHelper: {
             require: './helpers/PlaywrightHelper.js',
         },
         JSWait: {

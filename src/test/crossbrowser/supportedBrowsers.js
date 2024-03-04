@@ -45,20 +45,22 @@ const supportedBrowsers = {
         }
     },
     chromium: {
-        chromium_win_latest: {
+        chrome_win_latest: {
             browserName: 'chromium',
             platformName: LATEST_WINDOWS,
-            browserVersion: 'latest',
+            browserVersion: 'latest-1',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: WIN_CHROME_LATEST'
+                name: 'Probate Back Office - XUI: WIN_CHROME_LATEST',
+                screenResolution: '1600x1200'
             }
         },
-        chromium_mac_latest: {
+        chrome_mac_latest: {
             browserName: 'chromium',
             platformName: LATEST_MAC,
-            browserVersion: 'latest',
+            browserVersion: 'latest-1',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: MAC_CHROME_LATEST'
+                name: 'Probate Back Office - XUI: MAC_CHROME_LATEST',
+                screenResolution: '1600x1200'
             }
         }
     },
@@ -66,17 +68,19 @@ const supportedBrowsers = {
         firefox_win_latest: {
             browserName: 'firefox',
             platformName: LATEST_WINDOWS,
-            browserVersion: 'latest',
+            browserVersion: 'latest-1',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: WIN_FIREFOX_LATEST'
+                name: 'Probate Back Office - XUI: WIN_FIREFOX_LATEST',
+                screenResolution: '1600x1200'
             }
         },
         firefox_mac_latest: {
             browserName: 'firefox',
             platformName: LATEST_MAC,
-            browserVersion: 'latest',
+            browserVersion: 'latest-1',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: MAC_FIREFOX_LATEST'
+                name: 'Probate Back Office - XUI: MAC_FIREFOX_LATEST',
+                screenResolution: '1600x1200'
             }
         }
     }
