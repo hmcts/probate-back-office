@@ -31,7 +31,7 @@ module.exports = async function (caseRef, tabConfigFile, dataConfigFile, nextSte
     const dataConfigKeys = tabConfigFile.dataKeys;
     // If 'Event History' tab, then check Next Step (Event), End State, Summary and Comment
     if (tabConfigFile.tabName === 'Event History') {
-        I.see(nextStep);
+        I.seeInSource(nextStep);
         I.see(endState);
 
         let eventSummaryPrefix = nextStep;
