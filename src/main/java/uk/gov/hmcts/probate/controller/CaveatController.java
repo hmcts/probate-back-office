@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.validator.BulkPrintValidationRule;
+import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailAddressNotificationValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
@@ -66,6 +67,7 @@ public class CaveatController {
     private final FeeService feeService;
     private final RegistrarDirectionService registrarDirectionService;
     private final DocumentGeneratorService documentGeneratorService;
+    private final CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
 
     @PostMapping(path = "/raise")
     public ResponseEntity<CaveatCallbackResponse> raiseCaveat(
@@ -197,7 +199,7 @@ public class CaveatController {
                 .buildServiceRequest(caveatCallbackRequest.getCaseDetails(), feeResponse));
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = confirmationResponseService
-            .getNextStepsConfirmation(caveatData);
+            .getNextStepsConfirmation(caveatData, caveatCallbackRequest.getCaseDetails().getId());
 
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
@@ -259,6 +261,13 @@ public class CaveatController {
     public ResponseEntity<CaveatCallbackResponse> permanentlyDeleteRemovedCaveat(
             @RequestBody CaveatCallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(callbackRequest);
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
+    }
+
+    @PostMapping(path = "/validate-acknowledgement")
+    public ResponseEntity<CaveatCallbackResponse> validateAcknowledgement(@RequestBody CaveatCallbackRequest
+                                                                                      callbackRequest) {
+        caveatAcknowledgementValidationRule.validate(callbackRequest.getCaseDetails());
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 }

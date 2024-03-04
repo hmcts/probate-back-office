@@ -834,7 +834,8 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData,
+                123456L);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -874,7 +875,8 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData,
+                12L);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
