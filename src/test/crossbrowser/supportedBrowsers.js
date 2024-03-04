@@ -24,7 +24,7 @@ const supportedBrowsers = {
     webkit: {
         webkit_mac_latest: {
             browserName: 'webkit',
-            platformName: 'macOS 11',
+            platformName: 'LATEST_MAC',
             browserVersion: 'latest',
             'sauce:options': {
                 name: 'Probate Back Office - XUI: MAC_WEBKIT_LATEST',
