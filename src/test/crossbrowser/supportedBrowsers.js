@@ -57,10 +57,9 @@ const supportedBrowsers = {
         chrome_mac_latest: {
             browserName: 'chromium',
             platformName: LATEST_MAC,
-            browserVersion: 'latest-1',
+            browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: MAC_CHROME_LATEST',
-                screenResolution: '1600x1200'
+                name: 'Probate Back Office - XUI: MAC_CHROME_LATEST'
             }
         }
     },
