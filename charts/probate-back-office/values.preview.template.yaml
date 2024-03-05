@@ -25,7 +25,8 @@ ccd:
       enabled: false
     elastic:
       enabled: true
-    ras: true
+    ras:
+      enabled: true
 
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
