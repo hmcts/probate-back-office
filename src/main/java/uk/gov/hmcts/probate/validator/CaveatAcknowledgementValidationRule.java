@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import java.util.List;
 import java.util.Locale;
 
 @Component
@@ -22,9 +23,11 @@ public class CaveatAcknowledgementValidationRule {
 
     public void validate(CaveatDetails caseDetails) {
         CaveatData caveatData = caseDetails.getData();
-        String paymentConfirmation = caveatData.getPaymentConfirmCheckbox();
-        log.info("Payment confirmation: {}", paymentConfirmation);
-        if (!PAYMENT_CONFIRMATION.equals(paymentConfirmation)) {
+        List<String> paymentConfirmation = caveatData.getPaymentConfirmCheckbox();
+        String confirmation = (null != paymentConfirmation && !paymentConfirmation.isEmpty()) ?
+                caveatData.getPaymentConfirmCheckbox().get(0) : "";
+        log.info("Payment confirmation: {}", confirmation);
+        if (!PAYMENT_CONFIRMATION.equals(confirmation)) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage(PAYMENT_ACKNOWLEDGEMENT, null, Locale.UK);
             throw new BusinessValidationException(userMessage,

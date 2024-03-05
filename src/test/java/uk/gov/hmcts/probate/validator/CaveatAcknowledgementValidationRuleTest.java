@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
+import java.util.List;
+
 class CaveatAcknowledgementValidationRuleTest {
 
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
@@ -29,7 +31,7 @@ class CaveatAcknowledgementValidationRuleTest {
 
         caveatDataNoException = CaveatData.builder()
             .applicationType(ApplicationType.PERSONAL)
-            .paymentConfirmCheckbox("paymentAcknowledgement")
+            .paymentConfirmCheckbox(List.of("paymentAcknowledgement"))
             .registryLocation("Bristol").build();
 
         caveatDataWithException = CaveatData.builder()
