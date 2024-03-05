@@ -69,8 +69,7 @@ const supportedBrowsers = {
             platformName: LATEST_WINDOWS,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: WIN_FIREFOX_LATEST',
-                screenResolution: '1600x1200'
+                name: 'Probate Back Office - XUI: WIN_FIREFOX_LATEST'
             }
         },
         firefox_mac_latest: {
@@ -78,8 +77,7 @@ const supportedBrowsers = {
             platformName: LATEST_MAC,
             browserVersion: 'latest',
             'sauce:options': {
-                name: 'Probate Back Office - XUI: MAC_FIREFOX_LATEST',
-                screenResolution: '1600x1200'
+                name: 'Probate Back Office - XUI: MAC_FIREFOX_LATEST'
             }
         }
     }
