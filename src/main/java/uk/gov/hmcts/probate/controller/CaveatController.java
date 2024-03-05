@@ -264,7 +264,7 @@ public class CaveatController {
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
 
-    @PostMapping(path = "/validate-acknowledgement", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/validate-acknowledgement")
     public ResponseEntity<CaveatCallbackResponse> validateAcknowledgement(@RequestBody CaveatCallbackRequest
                                                                                       callbackRequest) {
         caveatAcknowledgementValidationRule.validate(callbackRequest.getCaseDetails());
