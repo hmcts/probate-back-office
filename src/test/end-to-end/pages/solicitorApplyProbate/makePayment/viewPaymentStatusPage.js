@@ -12,7 +12,7 @@ module.exports = async function (caseRef, appType) {
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.paymentStatusConfirmText, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.serviceRequestLink, testConfig.WaitForTextTimeout);
-    await I.click(makePaymentConfig.serviceRequestLink);
+    await I.forceClick('View service requests');
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.paymentStatus, testConfig.WaitForTextTimeout);
     await I.dontSee(makePaymentConfig.payNowLinkText);
