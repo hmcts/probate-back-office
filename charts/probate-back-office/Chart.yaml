@@ -27,10 +27,9 @@ dependencies:
     version: 2.3.0
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: idam-pr.enabled
-
   - name: postgresql
-    version: 11.6.3
-    repository: https://charts.bitnami.com/bitnami
+    version: 1.0.2
+    repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     condition: postgresql.enabled
 
 #  - name: elasticsearch
