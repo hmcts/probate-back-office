@@ -11,7 +11,7 @@ module.exports = async function (caseRef, appType) {
     const caseRefNoDashes = caseRef.replace(/-/g, '');
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.paymentStatusConfirmText, testConfig.WaitForTextTimeout);
-    await I.seeInSource(makePaymentConfig.serviceRequestLink);
+    await I.see(makePaymentConfig.serviceRequestLink);
     await I.click(makePaymentConfig.serviceRequestLink);
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForText(makePaymentConfig.paymentStatus, testConfig.WaitForTextTimeout);
