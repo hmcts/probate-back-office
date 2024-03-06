@@ -67,7 +67,7 @@ ccd:
       devcpuLimits: 2
       devmemoryLimits: 2Gi
       environment:
-        DATA_STORE_DB_HOST: '{{ tpl .Values.global.postgresHostname $}}'
+        DATA_STORE_DB_HOST: "{{ tpl .Values.global.postgresHostname $}}"
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -153,13 +153,13 @@ ccd:
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
       - name: DATA_STORE_URL
-        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/{{ .Values.global.databaseNamePrefix }}data-store?ssl=require&stringtype=unspecified
+        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?ssl=require&stringtype=unspecified
       - name: DATA_STORE_USER
         value: hmcts
       - name: DATA_STORE_PASS
         value: hmcts
       - name: DB_URL
-        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/data-store?ssl=disable&stringtype=unspecified
       - name: DB_USER
         value: hmcts
       - name: DB_PWD
@@ -181,7 +181,7 @@ ccd:
         memory: "1024Mi"
     configTpl:
       xpack.monitoring.enabled: "false"
-      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/data-store?ssl=disable&stringtype=unspecified
       db.user: hmcts
       db.pwd: hmcts
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
