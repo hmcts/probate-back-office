@@ -55,8 +55,7 @@ class CaveatAcknowledgementValidationRuleTest {
             caveatAcknowledgementValidationRule.validate(caveatDetails);
         })
             .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("You must confirm that you understand that you must complete payment after you've submitted "
-                    + "your application");
+            .hasMessage("Payment confirmation checkbox is not checked: 12345678987654321");
     }
 
 

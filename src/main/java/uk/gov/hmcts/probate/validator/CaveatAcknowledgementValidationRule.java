@@ -31,8 +31,7 @@ public class CaveatAcknowledgementValidationRule {
             String userMessage = businessValidationMessageRetriever
                     .getMessage(PAYMENT_ACKNOWLEDGEMENT, null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "You must confirm that you understand that you must complete payment after you've submitted your "
-                            + "application");
+                    "Payment confirmation checkbox is not checked: " + caseDetails.getId());
         }
     }
 
