@@ -26,7 +26,6 @@ public class CaveatAcknowledgementValidationRule {
         List<String> paymentConfirmation = caveatData.getPaymentConfirmCheckbox();
         String confirmation = (null != paymentConfirmation && !paymentConfirmation.isEmpty())
                 ? caveatData.getPaymentConfirmCheckbox().get(0) : "";
-        log.info("Payment confirmation: {}", confirmation);
         if (!PAYMENT_CONFIRMATION.equals(confirmation)) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage(PAYMENT_ACKNOWLEDGEMENT, null, Locale.UK);
