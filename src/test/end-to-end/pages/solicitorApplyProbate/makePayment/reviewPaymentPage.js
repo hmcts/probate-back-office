@@ -6,6 +6,7 @@ const makePaymentConfig = require('./makePaymentConfig');
 module.exports = async function (caseRef, serviceRequestReviewTabConfig) {
     const I = this;
     const tabXPath = `//div[contains(text(),"${makePaymentConfig.paymentTab}")]`;
+    await I.wait(2);
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
     await I.waitForElement(tabXPath, serviceRequestReviewTabConfig.testTimeToWaitForTab || 60);
     await I.runAccessibilityTest();

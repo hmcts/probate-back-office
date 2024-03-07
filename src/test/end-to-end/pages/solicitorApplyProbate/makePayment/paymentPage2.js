@@ -16,6 +16,14 @@ module.exports = async function (caseRef) {
     await I.waitForElement('#pbaAccountNumber');
     await I.selectOption('#pbaAccountNumber', makePaymentConfig.page2_pBAANumber);
     await I.fillField('#pbaAccountRef', makePaymentConfig.page2_paymentReference);
-    await I.click(`//label[normalize-space()="${makePaymentConfig.paymentOptionLabel}"]`);
-    await I.click('button[type="submit"]');
+    await I.pressKey('Enter');
+
+    //await I.click(`//label[normalize-space()="${makePaymentConfig.paymentOptionLabel}"]`);
+    // await I.click('Enter a reference for your PBA account statements');
+    // await I.wait(2);
+    //await I.selectOption('#pbaAccountNumber', makePaymentConfig.page2_pBAANumber);
+    //await I.waitForClickable('button[type="submit"]');
+    await I.waitForEnabled('Confirm payment');
+    await I.click('Confirm payment');
+    await I.wait(5);
 };
