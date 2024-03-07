@@ -23,7 +23,7 @@ module.exports = async function (caseRef) {
     // await I.wait(2);
     //await I.selectOption('#pbaAccountNumber', makePaymentConfig.page2_pBAANumber);
     //await I.waitForClickable('button[type="submit"]');
-    await I.waitForEnabled('Confirm payment');
+    //await I.waitForEnabled('Confirm payment');
     await I.click('Confirm payment');
-    await I.wait(5);
+
 };

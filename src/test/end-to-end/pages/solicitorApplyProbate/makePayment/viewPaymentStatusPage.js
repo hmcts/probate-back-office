@@ -9,6 +9,8 @@ module.exports = async function (caseRef, appType) {
     const caseProgressTabXPath = `//div[contains(text(),"${makePaymentConfig.caseProgressTab}")]`;
     const caseRefNoDashes = await I.replaceAll(caseRef, '-', '');
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
+    await I.waitForText(makePaymentConfig.serviceRequestLink, testConfig.WaitForTextTimeout);
+    //await I.waitForText(makePaymentConfig.paymentStatusConfirmText, testConfig.WaitForTextTimeout);
     await I.seeInSource(makePaymentConfig.paymentStatusConfirmText);
     await I.waitForText(makePaymentConfig.serviceRequestLink, testConfig.WaitForTextTimeout);
     await I.forceClick('View service requests');
