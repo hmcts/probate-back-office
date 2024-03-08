@@ -460,10 +460,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState());
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformWithConditionalStateChange(callbackRequest,
+                ofNullable(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState()));
     }
 
 
