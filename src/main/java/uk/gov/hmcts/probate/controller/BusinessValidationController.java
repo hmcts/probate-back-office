@@ -135,7 +135,6 @@ public class BusinessValidationController {
         naValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
-        log.info("Validation list in controller {}", ihtValidation);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
             caseDataTransformer.transformFormCaseData(request);
