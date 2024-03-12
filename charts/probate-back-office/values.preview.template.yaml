@@ -163,7 +163,7 @@ ccd:
       - name: DB_URL
         value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?stringtype=unspecified&sslmode=require
       - name: DB_USER
-        value: postgres
+        value: hmcts
       - name: DB_PWD
         value: 9LRk!0A~3K%1
       - name: ES_HOSTS
