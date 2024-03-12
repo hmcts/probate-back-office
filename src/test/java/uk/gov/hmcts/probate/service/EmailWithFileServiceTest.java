@@ -5,6 +5,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -73,5 +74,16 @@ class EmailWithFileServiceTest {
         assertFalse(emailWithFileService.emailFile(
             Paths.get(System.getProperty("java.io.tmpdir"), "absenty.txt").toFile(), "dateStr"));
         verifyNoInteractions(notificationClient);
+    }
+
+    @Test
+    void testEmailFileGreaterThan2MB() throws IOException {
+        File file = ResourceUtils.getFile(FileUtils.class.getResource("/files/hmrcPersonal.txt"));
+        byte[] largeFileContents = new byte[(int) (3 * 1048576)];
+        try (MockedStatic<FileUtils> mockedStatic = mockStatic(FileUtils.class)) {
+            when(FileUtils.readFileToByteArray(any(File.class))).thenReturn(largeFileContents);
+            assertFalse(emailWithFileService.emailFile(file, "dateStr"));
+            verifyNoInteractions(notificationClient);
+        }
     }
 }

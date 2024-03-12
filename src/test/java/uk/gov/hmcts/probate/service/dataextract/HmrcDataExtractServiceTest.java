@@ -160,6 +160,7 @@ class HmrcDataExtractServiceTest {
             when(caseQueryService.findGrantIssuedCasesWithGrantIssuedDate(any(), any())).thenReturn(returnedCases);
             when(emailWithFileService.emailFile(any(), any())).thenReturn(false);
             when(caseQueryService.findCaseStateWithinDateRangeHMRC(any(), any())).thenReturn(returnedCases);
+            when(fileTransferService.uploadFile(any())).thenReturn(HttpStatus.SERVICE_UNAVAILABLE.value());
 
             hmrcDataExtractService.performHmrcExtractFromDate("2000-12-31", "2001-01-01");
 
