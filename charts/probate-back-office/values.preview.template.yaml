@@ -160,18 +160,12 @@ ccd:
     image: hmctspublic.azurecr.io/ccd/logstash
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
-      - name: DATA_STORE_URL
-        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?stringtype=unspecified&sslmode=require
-      - name: DATA_STORE_USER
-        value: hmcts
-      - name: DATA_STORE_PASS
-        value: hmcts
       - name: DB_URL
         value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/{{ .Values.global.databaseNamePrefix }}data-store?stringtype=unspecified&sslmode=require
       - name: DB_USER
-        value: hmcts
+        value: postgres
       - name: DB_PWD
-        value: hmcts
+        value: 9LRk!0A~3K%1
       - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_DATA_NODES_URL
