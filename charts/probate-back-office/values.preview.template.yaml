@@ -165,7 +165,7 @@ ccd:
       - name: DB_USER
         value: hmcts
       - name: DB_PWD
-        value: 9LRk!0A~3K%1
+        value: "PASSWORD: 9LRk!0A~3K%1"
       - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_DATA_NODES_URL
@@ -276,7 +276,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
-    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
+    PROBATE_POSTGRESQL_PASSWORD: "PASSWORD: 9LRk!0A~3K%1"
     PROBATE_POSTGRESQL_HOSTNAME: '{{ .Values.global.postgresHostname }}'
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
