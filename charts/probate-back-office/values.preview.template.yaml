@@ -51,7 +51,7 @@ ccd:
         - name: "pr-${CHANGE_ID}-data-store"
         - name: "pr-${CHANGE_ID}-definition-store"
         - name: "pr-${CHANGE_ID}-user-profile"
-        - name: "pr-${CHANGE_ID}-role_assignment"
+        - name: "pr-${CHANGE_ID}-role-assignment"
         - name: "probatemandb"
 
   ccd-api-gateway-web:
