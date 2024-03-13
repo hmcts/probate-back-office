@@ -27,7 +27,6 @@ ccd:
       enabled: true
     ras:
       enabled: true
-
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
@@ -42,7 +41,6 @@ ccd:
     postgresHostname: "probate-preview.postgres.database.azure.com"
     postgresSecret: postgres
     databaseNamePrefix: "pr-${CHANGE_ID}-"
-
   postgresql:
     enabled: true
     flexibleserver: "probate-preview"
@@ -53,7 +51,6 @@ ccd:
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
         - name: "probatemandb"
-
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -111,7 +108,6 @@ ccd:
         ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: probate_backend,ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer
         LAUNCH_DARKLY_ENV: pr
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
-
   ccd-definition-store-api:
     java:
       autoscaling:
@@ -130,11 +126,10 @@ ccd:
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
-      enviroment:
+      environment:
         USER_PROFILE_DB_HOST: '{{ .Values.global.postgresHostname }}'
       keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
-
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -152,7 +147,6 @@ ccd:
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
     persistence:
       enabled: false
-
   logstash:
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
@@ -160,12 +154,18 @@ ccd:
     image: hmctspublic.azurecr.io/ccd/logstash
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
+      - name: DATA_STORE_URL
+        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
+      - name: DATA_STORE_USER
+        value: hmcts
+      - name: DATA_STORE_PASS
+        value: ${PREVIEW_POSTGRES_PASS}
       - name: DB_URL
-        value: "jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require"
+        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       - name: DB_USER
         value: hmcts
       - name: DB_PWD
-        value: "PASSWORD: 9LRk!0A~3K%1"
+        value: ${PREVIEW_POSTGRES_PASS}
       - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_DATA_NODES_URL
@@ -183,13 +183,12 @@ ccd:
         memory: "1024Mi"
     configTpl:
       xpack.monitoring.enabled: "false"
-      db.url: "jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require"
+      db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       db.user: hmcts
-      db.pwd: "PASSWORD: 9LRk!0A~3K%1"
+      db.pwd: ${PREVIEW_POSTGRES_PASS}
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
-
   ccd-user-profile-importer:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
@@ -276,7 +275,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
-    PROBATE_POSTGRESQL_PASSWORD: "PASSWORD: 9LRk!0A~3K%1"
+    PROBATE_POSTGRESQL_PASSWORD: ${PREVIEW_POSTGRES_PASS}
     PROBATE_POSTGRESQL_HOSTNAME: '{{ .Values.global.postgresHostname }}'
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
@@ -350,3 +349,5 @@ java:
           alias: SCHEDULER_CASEWORKER_USERNAME
         - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
+        - name: preview-postgres-pass
+          alias: PREVIEW_POSTGRES_PASS
