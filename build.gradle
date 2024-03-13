@@ -299,10 +299,11 @@ dependencies {
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
-  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
+  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.23'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.25.2'
+  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
