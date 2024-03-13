@@ -185,7 +185,7 @@ ccd:
       xpack.monitoring.enabled: "false"
       db.url: "jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require"
       db.user: hmcts
-      db.pwd: hmcts
+      db.pwd: "PASSWORD: 9LRk!0A~3K%1"
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
@@ -287,6 +287,7 @@ java:
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
     BACK_OFFICE_BASEURL: https://${SERVICE_NAME}.preview.platform.hmcts.net
     ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
+    PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
 
   keyVaults:
     probate:
