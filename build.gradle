@@ -193,7 +193,7 @@ def versions = [
         springBootStarterHateoas        : '2.7.14',
         hmctsJavaLogging                : '6.0.1',
         authCheckerLib                  : '2.3.0',
-        jacksonDatabind                 : '2.14.2',
+        jacksonDatabind                 : '2.17.0',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
