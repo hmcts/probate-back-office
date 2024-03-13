@@ -79,6 +79,7 @@ class TaskStateRendererTest {
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
     private static final String IHT_FORM_207 = "IHT207";
     private static final String IHT_FORM_205 = "IHT205";
+    private static final String IHT_FORM_400 = "IHT400";
     private static final String PRIMARY_APPLICANT_FIRST_NAME = "fName";
     private static final String PRIMARY_APPLICANT_SURNAME = "sName";
     private static final SolsAddress PRIMARY_APPLICANT_ADDRESS = mock(SolsAddress.class);
@@ -661,6 +662,36 @@ class TaskStateRendererTest {
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
             LocalDate.of(2020,10,10),
             LocalDate.of(2020,11, 1), caseDetails);
+
+        assertEquals(expectedHtml, result);
+    }
+
+    @Test
+    void shouldRenderCorrectDocumentsForState_SendDocuments_GopIht400() {
+        final CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(PRIMARY_APPLICANT_FIRST_NAME)
+                .primaryApplicantSurname(PRIMARY_APPLICANT_SURNAME)
+                .primaryApplicantIsApplying(NO)
+                .primaryApplicantAddress(PRIMARY_APPLICANT_ADDRESS)
+                .primaryApplicantAlias(PRIMARY_APPLICANT_NAME_ON_WILL)
+                .solsAdditionalExecutorList(null)
+                .solsWillType(GRANT_TYPE_PROBATE)
+                .solsFeeAccountNumber("1")
+                .ihtFormId(IHT_FORM_400)
+                .iht217(YES)
+                .build();
+
+        CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
+
+        String expectedHtml = fileSystemResourceService
+                .getFileFromResourceAsString(
+                        "caseprogress/gop/solicitorCaseProgressSendDocumentsIHT400");
+        expectedHtml = expectedHtml.replaceAll("<BRANCH/>", TaskState.CODE_BRANCH);
+
+        String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
+                testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
+                LocalDate.of(2020,10,10),
+                LocalDate.of(2020,11, 1), caseDetails);
 
         assertEquals(expectedHtml, result);
     }
