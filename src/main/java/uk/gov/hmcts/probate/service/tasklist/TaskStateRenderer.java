@@ -70,6 +70,8 @@ import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.REVIEW_OR_SUB
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.SOLICITOR_DETAILS_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_COVERSHEET_URL_TEMPLATE;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.TL_SERVICE_REQUEST_URL_TEMPLATE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.IHT400_VALUE;
+import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
 
 // Renders links / text and also the status tag - i.e. details varying by state
 @Slf4j
@@ -369,7 +371,9 @@ public class TaskStateRenderer {
         String ihtFormValue = data.getIhtFormId() == null ? "" : data.getIhtFormId();
         String ihtText = "";
         String ihtForm = "";
-        if (!ihtFormValue.contentEquals(IHT_400421) && !"".equals(ihtFormValue)) {
+        if (!"".equals(ihtFormValue) && !ihtFormValue.contentEquals(IHT400_VALUE)
+                && !ihtFormValue.contentEquals(IHT_400421)
+                && !ihtFormValue.contentEquals(NOT_APPLICABLE_VALUE)) {
             ihtText = LIST_ITEM_START + "the inheritance tax form ";
             if (YES.equals(data.getIht217())) {
                 ihtForm = "IHT205 and IHT217" + LIST_ITEM_END;
