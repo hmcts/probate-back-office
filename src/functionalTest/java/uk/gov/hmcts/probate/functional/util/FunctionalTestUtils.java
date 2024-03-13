@@ -20,10 +20,13 @@ import java.util.List;
 import java.util.Locale;
 import javax.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
-import org.pdfbox.cos.COSDocument;
-import org.pdfbox.pdfparser.PDFParser;
-import org.pdfbox.pdmodel.PDDocument;
-import org.pdfbox.util.PDFTextStripper;
+import org.apache.pdfbox.cos.COSDocument;
+import org.apache.pdfbox.io.IOUtils;
+import org.apache.pdfbox.io.RandomAccessBuffer;
+import org.apache.pdfbox.io.RandomAccessRead;
+import org.apache.pdfbox.pdfparser.PDFParser;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.text.PDFTextStripper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -217,7 +220,9 @@ public class FunctionalTestUtils {
         String parsedText = "";
 
         try {
-            parser = new PDFParser(inputStream);
+            byte[] byteArray = IOUtils.toByteArray(inputStream);
+            RandomAccessRead randomAccessRead = new RandomAccessBuffer(byteArray);
+            parser = new PDFParser(randomAccessRead);
             parser.parse();
             cosDoc = parser.getDocument();
             pdfStripper = new PDFTextStripper();
