@@ -159,13 +159,13 @@ ccd:
       - name: DATA_STORE_USER
         value: hmcts
       - name: DATA_STORE_PASS
-        value: ${PREVIEW_POSTGRES_PASS}
+        value: hmcts
       - name: DB_URL
         value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       - name: DB_USER
         value: hmcts
       - name: DB_PWD
-        value: ${PREVIEW_POSTGRES_PASS}
+        value: hmcts
       - name: ES_HOSTS
         value: http://${SERVICE_NAME}-es-master:9200
       - name: ES_DATA_NODES_URL
@@ -185,7 +185,7 @@ ccd:
       xpack.monitoring.enabled: "false"
       db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       db.user: hmcts
-      db.pwd: ${PREVIEW_POSTGRES_PASS}
+      db.pwd: hmcts
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
@@ -275,7 +275,7 @@ java:
   ingressHost: ${SERVICE_FQDN}
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
-    PROBATE_POSTGRESQL_PASSWORD: ${PREVIEW_POSTGRES_PASS}
+    PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: '{{ .Values.global.postgresHostname }}'
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
@@ -349,5 +349,3 @@ java:
           alias: SCHEDULER_CASEWORKER_USERNAME
         - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
-        - name: preview-postgres-pass
-          alias: PREVIEW_POSTGRES_PASS
