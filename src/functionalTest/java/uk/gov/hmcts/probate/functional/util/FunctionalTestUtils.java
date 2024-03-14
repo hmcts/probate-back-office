@@ -224,7 +224,7 @@ public class FunctionalTestUtils {
             RandomAccessRead randomAccessRead = new RandomAccessBuffer(byteArray);
             parser = new PDFParser(randomAccessRead);
             parser.parse();
-            cosDoc = parser.getDocument();
+            cosDoc = parser.parse().getDocument();
             pdfStripper = new PDFTextStripper();
             pdDoc = new PDDocument(cosDoc);
             parsedText = pdfStripper.getText(pdDoc);
