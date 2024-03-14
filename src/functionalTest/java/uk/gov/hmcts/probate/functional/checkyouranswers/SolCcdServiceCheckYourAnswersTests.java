@@ -3,11 +3,11 @@ package uk.gov.hmcts.probate.functional.checkyouranswers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.apache.pdfbox.Loader;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
+import java.io.ByteArrayInputStream;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 import java.io.IOException;
@@ -271,7 +271,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
     }
 
     private String textContentOf(byte[] pdfData) throws IOException {
-        final PDDocument pdfDocument = Loader.loadPDF(pdfData);
+        final PDDocument pdfDocument = PDDocument.load(new ByteArrayInputStream(pdfData));
         try {
             return new PDFTextStripper().getText(pdfDocument);
         } finally {
