@@ -20,9 +20,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
@@ -265,7 +263,8 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaveatCallbackResponse> rollbackDataMigration(@RequestBody CaveatCallbackRequest callbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> rollbackDataMigration
+            (@RequestBody CaveatCallbackRequest callbackRequest) {
         log.info("Rollback Data migration - {}", callbackRequest.getCaseDetails().getId());
         return ResponseEntity.ok(caveatCallbackResponseTransformer.rollback(callbackRequest));
     }
