@@ -263,8 +263,8 @@ public class CaveatController {
     }
 
     @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CaveatCallbackResponse> rollbackDataMigration
-            (@RequestBody CaveatCallbackRequest callbackRequest) {
+    public ResponseEntity<CaveatCallbackResponse> rollbackDataMigration(@RequestBody CaveatCallbackRequest
+                                                                                    callbackRequest) {
         log.info("Rollback Data migration - {}", callbackRequest.getCaseDetails().getId());
         return ResponseEntity.ok(caveatCallbackResponseTransformer.rollback(callbackRequest));
     }
