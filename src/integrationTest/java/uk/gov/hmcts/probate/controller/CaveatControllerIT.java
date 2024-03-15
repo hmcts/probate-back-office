@@ -52,6 +52,7 @@ class CaveatControllerIT {
     private static final String REGISTRARS_DECISION = "/caveat/registrars-decision";
     private static final String SETUP_FOR_REMOVAL = "/caveat/setup-for-permanent-removal";
     private static final String DELETE_REMOVED = "/caveat/permanently-delete-removed";
+    private static final String ROLLBACK = "/caveat/rollback";
 
     @Autowired
     private MockMvc mockMvc;
@@ -368,6 +369,13 @@ class CaveatControllerIT {
     void shouldDeleteRemovedDocuments() throws Exception {
         String caveatPayload = testUtils.getStringFromFile("caveatDocumentsPayloadNotifications.json");
         mockMvc.perform(post(DELETE_REMOVED).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldRollback() throws Exception {
+        String caveatPayload = testUtils.getStringFromFile("caveatPayloadNotificationsOrgPolicy.json");
+        mockMvc.perform(post(ROLLBACK).content(caveatPayload).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }

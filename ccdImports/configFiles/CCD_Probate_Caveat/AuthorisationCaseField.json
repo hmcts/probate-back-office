@@ -433,6 +433,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "scannedDocuments", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "evidenceHandled", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},

@@ -11,6 +11,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
+import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.service.CaveatNotificationService;
@@ -162,6 +163,18 @@ class CaveatControllerUnitTest {
         ResponseEntity<CaveatCallbackResponse> response =
                 underTest.permanentlyDeleteRemovedCaveat(caveatCallbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForCaveat(caveatCallbackRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldRollback() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+
+        ResponseEntity<CaveatCallbackResponse> response =
+                underTest.rollbackDataMigration(caveatCallbackRequest);
+        verify(caveatCallbackResponseTransformer, times(1))
+                .rollback(caveatCallbackRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
