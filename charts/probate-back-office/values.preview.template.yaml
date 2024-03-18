@@ -1,30 +1,6 @@
 tags:
   probate-ccd-stack: true
 
-postgresql:
-  enabled: true
-  image:
-    registry: hmctspublic.azurecr.io
-    repository: imported/bitnami/postgresql
-    tag: '11.3.0'
-  resources:
-    requests:
-      cpu: 25m
-  auth:
-    username: hmcts
-    password: hmcts
-  primary:
-    persistence:
-      enabled: false
-    initdb:
-      scripts:
-         create.sql: |
-           CREATE DATABASE probatemandb WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "data-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "definition-store" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "user-profile" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-           CREATE DATABASE "role_assignment" WITH OWNER = hmcts ENCODING = 'UTF-8' CONNECTION LIMIT = -1;
-
 idam-pr:
   enabled: true
   releaseNameOverride: ${SERVICE_NAME}-xui-idam-pr
@@ -49,9 +25,8 @@ ccd:
       enabled: false
     elastic:
       enabled: true
-    postgresql:
-      enabled: false
-
+    ras:
+      enabled: true
   global:
     ccdApiGatewayIngress: gateway-${SERVICE_FQDN}
     ccdCaseManagementWebIngress: case-management-web-${SERVICE_FQDN}
@@ -62,10 +37,20 @@ ccd:
     idamApiUrl: https://idam-api.aat.platform.hmcts.net
     idamWebUrl: https://idam-web-public.aat.platform.hmcts.net
     s2sUrl: http://rpe-service-auth-provider-aat.service.core-compute-aat.internal
-    postgresUsername: hmcts
-    postgresPassword: hmcts
     devMode: true
-
+    postgresHostname: "probate-preview.postgres.database.azure.com"
+    postgresSecret: postgres
+    databaseNamePrefix: "pr-${CHANGE_ID}-"
+  postgresql:
+    enabled: true
+    flexibleserver: "probate-preview"
+    setup:
+      databases:
+        - name: "pr-${CHANGE_ID}-data-store"
+        - name: "pr-${CHANGE_ID}-definition-store"
+        - name: "pr-${CHANGE_ID}-user-profile"
+        - name: "pr-${CHANGE_ID}-role-assignment"
+        - name: "probatemandb"
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -87,7 +72,7 @@ ccd:
       devcpuLimits: 2
       devmemoryLimits: 2Gi
       environment:
-        DATA_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DATA_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DATA_STORE_IDAM_KEY: ${DATA_STORE_S2S_KEY}
         IDAM_API_BASE_URL: https://idam-api.aat.platform.hmcts.net
         IDAM_OIDC_URL: https://idam-web-public.aat.platform.hmcts.net
@@ -101,7 +86,7 @@ ccd:
         HTTP_CLIENT_MAX_TOTAL: '300'
         HTTP_CLIENT_MAX_CLIENT_PER_ROUTE: '30'
         DATA_STORE_DB_MAX_POOL_SIZE: 80
-        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&ssl=disable&gssEncMode=disable"
+        DATA_STORE_DB_OPTIONS: "?stringtype=unspecified&sslmode=require"
         CCD_DOCUMENT_URL_PATTERN: ^https?://(((?:dm-store-aat\.service\.core-compute-aat\.internal(?::\d+)?)\/documents\/[A-Za-z0-9-]+(?:\/binary)?))
         CASE_DOCUMENT_AM_URL: http://ccd-case-document-am-api-aat.service.core-compute-aat.internal
         ROLE_ASSIGNMENT_URL: http://${SERVICE_NAME}-am-role-assignment-service
@@ -117,19 +102,19 @@ ccd:
           secrets:
             - role-assignment-service-LD-SDK-KEY
       environment:
-        ROLE_ASSIGNMENT_DB_HOST: ${SERVICE_NAME}-postgresql
+        ROLE_ASSIGNMENT_DB_HOST: '{{ .Values.global.postgresHostname }}'
+        ROLE_ASSIGNMENT_DB_NAME: "{{ .Values.global.databaseNamePrefix }}role-assignment"
         CCD_DATA_STORE_URL: "http://${SERVICE_NAME}-ccd-data-store-api"
         ROLE_ASSIGNMENT_S2S_AUTHORISED_SERVICES: probate_backend,ccd_gw,am_role_assignment_service,am_org_role_mapping_service,wa_task_management_api,wa_task_configuration_api,xui_webapp,aac_manage_case_assignment,ccd_data,wa_workflow_api,wa_task_monitor,wa_case_event_handler,iac,hmc_cft_hearing_service,ccd_case_disposer
         LAUNCH_DARKLY_ENV: pr
         LD_SDK_KEY: ${LD_SDK_AM_KEY}
-
   ccd-definition-store-api:
     java:
       autoscaling:
         maxReplicas: 2
       imagePullPolicy: Always
       environment:
-        DEFINITION_STORE_DB_HOST: ${SERVICE_NAME}-postgresql
+        DEFINITION_STORE_DB_HOST: '{{ .Values.global.postgresHostname }}'
         DEFINITION_STORE_IDAM_KEY: ${DEFINITION_STORE_S2S_KEY}
         DEFINITION_STORE_S2S_AUTHORISED_SERVICES: ccd_data,ccd_gw,ccd_admin,xui_webapp,aac_manage_case_assignment
         DEFINITION_STORE_TX_TIMEOUT_DEFAULT: 60
@@ -141,11 +126,10 @@ ccd:
   ccd-user-profile-api:
     java:
       imagePullPolicy: Always
-      enviroment:
-        USER_PROFILE_DB_HOST: ${SERVICE_NAME}-postgresql
+      environment:
+        USER_PROFILE_DB_HOST: '{{ .Values.global.postgresHostname }}'
       keyVaults: []
       ingressHost: ccd-user-profile-api-${SERVICE_FQDN}
-
   elasticsearch:
     nameOverride: ${SERVICE_NAME}-es
     clusterName: "es"
@@ -163,7 +147,6 @@ ccd:
         value: .security*,.watches,.triggered_watches,.watcher-history-*,.logstash_dead_letter,.ml*,grantofrepresentation_cases,caveat_cases,legacy_cases,standingsearch_cases,willlodgement_cases
     persistence:
       enabled: false
-
   logstash:
     elasticsearch:
       host: ${SERVICE_NAME}-es-master
@@ -172,13 +155,13 @@ ccd:
     imageTag: "ccd-probate-logstash-latest"
     extraEnvs:
       - name: DATA_STORE_URL
-        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       - name: DATA_STORE_USER
         value: hmcts
       - name: DATA_STORE_PASS
         value: hmcts
       - name: DB_URL
-        value: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+        value: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       - name: DB_USER
         value: hmcts
       - name: DB_PWD
@@ -200,13 +183,12 @@ ccd:
         memory: "1024Mi"
     configTpl:
       xpack.monitoring.enabled: "false"
-      db.url: jdbc:postgresql://${SERVICE_NAME}-postgresql:5432/data-store?ssl=disable&stringtype=unspecified
+      db.url: jdbc:postgresql://probate-preview.postgres.database.azure.com:5432/pr-${CHANGE_ID}-data-store?stringtype=unspecified&sslmode=require
       db.user: hmcts
       db.pwd: hmcts
       es.data.nodes.url: http://${SERVICE_NAME}-es-master:9200
     livenessProbe:
       initialDelaySeconds: 90
-
   ccd-user-profile-importer:
     image: hmctspublic.azurecr.io/ccd/user-profile-importer:latest
     users:
@@ -294,7 +276,7 @@ java:
   environment:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
-    PROBATE_POSTGRESQL_HOSTNAME: ${SERVICE_NAME}-postgresql
+    PROBATE_POSTGRESQL_HOSTNAME: '{{ .Values.global.postgresHostname }}'
     PROBATE_POSTGRESQL_DATABASE: probatemandb
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
@@ -304,6 +286,7 @@ java:
     BLOB_STORAGE_SMEEANDFORD_FEATURE_ENABLED: true
     BACK_OFFICE_BASEURL: https://${SERVICE_NAME}.preview.platform.hmcts.net
     ACA_SERVICE_API_BASEURL: http://${SERVICE_NAME}-aac-manage-case-assignment
+    PROBATE_POSTGRESQL_HOSTNAME_VAL: '{{ .Values.global.postgresHostname }}'
 
   keyVaults:
     probate:
@@ -366,4 +349,3 @@ java:
           alias: SCHEDULER_CASEWORKER_USERNAME
         - name: schedulerCaseWorkerPass
           alias: SCHEDULER_CASEWORKER_PASSWORD
-
