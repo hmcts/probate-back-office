@@ -50,7 +50,7 @@ ccd:
         - name: "pr-${CHANGE_ID}-definition-store"
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
-        - name: "probatemandb"
+        - name: "pr-${CHANGE_ID}-probatemandb"
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
@@ -277,7 +277,7 @@ java:
     PROBATE_POSTGRESQL_USER: "hmcts"
     PROBATE_POSTGRESQL_PASSWORD: "hmcts"
     PROBATE_POSTGRESQL_HOSTNAME: '{{ .Values.global.postgresHostname }}'
-    PROBATE_POSTGRESQL_DATABASE: probatemandb
+    PROBATE_POSTGRESQL_DATABASE: pr-${CHANGE_ID}-probatemandb
     CCD_GATEWAY_HOST: http://gateway-${SERVICE_FQDN}
     SERVICES_CORECASEDATA_BASEURL : http://${SERVICE_NAME}-ccd-data-store-api
     CCD_DATA_STORE_API_HOST : http://${SERVICE_NAME}-ccd-data-store-api
