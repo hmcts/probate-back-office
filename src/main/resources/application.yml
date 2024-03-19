@@ -20,6 +20,9 @@ management:
     health:
       show-details: always
       enabled: true
+  health:
+    db:
+      enabled: false
 
 springdoc:
   packagesToScan: uk.gov.hmcts.probate.controller

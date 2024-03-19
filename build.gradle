@@ -299,10 +299,11 @@ dependencies {
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
-  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
+  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.23'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.25.2'
+  implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
@@ -348,7 +349,7 @@ dependencies {
     exclude group: 'com.vaadin.external.google', module:'android-json'
   }
   testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
-  testImplementation group: 'org.pdfbox', name: 'com.springsource.org.pdfbox', version: '0.7.3'
+  testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
@@ -371,7 +372,7 @@ dependencies {
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '7.0.0'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.0'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
