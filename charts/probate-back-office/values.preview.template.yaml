@@ -50,6 +50,7 @@ ccd:
         - name: "pr-${CHANGE_ID}-definition-store"
         - name: "pr-${CHANGE_ID}-user-profile"
         - name: "pr-${CHANGE_ID}-role-assignment"
+        - name: "probatemandb"
   ccd-api-gateway-web:
     nodejs:
       imagePullPolicy: Always
