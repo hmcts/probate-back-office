@@ -25,7 +25,7 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
     public static final String IHT_VALUE_VALIDATION = "ihtValueValidation";
 
     private final BusinessValidationMessageService businessValidationMessageService;
-    private static final String REGEX_PATTERN = "^[1-9]\\d*$";
+    private static final String REGEX_PATTERN = "^[0-9]\\d*$";
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
