@@ -152,6 +152,17 @@ class IHTValidationRuleTest {
     }
 
     @Test
+    void testValidateWithSuccessWhenZeroForFormNetValue() {
+        when(inheritanceTaxMock.getGrossValue()).thenReturn(BigDecimal.ZERO);
+        when(inheritanceTaxMock.getNetValue()).thenReturn(BigDecimal.ZERO);
+
+        List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
+
+        verify(businessValidationMessageService, never()).generateError(any(String.class), any(String.class));
+        assertThat(validationError.isEmpty(), is(true));
+    }
+
+    @Test
     void testValidateFailureWhenFormNetHigherThanGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(HIGHER_VALUE);
