@@ -86,6 +86,20 @@ public class SolCCDServiceAuthTokenGenerator {
         return token;
     }
 
+    public String generateClientToken(String userName, String password) {
+        String code = generateClientCode(userName, password);
+        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?"
+                        + "code=" + code
+                        + "&client_secret=" + probateClientSecret
+                        + "&client_id=" + probateClientId
+                        + "&redirect_uri=" + redirectUri
+                        + "&grant_type=authorization_code")
+                .body().jsonPath();
+        String token = jp.get("access_token");
+
+        return token;
+    }
+
     private String generateClientCode() {
         String code = "";
         String jsonResponse = given()
@@ -107,16 +121,6 @@ public class SolCCDServiceAuthTokenGenerator {
         return code;
     }
 
-    public void createNewUser() {
-        given().headers("Content-type", "application/json")
-            .relaxedHTTPSValidation()
-            .body(
-                "{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\","
-                    + "\"password\":\"123\",\"continue-url\":\"test\"}")
-            .post(idamUrl + "/testing-support/accounts");
-    }
-
-
     private String generateClientCode(String userName, String password) {
         final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
         ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
@@ -129,19 +133,15 @@ public class SolCCDServiceAuthTokenGenerator {
         return authorization.jsonPath().get("code");
     }
 
-    public String generateClientToken(String userName, String password) {
-        String code = generateClientCode(userName, password);
-        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?"
-                        + "code=" + code
-                        + "&client_secret=" + probateClientSecret
-                        + "&client_id=" + probateClientId
-                        + "&redirect_uri=" + redirectUri
-                        + "&grant_type=authorization_code")
-                .body().jsonPath();
-        String token = jp.get("access_token");
-
-        return token;
+    public void createNewUser() {
+        given().headers("Content-type", "application/json")
+            .relaxedHTTPSValidation()
+            .body(
+                "{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\","
+                    + "\"password\":\"123\",\"continue-url\":\"test\"}")
+            .post(idamUrl + "/testing-support/accounts");
     }
+
 
     public String generateOpenIdToken(String userName, String password) {
         JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/o/token?"
