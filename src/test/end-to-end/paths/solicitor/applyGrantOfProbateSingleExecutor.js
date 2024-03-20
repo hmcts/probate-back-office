@@ -54,7 +54,7 @@ Scenario(scenarioName, async function ({I}) {
     await I.deceasedDetailsPage1();
     await I.deceasedDetailsPage2();
     await I.enterIhtDetails(caseProgressConfig, caseProgressConfig.optionYes);
-    await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, IHT400);
+    await I.provideIhtValues(deceasedDetailsConfig.page2_ihtGrossValue, deceasedDetailsConfig.page2_ihtNetValue, 'IHT400');
     await I.deceasedDetailsPage3();
     await I.deceasedDetailsPage4();
     await I.cyaPage();
