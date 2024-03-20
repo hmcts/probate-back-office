@@ -137,7 +137,7 @@ public class SecurityUtils {
         return getIdamOauth2TokenScheduler(schedulerUserName, schedulerPassword);
     }
 
-    private String getIdamOauth2TokenScheduler(String username, String password) {
+    public String getIdamOauth2TokenScheduler(String username, String password) {
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);
         try {
@@ -166,7 +166,7 @@ public class SecurityUtils {
         }
     }
 
-    private String getIdamOauth2Token(String username, String password) {
+    public String getIdamOauth2Token(String username, String password) {
 
         TokenResponse idamOpenIdTokenResponse;
         log.info("Client ID: {} . Authenticating...", authClientId);

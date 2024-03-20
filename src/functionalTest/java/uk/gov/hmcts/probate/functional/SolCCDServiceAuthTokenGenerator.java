@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.functional.model.ClientAuthorizationCodeResponse;
 import uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.io.IOException;
@@ -51,6 +52,8 @@ public class SolCCDServiceAuthTokenGenerator {
     @Autowired
     private ServiceAuthTokenGenerator tokenGenerator;
 
+    @Autowired
+    private SecurityUtils securityUtils;
     public String generateServiceToken() {
         return tokenGenerator.generate();
     }
@@ -107,7 +110,7 @@ public class SolCCDServiceAuthTokenGenerator {
     }
 
     public String generateClientToken(String userName, String password) {
-        String code = generateClientCode(userName, password);
+        /*String code = generateClientCode(userName, password);
         JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?"
             + "code=" + code
             + "&client_secret=" + probateClientSecret
@@ -117,7 +120,8 @@ public class SolCCDServiceAuthTokenGenerator {
             .body().jsonPath();
         String token = jp.get("access_token");
 
-        return token;
+        return token;*/
+        return securityUtils.getIdamOauth2Token(userName,password);
     }
 
     public String generateClientToken() {
