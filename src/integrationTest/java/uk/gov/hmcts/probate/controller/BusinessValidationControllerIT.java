@@ -163,6 +163,7 @@ class BusinessValidationControllerIT {
     private static final String UNIQUE_CODE = "/case/validate-unique-code";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
+    private static final String VALUES_PAGE = "/case/validate-values-page";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1205,6 +1206,16 @@ class BusinessValidationControllerIT {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(UNIQUE_CODE).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldValidateValuesPage() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(VALUES_PAGE).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }

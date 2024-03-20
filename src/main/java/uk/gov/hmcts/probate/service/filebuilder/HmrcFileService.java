@@ -16,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Grantee;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.ReturnedCaseDetails;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -30,6 +31,7 @@ import java.util.stream.Stream;
 public class HmrcFileService extends BaseFileService {
     private final TextFileBuilderService textFileBuilderService;
     private final FileExtractDateFormatter fileExtractDateFormatter;
+    private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     private static final String DELIMITER = "~";
     private static final String ROW_DELIMITER = "\n";
@@ -42,10 +44,11 @@ public class HmrcFileService extends BaseFileService {
     private static final String LAST_FILE = "Y";
     private static final String FINAL_GRANT = "Y";
     private static final Map<String, String> iht2EstateMap = Stream.of(new String[][]{
-        {"IHT400421", "N"},
-        {"IHT205", "Y"},
-        {"IHT207", "E"},
-        {"NA", "X"},
+            {"IHT400", "N"},
+            {"IHT400421", "N"},
+            {"IHT205", "Y"},
+            {"IHT207", "E"},
+            {"NA", "X"},
     }).collect(Collectors.toMap(data -> data[0], data -> data[1]));
 
     public File createHmrcFile(List<ReturnedCaseDetails> ccdCases, String fileName) {
@@ -159,13 +162,23 @@ public class HmrcFileService extends BaseFileService {
         fileData.add(ROW_DELIMITER);
         return 1;
     }
-    
+
     private void addExpectedEstateIndicator(ImmutableList.Builder<String> fileData, CaseData data) {
         String type = iht2EstateMap.get("NA");
-        if (!StringUtils.isEmpty(data.getIhtFormId())) {
-            type = iht2EstateMap.get(data.getIhtFormId());
+        if (exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(data.getDeceasedDateOfDeath())) {
+            if (!StringUtils.isEmpty(data.getIhtFormEstateValuesCompleted())
+                    && data.getIhtFormEstateValuesCompleted().equals("Yes")) {
+                if (!StringUtils.isEmpty(data.getIhtFormEstate())) {
+                    type = iht2EstateMap.get(data.getIhtFormEstate());
+                }
+            } else {
+                type = "Y";
+            }
+        } else {
+            if (!StringUtils.isEmpty(data.getIhtFormId())) {
+                type = iht2EstateMap.get(data.getIhtFormId());
+            }
         }
-
         if (type == null) {
             throw new BadRequestException("Unsupported IHT Form Type for " + data.getIhtFormId());
         }
