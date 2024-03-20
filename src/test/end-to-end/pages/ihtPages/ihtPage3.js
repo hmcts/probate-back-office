@@ -8,8 +8,7 @@ module.exports = async function (ihtGrossValue, ihtNetValue, whichIHTFormsComple
     if (whichIHTFormsCompleted === 'IHT400') {
         await I.waitForElement({css: '#ihtFormNetValue'});
         await I.fillField({css: '#ihtFormNetValue'}, ihtNetValue);
-    }
-    else {
+    } else {
         await I.waitForElement({css: '#ihtNetValue'});
         await I.fillField({css: '#ihtNetValue'}, ihtNetValue);
     }
