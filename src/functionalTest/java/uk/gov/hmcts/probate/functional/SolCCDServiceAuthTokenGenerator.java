@@ -5,6 +5,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +15,7 @@ import uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.io.IOException;
+import java.util.Base64;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.post;
@@ -112,6 +114,33 @@ public class SolCCDServiceAuthTokenGenerator {
                 "{ \"email\":\"test@TEST.COM\", \"forename\":\"test@TEST.COM\",\"surname\":\"test@TEST.COM\","
                     + "\"password\":\"123\",\"continue-url\":\"test\"}")
             .post(idamUrl + "/testing-support/accounts");
+    }
+
+
+    private String generateClientCode(String userName, String password) {
+        final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
+        ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
+                .header("Authorization", "Basic " + encoded)
+                .post("/oauth2/authorize?response_type=code&client_id="
+                        + probateClientId + "&redirect_uri=" + redirectUri)
+                .body();
+
+        log.info("authorization:" + authorization.prettyPrint());
+        return authorization.jsonPath().get("code");
+    }
+
+    public String generateClientToken(String userName, String password) {
+        String code = generateClientCode(userName, password);
+        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?"
+                        + "code=" + code
+                        + "&client_secret=" + probateClientSecret
+                        + "&client_id=" + probateClientId
+                        + "&redirect_uri=" + redirectUri
+                        + "&grant_type=authorization_code")
+                .body().jsonPath();
+        String token = jp.get("access_token");
+
+        return token;
     }
 
     public String generateOpenIdToken(String userName, String password) {
