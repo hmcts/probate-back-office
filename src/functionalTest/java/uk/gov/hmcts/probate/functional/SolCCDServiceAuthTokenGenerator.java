@@ -150,7 +150,7 @@ public class SolCCDServiceAuthTokenGenerator {
             + "&redirect_uri=" + redirectUri
             + "&username=" + userName
             + "&password=" + password
-            + "&grant_type=password&scope=openid")
+            + "&grant_type=password&scope=openid profile roles")
             .body().jsonPath();
         String token = jp.get("access_token");
 
