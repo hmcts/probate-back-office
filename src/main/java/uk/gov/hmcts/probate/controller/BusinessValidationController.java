@@ -137,7 +137,8 @@ public class BusinessValidationController {
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+            caseDataTransformer.transformFormCaseData(request);
+            return ResponseEntity.ok(callbackResponseTransformer.transformValuesPage(request));
         }
         return ResponseEntity.ok(response);
     }
@@ -204,12 +205,13 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         CaseDetails details = callbackRequest.getCaseDetails();
         if (response.getErrors().isEmpty()) {
+            caseDataTransformer.transformFormCaseData(callbackRequest);
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
-                log.info("selected No to Hmrc letter");
+                log.info("Selected No to Hmrc letter");
                 response = callbackResponseTransformer.transformCase(callbackRequest);
             }
         }
@@ -468,6 +470,14 @@ public class BusinessValidationController {
         logRequest(request.getRequestURI(), callbackRequest);
         uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformUniqueProbateCode(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-values-page")
+    public ResponseEntity<CallbackResponse> validateValuesPage(@RequestBody CallbackRequest callbackRequest,
+                                                               HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformValuesPage(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
