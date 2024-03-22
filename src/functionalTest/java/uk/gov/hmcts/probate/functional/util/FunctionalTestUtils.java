@@ -269,7 +269,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithCaseworkerUser() {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateClientToken(caseworkerEmail,
+        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(caseworkerEmail,
             caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
