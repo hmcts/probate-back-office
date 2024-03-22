@@ -464,6 +464,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/changeDod", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> changeDod(@RequestBody CallbackRequest callbackRequest,
+                                                            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("superuser change Dod");
+        CallbackResponse response = callbackResponseTransformer.changeDod(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
     @PostMapping(path = "/validate-unique-code")
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {
