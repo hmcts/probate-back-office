@@ -131,7 +131,7 @@ public class CaseData extends CaseDataParent {
         ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class}, message = "{dodIsNull}")
     private final LocalDate deceasedDateOfDeath;
 
-    private final String deceasedDod;
+    private final String deceasedDob;
 
     private final LocalDate currentDate = LocalDate.now();
 

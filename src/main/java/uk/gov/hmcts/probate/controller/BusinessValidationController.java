@@ -464,12 +464,12 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/changeDod", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> changeDod(@RequestBody CallbackRequest callbackRequest,
+    @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
                                                             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-        log.info("superuser change Dod");
-        CallbackResponse response = callbackResponseTransformer.changeDod(callbackRequest);
+        log.info("superuser change Dob");
+        CallbackResponse response = callbackResponseTransformer.changeDob(callbackRequest);
         return ResponseEntity.ok(response);
     }
 

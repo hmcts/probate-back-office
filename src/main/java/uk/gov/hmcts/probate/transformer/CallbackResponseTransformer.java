@@ -477,10 +477,10 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
-    public CallbackResponse changeDod(CallbackRequest callbackRequest) {
+    public CallbackResponse changeDob(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.deceasedDateOfDeath(callbackRequest.getCaseDetails().getData().getDeceasedDod());
+        responseCaseDataBuilder.deceasedDateOfBirth(callbackRequest.getCaseDetails().getData().getDeceasedDob());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
