@@ -54,7 +54,7 @@ public class SolCCDServiceAuthTokenGenerator {
     }
 
     public String getUserId() {
-        String clientToken = generateClientToken();
+        String clientToken = generateOpenIdToken();
 
         String withoutSignature = clientToken.substring(0, clientToken.lastIndexOf('.') + 1);
         Claims claims = Jwts.parser().build().parseSignedClaims(withoutSignature).getPayload();
@@ -116,6 +116,27 @@ public class SolCCDServiceAuthTokenGenerator {
             .post(idamUrl + "/testing-support/accounts");
     }
 
+    public String generateOpenIdToken() {
+        String code = generateClientCode();
+        String token = "";
+
+        String jsonResponse = post(idamUrl + "/o/token?"
+                + "client_secret=" + clientSecret
+                + "&client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
+                + "&grant_type=password&scope=openid profile roles")
+                .body().asString();
+
+        ObjectMapper mapper = new ObjectMapper();
+
+        try {
+            token = mapper.readValue(jsonResponse, ClientAuthorizationResponse.class).accessToken;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return token;
+    }
 
     public String generateOpenIdToken(String userName, String password) {
         JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/o/token?"
