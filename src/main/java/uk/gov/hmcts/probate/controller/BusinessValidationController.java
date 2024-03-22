@@ -472,6 +472,7 @@ public class BusinessValidationController {
         CallbackResponse response = callbackResponseTransformer.changeDod(callbackRequest);
         return ResponseEntity.ok(response);
     }
+
     @PostMapping(path = "/validate-unique-code")
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {
