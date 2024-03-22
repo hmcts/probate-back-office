@@ -62,51 +62,6 @@ public class SolCCDServiceAuthTokenGenerator {
         return claims.get("id", String.class);
     }
 
-    public String generateClientToken() {
-        String code = generateClientCode();
-        String token = "";
-
-        String jsonResponse = post(idamUrl + "/oauth2/token?code=" + code
-                + "&client_secret=" + clientSecret
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + redirectUri
-                + "&grant_type=authorization_code")
-                .body().asString();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            token = mapper.readValue(jsonResponse, ClientAuthorizationResponse.class).accessToken;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return token;
-    }
-
-
-    private String generateClientCode() {
-        String code = "";
-        String jsonResponse = given()
-            .relaxedHTTPSValidation()
-            .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
-            .post(idamUrl + "/oauth2/authorize?response_type=code"
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + redirectUri)
-            .asString();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            code = mapper.readValue(jsonResponse, ClientAuthorizationCodeResponse.class).code;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return code;
-    }
-
-
     public void createNewUser() {
         given().headers("Content-type", "application/json")
             .relaxedHTTPSValidation()
@@ -117,7 +72,6 @@ public class SolCCDServiceAuthTokenGenerator {
     }
 
     public String generateOpenIdToken() {
-        String code = generateClientCode();
         String token = "";
 
         String jsonResponse = post(idamUrl + "/o/token?"
