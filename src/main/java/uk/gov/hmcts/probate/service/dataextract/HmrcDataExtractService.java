@@ -61,9 +61,7 @@ public class HmrcDataExtractService {
 
         boolean isSuccess = emailWithFileService.emailFile(hmrcFile, date);
         if (!isSuccess) {
-            log.error("Failed to email hmrc file:" + hmrcFile.getName());
-            throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
-                "Failed to email HMRC file for " + date);
+            log.error("Failed to email hmrc file:" + hmrcFile.getName() + "for date " + date);
         }
     }
 
@@ -78,7 +76,7 @@ public class HmrcDataExtractService {
         if (response != 201) {
             log.error("Failed to upload HMRC file for :" + dateDesc);
             throw new ClientException(HttpStatus.SERVICE_UNAVAILABLE.value(),
-                "Failed to upload HMRC file for " + dateDesc);
+                    "Failed to upload HMRC file for " + dateDesc);
         }
     }
 

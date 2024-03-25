@@ -153,12 +153,12 @@ public class CaseData extends CaseDataParent {
 
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
 
-    private final String ihtFormId;
+    private String ihtFormId;
 
-    @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtNetNegative}")
+    @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtNetValue;
 
-    @DecimalMin(groups = {ApplicationUpdatedGroup.class}, value = "0.0", message = "{ihtGrossNegative}")
+    @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtGrossNegative}")
     private final BigDecimal ihtGrossValue;
 
     private final String solsWillType;
@@ -559,7 +559,7 @@ public class CaseData extends CaseDataParent {
     private final String willDamageDateKnown;
     private final String willDamageDate;
     private final String ihtFormEstateValuesCompleted;
-    private final String ihtFormEstate;
+    private String ihtFormEstate;
     private final BigDecimal ihtEstateGrossValue;
     private final String ihtEstateGrossValueField;
     private final BigDecimal ihtEstateNetValue;
@@ -581,6 +581,8 @@ public class CaseData extends CaseDataParent {
     private String documentsReceivedNotificationSent;
     private String uniqueProbateCodeId;
     private String hmrcLetterId;
+    @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
+    private final BigDecimal ihtFormNetValue;
 
     @Builder.Default
     private final List<CollectionMember<RegistrarDirection>> registrarDirections = new ArrayList<>();
