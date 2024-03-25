@@ -25,7 +25,7 @@ public class UniqueCodeValidationRule {
         CaseData caseData = caseDetails.getData();
         if (caseData.getUniqueProbateCodeId() != null && (!caseData.getUniqueProbateCodeId()
                 .matches(UNIQUE_CODE_REGEX_PATTERN) || !removeSpaces(caseData.getUniqueProbateCodeId())
-        || caseData.getUniqueProbateCodeId().length() > UNIQUE_CODE_MAX_LENGTH)) {
+            || caseData.getUniqueProbateCodeId().length() > UNIQUE_CODE_MAX_LENGTH)) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage("uniqueProbateCode", null, Locale.UK);
             throw new BusinessValidationException(userMessage,
