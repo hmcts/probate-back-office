@@ -75,8 +75,8 @@ public class ConfirmationResponseService {
     private String paymentInfo = null;
     private String paymentSummary = null;
 
-    public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData) {
-        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData));
+    public AfterSubmitCallbackResponse getNextStepsConfirmation(CaveatData caveatData, Long id) {
+        return getStopConfirmationUsingMarkdown(generateNextStepsBodyMarkdown(caveatData, id));
     }
 
     public AfterSubmitCallbackResponse getNextStepsConfirmation(CCDData ccdData, CaseData caseData) {
@@ -186,7 +186,7 @@ public class ConfirmationResponseService {
             .build();
     }
 
-    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData) {
+    private TemplateResponse generateNextStepsBodyMarkdown(CaveatData caveatData, Long id) {
         Map<String, String> keyValue = new HashMap<>();
         keyValue.put("{{solicitorReference}}", caveatData.getSolsSolicitorAppReference());
         String caseSubmissionDate = "";
@@ -194,8 +194,7 @@ public class ConfirmationResponseService {
             caseSubmissionDate = caveatData.getApplicationSubmittedDate().format(formatter);
         }
         keyValue.put("{{caseSubmissionDate}}", caseSubmissionDate);
-        keyValue.put("{{applicationFee}}", CAVEAT_APPLICATION_FEE);
-        keyValue.put("{{paymentReferenceNumber}}", caveatData.getSolsPBAPaymentReference());
+        keyValue.put("{{caseReference}}", id.toString());
 
         return markdownSubstitutionService
             .generatePage(templatesDirectory, MarkdownTemplate.CAVEAT_NEXT_STEPS, keyValue);

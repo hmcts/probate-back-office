@@ -1,25 +1,13 @@
-This caveat application has now been submitted
--------------------------------------------------
-**Your reference:** {{solicitorReference}}
+Your application has been submitted but cannot be processed until payment has been made
+=================
+**Application reference:** {{solicitorReference}}
 
 **Submitted on:** {{caseSubmissionDate}}
 
-Payment summary
--------------------------------------------------
-**Application fee** &pound;{{applicationFee}}
-
-**Customer reference** {{paymentReferenceNumber}}
-
-What happens next
+How to pay
 =================
-**You must complete payment next**
+[Pay the application fee](cases/case-details/{{caseReference}}#Service%20Request) using Payment by Account (PBA) or a credit or debit card by returning to the case details and selecting the Service Request tab.
 
-Go to the Service Request tab on you case details
+After you’ve paid, you may need to refresh the page or re-enter the case for the payment status to update.
 
-Complete the payment process
-
-Once payment is made, you'll need to refresh the page or re-enter the case for the payment status to update.
-
-Then you have will have completed your application to stop a grant of probate (caveat).
-
-We'll send you an email within 5 working days to confirm what's happened.
+We’ll then send you an email to confirm that we've received your application.

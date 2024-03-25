@@ -834,7 +834,8 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData,
+                123456L);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -874,7 +875,8 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData);
+        AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(caveatData,
+                123456L);
 
         assertNull(afterSubmitCallbackResponse.getConfirmationHeader());
         assertEquals(CONFIRMATION_BODY, afterSubmitCallbackResponse.getConfirmationBody());
@@ -1014,8 +1016,7 @@ class ConfirmationResponseServiceTest {
 
     private void assertConfirmationValuesCaveats(Map<String, String> nextStepsValues) {
         assertEquals("ref", nextStepsValues.get("{{solicitorReference}}"));
-        assertEquals("3.00", nextStepsValues.get("{{applicationFee}}"));
-        assertEquals("Sol Pay Ref", nextStepsValues.get("{{paymentReferenceNumber}}"));
+        assertEquals("123456", nextStepsValues.get("{{caseReference}}"));
     }
 
     private CCDData getCcdDataForConfirmation() {
