@@ -5,17 +5,14 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
-import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import uk.gov.hmcts.probate.functional.model.ClientAuthorizationCodeResponse;
 import uk.gov.hmcts.probate.functional.model.ClientAuthorizationResponse;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
 import java.io.IOException;
-import java.util.Base64;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.post;
@@ -56,45 +53,12 @@ public class SolCCDServiceAuthTokenGenerator {
     }
 
     public String getUserId() {
-        String clientToken = generateClientToken();
+        String clientToken = generateOpenIdToken();
 
         String withoutSignature = clientToken.substring(0, clientToken.lastIndexOf('.') + 1);
         Claims claims = Jwts.parser().build().parseSignedClaims(withoutSignature).getPayload();
 
         return claims.get("id", String.class);
-    }
-
-    private String generateClientCode() {
-        String code = "";
-        String jsonResponse = given()
-            .relaxedHTTPSValidation()
-            .header("Authorization", "Basic dGVzdEBURVNULkNPTToxMjM=")
-            .post(idamUrl + "/oauth2/authorize?response_type=code"
-                + "&client_id=" + clientId
-                + "&redirect_uri=" + redirectUri)
-            .asString();
-
-        ObjectMapper mapper = new ObjectMapper();
-
-        try {
-            code = mapper.readValue(jsonResponse, ClientAuthorizationCodeResponse.class).code;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return code;
-    }
-
-    private String generateClientCode(String userName, String password) {
-        final String encoded = Base64.getEncoder().encodeToString((userName + ":" + password).getBytes());
-        ResponseBody authorization = given().relaxedHTTPSValidation().baseUri(idamUrl)
-            .header("Authorization", "Basic " + encoded)
-            .post("/oauth2/authorize?response_type=code&client_id="
-                + probateClientId + "&redirect_uri=" + redirectUri)
-            .body();
-
-        log.info("authorization:" + authorization.prettyPrint());
-        return authorization.jsonPath().get("code");
     }
 
     public void createNewUser() {
@@ -106,30 +70,15 @@ public class SolCCDServiceAuthTokenGenerator {
             .post(idamUrl + "/testing-support/accounts");
     }
 
-    public String generateClientToken(String userName, String password) {
-        String code = generateClientCode(userName, password);
-        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/oauth2/token?"
-            + "code=" + code
-            + "&client_secret=" + probateClientSecret
-            + "&client_id=" + probateClientId
-            + "&redirect_uri=" + redirectUri
-            + "&grant_type=authorization_code")
-            .body().jsonPath();
-        String token = jp.get("access_token");
-
-        return token;
-    }
-
-    public String generateClientToken() {
-        String code = generateClientCode();
+    public String generateOpenIdToken() {
         String token = "";
 
-        String jsonResponse = post(idamUrl + "/oauth2/token?code=" + code
-            + "&client_secret=" + clientSecret
-            + "&client_id=" + clientId
-            + "&redirect_uri=" + redirectUri
-            + "&grant_type=authorization_code")
-            .body().asString();
+        String jsonResponse = post(idamUrl + "/o/token?"
+                + "client_secret=" + clientSecret
+                + "&client_id=" + clientId
+                + "&redirect_uri=" + redirectUri
+                + "&grant_type=password&scope=openid profile roles")
+                .body().asString();
 
         ObjectMapper mapper = new ObjectMapper();
 
@@ -142,8 +91,18 @@ public class SolCCDServiceAuthTokenGenerator {
         return token;
     }
 
-    public String generateAuthorisation(String userName, String password) {
-        return generateClientToken(userName, password);
+    public String generateOpenIdToken(String userName, String password) {
+        JsonPath jp = RestAssured.given().relaxedHTTPSValidation().post(idamUrl + "/o/token?"
+            + "client_secret=" + probateClientSecret
+            + "&client_id=" + probateClientId
+            + "&redirect_uri=" + redirectUri
+            + "&username=" + userName
+            + "&password=" + password
+            + "&grant_type=password&scope=openid profile roles")
+            .body().jsonPath();
+        String token = jp.get("access_token");
+
+        return token;
     }
 
 }
