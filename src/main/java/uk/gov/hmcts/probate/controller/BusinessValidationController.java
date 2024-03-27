@@ -56,6 +56,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
@@ -119,6 +120,7 @@ public class BusinessValidationController {
     private final ChangeToSameStateValidationRule changeToSameStateValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
+    private final Pre1900DOBValidationRule pre1900DOBValidationRule;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -469,6 +471,7 @@ public class BusinessValidationController {
                                                             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("superuser change Dob");
+        pre1900DOBValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.changeDob(callbackRequest);
         return ResponseEntity.ok(response);
     }
