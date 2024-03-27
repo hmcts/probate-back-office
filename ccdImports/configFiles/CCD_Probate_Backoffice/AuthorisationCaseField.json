@@ -3420,7 +3420,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "totalFeePaperForm", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperPaymentMethod", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paymentReferenceNumberPaperform", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-systemupdate", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "paperForm", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "channelChoice", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "languagePreferenceWelsh", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "solsSolicitorIsExec", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRU"},
