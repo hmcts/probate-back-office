@@ -2596,7 +2596,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.changeDob(callbackRequestMock);
-        assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getDeceasedDateOfBirth());
+        assertEquals("1889-03-31", callbackResponse.getData().getDeceasedDateOfBirth());
     }
 
     @Test
