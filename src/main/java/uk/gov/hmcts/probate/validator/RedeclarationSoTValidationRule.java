@@ -9,7 +9,8 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.Locale;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 
 @Component
 @RequiredArgsConstructor
@@ -25,7 +26,8 @@ public class RedeclarationSoTValidationRule implements CaseDetailsValidationRule
         String userMessage = businessValidationMessageRetriever.getMessage(REDEC_SOT, args, Locale.UK);
         CaseData caseData = caseDetails.getData();
 
-        if (caseData.getPaperForm().equals(YES)) {
+        if (caseData.getChannelChoice().equals(CHANNEL_CHOICE_PAPERFORM)
+                || caseData.getChannelChoice().equals(CHANNEL_CHOICE_BULKSCAN)) {
             throw new PaperApplicationException(userMessage,
                     "A caseworker is trying to access redeclaration event with a paper case for case id "
                             + caseDetails.getId());

@@ -523,7 +523,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
-
+        caseDataTransformer.transformCaseDataForPaperForm(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
@@ -633,6 +633,15 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         registrarDirectionService.addAndOrderDirectionsToGrant(callbackRequest.getCaseDetails().getData());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
+    }
+
+    @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> rollbackDataMigration(@RequestBody CallbackRequest callbackRequest,
+                                                                  HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("Rollback Data migration");
+        CallbackResponse response = callbackResponseTransformer.rollback(callbackRequest);
+        return ResponseEntity.ok(response);
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {

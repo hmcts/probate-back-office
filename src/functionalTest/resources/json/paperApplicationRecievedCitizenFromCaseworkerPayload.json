@@ -154,7 +154,8 @@
           }
         }
       ],
-      "solsSOTJobTitle": "job title"
+      "solsSOTJobTitle": "job title",
+      "channelChoice": "PaperForm"
     }
   }
 }

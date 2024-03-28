@@ -172,6 +172,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
 
     private final String caseType;
     private final String paperForm;
+    private final String channelChoice;
     private final String languagePreferenceWelsh;
 
     //paper form case creator fields

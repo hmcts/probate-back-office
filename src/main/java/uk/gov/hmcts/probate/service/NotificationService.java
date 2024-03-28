@@ -106,14 +106,14 @@ public class NotificationService {
         log.info("sendEmail for case: {}", caseDetails.getId());
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         log.info(
-            "template params, state={}, applicationType()={}, regLocation={}, language={}, paperForm={}, for case: "
-                + "{}, origin: {}",
+            "template params, state={}, applicationType()={}, regLocation={}, language={}, for case: "
+                + "{}, origin: {}, channelChoice: {}",
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-            caseData.getPaperForm(), caseDetails.getId(),
-            caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get());
+                caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get(),
+                caseData.getChannelChoice());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference(), caseData.getPaperForm(),
-            caseOriginOptional.orElse(null));
+            caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+            caseOriginOptional.orElse(null),caseData.getChannelChoice());
         log.info("Got templateId: {}", templateId);
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,

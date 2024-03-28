@@ -63,6 +63,7 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -474,6 +475,13 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getTransferToState());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse rollback(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.channelChoice(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1004,6 +1012,7 @@ public class CallbackResponseTransformer {
             .evidenceHandled(caseData.getEvidenceHandled())
 
             .paperForm(caseData.getPaperForm())
+            .channelChoice(caseData.getChannelChoice())
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
@@ -1567,6 +1576,12 @@ public class CallbackResponseTransformer {
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getChannelChoice() == null) {
+            builder.channelChoice(CHANNEL_CHOICE_DIGITAL);
+        } else {
+            builder.channelChoice(caseData.getChannelChoice());
         }
 
         if (willExists(caseData)) {

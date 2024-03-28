@@ -12,7 +12,8 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import uk.gov.hmcts.probate.model.State;
 
 import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -28,18 +29,13 @@ public class TemplateService {
     }
 
     public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
-                                LanguagePreference languagePreference, String paperForm) {
-        return getTemplateId(state, applicationType, registryLocation, languagePreference, paperForm, null);
-
-    }
-
-    public String getTemplateId(State state, ApplicationType applicationType, String registryLocation,
-                                LanguagePreference languagePreference, String paperForm, CaseOrigin caseOrigin) {
+                                LanguagePreference languagePreference, CaseOrigin caseOrigin,
+                                String channelChoice) {
 
         EmailTemplates emailTemplates = notificationTemplates.getEmail().get(languagePreference).get(applicationType);
         switch (state) {
             case APPLICATION_RECEIVED:
-                if (YES.equalsIgnoreCase(paperForm) && caseOrigin.equals(CASEWORKER)) {
+                if (CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice) && caseOrigin.equals(CASEWORKER)) {
                     return emailTemplates.getApplicationReceivedPaperFormCaseworker();
                 } else {
                     return emailTemplates.getApplicationReceived();
@@ -65,7 +61,8 @@ public class TemplateService {
             case REDECLARATION_SOT:
                 return emailTemplates.getRedeclarationSot();
             case GRANT_RAISED:
-                if (YES.equalsIgnoreCase(paperForm)) {
+                if (CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice)
+                        || CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase(channelChoice)) {
                     return emailTemplates.getGrantRaisedPaperFormBulkScan();
                 } else {
                     return emailTemplates.getGrantRaised();

@@ -42,6 +42,10 @@ public final class Constants {
     public static final String GRANT_TYPE_INTESTACY = "NoWill";
     public static final String GRANT_TYPE_ADMON = "WillLeftAnnexed";
 
+    public static final String CHANNEL_CHOICE_PAPERFORM = "PaperForm";
+    public static final String CHANNEL_CHOICE_DIGITAL = "Digital";
+    public static final String CHANNEL_CHOICE_BULKSCAN = "BulkScan";
+
     public static final String STATE_STOPPED = "Stopped";
     public static final String STATE_GRANT_TYPE_PROBATE = "SolProbateCreated";
     public static final String STATE_GRANT_TYPE_INTESTACY = "SolIntestacyCreated";

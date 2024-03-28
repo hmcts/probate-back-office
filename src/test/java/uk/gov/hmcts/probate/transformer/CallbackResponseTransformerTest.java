@@ -2589,6 +2589,17 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformApplicantOrganisationPolicy() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice("Digital");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
+        assertNull(callbackResponse.getData().getChannelChoice());
+    }
+
+    @Test
     void shouldTransformValuesPageForFormId400() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtFormId("IHT400")
