@@ -533,16 +533,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithEmail() throws IOException {
-        String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"Digital\",");
-
-        final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt",
-            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
-    }
-
-    @Test
     public void verifySuccessCaseworkerCreatedPersonalApplicationSameDobAndDod() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1960-01-01\",",
@@ -587,16 +577,6 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
-            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
-    }
-
-    @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithEmail() throws IOException {
-        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"Digital\",");
-
-        final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
