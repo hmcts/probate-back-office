@@ -66,6 +66,7 @@ class Pre1900DOBValidationRuleTest {
     void shouldReturnNoErrorForValidDOB() {
         dataMock = CaseData.builder()
                 .deceasedDob("1889-03-31")
+                .deceasedDateOfDeath(LocalDate.of(2020, 1, 2))
                 .build();
         detailsMock = new CaseDetails(dataMock, LAST_MODIFIED, CASE_ID);
 
