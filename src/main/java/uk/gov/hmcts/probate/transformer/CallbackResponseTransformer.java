@@ -481,6 +481,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.channelChoice(null);
         responseCaseDataBuilder.applicantOrganisationPolicy(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
