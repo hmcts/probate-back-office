@@ -481,7 +481,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.channelChoice(null);
+        responseCaseDataBuilder.applicantOrganisationPolicy(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1012,7 +1012,6 @@ public class CallbackResponseTransformer {
             .evidenceHandled(caseData.getEvidenceHandled())
 
             .paperForm(caseData.getPaperForm())
-            .channelChoice(caseData.getChannelChoice())
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
