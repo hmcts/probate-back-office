@@ -753,15 +753,6 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponse);
     }
 
-    @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> rollbackDataMigration(@RequestBody CallbackRequest callbackRequest,
-                                                                  HttpServletRequest request) {
-        logRequest(request.getRequestURI(), callbackRequest);
-        log.info("Rollback Data migration");
-        CallbackResponse response = callbackResponseTransformer.rollback(callbackRequest);
-        return ResponseEntity.ok(response);
-    }
-
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             log.info(DEFAULT_LOG_ERROR, callbackRequest.getCaseDetails().getId(), bindingResult);
