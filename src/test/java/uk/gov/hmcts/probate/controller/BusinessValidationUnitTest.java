@@ -990,6 +990,18 @@ class BusinessValidationUnitTest {
     }
 
     @Test
+    void shouldRollback() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.rollbackDataMigration(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .rollback(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldTransformDOB() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(bindingResultMock.hasErrors()).thenReturn(false);
