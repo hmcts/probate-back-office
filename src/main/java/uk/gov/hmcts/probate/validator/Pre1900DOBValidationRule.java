@@ -23,7 +23,13 @@ public class Pre1900DOBValidationRule implements CaseDetailsValidationRule {
         String newDobValue = caseData.getDeceasedDob();
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.UK);
         try {
-            LocalDate.parse(newDobValue, dateTimeFormatter);
+            LocalDate dob = LocalDate.parse(newDobValue, dateTimeFormatter);
+            if (dob.isAfter(LocalDate.now())) {
+                String userMessage = businessValidationMessageRetriever.getMessage("dobIsInTheFuture",
+                        null, Locale.UK);
+                throw new BusinessValidationException(userMessage,
+                        "Date of birth cannot be a future date for case: " + caseDetails.getId());
+            }
         } catch (DateTimeParseException dtpe) {
             String userMessage = businessValidationMessageRetriever.getMessage("dobOverrideDateInvalid",
                     null, Locale.UK);
