@@ -164,4 +164,16 @@ class CaveatControllerUnitTest {
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForCaveat(caveatCallbackRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    void shouldRollback() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+
+        ResponseEntity<CaveatCallbackResponse> response =
+                underTest.rollbackDataMigration(caveatCallbackRequest);
+        verify(caveatCallbackResponseTransformer, times(1))
+                .rollback(caveatCallbackRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
