@@ -120,33 +120,40 @@ public class CaseDataTransformer {
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
-            if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())
-                    && !IHT400.equals(caseData.getIhtFormEstate())) {
+            if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormId(caseData);
-            } else if (caseData.getIhtFormEstateValuesCompleted() != null
-                    && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                if (!IHT400.equals(caseData.getIhtFormEstate())) {
+                    resetHmrcLetterId(caseData);
+                }
+            } else if (NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormAndHmrcLetter(caseData);
             }
         } else {
-            if (caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
+            if (caseData.getIhtFormEstate() != null) {
                 resetIhtFormEstate(caseData);
+                if (!IHT400.equals(caseData.getIhtFormId())) {
+                    resetHmrcLetterId(caseData);
+                }
             }
         }
     }
 
     private void resetIhtFormId(CaseData caseData) {
         caseData.setIhtFormId(null);
+    }
+
+    private void resetHmrcLetterId(CaseData caseData) {
         caseData.setHmrcLetterId(null);
     }
 
     private void resetIhtFormEstate(CaseData caseData) {
         caseData.setIhtFormEstate(null);
-        caseData.setHmrcLetterId(null);
     }
 
     private void resetIhtFormAndHmrcLetter(CaseData caseData) {
-        caseData.setIhtFormEstate(null);
+        resetIhtFormEstate(caseData);
         resetIhtFormId(caseData);
+        resetHmrcLetterId(caseData);
     }
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
