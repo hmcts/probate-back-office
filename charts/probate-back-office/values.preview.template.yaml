@@ -206,6 +206,8 @@ xui-webapp:
     devmemoryRequests: 512Mi
     devcpuLimits: 1
     devmemoryLimits: 1Gi
+    autoscaling:
+      enabled: false
     environment:
       HEALTH_CCD_COMPONENT_API: http://gateway-${SERVICE_FQDN}/health
       HEALTH_CCD_DATA_API: http://${SERVICE_NAME}-ccd-data-store-api/health
