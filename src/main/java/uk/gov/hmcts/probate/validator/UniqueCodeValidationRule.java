@@ -15,7 +15,7 @@ import java.util.Locale;
 public class UniqueCodeValidationRule {
 
     private static final String UNIQUE_CODE_REGEX_PATTERN =
-            "^(cts|CTS) [a-zA-Z0-9]{10} [a-zA-Z0-9]{4} [a-zA-Z0-9]{4}$|^(cts|CTS)[a-zA-Z0-9]{18}$";
+            "^(cts|CTS)\\s?([a-zA-Z0-9]\\s?){18}$";
     private static final String REMOVE_SPACE_REGEX_PATTERN = "\\s+";
     private static final int UNIQUE_CODE_LENGTH = 21;
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;

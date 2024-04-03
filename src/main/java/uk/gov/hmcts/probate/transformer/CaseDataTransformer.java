@@ -6,13 +6,18 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_PRINTED_NAME;
 
 @Component
@@ -24,6 +29,8 @@ public class CaseDataTransformer {
     private final LegalStatementExecutorTransformer legalStatementExecutorTransformer;
     private final EvidenceHandledTransformer evidenceHandledTransformer;
     private final AttachDocumentsTransformer attachDocumentsTransformer;
+    private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private static final String IHT400 = "IHT400";
 
     public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -108,5 +115,41 @@ public class CaseDataTransformer {
 
     public void transformCaseDataForDocsReceivedNotificationSent(CallbackRequest callbackRequest) {
         attachDocumentsTransformer.updateDocsReceivedNotificationSent(callbackRequest.getCaseDetails().getData());
+    }
+
+    public void transformFormCaseData(CallbackRequest callbackRequest) {
+        CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
+            if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())
+                    && !IHT400.equals(caseData.getIhtFormEstate())) {
+                resetIhtFormId(caseData);
+            } else if (caseData.getIhtFormEstateValuesCompleted() != null
+                    && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                resetIhtFormAndHmrcLetter(caseData);
+            }
+        } else {
+            if (caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
+                resetIhtFormEstate(caseData);
+            }
+        }
+    }
+
+    private void resetIhtFormId(CaseData caseData) {
+        caseData.setIhtFormId(null);
+        caseData.setHmrcLetterId(null);
+    }
+
+    private void resetIhtFormEstate(CaseData caseData) {
+        caseData.setIhtFormEstate(null);
+        caseData.setHmrcLetterId(null);
+    }
+
+    private void resetIhtFormAndHmrcLetter(CaseData caseData) {
+        caseData.setIhtFormEstate(null);
+        resetIhtFormId(caseData);
+    }
+
+    private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
+        return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(dateOfDeath);
     }
 }
