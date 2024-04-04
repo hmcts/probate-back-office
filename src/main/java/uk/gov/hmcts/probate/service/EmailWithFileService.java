@@ -48,7 +48,8 @@ public class EmailWithFileService {
             log.info("HMRC file is {}MB", totalSpace);
             if (totalSpace > 2L) {
                 //not expecting this size, service will error but we'll log additional error too
-                log.error("HMRC File is over 2MB");
+                log.error("HMRC File is over 2MB, skip email process");
+                return false;
             }
         } catch (IOException e) {
             log.error("Error reading HMRC file {}", e.getMessage());

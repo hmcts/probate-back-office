@@ -712,6 +712,26 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
     }
 
+    @Test
+    void shouldTransformApplicantOrganisationPolicy() {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.applicantOrganisationPolicy(policy);
+
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        CaveatCallbackResponse callbackResponse = underTest.rollback(caveatCallbackRequestMock);
+        assertNull(callbackResponse.getCaveatData().getApplicantOrganisationPolicy());
+    }
+
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {
         assertCommonDetails(caveatCallbackResponse);
         assertApplicationType(caveatCallbackResponse, CAV_APPLICATION_TYPE);
