@@ -11,7 +11,6 @@ module.exports = async function (caseRef, nextStepName) {
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
-    const actionBtnLocator = {css: 'button.action-button[title="Remove"]'};
     await I.wait(testConfig.CaseMatchesInitialDelay);
 
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
@@ -48,22 +47,6 @@ module.exports = async function (caseRef, nextStepName) {
             await I.click(caseMatchesValidYesLocatorNthChild);
             await I.waitForElement(caseMatchesImportNoLocatorNthChild);
             await I.click(caseMatchesImportNoLocatorNthChild);
-        } else {
-            await I.click(removeBtnLocatorNthChild);
-            // Just a small delay - occasionally we get issues here but only relevant for local dev.
-            // Only necessary where we have no auto delay (local dev).
-            if (!testConfig.TestAutoDelayEnabled) {
-                await I.wait(testConfig.ManualDelayShort);
-            }
-            await I.wait(testConfig.ManualDelayMedium);
-            await I.waitForEnabled(actionBtnLocator);
-            await I.click(actionBtnLocator);
-            await I.waitForInvisible(actionBtnLocator);
-            // Just a small delay - occasionally we get issues here but only relevant for local dev.
-            // Only necessary where we have no auto delay (local dev).
-            if (!testConfig.TestAutoDelayEnabled) {
-                await I.wait(testConfig.ManualDelayShort);
-            }
         }
         // eslint-disable-next-line no-plusplus
         i--;
