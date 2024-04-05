@@ -59,14 +59,14 @@ Scenario(scenarioName, async function ({I}) {
     await I.seeCaseDetails(caseRef, deceasedDetailsTabConfig, applicationDetailsConfig);
     await I.seeUpdatesOnCase(caseRef, caveatorDetailsTabConfig, 'caveatorApplicationDetails', applicationDetailsConfig);
 
-    nextStepName = 'Complete application';
+    nextStepName = 'Submit application';
     endState = 'Caveat raised';
     const applicationType = 'Caveat';
     await I.logInfo(scenarioName, nextStepName, caseRef);
     await I.chooseNextStep(nextStepName);
     await I.completeCaveatApplicationPage1();
-    await I.completeCaveatApplicationPage2();
-    await I.completeCaveatApplicationPage3();
+    await I.completeCaveatApplicationPage2(caseRef);
+    // await I.completeCaveatApplicationPage3();
 
     await I.logInfo(scenarioName, 'Payment');
     await I.makeCaveatPaymentPage1(caseRef, serviceRequestTabConfig);
