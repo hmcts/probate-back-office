@@ -11,6 +11,7 @@ module.exports = async function (caseRef, nextStepName) {
     await I.waitForText(caseRef, testConfig.WaitForTextTimeout);
 
     const btnLocator = {css: 'button.button-secondary[aria-label^="Remove Possible case matches"]'};
+
     await I.wait(testConfig.CaseMatchesInitialDelay);
 
     const numOfElements = await I.grabNumberOfVisibleElements(btnLocator);
