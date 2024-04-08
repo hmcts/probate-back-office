@@ -18,6 +18,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.caseaccess.Organisation;
+import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
 import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -161,6 +163,7 @@ class BusinessValidationControllerIT {
     private static final String CASE_WORKER_RESOLVED_ESCALATED = "/case/resolve-case-worker-escalated";
     private static final String PREPARE_FOR_NOC = "/case/prepare-case-for-noc";
     private static final String UNIQUE_CODE = "/case/validate-unique-code";
+    private static final String ROLLBACK = "/case/rollback";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
     private static final String VALUES_PAGE = "/case/validate-values-page";
@@ -1216,6 +1219,25 @@ class BusinessValidationControllerIT {
 
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
         mockMvc.perform(post(VALUES_PAGE).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void shouldValidateRollback() throws Exception {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caseDataBuilder.applicantOrganisationPolicy(policy);
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(ROLLBACK).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
 }

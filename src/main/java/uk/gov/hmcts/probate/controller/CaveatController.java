@@ -261,4 +261,11 @@ public class CaveatController {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForCaveat(callbackRequest);
         return ResponseEntity.ok(caveatCallbackResponseTransformer.transformResponseWithNoChanges(callbackRequest));
     }
+
+    @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CaveatCallbackResponse> rollbackDataMigration(@RequestBody CaveatCallbackRequest
+                                                                                    callbackRequest) {
+        log.info("Rollback Data migration - {}", callbackRequest.getCaseDetails().getId());
+        return ResponseEntity.ok(caveatCallbackResponseTransformer.rollback(callbackRequest));
+    }
 }
