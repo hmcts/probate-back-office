@@ -9,8 +9,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.probate.service.exceptionrecord.mapper.OCRFieldDefaultLocalDateFieldMapper.OCR_DATE_FORMAT;
 
 @ExtendWith(SpringExtension.class)
@@ -58,8 +60,9 @@ class ExceptedEstateDateOfDeathCheckerIT {
         assertTrue(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(postDate));
 
     }
+
     @Test
-    public void ShouldReturnThrowExceptionForInvalidDate() {
+    public void ShouldThrowExceptionForInvalidDate() {
         OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
             exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(INVALID_DATE);
         });
