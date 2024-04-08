@@ -62,7 +62,7 @@ class ExceptedEstateDateOfDeathCheckerIT {
     }
 
     @Test
-    public void ShouldThrowExceptionForInvalidDate() {
+    public void shouldThrowExceptionForInvalidDate() {
         OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
             exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(INVALID_DATE);
         });
