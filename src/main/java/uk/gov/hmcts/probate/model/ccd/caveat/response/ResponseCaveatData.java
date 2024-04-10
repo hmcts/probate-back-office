@@ -117,5 +117,6 @@ public class ResponseCaveatData {
     private final ChangeOfRepresentative changeOfRepresentative;
     private final RemovedRepresentative removedRepresentative;
     private final ChangeOrganisationRequest changeOrganisationRequestField;
+    private String matches;
     private final List<String> paymentConfirmCheckbox;
 }
