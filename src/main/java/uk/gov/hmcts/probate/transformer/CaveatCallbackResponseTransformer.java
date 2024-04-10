@@ -304,7 +304,8 @@ public class CaveatCallbackResponseTransformer {
             .applicationSubmittedBy(caveatData.getApplicationSubmittedBy())
             .removedRepresentative(caveatData.getRemovedRepresentative())
             .changeOrganisationRequestField(caveatData.getChangeOrganisationRequestField())
-            .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()));
+            .changeOfRepresentatives(getNullForEmptyRepresentatives(caveatData.getChangeOfRepresentatives()))
+            .paymentConfirmCheckbox(caveatData.getPaymentConfirmCheckbox());
     }
 
     public CaseCreationDetails bulkScanCaveatCaseTransform(
