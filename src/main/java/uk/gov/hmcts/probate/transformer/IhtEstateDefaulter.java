@@ -33,8 +33,7 @@ public class IhtEstateDefaulter {
         if (dod.isBefore(switchDate)) {
             log.info("Putting form estate to null");
             responseCaseDataBuilder.ihtFormEstate(null);
-        }
-        else {
+        } else {
             log.info("Putting form id to null");
             responseCaseDataBuilder.ihtFormId(null);
         }
