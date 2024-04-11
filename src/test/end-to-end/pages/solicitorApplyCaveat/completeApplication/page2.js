@@ -3,8 +3,8 @@
 const testConfig = require('src/test/config.js');
 const completeApplicationConfig = require('./completeApplication');
 const commonConfig = require('src/test/end-to-end/pages/common/commonConfig');
-const dateFns = require("date-fns");
-const {legacyParse, convertTokens} = require("@date-fns/upgrade/v2");
+const dateFns = require('date-fns');
+const {legacyParse, convertTokens} = require('@date-fns/upgrade/v2');
 //const caseDetailsTabConfig = require('src/test/end-to-end/pages/caseDetails/solicitorApplyCaveat/caseDetailsTabConfig');
 // const click = require("webdriverio/build/commands/element/click");
 
