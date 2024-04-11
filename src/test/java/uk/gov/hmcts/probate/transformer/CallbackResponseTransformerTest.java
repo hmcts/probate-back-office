@@ -2589,6 +2589,17 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldDeleteFormData() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT400");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.deleteFormData(callbackRequestMock);
+        assertNull(callbackResponse.getData().getIhtFormId());
+    }
+
+    @Test
     void shouldTransformValuesPageForFormId400() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtFormId("IHT400")

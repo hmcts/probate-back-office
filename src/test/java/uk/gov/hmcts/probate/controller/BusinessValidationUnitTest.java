@@ -996,4 +996,16 @@ class BusinessValidationUnitTest {
                 .rollback(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    void shouldDeleteForm() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.deleteFormData(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .deleteFormData(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }

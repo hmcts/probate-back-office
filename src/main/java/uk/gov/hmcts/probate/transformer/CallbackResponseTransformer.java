@@ -494,6 +494,14 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    public CallbackResponse deleteFormData(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.ihtFormId(null)
+                .ihtFormEstate(null);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse transformValuesPage(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
