@@ -558,7 +558,7 @@ public class CaseData extends CaseDataParent {
     private final CombinedName willDamageCulpritName;
     private final String willDamageDateKnown;
     private final String willDamageDate;
-    private final String ihtFormEstateValuesCompleted;
+    private String ihtFormEstateValuesCompleted;
     private String ihtFormEstate;
     private final BigDecimal ihtEstateGrossValue;
     private final String ihtEstateGrossValueField;
