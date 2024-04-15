@@ -386,4 +386,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final BigDecimal ihtFormNetValue;
     private final String iht400Switch;
     private final String ihtNetValueSwitch;
+    private final String lastEditedAuthorForenames;
+    private final String lastEditedAuthorSurname;
 }

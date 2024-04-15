@@ -338,6 +338,7 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> validateCaseDetails(
+        @RequestHeader(value = "Authorization") String authToken,
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
         HttpServletRequest request) {
@@ -346,6 +347,7 @@ public class BusinessValidationController {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        caseDataTransformer.transformCaseDataForAuthorName(authToken, callbackRequest);
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {

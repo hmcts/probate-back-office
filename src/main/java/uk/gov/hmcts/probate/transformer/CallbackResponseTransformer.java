@@ -1205,7 +1205,9 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
+            .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
+            .lastEditedAuthorForenames(caseData.getLastEditedAuthorForenames())
+            .lastEditedAuthorSurname(caseData.getLastEditedAuthorSurname());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

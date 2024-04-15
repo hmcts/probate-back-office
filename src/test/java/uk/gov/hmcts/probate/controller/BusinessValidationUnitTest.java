@@ -498,7 +498,7 @@ class BusinessValidationUnitTest {
         when(callbackResponseTransformerMock.transform(callbackRequestMock))
             .thenReturn(callbackResponseMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails("auth", callbackRequestMock,
             bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -513,7 +513,7 @@ class BusinessValidationUnitTest {
             when(bindingResultMock.getFieldErrors()).thenReturn(Collections.singletonList(fieldErrorMock));
             when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+            ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails("auth", callbackRequestMock,
                 bindingResultMock, httpServletRequest);
 
             assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -531,7 +531,7 @@ class BusinessValidationUnitTest {
             .thenReturn((businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList())));
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
-        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails(callbackRequestMock,
+        ResponseEntity<CallbackResponse> response = underTest.validateCaseDetails("auth", callbackRequestMock,
             bindingResultMock, httpServletRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));

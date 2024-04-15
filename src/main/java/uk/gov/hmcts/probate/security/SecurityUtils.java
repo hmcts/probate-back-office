@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.security;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -242,5 +244,11 @@ public class SecurityUtils {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         String result = Objects.requireNonNull(userInfo.getSub());
         return result.toLowerCase();
+    }
+
+    public Pair<String, String> getUserName(String authToken) {
+        UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
+        return ImmutablePair.of(Objects.requireNonNull(userInfo.getGivenName()),
+                Objects.requireNonNull(userInfo.getFamilyName()));
     }
 }

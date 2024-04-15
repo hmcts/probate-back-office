@@ -1,12 +1,14 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.transformer.reset.ResetCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecutorTransformer;
@@ -30,6 +32,7 @@ public class CaseDataTransformer {
     private final EvidenceHandledTransformer evidenceHandledTransformer;
     private final AttachDocumentsTransformer attachDocumentsTransformer;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private final SecurityUtils securityUtils;
     private static final String IHT400 = "IHT400";
     private static final String IHT205 = "IHT205";
     private static final String PAPERFORM = "PaperForm";
@@ -188,5 +191,12 @@ public class CaseDataTransformer {
     public void transformCaseDataForPaperForm(CallbackRequest callbackRequest) {
         final var caseData = callbackRequest.getCaseDetails().getData();
         caseData.setChannelChoice(PAPERFORM);
+    }
+
+    public void transformCaseDataForAuthorName(String authToken, CallbackRequest callbackRequest) {
+        Pair<String, String> userName = securityUtils.getUserName(authToken);
+        final var caseData = callbackRequest.getCaseDetails().getData();
+        caseData.setLastEditedAuthorForenames(userName.getLeft());
+        caseData.setLastEditedAuthorSurname(userName.getRight());
     }
 }
