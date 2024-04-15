@@ -124,10 +124,11 @@ public class DocumentController {
 
     @PostMapping(path = "/assembleLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> assembleLetter(
+        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) {
 
-        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformCaseForLetter(callbackRequest, authToken);
 
         return ResponseEntity.ok(response);
 
@@ -147,6 +148,7 @@ public class DocumentController {
 
     @PostMapping(path = "/generateLetter", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> generateLetter(
+        @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         String letterId = null;
@@ -164,24 +166,26 @@ public class DocumentController {
         }
 
         CallbackResponse response =
-            callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId);
+            callbackResponseTransformer.transformCaseForLetter(callbackRequest, documents, letterId, authToken);
 
         return ResponseEntity.ok(response);
     }
 
 
     @PostMapping(path = "/generate-grant-draft", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> generateGrantDraft(@RequestHeader(value = "Authorization") String authToken,
+                                                               @RequestBody CallbackRequest callbackRequest) {
         registryDetailsService.getRegistryDetails(callbackRequest.getCaseDetails());
         Document document =
             documentGeneratorService.getDocument(callbackRequest, DocumentStatus.PREVIEW, DocumentIssueType.GRANT);
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-            Arrays.asList(document), null, null));
+            Arrays.asList(document), null, null, authToken));
     }
 
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
+        @RequestHeader(value = "Authorization") String authToken,
         @Validated({BulkPrintValidationRule.class})
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
@@ -227,10 +231,11 @@ public class DocumentController {
                     notificationService.sendEmail(grantState.apply(caseData.getCaseType()), caseDetails);
                 documents.add(grantIssuedSentEmail);
                 callbackResponse =
-                    callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+                    callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize, authToken);
             }
         } else {
-            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize);
+            callbackResponse = callbackResponseTransformer.addDocuments(callbackRequest, documents, letterId, pdfSize,
+                    authToken);
         }
 
         return ResponseEntity.ok(callbackResponse);
@@ -265,7 +270,9 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/generate-grant-draft-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrantDraftReissue(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> generateGrantDraftReissue(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest callbackRequest) {
 
         Document document;
         final CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -286,11 +293,13 @@ public class DocumentController {
         }
 
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-            Arrays.asList(document), null, null));
+            Arrays.asList(document), null, null, authToken));
     }
 
     @PostMapping(path = "/generate-grant-reissue", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> generateGrantReissue(@RequestBody CallbackRequest callbackRequest)
+    public ResponseEntity<CallbackResponse> generateGrantReissue(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
         final List<Document> documents = new ArrayList<>();
@@ -331,18 +340,20 @@ public class DocumentController {
         }
         log.info("{} documents generated: {}", documents.size(), documents);
         return ResponseEntity.ok(callbackResponseTransformer.addDocuments(callbackRequest,
-            documents, letterId, pdfSize));
+            documents, letterId, pdfSize, authToken));
     }
 
     // This only seems to be called once list lists are mapped to exec lists
     @PostMapping(path = "/generate-sot", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> generateStatementOfTruth(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> generateStatementOfTruth(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest callbackRequest) {
         redeclarationSoTValidationRule.validate(callbackRequest.getCaseDetails());
 
         log.info("Initiating call for SoT");
         caseDataTransformer.transformCaseDataForLegalStatementRegeneration(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.addSOTDocument(callbackRequest,
-            documentGeneratorService.generateSoT(callbackRequest)));
+            documentGeneratorService.generateSoT(callbackRequest), authToken));
     }
 
     @PostMapping(path = "/default-reprint-values", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -351,14 +362,16 @@ public class DocumentController {
     }
 
     @PostMapping(path = "/reprint", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> reprint(@RequestBody CallbackRequest callbackRequest) {
-        return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest));
+    public ResponseEntity<CallbackResponse> reprint(@RequestHeader(value = "Authorization") String authToken,
+                                                    @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(reprintService.reprintSelectedDocument(callbackRequest, authToken));
     }
 
     @PostMapping(path = "/evidenceAdded", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> evidenceAdded(@RequestHeader(value = "Authorization") String authToken,
+                                                          @RequestBody CallbackRequest callbackRequest) {
         evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, authToken);
         return ResponseEntity.ok(response);
     }
 
@@ -383,7 +396,7 @@ public class DocumentController {
         if (Boolean.TRUE.equals(update)) {
             evidenceUploadService.updateLastEvidenceAddedDate(caseDetails);
         }
-        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest, null);
         return ResponseEntity.ok(response);
     }
 
@@ -433,9 +446,10 @@ public class DocumentController {
 
     @PostMapping(path = "/permanently-delete-removed", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> permanentlyDeleteRemovedGrant(
+            @RequestHeader(value = "Authorization") String authToken,
             @RequestBody CallbackRequest callbackRequest) {
         documentGeneratorService.permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(callbackRequest, authToken));
     }
 
     @PostMapping(path = "/setup-for-permanent-removal-will", consumes = MediaType.APPLICATION_JSON_VALUE)

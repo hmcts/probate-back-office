@@ -32,7 +32,7 @@ public class ReprintService {
     private final PDFManagementService pdfManagementService;
     private final CallbackResponseTransformer callbackResponseTransformer;
 
-    public CallbackResponse reprintSelectedDocument(CallbackRequest callbackRequest) {
+    public CallbackResponse reprintSelectedDocument(CallbackRequest callbackRequest, String authToken) {
 
         DynamicListItem selectedDocumentItem =
             callbackRequest.getCaseDetails().getData().getReprintDocument().getValue();
@@ -51,7 +51,7 @@ public class ReprintService {
             callbackRequest.getCaseDetails().getId(),
             selectedDocument.getDocumentType().getTemplateName(), letterId, pdfSize);
         return callbackResponseTransformer
-            .addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize);
+            .addBulkPrintInformationForReprint(callbackRequest, selectedDocument, letterId, pdfSize, authToken);
     }
 
     private Document findDocument(DynamicListItem selectedDocumentItem, CaseData data) {

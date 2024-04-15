@@ -28,7 +28,7 @@ public class RedeclarationNotificationService {
     private final EmailAddressExecutorsApplyingValidationRule emailAddressExecutorsApplyingValidationRule;
     private final CallbackResponseTransformer callbackResponseTransformer;
 
-    public CallbackResponse handleRedeclarationNotification(CallbackRequest callbackRequest) {
+    public CallbackResponse handleRedeclarationNotification(CallbackRequest callbackRequest, String authToken) {
 
         log.info("Preparing to send email to executors for redeclaration notification");
         emailAddressExecutorsApplyingValidationRule.validate(callbackRequest.getCaseDetails());
@@ -47,6 +47,6 @@ public class RedeclarationNotificationService {
                 }
             }
         }
-        return callbackResponseTransformer.addDocuments(callbackRequest, emailDocument, null, null);
+        return callbackResponseTransformer.addDocuments(callbackRequest, emailDocument, null, null, authToken);
     }
 }

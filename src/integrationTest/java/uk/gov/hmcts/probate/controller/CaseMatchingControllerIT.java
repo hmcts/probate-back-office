@@ -19,12 +19,15 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.criterion.CaseMatchingCriteria;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.CaseMatchingService;
 import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -47,6 +50,8 @@ import static uk.gov.hmcts.probate.model.CaseType.WILL_LODGEMENT;
 @SpringBootTest
 @AutoConfigureMockMvc
 class CaseMatchingControllerIT {
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     @Autowired
     private MockMvc mockMvc;
@@ -69,6 +74,9 @@ class CaseMatchingControllerIT {
     @MockBean
     private LegacyImportService legacyImportService;
 
+    @MockBean
+    private SecurityUtils securityUtils;
+
     @Captor
     private ArgumentCaptor<List<CollectionMember<CaseMatch>>> caseMatchListCaptor;
 
@@ -76,6 +84,13 @@ class CaseMatchingControllerIT {
     public void setUp() {
         doReturn(new ArrayList<>()).when(caseMatchingService).findMatches(any(), any(CaseMatchingCriteria.class));
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        UserInfo caseworkerInfo = UserInfo.builder()
+                .familyName("familyName")
+                .givenName("givenname")
+                .roles(Arrays.asList("caseworker-probate"))
+                .build();
+        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
     }
 
     @Test
@@ -157,6 +172,7 @@ class CaseMatchingControllerIT {
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(true);
 
         mockMvc.perform(post("/case-matching/import-legacy-from-grant-flow")
+                .header(AUTH_HEADER, AUTH_TOKEN)
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -173,6 +189,7 @@ class CaseMatchingControllerIT {
         when(legacyImportService.areLegacyRowsValidToImport(any(List.class))).thenReturn(false);
 
         mockMvc.perform(post("/case-matching/import-legacy-from-grant-flow")
+                .header(AUTH_HEADER, AUTH_TOKEN)
                 .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())

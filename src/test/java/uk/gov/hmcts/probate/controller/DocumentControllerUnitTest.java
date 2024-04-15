@@ -201,9 +201,9 @@ class DocumentControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(mockCaseDetails);
 
         ResponseEntity<CallbackResponse> response = documentController
-                .evidenceAdded(callbackRequest);
+                .evidenceAdded(DUMMY_OAUTH_2_TOKEN, callbackRequest);
         ResponseEntity<CallbackResponse> response2 = documentController
-                .evidenceAdded(callbackRequest);
+                .evidenceAdded(DUMMY_OAUTH_2_TOKEN, callbackRequest);
         assertThat(response.getStatusCode(), equalTo(HttpStatus.OK));
         assertThat(response2.getStatusCode(), equalTo(HttpStatus.OK));
 
@@ -272,9 +272,9 @@ class DocumentControllerUnitTest {
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
 
         ResponseEntity<CallbackResponse> response =
-                documentController.permanentlyDeleteRemovedGrant(callbackRequest);
+                documentController.permanentlyDeleteRemovedGrant(DUMMY_OAUTH_2_TOKEN, callbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
-        verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest);
+        verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest, DUMMY_OAUTH_2_TOKEN);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

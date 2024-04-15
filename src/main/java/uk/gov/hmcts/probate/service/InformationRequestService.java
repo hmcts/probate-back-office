@@ -24,7 +24,7 @@ public class InformationRequestService {
     private List<Document> letterIdDocuments;
     private List<String> letterIds;
 
-    public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest) {
+    public CallbackResponse handleInformationRequest(CallbackRequest callbackRequest, String authToken) {
         documents = new LinkedList<>();
         letterIdDocuments = new LinkedList<>();
         letterIds = new ArrayList<>();
@@ -48,6 +48,7 @@ public class InformationRequestService {
             //        }
             //    });
         }
-        return callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents, letterIds);
+        return callbackResponseTransformer
+                .addInformationRequestDocuments(callbackRequest, documents, letterIds, authToken);
     }
 }

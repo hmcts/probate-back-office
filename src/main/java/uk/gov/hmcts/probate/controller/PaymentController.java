@@ -87,6 +87,6 @@ public class PaymentController {
     public ResponseEntity<CallbackResponse> updateTaskList(
         @RequestBody CallbackRequest request) {
         caseDataTransformer.transformCaseDataForEvidenceHandled(request);
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, null));
     }
 }

@@ -24,7 +24,9 @@ import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.containsString;
@@ -32,6 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -42,6 +45,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class LifeEventControllerIT {
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
 
     @Autowired
     private MockMvc mockMvc;
@@ -76,6 +81,13 @@ class LifeEventControllerIT {
     @BeforeEach
     public void setup() {
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
+
+        UserInfo caseworkerInfo = UserInfo.builder()
+                .familyName("familyName")
+                .givenName("givenname")
+                .roles(Arrays.asList("caseworker-probate"))
+                .build();
+        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
     }
 
     @Test
@@ -137,6 +149,7 @@ class LifeEventControllerIT {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecordsAboutToStart")
+                .header(AUTH_HEADER, AUTH_TOKEN)
                 .content(payload)
                 .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
@@ -151,6 +164,7 @@ class LifeEventControllerIT {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
@@ -177,6 +191,7 @@ class LifeEventControllerIT {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/manualUpdate")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
@@ -189,6 +204,7 @@ class LifeEventControllerIT {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecords.json");
 
         mockMvc.perform(post("/lifeevent/selectFromMultipleRecords")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(payload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());

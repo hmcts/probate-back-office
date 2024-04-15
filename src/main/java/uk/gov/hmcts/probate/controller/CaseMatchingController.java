@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
@@ -71,7 +72,7 @@ public class CaseMatchingController {
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + request.getCaseDetails().getId() + " case matching search result: " + caseIds);
 
-        return ResponseEntity.ok(callbackResponseTransformer.addMatches(request, caseMatches));
+        return ResponseEntity.ok(callbackResponseTransformer.addMatches(request, caseMatches, null));
     }
 
     @PostMapping(path = "/search-from-caveat-flow")
@@ -118,7 +119,8 @@ public class CaseMatchingController {
 
     @PostMapping(path = "/import-legacy-from-grant-flow", consumes = APPLICATION_JSON_VALUE, produces = {
         APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> doImportFromGrant(@RequestBody CallbackRequest callbackRequest,
+    public ResponseEntity<CallbackResponse> doImportFromGrant(@RequestHeader(value = "Authorization") String authToken,
+                                                              @RequestBody CallbackRequest callbackRequest,
                                                               HttpServletRequest request) {
 
         List<FieldErrorResponse> errors =
@@ -147,7 +149,7 @@ public class CaseMatchingController {
                 .collect(Collectors.joining(", "));
         log.info("Case ID: " + callbackRequest.getCaseDetails().getId() + " case matching import: " + caseIds);
 
-        return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows));
+        return ResponseEntity.ok(callbackResponseTransformer.addMatches(callbackRequest, rows, authToken));
     }
 
     @PostMapping(path = "/import-legacy-from-caveat-flow", consumes = APPLICATION_JSON_VALUE, produces = {

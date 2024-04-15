@@ -26,7 +26,7 @@ public class RaiseGrantOfRepresentationNotificationService {
     private final EventValidationService eventValidationService;
     private final List<EmailAddressNotifyValidationRule> emailAddressNotifyValidationRules;
 
-    public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest)
+    public CallbackResponse handleGrantReceivedNotification(CallbackRequest callbackRequest, String authToken)
         throws NotificationClientException {
 
         log.info("Preparing to send notifications for raising a grant application.");
@@ -50,7 +50,7 @@ public class RaiseGrantOfRepresentationNotificationService {
         }
 
         if (response.getErrors().isEmpty()) {
-            response = callbackResponseTransformer.grantRaised(callbackRequest, documents, letterId);
+            response = callbackResponseTransformer.grantRaised(callbackRequest, documents, letterId, authToken);
         }
         return response;
     }

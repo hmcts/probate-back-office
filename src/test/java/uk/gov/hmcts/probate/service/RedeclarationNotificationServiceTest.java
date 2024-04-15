@@ -66,6 +66,7 @@ class RedeclarationNotificationServiceTest {
             Document.builder().documentType(SENT_EMAIL).documentFileName("file2").build();
     private static final Document SENT_EMAIL_DOCUMENT =
             Document.builder().documentType(DocumentType.SENT_EMAIL).build();
+    private static final String AUTH_TOKEN = "auth";
 
     @BeforeEach
     public void setup() {
@@ -100,12 +101,13 @@ class RedeclarationNotificationServiceTest {
         CallbackResponse callbackResponse = CallbackResponse.builder().data(letterResponseCaseData).build();
 
 
-        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(callbackResponse);
+        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any(), any())).thenReturn(callbackResponse);
     }
 
     @Test
     void handleRedeclarationNotificationShouldBeSuccessful() {
-        CallbackResponse response = redeclarationNotificationService.handleRedeclarationNotification(callbackRequest);
+        CallbackResponse response = redeclarationNotificationService.handleRedeclarationNotification(callbackRequest,
+                AUTH_TOKEN);
 
         assertEquals(1, response.getData().getProbateSotDocumentsGenerated().size());
         assertEquals(SOT_INFORMATION_REQUEST,

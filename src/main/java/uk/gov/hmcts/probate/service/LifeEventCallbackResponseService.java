@@ -32,7 +32,7 @@ public class LifeEventCallbackResponseService {
 
     public CallbackResponse setNumberOfDeathRecords(CallbackRequest request) {
         final List<CollectionMember<DeathRecord>> deathRecords = request.getCaseDetails().getData().getDeathRecords();
-        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request);
+        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request, null);
         response.getData().setNumberOfDeathRecords(deathRecords == null ? null : deathRecords.size());
         return response;
     }
@@ -41,7 +41,7 @@ public class LifeEventCallbackResponseService {
         final CaseDetails caseDetails = request.getCaseDetails();
         final List<CollectionMember<DeathRecord>> deathRecords
             = lifeEventService.getDeathRecordsByNamesAndDate(caseDetails);
-        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request);
+        final CallbackResponse response = callbackResponseTransformer.updateTaskList(request, null);
         response.getData().setDeathRecords(deathRecords);
         response.getData().setNumberOfDeathRecords(deathRecords.size());
         return response;

@@ -54,6 +54,7 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
     private static final String SENT_EMAIL_FILE_NAME = "sentEmail.pdf";
     private static final String COVERSHEET_FILE_NAME = "coversheet.pdf";
     private static final byte[] DOC_BYTES = {(byte) 23};
+    private static final String AUTH_TOKEN = "AuthToken";
     @MockBean
     BulkPrintService bulkPrintService;
     @Autowired
@@ -116,7 +117,8 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL))).thenReturn(Document.builder()
             .documentFileName(SENT_EMAIL_FILE_NAME).documentType(GRANT_RAISED).build());
 
-        CallbackResponse response = handleGrantReceivedNotification.handleGrantReceivedNotification(callbackRequest);
+        CallbackResponse response = handleGrantReceivedNotification.handleGrantReceivedNotification(callbackRequest,
+            AUTH_TOKEN);
         assertEquals(1, response.getData().getProbateNotificationsGenerated().size());
         assertEquals(SENT_EMAIL_FILE_NAME,
             response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
@@ -147,7 +149,8 @@ class RaiseGrantOfRepresentationNotificationServiceIT {
             .thenReturn(Document.builder()
                 .documentFileName(COVERSHEET_FILE_NAME).documentType(GRANT_COVERSHEET).build());
 
-        CallbackResponse response = handleGrantReceivedNotification.handleGrantReceivedNotification(callbackRequest);
+        CallbackResponse response = handleGrantReceivedNotification.handleGrantReceivedNotification(callbackRequest,
+            AUTH_TOKEN);
         assertEquals(2, response.getData().getProbateNotificationsGenerated().size());
         assertEquals(COVERSHEET_FILE_NAME,
             response.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());

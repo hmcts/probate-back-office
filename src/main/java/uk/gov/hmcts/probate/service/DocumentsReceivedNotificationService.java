@@ -33,7 +33,7 @@ public class DocumentsReceivedNotificationService {
     private static final String NOTIFICATION_OFF = "toggle probate-documents-received-notification off";
     private static final String NOTIFICATION_NOT_REQUESTED = "notification not requested";
 
-    public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest)
+    public CallbackResponse handleDocumentReceivedNotification(CallbackRequest callbackRequest, String authToken)
         throws NotificationClientException {
 
         log.info("Preparing to send email notification for documents being recieved");
@@ -51,7 +51,7 @@ public class DocumentsReceivedNotificationService {
             if (response.getErrors().isEmpty()) {
                 Document documentsReceivedSentEmail = notificationService.sendEmail(DOCUMENTS_RECEIVED, caseDetails);
                 documents.add(documentsReceivedSentEmail);
-                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+                response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null, authToken);
             }
         } else {
             String reasonIgnored;
@@ -63,7 +63,7 @@ public class DocumentsReceivedNotificationService {
                 reasonIgnored = NOTIFICATION_NOT_REQUESTED;
             }
             log.info("No notification on Document received for case: {} " + reasonIgnored, caseDetails.getId());
-            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null);
+            response = callbackResponseTransformer.addDocuments(callbackRequest, documents, null, null, authToken);
         }
         return response;
     }

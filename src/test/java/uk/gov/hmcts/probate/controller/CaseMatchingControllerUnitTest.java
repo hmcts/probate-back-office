@@ -82,6 +82,7 @@ class CaseMatchingControllerUnitTest {
     private CaveatCallbackResponse caveatCallbackResponse;
 
     private List<CaseMatch> caseMatches = new ArrayList<>();
+    private static final String AUTH_TOKEN = "auth";
 
     @BeforeEach
     public void setUp() {
@@ -142,7 +143,7 @@ class CaseMatchingControllerUnitTest {
                 .build();
         CaseDetails caseDetails = new CaseDetails(caseData, new String[]{"2022", "1", "1", "1"}, 0L);
         when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
-        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches)).thenReturn(callbackResponse);
+        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches, null)).thenReturn(callbackResponse);
         ResponseEntity<CallbackResponse> response = underTest.search(callbackRequest);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
@@ -178,9 +179,10 @@ class CaseMatchingControllerUnitTest {
         when(caseDataMock.getCaseMatches()).thenReturn(caseMatchMock);
         when(legacyImportService.areLegacyRowsValidToImport(caseMatchMock)).thenReturn(true);
         when(legacyImportService.importLegacyRows(caseMatchMock)).thenReturn(caseMatches);
-        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches)).thenReturn(callbackResponse);
+        when(callbackResponseTransformer.addMatches(callbackRequest, caseMatches, AUTH_TOKEN))
+                .thenReturn(callbackResponse);
         ResponseEntity<CallbackResponse> response = underTest
-                .doImportFromGrant(callbackRequest, httpServletRequestMock);
+                .doImportFromGrant(AUTH_TOKEN, callbackRequest, httpServletRequestMock);
 
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody(), is(callbackResponse));

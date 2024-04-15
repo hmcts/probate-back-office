@@ -85,7 +85,7 @@ class PaymentControllerUnitTest {
 
     @Test
     void shouldUpdateTaskList() {
-        when(callbackResponseTransformerMock.updateTaskList(request)).thenReturn(callbackResponse);
+        when(callbackResponseTransformerMock.updateTaskList(request, null)).thenReturn(callbackResponse);
         doNothing().when(caseDataTransformerMock).transformCaseDataForEvidenceHandled(request);
         ResponseEntity<CallbackResponse> response = underTest.updateTaskList(request);
 

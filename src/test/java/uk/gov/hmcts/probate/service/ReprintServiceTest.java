@@ -54,6 +54,8 @@ class ReprintServiceTest {
     @Captor
     private ArgumentCaptor<Document> selectedDocumentCaptor;
 
+    private static final String AUTH_TOKEN = "auth";
+
 
     @BeforeEach
     public void setUp() {
@@ -81,7 +83,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest);
+        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
@@ -107,7 +109,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest);
+        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT));
@@ -133,7 +135,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest);
+        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.DIGITAL_GRANT_REISSUE));
@@ -159,7 +161,7 @@ class ReprintServiceTest {
 
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
-        reprintService.reprintSelectedDocument(callbackRequest);
+        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.STATEMENT_OF_TRUTH));
@@ -185,7 +187,7 @@ class ReprintServiceTest {
         SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
         when(bulkPrintService.sendDocumentsForReprint(any(), any(), any())).thenReturn(sendLetterResponse);
 
-        reprintService.reprintSelectedDocument(callbackRequest);
+        reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
 
         verify(bulkPrintService).sendDocumentsForReprint(any(), selectedDocumentCaptor.capture(), any());
         assertThat(selectedDocumentCaptor.getValue().getDocumentType(), is(DocumentType.OTHER));
@@ -199,7 +201,7 @@ class ReprintServiceTest {
                     .build();
             when(caseData.getReprintDocument()).thenReturn(doc);
 
-            reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
         });
     }
 
@@ -213,7 +215,7 @@ class ReprintServiceTest {
                     .build();
             when(caseData.getReprintDocument()).thenReturn(doc);
 
-            reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
         });
     }
 
@@ -227,7 +229,7 @@ class ReprintServiceTest {
                     .build();
             when(caseData.getReprintDocument()).thenReturn(doc);
 
-            reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
         });
     }
 
@@ -248,7 +250,7 @@ class ReprintServiceTest {
 
             setupGeneratedDocs();
 
-            reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
         });
     }
 
@@ -269,7 +271,7 @@ class ReprintServiceTest {
 
             setupGeneratedDocs();
 
-            reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
         });
     }
 
@@ -290,7 +292,7 @@ class ReprintServiceTest {
 
             setupScannedDocs();
 
-            reprintService.reprintSelectedDocument(callbackRequest);
+            reprintService.reprintSelectedDocument(callbackRequest, AUTH_TOKEN);
         });
     }
 

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -49,34 +50,39 @@ public class LifeEventController {
         }
         final CaseDetails caseDetails = request.getCaseDetails();
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, isCitizenUser);
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, null));
     }
 
     @PostMapping(path = "/manualUpdateAboutToStart", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> manualUpdateAboutToStart(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(lifeEventCallBackResponseService.getDeathRecordsByNamesAndDate(request));
     }
-    
+
     @PostMapping(path = "/manualUpdate", produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> manualUpdate(@RequestBody CallbackRequest request) {
+    public ResponseEntity<CallbackResponse> manualUpdate(@RequestHeader(value = "Authorization") String authToken,
+                                                         @RequestBody CallbackRequest request) {
         lifeEventValidationRule.validate(request.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, authToken));
     }
-    
+
     @PostMapping(path = "/selectFromMultipleRecordsAboutToStart",produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> countRecords(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(lifeEventCallBackResponseService.setNumberOfDeathRecords(request));
-    } 
+    }
 
     @PostMapping(path = "/selectFromMultipleRecords", produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> selectFromMultipleRecords(@RequestBody CallbackRequest request) {
+    public ResponseEntity<CallbackResponse> selectFromMultipleRecords(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest request) {
         lifeEventValidationRule.validate(request.getCaseDetails());
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, authToken));
     }
 
     @PostMapping(path = "/handOffToLegacySite", produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> handOffToLegacySite(@RequestBody CallbackRequest request) {
+    public ResponseEntity<CallbackResponse> handOffToLegacySite(
+            @RequestHeader(value = "Authorization") String authToken,
+            @RequestBody CallbackRequest request) {
         handOffLegacyTransformer.setHandOffToLegacySiteYes(request);
-        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
+        return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, authToken));
     }
 }

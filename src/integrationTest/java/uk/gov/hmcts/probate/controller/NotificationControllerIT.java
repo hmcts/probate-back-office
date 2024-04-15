@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
 import uk.gov.hmcts.probate.service.DocumentService;
@@ -40,6 +41,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -87,6 +89,8 @@ class NotificationControllerIT {
     private static final String START_GRANT_DELAYED_NOTIFICATION_DATE = "/notify/start-grant-delayed-notify-period";
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
+    private static final String AUTH_HEADER = "Authorization";
+    private static final String AUTH_TOKEN = "Bearer someAuthorizationToken";
     @Autowired
     private WebApplicationContext webApplicationContext;
 
@@ -138,6 +142,9 @@ class NotificationControllerIT {
 
     @MockBean
     private EvidenceUploadService evidenceUploadService;
+
+    @MockBean
+    private SecurityUtils securityUtils;
 
     @SpyBean
     private DocumentService documentService;
@@ -196,22 +203,31 @@ class NotificationControllerIT {
 
         when(documentGeneratorService.generateCoversheet(any())).thenReturn(EMPTY_DOC);
 
-        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addDocuments(any(), any(), any(), any(), any()))
+            .thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addNocDocuments(any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.caseStopped(any(), any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any(), any()))
             .thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any(), any()))
             .thenReturn(successfulResponse);
-        when(callbackResponseTransformer.grantRaised(any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.grantRaised(any(), any(), any(), any())).thenReturn(successfulResponse);
 
-        when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
+        when(informationRequestService.handleInformationRequest(any(), any())).thenReturn(successfulResponse);
 
-        when(redeclarationNotificationService.handleRedeclarationNotification(any())).thenReturn(successfulResponse);
+        when(redeclarationNotificationService.handleRedeclarationNotification(any(), any()))
+            .thenReturn(successfulResponse);
 
-        when(featureToggleService.isFeatureToggleOn("probate-documents-received-notification", false)).thenReturn(true);
+        when(featureToggleService.isFeatureToggleOn("probate-documents-received-notification", false))
+            .thenReturn(true);
 
+        UserInfo caseworkerInfo = UserInfo.builder()
+                .familyName("familyName")
+                .givenName("givenname")
+                .roles(Arrays.asList("caseworker-probate"))
+                .build();
+        doReturn(caseworkerInfo).when(securityUtils).getUserInfo(AUTH_TOKEN);
     }
 
     @Test
@@ -220,6 +236,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         mockMvc.perform(post("/notify/documents-received")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -232,6 +249,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post("/notify/documents-received")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -243,7 +261,7 @@ class NotificationControllerIT {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post("/notify/application-received")
+        mockMvc.perform(post(APPLICATION_RECEIVED_URL)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -255,7 +273,7 @@ class NotificationControllerIT {
 
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotificationsPaper.json");
 
-        mockMvc.perform(post("/notify/application-received")
+        mockMvc.perform(post(APPLICATION_RECEIVED_URL)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -271,6 +289,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -289,6 +308,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsAdmonWill.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -307,6 +327,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsIntestacy.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -325,6 +346,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotificationsEdgeCase.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -343,6 +365,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post("/document/generate-grant")
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -358,6 +381,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNotifications.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -370,6 +394,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -381,6 +406,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationsRequestedPayload.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -394,6 +420,7 @@ class NotificationControllerIT {
             testUtils.getStringFromFile("stopNotificationNoEmailRequestedAndNoBulkPrintPayload.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -408,6 +435,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
+            .header(AUTH_HEADER, AUTH_TOKEN)
             .content(solicitorPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
@@ -421,7 +449,8 @@ class NotificationControllerIT {
     void shouldReturnEmailSolsValidateSuccessful() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(DOC_RECEIVED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -433,7 +462,8 @@ class NotificationControllerIT {
 
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
-        mockMvc.perform(post(DOC_RECEIVED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(DOC_RECEIVED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this solicitor. Add an email address or contact them by post."))
@@ -448,7 +478,8 @@ class NotificationControllerIT {
     void shouldReturnEmailPAValidateSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(DOC_RECEIVED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -457,7 +488,8 @@ class NotificationControllerIT {
     void shouldReturnEmailPAValidateFromBulkScanSuccessful() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsFromBulkScan.json");
 
-        mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(DOC_RECEIVED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -470,7 +502,8 @@ class NotificationControllerIT {
 
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
-        mockMvc.perform(post(DOC_RECEIVED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(DOC_RECEIVED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this applicant. Add an email address or contact "
@@ -486,7 +519,7 @@ class NotificationControllerIT {
     void shouldReturnPAApplicantReceivedValidateUnSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
-        mockMvc.perform(post("/notify/application-received")
+        mockMvc.perform(post(APPLICATION_RECEIVED_URL)
             .content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk());
@@ -496,7 +529,8 @@ class NotificationControllerIT {
     void shouldReturnEmailSolsValidateSuccessfulCaseStopped() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorAdditionalExecutors.json");
 
-        mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_STOPPED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -505,7 +539,8 @@ class NotificationControllerIT {
     void shouldReturnEmailSolsValidateUnSuccessfulCaseStopped() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
-        mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_STOPPED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this solicitor. Add an email address or contact them by post."))
@@ -520,7 +555,8 @@ class NotificationControllerIT {
     void shouldReturnEmailPAValidateSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_STOPPED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
@@ -529,7 +565,8 @@ class NotificationControllerIT {
     void shouldReturnEmailPAValidateUnSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
 
-        mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(CASE_STOPPED_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("There is no email address for this applicant. Add an email address or contact them by post."))
@@ -554,7 +591,8 @@ class NotificationControllerIT {
     void shouldReturnSuccessfulResponseForInformationRequest() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post(REQUEST_INFO_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REQUEST_INFO_URL).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
@@ -564,7 +602,8 @@ class NotificationControllerIT {
     void shouldReturnSuccessfulResponseForRedeclarationSot() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
 
-        mockMvc.perform(post(REDECLARATION_SOT).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(REDECLARATION_SOT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
@@ -576,7 +615,8 @@ class NotificationControllerIT {
         Document raiseGrantDoc = Document.builder().documentType(GRANT_RAISED).build();
         doReturn(raiseGrantDoc).when(notificationService).sendEmail(any(), any());
 
-        mockMvc.perform(post(RAISE_GRANT).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(RAISE_GRANT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
@@ -588,7 +628,8 @@ class NotificationControllerIT {
         Document raiseGrantDoc = Document.builder().documentType(GRANT_RAISED).build();
         doReturn(raiseGrantDoc).when(notificationService).sendEmail(any(), any());
 
-        mockMvc.perform(post(RAISE_GRANT).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(post(RAISE_GRANT).header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
@@ -598,8 +639,9 @@ class NotificationControllerIT {
     void shouldReturnSuccessfulResponseForStartGrantDelayNotification() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
         when(callbackResponseTransformer
-                .transformCaseForAttachScannedDocs(any(), any())).thenReturn(successfulResponse);
-        mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE).content(personalPayload)
+                .transformCaseForAttachScannedDocs(any(), any(), any())).thenReturn(successfulResponse);
+        mockMvc.perform(post(START_GRANT_DELAYED_NOTIFICATION_DATE).header(AUTH_HEADER, AUTH_TOKEN)
+            .content(personalPayload)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
@@ -635,6 +677,7 @@ class NotificationControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("solicitorNocPayloadNotifications.json");
 
         mockMvc.perform(post("/notify/noc-notification")
+                        .header(AUTH_HEADER, AUTH_TOKEN)
                         .content(solicitorPayload)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -645,7 +688,8 @@ class NotificationControllerIT {
     void shouldReturnUnSuccessfulForNocEmail() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
 
-        mockMvc.perform(post("/notify/noc-notification").content(solicitorPayload)
+        mockMvc.perform(post("/notify/noc-notification").header(AUTH_HEADER, AUTH_TOKEN)
+                        .content(solicitorPayload)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
