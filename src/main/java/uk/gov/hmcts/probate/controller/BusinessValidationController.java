@@ -56,6 +56,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
@@ -119,6 +120,7 @@ public class BusinessValidationController {
     private final ChangeToSameStateValidationRule changeToSameStateValidationRule;
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
+    private final Pre1900DOBValidationRule pre1900DOBValidationRule;
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
@@ -137,7 +139,8 @@ public class BusinessValidationController {
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            return ResponseEntity.ok(callbackResponseTransformer.transform(request));
+            caseDataTransformer.transformFormCaseData(request);
+            return ResponseEntity.ok(callbackResponseTransformer.transformValuesPage(request));
         }
         return ResponseEntity.ok(response);
     }
@@ -204,12 +207,13 @@ public class BusinessValidationController {
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         CaseDetails details = callbackRequest.getCaseDetails();
         if (response.getErrors().isEmpty()) {
+            caseDataTransformer.transformFormCaseData(callbackRequest);
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
                 response = callbackResponseTransformer.transformForDeceasedDetails(callbackRequest, newState);
             } else {
-                log.info("selected No to Hmrc letter");
+                log.info("Selected No to Hmrc letter");
                 response = callbackResponseTransformer.transformCase(callbackRequest);
             }
         }
@@ -462,12 +466,39 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
+                                                            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("superuser change Dob");
+        pre1900DOBValidationRule.validate(callbackRequest.getCaseDetails());
+        CallbackResponse response = callbackResponseTransformer.changeDob(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/validate-unique-code")
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         uniqueCodeValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.transformUniqueProbateCode(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/validate-values-page")
+    public ResponseEntity<CallbackResponse> validateValuesPage(@RequestBody CallbackRequest callbackRequest,
+                                                               HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        CallbackResponse response = callbackResponseTransformer.transformValuesPage(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> rollbackDataMigration(@RequestBody CallbackRequest callbackRequest,
+                                                            HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("Rollback Data migration");
+        CallbackResponse response = callbackResponseTransformer.rollback(callbackRequest);
         return ResponseEntity.ok(response);
     }
 

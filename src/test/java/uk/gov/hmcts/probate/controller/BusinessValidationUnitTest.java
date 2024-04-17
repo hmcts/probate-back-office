@@ -50,6 +50,7 @@ import uk.gov.hmcts.probate.validator.IhtEstateValidationRule;
 import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
+import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
@@ -172,6 +173,8 @@ class BusinessValidationUnitTest {
     private UniqueCodeValidationRule uniqueCodeValidationRule;
     @Mock
     private NaValidationRule naValidationRule;
+    @Mock
+    private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -211,7 +214,8 @@ class BusinessValidationUnitTest {
             furtherEvidenceForApplicationValidationRule,
             changeToSameStateValidationRule,
             handOffLegacyTransformer,
-            registrarDirectionServiceMock);
+            registrarDirectionServiceMock,
+            pre1900DOBValidationRuleMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -782,7 +786,7 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         verify(ihtEstateValidationRule, times(1)).validate(caseDetailsMock);
         verify(naValidationRule, times(1)).validate(caseDetailsMock);
-        verify(callbackResponseTransformerMock).transform(callbackRequestMock);
+        verify(callbackResponseTransformerMock).transformValuesPage(callbackRequestMock);
     }
 
     @Test
@@ -794,7 +798,8 @@ class BusinessValidationUnitTest {
         when(eventValidationServiceMock.validateRequest(any(), any())).thenReturn(callbackResponseMock);
         ResponseEntity<CallbackResponse> response =
                 underTest.validateIhtEstateData(callbackRequestMock);
-        verify(callbackResponseTransformerMock, times(0)).transform(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(0))
+                .transformValuesPage(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
@@ -969,6 +974,42 @@ class BusinessValidationUnitTest {
                 underTest.validateUniqueProbateCode(callbackRequestMock,httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
                 .transformUniqueProbateCode(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformValuesPage() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.validateValuesPage(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .transformValuesPage(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldRollback() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.rollbackDataMigration(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .rollback(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformDOB() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.changeDob(callbackRequestMock,httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .changeDob(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }

@@ -5,6 +5,8 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
@@ -46,6 +48,7 @@ import uk.gov.hmcts.probate.model.exceptionrecord.CaseCreationDetails;
 import uk.gov.hmcts.probate.model.fee.FeeResponse;
 import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
@@ -78,6 +81,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -298,6 +302,8 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+    @Mock
+    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
     private static final List<CollectionMember<EstateItem>> UK_ESTATE = Arrays.asList(
         new CollectionMember<>(null,
@@ -2577,8 +2583,138 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         CallbackResponse callbackResponse = underTest.transformUniqueProbateCode(callbackRequestMock);
         assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
+    }
+
+    @Test
+    void shouldTransformDOB() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedDob("1889-03-31");;
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.changeDob(callbackRequestMock);
+        assertEquals("1889-03-31", callbackResponse.getData().getDeceasedDateOfBirth());
+    }
+
+    @Test
+    void shouldTransformValuesPageForFormId400() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT400")
+                .hmrcLetterId(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
+    }
+
+    @Test
+    void shouldTransformNetValueForFormEstate400() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstateValuesCompleted(YES)
+                .ihtFormEstate("IHT400")
+                .hmrcLetterId(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
+    }
+
+    @Test
+    void shouldTransformSwitchToNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstateValuesCompleted(YES)
+                .ihtFormEstate("IHT400")
+                .hmrcLetterId(NO);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(NO, callbackResponse.getData().getIht400Switch());
+    }
+
+    @Test
+    void shouldTransformNetValueForEE() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstateValuesCompleted(NO)
+                .deceasedHadLateSpouseOrCivilPartner(YES)
+                .hmrcLetterId(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
+    }
+
+    @Test
+    void shouldTransformNetValueForEEDeceasedSpouseNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstateValuesCompleted(NO)
+                .deceasedHadLateSpouseOrCivilPartner(NO)
+                .hmrcLetterId(YES);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidValue")
+    void shouldTransformNetValueForOtherFormId(final String formId) {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId(formId);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidValue")
+    void shouldTransformNetValueForOtherFormEstate(final String form) {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate(form);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getIht400Switch());
+    }
+
+    private static Stream<String> invalidValue() {
+        return Stream.of("IHT400421", "IHT205", "IHT207", "NA");
+    }
+
+    @Test
+    void shouldTransformApplicantOrganisationPolicy() {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .applicantOrganisationPolicy(policy);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
+        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
     }
 
     @Test
@@ -4044,6 +4180,63 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseData);
         callbackResponse = underTest.updateTaskList(callbackRequestMock);
         assertEquals("No", callbackResponse.getData().getBoEmailDocsReceivedNotification());
+    }
+
+    @Test
+    void shouldTransformForFormNetValue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormNetValue(IHT_NET)
+                .ihtFormId("IHT400")
+                .ihtNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void shouldTransformNoForFormNetValue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT400")
+                .ihtNetValue(IHT_NET)
+                .ihtFormNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void shouldTransformForFormEstateAndNoFormNetValue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtNetValue(IHT_NET)
+                .ihtFormNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void shouldTransformNoFormNetValueDifferentFormId() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormId("IHT205")
+                .ihtFormEstate("IHT400")
+                .ihtNetValue(IHT_NET)
+                .ihtFormNetValue(null);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

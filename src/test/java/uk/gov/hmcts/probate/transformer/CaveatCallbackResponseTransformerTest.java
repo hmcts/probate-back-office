@@ -14,6 +14,7 @@ import uk.gov.hmcts.probate.model.Constants;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
@@ -69,6 +70,7 @@ class CaveatCallbackResponseTransformerTest {
     public static final String ORG_ID = "OrgID";
     private static final String REPRESENTATIVE_NAME = "Representative Name";
     private static final String DX_NUMBER = "1234567890";
+    private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @Mock
     private OrganisationsRetrievalService organisationsRetrievalService;
@@ -637,6 +639,38 @@ class CaveatCallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldNotAddMatches() {
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.addMatches(caveatCallbackRequestMock, caseMatches);
+
+        assertEquals(caveatCallbackResponse.getCaveatData().getMatches(), "No matches found");
+    }
+
+    @Test
+    void shouldAddMatches() {
+        List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
+        CollectionMember<CaseMatch> match =
+                new CollectionMember<>(null, CaseMatch
+                        .builder()
+                        .id("123")
+                        .build());
+        caseMatch.add(match);
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.registryLocation("ctsc");
+        caveatDataBuilder.caseMatches(caseMatch);
+        setupMocks();
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.addMatches(caveatCallbackRequestMock, caseMatches);
+
+        assertEquals(caveatCallbackResponse.getCaveatData().getMatches(), "Possible case matches");
+    }
+
+    @Test
     void shouldTransformResponse() {
         caveatDataBuilder.applicationType(SOLICITOR);
         caveatDataBuilder.paperForm("No");
@@ -710,6 +744,26 @@ class CaveatCallbackResponseTransformerTest {
         assertEquals("1", originalDocuments.getOriginalDocsGenerated().get(0).getId());
         assertEquals("2", originalDocuments.getOriginalDocsScanned().get(0).getId());
         assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
+    }
+
+    @Test
+    void shouldTransformApplicantOrganisationPolicy() {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caveatDataBuilder.applicationType(SOLICITOR);
+        caveatDataBuilder.paperForm("No");
+        caveatDataBuilder.applicantOrganisationPolicy(policy);
+
+        when(caveatCallbackRequestMock.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        CaveatCallbackResponse callbackResponse = underTest.rollback(caveatCallbackRequestMock);
+        assertNull(callbackResponse.getCaveatData().getApplicantOrganisationPolicy());
     }
 
     private void assertCommon(CaveatCallbackResponse caveatCallbackResponse) {

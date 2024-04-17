@@ -252,7 +252,8 @@ class ConfirmationResponseServiceFeatureIT {
     @Test
     void shouldGenerateCorrectConfirmationBodyCaveats() throws Exception {
         CaveatData caveatData = createCaveatDataBuilder().build();
-        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(caveatData);
+        AfterSubmitCallbackResponse stopConfirmation = confirmationResponseService.getNextStepsConfirmation(caveatData,
+                123L);
 
         String expectedConfirmationBody = testUtils.getStringFromFile("expectedConfirmationBodyCaveat.md");
 
