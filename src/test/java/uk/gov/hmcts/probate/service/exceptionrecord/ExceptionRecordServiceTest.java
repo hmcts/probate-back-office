@@ -93,11 +93,15 @@ class ExceptionRecordServiceTest {
 
     private ExceptionRecordRequest erRequestGrantOfProbateSolsAdmonWill;
 
+    private ExceptionRecordRequest erRequestGrantOfProbateSolsIntestacy;
+
     private CaveatCaseUpdateRequest caveatCaseUpdateRequest;
 
     private String exceptionRecordPayloadPA8A;
 
     private String exceptionRecordPayloadPA1P;
+
+    private String exceptionRecordPayloadPA1A;
 
     private String exceptionRecordPayloadPA1PSols;
 
@@ -112,6 +116,8 @@ class ExceptionRecordServiceTest {
     private GrantOfRepresentationData grantOfRepresentationDataSols;
 
     private GrantOfRepresentationData grantOfRepresentationDataSolsAdmonWill;
+
+    private GrantOfRepresentationData grantOfRepresentationDataSolsIntestacy;
 
     private CaseCreationDetails caveatCaseDetailsResponse;
 
@@ -134,6 +140,9 @@ class ExceptionRecordServiceTest {
             testUtils.getStringFromFile(
                     "expectedExceptionRecordDataSolicitorSingleExecutorAdmonWillPA1P.json");
 
+        exceptionRecordPayloadPA1A =
+                testUtils.getStringFromFile("expectedExceptionRecordDataSolicitorSingleExecutorPA1A.json");
+
         erRequestCaveat = getObjectMapper().readValue(exceptionRecordPayloadPA8A, ExceptionRecordRequest.class);
 
         erRequestGrantOfProbate = getObjectMapper().readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
@@ -143,6 +152,9 @@ class ExceptionRecordServiceTest {
 
         erRequestGrantOfProbateSolsAdmonWill = getObjectMapper()
                 .readValue(exceptionRecordPayloadPA1PSolsAdmonWill, ExceptionRecordRequest.class);
+
+        erRequestGrantOfProbateSolsIntestacy = getObjectMapper()
+                .readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
 
         warnings = new ArrayList<String>();
         caveatData = new CaveatData();
@@ -164,6 +176,12 @@ class ExceptionRecordServiceTest {
         grantOfRepresentationDataSolsAdmonWill.setSolsWillType(SolicitorWillType.GRANT_TYPE_ADMON);
         grantOfRepresentationDataSolsAdmonWill.setSolsSolicitorFirmName("FirmName");
         grantOfRepresentationDataSolsAdmonWill.setCaseHandedOffToLegacySite(true);
+
+        grantOfRepresentationDataSolsIntestacy = new GrantOfRepresentationData();
+        grantOfRepresentationDataSolsIntestacy.setApplicationType(ApplicationType.SOLICITORS);
+        grantOfRepresentationDataSolsIntestacy.setSolsWillType(SolicitorWillType.GRANT_TYPE_INTESTACY);
+        grantOfRepresentationDataSolsIntestacy.setSolsSolicitorFirmName("FirmName");
+        grantOfRepresentationDataSolsIntestacy.setCaseHandedOffToLegacySite(true);
 
         grantOfRepresentationDataSols = new GrantOfRepresentationData();
         grantOfRepresentationDataSols.setApplicationType(ApplicationType.SOLICITORS);
@@ -368,6 +386,28 @@ class ExceptionRecordServiceTest {
 
         assertEquals(ApplicationType.SOLICITORS, grantOfRepresentationDataResponse.getApplicationType());
         assertEquals(GrantType.ADMON_WILL, grantOfRepresentationDataResponse.getGrantType());
+        assertEquals("FirmName", grantOfRepresentationDataResponse.getSolsSolicitorFirmName());
+        assertEquals(Boolean.TRUE, grantOfRepresentationDataResponse.getCaseHandedOffToLegacySite());
+    }
+
+    @Test
+    void createGrantOfProbateCaseSolicitorIntestasyFromExceptionRecord() {
+        when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSolsIntestacy);
+        grantOfProbateCaseDetailsResponse =
+                CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
+                        .caseData(grantOfRepresentationDataSolsIntestacy)
+                        .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
+        when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
+                .thenReturn(grantOfProbateCaseDetailsResponse);
+        SuccessfulTransformationResponse response =
+                erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateSolsIntestacy,
+                        GrantType.INTESTACY,
+                        warnings);
+        GrantOfRepresentationData grantOfRepresentationDataResponse
+                = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
+
+        assertEquals(ApplicationType.SOLICITORS, grantOfRepresentationDataResponse.getApplicationType());
+        assertEquals(GrantType.INTESTACY, grantOfRepresentationDataResponse.getGrantType());
         assertEquals("FirmName", grantOfRepresentationDataResponse.getSolsSolicitorFirmName());
         assertEquals(Boolean.TRUE, grantOfRepresentationDataResponse.getCaseHandedOffToLegacySite());
     }
