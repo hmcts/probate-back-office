@@ -124,7 +124,7 @@
     { "name": "adoptiveRelatives_5_name", "value": "Pat Jones" },
     { "name": "adoptiveRelatives_5_relationship", "value": "Son" },
     { "name": "adoptiveRelatives_5_adoptedInOrOut", "value": "in" },
-    { "name": "solsWillType", "value": "WillLeftAnnexed" },
+    { "name": "solsWillType", "value": "NoWill" },
     { "name": "solsWillTypeReason", "value": "Because he died" },
     { "name": "bilingualGrantRequested", "value": "False" },
     { "name": "willDate", "value": "20062013" },
