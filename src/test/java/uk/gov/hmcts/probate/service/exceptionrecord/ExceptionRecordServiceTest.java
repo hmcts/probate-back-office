@@ -154,7 +154,7 @@ class ExceptionRecordServiceTest {
                 .readValue(exceptionRecordPayloadPA1PSolsAdmonWill, ExceptionRecordRequest.class);
 
         erRequestGrantOfProbateSolsIntestacy = getObjectMapper()
-                .readValue(exceptionRecordPayloadPA1P, ExceptionRecordRequest.class);
+                .readValue(exceptionRecordPayloadPA1A, ExceptionRecordRequest.class);
 
         warnings = new ArrayList<String>();
         caveatData = new CaveatData();
