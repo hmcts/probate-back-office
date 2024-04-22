@@ -40,6 +40,8 @@ class TaskListConstantsTest {
                 TaskListState.mapCaseState(StateConstants.STATE_BO_CASE_MATCHING_EXAMINING, null));
         assertEquals(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                 TaskListState.mapCaseState(StateConstants.STATE_BO_READY_TO_ISSUE, null));
+        assertEquals(TaskListState.TL_STATE_EXAMINE_APPLICATION,
+                TaskListState.mapCaseState(StateConstants.STATE_BO_CASE_WORKER_ESCALATION, null));
         assertEquals(TaskListState.TL_STATE_ISSUE_GRANT,
                 TaskListState.mapCaseState(StateConstants.STATE_BO_CASE_MATCHING_ISSUE_GRANT, null));
         assertEquals(TaskListState.TL_STATE_COMPLETE,
