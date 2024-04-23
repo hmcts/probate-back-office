@@ -93,7 +93,7 @@ sourceSets {
     java {
       compileClasspath += main.output
       runtimeClasspath += main.output
-      srcDir file('src/functionalTest/java')
+      srcDir file('src/functionalTest/empty')
     }
     resources.srcDir file('src/functionalTest/resources')
   }
