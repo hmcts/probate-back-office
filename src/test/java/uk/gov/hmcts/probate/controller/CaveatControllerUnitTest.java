@@ -24,6 +24,7 @@ import uk.gov.hmcts.probate.service.payments.PaymentsService;
 import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaveatDataTransformer;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
+import uk.gov.hmcts.probate.validator.CaveatAcknowledgementValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
@@ -90,6 +91,8 @@ class CaveatControllerUnitTest {
     @Mock
     private DocumentGeneratorService documentGeneratorService;
     @Mock
+    private CaveatAcknowledgementValidationRule caveatAcknowledgementValidationRule;
+    @Mock
     private HttpServletRequest httpServletRequestMock;
 
     @BeforeEach
@@ -99,7 +102,7 @@ class CaveatControllerUnitTest {
         underTest = new CaveatController(validationRuleCaveats, validationRuleCaveatsExpiry, caveatDodValidationRule,
             caveatDataTransformer, caveatCallbackResponseTransformer, serviceRequestTransformer, eventValidationService,
             notificationService, caveatNotificationService, confirmationResponseService, paymentsService, feeService,
-            registrarDirectionService, documentGeneratorService);
+            registrarDirectionService, documentGeneratorService, caveatAcknowledgementValidationRule);
     }
 
     @Test
@@ -175,5 +178,19 @@ class CaveatControllerUnitTest {
         verify(caveatCallbackResponseTransformer, times(1))
                 .rollback(caveatCallbackRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldValidatePaymentAcknowledgement() {
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataMock);
+        when(caveatCallbackRequest.getCaseDetails()).thenReturn(caveatDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+
+        ResponseEntity<CaveatCallbackResponse> response = underTest.validateAcknowledgement(
+                caveatCallbackRequest);
+
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        verify(caveatCallbackResponseTransformer, times(1))
+                .transformResponseWithNoChanges(caveatCallbackRequest);
     }
 }

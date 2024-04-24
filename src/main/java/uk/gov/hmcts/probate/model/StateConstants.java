@@ -45,6 +45,8 @@ public class StateConstants {
 
     public static final String STATE_APPLICATION_STOPPED = "Stopped";
 
+    public static final String STATE_BO_CASE_WORKER_ESCALATION = "BOCaseWorkerEscalation";
+
     // inset text for case progress tab
     public static final String STATE_DESC_DEFAULT = "Default";
     public static final String STATE_DESC_ESCALATED = "Case escalated to a Registrar";
