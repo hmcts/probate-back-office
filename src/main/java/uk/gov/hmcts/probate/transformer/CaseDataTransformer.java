@@ -129,9 +129,9 @@ public class CaseDataTransformer {
                 resetIhtFormAndHmrcLetter(caseData);
             }
         } else {
+            caseData.setIhtFormEstateValuesCompleted(null);
             if (caseData.getIhtFormEstate() != null) {
                 resetIhtFormEstate(caseData);
-                caseData.setIhtFormEstateValuesCompleted(null);
                 if (!IHT400.equals(caseData.getIhtFormId())) {
                     resetHmrcLetterId(caseData);
                 }
