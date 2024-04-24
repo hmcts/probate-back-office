@@ -302,6 +302,8 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
@@ -3712,6 +3714,24 @@ class CallbackResponseTransformerTest {
             (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
         assertEquals(RegistryLocation.CARDIFF,grantOfRepresentationData.getRegistryLocation());
         bulkScanGrantOfRepresentationDataSols.setLanguagePreferenceWelsh(FALSE);
+    }
+
+    @Test
+    void bulkScanGrantOfRepresentationTransformSolsCaseWithOrgPolicy() {
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy orgPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+        CaseCreationDetails grantOfRepresentationDetails
+                = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
+        GrantOfRepresentationData grantOfRepresentationData =
+                (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
+        assertEquals(orgPolicy, grantOfRepresentationData.getApplicantOrganisationPolicy());
     }
 
     @Test

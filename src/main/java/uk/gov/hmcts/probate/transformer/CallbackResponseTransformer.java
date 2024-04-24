@@ -1788,6 +1788,18 @@ public class CallbackResponseTransformer {
             }
         }
 
+        if (SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
+            grantOfRepresentationData.setApplicantOrganisationPolicy
+                    (uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                    .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                            .organisationID(null)
+                            .organisationName(null)
+                            .build())
+                    .orgPolicyReference(null)
+                    .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                    .build());
+        }
+
         return CaseCreationDetails.builder().<ResponseCaveatData>
                 eventId(EXCEPTION_RECORD_EVENT_ID).caseData(grantOfRepresentationData)
                 .caseTypeId(EXCEPTION_RECORD_CASE_TYPE_ID).build();
