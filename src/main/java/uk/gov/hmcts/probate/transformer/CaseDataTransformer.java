@@ -122,6 +122,7 @@ public class CaseDataTransformer {
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
             if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormId(caseData);
+                resetExceptedEstateFields(caseData);
                 if (!IHT400.equals(caseData.getIhtFormEstate())) {
                     resetHmrcLetterId(caseData);
                 }
@@ -129,7 +130,8 @@ public class CaseDataTransformer {
                 resetIhtFormAndHmrcLetter(caseData);
             }
         } else {
-            caseData.setIhtFormEstateValuesCompleted(null);
+            resetIhtFormEstateCompleted(caseData);
+            resetExceptedEstateFields(caseData);
             if (caseData.getIhtFormEstate() != null) {
                 resetIhtFormEstate(caseData);
                 if (!IHT400.equals(caseData.getIhtFormId())) {
@@ -155,6 +157,18 @@ public class CaseDataTransformer {
         resetIhtFormEstate(caseData);
         resetIhtFormId(caseData);
         resetHmrcLetterId(caseData);
+    }
+
+    private void resetIhtFormEstateCompleted(CaseData caseData) {
+        caseData.setIhtFormEstateValuesCompleted(null);
+    }
+
+    private void resetExceptedEstateFields(CaseData caseData) {
+        caseData.setIhtEstateGrossValue(null);
+        caseData.setIhtEstateNetValue(null);
+        caseData.setIhtEstateNetQualifyingValue(null);
+        caseData.setDeceasedHadLateSpouseOrCivilPartner(null);
+        caseData.setIhtUnusedAllowanceClaimed(null);
     }
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
