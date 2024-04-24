@@ -1789,8 +1789,8 @@ public class CallbackResponseTransformer {
         }
 
         if (SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
-            grantOfRepresentationData.setApplicantOrganisationPolicy
-                    (uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+            grantOfRepresentationData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
+                    .OrganisationPolicy.builder()
                     .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
                             .organisationID(null)
                             .organisationName(null)
