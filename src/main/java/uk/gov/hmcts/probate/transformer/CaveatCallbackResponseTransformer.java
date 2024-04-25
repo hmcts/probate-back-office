@@ -40,6 +40,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_WITHDRAWN;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 
 @Component
 @RequiredArgsConstructor
@@ -50,6 +51,8 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
+
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
@@ -333,6 +336,18 @@ public class CaveatCallbackResponseTransformer {
         } else {
             caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.TRUE);
             caveatData.setSendToBulkPrintRequested(Boolean.FALSE);
+        }
+
+        if (SOLICITORS.equals(caveatData.getApplicationType())) {
+            caveatData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
+                    .OrganisationPolicy.builder()
+                    .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                            .organisationID(null)
+                            .organisationName(null)
+                            .build())
+                    .orgPolicyReference(null)
+                    .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                    .build());
         }
 
         caveatData.setBulkScanCaseReference((caveatData.getBulkScanCaseReference()));
