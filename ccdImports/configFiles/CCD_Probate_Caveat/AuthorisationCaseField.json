@@ -516,6 +516,7 @@
   {"CaseTypeID": "Caveat", "CaseFieldID": "removedRepresentative", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentatives", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "changeOfRepresentative", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
+  {"CaseTypeID": "Caveat", "CaseFieldID": "applicantOrganisationPolicy", "UserRole": "caseworker-probate-systemupdate", "CRUD": "CRUD"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationId", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "applicationType", "UserRole": "citizen", "CRUD": "CRU"},
   {"CaseTypeID": "Caveat", "CaseFieldID": "registryLocation", "UserRole": "citizen", "CRUD": "CRU"},
