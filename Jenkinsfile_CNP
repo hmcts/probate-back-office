@@ -197,6 +197,7 @@ withPipeline("java", product, component) {
 
   enableSlackNotifications('#probate-jenkins')
   enableHighLevelDataSetup()
+  enableSecurityScan()
   syncBranchesWithMaster(branchesToSync)
 
   afterAlways('test') {
