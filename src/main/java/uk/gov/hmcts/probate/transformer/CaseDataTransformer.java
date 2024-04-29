@@ -31,6 +31,7 @@ public class CaseDataTransformer {
     private final AttachDocumentsTransformer attachDocumentsTransformer;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private static final String IHT400 = "IHT400";
+    private static final String IHT205 = "IHT205";
 
     public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -131,11 +132,13 @@ public class CaseDataTransformer {
             }
         } else {
             resetIhtFormEstateCompleted(caseData);
-            resetExceptedEstateFields(caseData);
             if (caseData.getIhtFormEstate() != null) {
                 resetIhtFormEstate(caseData);
                 if (!IHT400.equals(caseData.getIhtFormId())) {
                     resetHmrcLetterId(caseData);
+                }
+                if (!IHT205.equals(caseData.getIhtFormId())) {
+                    resetIht217(caseData);
                 }
             }
         }
@@ -143,6 +146,7 @@ public class CaseDataTransformer {
 
     private void resetIhtFormId(CaseData caseData) {
         caseData.setIhtFormId(null);
+        resetIht217(caseData);
     }
 
     private void resetHmrcLetterId(CaseData caseData) {
@@ -161,6 +165,11 @@ public class CaseDataTransformer {
 
     private void resetIhtFormEstateCompleted(CaseData caseData) {
         caseData.setIhtFormEstateValuesCompleted(null);
+        resetExceptedEstateFields(caseData);
+    }
+
+    private void resetIht217(CaseData caseData) {
+        caseData.setIht217(null);
     }
 
     private void resetExceptedEstateFields(CaseData caseData) {
