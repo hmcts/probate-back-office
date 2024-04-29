@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.7.14'
+    springBootVersion = '2.7.18'
   }
   repositories {
     jcenter()
@@ -14,14 +14,14 @@ buildscript {
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.7.14'
-  id 'uk.gov.hmcts.java' version '0.12.57'
+  id 'org.springframework.boot' version '2.7.18'
+  id 'uk.gov.hmcts.java' version '0.12.60'
   id 'com.github.ben-manes.versions' version '0.38.0'
   id 'com.gorylenko.gradle-git-properties' version '1.4.21'
   id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
-  id 'org.sonarqube' version '3.3'
+  id 'org.sonarqube' version '4.3.0.3225'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1107'
 }
 
@@ -189,17 +189,17 @@ def versions = [
         springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
         serenity                        : '2.6.0',
         serenityreporter                : '2.6.0',
-        springBootVersion               : '2.7.14',
-        springBootStarterHateoas        : '2.7.14',
-        hmctsJavaLogging                : '6.0.1',
+        springBootVersion               : '2.7.18',
+        springBootStarterHateoas        : '2.7.18',
+        hmctsJavaLogging                : '6.1.4',
         authCheckerLib                  : '2.3.0',
-        jacksonDatabind                 : '2.14.2',
+        jacksonDatabind                 : '2.14.3',
         commonsIO                       : '2.8.0',
         commonsValidator                : '1.6',
         restAssured                     : '4.4.0',
-        lombok                          : '1.18.30',
+        lombok                          : '1.18.32',
         springDocOpenUi                 : '1.7.0',
-        springSecurityVersion           : '5.7.3',
+        springSecurityVersion           : '5.7.11',
         probateCommonsVersion           : '1.4.43',
         ccdClient                       : '4.9.2',
         mapStruct                       : '1.2.0.Final',
@@ -289,8 +289,10 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
   implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.1'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
-  implementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
-    force = true
+  implementation ('io.github.openfeign.form:feign-form-spring') {
+    version {
+      strictly '3.8.0'
+    }
   }
 
   implementation group: 'com.google.guava', name: 'guava', version: '32.0.1-jre'
@@ -302,13 +304,15 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.0'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.23'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.25.2'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.25.4'
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
   implementation group: 'commons-io', name: 'commons-io', version: versions.commonsIO
   implementation group: 'commons-validator', name: 'commons-validator', version: versions.commonsValidator
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonDatabind
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDocOpenUi
   implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: versions.springDocOpenUi
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -319,7 +323,7 @@ dependencies {
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.2.1'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
@@ -340,7 +344,7 @@ dependencies {
 
   // Notifications client API
   implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '4.1.0-RELEASE'
-
+  implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
@@ -377,8 +381,10 @@ dependencies {
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testFunctionalCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  testFunctionalImplementation ('io.github.openfeign.form:feign-form-spring:3.8.0') {
-    force = true
+  testFunctionalImplementation ('io.github.openfeign.form:feign-form-spring') {
+    version {
+        strictly '3.8.0'
+    }
   }
 
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
@@ -393,7 +399,9 @@ dependencies {
   testCaseCreatorAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testCaseCreatorCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
 
-  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.2.1'
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonDatabind
+  contractTestImplementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'java8', version: versions.pact_version
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
@@ -615,4 +623,8 @@ dependencyCheck {
       }
     }
   }
+}
+
+rootProject.tasks.named("processResources") {
+  dependsOn("generateGitProperties")
 }

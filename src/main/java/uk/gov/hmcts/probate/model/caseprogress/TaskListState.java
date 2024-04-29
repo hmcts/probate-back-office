@@ -81,6 +81,9 @@ public enum TaskListState {
             case StateConstants.STATE_BO_QA:
                 return TL_STATE_EXAMINE_APPLICATION;
 
+            case StateConstants.STATE_BO_CASE_WORKER_ESCALATION:
+                return TL_STATE_EXAMINE_APPLICATION;
+
             case StateConstants.STATE_BO_CASE_MATCHING_ISSUE_GRANT:
                 return TL_STATE_ISSUE_GRANT;
 

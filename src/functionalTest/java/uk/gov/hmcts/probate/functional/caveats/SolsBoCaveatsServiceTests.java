@@ -257,12 +257,13 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(response.asString());
         final String confirmationText = jsonPath.get("confirmation_body");
 
-        assertThat(confirmationText, containsString("This caveat application has now been submitted"));
-        assertThat(confirmationText, containsString("**Your reference:** REF1123"));
-        assertThat(confirmationText, containsString("**Application fee** &pound;3.00"));
-        assertThat(confirmationText, containsString("**Customer reference** appref-PAY1"));
-        assertThat(confirmationText, containsString("**You must complete payment next**"));
-        assertThat(confirmationText, containsString("Complete the payment process"));
+        assertThat(confirmationText, containsString("Your application has been submitted but cannot be "
+                + "processed until payment has been made"));
+        assertThat(confirmationText, containsString("**Application reference:** REF1123"));
+        assertThat(confirmationText, containsString("using Payment by Account (PBA) or a credit or debit card "
+                + "by returning to the case details and selecting the Service Request tab."));
+        assertThat(confirmationText, containsString("After you’ve paid, you may need to refresh the page or "
+                + "re-enter the case for the payment status to update."));
     }
 
     @Test

@@ -463,10 +463,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState());
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformWithConditionalStateChange(callbackRequest,
+                ofNullable(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState()));
     }
 
 
@@ -481,6 +479,13 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse changeDob(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        responseCaseDataBuilder.deceasedDateOfBirth(callbackRequest.getCaseDetails().getData().getDeceasedDob());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
