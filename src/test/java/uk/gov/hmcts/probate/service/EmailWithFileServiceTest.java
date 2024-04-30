@@ -10,6 +10,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.util.ResourceUtils;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
 import uk.gov.service.notify.NotificationClient;
+import uk.gov.service.notify.RetentionPeriodDuration;
 import uk.gov.service.notify.SendEmailResponse;
 import uk.gov.service.notify.NotificationClientException;
 import org.apache.commons.io.FileUtils;
@@ -50,7 +51,7 @@ class EmailWithFileServiceTest {
         JSONObject jsonObject = new JSONObject().put("testKey", "testValue");
         when(emailAddresses.getHmrcEmail()).thenReturn("hmrc@example.com");
         mockStatic(NotificationClient.class);
-        when(NotificationClient.prepareUpload(any(byte[].class), anyBoolean(), anyBoolean(), anyString()))
+        when(NotificationClient.prepareUpload(any(byte[].class), anyBoolean(), any(RetentionPeriodDuration.class)))
             .thenReturn(jsonObject);
         SendEmailResponse mockResponse = mock(SendEmailResponse.class);
         when(notificationClient.sendEmail(any(), any(), any(), any(), any())).thenReturn(mockResponse);
