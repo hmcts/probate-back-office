@@ -10,6 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
+import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.cases.ApplicationType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
@@ -181,6 +182,28 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         GrantOfRepresentationData response =
             exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getDomicilityIHTCert());
+    }
+
+    @Test
+    void testWhenIht205EmptyPayloadExemptsThem() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .iht205completedOnline(TRUE)
+                .ihtReferenceNumber("REF123456789")
+                .ihtFormId("IHT205")
+                .formVersion("1")
+                .build();
+
+        //if iht205 is true, then when calling the function i need to make it should make sure that the
+        //unneeded fields are null
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+
+        assertNull(response.getIhtEstateGrossValue());
+        assertNull(response.getIhtEstateNetValue());
+        assertNull(response.getIhtEstateNetQualifyingValue());
+
+        //response should have the fields we want null-ed to be null! So we want to make sure those fields are null and
+        // not send and we can assert those are null
     }
 
     @Test
