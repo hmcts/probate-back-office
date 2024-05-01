@@ -258,11 +258,6 @@ dependencyManagement {
     dependencySet(group: 'io.netty', version: '2.0.65.Final') {
       entry 'netty-tcnative-classes'
     }
-
-    dependencySet(group: 'ch.qos.logback', version: '1.5.6') {
-      entry 'logback-core'
-      entry 'logback-classic'
-    }
   }
 }
 
