@@ -66,8 +66,7 @@ import java.util.List;
     },
     unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
-    @Mapping(target = "extraCopiesOfGrant", expression = "java(OCRFieldNumberMapper.stringToLong(new String("
-            + "\"extraCopiesOfGrant\"), ocrFields.getExtraCopiesOfGrant()))", qualifiedBy = {ToLong.class})
+    @Mapping(target = "extraCopiesOfGrant", expression = "java(OCRFieldNumberMapper.stringToLong(new String(" + "\"extraCopiesOfGrant\"), ocrFields.getExtraCopiesOfGrant()))", qualifiedBy = {ToLong.class})
     @Mapping(target = "outsideUkGrantCopies", expression = "java(OCRFieldNumberMapper.stringToLong(new String("
             + "\"outsideUKGrantCopies\"), ocrFields.getOutsideUKGrantCopies()))", qualifiedBy = {ToLong.class})
 
@@ -283,6 +282,15 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
+
+    @AfterMapping
+    default void setNonRequiredIht205FieldsToNull(@MappingTarget GrantOfRepresentationData caseData,  ExceptionRecordOCRFields ocrField) {
+        if (ocrField.getIht205completedOnline().equals("True")) {
+            caseData.setIhtEstateGrossValue(null);
+            caseData.setIhtEstateNetValue(null);
+            caseData.setIhtEstateNetQualifyingValue(null);
+        }
+    }
 
     @AfterMapping
     default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData) {
