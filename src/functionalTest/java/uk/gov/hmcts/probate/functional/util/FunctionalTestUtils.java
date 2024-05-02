@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.functional.util;
 
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.http.Header;
@@ -15,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -88,6 +91,8 @@ public class FunctionalTestUtils {
     @Value("${case_document_am.url}")
     private String caseDocumentManagermentUrl;
 
+    private final Cache<String, String> cache = Caffeine.newBuilder().expireAfterWrite(2, TimeUnit.HOURS).build();
+
     @PostConstruct
     public void init() {
         serviceToken = serviceAuthTokenGenerator.generateServiceToken();
@@ -146,20 +151,18 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeaders(String userName, String password, Integer id) {
-        final String genAuthorizationToken = "Bearer " + serviceAuthTokenGenerator
-                .generateOpenIdToken(userName, password);
+        final String authorizationToken = getCachedIdamOpenIdToken(userName, password);
         final String genServiceToken = serviceAuthTokenGenerator.generateServiceToken();
 
         return Headers.headers(
                 new Header("ServiceAuthorization", genServiceToken),
                 new Header("Content-Type", ContentType.JSON.toString()),
-                new Header("Authorization", genAuthorizationToken),
+                new Header("Authorization", authorizationToken),
                 new Header("user-id", id.toString()));
     }
 
     public Headers getHeadersForUnauthorisedServiceAndUser() {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(caseworkerEmail,
-                caseworkerPassword);
+        final String authorizationToken = getCachedIdamOpenIdToken(caseworkerEmail, caseworkerPassword);
         return Headers.headers(
                 new Header("ServiceAuthorization", UNAUTHORISED_SERVICE_TOKEN),
                 new Header("Content-Type", ContentType.JSON.toString()),
@@ -172,7 +175,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithUserId(String serviceToken, String userId) {
-        String auth = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(caseworkerEmail, caseworkerPassword);
+        String auth = getCachedIdamOpenIdToken(caseworkerEmail, caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -429,4 +432,12 @@ public class FunctionalTestUtils {
         }
     }
 
+    private String getCachedIdamOpenIdToken(String userName, String password) {
+        String userToken = cache.getIfPresent(userName);
+        if (userToken == null) {
+            userToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(userName, password);
+            cache.put(userName, userToken);
+        }
+        return userToken;
+    }
 }
