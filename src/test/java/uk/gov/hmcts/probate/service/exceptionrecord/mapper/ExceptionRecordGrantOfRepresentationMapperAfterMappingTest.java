@@ -528,7 +528,7 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    void testIht205CompletedOnlineCausesNonRequiredFieldsToBeNull() {
+    void testNonRequiredEstateValueFieldsToBeNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .iht205completedOnline(TRUE)
                 .ihtReferenceNumber("REF123456789")
