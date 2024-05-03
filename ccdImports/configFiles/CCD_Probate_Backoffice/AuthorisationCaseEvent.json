@@ -694,7 +694,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForGrantIssued", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForCaseClosed", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForRegistrarEscalation", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocsForSMEReferral", "UserRole": "ccaseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocsForSMEReferral", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsForDormant", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCaseCreated", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocumentsForCasePaymentFailed", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
