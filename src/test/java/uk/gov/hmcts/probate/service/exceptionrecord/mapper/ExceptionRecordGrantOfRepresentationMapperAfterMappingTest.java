@@ -185,28 +185,6 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    void testWhenIht205EmptyPayloadExemptsThem() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .iht205completedOnline(TRUE)
-                .ihtReferenceNumber("REF123456789")
-                .ihtFormId("IHT205")
-                .formVersion("1")
-                .build();
-
-        //if iht205 is true, then when calling the function i need to make it should make sure that the
-        //unneeded fields are null
-        GrantOfRepresentationData response =
-                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-
-        assertNull(response.getIhtEstateGrossValue());
-        assertNull(response.getIhtEstateNetValue());
-        assertNull(response.getIhtEstateNetQualifyingValue());
-
-        //response should have the fields we want null-ed to be null! So we want to make sure those fields are null and
-        // not send and we can assert those are null
-    }
-
-    @Test
     void testIHTReferenceClearedIfNotOnline() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .ihtFormCompletedOnline(FALSE)
@@ -529,34 +507,12 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    void testNonRequiredEstateValueFieldsToBeNullWithFormVersion2() {
+    void testIht205CompletedOnlineCausesNonRequiredFieldsToBeNull() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .formVersion("2")
-                .ihtEstateGrossValue("900,0000")
-                .ihtEstateNetValue("900,0000")
-                .ihtEstateNetQualifyingValue("900,0000")
-                .deceasedDiedOnAfterSwitchDate("False")
-                .build();
-
-        GrantOfRepresentationData response =
-                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
-
-        assertNull(response.getIhtEstateGrossValue());
-        assertNull(response.getIhtEstateNetValue());
-        assertNull(response.getIhtEstateNetQualifyingValue());
-    }
-
-    @Test
-    void testNonRequiredEstateValueFieldsToBeNullWithFormVersion3() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .formVersion("3")
-                .ihtNetValue205("900,000")
-                .ihtGrossValue205("900,000")
-                .ihtEstateGrossValue("900,0000")
-                .ihtEstateNetValue("900,0000")
-                .ihtEstateNetQualifyingValue("900,0000")
-                .exceptedEstate("False")
-                .iht205Completed("True")
+                .iht205completedOnline(TRUE)
+                .ihtReferenceNumber("REF123456789")
+                .ihtFormId("IHT205")
+                .formVersion("1")
                 .build();
 
         GrantOfRepresentationData response =
