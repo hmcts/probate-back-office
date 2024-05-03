@@ -279,7 +279,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"iht400process\"), "
                     + "ocrFields.getIht400process()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "uniqueProbateCodeId", source = "ocrFields.ihtCode")
-    @Mapping(target = "solsWillType", source = "ocrFields", qualifiedBy = {ToSolicitorWillType.class})
+    @Mapping(target = "solsWillType", expression = "java(OCRFieldSolicitorWillTypeMapper.toSolicitorWillType("
+            + "ocrFields.getSolsWillType(), grantType))",
+            qualifiedBy = {ToSolicitorWillType.class})
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
@@ -287,8 +289,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData) {
         // there might not be a reason given but if there is not will type set then clear
-        if (null == caseData.getSolsWillType() && caseData.getSolsWillTypeReason() != null
-                && caseData.getSolsWillTypeReason().isEmpty()) {
+        if (null == caseData.getSolsWillType()) {
             caseData.setSolsWillTypeReason(null);
         }
     }

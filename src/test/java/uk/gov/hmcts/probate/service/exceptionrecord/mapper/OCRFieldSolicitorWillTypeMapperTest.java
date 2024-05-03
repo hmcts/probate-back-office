@@ -6,6 +6,7 @@ import org.mockito.InjectMocks;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -23,28 +24,22 @@ class OCRFieldSolicitorWillTypeMapperTest {
 
     @Test
     void testCorrectWillTypeAdmon() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .solsWillType("Admon Will")
-            .build();
-        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType("Admon Will", GrantType.GRANT_OF_PROBATE);
         assertEquals(SolicitorWillType.GRANT_TYPE_ADMON, response);
     }
 
     @Test
     void testCorrectWillTypeIntestacy() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("No Will")
-                .build();
-        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType("No Will", GrantType.INTESTACY);
         assertEquals(SolicitorWillType.GRANT_TYPE_INTESTACY, response);
     }
 
     @Test
     void testCorrectWillTypeGrant() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Grant")
-                .build();
-        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType("Grant", GrantType.GRANT_OF_PROBATE);
         assertEquals(SolicitorWillType.GRANT_TYPE_PROBATE, response);
     }
 
@@ -53,34 +48,30 @@ class OCRFieldSolicitorWillTypeMapperTest {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .solsWillType("Probate")
                 .build();
-        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType("Probate", GrantType.GRANT_OF_PROBATE);
         assertEquals(SolicitorWillType.GRANT_TYPE_PROBATE, response);
     }
 
     @Test
     void testCorrectWillTypeWillLeftAnnexed() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("WillLeftAnnexed")
-                .build();
-        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType("Will Annexed", GrantType.GRANT_OF_PROBATE);
         assertEquals(SolicitorWillType.GRANT_TYPE_ADMON, response);
     }
 
     @Test
     void shouldReturnNullForEmpty() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-            .build();
-        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType(null, GrantType.GRANT_OF_PROBATE);
         assertNull(response);
     }
 
     @Test
     void shouldThrowExceptionForInvalidWillType() {
-        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Invalid")
-                .build();
         assertThrows(OCRMappingException.class, () -> {
-            SolicitorWillType response = ocrFieldSolicitorWillTypeMapper.toSolicitorWillType(ocrFields);
+            SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                    .toSolicitorWillType("Invalid will type", GrantType.GRANT_OF_PROBATE);
         });
     }
 }
