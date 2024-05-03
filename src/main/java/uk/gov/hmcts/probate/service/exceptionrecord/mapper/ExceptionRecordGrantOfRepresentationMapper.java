@@ -490,11 +490,10 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     default void setNonRequiredEstateValuesToNull(@MappingTarget GrantOfRepresentationData caseData,
                                                   ExceptionRecordOCRFields ocrField) {
 
-        if ("2".equals(ocrField.getFormVersion()) && ocrField.getDeceasedDiedOnAfterSwitchDate().equals("False")) {
-            caseData.setIhtEstateGrossValue(null);
-            caseData.setIhtEstateNetValue(null);
-            caseData.setIhtEstateNetQualifyingValue(null);
-        } else if ("3".equals(ocrField.getFormVersion()) && ocrField.getExceptedEstate().equals("False")) {
+        String formVersion = ocrField.getFormVersion();
+
+        if (("2".equals(formVersion) && "False".equalsIgnoreCase(ocrField.getDeceasedDateOfDeath())
+                || ("3".equals(formVersion)) && "False".equalsIgnoreCase(ocrField.getExceptedEstate()))) {
             caseData.setIhtEstateGrossValue(null);
             caseData.setIhtEstateNetValue(null);
             caseData.setIhtEstateNetQualifyingValue(null);
