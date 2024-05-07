@@ -528,12 +528,32 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     }
 
     @Test
-    void testNonRequiredEstateValueFieldsToBeNull() {
+    void testNonRequiredEstateValueFieldsToBeNullWithFormVersion2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .iht205completedOnline(TRUE)
-                .ihtReferenceNumber("REF123456789")
-                .ihtFormId("IHT205")
-                .formVersion("1")
+                .formVersion("2")
+                .ihtEstateGrossValue("900,0000")
+                .ihtEstateNetValue("900,0000")
+                .ihtEstateNetQualifyingValue("900,0000")
+                .deceasedDiedOnAfterSwitchDate("False")
+                .build();
+
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+
+        assertNull(response.getIhtEstateGrossValue());
+        assertNull(response.getIhtEstateNetValue());
+        assertNull(response.getIhtEstateNetQualifyingValue());
+    }
+
+    @Test
+    void testNonRequiredEstateValueFieldsToBeNullWithFormVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("3")
+                .ihtGrossValue("900,0000")
+                .ihtEstateGrossValue("900,0000")
+                .ihtEstateNetValue("900,0000")
+                .ihtEstateNetQualifyingValue("900,0000")
+                .exceptedEstate("False")
                 .build();
 
         GrantOfRepresentationData response =
