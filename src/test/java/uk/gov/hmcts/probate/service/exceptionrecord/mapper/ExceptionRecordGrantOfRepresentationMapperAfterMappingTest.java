@@ -549,11 +549,13 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     void testNonRequiredEstateValueFieldsToBeNullWithFormVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .formVersion("3")
-                .ihtGrossValue("900,0000")
+                .ihtNetValue205("900,000")
+                .ihtGrossValue205("900,000")
                 .ihtEstateGrossValue("900,0000")
                 .ihtEstateNetValue("900,0000")
                 .ihtEstateNetQualifyingValue("900,0000")
                 .exceptedEstate("False")
+                .iht205Completed("True")
                 .build();
 
         GrantOfRepresentationData response =
