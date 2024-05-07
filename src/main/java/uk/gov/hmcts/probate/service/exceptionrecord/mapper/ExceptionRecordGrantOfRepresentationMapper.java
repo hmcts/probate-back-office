@@ -493,8 +493,9 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
 
         String formVersion = ocrField.getFormVersion();
 
-        if (("2".equals(formVersion) && "False".equalsIgnoreCase(ocrField.getDeceasedDateOfDeath())
+        if (("2".equals(formVersion) && "False".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())
                 || ("3".equals(formVersion)) && "False".equalsIgnoreCase(ocrField.getExceptedEstate()))) {
+
             caseData.setIhtEstateGrossValue(null);
             caseData.setIhtEstateNetValue(null);
             caseData.setIhtEstateNetQualifyingValue(null);
