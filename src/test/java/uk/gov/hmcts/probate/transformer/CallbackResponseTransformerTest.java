@@ -2610,6 +2610,7 @@ class CallbackResponseTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
+        assertEquals(NO, callbackResponse.getData().getIhtNetValueSwitch());
     }
 
     @Test
@@ -2624,6 +2625,7 @@ class CallbackResponseTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
+        assertEquals(NO, callbackResponse.getData().getIhtNetValueSwitch());
     }
 
     @Test
@@ -2644,22 +2646,21 @@ class CallbackResponseTransformerTest {
     void shouldTransformNetValueForEE() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtFormEstateValuesCompleted(NO)
-                .deceasedHadLateSpouseOrCivilPartner(YES)
-                .hmrcLetterId(YES);
+                .deceasedHadLateSpouseOrCivilPartner(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
+        assertEquals(YES, callbackResponse.getData().getIhtNetValueSwitch());
     }
 
     @Test
     void shouldTransformNetValueForEEDeceasedSpouseNo() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtFormEstateValuesCompleted(NO)
-                .deceasedHadLateSpouseOrCivilPartner(NO)
-                .hmrcLetterId(YES);
+                .deceasedHadLateSpouseOrCivilPartner(NO);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -2679,6 +2680,7 @@ class CallbackResponseTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
+        assertEquals(YES, callbackResponse.getData().getIhtNetValueSwitch());
     }
 
     @ParameterizedTest
@@ -2692,6 +2694,7 @@ class CallbackResponseTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         CallbackResponse callbackResponse = underTest.transformValuesPage(callbackRequestMock);
         assertEquals(YES, callbackResponse.getData().getIht400Switch());
+        assertEquals(YES, callbackResponse.getData().getIhtNetValueSwitch());
     }
 
     private static Stream<String> invalidValue() {

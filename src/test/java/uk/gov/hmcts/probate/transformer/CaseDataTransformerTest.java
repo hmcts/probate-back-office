@@ -189,6 +189,18 @@ class CaseDataTransformerTest {
     }
 
     @Test
+    void shouldTransformFormSelectionFormEstate400421AndFormId400() {
+        caseDataMock = CaseData.builder().ihtFormEstate("IHT400421")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
     void shouldTransformFormSelectionForDiedAfter() {
         caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
                 .ihtFormEstate("IHT400421")

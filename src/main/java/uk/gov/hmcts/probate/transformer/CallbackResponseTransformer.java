@@ -534,7 +534,15 @@ public class CallbackResponseTransformer {
                         && (YES.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())
                         || NO.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())));
 
-        responseCaseDataBuilder.iht400Switch(shouldSwitch ? YES : NO);
+        boolean shouldNetValueSwitch = (isOnOrAfterSwitchDate && isIhtFormCompleted
+                && caseData.getIhtFormEstate() != null && !isIht400FormAfter)
+                        || (!isOnOrAfterSwitchDate && caseData.getIhtFormId() != null && !isIht400FormBefore)
+                        || (isOnOrAfterSwitchDate && NO.equals(caseData.getIhtFormEstateValuesCompleted())
+                        && (YES.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())
+                        || NO.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())));
+
+        responseCaseDataBuilder.iht400Switch(shouldSwitch ? YES : NO)
+                .ihtNetValueSwitch(shouldNetValueSwitch ? YES : NO);
     }
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
