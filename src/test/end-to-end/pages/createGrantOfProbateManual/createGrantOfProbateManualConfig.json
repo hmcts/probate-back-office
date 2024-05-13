@@ -10,6 +10,7 @@
   "page1_extraCopiesOfGrant": "1",
   "page1_outsideUKGrantCopies": "1",
   "page1_optionNo": "No",
+  "page1_optionChannelChoiceCW": "Paper Form",
   "page1_otherExecutorExistsNo": "No",
 
   "page1_amend_waitForText": "Amend case details",
@@ -28,8 +29,6 @@
   "page1_applyingYes": "Yes",
   "page1_list1_update_option": "Applicant Details",
 
-  "page1_amend_waitForText": "Amend case details",
-  "page1_url": "create/case/PROBATE/GrantOfRepresentation/applyforGrantPaperApplication/applyforGrantPaperApplicationapplyforGrantPaperApplicationpage1",
   "page1_bo_deceasedTitle": "Mr",
   "page1_deceasedForenames": "deceased_fn",
   "page1_deceasedSurname": "deceased_sn",
@@ -57,7 +56,7 @@
   "page1_deceasedMaritalStatus": "neverMarried",
   "page1_foreignAssetYes": "Yes",
   "page1_foreignAssetEstateValue": "500",
-  "page1_list1_update_option": "Deceased, IHT and Estate Details",
+  "page1_list2_update_option": "Deceased, IHT and Estate Details",
   "page1_deceasedDomicileInEngWales": "Yes",
 
   "address_line1": "1",
@@ -68,8 +67,8 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[26]/ccd-field-write/div/ccd-write-address-field/div/div/a",
-  "UKpostcodeLink2": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[35]/ccd-field-write/div/ccd-write-address-field/div/div/a",
+  "UKpostcodeLink": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[25]/ccd-field-write/div/ccd-write-address-field/div/div/a",
+  "UKpostcodeLink2": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[34]/ccd-field-write/div/ccd-write-address-field/div/div/a",
 
 
   "amendCaseDetails_waitForText": "Amend case details",

@@ -346,6 +346,7 @@ public class BusinessValidationController {
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
+            caseDataTransformer.transformFormCaseData(callbackRequest);
             response = callbackResponseTransformer.transform(callbackRequest);
         }
         return ResponseEntity.ok(response);
@@ -544,7 +545,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> paperFormCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult) throws NotificationClientException {
-
+        caseDataTransformer.transformCaseDataForPaperForm(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());

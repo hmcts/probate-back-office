@@ -31,6 +31,8 @@ public class CaseDataTransformer {
     private final AttachDocumentsTransformer attachDocumentsTransformer;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private static final String IHT400 = "IHT400";
+    private static final String IHT205 = "IHT205";
+    private static final String PAPERFORM = "PaperForm";
 
     public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -120,36 +122,71 @@ public class CaseDataTransformer {
     public void transformFormCaseData(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath())) {
-            if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())
-                    && !IHT400.equals(caseData.getIhtFormEstate())) {
+            if (caseData.getIhtFormId() != null && YES.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormId(caseData);
-            } else if (caseData.getIhtFormEstateValuesCompleted() != null
-                    && NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                resetExceptedEstateFields(caseData);
+                if (!IHT400.equals(caseData.getIhtFormEstate())) {
+                    resetHmrcLetterId(caseData);
+                }
+            } else if (NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormAndHmrcLetter(caseData);
             }
         } else {
-            if (caseData.getIhtFormEstate() != null && !IHT400.equals(caseData.getIhtFormId())) {
+            resetIhtFormEstateCompleted(caseData);
+            if (caseData.getIhtFormEstate() != null) {
                 resetIhtFormEstate(caseData);
+                if (!IHT400.equals(caseData.getIhtFormId())) {
+                    resetHmrcLetterId(caseData);
+                }
+                if (!IHT205.equals(caseData.getIhtFormId())) {
+                    resetIht217(caseData);
+                }
             }
         }
     }
 
     private void resetIhtFormId(CaseData caseData) {
         caseData.setIhtFormId(null);
+        resetIht217(caseData);
+    }
+
+    private void resetHmrcLetterId(CaseData caseData) {
         caseData.setHmrcLetterId(null);
     }
 
     private void resetIhtFormEstate(CaseData caseData) {
         caseData.setIhtFormEstate(null);
-        caseData.setHmrcLetterId(null);
     }
 
     private void resetIhtFormAndHmrcLetter(CaseData caseData) {
-        caseData.setIhtFormEstate(null);
+        resetIhtFormEstate(caseData);
         resetIhtFormId(caseData);
+        resetHmrcLetterId(caseData);
+    }
+
+    private void resetIhtFormEstateCompleted(CaseData caseData) {
+        caseData.setIhtFormEstateValuesCompleted(null);
+        resetExceptedEstateFields(caseData);
+    }
+
+    private void resetIht217(CaseData caseData) {
+        caseData.setIht217(null);
+    }
+
+    private void resetExceptedEstateFields(CaseData caseData) {
+        caseData.setIhtEstateGrossValue(null);
+        caseData.setIhtEstateNetValue(null);
+        caseData.setIhtEstateNetQualifyingValue(null);
+        caseData.setDeceasedHadLateSpouseOrCivilPartner(null);
+        caseData.setIhtUnusedAllowanceClaimed(null);
     }
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
         return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(dateOfDeath);
+    }
+
+    public void transformCaseDataForPaperForm(CallbackRequest callbackRequest) {
+        final var caseData = callbackRequest.getCaseDetails().getData();
+        caseData.setChannelChoice(PAPERFORM);
     }
 }

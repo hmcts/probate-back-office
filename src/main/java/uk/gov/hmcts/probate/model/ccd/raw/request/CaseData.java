@@ -365,6 +365,7 @@ public class CaseData extends CaseDataParent {
     private transient String attachDocuments;
     private final String caseType;
     private final String paperForm;
+    private String channelChoice;
     private final String languagePreferenceWelsh;
     private String primaryApplicantAlias;
     private final String primaryApplicantAliasReason;
@@ -560,16 +561,16 @@ public class CaseData extends CaseDataParent {
     private final CombinedName willDamageCulpritName;
     private final String willDamageDateKnown;
     private final String willDamageDate;
-    private final String ihtFormEstateValuesCompleted;
+    private String ihtFormEstateValuesCompleted;
     private String ihtFormEstate;
-    private final BigDecimal ihtEstateGrossValue;
+    private BigDecimal ihtEstateGrossValue;
     private final String ihtEstateGrossValueField;
-    private final BigDecimal ihtEstateNetValue;
+    private BigDecimal ihtEstateNetValue;
     private final String ihtEstateNetValueField;
-    private final BigDecimal ihtEstateNetQualifyingValue;
+    private BigDecimal ihtEstateNetQualifyingValue;
     private final String ihtEstateNetQualifyingValueField;
-    private final String deceasedHadLateSpouseOrCivilPartner;
-    private final String ihtUnusedAllowanceClaimed;
+    private String deceasedHadLateSpouseOrCivilPartner;
+    private String ihtUnusedAllowanceClaimed;
 
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
