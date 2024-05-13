@@ -2702,7 +2702,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformApplicantOrganisationPolicy() {
+    void shouldTransformChannelChoice() {
         OrganisationPolicy policy = OrganisationPolicy.builder()
                 .organisation(Organisation.builder()
                         .organisationID("ABC")
@@ -2717,7 +2717,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
+        assertNull(callbackResponse.getData().getChannelChoice());
     }
 
     @Test

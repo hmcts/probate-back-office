@@ -504,7 +504,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload,
             "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
             "\"primaryApplicantEmailAddress\": null,");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
@@ -516,7 +516,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload,
             "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
             "\"primaryApplicantEmailAddress\": null,");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"Digital\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContentsMissing(NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
@@ -525,20 +525,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithEmail() throws IOException {
         String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormYesResponse.txt",
-            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
-    }
-
-    @Test
-    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithEmail() throws IOException {
-        String payload = getJsonFromFile("success.paperForm.json");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
-
-        final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedPersonalEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
@@ -583,20 +573,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
+        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
         final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
         assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormYesResponse.txt",
-            NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
-    }
-
-    @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithEmail() throws IOException {
-        String payload = getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
-
-        final ResponseBody responseBody = validatePostSuccessForPayload(payload, PAPER_FORM_URL);
-        assertExpectedContents("caseworkerCreatedSolicitorEmailPaperFormNoResponse.txt",
             NOTIFICATION_DOCUMENT_BINARY_URL, responseBody);
     }
 
@@ -707,8 +687,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String errors = jsonPath.get("data.errors");
         final String paperForm = jsonPath.get("data.paperForm");
+        final String channelChoice = jsonPath.get("data.channelChoice");
         assertNull(errors);
         assertEquals(paperForm, "No");
+        assertEquals(channelChoice, "Digital");
     }
 
     @Test

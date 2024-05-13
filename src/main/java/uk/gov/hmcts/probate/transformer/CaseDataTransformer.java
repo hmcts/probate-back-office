@@ -32,6 +32,7 @@ public class CaseDataTransformer {
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
     private static final String IHT400 = "IHT400";
     private static final String IHT205 = "IHT205";
+    private static final String PAPERFORM = "PaperForm";
 
     public void transformForSolicitorApplicationCompletion(CallbackRequest callbackRequest) {
 
@@ -182,5 +183,10 @@ public class CaseDataTransformer {
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
         return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(dateOfDeath);
+    }
+
+    public void transformCaseDataForPaperForm(CallbackRequest callbackRequest) {
+        final var caseData = callbackRequest.getCaseDetails().getData();
+        caseData.setChannelChoice(PAPERFORM);
     }
 }

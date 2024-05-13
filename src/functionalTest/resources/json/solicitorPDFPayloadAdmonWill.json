@@ -85,6 +85,7 @@
       "registryLocation": "ctsc",
       "caseType": "admonWill",
       "paperForm": "No",
+      "channelChoice": "Digital",
       "dateOfDeathType": "diedOn",
       "currentDate": "2020-07-14",
       "currentDateFormatted": "14th July 2020",
