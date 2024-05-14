@@ -8,14 +8,19 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.time.LocalDate;
-import java.time.format.DateTimeParseException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.HashSet;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 
 @Component
 @RequiredArgsConstructor
 public class ApplicationSubmittedDateValidationRule implements CaseworkerAmendAndCreateValidationRule {
+
+    public static final String CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE = "applicationSubmittedDateIsInTheFuture";
+    public static final String CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD = "applicationSubmittedDateBeforeDod";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -24,17 +29,16 @@ public class ApplicationSubmittedDateValidationRule implements CaseworkerAmendAn
         Set<FieldErrorResponse> errors = new HashSet<>();
         LocalDate dod = ccdData.getDeceasedDateOfDeath();
         LocalDate applicationSubmittedDate = ccdData.getCaseSubmissionDate();
-        try {
 
-            if (applicationSubmittedDate.isAfter(LocalDate.now())) {
-                errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "applicationSubmittedDateIsInTheFuture"));
-            }
-            if (dod.isAfter(applicationSubmittedDate)) {
-                errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "dodIsAfterApplicationSubmittedDate"));
-            }
-        } catch (DateTimeParseException dtpe) {
-            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "ApplicationSubmittedDateInvalid"));
+        if (applicationSubmittedDate.isAfter(LocalDate.now())) {
+            errors.add(businessValidationMessageService.generateError(
+                    BUSINESS_ERROR, CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE));
         }
+        if (dod.isAfter(applicationSubmittedDate)) {
+            errors.add(businessValidationMessageService.generateError(
+                    BUSINESS_ERROR, CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD));
+        }
+
         return new ArrayList<>(errors);
     }
 
