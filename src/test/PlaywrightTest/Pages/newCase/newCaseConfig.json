@@ -1,0 +1,11 @@
+{
+  "waitForText" : "Case list",
+  "xuiCreateCaseLocator": "Create Case",
+  "jurisdictionLocatorName": "Jurisdiction",
+  "caseTypeLocatorName": "Case type",
+  "eventLocatorName": "Event",
+  "jurisdictionValue": "PROBATE",
+  "startButton": "Start",
+  "applicationTypeLocatorName": "Application type",
+  "registryLocatorName": "Registry location"
+}
