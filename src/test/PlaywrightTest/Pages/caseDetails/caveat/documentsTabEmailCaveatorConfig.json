@@ -1,0 +1,13 @@
+{
+  "tabName": "Documents",
+  "fields": [
+    "Type",
+    "Document Url",
+    "Date added"
+  ],
+  "dataKeys": [
+    "documentType",
+    "filename",
+    "dateAdded"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "tabName": "IHT",
+  "fields": [
+    "Did you complete Inheritance Tax (IHT) forms to report the estate’s value?",
+    "Which IHT forms did you complete to report the estate’s value?"
+  ],
+  "dataKeys": [
+    "EE_ihtFormEstateValueCompletedYes",
+    "EE_ihtFormEstate400"
+  ]
+}
