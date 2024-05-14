@@ -52,7 +52,7 @@ class ApplicationSubmittedDateValidationRuleTest {
 
     @Test
     void shouldReturnErrorForFutureApplicationSubmittedDate() {
-        when(ccdDataMock.getCaseSubmissionDate()).thenReturn(TOMORROW);
+        when(ccdDataMock.getApplicationSubmissionDate()).thenReturn(TOMORROW.format(pattern));
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2022, 1, 2));
         List<FieldErrorResponse> validationErrors = applicationSubmittedDateValidationRule.validate(ccdDataMock);
         assertEquals(1, validationErrors.size());
@@ -62,7 +62,7 @@ class ApplicationSubmittedDateValidationRuleTest {
 
     @Test
     void shouldReturnErrorForDODAfterApplicationSubmittedDate() {
-        when(ccdDataMock.getCaseSubmissionDate()).thenReturn(LocalDate.of(2022, 1, 1));
+        when(ccdDataMock.getApplicationSubmissionDate()).thenReturn("2022-01-01");
         when(ccdDataMock.getDeceasedDateOfDeath()).thenReturn(LocalDate.of(2022, 1, 2));
         List<FieldErrorResponse> validationErrors = applicationSubmittedDateValidationRule.validate(ccdDataMock);
         assertEquals(1, validationErrors.size());

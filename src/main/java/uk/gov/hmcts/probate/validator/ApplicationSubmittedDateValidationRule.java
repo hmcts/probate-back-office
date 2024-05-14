@@ -8,6 +8,8 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -26,9 +28,10 @@ public class ApplicationSubmittedDateValidationRule implements CaseworkerAmendAn
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
+        final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.UK);
         Set<FieldErrorResponse> errors = new HashSet<>();
         LocalDate dod = ccdData.getDeceasedDateOfDeath();
-        LocalDate applicationSubmittedDate = ccdData.getCaseSubmissionDate();
+        LocalDate applicationSubmittedDate = LocalDate.parse(ccdData.getApplicationSubmissionDate(), dateTimeFormatter);
 
         if (applicationSubmittedDate.isAfter(LocalDate.now())) {
             errors.add(businessValidationMessageService.generateError(
