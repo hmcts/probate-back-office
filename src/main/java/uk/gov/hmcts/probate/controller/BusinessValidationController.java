@@ -552,7 +552,6 @@ public class BusinessValidationController {
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
-        applicationSubmittedDateValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;
         final CaseData data = callbackRequest.getCaseDetails().getData();
