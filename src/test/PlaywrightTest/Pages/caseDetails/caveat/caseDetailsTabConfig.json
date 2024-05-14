@@ -1,0 +1,11 @@
+{
+  "tabName": "Case details",
+  "fields": [
+    "Application type",
+    "Registry location"
+  ],
+  "dataKeys": [
+    "page1_list1_application_type",
+    "page1_list2_registry_location"
+  ]
+}
