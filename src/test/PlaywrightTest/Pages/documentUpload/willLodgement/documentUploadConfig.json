@@ -2,8 +2,8 @@
   "waitForText" : "Document upload",
   "documentType": ["Email", "Correspondence", "Will", "Codicil", "Other", "Death Certificate"],
   "documentTypeSelected": "Email",
-  "fileToUploadUrl":"uploadDocuments/test_file_for_document_upload.png",
-  "filename": "test_file_for_document_upload.png",
+  "fileToUploadUrl":"../../Documents/uploadDocuments/test_file.docx",
+  "filename": "test_file.docx",
   "comment": "test file to upload",
   "id": "#documentsUploaded"
 }

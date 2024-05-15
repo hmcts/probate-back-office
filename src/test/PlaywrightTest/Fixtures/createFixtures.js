@@ -2,8 +2,7 @@ const base = require('@playwright/test');
 const { BasePage } = require('../Pages/utility/basePage');
 const { SignInPage } = require('../Pages/IDAM/signIn');
 const { CreateCasePage } = require('../Pages/newCase/newCase');
-
-//const { NewCaveatPage } = require('../Pages/newCase/newCase');
+const { CwEventActionsPage } = require('../Pages/newCase/cwEventActions');
 
 exports.test = base.test.extend({
     /*page: async ({ baseURL, page }, use) => {
@@ -23,8 +22,9 @@ exports.test = base.test.extend({
         await use(new CreateCasePage(page));
     },
 
- /*   newCaveatPage: async ({page}, use) => {
-        await use(new NewCaveatPage(page));
-    },*/
+    cwEventActionsPage: async ({page}, use) => {
+        await use(new CwEventActionsPage(page));
+    },
+
 });
 exports.expect = base.expect;
