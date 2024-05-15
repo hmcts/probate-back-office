@@ -1,7 +1,6 @@
 'use strict';
-const { test, expect } = require('../Fixtures/createFixtures');
+const { test } = require('../Fixtures/createFixtures');
 const dateFns = require('date-fns');
-const {testConfig} = require('../Configs/config');
 
 const createCaseConfig = require('../Pages/createCase/createCaseConfig');
 
@@ -90,8 +89,7 @@ test.describe('Solicitor - Apply Caveat', () => {
         await page.seeUpdatesOnCase(caseRef, caveatDetailsTabConfig, 'completedApplication', completeApplicationConfig);
         await page.seeUpdatesOnCase(caseRef, notificationsTabConfig, 'completedApplication', completeApplicationConfig);
     });
-}).tag('@crossbrowser')
-    .retry(testConfig.TestRetryScenarios);
+});
 
 
 
