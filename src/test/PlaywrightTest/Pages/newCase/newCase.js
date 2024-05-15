@@ -63,9 +63,9 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         if (crud === 'create') {
             await expect(this.createCaveatPageLocator).toBeVisible();
             await expect(this.applicationTypeLocator).toBeEnabled();
-            await this.applicationTypeLocator.selectOption({value: createCaveatConfig.page1_list1_application_type});
+            await this.applicationTypeLocator.selectOption({value: newCaseConfig.page1_list1_application_type});
             await expect(this.registryLocator).toBeEnabled();
-            await this.registryLocator.selectOption({value: createCaveatConfig.page1_list2_registry_location});
+            await this.registryLocator.selectOption({value: newCaseConfig.page1_list2_registry_location});
             // await I.waitForText(createCaveatConfig.page1_waitForText, testConfig.WaitForTextTimeout);
 
             // await I.waitForEnabled('#applicationType');
@@ -77,7 +77,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         if (crud === 'update') {
             await expect(this.amendCaveatPageLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
-            await this.registryLocator.selectOption({value: createCaveatConfig.page1_list2_registry_location_update});
+            await this.registryLocator.selectOption({value: newCaseConfig.page1_list2_registry_location_update});
             // await I.waitForText(createCaveatConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
 
             // await I.waitForEnabled('#registryLocation');

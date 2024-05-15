@@ -8,6 +8,7 @@ exports.BasePage = class BasePage {
         this.rejectLocator = page.getByRole('button', { name: "Reject analytics cookies" });
         this.continueButtonLocator = page.getByRole('button', { name: "Continue" });
         this.submitButtonLocator = page.getByRole('button', { name: "Submit" });
+        this.goButtonLocator = this.page.getByRole('button', {name: 'Go'});
     }
 
     async logInfo(scenarioName, log, caseRef){
@@ -66,22 +67,31 @@ exports.BasePage = class BasePage {
         await navigationPromise;
     }
 
+    async waitForGoNavigationToComplete(){
+        const navigationPromise = this.page.waitForNavigation();
+        await expect(this.goButtonLocator).toBeVisible();
+        await expect(this.goButtonLocator).toBeEnabled();
+        this.goButtonLocator.click();
+        await navigationPromise;
+    }
+
+    async waitForSignOutNavigationToComplete(signOutLocator, delay){
+        const navigationPromise = this.page.waitForNavigation();
+        await expect(this.page.locator(`${signOutLocator}`)).toBeVisible();
+        await expect(this.page.locator(`${signOutLocator}`)).toBeEnabled();
+        this.page.locator(`${signOutLocator}`).click();
+        await navigationPromise;
+    }
+
     async seeCaseDetails(caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault){
         if (tabConfigFile.tabName) {
             await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
-           //  const tabXPath = `//div[contains(text(),"${tabConfigFile.tabName}")]`;
-            // Tabs are hidden when there are more tabs
-            // await I.waitForElement(tabXPath, tabConfigFile.testTimeToWaitForTab || 60);
         }
 
         await expect(this.page.getByRole('heading', { name: caseRef })).toBeVisible();
         await this.page.getByRole('tab', {name: tabConfigFile.tabName}).focus();
         await this.page.getByRole('tab', {name: tabConfigFile.tabName}).click();
         await this.page.waitForTimeout(delay);
-        // await I.waitForText(caseRef, testConfig.WaitForTextTimeout || 60);
-
-        // await I.clickTab(tabConfigFile.tabName);
-        // await I.wait(delay);
 
         // *****Need to comment this until accessibility script is completed*****/
         // await this.page.runAccessibilityTest();
@@ -89,42 +99,57 @@ exports.BasePage = class BasePage {
         if (tabConfigFile.waitForText) {
             this.tabLocator = this.page.getByText(tabConfigFile.waitForText);
             await expect(this.tabLocator).toBeVisible();
-            // await I.waitForText(tabConfigFile.waitForText, testConfig.WaitForTextTimeout || 60);
         }
 
         /* eslint-disable no-await-in-loop */
         for (let i = 0; i < tabConfigFile.fields.length; i++) {
             if (tabConfigFile.fields[i] && tabConfigFile.fields[i] !== '') {
-                await expect(this.page.getByText(`{tabConfigFile.fields[i]}`)).toBeVisible;
-                // await I.see(tabConfigFile.fields[i]);
+                const textCount = this.page.getByText(tabConfigFile.fields[i]);
+                if (textCount > 1) {
+                    if (tabConfigFile.fields[i] === 'Caveat not matched') {
+                        await expect(this.page.getByText(tabConfigFile.fields[i]).nth(2)).toBeVisible;
+                    }
+                    await expect(this.page.getByText(tabConfigFile.fields[i], { exact: true })).toBeVisible;
+                } else if (tabConfigFile.tabName === 'Event History') {
+                    await expect(this.page.getByRole('table', { name: 'Details' })).toContainText(tabConfigFile.fields[i]);
+                } else {
+                    await expect(this.page.getByLabel('case viewer table')).toContainText(tabConfigFile.fields[i]);
+                }
             }
         }
 
         const dataConfigKeys = tabConfigFile.dataKeys;
         // If 'Event History' tab, then check Next Step (Event), End State, Summary and Comment
         if (tabConfigFile.tabName === 'Event History') {
-            await expect(this.page. getByRole('cell', { name: nextStep, exact: true }).locator('span')).toBeVisible();
-            await expect(this.page.getByText(endState)).toBeVisible();
-
+            if (nextStep === endState) {
+                await expect(this.page.getByText(nextStep).nth(2)).toBeVisible;
+                await expect(this.page.getByText(endState).nth(3)).toBeVisible();
+            } else {
+                await expect(this.page.getByRole('cell', { name: nextStep, exact: true }).locator('span')).toBeVisible();
+                await expect(this.page.getByRole('cell', { name: endState, exact: true }).locator('span')).toBeVisible();
+            }
             let eventSummaryPrefix = nextStep;
-
             eventSummaryPrefix = eventSummaryPrefix.replace(/\s+/g, '_').toLowerCase() + '_';
-
-            // await I.waitForText(nextStep, testConfig.WaitForTextTimeout || 60);
-            // await I.waitForText(endState, testConfig.WaitForTextTimeout || 60);
-
             if (dataConfigKeys) {
                 await expect(this.page.getByText(eventSummaryPrefix + dataConfigFile.summary)).toBeVisible();
                 await expect(this.page.getByText(eventSummaryPrefix + dataConfigFile.comment)).toBeVisible();
-                // await I.waitForText(eventSummaryPrefix + dataConfigFile.summary, testConfig.WaitForTextTimeout || 60);
-                // await I.waitForText(eventSummaryPrefix + dataConfigFile.comment, testConfig.WaitForTextTimeout || 60);
             }
-
         } else if (dataConfigKeys) {
             for (let i = 0; i < tabConfigFile.dataKeys.length; i++) {
-                await expect(this.page.getByText(dataConfigFile[tabConfigFile.dataKeys[i]])).toBeVisible();
-                // await I.waitForText(dataConfigFile[tabConfigFile.dataKeys[i]], testConfig.WaitForTextTimeout || 60);
+                const textCount = this.page.getByText(dataConfigFile[tabConfigFile.dataKeys[i]]);
+                if (textCount > 1) {
+                    await expect(this.page.getByText(dataConfigFile[tabConfigFile.dataKeys[i]], { exact: true })).toBeVisible;
+                } else {
+                    await expect(this.page.getByLabel('case viewer table')).toContainText(dataConfigFile[tabConfigFile.dataKeys[i]]);
+                }
             }
+        }
+    }
+
+    async waitForUploadToBeCompleted() {
+        let locs = await this.page.getByText('Cancel upload').all();
+        for (let i = 0; i < locs.length; i++) {
+            await expect(locs[i]).toBeDisabled();
         }
     }
 
