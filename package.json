@@ -54,6 +54,7 @@
   },
   "dependencies": {
     "@date-fns/upgrade": "^1.0.3",
+    "dotenv": "^16.4.5",
     "html_codesniffer": "^2.5.1",
     "require-directory": "^2.1.1"
   },
@@ -62,7 +63,6 @@
     "chai": "^4.1.0",
     "chai-http": "^4.3.0",
     "chai-string": "^1.5.0",
-    "codeceptjs": "^3.4.0",
     "date-fns": "^2.21.3",
     "eslint": "^7.22.0",
     "eslint-plugin-mocha": "^8.0.0",
