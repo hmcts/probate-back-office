@@ -27,4 +27,9 @@ exports.SignInPage = class SignInPage extends BasePage {
         await this.rejectCookies();
         await this.page.waitForTimeout(signInDelay);
     }
+
+    async signOut(delay = testConfig.SignOutDelayDefault){
+        await this.waitForSignOutNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', delay);
+        await expect(this.usernameLocator).toBeVisible();
+    }
 };
