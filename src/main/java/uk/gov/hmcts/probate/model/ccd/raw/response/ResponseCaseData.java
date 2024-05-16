@@ -385,4 +385,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String uniqueProbateCodeId;
     private final BigDecimal ihtFormNetValue;
     private final String iht400Switch;
+    private final String ihtNetValueSwitch;
 }
