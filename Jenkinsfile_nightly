@@ -1,4 +1,4 @@
-#!groovy
+`#!groovy
 
 properties([
         pipelineTriggers([cron('35 06 * * 1-5')]),
@@ -47,8 +47,35 @@ withNightlyPipeline("java", product, component) {
     enableSecurityScan()
     enableFortifyScan('probate-aat')
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
+    before('fullFunctionalTest') {
+            yarnBuilder.yarn('yarn-update')
+            yarnBuilder.yarn('install-dependencies')
+            env.PARALLEL_CHUNKS = params.FUNCTIONAL_TESTS_WORKERS
+            env.MOCKED_PAYMENTS = false
+            env.TEST_RETRIES = 5
+            env.TESTS_FOR_ACCESSIBILITY = true
+            env.ENV = 'aat'
+            env.CASE_SERVICE_URL = "https://manage-case.aat.platform.hmcts.net"
+        }
+
     afterAlways('fullFunctionalTest') {
-        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'functional-output/**/*'
+        stage('Functional Tests Nightly') {
+                    try {
+                        yarnBuilder.yarn('test:fullfunctional-nightly')
+                    } catch (Error) {
+                        unstable(message: "${STAGE_NAME} is unstable: " + Error.toString())
+                    } finally {
+                        publishHTML([
+                            allowMissing: true,
+                            alwaysLinkToLastBuild: true,
+                            keepAll: true,
+                            reportDir: 'playwright-report',
+                            reportFiles: 'index.html',
+                            reportName: 'UI Functional Test Report'
+                        ])
+                        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functionalTest/**/*'
+                    }
+        }
     }
 
     afterAlways('crossBrowserTest') {
