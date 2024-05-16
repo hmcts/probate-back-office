@@ -126,6 +126,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String NEWCASTLE_GOP_PAYLOAD = "solicitorPayloadNotificationsGopNewcastle.json";
     private static final String WINCHESTER_GOP_PAYLOAD = "solicitorPayloadNotificationsGopWinchester.json";
     private static final String BRISTOL_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
+    private static final String BULKSCAN_GOP_PAYLOAD = "solicitorPayloadNotificationsGopBristol.json";
     private static final String CW_PART_SUCC = "caseworkerPartSuccPowerReservedToOthers.json";
     private static final String CW_PART = "caseworkerPartOtherRenouncing.json";
     private static final String MULTI_EXEC_TC_PAYLOAD = "solicitorPayloadMultiExecTcReadyToIssue.json";
@@ -1272,6 +1273,14 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         assertTrue(response.contains(IHT_NET_PENCE));
         assertTrue(response.contains(GOP));
         assertTrue(response.contains(CTSC_REGISTRY_ADDRESS));
+    }
+
+    @Test
+    public void verifySuccessForGetDigitalGrantDraftPrimaryApplicantApplyingButNotSet() throws IOException {
+        final String response =
+                generateGrantDocumentFromPayload(utils.getJsonFromFile(BULKSCAN_GOP_PAYLOAD),
+                        GENERATE_GRANT_DRAFT);
+        assertTrue(response.contains(PRIMARY_APPLICANT));
     }
 
     @Test
