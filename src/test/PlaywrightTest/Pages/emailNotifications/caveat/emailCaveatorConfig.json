@@ -1,0 +1,9 @@
+{
+  "waitForText": "Email caveator",
+
+  "email_message_content": "email_caveator_email_message_content_text",
+
+  "documentType": "Sent Email",
+  "filename": "sentEmail.pdf",
+  "dateAdded": "XX XXX XXXX"
+}
