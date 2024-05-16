@@ -31,17 +31,18 @@ public class ApplicationSubmittedDateValidationRule implements CaseworkerAmendAn
         final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.UK);
         Set<FieldErrorResponse> errors = new HashSet<>();
         LocalDate dod = ccdData.getDeceasedDateOfDeath();
-        LocalDate applicationSubmittedDate = LocalDate.parse(ccdData.getApplicationSubmissionDate(), dateTimeFormatter);
-
-        if (applicationSubmittedDate.isAfter(LocalDate.now())) {
-            errors.add(businessValidationMessageService.generateError(
-                    BUSINESS_ERROR, CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE));
+        if (ccdData.getApplicationSubmissionDate() != null) {
+            LocalDate applicationSubmittedDate = LocalDate.parse(
+                    ccdData.getApplicationSubmissionDate(), dateTimeFormatter);
+            if (applicationSubmittedDate.isAfter(LocalDate.now())) {
+                errors.add(businessValidationMessageService.generateError(
+                        BUSINESS_ERROR, CODE_APPLICATION_SUBMITTED_DATE_IS_FUTURE));
+            }
+            if (dod.isAfter(applicationSubmittedDate)) {
+                errors.add(businessValidationMessageService.generateError(
+                        BUSINESS_ERROR, CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD));
+            }
         }
-        if (dod.isAfter(applicationSubmittedDate)) {
-            errors.add(businessValidationMessageService.generateError(
-                    BUSINESS_ERROR, CODE_APPLICATION_SUBMITTED_DATE_BEFORE_DOD));
-        }
-
         return new ArrayList<>(errors);
     }
 
