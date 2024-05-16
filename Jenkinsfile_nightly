@@ -1,4 +1,4 @@
-`#!groovy
+#!groovy
 
 properties([
         pipelineTriggers([cron('35 06 * * 1-5')]),
