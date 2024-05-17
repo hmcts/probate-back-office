@@ -19,7 +19,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         this.startButtonLocator = page.getByRole('button', {name: newCaseConfig.startButton});
         this.createCaveatPageLocator = page.getByText(createCaveatConfig.page1_waitForText);
         this.applicationTypeLocator = page.getByLabel(newCaseConfig.applicationTypeLocatorName);
-        this.registryLocator = page.getByLabel(newCaseConfig.registryLocatorName);
+        this.registryLocator = this.page.locator('#registryLocation');
         this.amendCaveatPageLocator = page.getByText(createCaveatConfig.page1_amend_waitForText);
         this.createCaveatPage2Locator = page.getByText(createCaveatConfig.page2_waitForText);
         this.postcodeLinkLocator = page.getByText(createCaveatConfig.UKpostcodeLink);
@@ -63,6 +63,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             await expect(this.createCaveatPageLocator).toBeVisible();
             await expect(this.applicationTypeLocator).toBeEnabled();
             await this.applicationTypeLocator.selectOption({value: newCaseConfig.page1_list1_application_type});
+            await expect(this.registryLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
             await this.registryLocator.selectOption({value: newCaseConfig.page1_list2_registry_location});
             // await I.waitForText(createCaveatConfig.page1_waitForText, testConfig.WaitForTextTimeout);
