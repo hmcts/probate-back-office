@@ -9,7 +9,7 @@ exports.SignInPage = class SignInPage extends BasePage {
         // this.signinPageLocator = page.getByLabel('Sign in');
         this.usernameLocator = this.page.getByText('Email address');
         this.passwordLocator = this.page.getByText('Password', {exact: true});
-        this.submitButtonLocator = page.getByRole("button", {name: 'Sign in'});
+        this.submitButtonLocator = page.getByRole('button', {name: 'Sign in'});
     }
     async authenticateWithIdamIfAvailable (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
         await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
