@@ -1,5 +1,5 @@
-const { expect } = require('@playwright/test');
-const { testConfig } = require ('../../Configs/config');
+const {expect} = require('@playwright/test');
+const {testConfig} = require ('../../Configs/config');
 const {BasePage} = require('../utility/basePage');
 
 exports.SignInPage = class SignInPage extends BasePage {
@@ -8,13 +8,13 @@ exports.SignInPage = class SignInPage extends BasePage {
         this.page = page;
         // this.signinPageLocator = page.getByLabel('Sign in');
         this.usernameLocator = this.page.getByText('Email address');
-        this.passwordLocator = this.page.getByText('Password', { exact: true })
-        this.submitButtonLocator = page.getByRole("button", { name: "Sign in" });
+        this.passwordLocator = this.page.getByText('Password', {exact: true});
+        this.submitButtonLocator = page.getByRole("button", {name: 'Sign in'});
     }
-    async authenticateWithIdamIfAvailable (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault){
+    async authenticateWithIdamIfAvailable (useProfessionalUser, signInDelay = testConfig.SignInDelayDefault) {
         await this.page.goto(`${testConfig.TestBackOfficeUrl}/`);
         await this.page.waitForTimeout(testConfig.ManualDelayMedium);
-        await expect(this.page.getByRole('heading', { name: 'Sign in', exact: true}, {timeout: 6000})).toBeVisible();
+        await expect(this.page.getByRole('heading', {name: 'Sign in', exact: true}, {timeout: 6000})).toBeVisible();
         await expect(this.usernameLocator).toBeVisible();
         await expect(this.passwordLocator).toBeVisible();
         await this.page.locator('#username').fill(useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvCwUser);
@@ -28,7 +28,7 @@ exports.SignInPage = class SignInPage extends BasePage {
         await this.page.waitForTimeout(signInDelay);
     }
 
-    async signOut(delay = testConfig.SignOutDelayDefault){
+    async signOut(delay = testConfig.SignOutDelayDefault) {
         await this.waitForSignOutNavigationToComplete('nav.hmcts-header__navigation ul li:last-child a', delay);
         await expect(this.usernameLocator).toBeVisible();
     }
