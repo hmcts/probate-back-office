@@ -112,7 +112,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             const keys = Object.keys(createCaveatConfig);
             for (let i=0; i < keys.length; i++) {
                 const propName = keys[i];
-                if (idx == 0) {
+                if (idx === 0) {
                     this.addNewButtonLocator = this.page.getByRole('button', {name: createCaveatConfig.page2_addAliasButton}).first();
                 } else {
                     this.addNewButtonLocator = this.page.getByRole('button', {name: createCaveatConfig.page2_addAliasButton}).nth(1);

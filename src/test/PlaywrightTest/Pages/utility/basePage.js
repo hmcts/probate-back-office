@@ -1,17 +1,17 @@
 const {expect} = require('@playwright/test');
 const {testConfig} = require ('../../Configs/config');
-const {accessibilityPage} = require("../../Accessibility/runner");
+const {accessibilityPage} = require('../../Accessibility/runner');
 
 exports.BasePage = class BasePage {
     constructor(page) {
         this.page = page;
-        this.rejectLocator = page.getByRole('button', {name: "Reject analytics cookies"});
+        this.rejectLocator = page.getByRole('button', {name: 'Reject analytics cookies'});
         this.continueButtonLocator = page.getByRole('button', {name: 'Continue'});
         this.submitButtonLocator = page.getByRole('button', {name: 'Submit'});
         this.goButtonLocator = this.page.getByRole('button', {name: 'Go'});
     }
 
-    async logInfo(scenarioName, log, caseRef){
+    async logInfo(scenarioName, log, caseRef) {
         let ret = scenarioName;
         await this.page.waitForTimeout(testConfig.GetCaseRefFromUrlDelay);
         if (log) {

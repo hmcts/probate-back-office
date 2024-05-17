@@ -38,8 +38,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.waitForGoNavigationToComplete(commonConfig.submitButton);
     }
 
-    async selectCaseMatchesForCaveat(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null,
-                                     skipMatchingInfo=false) {
+    async selectCaseMatchesForCaveat(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
         await expect(this.page.getByText(nextStepName)).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
@@ -89,7 +88,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
     }
 
-    async enterEventSummary(caseRef, nextStepName){
+    async enterEventSummary(caseRef, nextStepName) {
         await this.page.waitForTimeout(testConfig.EventSummaryDelay);
         let eventSummaryPrefix = nextStepName;
         await expect(this.page.getByText(nextStepName)).toBeVisible();
@@ -101,7 +100,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 
-    async uploadDocument(caseRef, documentUploadConfig){
+    async uploadDocument(caseRef, documentUploadConfig) {
         await expect(this.page.getByRole('heading', {name: documentUploadConfig.waitForText, exact: true})).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await expect(this.addNewLocator).toBeEnabled();
@@ -132,7 +131,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
 
         if (documentUploadConfig.documentType) {
             for (let i = 0; i < documentUploadConfig.documentType.length; i++) {
-                let optText = await this.page.locator(`${documentUploadConfig.id}_0_DocumentType option:nth-child(${i+2})`).innerText();
+                const optText = await this.page.locator(`${documentUploadConfig.id}_0_DocumentType option:nth-child(${i+2})`).innerText();
                 if (optText !== documentUploadConfig.documentType[i]) {
                     console.info('document upload doc types not as expected.');
                     console.info(`expected: ${documentUploadConfig.documentType[i]}, actual: ${optText}`);
