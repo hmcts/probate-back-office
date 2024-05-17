@@ -15,6 +15,7 @@ properties([
 
 @Library("Infrastructure") _
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 String product = "probate"
 String component = "back-office"
 
