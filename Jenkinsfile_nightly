@@ -15,7 +15,6 @@ properties([
 
 @Library("Infrastructure") _
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
 String product = "probate"
 String component = "back-office"
 
@@ -39,7 +38,7 @@ static LinkedHashMap<String, Object> secret(String secretName, String envVar) {
   ]
 }
 
-withNightlyPipeline("java", product, component) {
+withNightlyPipeline("nodejs", product, component) {
     env.TEST_E2E_URL = params.XUI_URL_TO_TEST
     env.TEST_URL = params.URL_TO_TEST
     env.Rules = params.SecurityRules
@@ -48,17 +47,6 @@ withNightlyPipeline("java", product, component) {
     enableSecurityScan()
     enableFortifyScan('probate-aat')
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
-    before('fullFunctionalTest') {
-            yarnBuilder.yarn('yarn-update')
-            yarnBuilder.yarn('install-dependencies')
-            env.PARALLEL_CHUNKS = params.FUNCTIONAL_TESTS_WORKERS
-            env.MOCKED_PAYMENTS = false
-            env.TEST_RETRIES = 5
-            env.TESTS_FOR_ACCESSIBILITY = true
-            env.ENV = 'aat'
-            env.CASE_SERVICE_URL = "https://manage-case.aat.platform.hmcts.net"
-        }
-
     afterAlways('fullFunctionalTest') {
         stage('Functional Tests Nightly') {
                     try {
