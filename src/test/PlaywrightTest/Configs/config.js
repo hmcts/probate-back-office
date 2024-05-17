@@ -64,5 +64,5 @@ export const testConfig = {
     FindCasesInitialDelay: 1, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 1 : 0.75,
     FindCasesDelay: process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 2 : 1,
     CheckYourAnswersDelay: 0.5, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 0.5 : 0.5
-    ExecutorsPageDelay: 0 // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0
+    ExecutorsPageDelay: 0, // process.env.E2E_AUTO_DELAY_ENABLED === 'true' ? 10 : 0
 }

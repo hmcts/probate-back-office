@@ -1,7 +1,6 @@
 // @ts-check
-const { test, expect } = require('../Fixtures/createFixtures');
+const {test} = require('../Fixtures/createFixtures');
 const dateFns = require('date-fns');
-const {testConfig} = require('../Configs/config');
 
 const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
 const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig.json');
@@ -32,8 +31,8 @@ const {
 
 test.describe('Caseworker Caveat3 - Caveat expired', () => {
     test('Caseworker Caveat3 - Caveat expired',
-        async ({basePage,signInPage,createCasePage,cwEventActionsPage,page}) => {
-            let scenarioName = 'Caseworker Caveat3 - Caveat expired';
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+            const scenarioName = 'Caseworker Caveat3 - Caveat expired';
 
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
 
@@ -168,5 +167,5 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await basePage.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
             await signInPage.signOut();
-    });
+        });
 });
