@@ -4,35 +4,36 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Client;
 import feign.Logger;
 import feign.codec.Decoder;
-import feign.httpclient.ApacheHttpClient;
 import feign.jackson.JacksonDecoder;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import feign.hc5.ApacheHttp5Client;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 
+@Configuration
 public class IdamConfiguration {
 
     @Bean
     public Client getFeignHttpClient() {
-        return new ApacheHttpClient(getHttpClient());
+        return new ApacheHttp5Client(getHttpClient());
     }
 
     private CloseableHttpClient getHttpClient() {
         int timeout = 10000;
         RequestConfig config = RequestConfig.custom()
-            .setConnectTimeout(timeout)
-            .setConnectionRequestTimeout(timeout)
-            .setSocketTimeout(timeout)
-            .build();
+                .setConnectTimeout(Timeout.ofMilliseconds(timeout))
+                .setResponseTimeout(Timeout.ofMilliseconds(timeout))
+                .build();
 
-        return HttpClientBuilder
-            .create()
-            .useSystemProperties()
-            .disableRedirectHandling()
-            .setDefaultRequestConfig(config)
-            .build();
+        return HttpClients.custom()
+                .useSystemProperties()
+                .disableRedirectHandling()
+                .setDefaultRequestConfig(config)
+                .build();
     }
 
     @Bean
