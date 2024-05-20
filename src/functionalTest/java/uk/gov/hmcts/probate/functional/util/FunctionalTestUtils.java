@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.io.IOUtils;
