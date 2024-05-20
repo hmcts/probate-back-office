@@ -114,7 +114,7 @@ exports.BasePage = class BasePage {
                 } else if (tabConfigFile.tabName === 'Event History') {
                     await expect(this.page.getByRole('table', {name: 'Details'})).toContainText(tabConfigFile.fields[i]);
                 } else {
-                    await expect(this.page.getByRole('table', { name: 'case viewer table' })).toContainText(tabConfigFile.fields[i]);
+                    await expect(this.page.getByRole('table', {name: 'case viewer table'})).toContainText(tabConfigFile.fields[i]);
                 }
             }
         }
