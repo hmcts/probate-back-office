@@ -141,7 +141,7 @@ exports.BasePage = class BasePage {
                 if (textCount > 1) {
                     await expect(this.page.getByText(dataConfigFile[tabConfigFile.dataKeys[i]], {exact: true})).toBeVisible();
                 } else {
-                    await expect(this.page.getByLabel('case viewer table')).toContainText(dataConfigFile[tabConfigFile.dataKeys[i]]);
+                    await expect(this.page.getByRole('table', {name: 'case viewer table'})).toContainText(dataConfigFile[tabConfigFile.dataKeys[i]]);
                 }
             }
         }
