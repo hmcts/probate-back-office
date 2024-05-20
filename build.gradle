@@ -1,6 +1,6 @@
 buildscript {
   ext {
-    springBootVersion = '2.7.18'
+    springBootVersion = '3.2.5'
   }
   dependencies {
     classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -10,8 +10,8 @@ buildscript {
 
 plugins {
   id 'application'
-  id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-  id 'org.springframework.boot' version '2.7.18'
+  id 'io.spring.dependency-management' version '1.1.5'
+  id 'org.springframework.boot' version '3.2.5'
   id 'uk.gov.hmcts.java' version '0.12.61'
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.2'
@@ -56,9 +56,8 @@ sonarqube {
 
 test.finalizedBy jacocoTestReport
 
-// https://jeremylong.github.io/DependencyCheck/dependency-check-gradle/configuration.html
 dependencyCheck {
-  suppressionFile = 'dependency-check-suppressions.xml'
+  suppressionFile = 'config/owasp/suppressions.xml'
 }
 
 pitest {
@@ -183,27 +182,27 @@ gitProperties {
 }
 
 def versions = [
-        springCloudStarterNetflixHystrix: '2.2.10.RELEASE',
-        serenity                        : '2.6.0',
-        serenityreporter                : '2.6.0',
-        springBootVersion               : '2.7.18',
-        springBootStarterHateoas        : '2.7.18',
+        springCloudStarterNetflixHystrix: '4.1.1',
+        serenity                        : '4.1.6',
+        serenityreporter                : '4.1.6',
+        springBootVersion               : '3.2.5',
+        springBootStarterHateoas        : '3.2.5',
         hmctsJavaLogging                : '6.1.4',
-        authCheckerLib                  : '2.3.0',
+        authCheckerLib                  : '3.0.0',
         jacksonDatabind                 : '2.14.3',
         commonsIO                       : '2.16.0',
         commonsValidator                : '1.6',
-        restAssured                     : '4.5.1',
+        restAssured                     : '5.4.0',
         lombok                          : '1.18.32',
-        springDocOpenUi                 : '1.7.0',
-        springSecurityVersion           : '5.7.11',
+        springDocOpenUi                 : '2.5.0',
+        springSecurityVersion           : '6.0.0',
         probateCommonsVersion           : '1.5.2',
-        ccdClient                       : '4.9.2',
+        ccdClient                       : '5.0.1',
         mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '4.1.2',
+        serviceAuthVersion              : '5.1.2',
         pact_version                    : '4.1.34',
         probatePactCommonsVersion       : '1.0.2',
-        springCloud                     : '3.1.8',
+        springCloud                     : '4.1.2',
         elasticSearchVersion            : '7.15.0',
         documentClient                  : '1.7.3'
 ]
@@ -227,7 +226,7 @@ repositories {
 
 dependencyManagement {
   imports {
-    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.9"
+    mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
   }
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
@@ -264,9 +263,7 @@ dependencyManagement {
 configurations.all {
   resolutionStrategy {
     eachDependency { details ->
-      if (details.requested.group in ['org.hibernate']) {
-        details.useVersion '5.6.5.Final'
-      }
+
       if (details.requested.group in ['org.apache.logging.log4j']) {
         details.useVersion '2.18.0'
       }
@@ -300,9 +297,9 @@ dependencies {
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
   implementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
-  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.0'
-  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '3.0.23'
-  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.0.13'
+  implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.1'
+  implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
+  implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.1.1'
   implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.25.4'
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
@@ -312,8 +309,7 @@ dependencies {
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: versions.jacksonDatabind
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: versions.jacksonDatabind
   implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: versions.jacksonDatabind
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: versions.springDocOpenUi
-  implementation group: 'org.springdoc', name: 'springdoc-openapi-security', version: versions.springDocOpenUi
+  implementation group: 'org.springdoc', name: 'springdoc-openapi-starter-webmvc-ui', version: versions.springDocOpenUi
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   implementation group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
@@ -324,9 +320,9 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
-  implementation group: 'io.github.openfeign', name: 'feign-httpclient', version: '10.7.4'
+  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.2.1'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-  implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.14'
+  implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
   implementation group: 'org.pitest', name: 'pitest', version: '1.3.2'
   implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
@@ -361,7 +357,7 @@ dependencies {
   testImplementation 'org.awaitility:awaitility:4.1.0'
   testImplementation 'com.github.hmcts:fortify-client:1.3.0:all'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
-  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '3.12.4'
+  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
 
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
@@ -370,12 +366,13 @@ dependencies {
 
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testFunctionalImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testFunctionalImplementation group: 'org.awaitility', name: 'awaitility', version: '3.1.6'
   testFunctionalImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
   testFunctionalImplementation group: 'com.github.hmcts', name: 'service-auth-provider-java-client', version: versions.serviceAuthVersion
-  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.0'
+  testFunctionalImplementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.1'
+  testFunctionalImplementation group: 'net.thucydides', name: 'thucydides-core', version: '0.9.275'
   testFunctionalImplementation sourceSets.main.runtimeClasspath
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
@@ -388,7 +385,7 @@ dependencies {
 
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
-  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
+  testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-junit5', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-single-page-report', version: versions.serenityreporter
   testCaseCreatorImplementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.12.5'
@@ -626,4 +623,16 @@ dependencyCheck {
 
 rootProject.tasks.named("processResources") {
   dependsOn("generateGitProperties")
+}
+
+bootJar {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+distTar {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+distZip {
+  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
