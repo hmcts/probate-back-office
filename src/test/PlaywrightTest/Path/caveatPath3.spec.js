@@ -64,10 +64,10 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await createCasePage.enterCaveatPage4('create');
             await createCasePage.checkMyAnswers(nextStepName);
             let endState = 'Caveat raised';
-            await basePage.logInfo(endState);
+            // await basePage.logInfo(endState);
 
             const caseRef = await basePage.getCaseRefFromUrl();
-            await basePage.logInfo(caseRef);
+            // await basePage.logInfo(caseRef);
             await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
             await basePage.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
