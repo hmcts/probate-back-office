@@ -48,19 +48,17 @@ withNightlyPipeline("nodejs", product, component) {
     enableFortifyScan('probate-aat')
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     afterAlways('fullFunctionalTest') {
-        stage('Functional Tests Nightly') {
-            env.TEST_E2E_URL = "https://manage-case.demo.platform.hmcts.net"
-            sh 'yarn install'
-            publishHTML target: [
-                allowMissing: true,
-                alwaysLinkToLastBuild: true,
-                keepAll: true,
-                reportDir: 'target/site/serenity/',
-                reportFiles: 'index.html',
-                reportName: 'UI Functional Test Report'
-            ]
-            steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functionalTest/**/*'
-        }
+        env.TEST_E2E_URL = "https://manage-case.demo.platform.hmcts.net"
+        sh 'yarn install'
+        publishHTML target: [
+            allowMissing: true,
+            alwaysLinkToLastBuild: true,
+            keepAll: true,
+            reportDir: 'target/site/serenity/',
+            reportFiles: 'index.html',
+            reportName: 'UI Functional Test Report'
+        ]
+        steps.archiveArtifacts allowEmptyArchive: true, artifacts: 'build/reports/tests/functionalTest/**/*'
     }
 
     afterAlways('crossBrowserTest') {
