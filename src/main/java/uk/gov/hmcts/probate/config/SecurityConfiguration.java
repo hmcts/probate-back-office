@@ -1,12 +1,14 @@
 package uk.gov.hmcts.probate.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.web.SecurityFilterChain;
 import uk.gov.hmcts.reform.auth.checker.core.RequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.core.service.Service;
 import uk.gov.hmcts.reform.auth.checker.core.service.ServiceRequestAuthorizer;
@@ -15,100 +17,93 @@ import uk.gov.hmcts.reform.auth.checker.core.user.UserRequestAuthorizer;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceanduser.AuthCheckerServiceAndUserFilter;
 import uk.gov.hmcts.reform.auth.checker.spring.serviceonly.AuthCheckerServiceOnlyFilter;
 
+@Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
 
-    @Configuration
+    @Bean
     @Order(1)
-    public static class AuthCheckerServiceAndUSerFilterConfigurerAdapter extends WebSecurityConfigurerAdapter {
-
-        private final AuthCheckerServiceAndUserFilter authCheckerServiceAndUserFilter;
-
-        public AuthCheckerServiceAndUSerFilterConfigurerAdapter(UserRequestAuthorizer<User> userRequestAuthorizer,
-                                                                ServiceRequestAuthorizer serviceRequestAuthorizer,
-                                                                AuthenticationManager authenticationManager) {
-            authCheckerServiceAndUserFilter =
+    public SecurityFilterChain serviceAndUserFilterChain(
+            HttpSecurity http,
+            UserRequestAuthorizer<User> userRequestAuthorizer,
+            ServiceRequestAuthorizer serviceRequestAuthorizer,
+            AuthenticationManager authenticationManager
+    ) throws Exception {
+        AuthCheckerServiceAndUserFilter authCheckerServiceAndUserFilter =
                 new AuthCheckerServiceAndUserFilter(serviceRequestAuthorizer, userRequestAuthorizer);
-            authCheckerServiceAndUserFilter.setAuthenticationManager(authenticationManager);
-        }
+        authCheckerServiceAndUserFilter.setAuthenticationManager(authenticationManager);
 
-        @Override
-        protected void configure(HttpSecurity http) throws Exception {
-
-            http
-                .requestMatchers()
-                .antMatchers("/notify/grant-delayed-scheduled")
-                .antMatchers("/notify/grant-awaiting-documents-scheduled")
-                .and()
+        http
+                .securityMatcher("/notify/grant-delayed-scheduled",
+                        "/notify/grant-awaiting-documents-scheduled")
                 .addFilter(authCheckerServiceAndUserFilter)
-                .csrf().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated();
-        }
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable)
+                .logout(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+            );
+
+        return http.build();
     }
 
-    @Configuration
-    public static class AuthCheckerServiceOnlyFilterConfigurerAdapter extends WebSecurityConfigurerAdapter {
+    @Bean
+    @Order(2)
+    public SecurityFilterChain serviceOnlyFilterChain(HttpSecurity http,
+                                                      RequestAuthorizer<Service> serviceRequestAuthorizer,
+                                                      AuthenticationManager authenticationManager) throws Exception {
+        AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter
+                = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
+        authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
 
-        private AuthCheckerServiceOnlyFilter authCheckerServiceOnlyFilter;
-
-        public AuthCheckerServiceOnlyFilterConfigurerAdapter(RequestAuthorizer<Service> serviceRequestAuthorizer,
-                                                             AuthenticationManager authenticationManager) {
-            authCheckerServiceOnlyFilter = new AuthCheckerServiceOnlyFilter(serviceRequestAuthorizer);
-            authCheckerServiceOnlyFilter.setAuthenticationManager(authenticationManager);
-        }
-
-        @Override
-        @Order(2)
-        protected void configure(HttpSecurity http) throws Exception {
-
-            http
-                .requestMatchers()
-                .antMatchers("/swagger-ui.html")
-                .antMatchers("/swagger-resources/**")
-                .antMatchers("/v2/api-docs")
-                .antMatchers("/health", "/health/liveness")
-                .antMatchers("/info")
-                .antMatchers("/case/**")
-                .antMatchers("/case-matching/**")
-                .antMatchers("/caveat/**")
-                .antMatchers("/data-extract/**")
-                .antMatchers("/document/**")
-                .antMatchers("/transform-scanned-data")
-                .antMatchers("/transform-exception-record")
-                .antMatchers("/update-case")
-                .antMatchers("/grant/**")
-                .antMatchers("/nextsteps/**")
-                .antMatchers("/notify/**")
-                .antMatchers("/forms/**")
-                .antMatchers("/template/**")
-                .antMatchers("/probateManTypes/**")
-                .antMatchers("/legacy/**")
-                .antMatchers("/standing-search/**")
-                .antMatchers("/payment/**")
-                .and()
+        http
+                .securityMatcher(
+                        "/swagger-ui.html",
+                        "/swagger-resources/**",
+                        "/v2/api-docs",
+                        "/health",
+                        "/health/liveness",
+                        "/info",
+                        "/case/**",
+                        "/case-matching/**",
+                        "/caveat/**",
+                        "/data-extract/**",
+                        "/document/**",
+                        "/transform-scanned-data",
+                        "/transform-exception-record",
+                        "/update-case",
+                        "/grant/**",
+                        "/nextsteps/**",
+                        "/notify/**",
+                        "/forms/**",
+                        "/template/**",
+                        "/probateManTypes/**",
+                        "/legacy/**",
+                        "/standing-search/**",
+                        "/payment/**"
+                )
                 .addFilter(authCheckerServiceOnlyFilter)
-                .csrf().disable()
-                .formLogin().disable()
-                .logout().disable()
-                .authorizeRequests()
-                .anyRequest().authenticated();
+                .csrf(csrf -> csrf.disable())
+                .formLogin(form -> form.disable())
+                .logout(logout -> logout.disable())
+                .authorizeHttpRequests(authorize -> authorize
+                        .anyRequest().authenticated()
+            );
 
-        }
+        return http.build();
+    }
 
-        public void configure(WebSecurity web) {
-            web.ignoring().antMatchers("/swagger-ui.html",
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return web -> web.ignoring().requestMatchers(
+                "/swagger-ui.html",
                 "/swagger-resources/**",
                 "/v2/api-docs",
                 "/health",
                 "/health/liveness",
                 "/info",
                 "/data-extract/**",
-                "/");
-        }
+                "/"
+        );
     }
-
-
 }
