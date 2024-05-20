@@ -98,7 +98,7 @@ exports.BasePage = class BasePage {
         // await this.page.runAccessibilityTest();
 
         if (tabConfigFile.waitForText) {
-            this.tabLocator = this.page.getByText(tabConfigFile.waitForText);
+            this.tabLocator = this.page.getByLabel(tabConfigFile.waitForText);
             await expect(this.tabLocator).toBeVisible();
         }
 
