@@ -51,7 +51,6 @@ import uk.gov.hmcts.probate.validator.NaValidationRule;
 import uk.gov.hmcts.probate.validator.NumberOfApplyingExecutorsValidationRule;
 import uk.gov.hmcts.probate.validator.OriginalWillSignedDateValidationRule;
 import uk.gov.hmcts.probate.validator.Pre1900DOBValidationRule;
-import uk.gov.hmcts.probate.validator.ApplicationSubmittedDateValidationRule;
 import uk.gov.hmcts.probate.validator.RedeclarationSoTValidationRule;
 import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
@@ -177,8 +176,6 @@ class BusinessValidationUnitTest {
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
 
-    @Mock
-    private ApplicationSubmittedDateValidationRule applicationSubmittedDateValidationRule;
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -219,8 +216,7 @@ class BusinessValidationUnitTest {
             changeToSameStateValidationRule,
             handOffLegacyTransformer,
             registrarDirectionServiceMock,
-            pre1900DOBValidationRuleMock,
-            applicationSubmittedDateValidationRule);
+            pre1900DOBValidationRuleMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
