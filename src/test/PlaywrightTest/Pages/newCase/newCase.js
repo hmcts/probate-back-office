@@ -1,26 +1,25 @@
-const { expect } = require('@playwright/test');
-const { testConfig } = require ('../../Configs/config');
-const { BasePage } = require ('../utility/basePage');
+const {expect} = require('@playwright/test');
+const {testConfig} = require ('../../Configs/config');
+const {BasePage} = require ('../utility/basePage');
 const newCaseConfig = require('./newCaseConfig');
-const createCaseConfig = require("../createCase/createCaseConfig");
 const createCaveatConfig = require('../createCaveat/createCaveatConfig');
 const commonConfig = require('../common/commonConfig');
 const checkYourAnswersConfig = require('../checkYourAnswers/checkYourAnswersConfig');
 const eventSummaryConfig = require('../eventSummary/eventSummaryConfig');
 
 exports.CreateCasePage = class CreateCasePage extends BasePage {
-     constructor(page) {
+    constructor(page) {
         super(page);
         this.page = page;
-        this.createCasePageLocator = page.getByRole('link', { name: newCaseConfig.waitForText});
-        this.createCaseLocator = page.getByRole('link', { name: newCaseConfig.xuiCreateCaseLocator});
+        this.createCasePageLocator = page.getByRole('link', {name: newCaseConfig.waitForText});
+        this.createCaseLocator = page.getByRole('link', {name: newCaseConfig.xuiCreateCaseLocator});
         this.jurisdictionLocator = page.getByLabel(newCaseConfig.jurisdictionLocatorName);
         this.caseTypeLocator = page.getByLabel(newCaseConfig.caseTypeLocatorName);
         this.eventLocator = page.getByLabel(newCaseConfig.eventLocatorName);
-        this.startButtonLocator = page.getByRole('button', { name: newCaseConfig.startButton });
+        this.startButtonLocator = page.getByRole('button', {name: newCaseConfig.startButton});
         this.createCaveatPageLocator = page.getByText(createCaveatConfig.page1_waitForText);
         this.applicationTypeLocator = page.getByLabel(newCaseConfig.applicationTypeLocatorName);
-        this.registryLocator = page.getByLabel(newCaseConfig.registryLocatorName);
+        this.registryLocator = this.page.locator('#registryLocation');
         this.amendCaveatPageLocator = page.getByText(createCaveatConfig.page1_amend_waitForText);
         this.createCaveatPage2Locator = page.getByText(createCaveatConfig.page2_waitForText);
         this.postcodeLinkLocator = page.getByText(createCaveatConfig.UKpostcodeLink);
@@ -40,7 +39,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         await this.createCaseLocator.click();
     }
 
-    async selectCaseTypeOptions(caseType, event){
+    async selectCaseTypeOptions(caseType, event) {
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
         await expect(this.createCaseLocator).toBeVisible();
         await expect(this.jurisdictionLocator).toBeEnabled();
@@ -59,11 +58,12 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         await this.page.waitForTimeout(testConfig.CreateCaseDelay);
     }
 
-    async enterCaveatPage1(crud){
+    async enterCaveatPage1(crud) {
         if (crud === 'create') {
             await expect(this.createCaveatPageLocator).toBeVisible();
             await expect(this.applicationTypeLocator).toBeEnabled();
             await this.applicationTypeLocator.selectOption({value: newCaseConfig.page1_list1_application_type});
+            await expect(this.registryLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
             await this.registryLocator.selectOption({value: newCaseConfig.page1_list2_registry_location});
             // await I.waitForText(createCaveatConfig.page1_waitForText, testConfig.WaitForTextTimeout);
@@ -87,7 +87,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterCaveatPage2(crud, unique_deceased_user){
+    async enterCaveatPage2(crud, unique_deceased_user) {
         if (crud === 'create') {
             await expect(this.createCaveatPage2Locator).toBeVisible();
             await this.page.locator('#deceasedForenames').fill(createCaveatConfig.page2_forenames+unique_deceased_user);
@@ -113,7 +113,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             const keys = Object.keys(createCaveatConfig);
             for (let i=0; i < keys.length; i++) {
                 const propName = keys[i];
-                if(idx == 0) {
+                if (idx === 0) {
                     this.addNewButtonLocator = this.page.getByRole('button', {name: createCaveatConfig.page2_addAliasButton}).first();
                 } else {
                     this.addNewButtonLocator = this.page.getByRole('button', {name: createCaveatConfig.page2_addAliasButton}).nth(1);
@@ -153,7 +153,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterCaveatPage3(crud){
+    async enterCaveatPage3(crud) {
         if (crud === 'create') {
             await expect(this.createCaveatPage3Locator).toBeVisible();
             // await I.waitForText(createCaveatConfig.page3_waitForText, testConfig.WaitForTextTimeout);
@@ -186,11 +186,10 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async enterCaveatPage4(crud){
+    async enterCaveatPage4(crud) {
         if (crud === 'update') {
             await expect(this.amendCaveatPage4Locator).toBeVisible();
-            // await I.waitForText(createCaveatConfig.page4_amend_waitForText, testConfig.WaitForTextTimeout);
-            await I.waitForEnabled({css: '#expiryDate-day'}, testConfig.WaitForTextTimeout);
+            await expect(this.page.locator('#expiryDate-day')).toBeEnabled();
 
             await this.page.locator('#expiryDate-day').fill(createCaveatConfig.page4_caveatExpiryDate_day_update);
             await this.page.locator('#expiryDate-month').fill(createCaveatConfig.page4_caveatExpiryDate_month_update);
@@ -200,7 +199,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
-    async checkMyAnswers(nextStepName){
+    async checkMyAnswers(nextStepName) {
         let eventSummaryPrefix = nextStepName;
         await expect(this.checkYourAnswersHeadingLocator).toBeVisible();
         // await I.waitForText(checkYourAnswersConfig.waitForText, testConfig.WaitForTextTimeout);

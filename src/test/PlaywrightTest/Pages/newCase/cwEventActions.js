@@ -1,12 +1,12 @@
-const { expect } = require('@playwright/test');
-const { testConfig } = require ('../../Configs/config');
-const { BasePage } = require ('../utility/basePage');
+const {expect} = require('@playwright/test');
+const {testConfig} = require ('../../Configs/config');
+const {BasePage} = require ('../utility/basePage');
 const commonConfig = require('../common/commonConfig');
 const eventSummaryConfig = require('../eventSummary/eventSummaryConfig');
 const emailCaveatorConfig = require('../emailNotifications/caveat/emailCaveatorConfig');
 const reopenCaveatConfig = require('../reopenningCases/caveat/reopenCaveatConfig');
 const withdrawCaveatConfig = require('../withdrawCaveat/withdrawCaveatConfig');
-const assert = require("assert");
+const assert = require('assert');
 
 exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
     constructor(page) {
@@ -19,11 +19,11 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.caseMatchImportLocator = this.page.locator('#caseMatches_0_doImport_No');
         this.summaryLocator = this.page.locator('#field-trigger-summary');
         this.descriptionLocator = this.page.locator('#field-trigger-description');
-        this.continueButtonLocator = this.page.getByRole('button', { name: 'Continue' });
-        this.addNewLocator = this.page.getByRole('button', { name: 'Add new' });
-        this.emailCaveatorHeadingLocator = this.page.getByRole('heading', { name: emailCaveatorConfig.waitForText});
+        this.continueButtonLocator = this.page.getByRole('button', {name: 'Continue'});
+        this.addNewLocator = this.page.getByRole('button', {name: 'Add new'});
+        this.emailCaveatorHeadingLocator = this.page.getByRole('heading', {name: emailCaveatorConfig.waitForText});
         this.emailLocator = this.page.locator('#messageContent');
-        this.reopenCaveatHeadingLocator = this.page.getByRole('heading', { name: reopenCaveatConfig.waitForText });
+        this.reopenCaveatHeadingLocator = this.page.getByRole('heading', {name: reopenCaveatConfig.waitForText});
         this.caveatReopenReasonLocator = this.page.locator('#caveatReopenReason');
         this.withdrawCaveatHeadingLocator = this.page.getByText(withdrawCaveatConfig.page1_waitForText);
         this.emailRequestedLocator = this.page.locator(`#caveatRaisedEmailNotificationRequested_${withdrawCaveatConfig.page1_optionNo}`);
@@ -31,14 +31,14 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.bulkPrintOptionLocator = this.page.locator(`#sendToBulkPrintRequested_${withdrawCaveatConfig.page1_optionNo}`);
     }
 
-    async chooseNextStep(nextStep){
+    async chooseNextStep(nextStep) {
         await expect(this.nextStepLocator).toBeEnabled();
         await this.nextStepLocator.selectOption(nextStep);
         await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
         await this.waitForGoNavigationToComplete(commonConfig.submitButton);
     }
 
-    async selectCaseMatchesForCaveat(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false){
+    async selectCaseMatchesForCaveat(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
         await expect(this.page.getByText(nextStepName)).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
@@ -73,6 +73,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
             const delay = ms => new Promise(resolve => setTimeout(resolve, ms));
             for (let i = 0; i < document.body.scrollHeight; i += 1000) {
                 window.scrollTo(0, i);
+                /* eslint-disable no-await-in-loop */
                 await delay(100);
             }
         });
@@ -87,7 +88,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.page.waitForTimeout(testConfig.CaseMatchesCompletionDelay);
     }
 
-    async enterEventSummary(caseRef, nextStepName){
+    async enterEventSummary(caseRef, nextStepName) {
         await this.page.waitForTimeout(testConfig.EventSummaryDelay);
         let eventSummaryPrefix = nextStepName;
         await expect(this.page.getByText(nextStepName)).toBeVisible();
@@ -99,7 +100,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 
-    async uploadDocument(caseRef, documentUploadConfig){
+    async uploadDocument(caseRef, documentUploadConfig) {
         await expect(this.page.getByRole('heading', {name: documentUploadConfig.waitForText, exact: true})).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await expect(this.addNewLocator).toBeEnabled();
@@ -130,7 +131,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
 
         if (documentUploadConfig.documentType) {
             for (let i = 0; i < documentUploadConfig.documentType.length; i++) {
-                let optText = await this.page.locator(`${documentUploadConfig.id}_0_DocumentType option:nth-child(${i+2})`).innerText();
+                const optText = await this.page.locator(`${documentUploadConfig.id}_0_DocumentType option:nth-child(${i+2})`).innerText();
                 if (optText !== documentUploadConfig.documentType[i]) {
                     console.info('document upload doc types not as expected.');
                     console.info(`expected: ${documentUploadConfig.documentType[i]}, actual: ${optText}`);
@@ -143,11 +144,6 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
             }
         }
         await expect(this.page.locator(`${documentUploadConfig.id}_0_DocumentLink`)).toBeVisible();
-        /*let [secondFileChooser] = await Promise.all([
-            this.page.waitForEvent('filechooser'),
-            this.uploadDocumentLocator.click(),
-        ]);
-        await secondFileChooser.setFiles([`${documentUploadConfig.fileToUploadUrl}`]);*/
         await this.page.waitForTimeout(3);
         await expect(this.page.locator(`${documentUploadConfig.id}_0_Comment`)).toHaveValue(documentUploadConfig.comment);
         // small delay to allow hidden vars to be set
@@ -155,7 +151,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 
-    async emailCaveator(caseRef){
+    async emailCaveator(caseRef) {
         await expect(this.emailCaveatorHeadingLocator).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await expect(this.emailLocator).toBeEnabled();
@@ -163,7 +159,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 
-    async reopenCaveat(caseRef){
+    async reopenCaveat(caseRef) {
         await expect(this.reopenCaveatHeadingLocator).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await expect(this.caveatReopenReasonLocator).toBeEnabled();
@@ -171,7 +167,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 
-    async withdrawCaveatPage1(){
+    async withdrawCaveatPage1() {
         await expect(this.withdrawCaveatHeadingLocator).toBeVisible();
         await expect(this.emailRequestedLocator).toBeEnabled();
         await this.emailRequestedLocator.focus();

@@ -63,6 +63,7 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
@@ -478,7 +479,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.applicantOrganisationPolicy(null);
+        responseCaseDataBuilder.channelChoice(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -534,7 +535,15 @@ public class CallbackResponseTransformer {
                         && (YES.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())
                         || NO.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())));
 
-        responseCaseDataBuilder.iht400Switch(shouldSwitch ? YES : NO);
+        boolean shouldNetValueSwitch = (isOnOrAfterSwitchDate && isIhtFormCompleted
+                && caseData.getIhtFormEstate() != null && !isIht400FormAfter)
+                        || (!isOnOrAfterSwitchDate && caseData.getIhtFormId() != null && !isIht400FormBefore)
+                        || (isOnOrAfterSwitchDate && NO.equals(caseData.getIhtFormEstateValuesCompleted())
+                        && (YES.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())
+                        || NO.equals(caseData.getDeceasedHadLateSpouseOrCivilPartner())));
+
+        responseCaseDataBuilder.iht400Switch(shouldSwitch ? YES : NO)
+                .ihtNetValueSwitch(shouldNetValueSwitch ? YES : NO);
     }
 
     private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
@@ -1016,6 +1025,7 @@ public class CallbackResponseTransformer {
             .evidenceHandled(caseData.getEvidenceHandled())
 
             .paperForm(caseData.getPaperForm())
+            .channelChoice(caseData.getChannelChoice())
             .languagePreferenceWelsh(caseData.getLanguagePreferenceWelsh())
             .caseType(caseData.getCaseType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
@@ -1579,6 +1589,12 @@ public class CallbackResponseTransformer {
         if (!isPaperForm(caseData)) {
             builder
                     .paperForm(ANSWER_NO);
+        }
+
+        if (caseData.getChannelChoice() == null) {
+            builder.channelChoice(CHANNEL_CHOICE_DIGITAL);
+        } else {
+            builder.channelChoice(caseData.getChannelChoice());
         }
 
         if (willExists(caseData)) {

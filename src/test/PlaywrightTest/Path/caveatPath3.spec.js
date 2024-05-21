@@ -1,7 +1,6 @@
 // @ts-check
-const { test, expect } = require('../Fixtures/createFixtures');
+const {test} = require('../Fixtures/createFixtures');
 const dateFns = require('date-fns');
-const {testConfig} = require('../Configs/config');
 
 const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
 const eventSummaryConfig = require('../Pages/eventSummary/eventSummaryConfig.json');
@@ -32,11 +31,11 @@ const {
 
 test.describe('Caseworker Caveat3 - Caveat expired', () => {
     test('Caseworker Caveat3 - Caveat expired',
-        async ({basePage,signInPage,createCasePage,cwEventActionsPage,page}) => {
-            let scenarioName = 'Caseworker Caveat3 - Caveat expired';
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+            const scenarioName = 'Caseworker Caveat3 - Caveat expired';
 
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
-
+                // Test File
             // get unique suffix for names - in order to match only against 1 case
             const unique_deceased_user = Date.now();
 
@@ -65,10 +64,10 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await createCasePage.enterCaveatPage4('create');
             await createCasePage.checkMyAnswers(nextStepName);
             let endState = 'Caveat raised';
-            await basePage.logInfo(endState);
+            // await basePage.logInfo(endState);
 
             const caseRef = await basePage.getCaseRefFromUrl();
-            await basePage.logInfo(caseRef);
+            // await basePage.logInfo(caseRef);
             await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             await basePage.seeCaseDetails(caseRef, caseDetailsTabConfig, createCaveatConfig);
             await basePage.seeCaseDetails(caseRef, deceasedDetailsTabConfig, createCaveatConfig);
@@ -168,5 +167,5 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await basePage.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
 
             await signInPage.signOut();
-    });
+        });
 });
