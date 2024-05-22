@@ -162,20 +162,16 @@ class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-            ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
             .addWarningsForConditionalFields(any(), any(),
-                gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-            gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(3, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-            citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-            citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-            citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+                    gorCitizenMandatoryFieldsArgumentCaptor.capture());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(3, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[1]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[2]);
     }
 
     @Test
@@ -225,22 +221,17 @@ class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(4, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(4, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[1]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[2]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[3]);
     }
 
     @Test
@@ -289,20 +280,16 @@ class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(3, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(3, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[1]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[2]);
     }
 
     @Test
@@ -350,20 +337,16 @@ class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(3, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(3, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[1]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[2]);
     }
 
     @Test
@@ -411,21 +394,19 @@ class CitizenMandatoryFieldsValidatorV2Test {
         assertEquals(IHT_207_COMPLETED.getValue(), defaultKeyValueArgumentCaptorValues.get(0).getValue());
         assertEquals(DIED_AFTER_SWITCH_DATE.getValue(), defaultKeyValueArgumentCaptorValues.get(1).getValue());
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(3, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(3, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[1]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[2]);
     }
+
 
     @Test
     void shouldCheckSwitchDateAndIHT205CompletedOnline() {
