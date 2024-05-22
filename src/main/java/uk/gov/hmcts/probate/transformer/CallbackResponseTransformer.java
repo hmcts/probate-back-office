@@ -444,6 +444,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse resolveStop(CallbackRequest callbackRequest) {
+        setState(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
@@ -463,6 +464,24 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    private void setState(CallbackRequest callbackRequest) {
+        CaseDetails details = callbackRequest.getCaseDetails();
+        switch (details.getData().getResolveStopState()) {
+            case CASE_MATCHING_ISSUE_GRANT:
+                details.setState(CASE_MATCHING_ISSUE_GRANT);
+                break;
+            case QA_CASE_STATE:
+                details.setState(QA_CASE_STATE);
+                break;
+            case READY_FOR_ISSUE:
+                details.setState(READY_FOR_ISSUE);
+                break;
+            default:
+                details.setState(CASE_PRINTED);
+                break;
+        }
+    }
+
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
         return transformWithConditionalStateChange(callbackRequest,
                 ofNullable(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState()));
@@ -470,10 +489,8 @@ public class CallbackResponseTransformer {
 
 
     public CallbackResponse transferToState(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getTransferToState());
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformWithConditionalStateChange(callbackRequest, Optional.of(callbackRequest.getCaseDetails()
+                .getData().getTransferToState()));
     }
 
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
