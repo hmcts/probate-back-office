@@ -1,39 +1,28 @@
-buildscript {
-  ext {
-    springBootVersion = '3.2.5'
-  }
-  dependencies {
-    classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
-    classpath("net.serenity-bdd:serenity-gradle-plugin:2.5.8")
-  }
-}
-
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.5'
-  id 'org.springframework.boot' version '3.2.5'
+  id 'org.springframework.boot' version '3.3.0'
   id 'uk.gov.hmcts.java' version '0.12.61'
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.2'
   id 'info.solidsoft.pitest' version '1.6.0'
   id 'jacoco'
-  id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
+  id 'project-report'
+  id 'au.com.dius.pact' version '4.6.9'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.0.1'
   id 'org.sonarqube' version '4.3.0.3225'
   id 'com.github.hmcts.rse-cft-lib' version '0.19.1196'
 }
 
-apply plugin: 'project-report'
-apply plugin: 'jacoco'
-apply plugin: 'net.serenity-bdd.aggregator'
-apply plugin: "com.gorylenko.gradle-git-properties"
-
-group = 'uk.gov.hmcts.probate'
-version = "4.0.0"
-mainClassName = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
+application {
+  mainClass = 'uk.gov.hmcts.probate.BusinessRulesValidationApplication'
+  group = 'uk.gov.hmcts.probate'
+  version = "4.0.0"
+}
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(17)
+    languageVersion = JavaLanguageVersion.of(21)
   }
 }
 
@@ -67,13 +56,6 @@ pitest {
   timestampedReports = false
   mutationThreshold = 50
   timeoutConstInMillis = 30000
-}
-
-sonarqube {
-  properties {
-    property "sonar.pitest.mode", "reuseReport"
-    property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-  }
 }
 
 sourceSets {
@@ -119,13 +101,9 @@ sourceSets {
   }
 }
 
-test {
+tasks.withType(Test) {
   maxHeapSize = "1024m"
   useJUnitPlatform()
-}
-
-processContractTestResources {
-  duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 task smoke(type: Test) {
@@ -158,7 +136,6 @@ task functional(type: Test) {
 
 functional.finalizedBy(aggregate)
 
-
 task caseCreator(type: Test) {
   description = "Runs functional Case creator Tests"
   testClassesDirs = sourceSets.testCaseCreator.output.classesDirs
@@ -171,7 +148,6 @@ task integration(type: Test) {
   group = "Verification"
   testClassesDirs = sourceSets.integrationTest.output.classesDirs
   classpath = sourceSets.integrationTest.runtimeClasspath
-  useJUnitPlatform()
 }
 
 gitProperties {
@@ -182,29 +158,29 @@ gitProperties {
 }
 
 def versions = [
-        springCloudStarterNetflixHystrix: '4.1.1',
-        serenity                        : '4.1.6',
-        serenityreporter                : '4.1.6',
-        springBootVersion               : '3.2.5',
-        springBootStarterHateoas        : '3.2.5',
-        hmctsJavaLogging                : '6.1.4',
-        authCheckerLib                  : '3.0.0',
-        jacksonDatabind                 : '2.14.3',
+        authCheckerLib                  : '3.0.1',
+        ccdClient                       : '5.0.1',
         commonsIO                       : '2.16.0',
         commonsValidator                : '1.6',
-        restAssured                     : '5.4.0',
-        lombok                          : '1.18.32',
-        springDocOpenUi                 : '2.5.0',
-        springSecurityVersion           : '6.0.0',
-        probateCommonsVersion           : '1.5.2',
-        ccdClient                       : '5.0.1',
-        mapStruct                       : '1.2.0.Final',
-        serviceAuthVersion              : '5.1.2',
-        pact_version                    : '4.1.34',
-        probatePactCommonsVersion       : '1.0.2',
-        springCloud                     : '4.1.2',
+        documentClient                  : '1.7.3',
         elasticSearchVersion            : '7.15.0',
-        documentClient                  : '1.7.3'
+        hmctsJavaLogging                : '6.1.4',
+        jacksonDatabind                 : '2.17.1',
+        lombok                          : '1.18.32',
+        mapStruct                       : '1.2.0.Final',
+        pact_version                    : '4.1.34',
+        probateCommonsVersion           : '1.5.2',
+        probatePactCommonsVersion       : '1.0.2',
+        restAssured                     : '5.4.0',
+        serenity                        : '4.1.6',
+        serenityreporter                : '4.1.6',
+        serviceAuthVersion              : '5.1.2',
+        springBootVersion               : '3.3.0',
+        springBootStarterHateoas        : '3.3.0',
+        springCloud                     : '4.1.2',
+        springCloudStarterNetflixHystrix: '4.1.1',
+        springDocOpenUi                 : '2.5.0',
+        springSecurityVersion           : '6.3.0'
 ]
 
 jacocoTestReport {
@@ -219,7 +195,6 @@ jacocoTestReport {
 repositories {
   mavenLocal()
   mavenCentral()
-  maven { url "https://repo.maven.apache.org/maven2" }
   maven { url "https://jitpack.io" }
 }
 
@@ -228,50 +203,7 @@ dependencyManagement {
   imports {
     mavenBom "org.springframework.cloud:spring-cloud-dependencies:2023.0.1"
   }
-  dependencies {
-    dependency group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
-    // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '4.1.107.Final') {
-      entry 'netty-buffer'
-      entry 'netty-codec'
-      entry 'netty-codec-dns'
-      entry 'netty-codec-http'
-      entry 'netty-codec-http2'
-      entry 'netty-codec-socks'
-      entry 'netty-common'
-      entry 'netty-handler'
-      entry 'netty-handler-proxy'
-      entry 'netty-resolver'
-      entry 'netty-resolver-dns'
-      entry 'netty-resolver-dns-classes-macos'
-      entry 'netty-resolver-dns-native-macos'
-      entry 'netty-tcnative-classes'
-      entry 'netty-transport'
-      entry 'netty-transport-classes-epoll'
-      entry 'netty-transport-classes-kqueue'
-      entry 'netty-transport-native-epoll'
-      entry 'netty-transport-native-kqueue'
-      entry 'netty-transport-native-unix-common'
-    }
-    // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '2.0.65.Final') {
-      entry 'netty-tcnative-classes'
-    }
-  }
 }
-
-configurations.all {
-  resolutionStrategy {
-    eachDependency { details ->
-
-      if (details.requested.group in ['org.apache.logging.log4j']) {
-        details.useVersion '2.18.0'
-      }
-    }
-  }
-}
-
-ext['snakeyaml.version'] = '2.2'
 
 dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: versions.springBootVersion
@@ -279,19 +211,14 @@ dependencies {
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-actuator', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-aop', version: versions.springBootVersion
   implementation group: 'org.springframework.boot', name: 'spring-boot-configuration-processor', version: versions.springBootVersion
-  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '1.2.4.RELEASE'
+  implementation group: 'org.springframework.retry', name: 'spring-retry', version: '2.0.6'
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
-  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.1'
+  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.2.1'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
-  implementation ('io.github.openfeign.form:feign-form-spring') {
-    version {
-      strictly '3.8.0'
-    }
-  }
+  implementation ('io.github.openfeign.form:feign-form-spring')
 
-  implementation group: 'com.google.guava', name: 'guava', version: '33.1.0-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
@@ -330,10 +257,8 @@ dependencies {
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
 
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
-  implementation ('org.springframework.boot:spring-boot-starter-data-jpa')
-  implementation ('org.postgresql:postgresql:42.4.4') {
-    exclude module: 'slf4j-simple'
-  }
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
   implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
@@ -344,21 +269,18 @@ dependencies {
 
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   testImplementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
-  testImplementation("org.springframework.boot:spring-boot-starter-test:$versions.springBootVersion") {
-    exclude group: 'com.vaadin.external.google', module:'android-json'
-  }
+  testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
   testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
   testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   testImplementation group: 'com.github.hmcts', name: 'auth-checker-lib', version: versions.authCheckerLib
-  testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.1'
-  testImplementation 'org.awaitility:awaitility:4.1.0'
-  testImplementation 'com.github.hmcts:fortify-client:1.3.0:all'
+  testImplementation group: 'org.wiremock', name: 'wiremock-standalone', version: '3.6.0'
+  testImplementation group: 'org.awaitility', name: 'awaitility', version: '4.2.1'
+  testImplementation group: 'com.github.hmcts', name: 'fortify-client', version: '1.4.1'
   testImplementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
-  testImplementation group: 'org.mockito', name: 'mockito-inline', version: '5.2.0'
-
+  testImplementation group: 'org.mockito', name: 'mockito-junit-jupiter', version: '5.12.0'
 
   testSmokeImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.restAssured
   testSmokeImplementation sourceSets.main.runtimeClasspath
@@ -377,11 +299,7 @@ dependencies {
   testFunctionalImplementation sourceSets.test.runtimeClasspath
   testFunctionalAnnotationProcessor group:'org.projectlombok', name: 'lombok', version: versions.lombok
   testFunctionalCompileOnly group:'org.projectlombok', name: 'lombok', version: versions.lombok
-  testFunctionalImplementation ('io.github.openfeign.form:feign-form-spring') {
-    version {
-        strictly '3.8.0'
-    }
-  }
+  testFunctionalImplementation group: 'io.github.openfeign.form', name: 'feign-form-spring'
 
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
   testCaseCreatorImplementation group: 'net.serenity-bdd', name: 'serenity-core', version: versions.serenity
@@ -461,7 +379,6 @@ project.ext {
 task runAndPublishConsumerPactTests(type: Test){
   logger.lifecycle("Runs consumer pact tests")
   systemProperty 'pact.rootDir', "pacts"
-  useJUnitPlatform()
   testClassesDirs = sourceSets.contractTest.output.classesDirs
   classpath = sourceSets.contractTest.runtimeClasspath
 
@@ -623,6 +540,10 @@ dependencyCheck {
 
 rootProject.tasks.named("processResources") {
   dependsOn("generateGitProperties")
+}
+
+processContractTestResources {
+  duplicatesStrategy = DuplicatesStrategy.INCLUDE
 }
 
 bootJar {
