@@ -4,11 +4,11 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import net.thucydides.core.annotations.Pending;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
@@ -16,11 +16,12 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
-import static junit.framework.TestCase.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PARM;
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -42,7 +43,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
     private String grantAwaitingDocumentationNotificationPeriodDays;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
@@ -93,7 +94,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
     @Pending
     @Test
-    public void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException, IOException {
+    void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException, IOException {
         final String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         final String grantDocCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
         final String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDocCaseJson,

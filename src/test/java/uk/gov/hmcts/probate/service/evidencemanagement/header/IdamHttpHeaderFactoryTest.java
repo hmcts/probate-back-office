@@ -53,7 +53,7 @@ class IdamHttpHeaderFactoryTest {
     }
 
     @Test
-    public void getAuthorizationHeadersForDocuments() {
+    void getAuthorizationHeadersForDocuments() {
         HttpHeaders httpHeaders = underTest.getAuthorizationHeadersForDownloadDocuments();
 
         assertTrue(httpHeaders.containsKey("Authorization"));

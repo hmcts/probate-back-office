@@ -6,9 +6,7 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import static org.bouncycastle.util.Longs.valueOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 class ExceptionRecordCaseDataValidatorTest {
 
@@ -32,8 +30,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtGrossValue(LOWER_VALUE)
                 .ihtNetValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
     }
@@ -44,8 +41,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(LOWER_VALUE)
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
     }

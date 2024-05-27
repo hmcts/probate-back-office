@@ -3,18 +3,15 @@ package uk.gov.hmcts.probate.smoke;
 import io.restassured.RestAssured;
 import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsNull.notNullValue;
 
-@RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {SmokeTestConfiguration.class})
 public class SmokeTests {
 
@@ -23,7 +20,7 @@ public class SmokeTests {
 
     private RestAssuredConfig config;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         RestAssured.useRelaxedHTTPSValidation();
         config = RestAssured.config()
@@ -34,7 +31,7 @@ public class SmokeTests {
     }
 
     @Test
-    public void shouldGetOkStatusFromHealthEndpointForSolCcdService() {
+    void shouldGetOkStatusFromHealthEndpointForSolCcdService() {
         given().config(config)
                 .when()
                 .get(url + "/health")
@@ -43,7 +40,7 @@ public class SmokeTests {
     }
 
     @Test
-    public void shouldGetOkStatusFromInfoEndpointForSolCcdService() {
+    void shouldGetOkStatusFromInfoEndpointForSolCcdService() {
         given().config(config)
                 .when()
                 .get(url + "/info")

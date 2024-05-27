@@ -5,8 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import org.hamcrest.Matchers;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
@@ -24,9 +23,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_LIFESPAN;
 
 public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
@@ -84,40 +81,40 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     private static final String EMAIL_NOTIFICATION_URL =
         "data.notificationsGenerated[0].value.DocumentLink.document_binary_url";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void verifyCaveatRaisedShouldReturnOkResponseCode() throws IOException {
+    void verifyCaveatRaisedShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_RAISED);
     }
 
     @Test
-    public void verifyRaisedCaveatValidateShouldReturnOkResponseCode() throws IOException {
+    void verifyRaisedCaveatValidateShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PAYLOAD, RAISED_CAVEAT_VALIDATE);
     }
 
     @Test
-    public void verifyRequestWithDobNullReturnsError() throws IOException {
+    void verifyRequestWithDobNullReturnsError() throws IOException {
         validatePostFailure(RAISE_CAVEAT_VALIDATE_FUTURE_DOD, "Date of death cannot be in the future",
                 200, RAISED_CAVEAT_VALIDATE);
     }
 
     @Test
-    public void verifyCaveatDefaultValuesShouldReturnOkResponseCode() throws IOException {
+    void verifyCaveatDefaultValuesShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_DEFAULT_VALUES);
     }
 
     @Test
-    public void verifyCaveatGeneralMessageShouldReturnOkResponseCode() throws IOException {
+    void verifyCaveatGeneralMessageShouldReturnOkResponseCode() throws IOException {
         validatePostSuccess(DEFAULT_PAYLOAD, CAVEAT_GENERAL_MESSAGE);
     }
 
 
     @Test
-    public void verifySuccessForCaveatDefaultValuesWithEmail() throws IOException {
+    void verifySuccessForCaveatDefaultValuesWithEmail() throws IOException {
         final String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -129,7 +126,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForCaveatDefaultValuesWithPaperForm() throws IOException {
+    void verifySuccessForCaveatDefaultValuesWithPaperForm() throws IOException {
         final String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD, CAVEAT_RAISED);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -140,7 +137,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
 
     @Test
-    public void verifySuccessForCaveatDefaultValuesWithoutEmail() throws IOException {
+    void verifySuccessForCaveatDefaultValuesWithoutEmail() throws IOException {
         final String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_DEFAULT_VALUES);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -152,7 +149,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalCaveatRaisedEmailContentsNoDOB() throws IOException {
+    void verifyPersonalCaveatRaisedEmailContentsNoDOB() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -161,7 +158,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalCaveatRaisedEmailContentsWelsh() throws IOException {
+    void verifyPersonalCaveatRaisedEmailContentsWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -171,7 +168,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorCaveatWithdrawnEmailTextEnglish() throws IOException {
+    void verifySolicitorCaveatWithdrawnEmailTextEnglish() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR, CAVEAT_WITHDRAW);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -180,7 +177,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorCaveatWithdrawnEmailTextWelsh() throws IOException {
+    void verifySolicitorCaveatWithdrawnEmailTextWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_WELSH, CAVEAT_WITHDRAW);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -189,7 +186,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalCaveatRaisedEmailContentsNoDOBWelsh() throws IOException {
+    void verifyPersonalCaveatRaisedEmailContentsNoDOBWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(PAYLOAD_CAVEAT_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -199,7 +196,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOBWelsh() throws IOException {
+    void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOBWelsh() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB_WELSH, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -209,7 +206,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOB() throws IOException {
+    void verifyCaveatRaisedSolicitorPaperEmailContentsNoDOB() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(DEFAULT_PAYLOAD_SOLICITOR_NO_DOB, CAVEAT_RAISED);
         final HashMap<String, String> replacements = new HashMap<>();
         replacements.put(EXPIRY_DATE_KEY, utils.formatDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN)));
@@ -218,18 +215,18 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorCaveatValidateEmailContentsNoDOB() throws IOException {
+    void verifySolicitorCaveatValidateEmailContentsNoDOB() throws IOException {
         assertNotNull(validatePostSuccess(CAVEAT_SOLICITOR_VALIDATE_PAYLOAD_NO_DOB, CAVEAT_VALIDATE));
     }
 
     @Test
-    public void verifyCaveatRaisedGeneratesExpiryDateWithoutCaveatorEmailAddress() throws IOException {
+    void verifyCaveatRaisedGeneratesExpiryDateWithoutCaveatorEmailAddress() throws IOException {
         final String response = validatePostSuccessReturnPayload(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED);
         assertTrue(response.contains("\"expiryDate\":\"" + LocalDate.now().plusMonths(CAVEAT_LIFESPAN) + "\""));
     }
 
     @Test
-    public void verifySuccessForCaveatRaisedDocumentAndCoversheet() throws IOException {
+    void verifySuccessForCaveatRaisedDocumentAndCoversheet() throws IOException {
         final String coversheet = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 0);
         final String response = generateDocument(DEFAULT_PAYLOAD_NO_EMAIL, CAVEAT_RAISED, 1);
 
@@ -241,7 +238,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForCaveatRaisedDocumentAndCoversheetCTSC() throws IOException {
+    void verifySuccessForCaveatRaisedDocumentAndCoversheetCTSC() throws IOException {
         final String coversheet = generateDocument(DEFAULT_PAYLOAD_CTSC_NO_EMAIL, CAVEAT_RAISED, 0);
         final String response = generateDocument(DEFAULT_PAYLOAD_CTSC_NO_EMAIL, CAVEAT_RAISED, 1);
 
@@ -252,7 +249,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatConfirmationShouldReturnOKResponseCode() throws IOException {
+    void verifyCaveatConfirmationShouldReturnOKResponseCode() throws IOException {
         final ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON, CAVEAT_CONFIRMATION);
         final JsonPath jsonPath = JsonPath.from(response.asString());
         final String confirmationText = jsonPath.get("confirmation_body");
@@ -267,7 +264,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatConfirmationShouldReturnBadResponseCode() throws IOException {
+    void verifyCaveatConfirmationShouldReturnBadResponseCode() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
         jsonAsString = jsonAsString
             .replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",", "\"caveatorEmailAddress\": \"\",");
@@ -281,7 +278,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatExtendShouldReturnOKResponseCode() throws IOException {
+    void verifyCaveatExtendShouldReturnOKResponseCode() throws IOException {
         final ResponseBody response = validatePostSuccess(CAVEAT_EXTEND_PAYLOAD, CAVEAT_EXTEND);
         JsonPath jsonPath = JsonPath.from(response.asString());
 
@@ -291,7 +288,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatExtendShouldReturnValidationError() throws IOException {
+    void verifyCaveatExtendShouldReturnValidationError() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_EXTEND_PAYLOAD);
         jsonAsString = jsonAsString
             .replace("\"caveatorEmailAddress\": \"caveator@probate-test.com\",", "\"caveatorEmailAddress\": \"\",");
@@ -304,7 +301,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatSolicitorCreateReturnOkResponseCode() throws IOException {
+    void verifyCaveatSolicitorCreateReturnOkResponseCode() throws IOException {
         String json = utils.getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
         final ResponseBody response = validatePostSuccessForPayload(json, CAVEAT_SOLICITOR_CREATED,
                 utils.getHeadersWithSolicitorUser());
@@ -321,7 +318,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatSolicitorCreateReturnsDefaultLocationAndApplicationType() throws IOException {
+    void verifyCaveatSolicitorCreateReturnsDefaultLocationAndApplicationType() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_SOLICITOR_CREATE_PAYLOAD);
         jsonAsString.replaceFirst("Solicitor", "Personal");
         jsonAsString.replaceFirst("ctsc", "Leeds");
@@ -335,7 +332,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatSolicitorUpdateReturnOKResponseCode() throws IOException {
+    void verifyCaveatSolicitorUpdateReturnOKResponseCode() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_SOLICITOR_UPDATE_PAYLOAD, CAVEAT_SOLICITOR_UPDATE);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
 
@@ -345,7 +342,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatSolicitorUpdateReturnDefaultApplicationTypeAndLocationInResponse() throws IOException {
+    void verifyCaveatSolicitorUpdateReturnDefaultApplicationTypeAndLocationInResponse() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_SOLICITOR_UPDATE_PAYLOAD);
         jsonAsString.replaceFirst("Solicitor", "Personal");
         jsonAsString.replaceFirst("ctsc", "Leeds");
@@ -360,7 +357,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatValidateShouldReturnOKResponseCode() throws IOException {
+    void verifyCaveatValidateShouldReturnOKResponseCode() throws IOException {
         final ResponseBody response = validatePostSuccess(CAVEAT_CASE_CONFIRMATION_JSON_2, CAVEAT_VALIDATE);
         final JsonPath jsonPath = JsonPath.from(response.asString());
         assertNull(jsonPath.get("data.applicationSubmittedDate"));
@@ -368,7 +365,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatValidateShouldReturnBadResponseCode() throws IOException {
+    void verifyCaveatValidateShouldReturnBadResponseCode() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_CASE_CONFIRMATION_JSON);
         jsonAsString = jsonAsString.replace("caveator@probate-test.com", "");
 
@@ -382,7 +379,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatValidateExtendShouldReturnOKResponseCode() throws IOException {
+    void verifyCaveatValidateExtendShouldReturnOKResponseCode() throws IOException {
         final DateTimeFormatter iso8601Formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         final LocalDate localDate = LocalDate.now();
         final LocalDate extended = localDate.plusMonths(6);
@@ -399,7 +396,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatValidateExtendShouldReturnValidationError() throws IOException {
+    void verifyCaveatValidateExtendShouldReturnValidationError() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_VALIDATE_EXTEND_PAYLOAD);
         jsonAsString = jsonAsString.replace("endDate", "1900-01-01");
 
@@ -412,7 +409,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatWithdrawShouldReturnOKResponseCode() throws IOException {
+    void verifyCaveatWithdrawShouldReturnOKResponseCode() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(CAVEAT_CASE_WITHDRAW_PAYLOAD, CAVEAT_WITHDRAW);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
 
@@ -422,7 +419,7 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaveatWithdrawWithoutEmailShouldReturnOkResponseCode() throws IOException {
+    void verifyCaveatWithdrawWithoutEmailShouldReturnOkResponseCode() throws IOException {
         String jsonAsString = getJsonFromFile(CAVEAT_CASE_WITHDRAW_PAYLOAD);
         jsonAsString = jsonAsString.replaceFirst("\"caveatRaisedEmailNotificationRequested\": \"Yes\",",
             "\"caveatRaisedEmailNotificationRequested\": \"No\",");

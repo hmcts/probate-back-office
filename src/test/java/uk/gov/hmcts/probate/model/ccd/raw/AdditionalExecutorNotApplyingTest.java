@@ -1,12 +1,13 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class AdditionalExecutorNotApplyingTest {
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+class AdditionalExecutorNotApplyingTest {
 
     private static final String EXEC_NAME_ON_WILL = "execNameOnWill";
     private static final String EXEC_NAME = "execName";
@@ -14,14 +15,14 @@ public class AdditionalExecutorNotApplyingTest {
 
     private AdditionalExecutorNotApplying.AdditionalExecutorNotApplyingBuilder additionalExecutorNotApplyingBuilder;
 
-    @Before
+    @BeforeEach
     public void setUP() {
         additionalExecutorNotApplyingBuilder = AdditionalExecutorNotApplying
             .builder();
     }
 
     @Test
-    public void shouldReturnFalseIfNull() {
+    void shouldReturnFalseIfNull() {
         final AdditionalExecutorNotApplying additionalExecutorNotApplying =
             additionalExecutorNotApplyingBuilder
                 .build();
@@ -29,7 +30,7 @@ public class AdditionalExecutorNotApplyingTest {
     }
 
     @Test
-    public void shouldReturnFalseIfNoMatch() {
+    void shouldReturnFalseIfNoMatch() {
         final AdditionalExecutorNotApplying additionalExecutorNotApplying =
             additionalExecutorNotApplyingBuilder
                 .notApplyingExecutorName(EXEC_NAME)
@@ -39,7 +40,7 @@ public class AdditionalExecutorNotApplyingTest {
     }
 
     @Test
-    public void shouldReturnTrueIfNameMatches() {
+    void shouldReturnTrueIfNameMatches() {
         final AdditionalExecutorNotApplying additionalExecutorNotApplying =
             additionalExecutorNotApplyingBuilder
                 .notApplyingExecutorName(EXEC_NAME)
@@ -48,7 +49,7 @@ public class AdditionalExecutorNotApplyingTest {
     }
 
     @Test
-    public void shouldReturnTrueIfNameOnWillMatches() {
+    void shouldReturnTrueIfNameOnWillMatches() {
         final AdditionalExecutorNotApplying additionalExecutorNotApplying =
             additionalExecutorNotApplyingBuilder
                 .notApplyingExecutorNameOnWill(EXEC_NAME_ON_WILL)
