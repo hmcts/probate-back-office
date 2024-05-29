@@ -3,7 +3,15 @@ package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.CaseType;
+
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.ScannedDocument;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.List;
+
 
 import static org.bouncycastle.util.Longs.valueOf;
 import static org.junit.Assert.assertEquals;
@@ -60,4 +68,21 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
+
+    @Test
+    void shouldDoNothingForCorrectScannedDocumentType() {
+
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(SCANNED_DOCUMENTS_LIST,
+                CaseType.GRANT_OF_REPRESENTATION));
+    }
+
+    private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
+            new CollectionMember<ScannedDocument>("id",
+                    ScannedDocument.builder()
+                            .fileName("scanneddocument.pdf")
+                            .controlNumber("1234")
+                            .scannedDate(LocalDateTime.now())
+                            .type("other")
+                            .subtype("will")
+                            .build()));
 }
