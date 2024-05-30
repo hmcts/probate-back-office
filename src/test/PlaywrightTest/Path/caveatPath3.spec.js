@@ -1,5 +1,5 @@
 // @ts-check
-const {test} = require('../Fixtures/createFixtures');
+const {test,expect} = require('../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
 const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
@@ -31,7 +31,7 @@ const {
 
 test.describe('Caseworker Caveat3 - Caveat expired', () => {
     test('Caseworker Caveat3 - Caveat expired',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage, makeAxeBuilder}, testInfo) => {
             const scenarioName = 'Caseworker Caveat3 - Caveat expired';
 
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
@@ -165,6 +165,16 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             await basePage.logInfo(scenarioName, endState);
             await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
             await basePage.seeCaseDetails(caseRef, caveatDetailsTabReopenConfig, reopenCaveatConfig);
+
+            const accessibilityScanResults = await makeAxeBuilder()
+                .analyze();
+
+            await testInfo.attach('accessibility-scan-results', {
+                body: JSON.stringify(accessibilityScanResults, null, 2),
+                contentType: 'application/json'
+            });
+
+            expect(accessibilityScanResults.violations).toEqual([]);
 
             await signInPage.signOut();
         });

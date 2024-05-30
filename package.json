@@ -56,6 +56,7 @@
     "fortifyScan": "./gradlew -p ./ fortifyScan"
   },
   "dependencies": {
+    "@axe-core/playwright": "^4.9.1",
     "@date-fns/upgrade": "^1.0.3",
     "dotenv-extended": "^2.9.0",
     "html_codesniffer": "^2.5.1",
