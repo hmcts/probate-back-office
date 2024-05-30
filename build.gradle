@@ -34,7 +34,7 @@ sonarqube {
   properties {
     property "sonar.projectName", "PROBATE :: BACK-OFFICE"
     property "sonar.projectKey", "Sols-CCD-Service-API"
-    property "sonar.jacoco.reportPath", "${project.buildDir}/jacoco/test.exec"
+    property "sonar.jacoco.reportPath", "${layout.buildDirectory.get()}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
@@ -165,7 +165,7 @@ def versions = [
         documentClient                  : '1.7.3',
         elasticSearchVersion            : '7.15.0',
         hmctsJavaLogging                : '6.1.4',
-        jacksonDatabind                 : '2.17.1',
+        jacksonDatabind                 : '2.15.0',
         lombok                          : '1.18.32',
         mapStruct                       : '1.2.0.Final',
         pact_version                    : '4.1.34',
@@ -188,7 +188,7 @@ jacocoTestReport {
   reports {
     xml.required = true
     csv.required = false
-    xml.outputLocation = file("${project.buildDir}/reports/jacoco/test/jacocoTestReport.xml")
+    xml.outputLocation = file("${layout.buildDirectory.get()}/reports/jacoco/test/jacocoTestReport.xml")
   }
 }
 
@@ -399,9 +399,6 @@ task highLevelDataSetup(type: JavaExec) {
 check.dependsOn(integration)
 tasks.withType(Copy).all { duplicatesStrategy 'exclude' }
 
-runAndPublishConsumerPactTests.finalizedBy pactPublish
-
-
 static def getCheckedOutGitCommitHash() {
   'git rev-parse --verify --short HEAD'.execute().text.trim()
 }
@@ -416,6 +413,8 @@ pact {
     version = project.pacticipantVersion
   }
 }
+
+runAndPublishConsumerPactTests.finalizedBy pactPublish
 
 // Build the back office excel file.
 task buildBackOfficeXlsx(type: Exec) {
