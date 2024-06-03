@@ -21,9 +21,10 @@ import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
+
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 
 @Slf4j
@@ -60,15 +61,16 @@ class DocumentServiceTest {
         lenient().when(caseData.getProbateDocumentsGenerated()).thenReturn(documents);
         lenient().when(caseDetails.getData()).thenReturn(caseData);
         lenient().when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+
+
     }
 
     @Test
     void shouldExpireDocument() throws JsonProcessingException {
-        doNothing().when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
 
-        verify(documentManagementService).delete(document);
+        verify(documentManagementService,never()).delete(document);
     }
 
     @Test
@@ -86,7 +88,7 @@ class DocumentServiceTest {
 
         documentService.delete(document, "99");
 
-        verify(documentManagementService).delete(document);
+        verify(documentManagementService,never()).delete(document);
     }
 
     @Test
