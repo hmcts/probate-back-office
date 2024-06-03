@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService
 import java.util.Arrays;
 import java.util.List;
 
-
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.lenient;
 import static org.mockito.Mockito.never;
