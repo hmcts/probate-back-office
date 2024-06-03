@@ -22,9 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 
 @Slf4j
@@ -53,14 +52,14 @@ class DocumentServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        when(document.getDocumentType()).thenReturn(DIGITAL_GRANT_DRAFT);
-        when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
+        lenient().when(document.getDocumentType()).thenReturn(DIGITAL_GRANT_DRAFT);
+        lenient().when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
 
         List<CollectionMember<Document>> documents = Arrays.asList(new CollectionMember(document));
 
-        when(caseData.getProbateDocumentsGenerated()).thenReturn(documents);
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        lenient().when(caseData.getProbateDocumentsGenerated()).thenReturn(documents);
+        lenient().when(caseDetails.getData()).thenReturn(caseData);
+        lenient().when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
     }
 
     @Test
@@ -74,7 +73,7 @@ class DocumentServiceTest {
 
     @Test
     void shouldProduceWaringLog() throws JsonProcessingException {
-        doThrow(JsonProcessingException.class).when(documentManagementService).delete(document);
+        lenient().doThrow(JsonProcessingException.class).when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
 
@@ -94,7 +93,7 @@ class DocumentServiceTest {
     void shouldNotDeleteDocumentWhenThrowingException() throws JsonProcessingException {
         Document document = Document.builder().build();
 
-        doThrow(new RuntimeException("")).when(documentManagementService).delete(document);
+        lenient().doThrow(new RuntimeException("")).when(documentManagementService).delete(document);
         documentService.delete(document, "99");
     }
 }
