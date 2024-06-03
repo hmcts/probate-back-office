@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 
 import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
-import uk.gov.hmcts.probate.model.ocr.OCRField;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToIHTFormEstateValuesCompleted;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
@@ -23,8 +22,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
     public Boolean toIhtFormEstateValuesCompleted(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for ihtFormEstateValuesCompleted");
 
-        if (isExceptedValue(ocrFields)
-                &&!isEmpty(ocrFields.getIhtEstateGrossValue())
+        if (isExceptedValue(ocrFields) && !isEmpty(ocrFields.getIhtEstateGrossValue())
             && !isEmpty(ocrFields.getIhtEstateNetValue())
             && !isEmpty(ocrFields.getIhtEstateNetQualifyingValue())) {
             return Boolean.FALSE;
