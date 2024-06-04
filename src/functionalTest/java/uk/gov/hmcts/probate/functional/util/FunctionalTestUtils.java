@@ -91,7 +91,7 @@ public class FunctionalTestUtils {
     @Value("${case_document_am.url}")
     private String caseDocumentManagermentUrl;
 
-    private final Cache<String, String> cache = Caffeine.newBuilder().expireAfterWrite(2, TimeUnit.HOURS).build();
+    private final Cache<String, String> cache = Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).build();
 
     @PostConstruct
     public void init() {
@@ -272,8 +272,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithCaseworkerUser() {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(caseworkerEmail,
-            caseworkerPassword);
+        final String authorizationToken = getCachedIdamOpenIdToken(caseworkerEmail, caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -287,8 +286,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSolicitorUser() {
-        String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(solicitorEmail,
-            solicitorPassword);
+        String authorizationToken = getCachedIdamOpenIdToken(solicitorEmail, solicitorPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -305,8 +303,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(schedulerEmail,
-            schedulerPassword);
+        final String authorizationToken = getCachedIdamOpenIdToken(schedulerEmail, schedulerPassword);
         final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
