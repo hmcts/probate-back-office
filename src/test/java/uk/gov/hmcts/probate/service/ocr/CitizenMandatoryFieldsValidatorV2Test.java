@@ -226,12 +226,12 @@ class CitizenMandatoryFieldsValidatorV2Test {
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
-        assertEquals(4, capturedArgs.length);
-        assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE, capturedArgs[0]);
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[1]);
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[2]);
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[3]);
+        List<GORCitizenMandatoryFields[]> capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
+        assertEquals(2, capturedArgs.size());
+        assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE.getValue(), capturedArgs.get(0)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(), capturedArgs.get(1)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(), capturedArgs.get(1)[1].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(), capturedArgs.get(1)[2].getValue());
     }
 
     @Test
