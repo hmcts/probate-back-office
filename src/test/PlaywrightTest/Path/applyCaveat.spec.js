@@ -37,12 +37,12 @@ test.describe('Solicitor - Apply Caveat', () => {
         await basePage.logInfo(scenarioName, nextStepName);
         await createCasePage.selectNewCase();
         await createCasePage.selectCaseTypeOptions(createCaseConfig.list2_text_caveat, createCaseConfig.list3_text_caveat)
-        await createCasePage.applyCaveatPage1();
-        await createCasePage.applyCaveatPage2();
-        await createCasePage.cyaPage();
-        await createCasePage.seeEndState(endState);
+        await createCasePage.applyCaveatPage1;
+        await createCasePage.applyCaveatPage2;
+        await createCasePage.cyaPage;
+        await createCasePage.seeEndState;
 
-        const caseRef = await page.getCaseRefFromUrl;
+        const caseRef = await page.getCaseRefFromUrl();
         await page.seeCaseDetails(caseRef, historyTabConfig, {}, nextStepName, endState)
         await page.seeCaseDetails(caseRef, caseDetailsTabConfig, applyCaveatConfig);
         await page.seeCaseDetails(caseRef, caveatorDetailsTabConfig, applyCaveatConfig);
@@ -54,7 +54,7 @@ test.describe('Solicitor - Apply Caveat', () => {
         await page.chooseNextStep(nextStepName);
         await page.caveatApplicationDetailsPage1();
         await page.caveatApplicationDetailsPage2();
-        await page.cyaPage();
+        await page.cyaPage;
 
 
         await page.seeEndState(endState);
