@@ -257,7 +257,7 @@ public class FunctionalTestUtils {
     }
 
     public String getUserId(String email, String password) {
-        final String caseworkerToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(email, password);
+        final String caseworkerToken = getCachedIdamOpenIdToken(email, password);
         final Headers headers = Headers.headers(
             new Header("Authorization", caseworkerToken));
 
@@ -294,8 +294,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSolicitor2User() {
-        String authorizationToken = "Bearer " + serviceAuthTokenGenerator
-            .generateOpenIdToken(solicitor2Email, solicitor2Password);
+        String authorizationToken = getCachedIdamOpenIdToken(solicitor2Email, solicitor2Password);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
