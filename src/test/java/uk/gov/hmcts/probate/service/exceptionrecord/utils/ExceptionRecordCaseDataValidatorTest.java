@@ -6,7 +6,9 @@ import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import static org.bouncycastle.util.Longs.valueOf;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 
 class ExceptionRecordCaseDataValidatorTest {
 
