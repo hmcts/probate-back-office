@@ -42,7 +42,7 @@ public class SecurityConfiguration {
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
-                );
+            );
 
         return http.build();
     }
@@ -88,7 +88,7 @@ public class SecurityConfiguration {
                 .logout(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
                         .anyRequest().authenticated()
-                );
+            );
 
         return http.build();
     }
