@@ -4,7 +4,6 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -21,7 +20,7 @@ import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ExtendWith(SerenityJUnit5Extension.class)
 public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
@@ -310,20 +309,34 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         final JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
 
         // Unable to use static file as documents are generated in the response, picking out specific values instead.
-        assertEquals("Personal", jsonPath.get("case_update_details.case_data.applicationType"), "Correct applicationType");
-        assertEquals("Yes", jsonPath.get("case_update_details.case_data.paperForm"), "Correct paperForm");
-        assertEquals(expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"), "Correct expiry date");
-        assertEquals("ctsc", jsonPath.get("case_update_details.case_data.registryLocation"), "Correct registry");
+        assertEquals("Personal", jsonPath.get("case_update_details.case_data.applicationType"),
+                "Correct applicationType");
+        assertEquals("Yes", jsonPath.get("case_update_details.case_data.paperForm"),
+                "Correct paperForm");
+        assertEquals(expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"),
+                "Correct expiry date");
+        assertEquals("ctsc", jsonPath.get("case_update_details.case_data.registryLocation"),
+                "Correct registry");
 
         // Checked Scanned Documents
-        assertEquals(2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size(), "Correct number scanned docs");
-        assertEquals("19365040100100002", jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"), "Correct DCN Scan Doc 1");
-        assertEquals("123135453645", jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"), "Correct DCN Scan Doc 2");
+        assertEquals(2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size(),
+                "Correct number scanned docs");
+        assertEquals("19365040100100002",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"),
+                "Correct DCN Scan Doc 1");
+        assertEquals("123135453645",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"),
+                "Correct DCN Scan Doc 2");
 
         // Checked Generated Notification Documents
-        assertEquals(2, jsonPath.getList("case_update_details.case_data.notificationsGenerated").size(), "Correct number generated notifications");
-        assertEquals(SENT_EMAIL, jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"), "Correct DocumentType Doc 1");
-        assertEquals(SENT_EMAIL, jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"), "Correct DocumentType Doc 2");
+        assertEquals(2, jsonPath.getList("case_update_details.case_data.notificationsGenerated").size(),
+                "Correct number generated notifications");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"),
+                "Correct DocumentType Doc 1");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"),
+                "Correct DocumentType Doc 2");
     }
 
     @Test
@@ -386,7 +399,8 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     @Test
     void testTransformSolicitorPA8AReturnTransformErrorAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
         String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
@@ -406,7 +420,8 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     void testTransformCombinedCitizenPA8Av2ReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2Automated.json");
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformExceptionRecordCombCitizenPA8Av2Automated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA8Av2.json");
         jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
@@ -418,7 +433,8 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     void testTransformCombinedSolicitorPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8AAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformExceptionRecordCombSolicitorPA8AAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
         jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
@@ -441,7 +457,8 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     void testTransformCombinedCitizenPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
         final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1PAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformExceptionRecordCombCitizenPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
         jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
@@ -453,7 +470,8 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     void testTransformCombinedSolicitorPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
         final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
         jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
@@ -465,7 +483,8 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     void testTransformSolicitorPA1PSingleExecReturnSuccessfulAutomatedJSON() throws IOException {
         final String currentDate = LocalDate.now().format(CCD_DATE_FORMAT);
         final String applicationSubmittedDate = APPLICATION_SUBMITTED_DATE + currentDate + "\"";
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
         jsonResponse = jsonResponse.replaceAll(APPLICATION_SUBMITTED_DATE_0_9,
@@ -495,20 +514,35 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         String expectedExpiryDate6MonthsFromNow = LocalDate.now().plusDays(7).plusMonths(6).format(
                 CaveatCallbackResponseTransformer.dateTimeFormatter);
         // Unable to use static file as documents are generated in the response, picking out specific values instead.
-        assertEquals("Personal", jsonPath.get("case_update_details.case_data.applicationType"), "Correct applicationType");
-        assertEquals("Yes", jsonPath.get("case_update_details.case_data.paperForm"), "Correct paperForm");
-        assertEquals(expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"), "Correct expiry date");
-        assertEquals("ctsc", jsonPath.get("case_update_details.case_data.registryLocation"), "Correct registry");
+        assertEquals("Personal", jsonPath.get("case_update_details.case_data.applicationType"),
+                "Correct applicationType");
+        assertEquals("Yes", jsonPath.get("case_update_details.case_data.paperForm"),
+                "Correct paperForm");
+        assertEquals(expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"),
+                "Correct expiry date");
+        assertEquals("ctsc", jsonPath.get("case_update_details.case_data.registryLocation"),
+                "Correct registry");
 
         // Checked Scanned Documents
-        assertEquals(2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size(), "Correct number scanned docs");
-        assertEquals("19365040100100002", jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"), "Correct DCN Scan Doc 1");
-        assertEquals("123135453645", jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"), "Correct DCN Scan Doc 2");
+        assertEquals(2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size(),
+                "Correct number scanned docs");
+        assertEquals("19365040100100002",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"),
+                "Correct DCN Scan Doc 1");
+        assertEquals("123135453645",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"),
+                "Correct DCN Scan Doc 2");
 
         // Checked Generated Notification Documents
-        assertEquals(2, jsonPath.getList("case_update_details.case_data.notificationsGenerated").size(), "Correct number generated notifications");
-        assertEquals(SENT_EMAIL, jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"), "Correct DocumentType Doc 1");
-        assertEquals(SENT_EMAIL, jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"), "Correct DocumentType Doc 2");
+        assertEquals(2,
+                jsonPath.getList("case_update_details.case_data.notificationsGenerated").size(),
+                "Correct number generated notifications");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"),
+                "Correct DocumentType Doc 1");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"),
+                "Correct DocumentType Doc 2");
     }
 
     @Test
