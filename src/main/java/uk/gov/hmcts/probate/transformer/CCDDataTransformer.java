@@ -40,6 +40,7 @@ public class CCDDataTransformer {
         CCDData.CCDDataBuilder dataBuilder =  CCDData.builder()
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
+            .applicationSubmissionDate(caseData.getApplicationSubmittedDate())
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails()))
             .solsWillType(caseData.getSolsWillType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
