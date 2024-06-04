@@ -51,7 +51,7 @@ class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     void shouldReturnFalseWhenIhtEstateFieldsAreAllPresentFormVersion3() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
             .formVersion("3")
-            .exceptedEstate("True")
+            .deceasedDiedOnAfterSwitchDate("True")
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
             .ihtEstateGrossValue("1000000")
             .ihtEstateNetValue("900000")
