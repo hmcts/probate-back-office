@@ -177,6 +177,7 @@ class BusinessValidationUnitTest {
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
 
+
     @Mock
     private CaseEscalatedService caseEscalatedService;
     private BusinessValidationController underTest;
