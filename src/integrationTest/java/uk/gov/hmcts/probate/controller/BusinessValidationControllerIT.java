@@ -992,9 +992,9 @@ class BusinessValidationControllerIT {
         Document document = Document.builder().documentType(DocumentType.DIGITAL_GRANT).build();
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
             .thenReturn(document);
-            assertThatThrownBy(() -> mockMvc.perform(post(REDECE_SOT).content(solicitorPayload)
-                    .contentType(MediaType.APPLICATION_JSON)))
-                    .hasCauseInstanceOf(PaperApplicationException.class);
+        assertThatThrownBy(() -> mockMvc.perform(post(REDECE_SOT).content(solicitorPayload)
+                .contentType(MediaType.APPLICATION_JSON)))
+                .hasCauseInstanceOf(PaperApplicationException.class);
     }
 
     @Test
