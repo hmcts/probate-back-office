@@ -38,6 +38,7 @@
       "deceasedForenames": "De",
       "deceasedSurname": "Ceased",
       "deceasedDateOfDeath": "2020-01-23",
+      "applicationSubmittedDate": "2023-12-12",
       "deceasedDateOfBirth": "1997-01-23",
       "deceasedDomicileInEngWales": "Yes",
       "deceasedAddress": {
@@ -102,6 +103,7 @@
       "registryLocation": "ctsc",
       "caseType": "intestacy",
       "paperForm": "No",
+      "channelChoice": "Digital",
       "dateOfDeathType": "diedOn",
       "currentDate": "2020-07-14",
       "currentDateFormatted": "14th July 2020",

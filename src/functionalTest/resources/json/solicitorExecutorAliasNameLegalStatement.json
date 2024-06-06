@@ -30,6 +30,7 @@
       "totalFee": "15500",
       "ihtFormId": "IHT205",
       "paperForm": "No",
+      "channelChoice": "Digital",
       "willExists": "Yes",
       "appointExec": "Yes",
       "bulkPrintId": [],
