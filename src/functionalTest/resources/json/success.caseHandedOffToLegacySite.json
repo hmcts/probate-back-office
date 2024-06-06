@@ -62,6 +62,7 @@
       "solsApplicantSiblings": null,
       "solsSolicitorFirmName": "SolicitorFirmName",
       "deceasedDateOfDeath": "2018-01-01",
+      "applicationSubmittedDate": "2023-12-12",
       "solsCYAStateTransition": "SolLegalStatementReviewed",
       "primaryApplicantForenames": "TestPrimaryExecutorFirstName",
       "primaryApplicantAddress": {

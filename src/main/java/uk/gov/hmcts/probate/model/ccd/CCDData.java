@@ -21,6 +21,7 @@ public class CCDData implements Serializable {
     private final Fee fee;
     private final String solsAdditionalInfo;
     private final LocalDate caseSubmissionDate;
+    private final String applicationSubmissionDate;
     private final List<Executor> executors;
     private final String boExaminationChecklistQ1;
     private final String boExaminationChecklistQ2;
