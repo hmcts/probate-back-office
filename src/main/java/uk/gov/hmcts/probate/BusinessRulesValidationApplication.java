@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -58,6 +59,7 @@ public class BusinessRulesValidationApplication implements CommandLineRunner {
     }
 
     @Bean
+    @Qualifier(value = "authorizedServiceExtractor")
     public Function<HttpServletRequest, Collection<String>> authorizedServicesExtractor() {
         return request -> authorisedServices;
     }
