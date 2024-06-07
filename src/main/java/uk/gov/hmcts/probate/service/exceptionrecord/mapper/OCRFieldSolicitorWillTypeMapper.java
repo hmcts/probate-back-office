@@ -20,6 +20,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Soli
 public class OCRFieldSolicitorWillTypeMapper {
 
     private static final LinkedHashMap<String, SolicitorWillType> willTypeMap = new LinkedHashMap<>();
+
     static {
         willTypeMap.put("ADMON", GRANT_TYPE_ADMON);
         willTypeMap.put("ANNEXED", GRANT_TYPE_ADMON);
