@@ -61,6 +61,13 @@ class OCRFieldSolicitorWillTypeMapperTest {
     }
 
     @Test
+    void testCorrectWillTypeGrantOfLettersOfAdminstration() {
+        SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
+                .toSolicitorWillType("GRANT OF LETTERS OF ADMINISTRATION", GrantType.GRANT_OF_PROBATE);
+        assertEquals(SolicitorWillType.GRANT_TYPE_ADMON, response);
+    }
+
+    @Test
     void shouldReturnNullForEmpty() {
         SolicitorWillType response = ocrFieldSolicitorWillTypeMapper
                 .toSolicitorWillType(null, GrantType.GRANT_OF_PROBATE);

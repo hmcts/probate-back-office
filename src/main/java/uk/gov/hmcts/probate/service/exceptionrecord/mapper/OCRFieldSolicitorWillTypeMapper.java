@@ -19,13 +19,14 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Soli
 @Component
 public class OCRFieldSolicitorWillTypeMapper {
 
-    private static final LinkedHashMap<String, SolicitorWillType> willTypeMap = new LinkedHashMap<>(Map.ofEntries(
-            Map.entry("ADMON", GRANT_TYPE_ADMON),
-            Map.entry("ANNEXED", GRANT_TYPE_ADMON),
-            Map.entry("PROBATE", GRANT_TYPE_PROBATE),
-            Map.entry("ADMINISTRAT", GRANT_TYPE_ADMON),
-            Map.entry("GRANT", GRANT_TYPE_PROBATE)
-    ));
+    private static final LinkedHashMap<String, SolicitorWillType> willTypeMap = new LinkedHashMap<>();
+    static {
+        willTypeMap.put("ADMON", GRANT_TYPE_ADMON);
+        willTypeMap.put("ANNEXED", GRANT_TYPE_ADMON);
+        willTypeMap.put("PROBATE", GRANT_TYPE_PROBATE);
+        willTypeMap.put("ADMINISTRAT", GRANT_TYPE_ADMON);
+        willTypeMap.put("GRANT", GRANT_TYPE_PROBATE);
+    }
 
     @ToSolicitorWillType
     public static SolicitorWillType toSolicitorWillType(String ocrSolsWillType, GrantType grantType) {
