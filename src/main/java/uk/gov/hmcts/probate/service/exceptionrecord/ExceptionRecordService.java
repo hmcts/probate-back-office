@@ -88,14 +88,12 @@ public class ExceptionRecordService {
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
+            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+                    erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
-            if (caveatData.getScannedDocuments() != null) {
-                ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
-                        caveatData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
-            }
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
@@ -125,17 +123,14 @@ public class ExceptionRecordService {
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
-            if (grantOfRepresentationData.getScannedDocuments() != null) {
-                ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
-                        grantOfRepresentationData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
-            }
-
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
+            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+                    erRequest.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
@@ -204,6 +199,8 @@ public class ExceptionRecordService {
             log.info("Mapping Caveat Scanned Documents to case.");
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
             int originalScannedNumber = caveatCallbackRequest.getCaseDetails().getData().getScannedDocuments().size();
+            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+                    erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(
                             caveatData.getScannedDocuments(),

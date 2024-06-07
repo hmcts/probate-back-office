@@ -5,14 +5,14 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.probate.model.CaseType;
-import uk.gov.hmcts.reform.probate.model.ScannedDocument;
-import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.probate.model.exceptionrecord.InputScannedDoc;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
@@ -75,19 +75,21 @@ public class ExceptionRecordCaseDataValidator {
         }
     }
 
-    public static void validateScannedDocumentTypes(List<CollectionMember<ScannedDocument>>
+
+    public static void validateInputScannedDocumentTypes(List<InputScannedDoc>
                                                             scannedDocuments,CaseType caseType) {
 
         List<String> disallowedDocTypesFound =
                 scannedDocuments
                         .stream()
-                        .filter(collectionMember ->
-                                !allowScannedDocumentTypes.containsKey(collectionMember.getValue().getType())
-                                        || (allowScannedDocumentTypes.containsKey(collectionMember.getValue().getType()
+                        .filter(Objects::nonNull)
+                        .filter(inputScannedDoc ->
+                                !allowScannedDocumentTypes.containsKey(inputScannedDoc.type)
+                                        || (allowScannedDocumentTypes.containsKey(inputScannedDoc.type
                                 )
-                                && !allowScannedDocumentTypes.get(collectionMember.getValue().getType())
+                                        && !allowScannedDocumentTypes.get(inputScannedDoc.type)
                                         .contains(caseType)))
-                        .map(collectionMember -> collectionMember.getValue().getType())
+                        .map(inputScannedDoc -> inputScannedDoc.type)
                         .collect(toList());
 
         if (!disallowedDocTypesFound.isEmpty()) {
