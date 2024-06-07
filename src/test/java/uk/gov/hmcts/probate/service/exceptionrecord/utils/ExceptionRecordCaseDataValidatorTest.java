@@ -8,8 +8,7 @@ import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.ScannedDocument;
-import java.time.LocalDateTime;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -26,8 +25,23 @@ class ExceptionRecordCaseDataValidatorTest {
             "The gross IHT value cannot be less than the net IHT value";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
 
+    private static final String SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR = "Scan Document Type validation error";
+    private static final String INVALID_SCAN_DOC_GOP =
+            "Invalid scanned Document Type Error for case type 'GRANT_OF_REPRESENTATION': [invalid_cherished]";
+    private static final String INVALID_SCAN_DOC_CAVEAT =
+            "Invalid scanned Document Type Error for case type 'CAVEAT': [will, invalid_cherished]";
     private static final Long HIGHER_VALUE = valueOf(20000);
     private static final Long LOWER_VALUE = valueOf(100);
+
+    private static final CollectionMember scanDocWill = new CollectionMember("id",
+            ScannedDocument.builder().type("will").build());
+
+    private static final CollectionMember scanDocCherished = new CollectionMember("id",
+            ScannedDocument.builder().type("cherished").build());
+
+    private static final CollectionMember scanDocInvalidCherished = new CollectionMember("id",
+            ScannedDocument.builder().type("invalid_cherished").build());
+
 
     @BeforeEach
     public void setUp() {
@@ -72,17 +86,38 @@ class ExceptionRecordCaseDataValidatorTest {
     @Test
     void shouldDoNothingForCorrectScannedDocumentType() {
 
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(SCANNED_DOCUMENTS_LIST,
+        List<CollectionMember<ScannedDocument>> scannedDocumentsWill = new ArrayList<>(1);
+        scannedDocumentsWill.add(scanDocWill);
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(scannedDocumentsWill,
                 CaseType.GRANT_OF_REPRESENTATION));
+
+        List<CollectionMember<ScannedDocument>> scannedDocumentsCherished = new ArrayList<>(1);
+        scannedDocumentsCherished.add(scanDocCherished);
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator
+                .validateScannedDocumentTypes(scannedDocumentsCherished, CaseType.CAVEAT));
     }
 
-    private static final List<CollectionMember<ScannedDocument>> SCANNED_DOCUMENTS_LIST = Arrays.asList(
-            new CollectionMember<ScannedDocument>("id",
-                    ScannedDocument.builder()
-                            .fileName("scanneddocument.pdf")
-                            .controlNumber("1234")
-                            .scannedDate(LocalDateTime.now())
-                            .type("other")
-                            .subtype("will")
-                            .build()));
+    @Test
+    void shouldThrowExceptionForGopInvalidScanDoc() {
+        List<CollectionMember<ScannedDocument>> invalidScannedDocuments = new ArrayList<>(2);
+        invalidScannedDocuments.add(scanDocWill);
+        invalidScannedDocuments.add(scanDocInvalidCherished);
+        OCRMappingException exception = assertThrows(SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR,
+                OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(invalidScannedDocuments,
+                        CaseType.GRANT_OF_REPRESENTATION));
+        assertEquals(INVALID_SCAN_DOC_GOP, exception.getWarnings().get(0));
+    }
+
+    @Test
+    void shouldThrowExceptionForCaveatInvalidScanDoc() {
+        List<CollectionMember<ScannedDocument>> invalidScannedDocuments = new ArrayList<>(2);
+        invalidScannedDocuments.add(scanDocWill);
+        invalidScannedDocuments.add(scanDocInvalidCherished);
+        OCRMappingException exception = assertThrows(SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR,
+                OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(invalidScannedDocuments,
+                        CaseType.CAVEAT));
+        assertEquals(INVALID_SCAN_DOC_CAVEAT, exception.getWarnings().get(0));
+    }
 }

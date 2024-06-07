@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetails;
@@ -91,7 +92,8 @@ public class ExceptionRecordService {
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
-
+            ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
+                    caveatData.getScannedDocuments(), CaseType.CAVEAT);
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
@@ -121,6 +123,8 @@ public class ExceptionRecordService {
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+            ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
+                    grantOfRepresentationData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
