@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.config;
 
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -16,7 +15,6 @@ import java.util.regex.Pattern;
 public class AuthCheckerConfiguration {
 
     @Bean
-    @Qualifier("authorizedRolesExtractor")
     public Function<HttpServletRequest, Collection<String>> authorizedRolesExtractor() {
         return any -> Collections.emptyList();
     }
