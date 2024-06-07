@@ -92,6 +92,10 @@ public class ExceptionRecordService {
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
+            if (caveatData.getScannedDocuments() != null) {
+                ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
+                        caveatData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
+            }
             ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
                     caveatData.getScannedDocuments(), CaseType.CAVEAT);
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
@@ -123,8 +127,11 @@ public class ExceptionRecordService {
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
             ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
-            ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
-                    grantOfRepresentationData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
+            if (grantOfRepresentationData.getScannedDocuments() != null) {
+                ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
+                        grantOfRepresentationData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
+            }
+
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
