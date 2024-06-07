@@ -33,12 +33,13 @@ jacoco {
 sonarqube {
   properties {
     property "sonar.projectName", "PROBATE :: BACK-OFFICE"
+    property "sonar.exclusions", "**/SecurityConfiguration.java"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${layout.buildDirectory.get()}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
     property "sonar.pitest.mode", "reuseReport"
     property "sonar.pitest.reportsDirectory", "build/reports/pitest"
-    property "sonar.cpd.exclusions", "**/test/**,**/CallbackResponseTransformer.java,**/ResponseCaseData.java,**/CaseData.java,**/BlobUpload.java,**/SecurityConfiguration.java" +
+    property "sonar.cpd.exclusions", "**/test/**,**/CallbackResponseTransformer.java,**/ResponseCaseData.java,**/CaseData.java,**/BlobUpload.java" +
             ",**/BusinessRulesValidationApplication.java"
   }
 }
