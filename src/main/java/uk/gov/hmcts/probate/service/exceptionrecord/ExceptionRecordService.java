@@ -96,8 +96,6 @@ public class ExceptionRecordService {
                 ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
                         caveatData.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
             }
-            ExceptionRecordCaseDataValidator.validateScannedDocumentTypes(
-                    caveatData.getScannedDocuments(), CaseType.CAVEAT);
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
