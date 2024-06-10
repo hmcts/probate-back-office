@@ -533,7 +533,9 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertNull(response.getSolsWillTypeReason());
+    }
 
+    @Test
     void testNonRequiredEstateValueFieldsToBeNullWithFormVersion2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
                 .formVersion("2")
