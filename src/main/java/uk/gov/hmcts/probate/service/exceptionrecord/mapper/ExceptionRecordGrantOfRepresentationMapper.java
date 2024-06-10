@@ -258,6 +258,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {
         ToApplicationTypeGrantOfRepresentation.class})
+    @Mapping(target = "channelChoice", expression = "java(new String(\"BulkScan\"))")
     @Mapping(target = "ihtFormEstate", source = "ocrFields", qualifiedBy = {ToIHTFormEstate.class})
     @Mapping(target = "ihtEstateGrossValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
             + "\"ihtEstateGrossValue\"), ocrFields.getIhtEstateGrossValue()))", qualifiedBy = {ToPennies.class})
