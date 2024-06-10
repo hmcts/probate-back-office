@@ -22,7 +22,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
     public Boolean toIhtFormEstateValuesCompleted(ExceptionRecordOCRFields ocrFields) {
         log.info("Beginning mapping for ihtFormEstateValuesCompleted");
 
-        if (isExceptedValue(ocrFields) && !isEmpty(ocrFields.getIhtEstateGrossValue())
+        if (isExpectedEstate(ocrFields) && !isEmpty(ocrFields.getIhtEstateGrossValue())
             && !isEmpty(ocrFields.getIhtEstateNetValue())
             && !isEmpty(ocrFields.getIhtEstateNetQualifyingValue())) {
             return Boolean.FALSE;
@@ -37,7 +37,7 @@ public class OCRFieldIhtFormEstateValuesCompletedMapper {
         return null;
     }
 
-    private Boolean isExceptedValue(ExceptionRecordOCRFields ocrField) {
+    private Boolean isExpectedEstate(ExceptionRecordOCRFields ocrField) {
         String formVersion = ocrField.getFormVersion();
 
         return (("2".equals(formVersion) && "True".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())
