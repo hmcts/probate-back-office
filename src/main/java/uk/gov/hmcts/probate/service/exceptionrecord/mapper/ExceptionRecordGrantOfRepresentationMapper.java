@@ -288,9 +288,13 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
 
     @AfterMapping
-    default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData) {
-        // there might not be a reason given but if there is not will type set then clear
-        if (null == caseData.getSolsWillType()) {
+    default void clearSolsWillTypeAndReason(@MappingTarget GrantOfRepresentationData caseData) {
+        // there should not be sols will type on citizen case
+        if (caseData.getApplicationType() == ApplicationType.PERSONAL) {
+            caseData.setSolsWillTypeReason(null);
+            caseData.setSolsWillType(null);
+        } else if (null == caseData.getSolsWillType()) {
+            // there might not be a reason given but if there is not will type set then clear
             caseData.setSolsWillTypeReason(null);
         }
     }

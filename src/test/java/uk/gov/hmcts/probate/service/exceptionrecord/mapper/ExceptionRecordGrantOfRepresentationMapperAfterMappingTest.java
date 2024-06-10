@@ -505,6 +505,30 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         assertEquals(SolicitorWillType.GRANT_TYPE_INTESTACY, response.getSolsWillType());
     }
 
+    @Test
+    void testSetEmptySolsWillTypeAndReason() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("WillLeftAnnexed")
+                .solsWillTypeReason("someReason")
+                .solsSolicitorIsApplying("false")
+                .build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertNull(response.getSolsWillType());
+        assertNull(response.getSolsWillTypeReason());
+    }
+
+    @Test
+    void testSetEmptySolsWillReason() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillTypeReason("someReason")
+                .solsSolicitorIsApplying("true")
+                .build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertNull(response.getSolsWillTypeReason());
+    }
+
     @Configuration
     public static class Config {
 
