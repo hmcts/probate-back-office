@@ -2,7 +2,7 @@
 "tabName": "Case details",
 "fields": [
   "What case type is this?",
-  "Is this a paper form?",
+  "What is the channel choice?",
   "Inheritance Tax form",
   "Gross value of the estate for probate",
   "Net value of the estate for probate",
@@ -16,7 +16,7 @@
 ],
 "dataKeys": [
 "page1_list3_case_type",
-"page1_optionNo",
+"page1_optionChannelChoiceCW",
 "ihtForm400",
 "IhtGrossValue",
 "IhtNetValue",

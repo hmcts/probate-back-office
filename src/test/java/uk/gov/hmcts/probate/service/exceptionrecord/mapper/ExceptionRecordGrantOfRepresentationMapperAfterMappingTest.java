@@ -505,6 +505,45 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
         assertEquals(SolicitorWillType.GRANT_TYPE_INTESTACY, response.getSolsWillType());
     }
 
+    @Test
+    void testNonRequiredEstateValueFieldsToBeNullWithFormVersion2() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("2")
+                .ihtEstateGrossValue("900,0000")
+                .ihtEstateNetValue("900,0000")
+                .ihtEstateNetQualifyingValue("900,0000")
+                .deceasedDiedOnAfterSwitchDate("False")
+                .build();
+
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+
+        assertNull(response.getIhtEstateGrossValue());
+        assertNull(response.getIhtEstateNetValue());
+        assertNull(response.getIhtEstateNetQualifyingValue());
+    }
+
+    @Test
+    void testNonRequiredEstateValueFieldsToBeNullWithFormVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .formVersion("3")
+                .ihtNetValue205("900,000")
+                .ihtGrossValue205("900,000")
+                .ihtEstateGrossValue("900,0000")
+                .ihtEstateNetValue("900,0000")
+                .ihtEstateNetQualifyingValue("900,0000")
+                .exceptedEstate("False")
+                .iht205Completed("True")
+                .build();
+
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+
+        assertNull(response.getIhtEstateGrossValue());
+        assertNull(response.getIhtEstateNetValue());
+        assertNull(response.getIhtEstateNetQualifyingValue());
+    }
+
     @Configuration
     public static class Config {
 

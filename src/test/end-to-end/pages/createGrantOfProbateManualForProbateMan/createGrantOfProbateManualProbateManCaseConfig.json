@@ -4,12 +4,13 @@
   "page1_list2_application_type": "Personal",
   "page1_applicationSubmittedDate_day": "03",
   "page1_applicationSubmittedDate_month": "03",
-  "page1_applicationSubmittedDate_year": "1970",
-  "page1_applicationSubmittedDate_long": "3 Mar 1970",
+  "page1_applicationSubmittedDate_year": "2024",
+  "page1_applicationSubmittedDate_long": "3 Mar 2024",
   "page1_list3_case_type": "Grant of Probate",
   "page1_extraCopiesOfGrant": "1",
   "page1_outsideUKGrantCopies": "1",
   "page1_optionNo": "No",
+  "page1_optionChannelChoiceCW": "Paper Form",
   "page1_otherExecutorExistsNo": "No",
 
   "page1_amend_waitForText": "Amend case details",
@@ -47,8 +48,8 @@
   "address_country": "United Kingdom",
   "address_postcode": "SW1A 1AA",
 
-  "UKpostcodeLink": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[26]/ccd-field-write/div/ccd-write-address-field/div/div/a",
-  "UKpostcodeLink2": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[35]/ccd-field-write/div/ccd-write-address-field/div/div/a",
+  "UKpostcodeLink": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[25]/ccd-field-write/div/ccd-write-address-field/div/div/a",
+  "UKpostcodeLink2": "/html/body/exui-root/exui-case-home/div/exui-case-create-submit/exui-page-wrapper/div/div/main/div/exui-ccd-connector/ccd-case-edit/ccd-case-edit-page/div/form/fieldset/ccd-case-edit-form/div[34]/ccd-field-write/div/ccd-write-address-field/div/div/a",
 
   "amendCaseDetails_waitForText": "Amend case details",
   "amendApplicantDetails_update_option": "Applicant Details",

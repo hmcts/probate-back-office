@@ -17,6 +17,8 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationC
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -189,6 +191,18 @@ class CaseDataTransformerTest {
     }
 
     @Test
+    void shouldTransformFormSelectionFormEstate400421AndFormId400() {
+        caseDataMock = CaseData.builder().ihtFormEstate("IHT400421")
+                .ihtFormId("IHT400")
+                .hmrcLetterId("No").build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
     void shouldTransformFormSelectionForDiedAfter() {
         caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
                 .ihtFormEstate("IHT400421")
@@ -228,5 +242,15 @@ class CaseDataTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformCaseDataForPaperForm() {
+        caseDataMock = CaseData.builder().build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        caseDataTransformer.transformCaseDataForPaperForm(callbackRequestMock);
+        assertThat(caseDataMock.getChannelChoice(), is("PaperForm"));
     }
 }
