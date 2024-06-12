@@ -8,6 +8,9 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.util.ArrayList;
 import java.util.List;
 
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS;
+
 @Slf4j
 @Component
 public class ExceptionRecordCaseDataValidator {
@@ -38,6 +41,18 @@ public class ExceptionRecordCaseDataValidator {
         }
         if (!errorMessages.isEmpty()) {
             throw new OCRMappingException(IHT_VALDIATION_ERROR, errorMessages);
+        }
+        if(caseData.getIhtEstateNetQualifyingValue()!=null && caseData.getIhtEstateNetValue() != null) {
+            if (caseData.getIhtEstateNetQualifyingValue().compareTo(caseData.getIhtEstateNetValue()) > 0) {
+                log.error(IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS);
+                errorMessages.add(IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS);
+            }
+        }
+        if(caseData.getIhtEstateGrossValue()  != null && caseData.getIhtEstateNetQualifyingValue() !=null) {
+            if(caseData.getIhtEstateNetQualifyingValue().compareTo(caseData.getIhtEstateGrossValue()) > 0){
+                log.error(IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE);
+                errorMessages.add(IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE);
+            }
         }
     }
 }

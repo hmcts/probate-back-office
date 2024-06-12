@@ -67,7 +67,9 @@ public class CCDDataTransformer {
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .englishWill(caseData.getEnglishWill())
             .dispenseWithNotice(caseData.getDispenseWithNotice())
-            .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs());
+            .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
+                ;
+
 
         if (caseData.getApplicationType() != null) {
             dataBuilder
@@ -134,6 +136,7 @@ public class CCDDataTransformer {
             .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
             .ihtEstateNetValue(caseData.getIhtEstateNetValue())
             .ihtFormNetValue(caseData.getIhtFormNetValue())
+            .ihtEstateNetQualifyingValue(caseData.getIhtEstateNetQualifyingValue())
             .build();
     }
 

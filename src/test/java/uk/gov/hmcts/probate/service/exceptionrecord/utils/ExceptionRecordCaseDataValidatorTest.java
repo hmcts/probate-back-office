@@ -60,4 +60,20 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
+    @Test
+    void shouldDoNothingForIhtEstateNetQualifyingValueGraterThanGross() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .ihtEstateNetValue(HIGHER_VALUE)
+                .ihtEstateNetQualifyingValue(HIGHER_VALUE)
+                .build();
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+    }
+    @Test
+    void shouldDoNothingForhtEstateNetQualifyingValueGraterThanGross() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .ihtEstateNetValue(HIGHER_VALUE)
+                .ihtEstateNetQualifyingValue(HIGHER_VALUE)
+                .build();
+        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+    }
 }
