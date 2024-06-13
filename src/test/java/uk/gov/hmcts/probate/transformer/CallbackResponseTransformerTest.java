@@ -18,27 +18,7 @@ import uk.gov.hmcts.probate.model.caseaccess.Organisation;
 import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.Reissue;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutor;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
-import uk.gov.hmcts.probate.model.ccd.raw.AdoptedRelative;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.AttorneyApplyingOnBehalfOf;
-import uk.gov.hmcts.probate.model.ccd.raw.CodicilAddedDate;
-import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
-import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
-import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
-import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.Payment;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
-import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
-import uk.gov.hmcts.probate.model.ccd.raw.ScannedDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
-import uk.gov.hmcts.probate.model.ccd.raw.StopReason;
-import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
+import uk.gov.hmcts.probate.model.ccd.raw.*;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -4240,6 +4220,20 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldTransformWithHandOffReason() {
+        List<CollectionMember<HandoffReason>> reason = new ArrayList();
+        reason.add(new CollectionMember<>(null, HandoffReason.builder().handoffReason("Reason").build()));
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .boHandoffReasonList(reason);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
