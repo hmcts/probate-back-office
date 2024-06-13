@@ -218,11 +218,15 @@ class IHTValidationRuleTest {
         return Stream.of(BigDecimal.valueOf(123.09), BigDecimal.valueOf(-123),
                 BigDecimal.valueOf(123,123), BigDecimal.valueOf(123.));
     }
+
     @Test
     void testValidateEstateNetQualifyingGraterThanEstateNetValue() {
-        when(inheritanceTaxMock.getIhtEstateNetValue()).thenReturn(LOWER_VALUE);
-        when(inheritanceTaxMock.getIhtEstateNetQualifyingValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS))
+        when(inheritanceTaxMock.getIhtEstateNetValue())
+                .thenReturn(LOWER_VALUE);
+        when(inheritanceTaxMock
+                .getIhtEstateNetQualifyingValue()).thenReturn(HIGHER_VALUE);
+        when(businessValidationMessageService
+                .generateError(BUSINESS_ERROR, IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS))
                 .thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
@@ -237,7 +241,8 @@ class IHTValidationRuleTest {
     void testValidateEstateEstateValueGraterThanNetqualifyingValue() {
         when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getIhtEstateNetQualifyingValue()).thenReturn(HIGHER_VALUE);
-        when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE))
+        when(businessValidationMessageService
+                .generateError(BUSINESS_ERROR, IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE))
                 .thenReturn(businessValidationError);
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);

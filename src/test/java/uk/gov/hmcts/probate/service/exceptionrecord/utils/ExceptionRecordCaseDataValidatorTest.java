@@ -1,4 +1,5 @@
 package uk.gov.hmcts.probate.service.exceptionrecord.utils;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
@@ -58,6 +59,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
+
     @Test
     void shouldDoNothingForIhtEstateNetQualifyingValueGraterThanGross() {
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
@@ -66,6 +68,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .build();
         assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
     }
+
     @Test
     void shouldDoNothingForhtEstateNetQualifyingValueGraterThanGross() {
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
