@@ -24,7 +24,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
-import static uk.gov.hmcts.probate.validator.IHTValidationRule.*;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_VALUE_VALIDATION;
 
 class IHTValidationRuleTest {
 

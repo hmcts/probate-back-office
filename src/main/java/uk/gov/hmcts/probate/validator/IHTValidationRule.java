@@ -6,10 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
-
-import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -25,8 +22,10 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
     public static final String IHT_PROBATE_NET_GREATER_THAN_GROSS = "ihtProbateNetGreaterThanGross";
     public static final String IHT_ESTATE_NET_GREATER_THAN_GROSS = "ihtEstateNetGreaterThanGross";
 
-    public static final String IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS = "ihtEstateNetQualifyingValeThanGross";
-    public static final String IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE = "ihtEstateNetValueGraterThanGrossValue";
+    public static final String
+            IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS = "ihtEstateNetQualifyingValeThanGross";
+    public static final String
+            IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE = "ihtEstateNetValueGraterThanGrossValue";
 
     public static final String IHT_VALUE_VALIDATION = "ihtValueValidation";
 
@@ -65,13 +64,13 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                             codes.add(IHT_PROBATE_NET_GREATER_THAN_GROSS);
                         }
                     }
-                    if(iht.getIhtEstateNetValue()  != null && iht.getIhtEstateNetQualifyingValue() !=null) {
-                        if(iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateNetValue()) > 0){
+                    if (iht.getIhtEstateNetValue() != null && iht.getIhtEstateNetQualifyingValue() != null) {
+                        if (iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateNetValue()) > 0) {
                             codes.add(IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS);
                         }
                     }
-                    if(iht.getIhtEstateGrossValue()  != null && iht.getIhtEstateNetQualifyingValue() !=null) {
-                        if(iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateGrossValue()) > 0){
+                    if (iht.getIhtEstateGrossValue() != null && iht.getIhtEstateNetQualifyingValue() != null) {
+                        if (iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateGrossValue()) > 0) {
                             codes.add(IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE);
                         }
                     }
