@@ -2703,22 +2703,14 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformChannelChoice() {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
-                .build();
+    void shouldTransformHandoffReason() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicantOrganisationPolicy(policy);
+                .caseHandedOffToLegacySite(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getChannelChoice());
+        assertNull(callbackResponse.getData().getBoHandoffReasonList());
     }
 
     @Test
