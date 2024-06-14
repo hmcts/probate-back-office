@@ -10,6 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.Assert.assertThrows;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE;
+
 class ExceptionRecordCaseDataValidatorTest {
 
     private static final String IHT_PROBATE_NET_GREATER_THAN_GROSS =
