@@ -8,7 +8,8 @@ import static org.bouncycastle.util.Longs.valueOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.Assert.assertThrows;
-
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE;
+import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE;
 class ExceptionRecordCaseDataValidatorTest {
 
     private static final String IHT_PROBATE_NET_GREATER_THAN_GROSS =
@@ -16,6 +17,7 @@ class ExceptionRecordCaseDataValidatorTest {
     private static final String IHT_ESTATE_NET_GREATER_THAN_GROSS =
             "The gross IHT value cannot be less than the net IHT value";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
+
 
     private static final Long HIGHER_VALUE = valueOf(20000);
     private static final Long LOWER_VALUE = valueOf(100);
@@ -76,5 +78,29 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
         assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+    }
+
+    @Test
+    void shouldThrowExceptionForIhtNetQualifyingValueGraterThanGross() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .ihtEstateGrossValue(LOWER_VALUE)
+                .ihtEstateNetQualifyingValue(HIGHER_VALUE)
+                .build();
+        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
+                OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE, exception.getWarnings().get(0));
+    }
+
+    @Test
+    void shouldThrowExceptionForIhtNetQualifyingValueGraterThanNet() {
+        GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
+                .ihtEstateNetValue(LOWER_VALUE)
+                .ihtEstateNetQualifyingValue(HIGHER_VALUE)
+                .build();
+        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
+                OCRMappingException.class,
+                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE, exception.getWarnings().get(0));
     }
 }

@@ -23,9 +23,9 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
     public static final String IHT_ESTATE_NET_GREATER_THAN_GROSS = "ihtEstateNetGreaterThanGross";
 
     public static final String
-            IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS = "ihtEstateNetQualifyingValeThanGross";
+            IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE = "ihtEstateNetQualifyingValeThanGross";
     public static final String
-            IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE = "ihtEstateNetValueGraterThanGrossValue";
+            IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE = "ihtEstateNetValueGraterThanGrossValue";
 
     public static final String IHT_VALUE_VALIDATION = "ihtValueValidation";
 
@@ -66,12 +66,12 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
                     }
                     if (iht.getIhtEstateNetValue() != null && iht.getIhtEstateNetQualifyingValue() != null) {
                         if (iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateNetValue()) > 0) {
-                            codes.add(IHT_NETQUALIFYINGVALUE_SHOULDNOTBE_GREATER_THAN_GROSS);
+                            codes.add(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE);
                         }
                     }
                     if (iht.getIhtEstateGrossValue() != null && iht.getIhtEstateNetQualifyingValue() != null) {
                         if (iht.getIhtEstateNetQualifyingValue().compareTo(iht.getIhtEstateGrossValue()) > 0) {
-                            codes.add(IHT_NETESTATEVALUE_GRATER_THAN_ESTATE_GROSS_VALUE);
+                            codes.add(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE);
                         }
                     }
                     return codes;
