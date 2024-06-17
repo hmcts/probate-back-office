@@ -481,7 +481,9 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSolicitorWillTypeProbate() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Probate").build();
+                .solsWillType("Probate")
+                .solsSolicitorIsApplying("true")
+                .build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
         assertEquals(SolicitorWillType.GRANT_TYPE_PROBATE, response.getSolsWillType());
@@ -490,7 +492,9 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSolicitorWillTypeAdmon() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Admon Will").build();
+                .solsWillType("Admon Will")
+                .solsSolicitorIsApplying("true")
+                .build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.ADMON_WILL);
         assertEquals(SolicitorWillType.GRANT_TYPE_ADMON, response.getSolsWillType());
@@ -499,10 +503,36 @@ class ExceptionRecordGrantOfRepresentationMapperAfterMappingTest {
     @Test
     void testSolicitorWillTypeIntestacy() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
-                .solsWillType("Intestacy").build();
+                .solsWillType("Intestacy")
+                .solsSolicitorIsApplying("true")
+                .build();
         GrantOfRepresentationData response =
                 exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.INTESTACY);
         assertEquals(SolicitorWillType.GRANT_TYPE_INTESTACY, response.getSolsWillType());
+    }
+
+    @Test
+    void testSetEmptySolsWillTypeAndReason() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillType("WillLeftAnnexed")
+                .solsWillTypeReason("someReason")
+                .solsSolicitorIsApplying("false")
+                .build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertNull(response.getSolsWillType());
+        assertNull(response.getSolsWillTypeReason());
+    }
+
+    @Test
+    void testSetEmptySolsWillReason() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+                .solsWillTypeReason("someReason")
+                .solsSolicitorIsApplying("true")
+                .build();
+        GrantOfRepresentationData response =
+                exceptionRecordGrantOfRepresentationMapper.toCcdData(ocrFields, GrantType.GRANT_OF_PROBATE);
+        assertNull(response.getSolsWillTypeReason());
     }
 
     @Test
