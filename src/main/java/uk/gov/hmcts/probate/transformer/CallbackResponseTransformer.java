@@ -48,6 +48,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -1208,7 +1209,7 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .boHandoffReasonList(getNullForEmptyHandoffReason(caseData))
+            .boHandoffReasonList(getEmptyListForEmptyHandoffReason(caseData))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1813,15 +1814,15 @@ public class CallbackResponseTransformer {
         return collectionMembers;
     }
 
-    private List<CollectionMember<HandoffReason>> getNullForEmptyHandoffReason(
+    private List<CollectionMember<HandoffReason>> getEmptyListForEmptyHandoffReason(
             CaseData caseData) {
         List<CollectionMember<HandoffReason>> collectionMembers = caseData.getBoHandoffReasonList();
         if (collectionMembers == null || collectionMembers.isEmpty()) {
-            return null;
+            return Collections.emptyList();
+        } else if (NO.equals(caseData.getCaseHandedOffToLegacySite())) {
+            return Collections.emptyList();
+        } else {
+            return collectionMembers;
         }
-        if (NO.equals(caseData.getCaseHandedOffToLegacySite())) {
-            return null;
-        }
-        return collectionMembers;
     }
 }

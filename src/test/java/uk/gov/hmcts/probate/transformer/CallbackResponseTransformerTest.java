@@ -4239,9 +4239,10 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldTransformWithHandOffReason() {
         List<CollectionMember<HandoffReason>> reason = new ArrayList();
-        reason.add(new CollectionMember<>(null, HandoffReason.builder().handoffReason("Reason").build()));
+        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason("Reason").build()));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .boHandoffReasonList(reason);
+                .boHandoffReasonList(reason)
+                .caseHandedOffToLegacySite("Yes");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
@@ -4259,7 +4260,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
-        assertNull(callbackResponse.getData().getBoHandoffReasonList());
+        assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
     @Test
@@ -4270,7 +4271,7 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
-        assertNull(callbackResponse.getData().getBoHandoffReasonList());
+        assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

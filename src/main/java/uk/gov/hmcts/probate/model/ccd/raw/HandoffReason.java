@@ -9,6 +9,6 @@ import lombok.Data;
 @Builder
 public class HandoffReason {
 
-    @JsonProperty(value = "handoffReason")
-    private final String handoffReason;
+    @JsonProperty(value = "caseHandoffReason")
+    private final String caseHandoffReason;
 }
