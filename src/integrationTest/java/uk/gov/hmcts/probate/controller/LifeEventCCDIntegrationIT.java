@@ -91,7 +91,6 @@ class LifeEventCCDIntegrationIT {
     }
 
 
-    @Disabled
     @Test
     void shouldUpdateCCDIfSingleRecordReturned() throws Exception {
         wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
@@ -124,7 +123,6 @@ class LifeEventCCDIntegrationIT {
                 + "-triggers/deathRecordVerified/token")));
     }
 
-    @Disabled
     @Test
     void shouldUpdateCCDWithDeathRecordVerificationFailedNoRecordsReturned() throws Exception {
         wireMockServer.stubFor(get(urlPathMatching("/api/.*"))
@@ -147,7 +145,6 @@ class LifeEventCCDIntegrationIT {
 
     }
 
-    @Disabled
     @Test
     void shouldUpdateCCDIfMultipleRecordsReturned() throws Exception {
 
