@@ -37,7 +37,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import static java.util.stream.Collectors.toList;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
@@ -90,7 +89,7 @@ public class ExceptionRecordService {
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+                .toList());
 
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
@@ -130,7 +129,7 @@ public class ExceptionRecordService {
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+                .toList());
 
             // Add grant type
             if (grantOfRepresentationData.getApplicationType().equals(SOLICITORS)
