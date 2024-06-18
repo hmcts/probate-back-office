@@ -1209,7 +1209,7 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .boHandoffReasonList(getEmptyListForEmptyHandoffReason(caseData))
+            .boHandoffReasonList(getHandoffReasonList(caseData))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1814,15 +1814,13 @@ public class CallbackResponseTransformer {
         return collectionMembers;
     }
 
-    private List<CollectionMember<HandoffReason>> getEmptyListForEmptyHandoffReason(
+    private List<CollectionMember<HandoffReason>> getHandoffReasonList(
             CaseData caseData) {
         List<CollectionMember<HandoffReason>> collectionMembers = caseData.getBoHandoffReasonList();
-        if (collectionMembers == null || collectionMembers.isEmpty()) {
+        if (collectionMembers == null || collectionMembers.isEmpty()
+                || NO.equals(caseData.getCaseHandedOffToLegacySite())) {
             return Collections.emptyList();
-        } else if (NO.equals(caseData.getCaseHandedOffToLegacySite())) {
-            return Collections.emptyList();
-        } else {
-            return collectionMembers;
         }
+        return collectionMembers;
     }
 }
