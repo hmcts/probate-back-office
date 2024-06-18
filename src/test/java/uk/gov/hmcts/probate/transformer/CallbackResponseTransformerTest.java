@@ -4249,6 +4249,30 @@ class CallbackResponseTransformerTest {
         assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
     }
 
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReturnNullForEmptyHandOffReason() {
+        List<CollectionMember<HandoffReason>> reason = new ArrayList();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .boHandoffReasonList(reason);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertNull(callbackResponse.getData().getBoHandoffReasonList());
+    }
+
+    @Test
+    void shouldReturnNullWhenHandOffSiteIsNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .caseHandedOffToLegacySite("No");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertNull(callbackResponse.getData().getBoHandoffReasonList());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }

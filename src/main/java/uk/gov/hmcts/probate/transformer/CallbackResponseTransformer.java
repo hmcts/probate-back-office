@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -1207,7 +1208,7 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .boHandoffReasonList(caseData.getBoHandoffReasonList())
+            .boHandoffReasonList(getNullForEmptyHandoffReason(caseData))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1807,6 +1808,18 @@ public class CallbackResponseTransformer {
     private List<CollectionMember<ChangeOfRepresentative>> getNullForEmptyRepresentatives(
             List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        return collectionMembers;
+    }
+
+    private List<CollectionMember<HandoffReason>> getNullForEmptyHandoffReason(
+            CaseData caseData) {
+        List<CollectionMember<HandoffReason>> collectionMembers = caseData.getBoHandoffReasonList();
+        if (collectionMembers == null || collectionMembers.isEmpty()) {
+            return null;
+        }
+        if (NO.equals(caseData.getCaseHandedOffToLegacySite())) {
             return null;
         }
         return collectionMembers;
