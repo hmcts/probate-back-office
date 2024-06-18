@@ -302,8 +302,8 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
-
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
+
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 

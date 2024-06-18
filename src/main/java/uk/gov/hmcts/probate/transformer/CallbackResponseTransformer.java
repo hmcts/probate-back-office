@@ -1786,18 +1786,16 @@ public class CallbackResponseTransformer {
             if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
                 grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
             }
-        }
 
-        if (SOLICITORS.equals(grantOfRepresentationData.getApplicationType())) {
             grantOfRepresentationData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
-                    .OrganisationPolicy.builder()
-                    .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
-                            .organisationID(null)
-                            .organisationName(null)
-                            .build())
-                    .orgPolicyReference(null)
-                    .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
-                    .build());
+                .OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                    .organisationID(null)
+                    .organisationName(null)
+                    .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build());
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>

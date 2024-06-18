@@ -340,14 +340,14 @@ public class CaveatCallbackResponseTransformer {
 
         if (SOLICITORS.equals(caveatData.getApplicationType())) {
             caveatData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
-                    .OrganisationPolicy.builder()
-                    .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
-                            .organisationID(null)
-                            .organisationName(null)
-                            .build())
-                    .orgPolicyReference(null)
-                    .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
-                    .build());
+                .OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                    .organisationID(null)
+                    .organisationName(null)
+                    .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build());
         }
 
         caveatData.setBulkScanCaseReference((caveatData.getBulkScanCaseReference()));
