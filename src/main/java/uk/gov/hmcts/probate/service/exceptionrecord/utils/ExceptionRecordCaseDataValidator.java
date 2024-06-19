@@ -35,7 +35,6 @@ public class ExceptionRecordCaseDataValidator {
     private static final String IHT_ESTATE_NET_GREATER_THAN_GROSS =
             "The gross IHT value cannot be less than the net IHT value";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
-    private static final String SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR = "Scan Document Type validation error";
     private static final String INVALID_SCANNED_DOCUMENT_TYPE_ERROR = "Invalid scanned Document Type Error "
             + "for case type '%s': [%s]";
 
@@ -100,7 +99,7 @@ public class ExceptionRecordCaseDataValidator {
                     StringUtils.join(disallowedDocTypesFound, ", ")
             );
 
-            throw new OCRMappingException(SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR, Arrays.asList(errorMessage));
+            throw new OCRMappingException(errorMessage, Arrays.asList(errorMessage));
         }
     }
 }
