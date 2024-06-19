@@ -8,9 +8,6 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 import java.util.ArrayList;
 import java.util.List;
 
-import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE;
-import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE;
-
 @Slf4j
 @Component
 public class ExceptionRecordCaseDataValidator {
@@ -19,6 +16,10 @@ public class ExceptionRecordCaseDataValidator {
             "The gross probate value cannot be less than the net probate value";
     private static final String IHT_ESTATE_NET_GREATER_THAN_GROSS =
             "The gross IHT value cannot be less than the net IHT value";
+    private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE =
+            "Net qualifying value can't be greater than the net amount";
+    private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
+            "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
 
     private ExceptionRecordCaseDataValidator() {

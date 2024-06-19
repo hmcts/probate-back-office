@@ -19,6 +19,8 @@ class ExceptionRecordCaseDataValidatorTest {
             "The gross IHT value cannot be less than the net IHT value";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
 
+    private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
+            "The gross IHT value cannot be less than the net IHT value";
 
     private static final Long HIGHER_VALUE = valueOf(20000);
     private static final Long LOWER_VALUE = valueOf(100);
@@ -64,7 +66,7 @@ class ExceptionRecordCaseDataValidatorTest {
     }
 
     @Test
-    void shouldDoNothingForIhtEstateNetQualifyingValueGraterThanGross() {
+    void shouldDoNothingForIhtEstateNetQualifyingValueEqualToNetValue() {
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
@@ -73,7 +75,7 @@ class ExceptionRecordCaseDataValidatorTest {
     }
 
     @Test
-    void shouldDoNothingForhtEstateNetQualifyingValueGraterThanGross() {
+    void shouldDoNothingForIhtEstateNetQualifyingValueEqualToGrossValue() {
         GrantOfRepresentationData casedata = GrantOfRepresentationData.builder()
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)

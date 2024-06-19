@@ -23,9 +23,9 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
     public static final String IHT_ESTATE_NET_GREATER_THAN_GROSS = "ihtEstateNetGreaterThanGross";
 
     public static final String
-            IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE = "ihtEstateNetQualifyingValeThanGross";
+            IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE = "ihtEstateNetQualifyingValueGreaterThanGross";
     public static final String
-            IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE = "ihtEstateNetValueGraterThanGrossValue";
+            IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE = "ihtEstateNetQualifyingValueGreaterThanNet";
 
     public static final String IHT_VALUE_VALIDATION = "ihtValueValidation";
 

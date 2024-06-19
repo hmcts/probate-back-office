@@ -220,7 +220,7 @@ class IHTValidationRuleTest {
     }
 
     @Test
-    void testValidateEstateNetQualifyingGraterThanEstateNetValue() {
+    void testValidateEstateNetQualifyingValueGreaterThanEstateNetValue() {
         when(inheritanceTaxMock.getIhtEstateNetValue())
                 .thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock
@@ -238,7 +238,7 @@ class IHTValidationRuleTest {
     }
 
     @Test
-    void testValidateEstateEstateValueGraterThanNetqualifyingValue() {
+    void testValidateEstateNetQualifyingValueGreaterThanEstateGrossValue() {
         when(inheritanceTaxMock.getIhtEstateGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getIhtEstateNetQualifyingValue()).thenReturn(HIGHER_VALUE);
         when(businessValidationMessageService
