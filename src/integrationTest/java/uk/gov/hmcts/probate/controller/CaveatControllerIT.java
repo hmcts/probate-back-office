@@ -1,7 +1,5 @@
 package uk.gov.hmcts.probate.controller;
 
-import jakarta.servlet.ServletException;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -32,9 +30,7 @@ import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import static org.assertj.core.api.AssertionsForClassTypes.catchThrowableOfType;
 import static org.hamcrest.CoreMatchers.containsString;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doReturn;
@@ -213,10 +209,10 @@ class CaveatControllerIT {
         LocalDate futureDoD = LocalDate.now().plusDays(1);
         caveatPayload = caveatPayload.replace("2017-12-31", caveatDateFormatter.format(futureDoD));
 
-        String finalCaveatPayload = caveatPayload;
-        Throwable exception = catchThrowableOfType(() -> mockMvc.perform(post("/caveat/raise-caveat-validate")
-                .content(finalCaveatPayload).contentType(MediaType.APPLICATION_JSON)), ServletException.class);
-        assertEquals(exception.getCause().getMessage(),"Date of death cannot be in the future");
+        mockMvc.perform(post("/caveat/raise-caveat-validate").content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("Date of death cannot be in the future"));
     }
 
     @Test
