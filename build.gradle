@@ -192,7 +192,7 @@ def versions = [
         authCheckerLib                  : '2.3.0',
         jacksonDatabind                 : '2.14.3',
         commonsIO                       : '2.16.1',
-        commonsValidator                : '1.6',
+        commonsValidator                : '1.9.0',
         restAssured                     : '4.5.1',
         lombok                          : '1.18.32',
         springDocOpenUi                 : '1.7.0',
