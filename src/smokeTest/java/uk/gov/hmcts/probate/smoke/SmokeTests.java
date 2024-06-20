@@ -5,13 +5,16 @@ import io.restassured.config.HttpClientConfig;
 import io.restassured.config.RestAssuredConfig;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.core.IsNull.notNullValue;
 
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {SmokeTestConfiguration.class})
 public class SmokeTests {
 
