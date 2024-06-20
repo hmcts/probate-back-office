@@ -8,9 +8,6 @@ import static org.bouncycastle.util.Longs.valueOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.Assert.assertThrows;
-import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE;
-import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE;
-
 class ExceptionRecordCaseDataValidatorTest {
 
     private static final String IHT_PROBATE_NET_GREATER_THAN_GROSS =
@@ -20,7 +17,10 @@ class ExceptionRecordCaseDataValidatorTest {
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
 
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
-            "The gross IHT value cannot be less than the net IHT value";
+            "Net qualifying value can't be greater than the gross amount";
+    private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE =
+            "Net qualifying value can't be greater than the net amount";
+
 
     private static final Long HIGHER_VALUE = valueOf(20000);
     private static final Long LOWER_VALUE = valueOf(100);
