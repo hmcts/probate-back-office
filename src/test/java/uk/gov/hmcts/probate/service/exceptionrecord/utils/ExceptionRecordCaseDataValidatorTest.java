@@ -8,6 +8,7 @@ import static org.bouncycastle.util.Longs.valueOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.Assert.assertThrows;
+
 class ExceptionRecordCaseDataValidatorTest {
 
     private static final String IHT_PROBATE_NET_GREATER_THAN_GROSS =
