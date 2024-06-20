@@ -142,7 +142,7 @@
     <tr>
         <td colspan="2">
             <p>The gross value for the estate in England and Wales
-                amounts to &#163;{{ (case_details.case_data.ihtGrossValue/100)|numberformat("#.00") }} and the net value for the estate amounts to &#163;{{ (case_details.case_data.ihtNetValue/100)|numberformat("#.00") }}.</p>
+                amounts to &#163;{{ Math.floor(case_details.case_data.ihtGrossValue/100) }} and the net value for the estate amounts to &#163;{{ Math.floor(case_details.case_data.ihtNetValue/100) }}.</p>
             {% if case_extras != null %}
                 {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
