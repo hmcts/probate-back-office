@@ -111,15 +111,13 @@ public class ExceptionRecordService {
         GrantType grantType,
         List<String> warnings) {
 
-        List<String> errors = new ArrayList<String>();
-
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
-            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
+            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData, warnings);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());

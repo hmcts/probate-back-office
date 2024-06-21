@@ -2,12 +2,14 @@ package uk.gov.hmcts.probate.service.exceptionrecord.utils;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.probate.exception.OCRMappingException;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.bouncycastle.util.Longs.valueOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ExceptionRecordCaseDataValidatorTest {
 
@@ -15,12 +17,11 @@ class ExceptionRecordCaseDataValidatorTest {
             "The gross probate value cannot be less than the net probate value";
     private static final String IHT_ESTATE_NET_GREATER_THAN_GROSS =
             "The gross IHT value cannot be less than the net IHT value";
-    private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
-
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
             "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE =
             "Net qualifying value can't be greater than the net amount";
+    private List<String> warnings;
 
 
     private static final Long HIGHER_VALUE = valueOf(20000);
@@ -28,7 +29,7 @@ class ExceptionRecordCaseDataValidatorTest {
 
     @BeforeEach
     public void setUp() {
-
+        warnings = new ArrayList<>();
     }
 
     @Test
@@ -37,10 +38,8 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtGrossValue(LOWER_VALUE)
                 .ihtNetValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
-        assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, warnings.get(0));
     }
 
     @Test
@@ -49,10 +48,8 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(LOWER_VALUE)
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
-        assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, warnings.get(0));
     }
 
     @Test
@@ -63,7 +60,8 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(HIGHER_VALUE)
                 .ihtNetValue(LOWER_VALUE)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertTrue(warnings.isEmpty());
     }
 
     @Test
@@ -72,7 +70,8 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertTrue(warnings.isEmpty());
     }
 
     @Test
@@ -81,7 +80,8 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        assertDoesNotThrow(() -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertTrue(warnings.isEmpty());
     }
 
     @Test
@@ -90,10 +90,8 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(LOWER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
-        assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE, exception.getWarnings().get(0));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE, warnings.get(0));
     }
 
     @Test
@@ -102,9 +100,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(LOWER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
-                () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
-        assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE, exception.getWarnings().get(0));
+        ExceptionRecordCaseDataValidator.validateIhtValues(casedata, warnings);
+        assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE, warnings.get(0));
     }
 }
