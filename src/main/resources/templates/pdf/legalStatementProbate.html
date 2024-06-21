@@ -163,7 +163,7 @@
             {% for executor in case_details.case_data.executorsApplyingLegalStatement %}
             <p>
                 {{ executor.value.applyingExecutorFirstName }} {{ executor.value.applyingExecutorLastName }},
-                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} and codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} and codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
+                {% if (case_details.case_data.executorsApplyingLegalStatement|length > 1) %}an{% else %}the{% endif %} executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} and codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} and codicils{% endif %}{% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %} as {{ executor.value.applyingExecutorOtherNames }}{% endif %},
                 is applying for probate.
             </p>
             {% endfor %}
