@@ -100,11 +100,19 @@ Died on
 {% endmacro %}
 
 {% macro codicils(cd) %}
+{% if cd.codicilAddedDateList != null}
 {% if cd.codicilAddedDateList|length == 1 %} with one codicil{% endif %}
 {% if cd.codicilAddedDateList|length == 2 %} with two codicils{% endif %}
 {% if cd.codicilAddedDateList|length == 3 %} with three codicils{% endif %}
 {% if cd.codicilAddedDateList|length == 4 %} with four codicils{% endif %}
 {% if cd.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
+{%  elseif cd.willNumberOfCodicils !== null and cd.willNumberOfCodicils != "" %}
+{% if cd.willNumberOfCodicils == "1" %} with one codicil{% endif %}
+{% if cd.willNumberOfCodicils == "2" %} with two codicils{% endif %}
+{% if cd.willNumberOfCodicils == "3" %} with three codicils{% endif %}
+{% if cd.willNumberOfCodicils == "4" %} with four codicils{% endif %}
+{% if cd.willNumberOfCodicils == "5" %} with five codicils{% endif %}
+{% endif %}
 {% endmacro %}
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
