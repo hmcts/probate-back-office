@@ -151,8 +151,9 @@
     </tr>
     <tr>
         <td colspan="2">
+            {% if case_extras != null %}
             <p>The gross value for the estate in {% if case_details.case_data.deceasedDomicileInEngWales == "Yes"%}the United Kingdom {% else %}England and Wales {% endif %}
-                amounts to &#163;{{ Math.floor(case_details.case_data.ihtGrossValue/100) }} and the net value for the estate amounts to &#163;{{ Math.floor(case_details.case_data.ihtNetValue/100) }}.</p>
+                amounts to &#163;{{ case_extras.grossValue }} and the net value for the estate amounts to &#163;{ case_extras.netValue }}.</p>{% endif %}
             {% if case_extras != null %}
                 {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
