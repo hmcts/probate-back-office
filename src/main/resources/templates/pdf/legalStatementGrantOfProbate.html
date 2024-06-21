@@ -272,7 +272,7 @@
             </span></p>
             {% endif %}
             {% else %}
-            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
                         {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
                         {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
                         {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
