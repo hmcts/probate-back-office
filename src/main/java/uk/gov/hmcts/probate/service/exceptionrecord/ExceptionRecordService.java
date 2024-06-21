@@ -117,7 +117,7 @@ public class ExceptionRecordService {
             GrantOfRepresentationData grantOfRepresentationData =
                     erGrantOfRepresentationMapper.toCcdData(erRequest.getOCRFieldsObject(), grantType);
 
-            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData, warnings);
+            ExceptionRecordCaseDataValidator.validateIhtValues(grantOfRepresentationData);
 
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
