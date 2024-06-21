@@ -86,7 +86,7 @@
             <p>{% if (multipleExecutors) %}We{% else %}I{% endif %},
                 {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {{ executor.value.applyingExecutorName }}
-                {% if executor.value.applyingExecutorOtherNames != null %}otherwise known as {{ executor.value.applyingExecutorOtherNames }}{% endif %}
+                {% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %}otherwise known as {{ executor.value.applyingExecutorOtherNames }}{% endif %}
                 of
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }},{% endif %}
