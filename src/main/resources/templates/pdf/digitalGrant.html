@@ -366,9 +366,10 @@ Died on
             {{ applyingExecutors(case_details.case_data, primaryApplicantApplying, isTc) }}
             {{ powerReserved(case_details.case_data) }}
             <p>The application has stated that the gross value of the estate in {% if case_details.case_data.deceasedDomicileInEngWales != "No" %}the United Kingdom{% else %}England and Wales{% endif %} amounts to
-                &#163;{{ Math.floor(case_details.case_data.ihtGrossValue / 100) | numberformat("###,###") }} and the net value amounts to
-                &#163;{{ Math.floor(case_details.case_data.ihtNetValue / 100) | numberformat("###,###") }}
-            </p>
+                {% if case_extras != null%}
+                &#163;{{ case_extras.grossValue | numberformat("###,###") }} and the net value amounts to
+                &#163;{{ case_extras.netValue | numberformat("###,###") }}
+            </p>{% endif %}
         </td>
     </tr>
     <tr>
