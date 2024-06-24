@@ -141,7 +141,7 @@ class PDFDecoratorServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(solicitorLegalStatementPDFDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson1);
-        when(removePenceDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson2);
+        when(removePenceDecoratorMock.decorate(caseDataMock, documentType)).thenReturn(caseExtraJson2);
         when(caseExtraDecoratorMock.combineDecorations(caseExtraJson1, caseExtraJson2))
                 .thenReturn(combinedCaseExtraJson);
 
@@ -156,7 +156,7 @@ class PDFDecoratorServiceTest {
         when(objectMapperMock.writeValueAsString(callbackRequestMock)).thenReturn(caseDetailsJson);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
-        when(removePenceDecoratorMock.decorate(caseDataMock)).thenReturn(caseExtraJson2);
+        when(removePenceDecoratorMock.decorate(caseDataMock, documentType)).thenReturn(caseExtraJson2);
         String expectedJson2 = "{\"case_details\":{\"case_data\":{\"solsSolicitorWillSignSOT\":\"Yes\"},"
             + "\"id\":1634732500947999,\"state\":\"SolAppUpdated\"},\"case_extras\":{\"grossValue\" : \"123\","
             + "\"netValue\" : \"122\"}}";

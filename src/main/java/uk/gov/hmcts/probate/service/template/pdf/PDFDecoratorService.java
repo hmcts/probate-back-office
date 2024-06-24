@@ -89,7 +89,7 @@ public class PDFDecoratorService {
             } else if (legalStatement) {
                 CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
                 updatedJson = caseExtraDecorator.combineDecorations(solicitorLegalStatementPDFDecorator
-                        .decorate(caseData), removePenceDecorator.decorate(caseData));
+                        .decorate(caseData), removePenceDecorator.decorate(caseData, documentType));
             } else if (documentType.equals(DIGITAL_GRANT_REISSUE_DRAFT)
                     || documentType.equals(DIGITAL_GRANT_REISSUE)
                     || documentType.equals(DIGITAL_GRANT)
@@ -100,7 +100,7 @@ public class PDFDecoratorService {
                     || documentType.equals(ADMON_WILL_GRANT_DRAFT)
             ) {
                 CaseData caseData = ((CallbackRequest) data).getCaseDetails().getData();
-                updatedJson = removePenceDecorator.decorate(caseData);
+                updatedJson = removePenceDecorator.decorate(caseData, documentType);
             }
         }
 

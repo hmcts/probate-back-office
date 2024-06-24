@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 @Data
 public class IhtGrossNetValueCaseExtra {
 
-    private final BigDecimal grossValue;
-    private final BigDecimal netValue;
+    private final String grossValue;
+    private final String netValue;
 
 }
