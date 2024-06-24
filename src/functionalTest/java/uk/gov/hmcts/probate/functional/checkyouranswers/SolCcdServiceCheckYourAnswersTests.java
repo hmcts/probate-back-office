@@ -95,7 +95,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     public void verifyIhtGrossInTheReturnedPDF() throws IOException {
-        validatePostRequestSuccessForLegalStatement("1000.01", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("1000", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
