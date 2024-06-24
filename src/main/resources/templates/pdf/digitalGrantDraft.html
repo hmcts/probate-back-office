@@ -370,9 +370,9 @@ Died on
             {{ powerReserved(case_details.case_data) }}
             <p>The application has stated that the gross value of the estate in {% if case_details.case_data.deceasedDomicileInEngWales != "No" %}the United Kingdom{% else %}England and Wales{% endif %} amounts to
                 {% if case_extras != null%}
-                &#163;{{ case_extras.grossValue | numberformat("###,###") }} and the net value amounts to
-                &#163;{{ case_extras.netValue | numberformat("###,###") }}
-            </p>{% endif %}
+                &#163;{{ case_extras.grossValue }} and the net value amounts to
+                &#163;{{ case_extras.netValue }}{% endif %}
+            </p>
         </td>
     </tr>
     <tr>
