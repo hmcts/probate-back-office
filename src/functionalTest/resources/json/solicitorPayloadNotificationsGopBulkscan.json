@@ -24,11 +24,13 @@
     ],
     "security_classification": "PUBLIC",
     "case_data": {
-      "dateOfDeathType": "diedOnOrSince",
+      "dateOfDeathType": "presumedDiedOn",
       "otherExecutorExists": "No",
       "boSendToBulkPrint": "No",
+      "paperForm": "Yes",
+      "channelChoice": "BulkScan",
       "outsideUKGrantCopies": null,
-      "applicationType": "Solicitor",
+      "applicationType": "Personal",
       "deceasedAddress": {
         "County": "",
         "Country": "",
@@ -39,29 +41,56 @@
         "AddressLine3": ""
       },
       "caseType": "gop",
-      "paperForm": null,
+      "executorsApplyingNotifications": [
+        {
+          "id": "1",
+          "value": {
+            "name": "Bob Smith",
+            "email": "test@test.com",
+            "notification": "Yes",
+            "responseReceived": "No",
+            "address": {
+              "County": "",
+              "Country": "",
+              "PostCode": "2",
+              "PostTown": "",
+              "AddressLine1": "1",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            }
+          }
+        }
+      ],
+      "executorsApplying": [
+        {
+          "id": null,
+          "value": {
+            "applyingExecutorName": "Eileen Executor",
+            "applyingExecutorEmail": "test@test.com",
+            "applyingExecutorAddress": {
+              "County": "",
+              "Country": "",
+              "PostCode": "2",
+              "PostTown": "",
+              "AddressLine1": "1",
+              "AddressLine2": "",
+              "AddressLine3": ""
+            }
+          }
+        }
+      ],
+      "boEmailRequestInfoNotification": "Yes",
+      "boStopDetailsDeclarationParagraph": "Yes",
       "deceasedAnyOtherNames": "No",
       "solsFeeAccountNumber": "1234",
       "willHasCodicils": "No",
       "deceasedDateOfBirth": "1900-01-01",
       "willAccessOriginal": "Yes",
       "willExists": "Yes",
-      "solsWillType": "WillLeft",
-      "solsApplicantRelationshipToDeceased": null,
-      "solsSpouseOrCivilRenouncing": null,
-      "solsAdoptedEnglandOrWales": null,
-      "solsMinorityInterest": null,
-      "solsApplicantSiblings": null,
-      "solsEntitledMinority": null,
-      "solsDiedOrNotApplying": null,
-      "solsResiduary": null,
-      "solsResiduaryType": null,
-      "solsLifeInterest": null,
       "solsSolicitorFirmName": "Solicitor Firm Name",
       "deceasedDateOfDeath": "2000-01-01",
-      "applicationSubmittedDate": "2023-12-12",
       "solsSOTNeedToUpdate": "No",
-      "primaryApplicantEmailAddress": "primary@probate-test.com",
+      "primaryApplicantEmailAddress": "testsolicitor@probate-test.com",
       "primaryApplicantForenames": "Executor name 1",
       "primaryApplicantAddress": {
         "County": "",
@@ -72,7 +101,7 @@
         "AddressLine2": "",
         "AddressLine3": ""
       },
-      "solsSolicitorEmail": "solicitor@probate-test.com",
+      "solsSolicitorEmail": "solicitor@hmcts-test.net",
       "applicationGrounds": "Grounds for application",
       "ukEstate": [
         {
@@ -83,9 +112,9 @@
           }
         }
       ],
-      "deceasedDomicileInEngWales": "Yes",
+      "deceasedDomicileInEngWales": "No",
       "ihtNetValue": "800000",
-      "boStopDetails": "SOLS stop details",
+      "boStopDetails": "PA stop details",
       "deceasedSurname": "Deceased Last Name",
       "solsLegalStatementDocument": {
         "document_url": "http://localhost:8080/documents/e1f4f972-1514-4247-bdb1-964998ef3710",
@@ -104,24 +133,28 @@
         "Country": "SolAddCo"
       },
       "deceasedForenames": "Deceased First Name",
-      "primaryApplicantIsApplying": "Yes",
       "primaryApplicantHasAlias": "No",
       "solsSOTName": "Solicitor_fn Solicitor_ln",
       "solsSOTForenames": "Solicitor_fn",
       "solsSOTSurname": "Solicitor_ln",
       "solsSolicitorIsExec": "No",
       "solsSolicitorIsMainApplicant": null,
-      "solsSolicitorIsApplying": null,
+      "solsSolicitorIsApplying": "Yes",
       "solsSolicitorNotApplyingReason": null,
       "ihtGrossValue": "1000000",
       "ihtFormId": "IHT205",
-      "registryLocation": "ctsc",
+      "registryLocation": "London",
       "primaryApplicantSurname": "Executor Last Name 1",
       "solsSolicitorAppReference": "1231-3984-3949-0300",
-      "solsSOTJobTitle": "job title",
-      "boExaminationChecklistQ1": "yes",
-      "boExaminationChecklistQ2": "yes",
-      "boExaminationChecklistRequestQA": "yes"
+      "deceasedAliasNameList": [
+        {
+          "value": {
+            "Forenames": "Giacomo",
+            "LastName": "Terrel"
+          }
+        }
+      ],
+      "solsSOTJobTitle": "job title"
     }
   }
 }
