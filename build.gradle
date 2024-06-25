@@ -162,7 +162,7 @@ def versions = [
         authCheckerLib                  : '3.0.1',
         ccdClient                       : '5.0.1',
         commonsIO                       : '2.16.1',
-        commonsValidator                : '1.9',
+        commonsValidator                : '1.9.0',
         documentClient                  : '1.7.3',
         elasticSearchVersion            : '7.15.0',
         hmctsJavaLogging                : '6.1.5',
