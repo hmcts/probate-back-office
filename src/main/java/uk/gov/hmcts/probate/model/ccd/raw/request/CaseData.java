@@ -584,6 +584,9 @@ public class CaseData extends CaseDataParent {
     private String documentsReceivedNotificationSent;
     private String uniqueProbateCodeId;
     private String hmrcLetterId;
+    private String deceasedAnyOtherNameOnWill;
+    private String deceasedAliasFirstNameOnWill;
+    private String deceasedAliasLastNameOnWill;
     @Min(value = 0, groups = {ApplicationUpdatedGroup.class}, message = "{ihtNetNegative}")
     private final BigDecimal ihtFormNetValue;
 
