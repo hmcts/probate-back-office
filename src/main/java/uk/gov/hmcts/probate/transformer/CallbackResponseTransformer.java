@@ -1205,6 +1205,9 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
+            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
+            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
+            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1538,14 +1541,19 @@ public class CallbackResponseTransformer {
             }
         }
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .collect(Collectors.toList());
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1568,14 +1576,19 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .toList();
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
