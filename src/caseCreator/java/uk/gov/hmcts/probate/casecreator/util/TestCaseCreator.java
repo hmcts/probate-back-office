@@ -12,9 +12,9 @@ import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.jupiter.api.Disabled;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,7 +105,7 @@ public class TestCaseCreator {
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication", GOR);
     }
 
-    @Ignore
+    @Disabled
     @Test
     public void createBOSolsCase() throws Exception {
         idamUsername = idamBoUsername;
