@@ -11,9 +11,9 @@ import io.restassured.parsing.Parser;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -105,7 +105,7 @@ public class TestCaseCreator {
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication", GOR);
     }
 
-    @Ignore
+    @Disabled
     @Test
     void createBOSolsCase() throws Exception {
         idamUsername = idamBoUsername;
