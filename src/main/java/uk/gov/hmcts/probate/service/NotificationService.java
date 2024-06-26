@@ -51,6 +51,8 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
@@ -68,6 +70,8 @@ public class NotificationService {
     private static final String PERSONALISATION_APPLICANT_NAME = "applicant_name";
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private final Pattern regexPattern =
+            Pattern.compile("'\\[(.*?)]\\((https?://.*?)\\)$", Pattern.CASE_INSENSITIVE);
     @Autowired
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
@@ -122,7 +126,15 @@ public class NotificationService {
         if (state == state.CASE_STOPPED_CAVEAT) {
             personalisation = caveatPersonalisationService.getCaveatStopPersonalisation(personalisation, caseData);
         }
-
+        try {
+            for (var entry : personalisation.entrySet()) {
+                if (validate(entry.getValue().toString())) {
+                    throw new Exception("");
+                }
+            }
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
                 personalisation.replace(PERSONALISATION_APPLICANT_NAME, caseData.getSolsSOTName());
@@ -498,5 +510,11 @@ public class NotificationService {
         return caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+    }
+
+    private  boolean validate(String entryValue) {
+        Matcher matcher = regexPattern.matcher(entryValue);
+        return matcher.matches();
+
     }
 }
