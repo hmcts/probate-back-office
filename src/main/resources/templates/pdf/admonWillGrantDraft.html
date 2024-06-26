@@ -18,7 +18,7 @@
 {% if case_details.case_data.codicilAddedDateList|length == 3 %} with three codicils{% endif %}
 {% if case_details.case_data.codicilAddedDateList|length == 4 %} with four codicils{% endif %}
 {% if case_details.case_data.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
-{%  elseif case_details.case_data.willNumberOfCodicils !== null and case_details.case_data.willNumberOfCodicils != "" %}
+{%  elseif case_details.case_data.willNumberOfCodicils != null and case_details.case_data.willNumberOfCodicils != "" %}
 {% if case_details.case_data.willNumberOfCodicils == "1" %} with one codicil{% endif %}
 {% if case_details.case_data.willNumberOfCodicils == "2" %} with two codicils{% endif %}
 {% if case_details.case_data.willNumberOfCodicils == "3" %} with three codicils{% endif %}
