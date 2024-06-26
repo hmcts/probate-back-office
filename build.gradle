@@ -22,7 +22,7 @@ application {
 
 java {
   toolchain {
-    languageVersion = JavaLanguageVersion.of(21)
+    languageVersion = JavaLanguageVersion.of(17)
   }
 }
 
@@ -124,6 +124,7 @@ task functional(type: Test) {
         def index = it.indexOf("=")
         def key = it.substring(0, index)
         def value = it.substring(index + 1)
+        println 'key:value-->' + key+':' +value
         environment key, value
       }
     }
