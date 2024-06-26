@@ -100,14 +100,6 @@ Died on
 {% endmacro %}
 
 {% macro codicils(cd) %}
-{% if cd.codicilAddedDateList|length == "1" %} with one codicil{% endif %}
-{% if cd.codicilAddedDateList|length == "2" %} with two codicils{% endif %}
-{% if cd.codicilAddedDateList|length == "3" %} with three codicils{% endif %}
-{% if cd.codicilAddedDateList|length == "4" %} with four codicils{% endif %}
-{% if cd.codicilAddedDateList|length == "5" %} with five codicils{% endif %}
-{% endmacro %}
-
-{% macro codicils(cd) %}
 {% if cd.codicilAddedDateList != null}
 {% if cd.codicilAddedDateList|length == 1 %} with one codicil{% endif %}
 {% if cd.codicilAddedDateList|length == 2 %} with two codicils{% endif %}
