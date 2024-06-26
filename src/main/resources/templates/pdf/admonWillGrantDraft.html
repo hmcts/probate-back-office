@@ -12,13 +12,11 @@
 {% endmacro %}
 
 {% macro codicils(cd) %}
-{% if cd.codicilAddedDateList != null}
 {% if cd.codicilAddedDateList|length == 1 %} with one codicil
 {% elseif cd.codicilAddedDateList|length == 2 %} with two codicils
 {% elseif cd.codicilAddedDateList|length == 3 %} with three codicils
 {% elseif cd.codicilAddedDateList|length == 4 %} with four codicils
 {% elseif cd.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
-{% endif %}
 {% endmacro %}
 
 <html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
