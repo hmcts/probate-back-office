@@ -124,7 +124,6 @@ task functional(type: Test) {
         def index = it.indexOf("=")
         def key = it.substring(0, index)
         def value = it.substring(index + 1)
-        println 'key:value-->' + key+':' +value
         environment key, value
       }
     }
