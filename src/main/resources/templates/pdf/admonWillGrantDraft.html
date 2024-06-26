@@ -12,12 +12,13 @@
 {% endmacro %}
 
 {% macro codicils(cd) %}
-{% if cd.codicilAddedDateList }
-{% if cd.codicilAddedDateList|length == 1 %} with one codicil
-{% elseif cd.codicilAddedDateList|length == 2 %} with two codicils
-{% elseif cd.codicilAddedDateList|length == 3 %} with three codicils
-{% elseif cd.codicilAddedDateList|length == 4 %} with four codicils
-{% elseif cd.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
+{% if cd.codicilAddedDateList|length > 0 %}
+{% set length = cd.codicilAddedDateList|length %}
+{% if length == 1 %} with one codicil
+{% elseif length == 2 %} with two codicils
+{% elseif length == 3 %} with three codicils
+{% elseif length == 4 %} with four codicils
+{% elseif length == 5 %} with five codicils{% endif %}
 {% endif %}
 {% endmacro %}
 
