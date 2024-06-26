@@ -67,7 +67,6 @@ public class PDFDecoratorService {
         try {
             dataJson = objectMapper.writeValueAsString(data);
             dataJson = addExtraCaseData(dataJson, data, documentType);
-            log.info("Decorated data: {}", dataJson);
         } catch (JsonProcessingException e) {
             log.error(e.getMessage(), e);
             throw new BadRequestException(e.getMessage());
