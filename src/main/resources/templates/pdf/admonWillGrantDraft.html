@@ -19,7 +19,7 @@
 {% elseif codicilLength == 3 %} with three codicils
 {% elseif codicilLength == 4 %} with four codicils
 {% elseif codicilLength == 5 %} with five codicils{% endif %}
-{%  elseif cd.willNumberOfCodicils !== null and cd.willNumberOfCodicils != "" %}
+{% elseif cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}
 {% set codicilNumber = cd.willNumberOfCodicils %}
 {% if codicilNumber == "1" %} with one codicil
 {% elseif codicilNumber == "2" %} with two codicils
