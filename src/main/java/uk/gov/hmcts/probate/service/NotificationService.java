@@ -128,12 +128,11 @@ public class NotificationService {
         }
         try {
             for (var entry : personalisation.entrySet()) {
-                if (validate(entry.getValue().toString())) {
+                if (entry.getValue() !=null && validate(entry.getValue().toString())) {
                     throw new Exception("");
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException(e);
         }
         if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             if (!StringUtils.isEmpty(caseData.getSolsSOTName())) {
