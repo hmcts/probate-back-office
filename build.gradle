@@ -232,7 +232,7 @@ dependencyManagement {
   dependencies {
     dependency group: 'org.bouncycastle', name: 'bcprov-jdk15on', version: '1.70'
     // CVE-2022-24823
-    dependencySet(group: 'io.netty', version: '4.1.107.Final') {
+    dependencySet(group: 'io.netty', version: '4.1.111.Final') {
       entry 'netty-buffer'
       entry 'netty-codec'
       entry 'netty-codec-dns'
