@@ -16,11 +16,11 @@
 {{ cd.codicilAddedDateList|default([]) }}
 {% if cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}
 {% set codicilNumber = cd.willNumberOfCodicils %}
-{% if codicilNumber == "1" %} with one codicil
-{% elseif codicilNumber == "2" %} with two codicils
-{% elseif codicilNumber == "3" %} with three codicils
-{% elseif codicilNumber == "4" %} with four codicils
-{% elseif codicilNumber == "5" %} with five codicils{% endif %}
+{% if codicilNumber == 1 %} with one codicil
+{% elseif codicilNumber == 2 %} with two codicils
+{% elseif codicilNumber == 3 %} with three codicils
+{% elseif codicilNumber == 4 %} with four codicils
+{% elseif codicilNumber == 5 %} with five codicils{% endif %}
 {% elseif cd.codicilAddedDateList|length > 0 %}
 {% set codicilLength = cd.codicilAddedDateList|length %}
 {% if codicilLength == 1 %} with one codicil
