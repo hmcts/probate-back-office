@@ -101,11 +101,11 @@ Died on
 
 {% macro codicils(codicil) %}
 {{ codicil }}
-{% if codicil == 1 %} with one codicil
-{% elseif codicil == 2 %} with two codicils
-{% elseif codicil == 3 %} with three codicils
-{% elseif codicil == 4 %} with four codicils
-{% elseif codicil == 5 %} with five codicils
+{% if codicil == 1 or codicil == "1" %} with one codicil
+{% elseif codicil == 2 or codicil == "2" %} with two codicils
+{% elseif codicil == 3 or codicil == "3" %} with three codicils
+{% elseif codicil == 4 or codicil == "4" %} with four codicils
+{% elseif codicil == 5 or codicil == "5" %} with five codicils
 {% endif %}
 {% endmacro %}
 
