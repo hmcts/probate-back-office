@@ -99,18 +99,18 @@ Died on
 <strong>{{cd.deceasedDateOfDeathFormatted}}</strong> domiciled in <strong>{% if cd.domicilityCountry != null and cd.domicilityCountry != "" %}{{cd.domicilityCountry}}{% else %}England and Wales{% endif %}</strong>
 {% endmacro %}
 
-{% macro codicils(cd) %}
-{% if cd == 1 %} with one codicil
-{% elseif cd == 2 %} with two codicils
-{% elseif cd == 3 %} with three codicils
-{% elseif cd == 4 %} with four codicils
-{% elseif cd == 5 %} with five codicils
+{% macro codicils(codicil) %}
+{% if codicil == 1 %} with one codicil
+{% elseif codicil == 2 %} with two codicils
+{% elseif codicil == 3 %} with three codicils
+{% elseif codicil == 4 %} with four codicils
+{% elseif codicil == 5 %} with five codicils
 {% endif %}
 {% endmacro %}
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
 <p>The Last Will and Testament <strong>
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{% if case_details.case_data.codicilAddedDateList != null %}{{ codicils(case_details.case_data.codicilAddedDateList|length) }}{% elseif case_details.case_data.willNumberOfCodicils != null and case_details.case_data.willNumberOfCodicils != "" %}{{ codicils(case_details.case_data.willNumberOfCodicils) }}{% endif %}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{% if cd.codicilAddedDateList != null %}{{ codicils(cd.codicilAddedDateList|length) }}{% elseif cd.willNumberOfCodicils != null and cd.willNumberOfCodicils != "" %}{{ codicils(cd.willNumberOfCodicils) }}{% endif %}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 
