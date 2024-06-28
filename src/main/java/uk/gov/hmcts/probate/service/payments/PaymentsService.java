@@ -68,12 +68,19 @@ public class PaymentsService {
     private final CaveatNotificationService caveatNotificationService;
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
+        log.info("paymentService.createServiceRequest...................");
+        try{
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
         DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
         String readPath = "$['" + SERVICE_REQUEST_REFERENCE_KEY + "']";
         return jsonContext.read(readPath);
+        }catch(Exception e){
+            log.info("paymentService.createServiceRequest.Exception..................");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
