@@ -100,24 +100,17 @@ Died on
 {% endmacro %}
 
 {% macro codicils(cd) %}
-{% if cd.codicilAddedDateList != null}
-{% if cd.codicilAddedDateList|length == 1 %} with one codicil{% endif %}
-{% if cd.codicilAddedDateList|length == 2 %} with two codicils{% endif %}
-{% if cd.codicilAddedDateList|length == 3 %} with three codicils{% endif %}
-{% if cd.codicilAddedDateList|length == 4 %} with four codicils{% endif %}
-{% if cd.codicilAddedDateList|length == 5 %} with five codicils{% endif %}
-{%  elseif cd.willNumberOfCodicils !== null and cd.willNumberOfCodicils != "" %}
-{% if cd.willNumberOfCodicils == "1" %} with one codicil{% endif %}
-{% if cd.willNumberOfCodicils == "2" %} with two codicils{% endif %}
-{% if cd.willNumberOfCodicils == "3" %} with three codicils{% endif %}
-{% if cd.willNumberOfCodicils == "4" %} with four codicils{% endif %}
-{% if cd.willNumberOfCodicils == "5" %} with five codicils{% endif %}
+{% if cd == 1 %} with one codicil
+{% elseif cd == 2 %} with two codicils
+{% elseif cd == 3 %} with three codicils
+{% elseif cd == 4 %} with four codicils
+{% elseif cd == 5 %} with five codicils
 {% endif %}
 {% endmacro %}
 
 {% macro lastWillAndTestamentParagraph(cd, applyingExecCounter) %}
 <p>The Last Will and Testament <strong>
-    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{{ codicils(cd) }}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
+    {% if cd.boWillMessage != null and cd.boWillMessage != ""%}{{ cd.boWillMessage }}{% endif %}{% if cd.willHasCodicils == "Yes" %}{% if case_details.case_data.codicilAddedDateList != null %}{{ codicils(case_details.case_data.codicilAddedDateList|length) }}{% elseif case_details.case_data.willNumberOfCodicils != null and case_details.case_data.willNumberOfCodicils != "" %}{{ codicils(case_details.case_data.willNumberOfCodicils) }}{% endif %}{% endif %}</strong> of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong> (An official copy of which is available from the Court) was proved and registered before the High Court of Justice.
     The Administration of <strong>{{ cd.deceasedForenames }} {{ cd.deceasedSurname }}</strong>'s estate is granted by this court to the following Executor{% if applyingExecCounter > 1 %}s{% endif %} </p>
 {% endmacro %}
 
