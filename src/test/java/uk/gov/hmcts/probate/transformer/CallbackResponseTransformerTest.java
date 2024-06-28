@@ -302,6 +302,8 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+    private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
@@ -4240,6 +4242,19 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void testDefaultDateOfDeathDefaultsToDiedOn() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .dateOfDeathType(null)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+
+        assertEquals(DEFAULT_DATE_OF_DEATHTYPE, callbackResponse.getData().getDateOfDeathType());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
