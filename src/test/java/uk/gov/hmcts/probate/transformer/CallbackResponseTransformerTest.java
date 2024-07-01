@@ -4252,8 +4252,8 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
 
+        CallbackResponse callbackResponse = underTest.defaultDateOfDeathType(callbackRequestMock);
         assertEquals(DEFAULT_DATE_OF_DEATHTYPE, callbackResponse.getData().getDateOfDeathType());
     }
 
