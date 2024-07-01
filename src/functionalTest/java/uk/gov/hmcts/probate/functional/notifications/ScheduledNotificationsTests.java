@@ -55,9 +55,10 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
 
         final String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
         final String grantDelayCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARM, EVENT_APPLY);
-
+        log.info("createCaseAndVerifyGrantDelayed: start");
         final String applyforGrantPaperApplicationManResponse = utils.createCaseAsCaseworker(grantDelayCaseJson,
                 EVENT_APPLY);
+        log.info("createCaseAndVerifyGrantDelayed: end");
         final JsonPath jsonPathApply = JsonPath.from(applyforGrantPaperApplicationManResponse);
         final String caseId = jsonPathApply.get("id").toString();
 
