@@ -4292,7 +4292,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals("John Doe",
+        assertEquals("Jane Smith",
                 callbackResponse.getData()
                         .getSolsDeceasedAliasNamesList()
                         .get(0)
