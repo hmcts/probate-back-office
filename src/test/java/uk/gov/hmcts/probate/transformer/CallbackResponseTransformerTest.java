@@ -4258,7 +4258,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldAddDeceasedAliasNamesToCaseData() {
+    void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilder() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .deceasedAliasFirstNameOnWill("John")
                 .deceasedAliasLastNameOnWill("Doe");
@@ -4266,7 +4266,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals("John Doe",
@@ -4279,17 +4279,17 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldAddDeceasedAliasNamesToCaseData2() {
+    void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderForTransformCase() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtReferenceNumber("020e920e920e902e2")
-                .deceasedAliasFirstNameOnWill("John")
-                .deceasedAliasLastNameOnWill("Doe")
+                .deceasedAliasFirstNameOnWill("Jane")
+                .deceasedAliasLastNameOnWill("Smith")
                 .solsExecutorAliasNames("Dee ceased lol");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
-        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
         assertEquals("John Doe",
