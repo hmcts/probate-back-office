@@ -4257,6 +4257,25 @@ class CallbackResponseTransformerTest {
         assertEquals(DEFAULT_DATE_OF_DEATHTYPE, callbackResponse.getData().getDateOfDeathType());
     }
 
+    @Test
+    void shouldAddDeceasedAliasNamesToCaseData() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAliasFirstNameOnWill("John")
+                .deceasedAliasLastNameOnWill("Doe");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
+        assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
+        assertEquals("John Doe", callbackResponse.getData().getSolsDeceasedAliasNamesList().get(0).getValue().getSolsAliasname());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
