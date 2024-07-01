@@ -4272,7 +4272,12 @@ class CallbackResponseTransformerTest {
         assertLegacyInfo(callbackResponse);
         assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
-        assertEquals("John Doe", callbackResponse.getData().getSolsDeceasedAliasNamesList().get(0).getValue().getSolsAliasname());
+        assertEquals("John Doe",
+                callbackResponse.getData()
+                .getSolsDeceasedAliasNamesList()
+                .get(0)
+                .getValue()
+                .getSolsAliasname());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
