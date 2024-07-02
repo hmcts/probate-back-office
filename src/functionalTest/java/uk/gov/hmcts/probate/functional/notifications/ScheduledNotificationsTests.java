@@ -5,8 +5,8 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
-import net.thucydides.core.annotations.Pending;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -49,7 +49,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
     }
 
     @Test
-    @Pending
+    @Disabled
     public void createCaseAndVerifyGrantDelayed() throws InterruptedException, IOException {
         final String delayedDate = DATE_FORMAT.format(LocalDate.now());
 
@@ -93,7 +93,7 @@ public class ScheduledNotificationsTests extends IntegrationTestBase {
         assertTrue(emailDocText.contains(expectedText));
     }
 
-    @Pending
+    @Disabled
     @Test
     void createCaseAndVerifyGrantAwaitingDocumentation() throws InterruptedException, IOException {
         final String baseCaseJson = utils.getJsonFromFile(APPLY_FOR_GRANT_PAYLOAD);
