@@ -1636,6 +1636,7 @@ class CallbackResponseTransformerTest {
         caseDataBuilder.solsDeceasedAliasNamesList(deceasedAliasNamesList);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
@@ -4286,18 +4287,43 @@ class CallbackResponseTransformerTest {
                 .deceasedAliasLastNameOnWill("Smith")
                 .solsExecutorAliasNames("Dee ceased lol");
 
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse response = underTest.setupOriginalDocumentsForRemoval(callbackRequestMock);
 
-        assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
+        assertEquals(1, response.getData().getSolsDeceasedAliasNamesList().size());
+
         assertEquals("Jane Smith",
                 callbackResponse.getData()
                         .getSolsDeceasedAliasNamesList()
                         .get(0)
                         .getValue()
                         .getSolsAliasname());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
+    void testUpdateCaseBuilderForTransformCaseAddsDeceasedAlias() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+
+        caseDataBuilder.deceasedAliasNameList(deceasedAliasNamesList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, callbackResponse
+                .getData()
+                .getSolsDeceasedAliasNamesList()
+                .get(0)
+                .getValue()
+                .getSolsAliasname());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
     }
 
