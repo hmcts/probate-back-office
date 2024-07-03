@@ -66,24 +66,14 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             await expect(this.registryLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
             await this.registryLocator.selectOption({value: newCaseConfig.page1_list2_registry_location});
-            // await I.waitForText(createCaveatConfig.page1_waitForText, testConfig.WaitForTextTimeout);
 
-            // await I.waitForEnabled('#applicationType');
-            // await I.selectOption('#applicationType', createCaveatConfig.page1_list1_application_type);
-            // await I.waitForEnabled('#registryLocation');
-            // await I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location);
         }
 
         if (crud === 'update') {
             await expect(this.amendCaveatPageLocator).toBeVisible();
             await expect(this.registryLocator).toBeEnabled();
             await this.registryLocator.selectOption({value: newCaseConfig.page1_list2_registry_location_update});
-            // await I.waitForText(createCaveatConfig.page1_amend_waitForText, testConfig.WaitForTextTimeout);
-
-            // await I.waitForEnabled('#registryLocation');
-            // await I.selectOption('#registryLocation', createCaveatConfig.page1_list2_registry_location_update);
         }
-
         await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
@@ -97,16 +87,6 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             await this.page.locator('#deceasedDateOfDeath-year').fill(createCaveatConfig.page2_dateOfDeath_year);
             await this.page.locator(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`).focus();
             await this.page.locator(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`).check();
-            // await I.waitForText(createCaveatConfig.page2_waitForText, testConfig.WaitForTextTimeout);
-
-            // await I.fillField('#deceasedForenames', createCaveatConfig.page2_forenames+unique_deceased_user);
-            // await I.fillField('#deceasedSurname', createCaveatConfig.page2_surname+unique_deceased_user);
-            //
-            // await I.fillField('#deceasedDateOfDeath-day', createCaveatConfig.page2_dateOfDeath_day);
-            // await I.fillField('#deceasedDateOfDeath-month', createCaveatConfig.page2_dateOfDeath_month);
-            // await I.fillField('#deceasedDateOfDeath-year', createCaveatConfig.page2_dateOfDeath_year);
-
-            // await I.click(`#deceasedAnyOtherNames_${createCaveatConfig.page2_hasAliasYes}`);
 
             let idx = 0;
             /* eslint-disable no-await-in-loop */
@@ -173,6 +153,7 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
             await this.page.locator('#caveatorAddress__detailPostCode').fill(createCaveatConfig.address_postcode);
             await this.page.locator('#caveatorAddress__detailCountry').fill(createCaveatConfig.address_country);
             await this.page.locator(`#languagePreferenceWelsh_${createCaveatConfig.page3_langPrefNo}`).click();
+            await this.waitForNavigationToComplete(commonConfig.continueButton);
         }
 
         if (crud === 'update') {
@@ -181,9 +162,9 @@ exports.CreateCasePage = class CreateCasePage extends BasePage {
 
             await this.page.locator('#caveatorForenames').fill(createCaveatConfig.page3_caveator_forenames_update);
             await this.page.locator('#caveatorSurname').fill(createCaveatConfig.page3_caveator_surname_update);
+            await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
         }
 
-        await this.waitForNavigationToComplete(commonConfig.continueButton);
     }
 
     async enterCaveatPage4(crud) {
