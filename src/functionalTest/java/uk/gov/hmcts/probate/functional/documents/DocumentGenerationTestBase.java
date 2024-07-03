@@ -87,8 +87,9 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
             final String response = utils.downloadPdfAndParseToString(documentUrl);
             return removeCrLfs(response);
         } catch (Exception e) {
-            log.info("DocumentGenerationTestBase.generateDocumentFromPayload exception......"+e.toString());
-            log.info("DocumentGenerationTestBase.generateDocumentFromPayload exception......"+e.getCause());
+            log.info("DocumentGenerationTestBase.generateDocumentFromPayload exception......" + e.toString());
+            log.info("DocumentGenerationTestBase.generateDocumentFromPayload exception......" + e.getCause());
+            System.out.println("DocumentGenerationTestBase.generateDocumentFromPayload exception......");
             e.printStackTrace();
         }
         return null;
