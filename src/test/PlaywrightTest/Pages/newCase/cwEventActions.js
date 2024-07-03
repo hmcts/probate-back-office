@@ -6,6 +6,7 @@ const eventSummaryConfig = require('../eventSummary/eventSummaryConfig');
 const emailCaveatorConfig = require('../emailNotifications/caveat/emailCaveatorConfig');
 const reopenCaveatConfig = require('../reopenningCases/caveat/reopenCaveatConfig');
 const withdrawCaveatConfig = require('../withdrawCaveat/withdrawCaveatConfig');
+const registrarsDecisionConfig = require('../registrarsDecision/registrarsDecisionConfig');
 const assert = require('assert');
 
 exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
@@ -29,6 +30,10 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.emailRequestedLocator = this.page.locator(`#caveatRaisedEmailNotificationRequested_${withdrawCaveatConfig.page1_optionNo}`);
         this.bulkPrintTextLocator = this.page.getByText(withdrawCaveatConfig.page1_send_bulk_print);
         this.bulkPrintOptionLocator = this.page.locator(`#sendToBulkPrintRequested_${withdrawCaveatConfig.page1_optionNo}`);
+        this.registrarDecisionHeadingLocator = this.page.getByText(registrarsDecisionConfig.waitForText);
+        // this.registrarDecisionSelectionLocator = this.page.getByLabel(`${registrarsDecisionConfig.radioProbateRefused}`);
+        this.registrarDecisionSelectionLocator = this.page.getByRole('radio').nth(0);
+        this.registrarDecisionReasonLocator = this.page.locator(`#registrarDirectionToAdd_furtherInformation`);
     }
 
     async chooseNextStep(nextStep) {
@@ -176,5 +181,22 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.bulkPrintOptionLocator.focus();
         await this.bulkPrintOptionLocator.check();
         await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async registrarsDecision(caseRef) {
+        await expect(this.registrarDecisionHeadingLocator).toBeVisible();
+        await expect(this.page.getByText(caseRef)).toBeVisible();
+        await expect(this.registrarDecisionSelectionLocator).toBeEnabled();
+        await this.registrarDecisionSelectionLocator.focus();
+        await this.registrarDecisionSelectionLocator.click();
+        await this.page.waitForTimeout(3);
+        await this.registrarDecisionSelectionLocator.click();
+        await this.registrarDecisionReasonLocator.fill(registrarsDecisionConfig.furtherInformation);
+        //await I.waitForEnabled({css: `#registrarDirectionToAdd_decision-${registrarsDecisionConfig.radioProbateRefused}`});
+        //await I.dontSeeCheckboxIsChecked({css: `#registrarDirectionToAdd_decision-${registrarsDecisionConfig.radioProbateRefused}`});
+        //await I.click({css: `#registrarDirectionToAdd_decision-${registrarsDecisionConfig.radioProbateRefused}`});
+        //await I.fillField('#registrarDirectionToAdd_furtherInformation', registrarsDecisionConfig.furtherInformation);
+        await this.waitForNavigationToComplete(commonConfig.continueButton);
+        //await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
     }
 };
