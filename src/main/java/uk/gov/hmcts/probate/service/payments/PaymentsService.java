@@ -2,8 +2,6 @@ package uk.gov.hmcts.probate.service.payments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -68,19 +67,11 @@ public class PaymentsService {
     private final CaveatNotificationService caveatNotificationService;
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
-        log.info("paymentService.createServiceRequest...................");
-        try {
-            SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-            String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
-                    securityDTO.getServiceAuthorisation(), serviceRequestDto);
-            DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
-            String readPath = "$['" + SERVICE_REQUEST_REFERENCE_KEY + "']";
-            return jsonContext.read(readPath);
-        } catch (Exception e) {
-            log.info("paymentService.createServiceRequest.Exception..................");
-            e.printStackTrace();
-        }
-        return null;
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        PaymentServiceResponse paymentServiceResponse = serviceRequestClient
+                .createServiceRequest(securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(), serviceRequestDto);
+        return paymentServiceResponse.getServiceRequestReference();
     }
 
     public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
