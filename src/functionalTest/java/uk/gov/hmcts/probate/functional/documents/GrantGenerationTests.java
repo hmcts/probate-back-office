@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.documents;
 
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,6 +13,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 
+@Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
 public class GrantGenerationTests extends DocumentGenerationTestBase {
     // Grant fields
@@ -358,7 +360,9 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
         throws IOException {
         String intestacyPayload = "/default/intestacy/personal/";
 
+        log.info("GrantGenerationTests.IntestacyPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales start");
         String response = generateGrantDocument(intestacyPayload + INTESTACY_JSON, GENERATE_GRANT_DRAFT);
+        log.info("GrantGenerationTests.IntestacyPersonalGrantTypesWhenDeceasedDomiciledInEnglandOrWales end");
         assertTrue(response.contains(DECEASED_DOMICILED_IN_ENG_WALES_TEXT));
 
         response = generateGrantDocument(intestacyPayload + INTESTACY_JSON, GENERATE_GRANT);

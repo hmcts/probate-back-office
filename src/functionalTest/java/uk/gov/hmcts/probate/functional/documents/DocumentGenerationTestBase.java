@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional.documents;
 
+import lombok.extern.slf4j.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
@@ -7,6 +8,7 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
 
+@Slf4j
 public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     protected static final String GENERATE_GRANT = "/document/generate-grant";
     protected static final String GENERATE_GRANT_REISSUE = "/document/generate-grant-reissue";
@@ -69,19 +71,26 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     }
 
     protected String generateDocumentFromPayload(String payload, String path, String documentName) {
+        try {
+            log.info("DocumentGenerationTestBase.generateDocumentFromPayload start");
+            Response jsonResponse = RestAssured.given()
+                    .relaxedHTTPSValidation()
+                    .headers(utils.getHeadersWithUserId())
+                    .body(payload)
+                    .when().post(path).andReturn();
 
-        Response jsonResponse = RestAssured.given()
-            .relaxedHTTPSValidation()
-            .headers(utils.getHeadersWithUserId())
-            .body(payload)
-            .when().post(path).andReturn();
+            log.info("DocumentGenerationTestBase.generateDocumentFromPayload end");
+            JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
-        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
-
-        final String documentUrl =
-            jsonPath.get("data." + documentName + ".document_binary_url");
-        final String response = utils.downloadPdfAndParseToString(documentUrl);
-        return removeCrLfs(response);
+            final String documentUrl =
+                    jsonPath.get("data." + documentName + ".document_binary_url");
+            final String response = utils.downloadPdfAndParseToString(documentUrl);
+            return removeCrLfs(response);
+        } catch (Exception e) {
+            log.info("DocumentGenerationTestBase.generateDocumentFromPayload exception......");
+            e.printStackTrace();
+        }
+        return null;
     }
 
     protected String generateDocument(String jsonFileName, String path, String documentName) throws IOException {
