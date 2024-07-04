@@ -117,6 +117,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
                 throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
             }
         } catch (Exception e) {
+            if (e instanceof ClientException) {
+                throw e;
+            }
             log.info("DocumentManagementServiceImpl.exception-----" + e.getMessage());
             e.printStackTrace();
         }
