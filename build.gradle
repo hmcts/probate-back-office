@@ -163,7 +163,7 @@ def versions = [
         ccdClient                       : '5.0.1',
         commonsIO                       : '2.16.1',
         commonsValidator                : '1.9.0',
-        documentClient                  : '1.7.3',
+        documentClient                  : '7.0.1',
         elasticSearchVersion            : '7.15.0',
         hmctsJavaLogging                : '6.1.5',
         jacksonDatabind                 : '2.17.1',
