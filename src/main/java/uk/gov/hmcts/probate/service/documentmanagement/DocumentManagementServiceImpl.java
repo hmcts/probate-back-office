@@ -104,16 +104,22 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     @Override
     public byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException {
-        String auth = securityUtils.getCaseworkerToken();
-        String s2s = securityUtils.generateServiceToken();
+        try {
+            String auth = securityUtils.getCaseworkerToken();
+            String s2s = securityUtils.generateServiceToken();
 
-        ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
-                binaryUrl);
-        Resource body = response.getBody();
-        if (body != null) {
-            return IOUtils.toByteArray(body.getInputStream());
-        } else {
-            throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
+            ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
+                    binaryUrl);
+            Resource body = response.getBody();
+            if (body != null) {
+                return IOUtils.toByteArray(body.getInputStream());
+            } else {
+                throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
+            }
+        } catch (Exception e) {
+            log.info("DocumentManagementServiceImpl.exception-----" + e.getMessage());
+            e.printStackTrace();
         }
+        return null;
     }
 }

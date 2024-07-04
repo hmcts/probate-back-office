@@ -33,7 +33,7 @@ jacoco {
 sonarqube {
   properties {
     property "sonar.projectName", "PROBATE :: BACK-OFFICE"
-    property "sonar.exclusions", "**/SecurityConfiguration.java,**/BusinessRulesValidationApplication.java,**/AuthCheckerConfiguration.java,**/DocumentManagementServiceImpl.java,**/EventValidationService.java,**/BulkPrintService.java"
+    property "sonar.exclusions", "**/SecurityConfiguration.java,**/BusinessRulesValidationApplication.java,**/AuthCheckerConfiguration.java,**/DocumentManagementServiceImpl.java,**/EventValidationService.java,**/BulkPrintService.java,**/DocumentManagementServiceImpl.java"
     property "sonar.projectKey", "Sols-CCD-Service-API"
     property "sonar.jacoco.reportPath", "${layout.buildDirectory.get()}/jacoco/test.exec"
     property "sonar.host.url", "https://sonar.reform.hmcts.net/"
@@ -163,7 +163,7 @@ def versions = [
         ccdClient                       : '5.0.1',
         commonsIO                       : '2.16.1',
         commonsValidator                : '1.9.0',
-        documentClient                  : '7.0.1',
+        documentClient                  : '1.7.3',
         elasticSearchVersion            : '7.15.0',
         hmctsJavaLogging                : '6.1.5',
         jacksonDatabind                 : '2.17.1',
