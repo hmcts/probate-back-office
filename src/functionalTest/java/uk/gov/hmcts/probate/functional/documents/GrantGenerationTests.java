@@ -215,12 +215,18 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
 
         final String payloadIssue = replaceAllInString(getJsonFromFile(gopPayload + GOP_JSON),
             DECEASED_DOMICILE_IN_ENG_WALES_YES, DECEASED_DOMICILE_IN_ENG_WALES_NO);
-
+        log.info("verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales-1-"
+                + GENERATE_GRANT_DRAFT);
         String response = generateGrantDocumentFromPayload(payloadIssue, GENERATE_GRANT_DRAFT);
         assertTrue(response.contains(expectedText));
 
+        log.info("verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales-2-"
+                + GENERATE_GRANT);
         response = generateGrantDocumentFromPayload(payloadIssue, GENERATE_GRANT);
         assertTrue(response.contains(expectedText));
+
+        log.info("verifyGenerateAllEnglishGopPersonalGrantTypesWhenDeceasedNotDomiciledInEnglandOrWales-3-"
+                + GENERATE_GRANT);
 
         final String payloadReissue = replaceAllInString(getJsonFromFile(gopPayload + "gopReissue.json"),
             DECEASED_DOMICILE_IN_ENG_WALES_YES, DECEASED_DOMICILE_IN_ENG_WALES_NO);
