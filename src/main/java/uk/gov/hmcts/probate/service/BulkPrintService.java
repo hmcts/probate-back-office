@@ -167,6 +167,7 @@ public class BulkPrintService {
             log.error("Error retrieving document from store with url {}", ioe);
         } catch (Exception e) {
             log.error("Error sending pdfs to bulk print {}", e.getMessage());
+            e.printStackTrace();
         }
         return sendLetterResponse;
     }
