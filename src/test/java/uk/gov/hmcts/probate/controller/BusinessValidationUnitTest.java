@@ -85,6 +85,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.CaseState.Constants.CASE_P
 class BusinessValidationUnitTest {
 
     private static Optional<String> STATE_GRANT_TYPE_PROBATE = Optional.of("SolProbateCreated");
+    private static String PAPERFORM = "PaperForm";
     @Mock
     private EmailAddressNotifyApplicantValidationRule emailAddressNotifyApplicantValidationRule;
     @Mock
@@ -175,6 +176,7 @@ class BusinessValidationUnitTest {
     private NaValidationRule naValidationRule;
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
+
 
     @Mock
     private CaseEscalatedService caseEscalatedService;
@@ -1011,5 +1013,27 @@ class BusinessValidationUnitTest {
         verify(callbackResponseTransformerMock, times(1))
                 .changeDob(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldTransformChannelChoice() throws NotificationClientException {
+        ResponseCaseData responseCaseData = ResponseCaseData.builder().channelChoice(PAPERFORM).build();
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(caseDataMock.getApplicationType()).thenReturn(ApplicationType.PERSONAL);
+        when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
+                .thenReturn(callbackResponseMock);
+        when(callbackResponseMock.getData()).thenReturn(responseCaseData);
+        Document documentMock = Mockito.mock(Document.class);
+        when(notificationService.sendEmail(APPLICATION_RECEIVED, caseDetailsMock, Optional.of(CaseOrigin.CASEWORKER)))
+                .thenReturn(documentMock);
+        when(callbackResponseTransformerMock.paperForm(callbackRequestMock, documentMock))
+                .thenReturn(callbackResponseMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.paperFormCaseDetails(callbackRequestMock, bindingResultMock);
+
+        verify(caseDataTransformerMock).transformCaseDataForPaperForm(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getBody().getData().getChannelChoice(), is(PAPERFORM));
     }
 }

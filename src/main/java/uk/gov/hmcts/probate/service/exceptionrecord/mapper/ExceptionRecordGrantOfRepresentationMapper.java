@@ -42,29 +42,29 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import java.util.List;
 
 @Mapper(componentModel = "spring",
-    imports = {StringUtils.class, ApplicationType.class},
-    uses = {ApplicationTypeMapper.class,
-        OCRFieldAddressMapper.class,
-        OCRFieldAdditionalExecutorsApplyingMapper.class,
-        OCRFieldAdditionalExecutorsNotApplyingMapper.class,
-        OCRFieldDefaultLocalDateFieldMapper.class,
-        OCRFieldYesOrNoMapper.class,
-        OCRFieldMartialStatusMapper.class,
-        OCRFieldAdoptiveRelativesMapper.class,
-        OCRFieldIhtFormEstateMapper.class,
-        OCRFieldIhtFormTypeMapper.class,
-        OCRFieldIhtMoneyMapper.class,
-        OCRFieldRelationshipMapper.class,
-        OCRFieldPaymentMethodMapper.class,
-        OCRFieldNumberMapper.class,
-        OCRFieldIhtFormEstateValuesCompletedMapper.class,
-        OCRFieldIhtFormCompletedOnlineMapper.class,
-        OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class,
-        OCRFieldSolicitorWillTypeMapper.class,
-        OCRFieldIhtGrossValueMapper.class,
-        OCRFieldIhtNetValueMapper.class
-    },
-    unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
+        imports = {StringUtils.class, ApplicationType.class},
+        uses = {ApplicationTypeMapper.class,
+                OCRFieldAddressMapper.class,
+                OCRFieldAdditionalExecutorsApplyingMapper.class,
+                OCRFieldAdditionalExecutorsNotApplyingMapper.class,
+                OCRFieldDefaultLocalDateFieldMapper.class,
+                OCRFieldYesOrNoMapper.class,
+                OCRFieldMartialStatusMapper.class,
+                OCRFieldAdoptiveRelativesMapper.class,
+                OCRFieldIhtFormEstateMapper.class,
+                OCRFieldIhtFormTypeMapper.class,
+                OCRFieldIhtMoneyMapper.class,
+                OCRFieldRelationshipMapper.class,
+                OCRFieldPaymentMethodMapper.class,
+                OCRFieldNumberMapper.class,
+                OCRFieldIhtFormEstateValuesCompletedMapper.class,
+                OCRFieldIhtFormCompletedOnlineMapper.class,
+                OCRFieldDeceasedHadLateSpouseOrCivilPartnerMapper.class,
+                OCRFieldSolicitorWillTypeMapper.class,
+                OCRFieldIhtGrossValueMapper.class,
+                OCRFieldIhtNetValueMapper.class
+        },
+        unmappedTargetPolicy = ReportingPolicy.IGNORE, nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "extraCopiesOfGrant", expression = "java(OCRFieldNumberMapper.stringToLong(new String("
             + "\"extraCopiesOfGrant\"), ocrFields.getExtraCopiesOfGrant()))", qualifiedBy = {ToLong.class})
@@ -147,70 +147,70 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     // Following fields captured as text but used as booleans in orchestrator
     @Mapping(target = "childrenSurvived", ignore = true)
     @Mapping(target = "childrenUnderEighteenSurvivedText", expression = "java(ocrFields"
-        + ".getChildrenUnderEighteenSurvived())")
+            + ".getChildrenUnderEighteenSurvived())")
     @Mapping(target = "childrenOverEighteenSurvivedText", expression = "java(ocrFields"
-        + ".getChildrenOverEighteenSurvived())")
+            + ".getChildrenOverEighteenSurvived())")
     @Mapping(target = "childrenDied", ignore = true)
     @Mapping(target = "childrenDiedUnderEighteenText", expression = "java(ocrFields.getChildrenDiedUnderEighteen())")
     @Mapping(target = "childrenDiedOverEighteenText", expression = "java(ocrFields.getChildrenDiedOverEighteen())")
     @Mapping(target = "grandChildrenSurvived", ignore = true)
     @Mapping(target = "grandChildrenSurvivedUnderEighteenText", expression = "java(ocrFields"
-        + ".getGrandChildrenSurvivedUnderEighteen())")
+            + ".getGrandChildrenSurvivedUnderEighteen())")
     @Mapping(target = "grandChildrenSurvivedOverEighteenText", expression = "java(ocrFields"
-        + ".getGrandChildrenSurvivedOverEighteen())")
+            + ".getGrandChildrenSurvivedOverEighteen())")
 
     // Ignored fields defined in after mapping section.
     @Mapping(target = "parentsExistUnderEighteenSurvived", source = "ocrFields.parentsExistUnderEighteenSurvived")
     @Mapping(target = "parentsExistOverEighteenSurvived", source = "ocrFields.parentsExistOverEighteenSurvived")
     @Mapping(target = "wholeBloodSiblingsSurvivedUnderEighteen", source = "ocrFields"
-        + ".wholeBloodSiblingsSurvivedUnderEighteen")
+            + ".wholeBloodSiblingsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodSiblingsSurvivedOverEighteen", source = "ocrFields"
-        + ".wholeBloodSiblingsSurvivedOverEighteen")
+            + ".wholeBloodSiblingsSurvivedOverEighteen")
     @Mapping(target = "wholeBloodSiblingsDiedUnderEighteen", source = "ocrFields.wholeBloodSiblingsDiedUnderEighteen")
     @Mapping(target = "wholeBloodSiblingsDiedOverEighteen", source = "ocrFields.wholeBloodSiblingsDiedOverEighteen")
     @Mapping(target = "wholeBloodNeicesAndNephewsUnderEighteen", source = "ocrFields"
-        + ".wholeBloodNeicesAndNephewsUnderEighteen")
+            + ".wholeBloodNeicesAndNephewsUnderEighteen")
     @Mapping(target = "wholeBloodNeicesAndNephewsOverEighteen", source = "ocrFields"
-        + ".wholeBloodNeicesAndNephewsOverEighteen")
+            + ".wholeBloodNeicesAndNephewsOverEighteen")
     @Mapping(target = "halfBloodSiblingsSurvivedUnderEighteen", source = "ocrFields"
-        + ".halfBloodSiblingsSurvivedUnderEighteen")
+            + ".halfBloodSiblingsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodSiblingsSurvivedOverEighteen", source = "ocrFields"
-        + ".halfBloodSiblingsSurvivedOverEighteen")
+            + ".halfBloodSiblingsSurvivedOverEighteen")
     @Mapping(target = "halfBloodSiblingsDiedUnderEighteen", source = "ocrFields.halfBloodSiblingsDiedUnderEighteen")
     @Mapping(target = "halfBloodSiblingsDiedOverEighteen", source = "ocrFields.halfBloodSiblingsDiedOverEighteen")
     @Mapping(target = "halfBloodNeicesAndNephewsUnderEighteen", source = "ocrFields"
-        + ".halfBloodNeicesAndNephewsUnderEighteen")
+            + ".halfBloodNeicesAndNephewsUnderEighteen")
     @Mapping(target = "halfBloodNeicesAndNephewsOverEighteen", source = "ocrFields"
-        + ".halfBloodNeicesAndNephewsOverEighteen")
+            + ".halfBloodNeicesAndNephewsOverEighteen")
     @Mapping(target = "grandparentsDiedUnderEighteen", source = "ocrFields.grandparentsDiedUnderEighteen")
     @Mapping(target = "grandparentsDiedOverEighteen", source = "ocrFields.grandparentsDiedOverEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedUnderEighteen", source = "ocrFields"
-        + ".wholeBloodUnclesAndAuntsSurvivedUnderEighteen")
+            + ".wholeBloodUnclesAndAuntsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsSurvivedOverEighteen", source = "ocrFields"
-        + ".wholeBloodUnclesAndAuntsSurvivedOverEighteen")
+            + ".wholeBloodUnclesAndAuntsSurvivedOverEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsDiedUnderEighteen", source = "ocrFields"
-        + ".wholeBloodUnclesAndAuntsDiedUnderEighteen")
+            + ".wholeBloodUnclesAndAuntsDiedUnderEighteen")
     @Mapping(target = "wholeBloodUnclesAndAuntsDiedOverEighteen", source = "ocrFields"
-        + ".wholeBloodUnclesAndAuntsDiedOverEighteen")
+            + ".wholeBloodUnclesAndAuntsDiedOverEighteen")
     @Mapping(target = "wholeBloodCousinsSurvivedUnderEighteen", source = "ocrFields"
-        + ".wholeBloodCousinsSurvivedUnderEighteen")
+            + ".wholeBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "wholeBloodCousinsSurvivedOverEighteen", source = "ocrFields"
-        + ".wholeBloodCousinsSurvivedOverEighteen")
+            + ".wholeBloodCousinsSurvivedOverEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsSurvivedUnderEighteen", source = "ocrFields"
-        + ".halfBloodUnclesAndAuntsSurvivedUnderEighteen")
+            + ".halfBloodUnclesAndAuntsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsSurvivedOverEighteen", source = "ocrFields"
-        + ".halfBloodUnclesAndAuntsSurvivedOverEighteen")
+            + ".halfBloodUnclesAndAuntsSurvivedOverEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsDiedUnderEighteen", source = "ocrFields"
-        + ".halfBloodUnclesAndAuntsDiedUnderEighteen")
+            + ".halfBloodUnclesAndAuntsDiedUnderEighteen")
     @Mapping(target = "halfBloodUnclesAndAuntsDiedOverEighteen", source = "ocrFields"
-        + ".halfBloodUnclesAndAuntsDiedOverEighteen")
+            + ".halfBloodUnclesAndAuntsDiedOverEighteen")
     @Mapping(target = "halfBloodCousinsSurvivedUnderEighteen", source = "ocrFields"
-        + ".halfBloodCousinsSurvivedUnderEighteen")
+            + ".halfBloodCousinsSurvivedUnderEighteen")
     @Mapping(target = "halfBloodCousinsSurvivedOverEighteen", source = "ocrFields.halfBloodCousinsSurvivedOverEighteen")
     @Mapping(target = "primaryApplicantRelationshipToDeceased",
-        source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationship.class})
+            source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationship.class})
     @Mapping(target = "paRelationshipToDeceasedOther",
-        source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
+            source = "ocrFields.primaryApplicantRelationshipToDeceased", qualifiedBy = {ToRelationshipOther.class})
     @Mapping(target = "solsSOTName", source = "ocrFields.solsSolicitorRepresentativeName")
     @Mapping(target = "applyingAsAnAttorney", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
             + "\"applyingAsAnAttorney\"), ocrFields.getApplyingAsAnAttorney()))", qualifiedBy = {ToYesOrNo.class})
@@ -238,7 +238,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "deceasedMarriedAfterWillOrCodicilDate",
             expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"deceasedMarriedAfterWillOrCodicilDate\"), "
                     + "ocrFields.getDeceasedMarriedAfterWillOrCodicilDate()))",
-        qualifiedBy = {ToYesOrNo.class})
+            qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "languagePreferenceWelsh", expression =
             "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"bilingualGrantRequested\"), "
                     + "ocrFields.getBilingualGrantRequested()))", qualifiedBy = {ToYesOrNo.class})
@@ -250,8 +250,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             + "\"willGiftUnderEighteen\"), ocrFields.getWillGiftUnderEighteen()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "notifiedApplicants", expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String("
             + "\"notifiedApplicants\"), ocrFields.getNotifiedApplicants()))", qualifiedBy = {ToYesOrNo.class})
-    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields", qualifiedBy = {
-        ToIHTFormCompletedOnline.class})
+    @Mapping(target = "ihtFormCompletedOnline", source = "ocrFields", qualifiedBy = {ToIHTFormCompletedOnline.class})
     @Mapping(target = "ihtReferenceNumber", source = "ocrFields.ihtReferenceNumber")
     @Mapping(target = "ihtFormId", source = "ocrFields", qualifiedBy = {ToIHTFormId.class})
     @Mapping(target = "ihtGrossValue", source = "ocrFields", qualifiedBy = {ToIHTGrossValue.class})
@@ -259,6 +258,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @Mapping(target = "paperForm", expression = "java(Boolean.TRUE)")
     @Mapping(target = "applicationType", source = "ocrFields", qualifiedBy = {
         ToApplicationTypeGrantOfRepresentation.class})
+    @Mapping(target = "channelChoice", expression = "java(new String(\"BulkScan\"))")
     @Mapping(target = "ihtFormEstate", source = "ocrFields", qualifiedBy = {ToIHTFormEstate.class})
     @Mapping(target = "ihtEstateGrossValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies(new String("
             + "\"ihtEstateGrossValue\"), ocrFields.getIhtEstateGrossValue()))", qualifiedBy = {ToPennies.class})
@@ -266,29 +266,33 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
             + "\"ihtEstateNetValue\"), ocrFields.getIhtEstateNetValue()))", qualifiedBy = {ToPennies.class})
     @Mapping(target = "ihtEstateNetQualifyingValue", expression = "java(OCRFieldIhtMoneyMapper.poundsToPennies("
             + "new String(\"ihtEstateNetQualifyingValue\"), ocrFields.getIhtEstateNetQualifyingValue()))",
-            qualifiedBy = {ToPennies.class})
-    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner",
-        source = "ocrFields", qualifiedBy = {
-            ToDeceasedHadLateSpouseOrCivilPartner.class})
+                qualifiedBy = {ToPennies.class})
+    @Mapping(target = "deceasedHadLateSpouseOrCivilPartner", source = "ocrFields", qualifiedBy = {
+        ToDeceasedHadLateSpouseOrCivilPartner.class})
     @Mapping(target = "ihtUnusedAllowanceClaimed",
             expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"ihtUnusedAllowanceClaimed\"), "
                     + "ocrFields.getIhtUnusedAllowanceClaimed()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "ihtFormEstateValuesCompleted", source = "ocrFields",
-        qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
+            qualifiedBy = {ToIHTFormEstateValuesCompleted.class})
     @Mapping(target = "hmrcLetterId",
             expression = "java(OCRFieldYesOrNoMapper.toYesOrNo(new String(\"iht400process\"), "
                     + "ocrFields.getIht400process()))", qualifiedBy = {ToYesOrNo.class})
     @Mapping(target = "uniqueProbateCodeId", source = "ocrFields.ihtCode")
-    @Mapping(target = "solsWillType", source = "ocrFields", qualifiedBy = {ToSolicitorWillType.class})
+    @Mapping(target = "solsWillType", expression = "java(OCRFieldSolicitorWillTypeMapper.toSolicitorWillType("
+            + "ocrFields.getSolsWillType(), grantType))",
+            qualifiedBy = {ToSolicitorWillType.class})
     @Mapping(target = "solsWillTypeReason", source = "ocrFields.solsWillTypeReason")
 
     GrantOfRepresentationData toCcdData(ExceptionRecordOCRFields ocrFields, GrantType grantType);
 
     @AfterMapping
-    default void clearEmptySolsWillTypeReason(@MappingTarget GrantOfRepresentationData caseData) {
-        // there might not be a reason given but if there is not will type set then clear
-        if (null == caseData.getSolsWillType() && caseData.getSolsWillTypeReason() != null
-                && caseData.getSolsWillTypeReason().isEmpty()) {
+    default void clearSolsWillTypeAndReason(@MappingTarget GrantOfRepresentationData caseData) {
+        // there should not be sols will type on citizen case
+        if (caseData.getApplicationType() == ApplicationType.PERSONAL) {
+            caseData.setSolsWillTypeReason(null);
+            caseData.setSolsWillType(null);
+        } else if (null == caseData.getSolsWillType()) {
+            // there might not be a reason given but if there is not will type set then clear
             caseData.setSolsWillTypeReason(null);
         }
     }
@@ -297,25 +301,25 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     default void setDomicilityIHTCert(@MappingTarget GrantOfRepresentationData caseData,
                                       ExceptionRecordOCRFields ocrField) {
         if (BooleanUtils.toBoolean(ocrField.getDomicilityEntrustingDocument())
-            || BooleanUtils.toBoolean(ocrField.getDomicilitySuccessionIHTCert())) {
+                || BooleanUtils.toBoolean(ocrField.getDomicilitySuccessionIHTCert())) {
             caseData.setDomicilityIHTCert(Boolean.TRUE);
         }
     }
 
     @AfterMapping
     default void setSolsPaymentMethod(
-        @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
-            && StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
+                && StringUtils.isNotBlank(caseData.getSolsFeeAccountNumber())) {
             caseData.setSolsPaymentMethods(SolsPaymentMethods.FEE_ACCOUNT);
         }
     }
 
     @AfterMapping
     default void setSolsSolicitorRepresentativeName(
-        @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if ((caseData.getApplicationType() == ApplicationType.SOLICITORS)
-            && (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
+                && (StringUtils.isNotBlank(ocrField.getSolsSolicitorRepresentativeName()))) {
             String solicitorFullName = ocrField.getSolsSolicitorRepresentativeName();
             List<String> names = OCRFieldExtractor.splitFullname(solicitorFullName);
             if (names.size() > 2) {
@@ -333,7 +337,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
 
     @AfterMapping
     default void clearIhtFormOrReferenceIfNotSelected(
-        @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField) {
         if (caseData.getIhtFormCompletedOnline() != null && caseData.getIhtFormCompletedOnline()) {
             caseData.setIhtFormId(null);
         }
@@ -345,23 +349,23 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     @AfterMapping
     @SuppressWarnings("Duplicates")
     default void setDerivedFamilyBooleans(
-        @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField, GrantType grantType) {
+            @MappingTarget GrantOfRepresentationData caseData, ExceptionRecordOCRFields ocrField, GrantType grantType) {
         if (greaterThenZero(ocrField.getChildrenUnderEighteenSurvived())
-            || greaterThenZero(ocrField.getChildrenOverEighteenSurvived())) {
+                || greaterThenZero(ocrField.getChildrenOverEighteenSurvived())) {
             caseData.setChildrenSurvived(Boolean.TRUE);
         } else {
             caseData.setChildrenOverEighteenSurvivedText(null);
             caseData.setChildrenUnderEighteenSurvivedText(null);
         }
         if (greaterThenZero(ocrField.getChildrenDiedUnderEighteen())
-            || greaterThenZero(ocrField.getChildrenDiedOverEighteen())) {
+                || greaterThenZero(ocrField.getChildrenDiedOverEighteen())) {
             caseData.setChildrenDied(Boolean.TRUE);
         } else {
             caseData.setChildrenDiedOverEighteenText(null);
             caseData.setChildrenDiedUnderEighteenText(null);
         }
         if (greaterThenZero(ocrField.getGrandChildrenSurvivedUnderEighteen())
-            || greaterThenZero(ocrField.getGrandChildrenSurvivedOverEighteen())) {
+                || greaterThenZero(ocrField.getGrandChildrenSurvivedOverEighteen())) {
             caseData.setGrandChildrenSurvived(Boolean.TRUE);
         } else {
             caseData.setGrandChildrenSurvivedOverEighteenText(null);
@@ -369,98 +373,98 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
         }
         if (grantType.equals(GrantType.INTESTACY)) {
             if (greaterThenZero(ocrField.getParentsExistUnderEighteenSurvived())
-                || greaterThenZero(ocrField.getParentsExistOverEighteenSurvived())) {
+                    || greaterThenZero(ocrField.getParentsExistOverEighteenSurvived())) {
                 caseData.setParentsExistSurvived(Boolean.TRUE);
             } else {
                 caseData.setParentsExistOverEighteenSurvived(null);
                 caseData.setParentsExistUnderEighteenSurvived(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodSiblingsSurvivedUnderEighteen())
-                || greaterThenZero(ocrField.getWholeBloodSiblingsSurvivedOverEighteen())) {
+                    || greaterThenZero(ocrField.getWholeBloodSiblingsSurvivedOverEighteen())) {
                 caseData.setWholeBloodSiblingsSurvived(Boolean.TRUE);
             } else {
                 caseData.setWholeBloodSiblingsSurvivedOverEighteen(null);
                 caseData.setWholeBloodSiblingsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodSiblingsDiedUnderEighteen())
-                || greaterThenZero(ocrField.getWholeBloodSiblingsDiedOverEighteen())) {
+                    || greaterThenZero(ocrField.getWholeBloodSiblingsDiedOverEighteen())) {
                 caseData.setWholeBloodSiblingsDied(Boolean.TRUE);
             } else {
                 caseData.setWholeBloodSiblingsDiedOverEighteen(null);
                 caseData.setWholeBloodSiblingsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodNeicesAndNephewsUnderEighteen())
-                || greaterThenZero(ocrField.getWholeBloodNeicesAndNephewsOverEighteen())) {
+                    || greaterThenZero(ocrField.getWholeBloodNeicesAndNephewsOverEighteen())) {
                 caseData.setWholeBloodNeicesAndNephews(Boolean.TRUE);
             } else {
                 caseData.setWholeBloodNeicesAndNephewsOverEighteen(null);
                 caseData.setWholeBloodNeicesAndNephewsUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodSiblingsSurvivedUnderEighteen())
-                || greaterThenZero(ocrField.getHalfBloodSiblingsSurvivedOverEighteen())) {
+                    || greaterThenZero(ocrField.getHalfBloodSiblingsSurvivedOverEighteen())) {
                 caseData.setHalfBloodSiblingsSurvived(Boolean.TRUE);
             } else {
                 caseData.setHalfBloodSiblingsSurvivedOverEighteen(null);
                 caseData.setHalfBloodSiblingsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodSiblingsDiedUnderEighteen())
-                || greaterThenZero(ocrField.getHalfBloodSiblingsDiedOverEighteen())) {
+                    || greaterThenZero(ocrField.getHalfBloodSiblingsDiedOverEighteen())) {
                 caseData.setHalfBloodSiblingsDied(Boolean.TRUE);
             } else {
                 caseData.setHalfBloodSiblingsDiedOverEighteen(null);
                 caseData.setHalfBloodSiblingsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodNeicesAndNephewsUnderEighteen())
-                || greaterThenZero(ocrField.getHalfBloodNeicesAndNephewsOverEighteen())) {
+                    || greaterThenZero(ocrField.getHalfBloodNeicesAndNephewsOverEighteen())) {
                 caseData.setHalfBloodNeicesAndNephews(Boolean.TRUE);
             } else {
                 caseData.setHalfBloodNeicesAndNephewsOverEighteen(null);
                 caseData.setHalfBloodNeicesAndNephewsUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getGrandparentsDiedUnderEighteen())
-                || greaterThenZero(ocrField.getGrandparentsDiedOverEighteen())) {
+                    || greaterThenZero(ocrField.getGrandparentsDiedOverEighteen())) {
                 caseData.setGrandparentsDied(Boolean.TRUE);
             } else {
                 caseData.setGrandparentsDiedOverEighteen(null);
                 caseData.setGrandparentsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedUnderEighteen())
-                || greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())) {
+                    || greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsSurvivedOverEighteen())) {
                 caseData.setWholeBloodUnclesAndAuntsSurvived(Boolean.TRUE);
             } else {
                 caseData.setWholeBloodUnclesAndAuntsSurvivedOverEighteen(null);
                 caseData.setWholeBloodUnclesAndAuntsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedUnderEighteen())
-                || greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedOverEighteen())) {
+                    || greaterThenZero(ocrField.getWholeBloodUnclesAndAuntsDiedOverEighteen())) {
                 caseData.setWholeBloodUnclesAndAuntsDied(Boolean.TRUE);
             } else {
                 caseData.setWholeBloodUnclesAndAuntsDiedOverEighteen(null);
                 caseData.setWholeBloodUnclesAndAuntsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getWholeBloodCousinsSurvivedUnderEighteen())
-                || greaterThenZero(ocrField.getWholeBloodCousinsSurvivedOverEighteen())) {
+                    || greaterThenZero(ocrField.getWholeBloodCousinsSurvivedOverEighteen())) {
                 caseData.setWholeBloodCousinsSurvived(Boolean.TRUE);
             } else {
                 caseData.setWholeBloodCousinsSurvivedOverEighteen(null);
                 caseData.setWholeBloodCousinsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedUnderEighteen())
-                || greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())) {
+                    || greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsSurvivedOverEighteen())) {
                 caseData.setHalfBloodUnclesAndAuntsSurvived(Boolean.TRUE);
             } else {
                 caseData.setHalfBloodUnclesAndAuntsSurvivedOverEighteen(null);
                 caseData.setHalfBloodUnclesAndAuntsSurvivedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedUnderEighteen())
-                || greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedOverEighteen())) {
+                    || greaterThenZero(ocrField.getHalfBloodUnclesAndAuntsDiedOverEighteen())) {
                 caseData.setHalfBloodUnclesAndAuntsDied(Boolean.TRUE);
             } else {
                 caseData.setHalfBloodUnclesAndAuntsDiedOverEighteen(null);
                 caseData.setHalfBloodUnclesAndAuntsDiedUnderEighteen(null);
             }
             if (greaterThenZero(ocrField.getHalfBloodCousinsSurvivedUnderEighteen())
-                || greaterThenZero(ocrField.getHalfBloodCousinsSurvivedOverEighteen())) {
+                    || greaterThenZero(ocrField.getHalfBloodCousinsSurvivedOverEighteen())) {
                 caseData.setHalfBloodCousinsSurvived(Boolean.TRUE);
             } else {
                 caseData.setHalfBloodCousinsSurvivedOverEighteen(null);
@@ -473,7 +477,7 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
     default void setApplyingAsAnAttorneyBoolean(@MappingTarget GrantOfRepresentationData caseData,
                                                 ExceptionRecordOCRFields ocrField) {
         if (caseData.getAttorneyOnBehalfOfNameAndAddress().size() > 0
-            && StringUtils.isNotBlank(caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName())) {
+                && StringUtils.isNotBlank(caseData.getAttorneyOnBehalfOfNameAndAddress().get(0).getValue().getName())) {
             caseData.setApplyingAsAnAttorney(Boolean.TRUE);
         } else {
             caseData.setApplyingAsAnAttorney(Boolean.FALSE);
@@ -485,6 +489,21 @@ public interface ExceptionRecordGrantOfRepresentationMapper {
                                                ExceptionRecordOCRFields ocrField) {
         if ("True".equalsIgnoreCase(ocrField.getSolsSolicitorIsApplying())) {
             caseData.setCaseHandedOffToLegacySite(Boolean.TRUE);
+        }
+    }
+
+    @AfterMapping
+    default void setNonRequiredEstateValuesToNull(@MappingTarget GrantOfRepresentationData caseData,
+                                                  ExceptionRecordOCRFields ocrField) {
+
+        String formVersion = ocrField.getFormVersion();
+
+        if (("2".equals(formVersion) && "False".equalsIgnoreCase(ocrField.getDeceasedDiedOnAfterSwitchDate())
+                || ("3".equals(formVersion)) && "False".equalsIgnoreCase(ocrField.getExceptedEstate()))) {
+
+            caseData.setIhtEstateGrossValue(null);
+            caseData.setIhtEstateNetValue(null);
+            caseData.setIhtEstateNetQualifyingValue(null);
         }
     }
 
