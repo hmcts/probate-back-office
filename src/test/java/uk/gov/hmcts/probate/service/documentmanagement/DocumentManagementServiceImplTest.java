@@ -33,6 +33,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -157,7 +158,7 @@ class DocumentManagementServiceImplTest {
         when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
         when(securityUtils.generateServiceToken()).thenReturn("S2S");
         when(documentManagementClient.getDocumentBinary(anyString(), anyString(),
-                anyString())).thenReturn(getResponseMock);
+                any())).thenReturn(getResponseMock);
         when(getResponseMock.getBody()).thenReturn(getBodyMock);
         File file = ResourceUtils.getFile(FileUtils.class.getResource("/" + "digitalCase.json"));
         FileInputStream fis = new FileInputStream(file);
@@ -176,7 +177,7 @@ class DocumentManagementServiceImplTest {
         assertThrows(ClientException.class, () -> {
             when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
             when(securityUtils.generateServiceToken()).thenReturn("S2S");
-            when(documentManagementClient.getDocumentBinary(anyString(), anyString(), anyString()))
+            when(documentManagementClient.getDocumentBinary(anyString(), anyString(), any()))
                     .thenReturn(getResponseMock);
             documentManagementService.getDocument(Document.builder()
                     .documentLink(DocumentLink.builder()
