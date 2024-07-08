@@ -12,24 +12,22 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class PersonalisationValidationRule {
 
-    private final Pattern regexPattern =
-            Pattern.compile("'\\[(.*?)]\\((https?://.*?)\\)$", Pattern.CASE_INSENSITIVE);
+    private final Pattern MARKDOWN_LINK_PATTERN =
+            Pattern.compile("^\\[(.*?)]\\((https?:\\/\\/.*?)\\)$", Pattern.CASE_INSENSITIVE);
 
-    public List<String> validatePersonalisation(Map<String, Object> personalisation) {
+    public <T> List<String> validatePersonalisation(Map<String, T> personalisation) {
         List<String> invalidFields = new ArrayList<>();
         for (var entry : personalisation.entrySet()) {
-            if (entry.getValue() != null && regexPattern.matcher(entry.getValue().toString()).matches()) {
-                invalidFields.add(entry.getKey());
-            }
-        }
-        return invalidFields;
-    }
-
-    public List<String> validateCaveatPersonalisation(Map<String, String> personalisation) {
-        List<String> invalidFields = new ArrayList<>();
-        for (var entry : personalisation.entrySet()) {
-            if (entry.getValue() != null && regexPattern.matcher(entry.getValue()).matches()) {
-                invalidFields.add(entry.getKey());
+            if (entry.getValue() != null) {
+                String entryValue = entry.getValue().toString();
+                int firstIndex = entryValue.indexOf('[');
+                int secondIndex = entryValue.indexOf(')');
+                if (firstIndex != -1 && secondIndex != -1 && firstIndex < secondIndex) {
+                    String valueToValidate = entryValue.substring(firstIndex, secondIndex + 1);
+                    if (!valueToValidate.isEmpty() && MARKDOWN_LINK_PATTERN.matcher(valueToValidate).matches()) {
+                        invalidFields.add(entry.getKey());
+                    }
+                }
             }
         }
         return invalidFields;

@@ -70,7 +70,7 @@ public class NotificationService {
     private static final String PERSONALISATION_SOT_LINK = "sot_link";
     private static final DateTimeFormatter RELEASE_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
-            "Hyperlink detected in personalisation, stop sending notification email.";
+            "Markdown Link detected in case data, stop sending notification email.";
 
     @Autowired
     private final EmailAddresses emailAddresses;
@@ -260,7 +260,7 @@ public class NotificationService {
         }
 
         String reference = caveatDetails.getId().toString();
-        List<String> invalidPersonalisation = personalisationValidationRule.validateCaveatPersonalisation(personalisation);
+        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
         if (!invalidPersonalisation.isEmpty()) {
             log.error("Personalisation validation failed for case: {} fields: {}",
                     caveatDetails.getId(), invalidPersonalisation);
