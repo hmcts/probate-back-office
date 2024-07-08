@@ -46,6 +46,8 @@ class DocumentManagementServiceImplTest {
     @Mock
     private CaseDocumentClient caseDocumentClient;
     @Mock
+    private DocumentManagementClient documentManagementClient;
+    @Mock
     private SecurityUtils securityUtils;
     @Mock
     private DocumentUploadRequest documentUploadRequestMock;
@@ -154,7 +156,8 @@ class DocumentManagementServiceImplTest {
     void shoulGetDocument() throws IOException {
         when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
         when(securityUtils.generateServiceToken()).thenReturn("S2S");
-        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
+        when(documentManagementClient.getDocumentBinary(anyString(), anyString(),
+                anyString())).thenReturn(getResponseMock);
         when(getResponseMock.getBody()).thenReturn(getBodyMock);
         File file = ResourceUtils.getFile(FileUtils.class.getResource("/" + "digitalCase.json"));
         FileInputStream fis = new FileInputStream(file);
@@ -173,7 +176,7 @@ class DocumentManagementServiceImplTest {
         assertThrows(ClientException.class, () -> {
             when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
             when(securityUtils.generateServiceToken()).thenReturn("S2S");
-            when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString()))
+            when(documentManagementClient.getDocumentBinary(anyString(), anyString(), anyString()))
                     .thenReturn(getResponseMock);
             documentManagementService.getDocument(Document.builder()
                     .documentLink(DocumentLink.builder()
