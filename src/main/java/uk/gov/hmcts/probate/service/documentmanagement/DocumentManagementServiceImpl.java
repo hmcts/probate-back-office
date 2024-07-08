@@ -37,7 +37,6 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     private static final String BEARER_PREFIX = "Bearer ";
     private final SecurityUtils securityUtils;
     private final CaseDocumentClient caseDocumentClient;
-    private final DocumentManagementClient documentManagementClient;
     private final DocumentManagementRequestBuilder documentManagementRequestBuilder;
 
     @Override
@@ -111,10 +110,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             log.info("getDocumentByBinaryUrl.auth:" + auth);
             log.info("getDocumentByBinaryUrl.s2s:" + s2s);
             log.info("getDocumentByBinaryUrl.binaryUrl:" + binaryUrl);
-            String selfHref = binaryUrl.replace("/binary", "");
-            UUID documentId = getDocumentIdFromSelfHref(selfHref);
-            log.info("getDocumentByBinaryUrl.documentId:" + documentId);
-            ResponseEntity<Resource> response = documentManagementClient.getDocumentBinary(auth, s2s, documentId);
+            ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s, binaryUrl);
             Resource body = response.getBody();
             if (body != null) {
                 return IOUtils.toByteArray(body.getInputStream());
@@ -129,9 +125,5 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             e.printStackTrace();
         }
         return null;
-    }
-
-    private UUID getDocumentIdFromSelfHref(String selfHref) {
-        return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
     }
 }

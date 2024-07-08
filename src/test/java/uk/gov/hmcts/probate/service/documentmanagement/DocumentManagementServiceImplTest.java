@@ -33,7 +33,6 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -46,8 +45,7 @@ class DocumentManagementServiceImplTest {
     private DocumentManagementRequestBuilder documentManagementRequestBuilder;
     @Mock
     private CaseDocumentClient caseDocumentClient;
-    @Mock
-    private DocumentManagementClient documentManagementClient;
+
     @Mock
     private SecurityUtils securityUtils;
     @Mock
@@ -157,8 +155,7 @@ class DocumentManagementServiceImplTest {
     void shoulGetDocument() throws IOException {
         when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
         when(securityUtils.generateServiceToken()).thenReturn("S2S");
-        when(documentManagementClient.getDocumentBinary(anyString(), anyString(),
-                any())).thenReturn(getResponseMock);
+        when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
         when(getResponseMock.getBody()).thenReturn(getBodyMock);
         File file = ResourceUtils.getFile(FileUtils.class.getResource("/" + "digitalCase.json"));
         FileInputStream fis = new FileInputStream(file);
@@ -177,7 +174,7 @@ class DocumentManagementServiceImplTest {
         assertThrows(ClientException.class, () -> {
             when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
             when(securityUtils.generateServiceToken()).thenReturn("S2S");
-            when(documentManagementClient.getDocumentBinary(anyString(), anyString(), any()))
+            when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString()))
                     .thenReturn(getResponseMock);
             documentManagementService.getDocument(Document.builder()
                     .documentLink(DocumentLink.builder()
