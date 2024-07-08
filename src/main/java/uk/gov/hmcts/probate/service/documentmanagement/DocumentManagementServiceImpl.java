@@ -37,6 +37,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     private static final String BEARER_PREFIX = "Bearer ";
     private final SecurityUtils securityUtils;
     private final CaseDocumentClient caseDocumentClient;
+    private final DocumentManagementClient documentManagementClient;
     private final DocumentManagementRequestBuilder documentManagementRequestBuilder;
 
     @Override
@@ -108,7 +109,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             String auth = securityUtils.getCaseworkerToken();
             String s2s = securityUtils.generateServiceToken();
 
-            ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
+            ResponseEntity<Resource> response = documentManagementClient.getDocumentBinary(auth, s2s,
                     binaryUrl);
             Resource body = response.getBody();
             if (body != null) {
