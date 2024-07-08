@@ -152,6 +152,7 @@ public class NotificationController {
                 callbackRequest.getCaseDetails().getId());
             Map<String, Object> placeholders =
                 gorDocmosisService.caseDataForStoppedMatchedCaveat(callbackRequest.getCaseDetails());
+
             Document caveatRaisedDoc =
                 pdfManagementService.generateDocmosisDocumentAndUpload(placeholders, DocumentType
                     .CAVEAT_STOPPED);
