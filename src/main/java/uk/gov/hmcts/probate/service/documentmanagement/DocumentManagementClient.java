@@ -13,7 +13,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public interface DocumentManagementClient {
     static final String SERVICE_AUTHORIZATION = "ServiceAuthorization";
 
-    @GetMapping(value = "/{documentId}/binary")
+    @GetMapping(value = "/binary")
     ResponseEntity<Resource> getDocumentBinary(@RequestHeader(AUTHORIZATION) String authorisation,
                                                @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuth,
                                                @RequestBody final String binaryUrl);
