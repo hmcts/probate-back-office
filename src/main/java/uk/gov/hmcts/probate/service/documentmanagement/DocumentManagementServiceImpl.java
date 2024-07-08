@@ -110,8 +110,11 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             String s2s = securityUtils.generateServiceToken();
             log.info("getDocumentByBinaryUrl.auth:" + auth);
             log.info("getDocumentByBinaryUrl.s2s:" + s2s);
-            ResponseEntity<Resource> response = documentManagementClient.getDocumentBinary(auth, s2s,
-                    binaryUrl);
+            log.info("getDocumentByBinaryUrl.binaryUrl:" + binaryUrl);
+            String selfHref = binaryUrl.replace("/binary", "");
+            UUID documentId = getDocumentIdFromSelfHref(selfHref);
+            log.info("getDocumentByBinaryUrl.documentId:" + documentId);
+            ResponseEntity<Resource> response = documentManagementClient.getDocumentBinary(auth, s2s, documentId);
             Resource body = response.getBody();
             if (body != null) {
                 return IOUtils.toByteArray(body.getInputStream());
@@ -126,5 +129,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
             e.printStackTrace();
         }
         return null;
+    }
+
+    private UUID getDocumentIdFromSelfHref(String selfHref) {
+        return UUID.fromString(selfHref.substring(selfHref.length() - DOC_UUID_LENGTH));
     }
 }
