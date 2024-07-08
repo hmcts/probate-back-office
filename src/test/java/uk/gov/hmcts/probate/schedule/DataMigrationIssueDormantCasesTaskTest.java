@@ -43,7 +43,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
     }
 
     @Test
-     void shouldMakeDormantCasesDateRange() {
+     void shouldMakeDormantCasesOnAdhocDate() {
         ResponseEntity<String> responseEntity = ResponseEntity.accepted()
                 .body("Perform make dormant finished");
         dataMigrationIssueDormantCasesTask.run();
@@ -51,6 +51,14 @@ import static org.mockito.Mockito.verifyNoInteractions;
         assertEquals("Perform make dormant finished", responseEntity.getBody());
         verify(dataExtractDateValidator).dateValidator(date);
         verify(migrationIssueDormantCaseService).makeCaseReferenceDormant(references);
+    }
+
+    @Test
+    void shouldNotMakeDormantCasesIfNoAdhocDate() {
+        ReflectionTestUtils.setField(dataMigrationIssueDormantCasesTask, "adHocJobDate", null);
+        dataMigrationIssueDormantCasesTask.run();
+        verifyNoInteractions(dataExtractDateValidator);
+        verifyNoInteractions(migrationIssueDormantCaseService);
     }
 
     @Test
@@ -63,7 +71,7 @@ import static org.mockito.Mockito.verifyNoInteractions;
     }
 
     @Test
-    void shouldThrowNullPointerExceptionForMakeDormantCases() {
+    void shouldThrowNullPointerExceptionForDormantCases() {
         doThrow(new NullPointerException()).when(dataExtractDateValidator)
                 .dateValidator(date);
         dataMigrationIssueDormantCasesTask.run();

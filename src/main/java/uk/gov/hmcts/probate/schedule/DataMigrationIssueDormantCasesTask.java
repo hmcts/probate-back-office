@@ -41,6 +41,8 @@ public class DataMigrationIssueDormantCasesTask implements Runnable {
             } catch (Exception e) {
                 log.error("Error on DataMigrationIssueDormantCasesTask Scheduler {}", e.getMessage());
             }
+        } else {
+            log.error("Adhoc date or case references are not set");
         }
     }
 
