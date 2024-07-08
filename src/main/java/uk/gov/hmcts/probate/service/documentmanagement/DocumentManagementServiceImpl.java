@@ -108,7 +108,8 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         try {
             String auth = securityUtils.getCaseworkerToken();
             String s2s = securityUtils.generateServiceToken();
-
+            log.info("getDocumentByBinaryUrl.auth:" + auth);
+            log.info("getDocumentByBinaryUrl.s2s:" + s2s);
             ResponseEntity<Resource> response = documentManagementClient.getDocumentBinary(auth, s2s,
                     binaryUrl);
             Resource body = response.getBody();
