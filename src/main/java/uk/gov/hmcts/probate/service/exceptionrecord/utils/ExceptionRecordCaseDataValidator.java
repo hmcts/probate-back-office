@@ -16,6 +16,10 @@ public class ExceptionRecordCaseDataValidator {
             "The gross probate value cannot be less than the net probate value";
     private static final String IHT_ESTATE_NET_GREATER_THAN_GROSS =
             "The gross IHT value cannot be less than the net IHT value";
+    private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE =
+            "Net qualifying value can't be greater than the net amount";
+    private static final String IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE =
+            "Net qualifying value can't be greater than the gross amount";
     private static final String IHT_VALDIATION_ERROR = "IHT Values validation error";
 
     private ExceptionRecordCaseDataValidator() {
@@ -34,6 +38,19 @@ public class ExceptionRecordCaseDataValidator {
             if (caseData.getIhtEstateNetValue().compareTo(caseData.getIhtEstateGrossValue()) > 0) {
                 log.error(IHT_ESTATE_NET_GREATER_THAN_GROSS);
                 errorMessages.add(IHT_ESTATE_NET_GREATER_THAN_GROSS);
+            }
+        }
+
+        if (caseData.getIhtEstateNetQualifyingValue() != null && caseData.getIhtEstateNetValue() != null) {
+            if (caseData.getIhtEstateNetQualifyingValue().compareTo(caseData.getIhtEstateNetValue()) > 0) {
+                log.error(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE);
+                errorMessages.add(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE);
+            }
+        }
+        if (caseData.getIhtEstateGrossValue() != null && caseData.getIhtEstateNetQualifyingValue() != null) {
+            if (caseData.getIhtEstateNetQualifyingValue().compareTo(caseData.getIhtEstateGrossValue()) > 0) {
+                log.error(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE);
+                errorMessages.add(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE);
             }
         }
         if (!errorMessages.isEmpty()) {

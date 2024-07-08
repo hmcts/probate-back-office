@@ -8,7 +8,6 @@ import io.restassured.response.Response;
 import java.io.IOException;
 import java.util.List;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -47,7 +46,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
 
 
     @Test
-    @Ignore
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -68,7 +66,6 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
-    @Ignore
     public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
