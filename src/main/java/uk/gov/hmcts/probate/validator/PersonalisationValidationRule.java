@@ -12,7 +12,7 @@ import java.util.regex.Pattern;
 @RequiredArgsConstructor
 public class PersonalisationValidationRule {
 
-    private final Pattern MARKDOWN_LINK_PATTERN =
+    private final Pattern markdownLinkPattern =
             Pattern.compile("^\\[(.*?)]\\((https?:\\/\\/.*?)\\)$", Pattern.CASE_INSENSITIVE);
 
     public <T> List<String> validatePersonalisation(Map<String, T> personalisation) {
@@ -24,7 +24,7 @@ public class PersonalisationValidationRule {
                 int secondIndex = entryValue.indexOf(')');
                 if (firstIndex != -1 && secondIndex != -1 && firstIndex < secondIndex) {
                     String valueToValidate = entryValue.substring(firstIndex, secondIndex + 1);
-                    if (!valueToValidate.isEmpty() && MARKDOWN_LINK_PATTERN.matcher(valueToValidate).matches()) {
+                    if (!valueToValidate.isEmpty() && markdownLinkPattern.matcher(valueToValidate).matches()) {
                         invalidFields.add(entry.getKey());
                     }
                 }

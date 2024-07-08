@@ -23,9 +23,9 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
-    public void testValidatePersonalisation_valid() {
+    public void shouldReturnFielNameWithHyperLinkWhereValidatePersonilization() {
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("field1", "info [example](http://example.com) some text");
+        personalisation.put("field1", "Some text [example](http://example.com)");
         personalisation.put("field2", "Valid text");
 
         List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
@@ -35,10 +35,10 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
-    public void testValidatePersonalisation_invalid() {
+    public void shouldRetunEmptyListWhereNoMarkDownLink() {
         Map<String, Object> personalisation = new HashMap<>();
-        personalisation.put("field1", "Invalid text");
-        personalisation.put("field2", "Another invalid text");
+        personalisation.put("field1", "Some text");
+        personalisation.put("field2", "Another  text");
 
         List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
 
@@ -46,7 +46,7 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
-    public void testValidatePersonalisation_nullValue() {
+    public void shouldRetunEmptyListForNullValid() {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", null);
 

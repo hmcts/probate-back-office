@@ -332,10 +332,10 @@ public class NotificationService {
         Registry registry =
             registriesProperties.getRegistries().get(caseDetails.getData().getRegistryLocation().toLowerCase());
 
-        String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
+       final String templateId = templateService.getTemplateId(state, caseDetails.getData().getApplicationType(),
             caseDetails.getData().getRegistryLocation(),
             caseDetails.getData().getLanguagePreference());
-        String emailReplyToId = registry.getEmailReplyToId();
+       final String emailReplyToId = registry.getEmailReplyToId();
 
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails, registry);
@@ -351,7 +351,7 @@ public class NotificationService {
         String reference = caseDetails.getData().getSolsSolicitorAppReference();
 
         SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference,
+            getSendEmailResponse(state,templateId, emailReplyToId, executor.getEmail(), personalisation, reference,
                 caseDetails.getId());
 
         return getSentEmailDocument(state, executor.getEmail(), response);
