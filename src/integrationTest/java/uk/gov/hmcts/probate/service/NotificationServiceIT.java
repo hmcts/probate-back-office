@@ -2135,6 +2135,5 @@ class NotificationServiceIT {
                 eq(""));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
-
     }
 }
