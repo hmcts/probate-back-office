@@ -94,8 +94,6 @@ public class ExceptionRecordService {
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
-                .toList());
-
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
