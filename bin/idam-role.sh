@@ -8,7 +8,7 @@ if [ -z "$role" ]
     echo "Usage: ./idam-role.sh role [role] [description]"
     exit 1
 fi
-authToken=$(curl -s -X POST "${IDAM_URI}/loginUser" -H "accept: application/json" -H "Content-Type: application/x-www-form-urlencoded" -d "password=Ref0rmIsFun&username=idamOwner@hmcts.net" | docker run --rm --interactive ghcr.io/jqlang/jq -r .api_auth_token)
+authToken=$(curl -s -X POST "${IDAM_URI}/loginUser" -H "accept: application/json" -H "Content-Type: application/x-www-form-urlencoded" -d "password=Ref0rmIsFun&username=idamOwner@hmcts.net" | docker run --rm --interactive hmctspublic.azurecr.io/imported/jqlang/jq -r .api_auth_token)
 
 curl --request POST \
   --url "${IDAM_URI}/roles" \
