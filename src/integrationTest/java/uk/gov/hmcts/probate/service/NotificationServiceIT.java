@@ -64,6 +64,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -2135,5 +2136,12 @@ class NotificationServiceIT {
                 eq(""));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+    @Test
+    void throwExceptionWhenInvalidPersonalisationExists() {
+        Map<String, Object> personalisation = new HashMap<>();
+        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
+
+        assertThrows(result, NotificationClientException);
     }
 }
