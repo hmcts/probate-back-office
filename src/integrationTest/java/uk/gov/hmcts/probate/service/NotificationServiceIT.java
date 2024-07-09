@@ -64,6 +64,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -222,6 +223,7 @@ class NotificationServiceIT {
     private CaveatData caveatData;
     private CallbackRequest callbackRequest;
     private CaveatDetails caveatStoppedCtscCaseData;
+    private CaseDetails  markdownLinkCaseData;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -596,6 +598,14 @@ class NotificationServiceIT {
             .caveatorEmailAddress("caveator@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .build(), LAST_MODIFIED, ID);
+
+        markdownLinkCaseData = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Oxford")
+                .deceasedForenames("Some text [example](http://example.com)")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
         CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());
         List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
@@ -2135,5 +2145,15 @@ class NotificationServiceIT {
                 eq(""));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    void throwExceptionWhenInvalidPersonalisationExists() {
+
+
+        NotificationClientException expectException =  assertThrows(NotificationClientException.class,() -> {
+            notificationService.sendEmail(CASE_STOPPED,markdownLinkCaseData);
+        } );
+        assertEquals("Markdown Link detected in case data, stop sending notification email.",expectException.getMessage());
     }
 }
