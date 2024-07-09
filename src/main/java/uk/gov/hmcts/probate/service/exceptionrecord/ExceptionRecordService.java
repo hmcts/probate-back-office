@@ -94,6 +94,8 @@ public class ExceptionRecordService {
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
+                .toList());
+
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
@@ -114,8 +116,6 @@ public class ExceptionRecordService {
         GrantType grantType,
         List<String> warnings) {
 
-        List<String> errors = new ArrayList<String>();
-
         try {
             log.info("About to map Grant of Representation OCR fields to CCD for case: {}",
                     erRequest.getExceptionRecordId());
@@ -134,7 +134,7 @@ public class ExceptionRecordService {
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .collect(toList()));
+                .toList());
 
             // Add grant type
             if (grantOfRepresentationData.getApplicationType().equals(SOLICITORS)
@@ -155,7 +155,10 @@ public class ExceptionRecordService {
                 .caseCreationDetails(grantOfRepresentationCaseDetailsResponse)
                 .warnings(warnings)
                 .build();
-
+        } catch (OCRMappingException ocrMappingException) {
+            log.error("OCR Mapping Exception: {} for caseid: {}",
+                ocrMappingException.getMessage(), erRequest.getExceptionRecordId());
+            throw ocrMappingException;
         } catch (Exception e) {
             log.error("Error transforming Grant of Representation case from Exception Record", e);
             throw new OCRMappingException(e.getMessage());

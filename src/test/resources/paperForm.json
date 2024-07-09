@@ -106,7 +106,7 @@
       "boExaminationChecklistQ1": null,
       "boExaminationChecklistQ2": null,
       "boExaminationChecklistRequestQA": null,
-      "applicationSubmittedDate": null,
+      "applicationSubmittedDate": "2023-12-12",
       "scannedDocuments": null,
       "evidenceHandled": null,
       "caseType": "intestacy",
