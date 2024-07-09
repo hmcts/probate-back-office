@@ -2136,12 +2136,6 @@ class NotificationServiceIT {
                 eq(""));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
-    }
-    @Test
-    void throwExceptionWhenInvalidPersonalisationExists() {
-        Map<String, Object> personalisation = new HashMap<>();
-        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
 
-        assertThrows(result, NotificationClientException);
     }
 }
