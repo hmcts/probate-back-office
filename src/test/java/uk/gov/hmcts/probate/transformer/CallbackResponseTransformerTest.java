@@ -2719,7 +2719,7 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getChannelChoice());
+        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
     }
 
     @Test
