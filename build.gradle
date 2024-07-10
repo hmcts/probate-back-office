@@ -194,7 +194,7 @@ def versions = [
         commonsIO                       : '2.16.1',
         commonsValidator                : '1.9.0',
         restAssured                     : '4.5.1',
-        lombok                          : '1.18.32',
+        lombok                          : '1.18.34',
         springDocOpenUi                 : '1.7.0',
         springSecurityVersion           : '5.7.11',
         probateCommonsVersion           : '1.5.2',
