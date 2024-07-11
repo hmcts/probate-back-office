@@ -134,6 +134,7 @@ public class CCDDataTransformer {
             .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
             .ihtEstateNetValue(caseData.getIhtEstateNetValue())
             .ihtFormNetValue(caseData.getIhtFormNetValue())
+            .ihtEstateNetQualifyingValue(caseData.getIhtEstateNetQualifyingValue())
             .build();
     }
 
