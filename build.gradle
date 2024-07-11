@@ -317,7 +317,7 @@ dependencies {
   implementation group: 'org.projectlombok', name: 'lombok', version: versions.lombok
   implementation group:'org.projectlombok', name: 'lombok', version: versions.lombok
   annotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
-  implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.1.0'
+  implementation group: 'org.projectlombok', name: 'lombok-mapstruct-binding', version: '0.2.0'
 
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
