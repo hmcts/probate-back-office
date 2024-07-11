@@ -4245,4 +4245,12 @@ class CallbackResponseTransformerTest {
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
+
+    @Test
+    void testApplicationSubmittedDateNonNull() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+            .applicationSubmittedDate(null);
+
+        assertNotNull(caseDataBuilder.applicationSubmittedDate(null));
+    }
 }

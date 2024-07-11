@@ -210,6 +210,9 @@ public class CallbackResponseTransformer {
                     .bulkPrintId(caseData.getBulkPrintId())
                     .build();
         }
+        if (caseData.getApplicationSubmittedDate() == null) {
+            responseCaseDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        }
 
         return transformResponse(responseCaseDataBuilder.build());
     }
