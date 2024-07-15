@@ -199,7 +199,7 @@ def versions = [
         springSecurityVersion           : '5.7.11',
         probateCommonsVersion           : '1.5.2',
         ccdClient                       : '4.9.2',
-        mapStruct                       : '1.2.0.Final',
+        mapStruct                       : '1.5.5.Final',
         serviceAuthVersion              : '4.1.2',
         pact_version                    : '4.1.34',
         probatePactCommonsVersion       : '1.0.2',
