@@ -5,7 +5,7 @@ variable "product" {
 
 variable "component" {}
 
-variable database_name {
+variable "database_name" {
   default = "probatemandb"
 }
 
