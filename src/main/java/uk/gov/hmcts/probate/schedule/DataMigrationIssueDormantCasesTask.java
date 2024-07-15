@@ -41,7 +41,7 @@ public class DataMigrationIssueDormantCasesTask implements Runnable {
                 log.error("Error on DataMigrationIssueDormantCasesTask Scheduler {}", e.getMessage());
             }
         } else {
-            log.error("Case references is not provided for DataMigrationIssueDormantCasesTask Scheduler");
+            log.error("Case references are not provided for DataMigrationIssueDormantCasesTask Scheduler");
         }
     }
 

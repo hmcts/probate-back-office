@@ -32,7 +32,6 @@ public class MigrationIssueDormantCaseService {
     private final AuditEventService auditEventService;
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private final List<String> eventList = Arrays.asList("boHistoryCorrection", "boCorrection");
 
     public void makeCaseReferenceDormant(List<String> caseReferenceList, LocalDateTime dormancyPeriod) {
