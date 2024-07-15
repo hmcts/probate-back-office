@@ -6,9 +6,9 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.MigrationIssueDormantCaseService;
-import uk.gov.hmcts.probate.service.dataextract.DataExtractDateValidator;
 import uk.gov.hmcts.reform.probate.model.client.ApiClientException;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,24 +17,23 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DataMigrationIssueDormantCasesTask implements Runnable {
 
-    private final DataExtractDateValidator dataExtractDateValidator;
     private final MigrationIssueDormantCaseService migrationIssueDormantCaseService;
     @Value("${adhocSchedulerJobCaseReference}")
     private String caseReferences;
-    @Value("${adhocSchedulerJobDate}")
-    public String adHocJobDate;
+    @Value("${dormancy.period_months}")
+    private int dormancyPeriodMonths;
 
     @Override
     public void run() {
         log.info("Scheduled task DataMigrationIssueDormantCasesTask started to make dormant cases");
-        if (StringUtils.isNotEmpty(adHocJobDate) && StringUtils.isNotEmpty(caseReferences)) {
+        if (StringUtils.isNotEmpty(caseReferences)) {
             log.info("Running DataMigrationIssueDormantCasesTask with Adhoc date");
             try {
-                log.info("Calling perform dormant Data Migration issue cases for date {}", adHocJobDate);
-                dataExtractDateValidator.dateValidator(adHocJobDate);
-                log.info("Perform Data Migration issue cases to dormant for Adhoc date started");
+                final LocalDateTime dormancyPeriod = LocalDateTime.now().minusMonths(dormancyPeriodMonths);
+                log.info("Calling perform dormant Data Migration issue cases for cases {}", caseReferences);
                 List<String> caseReferenceList = Arrays.asList(caseReferences.split(",", -1));
-                migrationIssueDormantCaseService.makeCaseReferenceDormant(caseReferenceList);
+                log.info("Perform Data Migration issue cases to dormant for Adhoc date started");
+                migrationIssueDormantCaseService.makeCaseReferenceDormant(caseReferenceList, dormancyPeriod);
                 log.info("Perform Data Migration issue cases to dormant for Adhoc date finished");
             } catch (ApiClientException e) {
                 log.error(e.getMessage());
@@ -42,7 +41,7 @@ public class DataMigrationIssueDormantCasesTask implements Runnable {
                 log.error("Error on DataMigrationIssueDormantCasesTask Scheduler {}", e.getMessage());
             }
         } else {
-            log.error("Adhoc date or case references are not set");
+            log.error("Case references is not provided for DataMigrationIssueDormantCasesTask Scheduler");
         }
     }
 
