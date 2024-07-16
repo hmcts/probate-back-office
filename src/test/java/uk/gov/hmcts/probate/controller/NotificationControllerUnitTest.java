@@ -57,6 +57,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
@@ -373,6 +374,30 @@ class NotificationControllerUnitTest {
         when(notificationService.sendNocEmail(any(), any())).thenReturn(document);
         ResponseEntity<CallbackResponse> stringResponseEntity =
                 notificationController.sendNOCEmailNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotSendNocEmailForBulkScanCase() throws NotificationClientException {
+        setUpMocks(NOC);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .channelChoice(CHANNEL_CHOICE_BULKSCAN)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.sendNOCEmailNotification(callbackRequest);
+        verify(notificationService, times(0)).sendNocEmail(any(), any());
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 }

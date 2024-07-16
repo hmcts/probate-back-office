@@ -123,4 +123,26 @@ class NoticeOfChangeUnitTest {
                 underTest.sendNOCEmailNotification(caveatCallbackRequest);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    void shouldNotSendNocEmailForPaperCase() throws NotificationClientException {
+        CaveatDetails caveatDetails = new CaveatDetails(CaveatData.builder()
+                .applicationType(SOLICITOR)
+                .paperForm("Yes")
+                .registryLocation("Manchester")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .build(), LAST_MODIFIED, ID);
+        caveatCallbackRequest  = new CaveatCallbackRequest(caveatDetails);
+        caveatCallbackResponse = CaveatCallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateCaveatNocEmail(any(), any())).thenReturn(caveatCallbackResponse);
+        ResponseEntity<CaveatCallbackResponse> response =
+                underTest.sendNOCEmailNotification(caveatCallbackRequest);
+        verify(notificationService, times(0)).sendCaveatNocEmail(any(), any());
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
