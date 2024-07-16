@@ -283,7 +283,7 @@ public class NotificationController {
 
         List<Document> documents = new ArrayList<>();
         response = eventValidationService.validateNocEmail(caseData, nocEmailAddressNotifyValidationRule);
-        if (response.getErrors().isEmpty() && !CHANNEL_CHOICE_BULKSCAN.equals(caseData.getChannelChoice())) {
+        if (response.getErrors().isEmpty() && !isFirstNOCOnBulkScan(caseData)) {
             log.info("Initiate call to notify Solicitor for case id {} ",
                     callbackRequest.getCaseDetails().getId());
             Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
@@ -317,4 +317,8 @@ public class NotificationController {
         return !YES.equalsIgnoreCase(caseData.getPaperForm());
     }
 
+    private boolean isFirstNOCOnBulkScan(CaseData caseData) {
+        return CHANNEL_CHOICE_BULKSCAN.equals(caseData.getChannelChoice())
+                && caseData.getChangeOfRepresentatives().size()==1;
+    }
 }
