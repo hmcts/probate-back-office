@@ -1,0 +1,34 @@
+{
+  "tabName": "Executor's details",
+  "fields": [
+    "Title",
+    "Forename(s)",
+    "Surname(s)",
+    "Building and Street",
+    "Town or City",
+    "County",
+    "Postcode/Zipcode",
+    "Country",
+    "Email address",
+    "Additional executor",
+    "Additional executor 1"
+  ],
+  "dataKeys": [
+    "page3_executor0_title",
+    "page3_executor0_forenames",
+    "page3_executor0_surname",
+    "page3_executor0_email",
+    "page3_additional_executor0_title",
+    "page3_additional_executor0_forenames",
+    "page3_additional_executor0_surname",
+    "page3_additional_executor0_email",
+    "address_line1",
+    "address_line2",
+    "address_line3",
+    "address_town",
+    "address_county",
+    "address_country",
+    "address_postcode"
+  ]
+}
+

@@ -1,0 +1,29 @@
+{
+  "page1_legalStmtLink": "legalStatementGrantOfProbate.pdf",
+  "page1_AdmonWilllegalStmtLink": "legalStatementAdmon.pdf",
+  "page1_NoWilllegalStmtLink":"legalStatementIntestacy.pdf",
+
+  "page3_waitForText":"Upload legal statement",
+
+  "page5_extraCopiesUK": "1",
+  "page5_outsideUKGrantCopies":"2",
+
+  "page6_paymentType": "Fee account",
+  "page6_payAccountNum": "1234",
+  "page6_pBAANumber": "PBA0082126",
+  "page6_paymentReference": "E2E PBA Payment Reference",
+
+  "page7_waitForText":"Complete application",
+
+  "page8_waitForText":"This probate application has now been submitted",
+  "page8_applicationFee": "Application fee £273.00",
+  "page8_additionalCopiesFee": "Fee for additional UK copies £1.50",
+  "page8_feeForCertifiedCopies": "Fee for certified copies £3.00",
+  "page8_totalFeeAmount": "Fee amount £277.50",
+  "page8_paymentMethod": "Payment method fee account",
+  "page8_pBAAccount": "Selected PBA account PBA0082126",
+  "page8_customerReference": "Customer application reference E2E PBA Payment Reference",
+
+  "optionYes": "Yes",
+  "optionNo": "No"
+}
