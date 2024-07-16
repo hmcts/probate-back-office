@@ -319,6 +319,6 @@ public class NotificationController {
 
     private boolean isFirstNOCOnBulkScan(CaseData caseData) {
         return CHANNEL_CHOICE_BULKSCAN.equals(caseData.getChannelChoice())
-                && caseData.getChangeOfRepresentatives().size()==1;
+                && caseData.getChangeOfRepresentatives().size() == 1;
     }
 }

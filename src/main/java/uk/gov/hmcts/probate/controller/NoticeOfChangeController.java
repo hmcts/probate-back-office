@@ -21,7 +21,6 @@ import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.CaveatCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
-import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.EventValidationService;
 import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.PrepareNocCaveatService;
@@ -36,7 +35,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
-import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.NOC;
 
@@ -111,6 +109,6 @@ public class NoticeOfChangeController {
 
     private boolean isFirstNOCOnPaperForm(CaveatData caveatData) {
         return YES.equals(caveatData.getPaperForm())
-                && caveatData.getChangeOfRepresentatives().size()==1;
+                && caveatData.getChangeOfRepresentatives().size() == 1;
     }
 }
