@@ -63,15 +63,15 @@ import static org.mockito.Mockito.verifyNoInteractions;
     @Test
      void shouldThrowClientExceptionWithBadRequestForMakeDormantCasesWithIncorrectDateFormat() {
         doThrow(new ApiClientException(HttpStatus.BAD_REQUEST.value(), null)).when(migrationIssueDormantCaseService)
-                .makeCaseReferenceDormant(references, dormancyDate);
+                .makeCaseReferenceDormant(any(), any());
         dataMigrationIssueDormantCasesTask.run();
         verifyNoInteractions(ccdClientApi);
     }
 
     @Test
     void shouldThrowNullPointerExceptionForDormantCases() {
-        doThrow(new NullPointerException()).when(migrationIssueDormantCaseService).makeCaseReferenceDormant(references,
-                dormancyDate);
+        doThrow(new NullPointerException()).when(migrationIssueDormantCaseService).makeCaseReferenceDormant(any(),
+                any());
         dataMigrationIssueDormantCasesTask.run();
         verifyNoInteractions(ccdClientApi);
     }
