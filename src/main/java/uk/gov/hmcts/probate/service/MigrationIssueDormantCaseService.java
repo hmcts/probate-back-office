@@ -31,7 +31,7 @@ public class MigrationIssueDormantCaseService {
     private final AuditEventService auditEventService;
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
-    private final List<String> eventList = Arrays.asList("boHistoryCorrection", "boCorrection");
+    private final List<String> excludedEventList = Arrays.asList("boHistoryCorrection", "boCorrection");
 
     public void makeCaseReferenceDormant(List<String> caseReferenceList, LocalDateTime dormancyPeriod) {
         log.info("Make Data Migration issue cases to Dormant for cases : {}", caseReferenceList);
@@ -74,9 +74,9 @@ public class MigrationIssueDormantCaseService {
     }
 
     private AuditEvent getAuditEvent(Long caseId, SecurityDTO securityDTO) {
-        return auditEventService.getLatestAuditEventByName(caseId.toString(), eventList,
+        return auditEventService.getLatestAuditEventByName(caseId.toString(), excludedEventList,
                 securityDTO.getAuthorisation(), securityDTO.getServiceAuthorisation())
                 .orElseThrow(() -> new IllegalStateException(String
-                .format("Could not find any event other than %s event in audit", eventList)));
+                .format("Could not find any event other than %s event in audit", excludedEventList)));
     }
 }
