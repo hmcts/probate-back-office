@@ -296,20 +296,6 @@
       <td colspan="2">IHT Net value:</td>
       <td>{% if case_data.ihtNetValue %}&pound;{{ (case_data.ihtNetValue/100) | money('0,0.00') }}{% endif %}</td>
     </tr>
-    {% if case_data.ihtFormEstateValuesCompleted == "No" %}
-    <tr>
-      <td colspan="2">IHT Estate Gross value:</td>
-      <td>{% if case_data.ihtEstateGrossValue %}&pound;{{ (case_data.ihtEstateGrossValue/100) | money('0,0.00') }}{% endif %}</td>
-    </tr>
-    <tr>
-      <td colspan="2">IHT Estate Net value:</td>
-      <td>{% if case_data.ihtEstateNetValue %}&pound;{{ (case_data.ihtEstateNetValue/100) | money('0,0.00') }}{% endif %}</td>
-    </tr>
-    <tr>
-      <td colspan="2">IHT Estate Net Qualifying value:</td>
-      <td>{% if case_data.ihtEstateNetQualifyingValue %}&pound;{{ (case_data.ihtEstateNetQualifyingValue/100) | money('0,0.00') }}{% endif %}</td>
-    </tr>
-    {% endif %}
     <tr>
       <td colspan="2">Payment reference:</td>
       <td>{% if case_data.paymentReferenceNumber %}{{ case_data.paymentReferenceNumber }}{% endif %}</td>
