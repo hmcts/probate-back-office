@@ -4249,7 +4249,7 @@ class CallbackResponseTransformerTest {
     @Test
     void rollbackShouldSetApplicationSubmittedDateToNull() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicationSubmittedDate(null);
+                .applicationSubmittedDate(LocalDate.now().toString());
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
