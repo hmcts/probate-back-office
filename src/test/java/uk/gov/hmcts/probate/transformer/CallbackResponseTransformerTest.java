@@ -10,7 +10,11 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -103,6 +107,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -4257,7 +4262,6 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
         CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
         assertCommon(callbackResponse);
@@ -4266,6 +4270,17 @@ class CallbackResponseTransformerTest {
                 .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
         assertEquals(callbackResponse.getData().getApplicationSubmittedDate(),
                 LocalDate.now().toString());
+    }
+
+    @Test
+    void shouldSetDefaultDateOfDeathTypeToDiedOn() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.defaultDateOfDeathType(callbackRequestMock);
+        assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
