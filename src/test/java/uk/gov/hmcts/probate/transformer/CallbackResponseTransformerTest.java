@@ -4242,15 +4242,33 @@ class CallbackResponseTransformerTest {
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
     }
 
-    private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
-        return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
-    }
-
     @Test
     void testApplicationSubmittedDateNonNull() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-            .applicationSubmittedDate(null);
+        caseDataBuilder.applicationType(SOLICITOR)
+                .applicationSubmittedDate(null);
 
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.GRANT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+        assertCommon(callbackResponse);
+
+        assertEquals("123-456", callbackResponse
+                .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
         assertNotNull(caseDataBuilder.applicationSubmittedDate(null));
+        assertEquals(callbackResponse.getData().getApplicationSubmittedDate(),
+                LocalDate.now().toString());
+    }
+
+    private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
+        return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
 }
