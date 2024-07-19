@@ -4257,6 +4257,7 @@ class CallbackResponseTransformerTest {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
         CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
         assertCommon(callbackResponse);
