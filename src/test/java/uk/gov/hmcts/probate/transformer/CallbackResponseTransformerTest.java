@@ -4263,7 +4263,6 @@ class CallbackResponseTransformerTest {
 
         assertEquals("123-456", callbackResponse
                 .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
-        assertNotNull(caseDataBuilder.applicationSubmittedDate(null));
         assertEquals(callbackResponse.getData().getApplicationSubmittedDate(),
                 LocalDate.now().toString());
     }
