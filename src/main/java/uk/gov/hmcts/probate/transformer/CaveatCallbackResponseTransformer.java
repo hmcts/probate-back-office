@@ -323,10 +323,6 @@ public class CaveatCallbackResponseTransformer {
             caveatData.setPaperForm(true);
         }
 
-        if (caveatData.getApplicationSubmittedDate() == null) {
-            caveatData.setApplicationSubmittedDate(LocalDate.now());
-        }
-
         if (caveatData.getCaveatorEmailAddress() == null || caveatData.getCaveatorEmailAddress().isEmpty()) {
             caveatData.setSendToBulkPrintRequested(Boolean.TRUE);
             caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.FALSE);

@@ -94,6 +94,8 @@ public class ExceptionRecordService {
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
                 .collect(toList()));
+
+            caveatData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
@@ -142,6 +144,7 @@ public class ExceptionRecordService {
                 grantOfRepresentationData.setGrantType(grantType);
             }
 
+            grantOfRepresentationData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
 
             log.info(
                 "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
