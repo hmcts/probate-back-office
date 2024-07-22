@@ -282,7 +282,7 @@
     </tr>
     <tr>
       <td colspan="2">IHT completed:</td>
-      <td>{% if case_data.ihtFormId or case_data.ihtFormEstateValuesCompleted == Yes %}Yes{% elseif case_data.ihtFormEstateValuesCompleted == No %}No</td>
+      <td>{% if case_data.ihtFormId or case_data.ihtFormEstateValuesCompleted == Yes %}Yes{% elseif case_data.ihtFormEstateValuesCompleted == No %}No{% endif %}</td>
     </tr>
     <tr>
       <td colspan="2">IHT form completed:</td>
