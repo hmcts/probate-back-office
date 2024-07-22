@@ -10,12 +10,12 @@ buildscript {
 
 plugins {
   id 'application'
-  id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+  id 'io.spring.dependency-management' version '1.1.6'
   id 'org.springframework.boot' version '2.7.18'
   id 'uk.gov.hmcts.java' version '0.12.63'
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.2'
-  id 'info.solidsoft.pitest' version '1.6.0'
+  id 'info.solidsoft.pitest' version '1.15.0'
   id 'jacoco'
   id 'au.com.dius.pact' version '4.1.7' // do not change, otherwise serenity report fails
   id 'org.sonarqube' version '4.3.0.3225'
