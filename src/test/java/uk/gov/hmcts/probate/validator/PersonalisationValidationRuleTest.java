@@ -18,12 +18,12 @@ class PersonalisationValidationRuleTest {
     private PersonalisationValidationRule personalisationValidationRule;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         MockitoAnnotations.openMocks(this);
     }
 
     @Test
-    public void shouldReturnFielNameWithHyperLinkWhereValidatePersonilization() {
+    void shouldReturnFielNameWithHyperLinkWhereValidatePersonilization() {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", "Some text [example](http://example.com)");
         personalisation.put("field2", "Valid text");
@@ -35,7 +35,7 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
-    public void shouldRetunEmptyListWhereNoMarkDownLink() {
+    void shouldRetunEmptyListWhereNoMarkDownLink() {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", "Some text");
         personalisation.put("field2", "Another  text");
@@ -46,7 +46,7 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
-    public void shouldRetunEmptyListForNullValid() {
+    void shouldRetunEmptyListForNullValid() {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", null);
 

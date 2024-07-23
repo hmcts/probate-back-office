@@ -24,7 +24,7 @@ public class PersonalisationValidationRule {
                 int secondIndex = entryValue.indexOf(')');
                 if (firstIndex != -1 && secondIndex != -1 && firstIndex < secondIndex) {
                     String valueToValidate = entryValue.substring(firstIndex, secondIndex + 1);
-                    if (!valueToValidate.isEmpty() && markdownLinkPattern.matcher(valueToValidate).matches()) {
+                    if (!valueToValidate.isEmpty() && markdownLinkPattern.matcher(valueToValidate).find()) {
                         invalidFields.add(entry.getKey());
                     }
                 }
