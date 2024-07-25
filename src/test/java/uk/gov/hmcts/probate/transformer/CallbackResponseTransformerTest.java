@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -2702,22 +2703,14 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformChannelChoice() {
-        OrganisationPolicy policy = OrganisationPolicy.builder()
-                .organisation(Organisation.builder()
-                        .organisationID("ABC")
-                        .organisationName("OrgName")
-                        .build())
-                .orgPolicyReference(null)
-                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
-                .build();
+    void shouldTransformHandoffReason() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicantOrganisationPolicy(policy);
+                .caseHandedOffToLegacySite(YES);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getChannelChoice());
+        assertNull(callbackResponse.getData().getBoHandoffReasonList());
     }
 
     @Test
@@ -4240,6 +4233,45 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldTransformWithHandOffReason() {
+        List<CollectionMember<HandoffReason>> reason = new ArrayList();
+        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason("Reason").build()));
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .boHandoffReasonList(reason)
+                .caseHandedOffToLegacySite("Yes");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReturnNullForEmptyHandOffReason() {
+        List<CollectionMember<HandoffReason>> reason = new ArrayList();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .boHandoffReasonList(reason);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
+    }
+
+    @Test
+    void shouldReturnNullWhenHandOffSiteIsNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .caseHandedOffToLegacySite("No");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
