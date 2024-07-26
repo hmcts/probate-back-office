@@ -55,15 +55,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }
-        try {
-            return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
-                    documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
-                    documentUploadRequest.getFiles(), PRIVATE);
-        } catch (Exception e) {
-            log.info("DocumentManagementServiceImpl.upload.Exception..................");
-            e.printStackTrace();
-        }
-        return null;
+        return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
+                documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
+                documentUploadRequest.getFiles(), PRIVATE);
     }
 
     @Override
@@ -104,26 +98,17 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
 
     @Override
     public byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException {
-        try {
-            String auth = securityUtils.getCaseworkerToken();
-            String s2s = securityUtils.generateServiceToken();
-            log.info("getDocumentByBinaryUrl.auth:" + auth);
-            log.info("getDocumentByBinaryUrl.s2s:" + s2s);
-            log.info("getDocumentByBinaryUrl.binaryUrl:" + binaryUrl);
-            ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s, binaryUrl);
-            Resource body = response.getBody();
-            if (body != null) {
-                return IOUtils.toByteArray(body.getInputStream());
-            } else {
-                throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
-            }
-        } catch (Exception e) {
-            if (e instanceof ClientException) {
-                throw e;
-            }
-            log.info("DocumentManagementServiceImpl.exception-----" + e.getMessage());
-            e.printStackTrace();
+        String auth = securityUtils.getCaseworkerToken();
+        String s2s = securityUtils.generateServiceToken();
+        log.info("getDocumentByBinaryUrl.auth:" + auth);
+        log.info("getDocumentByBinaryUrl.s2s:" + s2s);
+        log.info("getDocumentByBinaryUrl.binaryUrl:" + binaryUrl);
+        ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s, binaryUrl);
+        Resource body = response.getBody();
+        if (body != null) {
+            return IOUtils.toByteArray(body.getInputStream());
+        } else {
+            throw new ClientException(500, "No body retrieved for document resource: " + binaryUrl);
         }
-        return null;
     }
 }

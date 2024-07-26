@@ -126,17 +126,11 @@ public class EventValidationService {
 
     public CallbackResponse validateBulkPrintResponse(String letterId,
                                                       List<? extends BulkPrintValidationRule> rules) {
-        try {
-            CCDData ccdData = ccdBeanTransformer.transformBulkPrint(letterId);
-            List<FieldErrorResponse> businessErrors = validateBulkPrint(ccdData, rules);
-            return CallbackResponse.builder()
-                    .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
-                    .build();
-        } catch (Exception e) {
-            log.info("EventValidationService.validateBulkPrintResponse--->" + e.getMessage());
-            e.printStackTrace();
-        }
-        return null;
+        CCDData ccdData = ccdBeanTransformer.transformBulkPrint(letterId);
+        List<FieldErrorResponse> businessErrors = validateBulkPrint(ccdData, rules);
+        return CallbackResponse.builder()
+                .errors(businessErrors.stream().map(FieldErrorResponse::getMessage).collect(Collectors.toList()))
+                .build();
     }
 
     public CaveatCallbackResponse validateCaveatBulkPrintResponse(String letterId,
