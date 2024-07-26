@@ -146,6 +146,18 @@ public class CcdClientApi implements CoreCaseDataService {
     }
 
     @Override
+    public Optional<CaseDetails> findCaseById(String caseId, SecurityDTO securityDTO) {
+        CaseDetails caseDetails = coreCaseDataApi.getCase(
+                securityDTO.getAuthorisation(),
+                securityDTO.getServiceAuthorisation(),
+                caseId);
+        if (caseDetails == null) {
+            return Optional.empty();
+        }
+        return Optional.of(caseDetails);
+    }
+
+    @Override
     public CaseDetails readForCaseWorker(CcdCaseType caseType, String caseId, SecurityDTO securityDTO) {
         return coreCaseDataApi.readForCaseWorker(
             securityDTO.getAuthorisation(),

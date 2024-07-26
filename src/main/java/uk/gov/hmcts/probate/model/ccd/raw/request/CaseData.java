@@ -39,6 +39,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -315,6 +316,8 @@ public class CaseData extends CaseDataParent {
     private final String casePrinted;
 
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
+
+    private final List<CollectionMember<HandoffReason>> boHandoffReasonList;
 
     private final String boStopDetails;
 
