@@ -100,9 +100,6 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     public byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException {
         String auth = securityUtils.getCaseworkerToken();
         String s2s = securityUtils.generateServiceToken();
-        log.info("getDocumentByBinaryUrl.auth:" + auth);
-        log.info("getDocumentByBinaryUrl.s2s:" + s2s);
-        log.info("getDocumentByBinaryUrl.binaryUrl:" + binaryUrl);
         ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s, binaryUrl);
         Resource body = response.getBody();
         if (body != null) {

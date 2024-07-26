@@ -71,18 +71,18 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
     }
 
     protected String generateDocumentFromPayload(String payload, String path, String documentName) {
-            Response jsonResponse = RestAssured.given()
-                    .relaxedHTTPSValidation()
-                    .headers(utils.getHeadersWithUserId())
-                    .body(payload)
-                    .when().post(path).andReturn();
+        Response jsonResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(utils.getHeadersWithUserId())
+                .body(payload)
+                .when().post(path).andReturn();
 
-            JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
 
-            final String documentUrl =
-                    jsonPath.get("data." + documentName + ".document_binary_url");
-            final String response = utils.downloadPdfAndParseToString(documentUrl);
-            return removeCrLfs(response);
+        final String documentUrl =
+                jsonPath.get("data." + documentName + ".document_binary_url");
+        final String response = utils.downloadPdfAndParseToString(documentUrl);
+        return removeCrLfs(response);
     }
 
     protected String generateDocument(String jsonFileName, String path, String documentName) throws IOException {
