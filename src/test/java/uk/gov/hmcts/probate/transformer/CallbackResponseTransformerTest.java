@@ -4318,6 +4318,7 @@ class CallbackResponseTransformerTest {
                 .getValue()
                 .getSolsAliasname());
         assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
 
     @SuppressWarnings("unchecked")
     @Test
