@@ -16,7 +16,6 @@ import java.util.regex.Pattern;
 public class AuthCheckerConfiguration {
 
     @Bean
-    @Qualifier("authorizedRolesExtractor")
     public Function<HttpServletRequest, Collection<String>> authorizedRolesExtractor() {
         return any -> Collections.emptyList();
     }
