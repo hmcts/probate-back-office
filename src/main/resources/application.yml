@@ -242,9 +242,9 @@ notifications:
       english:
         personal:
           applicationReceived: "6e3f4941-fd11-40fc-8480-8e314e85a985"
-          applicationReceivedNoDocs: "39b7cef5-8202-479e-9f1e-86a76f964221"
+          applicationReceivedNoDocs: "a6da6fb0-61a4-4a26-a324-805d7bcf733e"
           applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
-          documentReceived: "39b7cef5-8202-479e-9f1e-86a76f964221"
+          documentReceived: "24161fba-65f5-4384-9c4f-ef75f4a5c666"
           caseStopped: "60b95b7c-0a76-4608-b549-b3a579cfa3d0"
           caseStoppedCaveat: "937291a0-c0ae-40a4-a8cf-46a3452faff0"
           grantIssued: "227bc051-8210-4030-b669-6eee2cbe075e"
@@ -289,7 +289,7 @@ notifications:
           noticeOfChangeReceived: "6af59aa3-b379-406f-9be4-331b8411c6d9"
       welsh:
         personal:
-          applicationReceived: "6e3f4941-fd11-40fc-8480-8e314e85a985"
+          applicationReceived: "69b3805d-d66a-4433-ad66-be0bafb31d4a"
           applicationReceivedNoDocs: "39b7cef5-8202-479e-9f1e-86a76f964221"
           applicationReceivedPaperFormCaseworker: "22c81233-a213-4520-b6bc-896fe8f6988a"
           documentReceived: "39b7cef5-8202-479e-9f1e-86a76f964221"
