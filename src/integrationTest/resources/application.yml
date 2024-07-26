@@ -476,3 +476,5 @@ reactivate_dormant:
 
 grand_delay:
   number_of_weeks: 16
+
+adhocSchedulerJobCaseReference: ${ADHOC_JOB_CASE_REFERENCE:}
