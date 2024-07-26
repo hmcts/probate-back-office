@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.config;
 
 import org.springframework.context.annotation.Bean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ public class AuthCheckerConfiguration {
     }
 
     @Bean
+    @Qualifier("authorizedRolesExtractor")
     public Function<HttpServletRequest, Optional<String>> userIdExtractor() {
         Pattern pattern = Pattern.compile("^/users/([^/]+)/.+$");
 
