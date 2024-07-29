@@ -86,7 +86,7 @@
             <p>{% if (multipleExecutors) %}We{% else %}I{% endif %},
                 {% set countApplying = 1 %}{% for executor in case_details.case_data.executorsApplyingLegalStatement %}
                 {{ executor.value.applyingExecutorName }}
-                {% if executor.value.applyingExecutorOtherNames != null %}otherwise known as {{ executor.value.applyingExecutorOtherNames }}{% endif %}
+                {% if executor.value.applyingExecutorOtherNames != null and executor.value.applyingExecutorOtherNames != "" %}otherwise known as {{ executor.value.applyingExecutorOtherNames }}{% endif %}
                 of
                 {% if executor.value.applyingExecutorAddress.AddressLine1 != null and executor.value.applyingExecutorAddress.AddressLine1 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine1 }},{% endif %}
                 {% if executor.value.applyingExecutorAddress.AddressLine2 != null and executor.value.applyingExecutorAddress.AddressLine2 != "" %}{{ executor.value.applyingExecutorAddress.AddressLine2 }},{% endif %}
@@ -271,7 +271,7 @@
             </span></p>
             {% endif %}
             {% else %}
-            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
+            <p><span>{{ executor.value.notApplyingExecutorName }}, another executor named in the will{% if case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils == 1 %} or codicil{% elseif case_details.case_data.willHasCodicils == "Yes" and numberOfCodicils > 1 %} or codicils{% endif %}{% if executor.value.notApplyingExecutorNameOnWill != null and executor.value.notApplyingExecutorNameOnWill != "" %} as {{ executor.value.notApplyingExecutorNameOnWill }}{% endif%},
                         {% if executor.value.notApplyingExecutorReason == "DiedBefore" %}has died in the lifetime of the deceased.{% endif %}
                         {% if executor.value.notApplyingExecutorReason == "DiedAfter" %} has survived the deceased and died since.{% endif %}
                         {% if executor.value.notApplyingExecutorReason == "PowerReserved" %}is not making this application but reserves power to do so at a later date. They have been notified in writing.{% endif %}
