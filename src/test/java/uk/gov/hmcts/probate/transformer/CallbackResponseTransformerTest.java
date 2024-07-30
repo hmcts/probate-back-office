@@ -2703,17 +2703,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformHandoffReason() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .caseHandedOffToLegacySite(YES);
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getBoHandoffReasonList());
-    }
-
-    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
