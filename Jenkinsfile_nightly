@@ -18,6 +18,8 @@ properties([
 String product = "probate"
 String component = "back-office"
 
+def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
+
 def secrets = [
   'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
