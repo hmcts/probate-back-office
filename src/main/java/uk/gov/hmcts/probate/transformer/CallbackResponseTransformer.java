@@ -1791,10 +1791,6 @@ public class CallbackResponseTransformer {
             grantOfRepresentationData.setPaperForm(true);
         }
 
-        if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
-            grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
-        }
-
         if (grantOfRepresentationData.getEvidenceHandled() == null) {
             grantOfRepresentationData.setEvidenceHandled(false);
         }
