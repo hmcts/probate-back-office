@@ -65,7 +65,7 @@ exports.config = {
             mochawesome: {
                 stdout: './functional-output/console.log',
                 options: {
-                    reportDir: config.TestOutputDir || './functional-output',
+                    reportDir: testConfig.TestOutputDir || './functional-output',
                     reportName: 'index',
                     inlineAssets: true
                 }
