@@ -497,9 +497,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (YES.equals(callbackRequest.getCaseDetails().getData().getCaseHandedOffToLegacySite())) {
-            responseCaseDataBuilder.boHandoffReasonList(null);
-        }
+        responseCaseDataBuilder.applicationSubmittedDate(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
