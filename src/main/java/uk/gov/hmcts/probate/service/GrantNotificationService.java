@@ -21,6 +21,8 @@ import uk.gov.hmcts.reform.probate.model.ProbateDocumentType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -152,6 +154,7 @@ public class GrantNotificationService {
 
         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
             .grantDelayedNotificationIdentified(TRUE)
+            .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
             .build();
 
         ccdClientApi.updateCaseAsCaseworker(CcdCaseType.GRANT_OF_REPRESENTATION, foundCase.getId().toString(),

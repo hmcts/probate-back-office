@@ -170,6 +170,7 @@ class BusinessValidationControllerIT {
     private static final String FURTHER_EVIDENCE = "Some Further Evidence";
     private static final String VALUES_PAGE = "/case/validate-values-page";
     private static final String CHANGE_DOB = "/case/changeDob";
+    private static final String LAST_MODIFIED_DATE = "/case/setLastModifiedDate";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1261,6 +1262,16 @@ class BusinessValidationControllerIT {
         mockMvc.perform(post(CHANGE_DOB).content(json).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().string(CoreMatchers.containsString("1800-12-31")));
+    }
+
+    @Test
+    void shouldSetLastModifiedDate() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(LAST_MODIFIED_DATE).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 

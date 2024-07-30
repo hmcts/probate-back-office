@@ -4274,6 +4274,17 @@ class CallbackResponseTransformerTest {
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
+    @Test
+    void shouldReturnDateWhenEventIsNotMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("eventId");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertNotNull(callbackResponse.getData().getLastModifiedDateForDormant());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }

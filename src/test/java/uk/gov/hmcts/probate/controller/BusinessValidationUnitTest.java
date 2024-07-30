@@ -1036,4 +1036,16 @@ class BusinessValidationUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getChannelChoice(), is(PAPERFORM));
     }
+
+    @Test
+    void shouldTransformLastModifiedDateForDormant() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.setLastModifiedDateForDormant(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }
