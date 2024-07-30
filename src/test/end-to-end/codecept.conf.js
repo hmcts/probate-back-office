@@ -36,7 +36,7 @@ exports.config = {
         'JSWait': {
             require: './helpers/JSWait.js'
         },
-        'Mochawesome': {
+        'mochawesome': {
             uniqueScreenshotNames: 'true'
         }
     },
@@ -54,9 +54,22 @@ exports.config = {
     },
     'mocha': {
         'reporterOptions': {
-            'reportDir': testConfig.TestOutputDir,
-            'reportName': 'index',
-            'inlineAssets': true
+            'codeceptjs-cli-reporter': {
+                stdout: '-',
+                options: {steps: true}
+            },
+            'mocha-junit-reporter': {
+                stdout: '-',
+                options: {mochaFile: './functional-output/result.xml'}
+            },
+            mochawesome: {
+                stdout: './functional-output/console.log',
+                options: {
+                    reportDir: config.TestOutputDir || './functional-output',
+                    reportName: 'index',
+                    inlineAssets: true
+                }
+            }
         }
     },
     'name': 'Codecept Tests'
