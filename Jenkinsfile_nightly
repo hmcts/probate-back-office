@@ -18,8 +18,6 @@ properties([
 String product = "probate"
 String component = "back-office"
 
-def yarnBuilder = new uk.gov.hmcts.contino.YarnBuilder(this)
-
 def secrets = [
   'probate-aat': [
     secret('cwUserEmail', 'CW_USER_EMAIL'),
@@ -51,7 +49,6 @@ withNightlyPipeline("nodejs", product, component) {
     // enableCrossBrowserTest(['chrome', 'firefox', 'safari', 'microsoft'])
     afterAlways('build') {
         sh 'mkdir -p functional-output'
-        yarnBuilder.yarn('setup')
     }
 
     afterAlways('fullFunctionalTest') {
