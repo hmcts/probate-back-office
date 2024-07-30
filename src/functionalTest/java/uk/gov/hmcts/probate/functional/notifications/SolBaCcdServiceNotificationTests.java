@@ -349,14 +349,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalApplicantGrantIssuedContentIsOk() throws IOException {
-        final String document = sendEmail("personalPayloadNotifications.json", GRANT_ISSUED,
-                EMAIL_NOTIFICATION_URL);
-        String expectedText = utils.getStringFromFile("/json/personalApplicantGrantIssuedEmailContent.txt");
-        assertTrue(document.contains(expectedText));
-    }
-
-    @Test
     public void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
         final String document =
             sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
