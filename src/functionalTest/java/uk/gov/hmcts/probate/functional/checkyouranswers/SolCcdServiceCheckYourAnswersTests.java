@@ -97,12 +97,12 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
     @Test
     void verifyIhtGrossInTheReturnedPDF() throws IOException {
-        validatePostRequestSuccessForLegalStatement("1000.01", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("1000", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
     void verifyIhtNetInTheReturnedPDF() throws IOException {
-        validatePostRequestSuccessForLegalStatement("900.09", DOC_NAME, VALIDATE_PROBATE_URL);
+        validatePostRequestSuccessForLegalStatement("900", DOC_NAME, VALIDATE_PROBATE_URL);
     }
 
     @Test
@@ -142,7 +142,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
         validatePostRequestFailureForLegalStatement("\"deceasedDateOfBirth\": \"1987-01-01\"",
             "\"deceasedDateOfBirth\": \"\"", "caseDetails.data.deceasedDateOfBirth", VALIDATE_URL);
     }
-    
+
     @Test
     void validatePostRequestSuccessCYAForBeforeSignSOT() throws IOException {
         final Response response = given()
