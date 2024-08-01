@@ -39,7 +39,7 @@ import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.reform.probate.model.ProbateDocument;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;

@@ -29,7 +29,7 @@ import uk.gov.hmcts.probate.transformer.CaveatCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.StandingSearchCallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.WillLodgementCallbackResponseTransformer;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;

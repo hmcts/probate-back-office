@@ -3,11 +3,10 @@ package uk.gov.hmcts.probate.functional.bulkscanning;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ValidatableResponse;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.skyscreamer.jsonassert.JSONAssert;
 import org.skyscreamer.jsonassert.JSONCompareMode;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
@@ -20,8 +19,9 @@ import static java.lang.String.format;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
 
     protected static final String S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS =
@@ -51,7 +51,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     public static final String EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON =
         "bulkScanTransformExceptionRecordCombSolicitorPA1AAutomated.json";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
@@ -115,32 +115,32 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testAllMandatoryFieldsPresentReturnNoWarnings() throws IOException {
+    void testAllMandatoryFieldsPresentReturnNoWarnings() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, SUCCESS, null, 0, 0);
     }
 
     @Test
-    public void testMissingMandatoryFieldsReturnWarnings() throws IOException {
+    void testMissingMandatoryFieldsReturnWarnings() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFields.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOB_MISSING, 2, 0);
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, DOD_MISSING, 2, 1);
     }
 
     @Test
-    public void testMissingSolicitorEmailPA1AReturnsWarning() throws IOException {
+    void testMissingSolicitorEmailPA1AReturnsWarning() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
         validateOCRDataPostSuccess(PA1A, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
     }
 
     @Test
-    public void testMissingSolicitorEmailPA1PReturnsWarning() throws IOException {
+    void testMissingSolicitorEmailPA1PReturnsWarning() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataMissingMandatoryFieldsSolPA1.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS, SOLICITOR_EMAIL_MISSING, 1, 0);
     }
 
     @Test
-    public void testInvalidEmailFieldsReturnWarnings() throws IOException {
+    void testInvalidEmailFieldsReturnWarnings() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllInvalidEmailAddress.json");
         validateOCRDataPostSuccess(PA1P, jsonRequest, WARNINGS,
             format(S_S_DOES_NOT_APPEAR_TO_BE_A_VALID_EMAIL_ADDRESS, "Primary applicant email address",
@@ -154,27 +154,27 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testInvalidFormTypeReturnError() throws IOException {
+    void testInvalidFormTypeReturnError() throws IOException {
         String jsonRequest = utils.getJsonFromFile("expectedOCRDataAllMandatoryFields.json");
         validateOCRDataPostError(jsonRequest);
     }
 
     @Test
-    public void testTransformPA8AReturnSuccessfulJSON() throws IOException {
+    void testTransformPA8AReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile(TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON);
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformPA8Av2ReturnSuccessfulJSON() throws IOException {
+    void testTransformPA8Av2ReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8Av2.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8Av2.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformCombinedCitizenPA8Av2ReturnSuccessfulJSON() throws IOException {
+    void testTransformCombinedCitizenPA8Av2ReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA8Av2.json");
@@ -182,7 +182,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedSolicitorPA8AReturnSuccessfulJSON() throws IOException {
+    void testTransformCombinedSolicitorPA8AReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8A.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
@@ -190,14 +190,14 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformPA1PReturnSuccessfulJSON() throws IOException {
+    void testTransformPA1PReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1P.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformCombinedCitizenPA1PReturnSuccessfulJSON() throws IOException {
+    void testTransformCombinedCitizenPA1PReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1P.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
@@ -205,7 +205,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedSolicitorPA1PReturnSuccessfulJSON() throws IOException {
+    void testTransformCombinedSolicitorPA1PReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1P.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
@@ -213,7 +213,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformSolicitorPA1PReturnSuccessfulJSON() throws IOException {
+    void testTransformSolicitorPA1PReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1P.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
@@ -221,21 +221,21 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformMissingMandatoryPA1PReturnUnprocessedJSON() throws IOException {
+    void testTransformMissingMandatoryPA1PReturnUnprocessedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1P.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1P.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformMissingMandatoryPA1AReturnUnprocessedJSON() throws IOException {
+    void testTransformMissingMandatoryPA1AReturnUnprocessedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordMissingMandatoryPA1A.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanExceptionRecordMissingMandatoryPA1A.json");
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformCitizenPA1PReturnUnprocessedJSON() throws IOException {
+    void testTransformCitizenPA1PReturnUnprocessedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PUnprocessed.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputPA1PUnprocessed.json");
@@ -243,14 +243,14 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformPA1AReturnSuccessfulJSON() throws IOException {
+    void testTransformPA1AReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1A.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testUpdateCaseExtendCaveatPA8AReturnSuccessfulJSON() throws IOException {
+    void testUpdateCaseExtendCaveatPA8AReturnSuccessfulJSON() throws IOException {
         final String expiryDate7DaysFromNow =
             LocalDate.now().plusDays(7).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String expectedExpiryDate6MonthsFromNow =
@@ -261,34 +261,38 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         final JsonPath jsonPath = fetchJsonPathUpdatedCaveatDetailsFromCaseFromException(jsonRequest);
 
         // Unable to use static file as documents are generated in the response, picking out specific values instead.
-        Assert.assertEquals("Correct applicationType", "Personal",
-            jsonPath.get("case_update_details.case_data.applicationType"));
-        Assert.assertEquals("Correct paperForm", "Yes",
-            jsonPath.get("case_update_details.case_data.paperForm"));
-        Assert.assertEquals("Correct expiry date", expectedExpiryDate6MonthsFromNow,
-            jsonPath.get("case_update_details.case_data.expiryDate"));
-        Assert.assertEquals("Correct registry", "ctsc",
-            jsonPath.get("case_update_details.case_data.registryLocation"));
+        assertEquals("Personal", jsonPath.get("case_update_details.case_data.applicationType"),
+                "Correct applicationType");
+        assertEquals("Yes", jsonPath.get("case_update_details.case_data.paperForm"),
+                "Correct paperForm");
+        assertEquals(expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"),
+                "Correct expiry date");
+        assertEquals("ctsc", jsonPath.get("case_update_details.case_data.registryLocation"),
+                "Correct registry");
 
         // Checked Scanned Documents
-        Assert.assertEquals("Correct number scanned docs", 2,
-            jsonPath.getList("case_update_details.case_data.scannedDocuments").size());
-        Assert.assertEquals("Correct DCN Scan Doc 1", "19365040100100002",
-            jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"));
-        Assert.assertEquals("Correct DCN Scan Doc 2", "123135453645",
-            jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"));
+        assertEquals(2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size(),
+                "Correct number scanned docs");
+        assertEquals("19365040100100002",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"),
+                "Correct DCN Scan Doc 1");
+        assertEquals("123135453645",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"),
+                "Correct DCN Scan Doc 2");
 
         // Checked Generated Notification Documents
-        Assert.assertEquals("Correct number generated notifications", 2,
-            jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
-        Assert.assertEquals("Correct DocumentType Doc 1", SENT_EMAIL,
-            jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
-        Assert.assertEquals("Correct DocumentType Doc 2", SENT_EMAIL,
-            jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
+        assertEquals(2, jsonPath.getList("case_update_details.case_data.notificationsGenerated").size(),
+                "Correct number generated notifications");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"),
+                "Correct DocumentType Doc 1");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"),
+                "Correct DocumentType Doc 2");
     }
 
     @Test
-    public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorJSON() throws IOException {
+    void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA_8_A_JSON);
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanUpdateCaseExceptionRecordExpiredCaveatErrorPA8A.json");
@@ -296,7 +300,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorJSON() throws IOException {
+    void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorJSON() throws IOException {
         final String expiryDate3MonthsFromNow =
             LocalDate.now().plusMonths(3).format(CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String expireDate = EXPIRY_DATE + expiryDate3MonthsFromNow + "\"";
@@ -308,7 +312,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedCitizenPA1AReturnSuccessfulJSON() throws IOException {
+    void testTransformCombinedCitizenPA1AReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1A.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1A.json");
@@ -316,7 +320,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedSolicitorPA1AReturnSuccessfulJSON() throws IOException {
+    void testTransformCombinedSolicitorPA1AReturnSuccessfulJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1A.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1A.json");
@@ -324,35 +328,36 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformPA8AReturnTransformErrorJSON() throws IOException {
+    void testTransformPA8AReturnTransformErrorJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordError.json");
         String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformSolicitorPA8AReturnTransformErrorJSON() throws IOException {
+    void testTransformSolicitorPA8AReturnTransformErrorJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordError.json");
         String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformSolicitorPA8AReturnTransformErrorAutomatedJSON() throws IOException {
-        String jsonRequest = utils.getJsonFromFile("bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
+    void testTransformSolicitorPA8AReturnTransformErrorAutomatedJSON() throws IOException {
+        String jsonRequest = utils.getJsonFromFile(
+                "bulkScanTransformSolicitorExceptionRecordErrorAutomated.json");
         String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformPA8AReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA8AAutomated.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA8A.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformCombinedCitizenPA8Av2ReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformCombinedCitizenPA8Av2ReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA8Av2Automated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA8Av2.json");
@@ -360,7 +365,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedSolicitorPA8AReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformCombinedSolicitorPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA8AAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA8A.json");
@@ -368,14 +373,14 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformPA1PReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1P.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformCombinedCitizenPA1PReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformCombinedCitizenPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombCitizenPA1P.json");
@@ -383,7 +388,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedSolicitorPA1PReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformCombinedSolicitorPA1PReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordCombSolicitorPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputCombSolicitorPA1P.json");
@@ -391,7 +396,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformSolicitorPA1PSingleExecReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformSolicitorPA1PSingleExecReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordSolicitorPA1PAutomated.json");
         String jsonResponse = utils.getJsonFromFile(
                 "expectedBulkScanTransformExceptionRecordOutputSolicitorPA1P.json");
@@ -399,14 +404,14 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformPA1AReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformPA1AReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordPA1AAutomated.json");
         String jsonResponse = utils.getJsonFromFile("expectedBulkScanTransformExceptionRecordOutputPA1A.json");
         transformExceptionPostSuccess(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testUpdateCaseExtendCaveatPA8AReturnSuccessfulAutomatedJSON() throws IOException {
+    void testUpdateCaseExtendCaveatPA8AReturnSuccessfulAutomatedJSON() throws IOException {
         final String expiryDate7DaysFromNow = LocalDate.now().plusDays(7).format(
             CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String expiryDate = EXPIRY_DATE + expiryDate7DaysFromNow + "\"";
@@ -416,34 +421,39 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
         String expectedExpiryDate6MonthsFromNow = LocalDate.now().plusDays(7).plusMonths(6).format(
                 CaveatCallbackResponseTransformer.dateTimeFormatter);
         // Unable to use static file as documents are generated in the response, picking out specific values instead.
-        Assert.assertEquals("Correct applicationType", "Personal",
-            jsonPath.get("case_update_details.case_data.applicationType"));
-        Assert.assertEquals("Correct paperForm", "Yes",
-            jsonPath.get("case_update_details.case_data.paperForm"));
-        Assert.assertEquals("Correct expiry date", expectedExpiryDate6MonthsFromNow,
-            jsonPath.get("case_update_details.case_data.expiryDate"));
-        Assert.assertEquals("Correct registry", "ctsc",
-            jsonPath.get("case_update_details.case_data.registryLocation"));
+        assertEquals("Personal", jsonPath.get("case_update_details.case_data.applicationType"),
+                "Correct applicationType");
+        assertEquals("Yes", jsonPath.get("case_update_details.case_data.paperForm"),
+                "Correct paperForm");
+        assertEquals(expectedExpiryDate6MonthsFromNow, jsonPath.get("case_update_details.case_data.expiryDate"),
+                "Correct expiry date");
+        assertEquals("ctsc", jsonPath.get("case_update_details.case_data.registryLocation"),
+                "Correct registry");
 
         // Checked Scanned Documents
-        Assert.assertEquals("Correct number scanned docs", 2,
-            jsonPath.getList("case_update_details.case_data.scannedDocuments").size());
-        Assert.assertEquals("Correct DCN Scan Doc 1", "19365040100100002",
-            jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"));
-        Assert.assertEquals("Correct DCN Scan Doc 2", "123135453645",
-            jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"));
+        assertEquals(2, jsonPath.getList("case_update_details.case_data.scannedDocuments").size(),
+                "Correct number scanned docs");
+        assertEquals("19365040100100002",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[0].value.controlNumber"),
+                "Correct DCN Scan Doc 1");
+        assertEquals("123135453645",
+                jsonPath.get("case_update_details.case_data.scannedDocuments[1].value.controlNumber"),
+                "Correct DCN Scan Doc 2");
 
         // Checked Generated Notification Documents
-        Assert.assertEquals("Correct number generated notifications", 2,
-            jsonPath.getList("case_update_details.case_data.notificationsGenerated").size());
-        Assert.assertEquals("Correct DocumentType Doc 1", SENT_EMAIL,
-            jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"));
-        Assert.assertEquals("Correct DocumentType Doc 2", SENT_EMAIL,
-            jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"));
+        assertEquals(2,
+                jsonPath.getList("case_update_details.case_data.notificationsGenerated").size(),
+                "Correct number generated notifications");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[0].value.DocumentType"),
+                "Correct DocumentType Doc 1");
+        assertEquals(SENT_EMAIL,
+                jsonPath.get("case_update_details.case_data.notificationsGenerated[1].value.DocumentType"),
+                "Correct DocumentType Doc 2");
     }
 
     @Test
-    public void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorAutomatedJSON() throws IOException {
+    void testUpdateCaseExtendCaveatPA8AReturnExpiredErrorAutomatedJSON() throws IOException {
         String jsonRequest =
             utils.getJsonFromFile(EXCEPTION_RECORD_EXTEND_EXPIRY_PA8A_AUTOMATED_JSON);
         String jsonResponse =
@@ -452,7 +462,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorAutomatedJSON() throws IOException {
+    void testUpdateCaseExtendCaveatPA8AReturnOutsideOneMonthExpiryErrorAutomatedJSON() throws IOException {
         final String expiryDate3MonthsFromNow = LocalDate.now().plusMonths(3).format(
             CaveatCallbackResponseTransformer.dateTimeFormatter);
         final String expireDate = EXPIRY_DATE + expiryDate3MonthsFromNow + "\"";
@@ -467,7 +477,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedCitizenPA1AReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformCombinedCitizenPA1AReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest =
             utils.getJsonFromFile("bulkScanTransformExceptionRecordCombCitizenPA1AAutomated.json");
         String jsonResponse =
@@ -476,7 +486,7 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformCombinedSolicitorPA1AReturnSuccessfulAutomatedJSON() throws IOException {
+    void testTransformCombinedSolicitorPA1AReturnSuccessfulAutomatedJSON() throws IOException {
         String jsonRequest =
             utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         String jsonResponse =
@@ -485,32 +495,32 @@ public class SolBaCcdServiceBulkScanningTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testTransformPA8AReturnTransformErrorAutomatedJSON() throws IOException {
+    void testTransformPA8AReturnTransformErrorAutomatedJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile("bulkScanTransformExceptionRecordErrorAutomated.json");
         String jsonResponse = utils.getJsonFromFile(EXCEPTION_RECORD_OUTPUT_ERROR_JSON);
         transformExceptionPostUnprocessed(jsonRequest, jsonResponse);
     }
 
     @Test
-    public void testTransformPA1AReturnTransformForbiddenJSON() throws IOException {
+    void testTransformPA1AReturnTransformForbiddenJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         transformExceptionPostForbidden(jsonRequest);
     }
 
     @Test
-    public void testUpdatePA1AReturnTransformForbiddenJSON() throws IOException {
+    void testUpdatePA1AReturnTransformForbiddenJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile(EXCEPTION_RECORD_COMB_SOLICITOR_PA1A_AUTOMATED_JSON);
         updateExceptionPostForbidden(jsonRequest);
     }
 
     @Test
-    public void testTransformPA8AReturnTransformForbiddenJSON() throws IOException {
+    void testTransformPA8AReturnTransformForbiddenJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile(TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON);
         transformExceptionPostForbidden(jsonRequest);
     }
 
     @Test
-    public void testUpdatePA8AReturnTransformForbiddenJSON() throws IOException {
+    void testUpdatePA8AReturnTransformForbiddenJSON() throws IOException {
         String jsonRequest = utils.getJsonFromFile(TRANSFORM_EXCEPTION_RECORD_PA_8_A_JSON);
         updateExceptionPostForbidden(jsonRequest);
     }

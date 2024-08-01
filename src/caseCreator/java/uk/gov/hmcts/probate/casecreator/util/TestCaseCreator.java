@@ -10,12 +10,12 @@ import io.restassured.http.Headers;
 import io.restassured.parsing.Parser;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Ignore;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.Rule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -27,7 +27,7 @@ import java.nio.file.Files;
 import java.util.Base64;
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 @ContextConfiguration(classes = TestCaseCreatorConfig.class)
 public class TestCaseCreator {
 
@@ -81,33 +81,33 @@ public class TestCaseCreator {
 
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
         RestAssured.baseURI = solCcdServiceUrl;
         RestAssured.defaultParser = Parser.JSON;
     }
 
     @Test
-    public void createPaCase() throws Exception {
+    void createPaCase() throws Exception {
         idamUsername = idamPaUsername;
         createCase("create.pa.ccd.json", "citizens", EVENT_NAME_GOR_PA, GOR);
     }
 
     @Test
-    public void createPaCaseCaveats() throws Exception {
+    void createPaCaseCaveats() throws Exception {
         idamUsername = idamPaUsername;
         createCase("create.caveat.pa.ccd.json", "citizens", EVENT_NAME_CAVEAT_PA, CAVEAT);
     }
 
     @Test
-    public void createSolsCase() throws Exception {
+    void createSolsCase() throws Exception {
         idamUsername = idamSolUsername;
         createCase("create.sols.ccd.json", "caseworkers", "solicitorCreateApplication", GOR);
     }
 
-    @Ignore
+    @Disabled
     @Test
-    public void createBOSolsCase() throws Exception {
+    void createBOSolsCase() throws Exception {
         idamUsername = idamBoUsername;
         createCase("create.bo.sols.ccd.json", "caseworkers", "boPrintCase", GOR);
     }

@@ -9,7 +9,6 @@ import au.com.dius.pact.core.model.annotations.Pact;
 import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.HttpStatus;
 import org.json.JSONException;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -28,6 +27,7 @@ import uk.gov.hmcts.probate.service.fee.FeeService;
 import java.math.BigDecimal;
 import java.net.SocketTimeoutException;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -135,7 +135,7 @@ public class FeesRegisterConsumerTest {
     public void verifyApplicationFeeServicePact() throws JSONException, SocketTimeoutException {
 
         FeeResponse result = feeService.getApplicationFeeResponse(new BigDecimal("250000.00"));
-        Assert.assertTrue(new BigDecimal("200").equals(result.getFeeAmount()));
+        assertTrue(new BigDecimal("200").equals(result.getFeeAmount()));
 
     }
 
@@ -143,7 +143,7 @@ public class FeesRegisterConsumerTest {
     @PactTestFor(pactMethod = "createCopiesFeeFragment")
     public void verifyCopiesFeeServicePact() throws JSONException, SocketTimeoutException {
         FeeResponse result = feeService.getCopiesFeeResponse(3L);
-        Assert.assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
+        assertTrue(new BigDecimal("3.5").equals(result.getFeeAmount()));
 
     }
 
@@ -151,7 +151,7 @@ public class FeesRegisterConsumerTest {
     @PactTestFor(pactMethod = "createCopiesNoFeeFragment")
     public void verifyCopiesNoFeeServicePact() throws JSONException, SocketTimeoutException {
         FeeResponse result = feeService.getCopiesFeeResponse(0L);
-        Assert.assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
+        assertTrue(new BigDecimal("0").equals(result.getFeeAmount()));
     }
 
 }

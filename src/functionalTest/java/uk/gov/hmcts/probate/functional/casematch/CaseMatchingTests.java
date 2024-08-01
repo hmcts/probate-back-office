@@ -3,10 +3,10 @@ package uk.gov.hmcts.probate.functional.casematch;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
@@ -17,7 +17,7 @@ import static org.hamcrest.core.Is.is;
 import static uk.gov.hmcts.probate.functional.util.FunctionalTestUtils.TOKEN_PARM;
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class CaseMatchingTests extends CaseSearchTestBase {
     public static final String NAME = "Ned Stark";
     public static final String DATE_OF_BIRTH = "1900-01-01";
@@ -31,62 +31,62 @@ public class CaseMatchingTests extends CaseSearchTestBase {
     private static final String SEARCH_FROM_STANDING_SEARCH_FLOW = "/case-matching/search-from-standing-search-flow";
     private static final String SEARCH_FROM_WILL_LODGEMENT_FLOW = "/case-matching/search-from-will-lodgement-flow";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenGOPSearchFlow() throws IOException {
+    void shouldReturnMatchingCaseWhenGOPSearchFlow() throws IOException {
         createCase();
         final Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, SEARCH_GRANT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenGOPSearchFlow() throws IOException {
+    void shouldReturnNoMatchingCaseWhenGOPSearchFlow() throws IOException {
         final Response response = search(SEARCH_GRANT_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenCaveatSearchFlow() throws IOException {
+    void shouldReturnMatchingCaseWhenCaveatSearchFlow() throws IOException {
         createCase();
         final Response response = search(CAVEAT_MATCH_CASE_JSON, SEARCH_FROM_CAVEAT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenCaveatSearchFlow() throws IOException {
+    void shouldReturnNoMatchingCaseWhenCaveatSearchFlow() throws IOException {
         final Response response = search(SEARCH_FROM_CAVEAT_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenStandingSearchFlow() throws IOException {
+    void shouldReturnMatchingCaseWhenStandingSearchFlow() throws IOException {
         createCase();
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, SEARCH_FROM_STANDING_SEARCH_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenStandingSearchFlow() throws IOException {
+    void shouldReturnNoMatchingCaseWhenStandingSearchFlow() throws IOException {
         final Response response = search(SEARCH_FROM_STANDING_SEARCH_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));
     }
 
     @Test
-    public void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws IOException {
+    void shouldReturnMatchingCaseWhenWillLodgementSearchFlow() throws IOException {
         createCase();
         final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, SEARCH_FROM_WILL_LODGEMENT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnNoMatchingCaseWhenWillLodgementSearchFlow() throws IOException {
+    void shouldReturnNoMatchingCaseWhenWillLodgementSearchFlow() throws IOException {
         final Response response = search(SEARCH_FROM_WILL_LODGEMENT_FLOW);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertThat(jsonPath.get("data.caseMatches"), is(empty()));

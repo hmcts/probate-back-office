@@ -2,8 +2,8 @@ package uk.gov.hmcts.probate.functional.probateman;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.http.Headers;
-import net.serenitybdd.junit.runners.SerenityParameterizedRunner;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -13,7 +13,7 @@ import javax.sql.DataSource;
 import java.util.List;
 import java.util.Map;
 
-@RunWith(SerenityParameterizedRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class ProbateManFunctionalTests extends IntegrationTestBase {
 
     private static final String FORENAME_REPLACE = "[FORENAME_REPLACE]";
@@ -70,7 +70,7 @@ public class ProbateManFunctionalTests extends IntegrationTestBase {
 //        });
 //    }
 //
-//    @Before
+//    @BeforeEach
 //    public void setUp() {
 //        Awaitility.reset();
 //        Awaitility.setDefaultPollDelay(100, MILLISECONDS);

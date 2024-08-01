@@ -65,7 +65,8 @@ public class DataExtractController {
 
     @Operation(summary = "Initiate IronMountain data extract with date",
         description = "Date MUST be in callbackRequest 'yyyy-MM-dd'")
-    @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/resend-iron-mountain", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> initiateIronMountainExtract(
         @RequestBody CallbackRequest callbackRequest) {
         String resendDate = callbackRequest.getCaseDetails().getData().getResendDate();

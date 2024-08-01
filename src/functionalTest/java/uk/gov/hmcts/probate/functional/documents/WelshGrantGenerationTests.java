@@ -1,15 +1,15 @@
 package uk.gov.hmcts.probate.functional.documents;
 
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
     public void verifyPersonalGenerateWelshReissueGOP() throws IOException {
@@ -18,36 +18,36 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyPersonalGenerateWelshReissueAdmonWill() throws IOException {
+    void verifyPersonalGenerateWelshReissueAdmonWill() throws IOException {
         verifyPersonalWelshReissueText("personalPayloadReissueAdmonWillRegistrarsOrderWelsh.json",
             "expectedDocumentReissueAdmonWillWelsh.txt");
     }
 
     @Test
-    public void verifyPersonalGenerateWelshReissueIntestacy() throws IOException {
+    void verifyPersonalGenerateWelshReissueIntestacy() throws IOException {
         verifyPersonalWelshReissueText("personalPayloadReissueIntestacyRegistrarsDirectionWelsh.json",
             "expectedDocumentReissueIntestacyWelsh.txt");
     }
 
     @Test
-    public void verifyPersonalGenerateWelshGrantGOP() throws IOException {
+    void verifyPersonalGenerateWelshGrantGOP() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantGOPWelsh.json", "expectedDocumentGrantGOPWelsh.txt");
     }
 
     @Test
-    public void verifyPersonalExecutorNameGenerateWelshGrantGOP() throws IOException {
+    void verifyPersonalExecutorNameGenerateWelshGrantGOP() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantExecutorGOPWelsh.json",
                 "expectedDocumentGrantWithExecutorGOPWelsh.txt");
     }
 
     @Test
-    public void verifyPersonalGenerateWelshGrantAdmonWill() throws IOException {
+    void verifyPersonalGenerateWelshGrantAdmonWill() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantAdmonWillWelsh.json",
             "expectedDocumentGrantAdmonWillWelsh.txt");
     }
 
     @Test
-    public void verifyPersonalGenerateWelshGrantIntestacy() throws IOException {
+    void verifyPersonalGenerateWelshGrantIntestacy() throws IOException {
         verifyPersonalWelshGrantText("personalPayloadGrantIntestacyWelsh.json",
             "expectedDocumentGrantIntestacyWelsh.txt");
     }

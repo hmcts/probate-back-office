@@ -3,9 +3,10 @@ package uk.gov.hmcts.probate.functional.casematch;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 
 import java.io.IOException;
 
@@ -14,7 +15,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class LegacyTests extends CaseSearchTestBase {
     private static final String PROBATE_LEGACY_SEARCH_JSON = "casematch/grantOfProbateLegacy.json";
     private static final String CAVEAT_LEGACY_SEARCH_JSON = "casematch/caveatLegacySearch.json";
@@ -28,7 +29,7 @@ public class LegacyTests extends CaseSearchTestBase {
         "/case-matching/import-legacy-from-will-lodgement-flow";
 
     @Test
-    public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyGrantFlowImport() throws IOException {
+    void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyGrantFlowImport() throws IOException {
         final Response response = search(PROBATE_LEGACY_SEARCH_JSON, IMPORT_LEGACY_GRANT_FLOW);
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
@@ -36,7 +37,7 @@ public class LegacyTests extends CaseSearchTestBase {
     }
 
     @Test
-    public void shouldReturnErrorWheNoCaseMatchInLegacyCaveatFlowImport() throws IOException {
+    void shouldReturnErrorWheNoCaseMatchInLegacyCaveatFlowImport() throws IOException {
         final Response response = search(CAVEAT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
@@ -44,7 +45,7 @@ public class LegacyTests extends CaseSearchTestBase {
     }
 
     @Test
-    public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyWillLodgementImport() throws IOException {
+    void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyWillLodgementImport() throws IOException {
         final Response response = search(WILL_LODGEMENT_LEGACY_SEARCH_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
@@ -52,7 +53,7 @@ public class LegacyTests extends CaseSearchTestBase {
     }
 
     @Test
-    public void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyStandingSearchImport() throws IOException {
+    void shouldReturnErrorWhenMoreThanOneCaseMatchFoundInLegacyStandingSearchImport() throws IOException {
         final Response response = search(STANDING_SEARCH_LEGACY_SEARCH_JSON, IMPORT_LEGACY_STANDING_SEARCH);
         response.then().assertThat().statusCode(200);
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
@@ -60,25 +61,25 @@ public class LegacyTests extends CaseSearchTestBase {
     }
 
     @Test
-    public void shouldReturnSucessWhenNoCaseMatchInLegacyGrantFlow() throws IOException {
+    void shouldReturnSucessWhenNoCaseMatchInLegacyGrantFlow() throws IOException {
         final Response response = search(CAVEAT_MATCH_CASE_JSON, IMPORT_LEGACY_GRANT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnSucessWhenNoCaseMatchInLegacyCaveatFlowImport() throws IOException {
+    void shouldReturnSucessWhenNoCaseMatchInLegacyCaveatFlowImport() throws IOException {
         final Response response = search(GRANT_OF_PROBATE_MATCH_CASE_JSON, IMPORT_LEGACY_CAVEAT_FLOW);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturnSucessWhenNoCaseMatchInLegacyWillLodgementImport() throws IOException {
+    void shouldReturnSucessWhenNoCaseMatchInLegacyWillLodgementImport() throws IOException {
         final Response response = search(WILL_LODGEMENT_MATCH_CASE_JSON, IMPORT_LEGACY_WILL_LODGEMENT_SEARCH);
         response.then().assertThat().statusCode(200);
     }
 
     @Test
-    public void shouldReturSucessWhenNoCaseMatchInLegacyStandingSearchImport() throws IOException {
+    void shouldReturSucessWhenNoCaseMatchInLegacyStandingSearchImport() throws IOException {
         final Response response = search(STANDING_SEARCH_MATCH_CASE_JSON, IMPORT_LEGACY_STANDING_SEARCH);
         response.then().assertThat().statusCode(200);
     }

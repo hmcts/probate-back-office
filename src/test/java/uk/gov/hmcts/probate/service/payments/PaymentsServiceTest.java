@@ -13,6 +13,7 @@ import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
+import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestPaymentResponseDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
@@ -78,6 +79,7 @@ class PaymentsServiceTest {
 
     @Test
     void shouldCreateServiceRequest() {
+        PaymentServiceResponse  paymentServiceResponse = new PaymentServiceResponse("abcdef123456");
         ServiceRequestDto serviceDto = ServiceRequestDto.builder().build();
         SecurityDTO securityDTO = SecurityDTO.builder()
                 .userId("userId")
@@ -86,7 +88,7 @@ class PaymentsServiceTest {
                 .build();
         when(securityUtilsMock.getSecurityDTO()).thenReturn(securityDTO);
         when(serviceRequestClient.createServiceRequest(any(), any(), any()))
-                .thenReturn("{\"service_request_reference\":\"abcdef123456\"}");
+                .thenReturn(paymentServiceResponse);
         String request = paymentsService.createServiceRequest(serviceDto);
 
         assertEquals("abcdef123456", request);

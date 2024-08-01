@@ -28,7 +28,7 @@ import uk.gov.hmcts.reform.ccd.document.am.model.Document.Links;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
 import javax.crypto.BadPaddingException;
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -160,47 +160,47 @@ class PDFManagementServiceTest {
     }
 
     @Test
-    public void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
+    void shouldGenerateAndUploadIntestacyLegalStatement() throws IOException {
         assertDocumentUploaded(LEGAL_STATEMENT_INTESTACY, "legalStatementIntestacy.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
+    void shouldGenerateAndUploadAdmonLegalStatement() throws IOException {
         assertDocumentUploaded(LEGAL_STATEMENT_ADMON, "legalStatementAdmon.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadDigitalGrant() throws IOException {
+    void shouldGenerateAndUploadDigitalGrant() throws IOException {
         assertDocumentUploaded(DIGITAL_GRANT, "digitalGrant.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadIntestacyGrant() throws IOException {
+    void shouldGenerateAndUploadIntestacyGrant() throws IOException {
         assertDocumentUploaded(INTESTACY_GRANT, "intestacyGrant.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
+    void shouldGenerateAndUploadAdmonWillGrant() throws IOException {
         assertDocumentUploaded(ADMON_WILL_GRANT, "admonWillGrant.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
+    void shouldGenerateAndUploadWillLodgementDepositReceipt() throws IOException {
         assertDocumentUploaded(WILL_LODGEMENT_DEPOSIT_RECEIPT, "willLodgementDepositReceipt.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadSentEmail() throws IOException {
+    void shouldGenerateAndUploadSentEmail() throws IOException {
         assertDocumentUploaded(SENT_EMAIL, "sentEmail.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadCaveatRaised() throws IOException {
+    void shouldGenerateAndUploadCaveatRaised() throws IOException {
         assertDocumentUploaded(CAVEAT_RAISED, "caveatRaised.pdf");
     }
 
     @Test
-    public void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
+    void shouldGenerateAndUploadDocmosisDocumentCaveatRaised() throws IOException {
         assertDocmosisDocumentUploaded(CAVEAT_RAISED, "caveatRaised.pdf");
     }
 

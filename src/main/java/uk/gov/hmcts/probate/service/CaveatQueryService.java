@@ -25,7 +25,7 @@ import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.evidencemanagement.header.HttpHeadersFactory;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.net.URI;
 import java.util.List;
 import java.util.Locale;
