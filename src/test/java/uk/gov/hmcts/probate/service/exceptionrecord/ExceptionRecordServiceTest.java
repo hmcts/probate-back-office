@@ -411,4 +411,31 @@ class ExceptionRecordServiceTest {
         assertEquals("FirmName", grantOfRepresentationDataResponse.getSolsSolicitorFirmName());
         assertEquals(Boolean.TRUE, grantOfRepresentationDataResponse.getCaseHandedOffToLegacySite());
     }
+
+    @Test
+    void shouldSetGORApplicationSubmittedDateFromDeliveryDate() {
+        when(erGrantOfRepresentationMapper.toCcdData(any(), any())).thenReturn(grantOfRepresentationDataSolsIntestacy);
+        grantOfProbateCaseDetailsResponse =
+                CaseCreationDetails.builder().<ResponseCaveatData>eventId(EXCEPTION_RECORD_GOR_EVENT_ID)
+                        .caseData(grantOfRepresentationDataSolsIntestacy)
+                        .caseTypeId(EXCEPTION_RECORD_GOR_CASE_TYPE_ID).build();
+        when(grantOfProbatetransformer.bulkScanGrantOfRepresentationCaseTransform(any()))
+                .thenReturn(grantOfProbateCaseDetailsResponse);
+        SuccessfulTransformationResponse response =
+                erService.createGrantOfRepresentationCaseFromExceptionRecord(erRequestGrantOfProbateSolsIntestacy,
+                        GrantType.INTESTACY,
+                        warnings);
+        GrantOfRepresentationData grantOfRepresentationDataResponse
+                = (GrantOfRepresentationData) response.getCaseCreationDetails().getCaseData();
+        assertEquals(grantOfRepresentationDataResponse.getApplicationSubmittedDate(),
+                erRequestGrantOfProbateSolsIntestacy.getDeliveryDate().toLocalDate());
+    }
+
+    @Test
+    void shouldSetCaveatApplicationSubmittedDateFromDeliveryDate() {
+        SuccessfulTransformationResponse response =
+                erService.createCaveatCaseFromExceptionRecord(erRequestCaveat, warnings);
+        CaveatData caveatDataResponse = (CaveatData) response.getCaseCreationDetails().getCaseData();
+        assertEquals(caveatDataResponse.getApplicationSubmittedDate(), erRequestCaveat.getDeliveryDate().toLocalDate());
+    }
 }

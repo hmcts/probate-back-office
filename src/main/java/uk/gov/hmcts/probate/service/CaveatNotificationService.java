@@ -226,7 +226,10 @@ public class CaveatNotificationService {
     }
 
     private void setCaveatExpiryDate(CaveatData caveatData) {
-        caveatData.setExpiryDate(LocalDate.now().plusMonths(CAVEAT_LIFESPAN));
+        LocalDate baseDate = caveatData.getApplicationSubmittedDate() != null
+                ? caveatData.getApplicationSubmittedDate()
+                : LocalDate.now();
+        caveatData.setExpiryDate(baseDate.plusMonths(CAVEAT_LIFESPAN));
     }
 
 
