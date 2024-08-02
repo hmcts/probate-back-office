@@ -4278,7 +4278,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldReturnDateWhenExcludedEventIsNotMatched() {
+    void shouldReturnNewDateWhenExcludedEventIsNotMatched() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         when(callbackRequestMock.getEventId()).thenReturn("eventId");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
