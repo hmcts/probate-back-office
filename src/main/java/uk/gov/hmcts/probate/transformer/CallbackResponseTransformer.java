@@ -1835,8 +1835,8 @@ public class CallbackResponseTransformer {
     }
 
     private LocalDateTime getLastModifiedDate(String eventId, LocalDateTime lastModifiedDateForDormant) {
-        boolean noneMatch = EXCLUDED_EVENT_LIST.stream().noneMatch(s -> s.equals(eventId));
-        if (noneMatch) {
+        boolean shouldSetDate = EXCLUDED_EVENT_LIST.stream().noneMatch(s -> s.equals(eventId));
+        if (shouldSetDate) {
             return LocalDateTime.now(ZoneOffset.UTC);
         }
         return lastModifiedDateForDormant;
