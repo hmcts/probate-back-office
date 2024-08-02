@@ -2705,12 +2705,13 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldTransformHandoffReason() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .caseHandedOffToLegacySite(YES);
+                .lastModifiedDateForDormant(LocalDateTime.of(2024, 1, 1, 1,
+                        1, 1, 1));
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getBoHandoffReasonList());
+        assertNull(callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
     @Test
