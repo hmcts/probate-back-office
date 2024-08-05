@@ -3,12 +3,13 @@ package uk.gov.hmcts.probate.service.exceptionrecord.mapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
-import uk.gov.hmcts.probate.model.exceptionrecord.ExceptionRecordOCRFields;
 import uk.gov.hmcts.probate.service.exceptionrecord.mapper.qualifiers.ToSolicitorWillType;
+import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType;
 
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_ADMON_VALUE;
-import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.Constants.GRANT_TYPE_INTESTACY_VALUE;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_PROBATE;
@@ -18,35 +19,37 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Soli
 @Component
 public class OCRFieldSolicitorWillTypeMapper {
 
-    private static final String GRANT = "GRANT";
-    private static final String PROBATE = "PROBATE";
-    private static final String ADMON = "ADMON";
-    private static final String INTESTACY = "INTESTACY";
+    private static final LinkedHashMap<String, SolicitorWillType> willTypeMap = new LinkedHashMap<>();
 
-    private static final String ADMINISTRATION = "ADMINISTRATION";
+    static {
+        willTypeMap.put("ADMON", GRANT_TYPE_ADMON);
+        willTypeMap.put("ANNEXED", GRANT_TYPE_ADMON);
+        willTypeMap.put("PROBATE", GRANT_TYPE_PROBATE);
+        willTypeMap.put("ADMINISTRAT", GRANT_TYPE_ADMON);
+        willTypeMap.put("GRANT", GRANT_TYPE_PROBATE);
+    }
 
     @ToSolicitorWillType
-    public SolicitorWillType toSolicitorWillType(ExceptionRecordOCRFields ocrFields) {
-        if (ocrFields.getSolsWillType() == null || ocrFields.getSolsWillType().isEmpty()) {
+    public static SolicitorWillType toSolicitorWillType(String ocrSolsWillType, GrantType grantType) {
+        if (ocrSolsWillType == null || ocrSolsWillType.isEmpty()) {
             return null;
         }
-        String solsWillType = ocrFields.getSolsWillType().replaceAll("\\s+","").toUpperCase();
+        if (GrantType.INTESTACY.equals(grantType)) {
+            log.info("Form type: PA1A, map solicitor will type to Intestacy");
+            return GRANT_TYPE_INTESTACY;
+        }
+
+        String solsWillType = ocrSolsWillType.replaceAll("\\s+","").toUpperCase();
         log.info("Beginning mapping for Solicitor Will Type value: {}", solsWillType);
 
 
-        if (solsWillType.contains(ADMON) || solsWillType.contains(GRANT_TYPE_ADMON_VALUE.toUpperCase())
-                || solsWillType.contains(ADMINISTRATION)) {
-            return GRANT_TYPE_ADMON;
-        } else if (solsWillType.contains(GRANT) || solsWillType.contains(PROBATE)) {
-            return GRANT_TYPE_PROBATE;
-        } else if (solsWillType.contains(INTESTACY)
-                || solsWillType.contains(GRANT_TYPE_INTESTACY_VALUE.toUpperCase())) {
-            return GRANT_TYPE_INTESTACY;
-        } else {
-            String errorMessage = "solsWillType: WillLeft/Probate, WillLeftAnnexed/Admon or NoWill/Intestacy "
-                + "expected but got '" + solsWillType + "'";
-            log.error(errorMessage);
-            throw new OCRMappingException(errorMessage);
+        for (Map.Entry<String, SolicitorWillType> entry : willTypeMap.entrySet()) {
+            if (solsWillType.contains(entry.getKey())) {
+                return entry.getValue();
+            }
         }
+        String errorMessage = "solsWillType: Probate, Admon or Intestacy expected but got '" + solsWillType + "'";
+        log.error(errorMessage);
+        throw new OCRMappingException(errorMessage);
     }
 }

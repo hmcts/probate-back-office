@@ -77,6 +77,8 @@ class BusinessValidationControllerIT {
     private static final LocalDate DOD = LocalDate.of(2017, 4, 4);
     private static final Long ID = 1234567890123456L;
     private static final String[] LAST_MODIFIED = {"2018", "1", "1", "0", "0", "0", "0"};
+
+    private static final String APPLICATION_SUBMITTED_DATE = "2023-02-02";
     private static final String FORENAME = "Andy";
     private static final String SURNAME = "Michael";
     private static final String MARITAL_STATUS = "Never married";
@@ -298,6 +300,7 @@ class BusinessValidationControllerIT {
     void shouldValidateIHTEstate() throws Exception {
         LocalDateTime dod = LocalDateTime.parse("2021-07-01T00:00:00.000");
         caseDataBuilder.deceasedDateOfDeath(dod.toLocalDate());
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -352,6 +355,7 @@ class BusinessValidationControllerIT {
     @Test
     void shouldValidateWithSolicitorIHTFormIsNullWithNoError() throws Exception {
         caseDataBuilder.ihtFormId(null);
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 
@@ -517,6 +521,7 @@ class BusinessValidationControllerIT {
 
     @Test
     void shouldSuccesfullyGenerateProbateDeclaration() throws Exception {
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -536,6 +541,7 @@ class BusinessValidationControllerIT {
 
     @Test
     void shouldSuccesfullyGenerateTrustCorpsProbateDeclaration() throws Exception {
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -563,6 +569,7 @@ class BusinessValidationControllerIT {
         caseDataBuilder.solsApplicantSiblings(APPLICANT_SIBLINGS);
         caseDataBuilder.solsSolicitorIsExec(NO);
         caseDataBuilder.solsSolicitorIsApplying(NO);
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
@@ -592,6 +599,7 @@ class BusinessValidationControllerIT {
         caseDataBuilder.solsSolicitorIsExec(NO);
         caseDataBuilder.solsSolicitorIsApplying(NO);
         caseDataBuilder.furtherEvidenceForApplication(FURTHER_EVIDENCE);
+        caseDataBuilder.applicationSubmittedDate(APPLICATION_SUBMITTED_DATE);
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
         String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);

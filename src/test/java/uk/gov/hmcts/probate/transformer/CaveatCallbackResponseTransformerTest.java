@@ -314,6 +314,8 @@ class CaveatCallbackResponseTransformerTest {
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
         documents.add(0, document);
+        caveatDataBuilder.applicationSubmittedDate(null);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         String letterId = null;
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
@@ -342,6 +344,26 @@ class CaveatCallbackResponseTransformerTest {
 
         assertEquals("123-456",
             caveatCallbackResponse.getCaveatData().getBulkPrintId().get(0).getValue().getSendLetterId());
+    }
+
+    @Test
+    void shouldKeepApplicationSubmittedDateWhenNotNullCaveatRaised() {
+        setupMocks();
+        LocalDate newSubmittedDate = LocalDate.now().minusDays(5);
+        caveatDataBuilder.applicationSubmittedDate(newSubmittedDate);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertEquals(newSubmittedDate.toString(),
+                caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
     }
 
     @Test

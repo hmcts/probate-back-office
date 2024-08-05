@@ -28,7 +28,7 @@ esac
 binFolder=$(dirname "$0")
 
 userToken=$(${binFolder}/idam-lease-user-token.sh ${CCD_CONFIGURER_IMPORTER_USERNAME:-ccd.docker.default@hmcts.net} ${CCD_CONFIGURER_IMPORTER_PASSWORD:-Pa55word11})
-serviceToken=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
+serviceToken=$(${binFolder}/idam-lease-service-token.sh ccd_gw $(docker run --rm hmctspublic.azurecr.io/imported/toolbelt/oathtool --totp -b ${API_GATEWAY_S2S_KEY:-AAAAAAAAAAAAAAAA}))
 ccdUrl=${CCD_DEFINITION_STORE_API_BASE_URL:-http://localhost:4451}
 
 echo "Creating CCD role: ${role}"

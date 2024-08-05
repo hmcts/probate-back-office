@@ -62,7 +62,9 @@ import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
+
 import uk.gov.service.notify.NotificationClientException;
+
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -121,6 +123,7 @@ public class BusinessValidationController {
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
+
 
     @PostMapping(path = "/update-task-list")
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {

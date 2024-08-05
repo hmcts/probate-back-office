@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -47,6 +48,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -209,6 +211,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
                     .build();
+        }
+        if (caseData.getApplicationSubmittedDate() == null) {
+            responseCaseDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -444,6 +449,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse resolveStop(CallbackRequest callbackRequest) {
+        setState(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
         switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
@@ -463,6 +469,24 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    private void setState(CallbackRequest callbackRequest) {
+        CaseDetails details = callbackRequest.getCaseDetails();
+        switch (details.getData().getResolveStopState()) {
+            case CASE_MATCHING_ISSUE_GRANT:
+                details.setState(CASE_MATCHING_ISSUE_GRANT);
+                break;
+            case QA_CASE_STATE:
+                details.setState(QA_CASE_STATE);
+                break;
+            case READY_FOR_ISSUE:
+                details.setState(READY_FOR_ISSUE);
+                break;
+            default:
+                details.setState(CASE_PRINTED);
+                break;
+        }
+    }
+
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
         return transformWithConditionalStateChange(callbackRequest,
                 ofNullable(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState()));
@@ -470,16 +494,14 @@ public class CallbackResponseTransformer {
 
 
     public CallbackResponse transferToState(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getTransferToState());
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformWithConditionalStateChange(callbackRequest, Optional.of(callbackRequest.getCaseDetails()
+                .getData().getTransferToState()));
     }
 
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.channelChoice(null);
+        responseCaseDataBuilder.applicationSubmittedDate(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1188,6 +1210,7 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
+            .boHandoffReasonList(getHandoffReasonList(caseData))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1757,10 +1780,6 @@ public class CallbackResponseTransformer {
             grantOfRepresentationData.setPaperForm(true);
         }
 
-        if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
-            grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
-        }
-
         if (grantOfRepresentationData.getEvidenceHandled() == null) {
             grantOfRepresentationData.setEvidenceHandled(false);
         }
@@ -1788,6 +1807,16 @@ public class CallbackResponseTransformer {
             List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
+        }
+        return collectionMembers;
+    }
+
+    private List<CollectionMember<HandoffReason>> getHandoffReasonList(
+            CaseData caseData) {
+        List<CollectionMember<HandoffReason>> collectionMembers = caseData.getBoHandoffReasonList();
+        if (collectionMembers == null || collectionMembers.isEmpty()
+                || NO.equals(caseData.getCaseHandedOffToLegacySite())) {
+            return Collections.emptyList();
         }
         return collectionMembers;
     }

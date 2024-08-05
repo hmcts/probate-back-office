@@ -40,6 +40,7 @@ public class CCDDataTransformer {
         CCDData.CCDDataBuilder dataBuilder =  CCDData.builder()
             .caseId(callbackRequest.getCaseDetails().getId())
             .solicitorReference(notNullWrapper(caseData.getSolsSolicitorAppReference()))
+            .applicationSubmissionDate(caseData.getApplicationSubmittedDate())
             .caseSubmissionDate(getCaseSubmissionDate(callbackRequest.getCaseDetails()))
             .solsWillType(caseData.getSolsWillType())
             .solsSolicitorIsExec(caseData.getSolsSolicitorIsExec())
@@ -133,6 +134,7 @@ public class CCDDataTransformer {
             .ihtEstateGrossValue(caseData.getIhtEstateGrossValue())
             .ihtEstateNetValue(caseData.getIhtEstateNetValue())
             .ihtFormNetValue(caseData.getIhtFormNetValue())
+            .ihtEstateNetQualifyingValue(caseData.getIhtEstateNetQualifyingValue())
             .build();
     }
 

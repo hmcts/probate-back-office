@@ -41,10 +41,10 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     private static final String ADD_EXEC_ONE_PRIMARY_APPLICANT = "Add Ex First Name 1 Add Ex Last Name 1";
     private static final String ADD_EXEC_TWO = "Add Ex First Name 2 Add Ex Last Name 2";
     private static final String DOD = "1st January 2000";
-    private static final String IHT_NET = "8,000.00";
-    private static final String IHT_GROSS = "10,000.00";
-    private static final String IHT_NET_PENCE = "8,123.50";
-    private static final String IHT_GROSS_PENCE = "10,234.92";
+    private static final String IHT_NET = "8,000";
+    private static final String IHT_GROSS = "10,000";
+    private static final String IHT_NET_PENCE = "8,123";
+    private static final String IHT_GROSS_PENCE = "10,234";
     private static final String GOP = "Grant of Probate";
     private static final String DIED_ON = "Died on";
     private static final String DIED_ON_OR_SINCE = "Died on or since";
@@ -91,7 +91,7 @@ public class GrantGenerationTests extends DocumentGenerationTestBase {
     public static final String JULY_2021 = "5th July 2021";
 
     private static final String DECEASED_DOMICILED_IN_ENG_WALES_TEXT = "The application has stated that the gross value"
-        + " of the estate in the United Kingdom amounts to £10,000.00 and the net value amounts to £8,000.00";
+        + " of the estate in the United Kingdom amounts to £10,000 and the net value amounts to £8,000";
 
     private static final String REGISTRY_ADDRESS =
         "High Court of Justice England and WalesBirmingham District Probate Registry The Priory Courts33 Bull "
