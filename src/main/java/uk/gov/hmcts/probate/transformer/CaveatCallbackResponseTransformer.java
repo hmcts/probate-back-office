@@ -66,7 +66,9 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
-        responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        if (null == caveatData.getApplicationSubmittedDate()) {
+            responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        }
 
         if (null == caveatData.getPaperForm()) {
             responseCaveatDataBuilder.paperForm(YES);
@@ -324,10 +326,6 @@ public class CaveatCallbackResponseTransformer {
 
         if (caveatData.getPaperForm() == null) {
             caveatData.setPaperForm(true);
-        }
-
-        if (caveatData.getApplicationSubmittedDate() == null) {
-            caveatData.setApplicationSubmittedDate(LocalDate.now());
         }
 
         if (caveatData.getCaveatorEmailAddress() == null || caveatData.getCaveatorEmailAddress().isEmpty()) {

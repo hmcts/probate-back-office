@@ -27,6 +27,7 @@ import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -362,5 +363,37 @@ class CcdClientApiTest {
                     "Summary");
 
             });
+    }
+
+    @Test
+    void shouldReturnCaseDetailsForFindCaseById() {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+        CaseDetails details = CaseDetails.builder()
+                .id(1234567890123456L).build();
+        when(coreCaseDataApi.getCase(AUTHORISATION, SERVICE_AUTHORISATION, "1234567890123456"))
+                .thenReturn(details);
+
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.findCaseById("1234567890123456", securityDTO);
+
+        assertEquals(actualCaseDetails, Optional.of(details));
+    }
+
+    @Test
+    void shouldReturnEmptyForNullCaseDetails() {
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation(AUTHORISATION)
+                .serviceAuthorisation(SERVICE_AUTHORISATION)
+                .userId(USER_ID)
+                .build();
+        when(coreCaseDataApi.getCase(AUTHORISATION, SERVICE_AUTHORISATION, "1234567890123456"))
+                .thenReturn(null);
+
+        Optional<CaseDetails> actualCaseDetails = ccdClientApi.findCaseById("1234567890123456", securityDTO);
+
+        assertEquals(actualCaseDetails, Optional.empty());
     }
 }
