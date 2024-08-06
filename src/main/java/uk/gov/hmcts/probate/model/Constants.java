@@ -1,5 +1,7 @@
 package uk.gov.hmcts.probate.model;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -117,6 +119,9 @@ public final class Constants {
     // >, >=, <=, < comparisions etc, converting to numeric
     public static final String LATEST_SCHEMA_VERSION = "2.0.0";
     public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public static final DecimalFormat FORMAT = new DecimalFormat("#,###");
+
+    public static final BigDecimal DIVISOR = new BigDecimal("100");
     public static final String CAVEAT_SOLICITOR_NAME = "Sir/Madam";
 
     public static List<String> getNonTrustPtnrTitleClearingTypes() {
