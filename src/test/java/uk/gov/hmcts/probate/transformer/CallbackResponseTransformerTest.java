@@ -303,6 +303,7 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
     @Mock
@@ -2706,6 +2707,25 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformOrgPolicy() {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .applicantOrganisationPolicy(policy);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
+        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
     void shouldTransformCaseForLetter() {
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -3700,6 +3720,24 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void bulkScanGrantOfRepresentationTransformSolsCaseWithOrgPolicy() {
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy orgPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+        CaseCreationDetails grantOfRepresentationDetails
+                = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
+        GrantOfRepresentationData grantOfRepresentationData =
+                (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
+        assertEquals(orgPolicy, grantOfRepresentationData.getApplicantOrganisationPolicy());
+    }
+
+    @Test
     void shouldSetCorrectPrintIdForBulkScanGrantRaise() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -4403,17 +4441,6 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
-    }
-
-    @Test
-    void rollbackShouldSetApplicationSubmittedDateToNull() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicationSubmittedDate(LocalDate.now().toString());
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getApplicationSubmittedDate());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

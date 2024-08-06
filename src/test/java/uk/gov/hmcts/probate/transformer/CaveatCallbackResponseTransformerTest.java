@@ -61,6 +61,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 
 @ContextConfiguration(classes = {CaveatCallbackResponseTransformer.class})
 @ExtendWith(MockitoExtension.class)
@@ -70,6 +71,7 @@ class CaveatCallbackResponseTransformerTest {
     public static final String ORG_ID = "OrgID";
     private static final String REPRESENTATIVE_NAME = "Representative Name";
     private static final String DX_NUMBER = "1234567890";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @Mock
@@ -412,6 +414,24 @@ class CaveatCallbackResponseTransformerTest {
     void bulkScanCaveatTransform() {
         CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
         assertBulkScanCaseCreationDetails(caveatDetails);
+    }
+
+    @Test
+    void bulkScanCaveatTransformForOrgPolicy() {
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy orgPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                        .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                                .organisationID(null)
+                                .organisationName(null)
+                                .build())
+                        .orgPolicyReference(null)
+                        .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                        .build();
+        bulkScanCaveatData.setApplicationType(SOLICITORS);
+        CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
+        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
+                (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatDetails.getCaseData();
+        assertEquals(orgPolicy, caveatData.getApplicantOrganisationPolicy());
     }
 
     @Test

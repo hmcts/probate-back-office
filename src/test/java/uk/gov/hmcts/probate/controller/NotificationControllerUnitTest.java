@@ -12,6 +12,8 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.validation.BindingResult;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.State;
+import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.RemovedRepresentative;
@@ -41,6 +43,9 @@ import uk.gov.service.notify.NotificationClientException;
 
 import javax.servlet.http.HttpServletRequest;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -57,6 +62,7 @@ import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.ID;
 import static uk.gov.hmcts.probate.controller.CaseDataTestBuilder.LAST_MODIFIED;
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
@@ -115,6 +121,8 @@ class NotificationControllerUnitTest {
     private CallbackRequest callbackRequest;
     private CallbackResponse callbackResponse;
     private Document document;
+
+    private DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     @Test
     void shouldSendApplicationReceived() throws NotificationClientException {
@@ -373,6 +381,76 @@ class NotificationControllerUnitTest {
         when(notificationService.sendNocEmail(any(), any())).thenReturn(document);
         ResponseEntity<CallbackResponse> stringResponseEntity =
                 notificationController.sendNOCEmailNotification(callbackRequest);
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldNotSendNocEmailForBulkScanCaseFirstNoc() throws NotificationClientException {
+        setUpMocks(NOC);
+        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
+        CollectionMember<ChangeOfRepresentative> changeRepresentative1 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                        .builder()
+                        .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
+                        .build());
+        representatives.add(changeRepresentative1);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .channelChoice(CHANNEL_CHOICE_BULKSCAN)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .changeOfRepresentatives(representatives)
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.sendNOCEmailNotification(callbackRequest);
+        verify(notificationService, times(0)).sendNocEmail(any(), any());
+        assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
+    void shouldSendNocEmailForBulkScanCaseSecondNoc() throws NotificationClientException {
+        setUpMocks(NOC);
+        List<CollectionMember<ChangeOfRepresentative>> representatives = new ArrayList();
+        CollectionMember<ChangeOfRepresentative> changeRepresentative1 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                        .builder()
+                        .addedDateTime(LocalDateTime.parse("2022-12-01T12:39:54.001Z", dateTimeFormatter))
+                        .build());
+        CollectionMember<ChangeOfRepresentative> changeRepresentative2 =
+                new CollectionMember<>(null, ChangeOfRepresentative
+                        .builder()
+                        .addedDateTime(LocalDateTime.parse("2023-01-01T18:00:00.001Z", dateTimeFormatter))
+                        .build());
+        representatives.add(changeRepresentative1);
+        representatives.add(changeRepresentative2);
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .channelChoice(CHANNEL_CHOICE_BULKSCAN)
+                .registryLocation("Manchester")
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .solsSolicitorAppReference("1234-5678-9012")
+                .languagePreferenceWelsh("No")
+                .removedRepresentative(RemovedRepresentative.builder()
+                        .solicitorEmail("solicitor@gmail.com")
+                        .solicitorFirstName("FirstName")
+                        .solicitorLastName("LastName").build())
+                .changeOfRepresentatives(representatives)
+                .build(), LAST_MODIFIED, ID);
+        callbackRequest = new CallbackRequest(caseDetails);
+        callbackResponse = CallbackResponse.builder().errors(Collections.EMPTY_LIST).build();
+        when(eventValidationService.validateNocEmail(any(), any())).thenReturn(callbackResponse);
+        ResponseEntity<CallbackResponse> stringResponseEntity =
+                notificationController.sendNOCEmailNotification(callbackRequest);
+        verify(notificationService, times(1)).sendNocEmail(any(), any());
         assertThat(stringResponseEntity.getStatusCode(), is(HttpStatus.OK));
     }
 }
