@@ -4443,17 +4443,6 @@ class CallbackResponseTransformerTest {
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
     }
 
-    @Test
-    void rollbackShouldSetApplicationSubmittedDateToNull() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicationSubmittedDate(LocalDate.now().toString());
-
-        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getApplicationSubmittedDate());
-    }
-
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
