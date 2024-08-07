@@ -2708,7 +2708,6 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-=
     void shouldTransformLastModifiedDateForDormant() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .lastModifiedDateForDormant(LocalDateTime.of(2024, 1, 1, 1,
@@ -2722,7 +2721,6 @@ class CallbackResponseTransformerTest {
 
     @Test
     void shouldTransformCaseForLetter() {
-
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
