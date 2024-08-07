@@ -181,6 +181,11 @@ public class DocumentController {
             Arrays.asList(document), null, null));
     }
 
+    @PostMapping(path = "/set-draft-document", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> setDraftDocument(@RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.setDraftDocument(callbackRequest));
+    }
+
     @PostMapping(path = "/generate-grant", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> generateGrant(
         @Validated({BulkPrintValidationRule.class})

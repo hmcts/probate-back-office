@@ -284,6 +284,22 @@ public class CallbackResponseTransformer {
 
     }
 
+    public CallbackResponse setDraftDocument(CallbackRequest callbackRequest) {
+        List<CollectionMember<Document>> documents = callbackRequest.getCaseDetails().getData()
+                .getProbateDocumentsGenerated().stream()
+                .filter(collectionMember -> collectionMember.getValue().getDocumentType().equals(DIGITAL_GRANT_DRAFT))
+                .collect(Collectors.toList());
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        if (!documents.isEmpty()) {
+            responseCaseDataBuilder
+                    .draftDocument(documents.get(0).getValue().getDocumentLink())
+                    .build();
+        }
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
                                          String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
@@ -293,11 +309,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-
-        if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT_DRAFT)) {
-            responseCaseDataBuilder.draftDocument(caseData.getProbateDocumentsGenerated().get(0).getValue()
-                    .getDocumentLink());
-        }
 
         if (documents.isEmpty()) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(

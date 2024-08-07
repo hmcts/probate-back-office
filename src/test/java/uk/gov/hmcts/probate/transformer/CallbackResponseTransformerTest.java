@@ -4416,6 +4416,24 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getApplicationSubmittedDate());
     }
 
+    @Test
+    void shouldSetDraftDocument() {
+        List<CollectionMember<Document>> documents = new ArrayList();
+        CollectionMember<Document> document =
+                new CollectionMember<>(null, Document
+                        .builder()
+                        .documentType(DIGITAL_GRANT_DRAFT)
+                        .documentLink(SOT)
+                        .build());
+        documents.add(document);
+        caseDataBuilder.probateDocumentsGenerated(documents);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.setDraftDocument(callbackRequestMock);
+        assertEquals(document.getValue().getDocumentLink(), callbackResponse.getData().getDraftDocument());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }
