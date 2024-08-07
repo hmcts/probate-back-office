@@ -54,7 +54,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
-import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -211,6 +210,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
                     .build();
+        }
+        if (caseData.getApplicationSubmittedDate() == null) {
+            responseCaseDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -498,9 +500,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (YES.equals(callbackRequest.getCaseDetails().getData().getCaseHandedOffToLegacySite())) {
-            responseCaseDataBuilder.boHandoffReasonList(null);
-        }
+        responseCaseDataBuilder.applicationSubmittedDate(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1209,6 +1209,9 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
+            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
+            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
+            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
@@ -1543,14 +1546,19 @@ public class CallbackResponseTransformer {
             }
         }
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .collect(Collectors.toList());
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1573,14 +1581,19 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .toList();
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1777,10 +1790,6 @@ public class CallbackResponseTransformer {
 
         if (grantOfRepresentationData.getPaperForm() == null) {
             grantOfRepresentationData.setPaperForm(true);
-        }
-
-        if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
-            grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
         }
 
         if (grantOfRepresentationData.getEvidenceHandled() == null) {
