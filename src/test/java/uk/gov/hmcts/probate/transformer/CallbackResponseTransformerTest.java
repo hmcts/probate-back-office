@@ -108,6 +108,7 @@ import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -115,6 +116,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.OTHER;
@@ -4416,13 +4418,14 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getApplicationSubmittedDate());
     }
 
-    @Test
-    void shouldSetDraftDocument() {
+    @ParameterizedTest
+    @MethodSource("documentType")
+    void shouldTransformDraftDocument(final DocumentType type) {
         List<CollectionMember<Document>> documents = new ArrayList();
         CollectionMember<Document> document =
                 new CollectionMember<>(null, Document
                         .builder()
-                        .documentType(DIGITAL_GRANT_DRAFT)
+                        .documentType(type)
                         .documentLink(SOT)
                         .build());
         documents.add(document);
@@ -4432,6 +4435,10 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.setDraftDocument(callbackRequestMock);
         assertEquals(document.getValue().getDocumentLink(), callbackResponse.getData().getDraftDocument());
+    }
+
+    private static Stream<DocumentType> documentType() {
+        return Stream.of(DIGITAL_GRANT_DRAFT,INTESTACY_GRANT_DRAFT,ADMON_WILL_GRANT_DRAFT);
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

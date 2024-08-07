@@ -271,7 +271,5 @@
   {"LiveFrom": "01/01/2017", "ID": "ChangeOrganisationRequest", "CaseEventID": "applyNocDecision", "CaseFieldID": "changeOrganisationRequestField", "ListElementCode": "OrganisationToRemove.OrganisationName", "FieldDisplayOrder": "4", "DisplayContext": "OPTIONAL"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOrganisationRequest", "CaseEventID": "applyNocDecision", "CaseFieldID": "changeOrganisationRequestField", "ListElementCode": "CaseRoleId", "FieldDisplayOrder": "5", "DisplayContext": "OPTIONAL"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOrganisationRequest", "CaseEventID": "applyNocDecision", "CaseFieldID": "changeOrganisationRequestField", "ListElementCode": "RequestTimestamp", "FieldDisplayOrder": "6", "DisplayContext": "OPTIONAL"},
-  {"LiveFrom": "01/01/2017", "ID": "ChangeOrganisationRequest", "CaseEventID": "applyNocDecision", "CaseFieldID": "changeOrganisationRequestField", "ListElementCode": "ApprovalStatus", "FieldDisplayOrder": "7", "DisplayContext": "OPTIONAL"},
-  {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "probateDocumentsGenerated", "ListElementCode": "DocumentType", "FieldDisplayOrder": 1, "DisplayContext": "READONLY"},
-  {"LiveFrom": "01/01/2017", "ID": "ProbateDocument", "CaseEventID": "boIssueGrantForCaseMatching", "CaseFieldID": "probateDocumentsGenerated", "ListElementCode": "DocumentLink", "FieldDisplayOrder": 2, "DisplayContext": "READONLY"}
+  {"LiveFrom": "01/01/2017", "ID": "ChangeOrganisationRequest", "CaseEventID": "applyNocDecision", "CaseFieldID": "changeOrganisationRequestField", "ListElementCode": "ApprovalStatus", "FieldDisplayOrder": "7", "DisplayContext": "OPTIONAL"}
 ]
