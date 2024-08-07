@@ -289,17 +289,16 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse setDraftDocument(CallbackRequest callbackRequest) {
-        List<CollectionMember<Document>> documents = callbackRequest.getCaseDetails().getData()
+        Optional<CollectionMember<Document>> document = callbackRequest.getCaseDetails().getData()
                 .getProbateDocumentsGenerated().stream()
                 .filter(collectionMember -> DRAFT_DOCUMENTS.contains(collectionMember.getValue().getDocumentType()))
-                .collect(Collectors.toList());
+                .max(Comparator.comparing(doc -> doc.getValue().getDocumentDateAdded()));
+
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        if (!documents.isEmpty()) {
-            responseCaseDataBuilder
-                    .draftDocument(documents.get(0).getValue().getDocumentLink())
-                    .build();
-        }
+        document.ifPresent(documentCollectionMember -> responseCaseDataBuilder
+                .draftDocument(documentCollectionMember.getValue().getDocumentLink())
+                .build());
 
         return transformResponse(responseCaseDataBuilder.build());
     }
