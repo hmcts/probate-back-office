@@ -496,5 +496,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAliasFirstNameOnWill", "Label": "Enter their first name(s) as it appears on the will", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "deceasedAliasLastNameOnWill", "Label": "Enter their last name(s) as it appears on the will", "FieldType": "Text", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "boHandoffReasonList", "Label": "Handoff reason", "FieldType": "Collection", "FieldTypeParameter": "boHandoffReason", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "draftDocument", "Label": "Review Draft Document", "FieldType": "Document", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "draftDocument", "Label": "Review Draft Document before proceeding", "FieldType": "Document", "SecurityClassification": "Public"}
 ]
