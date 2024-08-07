@@ -37,8 +37,6 @@
               { "match": { "state": "BORegistrarEscalation" }},
               { "match": { "state": "BOCaseStopped" }},
               { "match": { "state": "CasePrinted" }},
-              { "match": { "state": "CasePaymentFailed" }},
-              { "match": { "state": "CaseCreated" }},
               { "match": { "state": "BOSotGenerated" }},
               { "match": { "state": "BORedecNotificationSent" }},
               { "match": { "state": "BOCaseStoppedAwaitRedec" }},
