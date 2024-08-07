@@ -24,6 +24,7 @@ import uk.gov.hmcts.reform.ccd.client.model.CallbackRequest;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -64,6 +65,7 @@ public class PrepareNocService {
                         caseData, caseDetails.getId().toString());
         caseData.put("changeOfRepresentatives", representatives);
         caseData.put("solsSolicitorAddress", solsAddress);
+        caseData.put("lastModifiedDateForDormant", LocalDateTime.now(ZoneOffset.UTC));
         caseDetails.getData().putAll(caseData);
         return assignCaseAccessClient.applyDecision(
                 authorisation,

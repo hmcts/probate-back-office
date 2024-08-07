@@ -61,6 +61,7 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -578,6 +579,7 @@ public class CaseData extends CaseDataParent {
     private final DeathRecord deathRecord;
     private final Integer numberOfDeathRecords;
     private final String moveToDormantDateTime;
+    private final LocalDateTime lastModifiedDateForDormant;
     private final String letterType;
     private final String caseworkerName;
     private final String letterText;

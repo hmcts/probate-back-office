@@ -17,6 +17,8 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 
 @Slf4j
@@ -87,6 +89,7 @@ public class LifeEventCCDService {
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
             .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
+            .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
             .build();
 
         ccdClientApi.updateCaseAsCitizen(
@@ -106,6 +109,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
+            .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
             .build();
 
         log.info("LEV updateCCDLifeEventVerificationNoRecordsFound: " + caseId);
