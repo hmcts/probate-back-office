@@ -605,6 +605,8 @@ public class CaseData extends CaseDataParent {
     private ChangeOfRepresentative changeOfRepresentative;
     private RemovedRepresentative removedRepresentative;
     private ChangeOrganisationRequest changeOrganisationRequestField;
+    private final DocumentLink draftDocument;
+    private List<String> confirmCheckbox;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

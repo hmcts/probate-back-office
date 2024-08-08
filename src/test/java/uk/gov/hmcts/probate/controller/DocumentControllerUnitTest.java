@@ -280,6 +280,18 @@ class DocumentControllerUnitTest {
     }
 
     @Test
+    void shouldSetDraftDocument() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+
+        ResponseEntity<CallbackResponse> response =
+                documentController.setDraftDocument(callbackRequest);
+        verify(callbackResponseTransformer, times(1)).setDraftDocument(callbackRequest);
+        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
+
+    @Test
     void shouldSetupDeleteDocumentsForWillLodgement() {
         WillLodgementCallbackRequest callbackRequest = mock(WillLodgementCallbackRequest.class);
         WillLodgementDetails caseDetailsMock = mock(WillLodgementDetails.class);

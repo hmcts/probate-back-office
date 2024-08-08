@@ -66,14 +66,17 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ASSEMBLED_LETTER;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_STOPPED;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.EDGE_CASE;
 import static uk.gov.hmcts.probate.model.DocumentType.GRANT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
@@ -109,6 +112,8 @@ public class CallbackResponseTransformer {
     private static final String CASE_TYPE_DEFAULT = GRANT_OF_PROBATE_NAME;
     private static final DocumentType[] LEGAL_STATEMENTS = {LEGAL_STATEMENT_PROBATE, LEGAL_STATEMENT_INTESTACY,
         LEGAL_STATEMENT_ADMON, LEGAL_STATEMENT_PROBATE_TRUST_CORPS};
+    private static final List<DocumentType> DRAFT_DOCUMENTS = Arrays.asList(DIGITAL_GRANT_DRAFT,INTESTACY_GRANT_DRAFT,
+        ADMON_WILL_GRANT_DRAFT);
     private static final ApplicationType DEFAULT_APPLICATION_TYPE = SOLICITOR;
     private static final String DEFAULT_REGISTRY_LOCATION = CTSC;
     private static final String CASE_MATCHING_ISSUE_GRANT = "BOCaseMatchingIssueGrant";
@@ -281,6 +286,21 @@ public class CallbackResponseTransformer {
 
         return transformResponse(responseCaseDataBuilder.build());
 
+    }
+
+    public CallbackResponse setDraftDocument(CallbackRequest callbackRequest) {
+        Optional<CollectionMember<Document>> document = callbackRequest.getCaseDetails().getData()
+                .getProbateDocumentsGenerated().stream()
+                .filter(collectionMember -> DRAFT_DOCUMENTS.contains(collectionMember.getValue().getDocumentType()))
+                .max(Comparator.comparing(doc -> doc.getValue().getDocumentDateAdded()));
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        document.ifPresent(documentCollectionMember -> responseCaseDataBuilder
+                .draftDocument(documentCollectionMember.getValue().getDocumentLink())
+                .build());
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
@@ -1213,6 +1233,8 @@ public class CallbackResponseTransformer {
             .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
             .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
+            .draftDocument(caseData.getDraftDocument())
+            .confirmCheckbox(caseData.getConfirmCheckbox())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
