@@ -439,5 +439,6 @@
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "Spreadsheet", "ListElement": "Spreadsheet", "DisplayOrder":  "19"},
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "TrustCorporation", "ListElement": "Trust Corporation", "DisplayOrder":  "20"},
   {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WillCodicilNotated", "ListElement": "Will or codicil to be notated", "DisplayOrder":  "21"},
-  {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WitnessInterview", "ListElement": "Witness Interview", "DisplayOrder":  "22"}
+  {"LiveFrom": "01/01/2017", "ID": "handoffReasonFixedList", "ListElementCode": "WitnessInterview", "ListElement": "Witness Interview", "DisplayOrder":  "22"},
+  {"LiveFrom": "01/01/2017", "ID": "acknowledgement", "ListElementCode": "acknowledgement", "ListElement": "I have reviewed the draft document and confirm that I have checked the content"}
 ]

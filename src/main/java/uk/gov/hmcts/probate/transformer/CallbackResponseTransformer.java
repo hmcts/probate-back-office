@@ -1234,6 +1234,7 @@ public class CallbackResponseTransformer {
             .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .draftDocument(caseData.getDraftDocument())
+            .confirmCheckbox(caseData.getConfirmCheckbox())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {

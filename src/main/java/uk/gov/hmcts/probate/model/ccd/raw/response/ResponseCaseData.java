@@ -392,4 +392,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAliasFirstNameOnWill;
     private final String deceasedAliasLastNameOnWill;
     private final DocumentLink draftDocument;
+    private final List<String> confirmCheckbox;
 }
