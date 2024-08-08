@@ -1233,6 +1233,7 @@ public class CallbackResponseTransformer {
             .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
             .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
+            .draftDocument(caseData.getDraftDocument())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
