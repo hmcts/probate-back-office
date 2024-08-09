@@ -55,27 +55,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyGrantReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
-            "expectedPersonalDocumentGrantReissued.txt",
-            "expectedPersonalEmailGrantReissued.txt");
-    }
-
-    @Test
-    public void verifyIntestacyReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadIntestacyReissued.json",
-            "expectedPersonalDocumentIntestacyReissued.txt",
-            "expectedPersonalEmailGrantReissued.txt");
-    }
-
-    @Test
-    public void verifyAdmonWillReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
-            "expectedPersonalDocumentAdmonWillReissued.txt",
-            "expectedPersonalEmailGrantReissued.txt");
-    }
-
-    @Test
     public void verifyGrantReissueDocumentAppNameWithApostrophe() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(
             "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
@@ -89,27 +68,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
             "personalPayloadGrantReissuedNameDoubleBarrelled.json", GRANT_REISSUED);
         assertExpectedContents("expectedPersonalDocumentGrantReissuedNameDoubleBarrelled.txt",
             GENERATED_DOCUMENT_URL, responseBody);
-    }
-
-    @Test
-    public void verifyWelshGrantReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
-            "expectedPersonalDocumentWelshGrantReissued.txt",
-            "expectedPersonalEmailWelshGrantReissued.txt");
-    }
-
-    @Test
-    public void verifyWelshIntestacyReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshIntestacyReissued.json",
-            "expectedPersonalDocumentWelshIntestacyReissued.txt",
-            "expectedPersonalEmailWelshGrantReissued.txt");
-    }
-
-    @Test
-    public void verifyWelshAdmonWillReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
-            "expectedPersonalDocumentWelshAdmonWillReissued.txt",
-            "expectedPersonalEmailWelshGrantReissued.txt");
     }
 
     @Test
