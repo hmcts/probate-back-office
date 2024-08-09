@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -47,12 +48,12 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
-import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -209,6 +210,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
                     .build();
+        }
+        if (caseData.getApplicationSubmittedDate() == null) {
+            responseCaseDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -496,7 +500,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.channelChoice(null);
+        responseCaseDataBuilder.applicationSubmittedDate(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1205,6 +1209,10 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
+            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
+            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
+            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
+            .boHandoffReasonList(getHandoffReasonList(caseData))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1538,14 +1546,19 @@ public class CallbackResponseTransformer {
             }
         }
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .collect(Collectors.toList());
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1568,14 +1581,19 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .toList();
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1774,10 +1792,6 @@ public class CallbackResponseTransformer {
             grantOfRepresentationData.setPaperForm(true);
         }
 
-        if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
-            grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
-        }
-
         if (grantOfRepresentationData.getEvidenceHandled() == null) {
             grantOfRepresentationData.setEvidenceHandled(false);
         }
@@ -1805,6 +1819,16 @@ public class CallbackResponseTransformer {
             List<CollectionMember<ChangeOfRepresentative>> collectionMembers) {
         if (collectionMembers == null || collectionMembers.isEmpty()) {
             return null;
+        }
+        return collectionMembers;
+    }
+
+    private List<CollectionMember<HandoffReason>> getHandoffReasonList(
+            CaseData caseData) {
+        List<CollectionMember<HandoffReason>> collectionMembers = caseData.getBoHandoffReasonList();
+        if (collectionMembers == null || collectionMembers.isEmpty()
+                || NO.equals(caseData.getCaseHandedOffToLegacySite())) {
+            return Collections.emptyList();
         }
         return collectionMembers;
     }

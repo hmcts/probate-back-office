@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 import uk.gov.hmcts.probate.exception.OCRMappingException;
+import uk.gov.hmcts.probate.model.CaseType;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatDetails;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.ExceptionRecordCaveatDetails;
@@ -37,6 +38,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static java.util.stream.Collectors.toList;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_EXPIRY_EXTENSION_PERIOD_IN_MONTHS;
 import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.SolicitorWillType.GRANT_TYPE_ADMON;
@@ -86,11 +88,14 @@ public class ExceptionRecordService {
 
             // Add scanned documents
             log.info("About to map Caveat Scanned Documents to CCD.");
+            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+                    erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
-                .toList());
+                .collect(toList()));
 
+            caveatData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
             log.info("Calling caveatTransformer to create transformation response for bulk scan orchestrator.");
             CaseCreationDetails caveatCaseDetailsResponse =
                 caveatCallbackResponseTransformer.bulkScanCaveatCaseTransform(caveatData);
@@ -124,6 +129,8 @@ public class ExceptionRecordService {
 
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
+            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+                    erRequest.getScannedDocuments(), CaseType.GRANT_OF_REPRESENTATION);
             grantOfRepresentationData.setScannedDocuments(erRequest.getScannedDocuments()
                 .stream()
                 .map(it -> documentMapper.toCaseDoc(it, erRequest.getExceptionRecordId()))
@@ -137,6 +144,7 @@ public class ExceptionRecordService {
                 grantOfRepresentationData.setGrantType(grantType);
             }
 
+            grantOfRepresentationData.setApplicationSubmittedDate(erRequest.getDeliveryDate().toLocalDate());
 
             log.info(
                 "Calling grantOfRepresentationTransformer to create transformation response for bulk scan "
@@ -195,6 +203,8 @@ public class ExceptionRecordService {
             log.info("Mapping Caveat Scanned Documents to case.");
             uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData caveatData = caveatDetails.getData();
             int originalScannedNumber = caveatCallbackRequest.getCaseDetails().getData().getScannedDocuments().size();
+            ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(
+                    erRequest.getScannedDocuments(), CaseType.CAVEAT);
             caveatCallbackRequest.getCaseDetails().getData().setScannedDocuments(
                     mergeScannedDocuments(
                             caveatData.getScannedDocuments(),
