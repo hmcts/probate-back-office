@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -48,6 +49,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -403,8 +405,8 @@ class NotificationControllerIT {
     @Test
     void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
         when(bulkPrintService
-            .sendToBulkPrintForGrant(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
-                .builder().build()))).thenReturn(null);
+            .sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+                    any(Document.class))).thenReturn(null);
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
@@ -497,12 +499,15 @@ class NotificationControllerIT {
     @Test
     void shouldReturnEmailSolsValidateUnSuccessfulCaseStopped() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService
+                .sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+                        any(Document.class))).thenReturn(sendLetterResponse);
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this solicitor. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().string(containsString("data")));
 
     }
 
@@ -518,12 +523,15 @@ class NotificationControllerIT {
     @Test
     void shouldReturnEmailPAValidateUnSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService
+                .sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+                        any(Document.class))).thenReturn(sendLetterResponse);
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this applicant. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().string(containsString("data")));
 
     }
 

@@ -54,7 +54,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
-import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_CAVEAT;
 import static uk.gov.hmcts.probate.model.State.DOCUMENTS_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.NOC;
@@ -126,25 +125,19 @@ public class NotificationController {
         throws NotificationClientException {
 
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CaseData caseData = caseDetails.getData();
         CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document document;
         List<Document> documents = new ArrayList<>();
         String letterId = null;
-
-        if (caseData.isCaveatStopNotificationRequested() && caseData.isCaveatStopEmailNotificationRequested()) {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
-            if (response.getErrors().isEmpty()) {
-                log.info("Initiate call to send caveat email for case id {} ",
+        response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        if (response.getErrors().isEmpty()) {
+            log.info("Initiate call to send caveat email for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-                document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
-                documents.add(document);
-                log.info("Successful response for caveat email for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-            }
-        } else if (caseData.isCaveatStopNotificationRequested() && !caseData.isCaveatStopEmailNotificationRequested()) {
-
+            document = notificationService.sendEmail(CASE_STOPPED_CAVEAT, caseDetails);
+            documents.add(document);
+            log.info("Successful response for caveat email for case id {} ", callbackRequest.getCaseDetails().getId());
+        } else {
             Document coversheet = documentGeneratorService.generateCoversheet(callbackRequest);
             documents.add(coversheet);
 
@@ -159,26 +152,13 @@ public class NotificationController {
             log.info("Successful response for caveat stopped document for case id {} ",
                 callbackRequest.getCaseDetails().getId());
 
-            if (caseData.isCaveatStopSendToBulkPrintRequested()) {
-                log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
+            log.info("Initiate call to bulk print for Caveat stopped document and coversheet for case id {} ",
                     callbackRequest.getCaseDetails().getId());
-                SendLetterResponse sendLetterResponse =
+            SendLetterResponse sendLetterResponse =
                     bulkPrintService.sendToBulkPrintForGrant(callbackRequest, caveatRaisedDoc, coversheet);
-                letterId = sendLetterResponse != null
-                    ? sendLetterResponse.letterId.toString()
-                    : null;
-                response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
-            }
-        } else {
-            response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
-            if (response.getErrors().isEmpty()) {
-                log.info("Initiate call to notify applicant for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-                document = notificationService.sendEmail(CASE_STOPPED, caseDetails);
-                documents.add(document);
-                log.info("Successful response from notify for case id {} ",
-                    callbackRequest.getCaseDetails().getId());
-            }
+            letterId = sendLetterResponse != null
+                    ? sendLetterResponse.letterId.toString() : null;
+            response = eventValidationService.validateBulkPrintResponse(letterId, bulkPrintValidationRules);
         }
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.caseStopped(callbackRequest, documents, letterId);
