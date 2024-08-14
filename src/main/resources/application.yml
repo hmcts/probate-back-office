@@ -264,7 +264,7 @@ notifications:
           grantDelayed: "7045b381-a087-44fe-8bb5-e5a591cb8473"
           grantAwaitingDocumentation: "cc4aa69b-10fb-4a9c-9e0e-1851dfaa69e9"
         solicitor:
-          A: "27939b7f-3028-4c90-87bb-694adb0b6a51"
+          applicationReceived: "27939b7f-3028-4c90-87bb-694adb0b6a51"
           applicationReceivedNoDocs: "b374863f-3f65-4aed-a5ab-fb2648222f75"
           applicationReceivedPaperFormCaseworker: "01bfc52c-0850-4155-ae03-e6d638286288"
           documentReceived: "e618dce9-405e-45a5-86e8-06d792336f2f"
