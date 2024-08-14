@@ -144,7 +144,8 @@ public abstract class IntegrationTestBase {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
 
-    protected final ResponseBody validatePostSuccess(String jsonFileName, String path, String caseId) throws IOException {
+    protected final ResponseBody validatePostSuccess(String jsonFileName, String path, String caseId)
+            throws IOException {
         String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
