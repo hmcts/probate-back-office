@@ -41,6 +41,9 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private static final String GENERATED_DOCUMENT_URL =
         "data.probateDocumentsGenerated[0].value.DocumentLink.document_binary_url";
     private static final String EMAIL_NOTIFICATION_DOCUMENT_URL = "DocumentLink.document_binary_url";
+    private static final String GRANT_OF_PROBATE_JSON = "/caveat/createCaveatSolicitor.json";
+    private static final String EVENT_PARAMETER = "EVENT_PARM";
+    private static final String APPLY_GRANT_EVENT = "raiseCaveat";
 
     @Before
     public void setUp() {
@@ -365,7 +368,11 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     @Test
     public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() throws IOException {
-        final String document = sendEmail("solicitorPayloadNotifications.json", CASE_STOPPED,
+        String caseId = createCase();
+        String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
+        payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
+                "\"boCaseStopCaveatId\": \"" + caseId + "\",");
+        final String document = sendEmail(payload, CASE_STOPPED,
                 EMAIL_NOTIFICATION_URL);
         //assertTrue(document.contains(SOLS_STOP_DETAILS));
     }
@@ -487,5 +494,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         final ResponseBody responseBody = validatePostSuccess(payload, api);
         assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
         assertExpectedContents(emailText, EMAIL_NOTIFICATION_URL, responseBody);
+    }
+
+    public String createCase() throws IOException {
+        //Create Case
+        final String baseCaseJson = utils.getJsonFromFile(GRANT_OF_PROBATE_JSON);
+        final String applyForGrantyCaseJson = utils.replaceAttribute(baseCaseJson, EVENT_PARAMETER, APPLY_GRANT_EVENT);
+        final String applyForGrantCase = utils.createCaveatCaseAsCaseworker(applyForGrantyCaseJson, APPLY_GRANT_EVENT);
+        final JsonPath jsonPathApply = JsonPath.from(applyForGrantCase);
+        final String caseId = jsonPathApply.get("id").toString();
+        log.info("createCase : caseId {} ", caseId);
+        return caseId;
     }
 }

@@ -331,6 +331,26 @@ public class FunctionalTestUtils {
         return submitResponse.getBody().asString();
     }
 
+    public String createCaveatCaseAsCaseworker(String caseJson, String eventId) {
+        final String user = getCaseworkerUserId();
+        final String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+                + "/jurisdictions/PROBATE/case-types/Caveat/event-triggers/" + eventId + "/token";
+        final Response startResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .when().get(ccdStartAsCaseworkerUrl).andReturn();
+        final String token = startResponse.getBody().jsonPath().get("token");
+        final String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
+        final String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
+                + "/jurisdictions/PROBATE/case-types/Caveat/cases";
+        Response submitResponse = RestAssured.given()
+                .relaxedHTTPSValidation()
+                .headers(getHeadersWithCaseworkerUser())
+                .body(caseCreateJson)
+                .when().post(submitForCaseworkerUrl).andReturn();
+        return submitResponse.getBody().asString();
+    }
+
     public String findCaseAsCaseworker(String caseId) {
         final String user = getCaseworkerUserId();
         final String ccdFindCaseUrl = coreCaseDataApiUrl + "/caseworkers/" + user
