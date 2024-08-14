@@ -369,11 +369,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     @Test
     public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() throws IOException {
         String caseId = createCase();
-        String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
-        payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
-                "\"boCaseStopCaveatId\": \"" + caseId + "\",");
-        final String document = sendEmail(payload, CASE_STOPPED,
-                EMAIL_NOTIFICATION_URL);
+        final String document = sendEmail("solicitorPayloadNotifications.json", CASE_STOPPED,
+                EMAIL_NOTIFICATION_URL, caseId);
         //assertTrue(document.contains(SOLS_STOP_DETAILS));
     }
 
@@ -431,6 +428,16 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private String sendEmail(String fileName, String url, String jsonDocumentUrl) throws IOException {
         final ResponseBody body = validatePostSuccess(fileName, url);
+
+        final JsonPath jsonPath = JsonPath.from(body.asString());
+        final String documentUrl = jsonPath.get(jsonDocumentUrl);
+
+        final String document = removeLineFeeds(utils.downloadPdfAndParseToString(documentUrl));
+        return document;
+    }
+
+    private String sendEmail(String fileName, String url, String jsonDocumentUrl, String id) throws IOException {
+        final ResponseBody body = validatePostSuccess(fileName, url, id);
 
         final JsonPath jsonPath = JsonPath.from(body.asString());
         final String documentUrl = jsonPath.get(jsonDocumentUrl);
