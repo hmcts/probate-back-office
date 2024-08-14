@@ -188,7 +188,7 @@ def versions = [
         serenityreporter                : '2.6.0',
         springBootVersion               : '2.7.18',
         springBootStarterHateoas        : '2.7.18',
-        hmctsJavaLogging                : '6.1.5',
+        hmctsJavaLogging                : '6.1.6',
         authCheckerLib                  : '2.3.0',
         jacksonDatabind                 : '2.14.3',
         commonsIO                       : '2.16.1',
