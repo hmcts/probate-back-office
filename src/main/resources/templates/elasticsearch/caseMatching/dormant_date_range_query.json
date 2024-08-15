@@ -37,7 +37,9 @@
               { "match": { "state": "applyforGrantPaperApplication" }},
               { "match": { "state": "BOCaveatPermenant" }},
               { "match": { "state": "BOCaseWorkerEscalation" }},
-              { "match": { "state": "BOPostGrantIssued" }}
+              { "match": { "state": "BOPostGrantIssued" }},
+              { "match": { "state": "BOGrantIssuedRegistrarEscalation" }},
+              { "match": { "state": "BOPostGrantIssuedRegistrarEscalation" }}
             ]
           }
         }
