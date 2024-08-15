@@ -31,6 +31,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
@@ -91,6 +92,7 @@ public class BusinessValidationController {
 
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
+    private static final String INVALID_CREATION_EVENT = "Invalid creation event";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -123,6 +125,7 @@ public class BusinessValidationController {
     private final HandOffLegacyTransformer handOffLegacyTransformer;
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
+    private final BusinessValidationMessageService businessValidationMessageService;
 
 
     @PostMapping(path = "/update-task-list")
@@ -658,6 +661,18 @@ public class BusinessValidationController {
             @RequestBody CallbackRequest callbackRequest) {
         registrarDirectionService.addAndOrderDirectionsToGrant(callbackRequest.getCaseDetails().getData());
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
+    }
+
+    @PostMapping(path = "/invalidEvent", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> invalidEvent(@RequestBody CallbackRequest callbackRequest) {
+        log.info("invalid creation event");
+        List<String> errors = Arrays.asList(businessValidationMessageService
+                .generateError(INVALID_CREATION_EVENT, "invalidCreationEvent").getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(errors)
+                .build();
+
+        return ResponseEntity.ok(callbackResponse);
     }
 
     private void validateForPayloadErrors(CallbackRequest callbackRequest, BindingResult bindingResult) {
