@@ -145,11 +145,8 @@ public abstract class IntegrationTestBase {
         return validatePostSuccessForPayload(utils.getJsonFromFile(jsonFileName), path);
     }
 
-    protected final ResponseBody validatePostSuccess(String jsonFileName, String path, String caseId)
-            throws IOException, InterruptedException {
-        String payload = utils.getJsonFromFile(jsonFileName);
-        payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
-                "\"boCaseStopCaveatId\": \"" + caseId + "\",");
+    protected final ResponseBody validatePostSuccessForCaseStopped(String payload, String path)
+            throws InterruptedException {
         Thread.sleep(ES_DELAY);
         return validatePostSuccessForPayload(payload, path);
     }
