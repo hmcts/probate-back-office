@@ -367,7 +367,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() throws IOException {
+    public void verifySolicitorCaseStoppedShouldReturnOkResponseCode() throws IOException, InterruptedException {
         String caseId = createCase();
         final String document = sendEmail("solicitorPayloadNotifications.json", CASE_STOPPED,
                 EMAIL_NOTIFICATION_URL, caseId);
@@ -436,7 +436,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         return document;
     }
 
-    private String sendEmail(String fileName, String url, String jsonDocumentUrl, String id) throws IOException {
+    private String sendEmail(String fileName, String url, String jsonDocumentUrl, String id) throws IOException,
+            InterruptedException {
         final ResponseBody body = validatePostSuccess(fileName, url, id);
 
         final JsonPath jsonPath = JsonPath.from(body.asString());

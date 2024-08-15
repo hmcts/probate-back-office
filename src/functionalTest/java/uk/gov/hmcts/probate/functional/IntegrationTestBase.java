@@ -39,6 +39,7 @@ public abstract class IntegrationTestBase {
 
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
+    private static final long ES_DELAY = 20000L;
 
     @Autowired
     public void solCcdServiceUrl(@Value("${sol.ccd.service.base.url}") String solCcdServiceUrl) {
@@ -145,10 +146,11 @@ public abstract class IntegrationTestBase {
     }
 
     protected final ResponseBody validatePostSuccess(String jsonFileName, String path, String caseId)
-            throws IOException {
-        String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
+            throws IOException, InterruptedException {
+        String payload = utils.getJsonFromFile(jsonFileName);
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
                 "\"boCaseStopCaveatId\": \"" + caseId + "\",");
+        Thread.sleep(ES_DELAY);
         return validatePostSuccessForPayload(payload, path);
     }
 
