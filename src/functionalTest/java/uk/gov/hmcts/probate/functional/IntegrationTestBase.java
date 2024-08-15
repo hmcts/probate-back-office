@@ -39,7 +39,7 @@ public abstract class IntegrationTestBase {
 
     private String solCcdServiceUrl;
     public static String evidenceManagementUrl;
-    private static final long ES_DELAY = 20000L;
+    private static final long ES_DELAY = 50000L;
 
     @Autowired
     public void solCcdServiceUrl(@Value("${sol.ccd.service.base.url}") String solCcdServiceUrl) {
