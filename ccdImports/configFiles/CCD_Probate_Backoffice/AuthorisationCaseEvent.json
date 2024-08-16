@@ -350,6 +350,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boPermenantStop", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boEscalateToRegistrar", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAddCommentForPostGrantIssuedRegistrarEscalation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocsForPostGrantRegistrarEscalation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseDetailsPostGrantRegistrarEscalation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCasePostGrantRegistrarEscalation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCaseGrantRegistrarEscalation", "UserRole": "caseworker-probate-caseofficer", "CRUD": "CRUD"},
