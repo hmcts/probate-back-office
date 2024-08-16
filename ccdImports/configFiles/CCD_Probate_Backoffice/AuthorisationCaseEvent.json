@@ -291,7 +291,6 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAddCommentForCaseStoppedReissue", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAmendCaseForCaseStoppedReissue", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocsForCaseStoppedReissue", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boUploadDocsForPostGrantRegistrarEscalation", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFindMatchedCaseForCaseStoppedReissue", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boSendStopEmailForCaseStoppedReissue", "UserRole": "caseworker-probate-caseadmin", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boFullCaseAmend", "UserRole": "caseworker-probate-caseadmin", "CRUD": "R"},
