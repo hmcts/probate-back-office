@@ -328,5 +328,9 @@ withPipeline("java", product, component) {
  docker run --rm --interactive curlimages/curl --insecure --retry 10 --retry-all-errors $CCD_DAT_URL/health
  """
   }
+
+  before('functionalTest:preview') {
+    env.SERVICES_CORECASEDATA_BASEURL = "http://probate-back-office-pr-${CHANGE_ID}-ccd-data-store-api"
+  }
 }
 
