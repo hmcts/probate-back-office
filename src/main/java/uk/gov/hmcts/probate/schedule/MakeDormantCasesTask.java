@@ -23,11 +23,14 @@ public class MakeDormantCasesTask implements Runnable {
     private int dormancyPeriodMonths;
     @Value("${dormancy.start_date}")
     private String dormancyStartDate;
+    @Value("${dormancy.end_date}")
+    private String dormancyEndDate;
 
     @Override
     public void run() {
         log.info("Scheduled task MakeDormantCasesTask started to make dormant cases");
-        final String endDate = DATE_FORMAT.format(LocalDate.now().minusMonths(dormancyPeriodMonths));
+        final String endDate = null == dormancyEndDate
+                ? DATE_FORMAT.format(LocalDate.now().minusMonths(dormancyPeriodMonths)) : dormancyEndDate;
         log.info("Calling perform make dormant from date, to date {} {}", dormancyStartDate, endDate);
 
         try {
