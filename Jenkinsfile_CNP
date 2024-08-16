@@ -330,7 +330,7 @@ withPipeline("java", product, component) {
   }
 
   before('functionalTest:preview') {
-    env.SERVICES_CORECASEDATA_BASEURL = "http://probate-back-office-pr-${CHANGE_ID}-ccd-data-store-api"
+    env.SERVICES_CORECASEDATA_BASEURL = "https://ccd-data-store-api-probate-back-office-pr-${CHANGE_ID}.preview.platform.hmcts.net"
   }
 }
 
