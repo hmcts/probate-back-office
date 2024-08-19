@@ -12,6 +12,8 @@
     "solsSolicitorFirmName": "The Firm & Co",
     "caveatorEmailAddress": "caveator@probate-test.com",
     "solsSolicitorPhoneNumber": "07070707077",
+    "caveatorForenames": "cav first name",
+    "caveatorSurname": "cav surname",
     "caveatorAddress": {
       "AddressLine1": "2",
       "AddressLine2": "",

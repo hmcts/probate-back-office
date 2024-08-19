@@ -335,16 +335,12 @@ public class FunctionalTestUtils {
         final String user = getCaseworkerUserId();
         final String ccdStartAsCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
                 + "/jurisdictions/PROBATE/case-types/Caveat/event-triggers/" + eventId + "/token";
-        log.info("createCaveatCaseAsCaseworker user {}", user);
-        log.info("ccdStartAsCaseworkerUrl {}", ccdStartAsCaseworkerUrl);
         final Response startResponse = RestAssured.given()
                 .relaxedHTTPSValidation()
                 .headers(getHeadersWithCaseworkerUser())
                 .when().get(ccdStartAsCaseworkerUrl).andReturn();
         final String token = startResponse.getBody().jsonPath().get("token");
         final String caseCreateJson = caseJson.replaceAll(TOKEN_PARM, token);
-        log.info("createCaveatCaseAsCaseworker token {}", token);
-        log.info("caseCreateJson {}", caseCreateJson);
         final String submitForCaseworkerUrl = coreCaseDataApiUrl + "/caseworkers/" + user
                 + "/jurisdictions/PROBATE/case-types/Caveat/cases";
         Response submitResponse = RestAssured.given()
