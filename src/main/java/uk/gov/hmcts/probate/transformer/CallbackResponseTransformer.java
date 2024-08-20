@@ -433,6 +433,11 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), false);
+        if (!storedMatches.isEmpty()) {
+            responseCaseDataBuilder.matches("Possible case matches");
+        } else {
+            responseCaseDataBuilder.matches("No matches found");
+        }
 
         return transformResponse(responseCaseDataBuilder.build());
     }
