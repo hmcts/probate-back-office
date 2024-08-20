@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
-import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchData;
 import uk.gov.hmcts.probate.model.ccd.standingsearch.request.StandingSearchDetails;
@@ -32,7 +31,6 @@ import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
-import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.STANDING_SEARCH_LIFESPAN;
 
 @ExtendWith(SpringExtension.class)
