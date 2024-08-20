@@ -530,7 +530,8 @@ public class CallbackResponseTransformer {
 
     private BigDecimal getNetValueLabel(CaseData caseData) {
         boolean isOnOrAfterSwitchDate = dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath());
-        if (ApplicationType.SOLICITOR.equals(caseData.getApplicationType()) && CHANNEL_CHOICE_DIGITAL.equals(caseData.getChannelChoice())
+        if (ApplicationType.SOLICITOR.equals(caseData.getApplicationType())
+                && CHANNEL_CHOICE_DIGITAL.equals(caseData.getChannelChoice())
                 && (!isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormId()))
                 || (isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormEstate()))
                 && caseData.getIhtFormNetValue() != null) {
