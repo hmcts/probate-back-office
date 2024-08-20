@@ -562,8 +562,8 @@ document_management:
 
 dormancy:
   period_months: 0
-  start_date: 2024-08-14
-  end_date: 2024-08-14
+  start_date: 2024-08-15
+  end_date: 2024-08-15
 
 make_dormant:
   add_time_minutes: 5
