@@ -106,6 +106,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
@@ -4171,17 +4172,33 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformForFormNetValue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+    void shouldTransformWithFormNetValueAndDigitalSolicitor() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR)
                 .ihtFormNetValue(IHT_NET)
                 .ihtFormId("IHT400")
-                .ihtNetValue(null);
+                .ihtNetValue(null)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void shouldTransformWithFormNetValueAndDigitalPersonal() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormNetValue(IHT_NET)
+                .ihtFormId("IHT400")
+                .ihtNetValue(null)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(null, callbackResponse.getData().getIhtNetValue());
     }
 
     @Test
