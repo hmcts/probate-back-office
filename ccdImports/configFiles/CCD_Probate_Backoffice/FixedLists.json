@@ -154,7 +154,7 @@
   {"LiveFrom": "01/01/2017", "ID": "paymentStatusEnum", "ListElementCode": "not_required", "ListElement": "Not Required"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "marriageOrCivilPartnership", "ListElement": "Marriage or civil partnership"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "divorceOrDissolution", "ListElement": "Divorce or dissolution"},
-  {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "changeByDeadPoll", "ListElement": "Change by deed poll"},
+  {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "changeByDeedPoll", "ListElement": "Change by deed poll"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "differentSpelling", "ListElement": "Different Spelling"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "partOfNameNotIncluded", "ListElement": "Part of their name was not included"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Other", "ListElement": "Other"},
