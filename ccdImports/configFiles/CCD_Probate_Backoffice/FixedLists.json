@@ -155,6 +155,8 @@
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Marriage", "ListElement": "Marriage"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Divorce", "ListElement": "Divorce"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Change by deed poll", "ListElement": "Change by deed poll"},
+  {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Different Spelling", "ListElement": "Different Spelling"},
+  {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "Part of their name was not included", "ListElement": "Part of their name was not included"},
   {"LiveFrom": "06/01/2017", "ID": "aliasReasonList", "ListElementCode": "other", "ListElement": "other"},
   {"LiveFrom": "06/01/2017", "ID": "selectionFixedList", "ListElementCode": "deceasedIHT", "ListElement": "Deceased, IHT and Estate Details"},
   {"LiveFrom": "06/01/2017", "ID": "selectionFixedList", "ListElementCode": "applicant", "ListElement": "Applicant Details"},
