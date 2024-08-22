@@ -165,7 +165,7 @@ def versions = [
         commonsValidator                : '1.9.0',
         documentClient                  : '1.8.1',
         elasticSearchVersion            : '7.15.0',
-        hmctsJavaLogging                : '6.1.5',
+        hmctsJavaLogging                : '6.1.6',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.34',
         mapStruct                       : '1.2.0.Final',
@@ -220,6 +220,7 @@ dependencies {
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring')
 
+  implementation group: 'com.google.guava', name: 'guava', version: '33.3.0-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
@@ -228,7 +229,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.1'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '0.1.1'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.26.1'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.27.0'
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '7.4'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind

@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
@@ -176,6 +177,8 @@ class BusinessValidationUnitTest {
     private NaValidationRule naValidationRule;
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
+    @Mock
+    private BusinessValidationMessageService businessValidationMessageServiceMock;
 
 
     @Mock
@@ -217,7 +220,8 @@ class BusinessValidationUnitTest {
             changeToSameStateValidationRule,
             handOffLegacyTransformer,
             registrarDirectionServiceMock,
-            pre1900DOBValidationRuleMock);
+            pre1900DOBValidationRuleMock,
+            businessValidationMessageServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
