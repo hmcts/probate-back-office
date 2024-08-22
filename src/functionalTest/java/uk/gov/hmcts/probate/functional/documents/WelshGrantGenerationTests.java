@@ -1,6 +1,5 @@
 package uk.gov.hmcts.probate.functional.documents;
 
-import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
-@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
@@ -61,8 +59,6 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
         expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
         expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
 
-        log.info("response: {}", response.trim());
-
         assertEquals(expectedText.trim(), response.trim());
     }
 
@@ -70,8 +66,6 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getProbateDocumentsGeneratedTextAtIndex(payload, GENERATE_GRANT_REISSUE, "2");
 
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
-
-        log.info("response: {}", response.trim());
 
         assertEquals(expectedText.trim(), response.trim());
     }
