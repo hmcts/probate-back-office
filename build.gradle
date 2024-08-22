@@ -294,7 +294,7 @@ dependencies {
     }
   }
 
-  implementation group: 'com.google.guava', name: 'guava', version: '33.2.1-jre'
+  implementation group: 'com.google.guava', name: 'guava', version: '33.3.0-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
