@@ -1798,7 +1798,7 @@ class CallbackResponseTransformerTest {
     void shouldTransformCaseForPAWithPrimaryApplicantAliasOtherToBeNull() {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
         caseDataBuilder.primaryApplicantSameWillName(YES);
-        caseDataBuilder.primaryApplicantAliasReason("Marriage");
+        caseDataBuilder.primaryApplicantAliasReason("marriageOrCivilPartnership");
         caseDataBuilder.primaryApplicantOtherReason("Married");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -1808,8 +1808,24 @@ class CallbackResponseTransformerTest {
 
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
-        assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
+        assertEquals("marriageOrCivilPartnership", callbackResponse.getData().getPrimaryApplicantAliasReason());
         assertNull(callbackResponse.getData().getPrimaryApplicantOtherReason());
+    }
+
+    @Test
+    void shouldTransformCaseForPAWithPrimaryApplicantAliasToBeDifferentSpelling() {
+        caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
+        caseDataBuilder.primaryApplicantSameWillName(NO);
+        caseDataBuilder.primaryApplicantAliasReason("differentSpelling");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantSameWillName());
+        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
+        assertEquals("differentSpelling", callbackResponse.getData().getPrimaryApplicantAliasReason());
     }
 
     @Test
