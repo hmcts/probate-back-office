@@ -197,7 +197,7 @@ def versions = [
         lombok                          : '1.18.34',
         springDocOpenUi                 : '1.7.0',
         springSecurityVersion           : '5.7.11',
-        probateCommonsVersion           : '1.6.5',
+        probateCommonsVersion           : '1.6.8',
         ccdClient                       : '4.9.2',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '4.1.2',
