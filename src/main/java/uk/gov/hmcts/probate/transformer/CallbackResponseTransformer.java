@@ -235,10 +235,6 @@ public class CallbackResponseTransformer {
                     .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
                     .build();
         }
-        responseCaseDataBuilder
-                .boCaveatStopEmailNotificationRequested(caseData.getValueForCaveatStopEmailNotification())
-                .boStopDetails("")
-                .build();
 
         return transformResponse(responseCaseDataBuilder.build());
     }
