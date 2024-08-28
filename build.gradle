@@ -197,7 +197,7 @@ def versions = [
         lombok                          : '1.18.34',
         springDocOpenUi                 : '1.7.0',
         springSecurityVersion           : '5.7.11',
-        probateCommonsVersion           : '1.4.49',
+        probateCommonsVersion           : '1.6.7',
         ccdClient                       : '4.9.2',
         mapStruct                       : '1.2.0.Final',
         serviceAuthVersion              : '4.1.2',
@@ -294,7 +294,7 @@ dependencies {
     }
   }
 
-  implementation group: 'com.google.guava', name: 'guava', version: '33.2.1-jre'
+  implementation group: 'com.google.guava', name: 'guava', version: '33.3.0-jre'
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: versions.springBootStarterHateoas
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.hmctsJavaLogging
   implementation group: 'com.github.hmcts.java-logging', name: 'logging-appinsights', version: versions.hmctsJavaLogging
