@@ -93,6 +93,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -302,8 +303,9 @@ class CallbackResponseTransformerTest {
     private static final String ORG_ID = "OrgID";
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
-    private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+    private static final String uniqueCode = "CTS 0405231104 3tpp s8e9"
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
+    private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
 
     @Mock
@@ -2727,7 +2729,6 @@ class CallbackResponseTransformerTest {
 
     @Test
     void shouldTransformCaseForLetter() {
-
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
@@ -4441,6 +4442,29 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
+    }
+
+    @Test
+    void shouldReturnNewDateWhenExcludedEventIsNotMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("eventId");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+    }
+
+    @Test
+    void shouldReturnExistingDateWhenExcludedEventIsMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .lastModifiedDateForDormant(dateTime);
+        when(callbackRequestMock.getEventId()).thenReturn("boHistoryCorrection");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
