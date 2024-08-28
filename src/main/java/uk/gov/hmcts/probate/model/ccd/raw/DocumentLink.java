@@ -4,6 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Data
 @Builder
 public class DocumentLink {
@@ -19,5 +21,8 @@ public class DocumentLink {
 
     @JsonProperty(value = "document_hash")
     private String documentHash;
+
+    @JsonProperty(value = "upload_timestamp" )
+    private LocalDateTime uploadTimestamp;
 
 }
