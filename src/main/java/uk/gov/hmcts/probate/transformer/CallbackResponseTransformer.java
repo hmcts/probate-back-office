@@ -137,14 +137,14 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
             callbackRequest.getCaseDetails(), authToken));
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -155,7 +155,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
         OriginalDocuments originalDocuments = OriginalDocuments.builder()
                 .originalDocsGenerated(caseData.getProbateDocumentsGenerated())
                 .originalDocsScanned(caseData.getScannedDocuments())
