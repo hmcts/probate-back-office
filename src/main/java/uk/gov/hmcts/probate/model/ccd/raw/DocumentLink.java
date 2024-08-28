@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.model.ccd.raw;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
-
 import java.time.LocalDateTime;
 
 @Data
@@ -22,7 +21,7 @@ public class DocumentLink {
     @JsonProperty(value = "document_hash")
     private String documentHash;
 
-    @JsonProperty(value = "upload_timestamp" )
+    @JsonProperty(value = "upload_timestamp")
     private LocalDateTime uploadTimestamp;
 
 }
