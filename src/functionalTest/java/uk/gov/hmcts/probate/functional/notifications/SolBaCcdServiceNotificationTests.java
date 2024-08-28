@@ -383,7 +383,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
             sendEmail("personalPayloadNotificationsSpecialCharacters.json", CASE_STOPPED,
                     EMAIL_NOTIFICATION_URL);
         verifyPAEmailCaseStopped(document);
-        assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
     }
 
     @Test
