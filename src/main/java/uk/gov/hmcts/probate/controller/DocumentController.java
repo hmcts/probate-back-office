@@ -388,13 +388,9 @@ public class DocumentController {
     }
 
     private boolean useHtmlPdfGeneratorForReissue(CaseData cd) {
-        if (GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())
-            && (cd.getApplicationType() == null || SOLICITOR.equals(cd.getApplicationType()))
-            && (LATEST_SCHEMA_VERSION.equals(cd.getSchemaVersion()))) {
-
-            return true;
-        }
-        return false;
+        return GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())
+                && (cd.getApplicationType() == null || SOLICITOR.equals(cd.getApplicationType()))
+                && (LATEST_SCHEMA_VERSION.equals(cd.getSchemaVersion()));
     }
 
     @PostMapping(
