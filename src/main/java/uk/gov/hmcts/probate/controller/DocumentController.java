@@ -59,7 +59,6 @@ import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
-import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.LATEST_SCHEMA_VERSION;
 import static uk.gov.hmcts.probate.model.Constants.NEWCASTLE;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -389,7 +388,7 @@ public class DocumentController {
     }
 
     private boolean useHtmlPdfGeneratorForReissue(CaseData cd) {
-        if ((GRANT_TYPE_PROBATE.equals(cd.getSolsWillType()) || GRANT_OF_PROBATE_NAME.equals(cd.getCaseType()))
+        if (GRANT_OF_PROBATE_NAME.equals(cd.getCaseType())
             && (cd.getApplicationType() == null || SOLICITOR.equals(cd.getApplicationType()))
             && (LATEST_SCHEMA_VERSION.equals(cd.getSchemaVersion()))) {
 
