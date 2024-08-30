@@ -293,7 +293,8 @@ class DocumentControllerIT {
                 .andReturn();
 
         verify(bulkPrintService)
-                .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
+                .optionallySendToBulkPrint(any(CallbackRequest.class),
+                        any(Document.class), any(Document.class), eq(true));
     }
 
 
