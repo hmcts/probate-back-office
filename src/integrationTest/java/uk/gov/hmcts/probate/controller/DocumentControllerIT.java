@@ -280,6 +280,25 @@ class DocumentControllerIT {
     }
 
     @Test
+    void generateDigitalGrantReissueWithBulkPrintWillLeftAnnexed() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrintWillLeftAnnexed.json");
+
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-reissue")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                        is(DIGITAL_GRANT_REISSUE.getTemplateName())))
+                .andReturn();
+
+        verify(bulkPrintService)
+                .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
+    }
+
+
+
+    @Test
     void generateDigitalGrantIfLocalPrint() throws Exception {
         when(documentGeneratorService
             .getDocument(any(CallbackRequest.class), eq(DocumentStatus.FINAL), eq(DocumentIssueType.GRANT)))
