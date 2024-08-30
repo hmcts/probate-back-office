@@ -1800,7 +1800,7 @@ class CallbackResponseTransformerTest {
     void shouldTransformCaseForPAWithPrimaryApplicantAliasOtherToBeNull() {
         caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
         caseDataBuilder.primaryApplicantSameWillName(YES);
-        caseDataBuilder.primaryApplicantAliasReason("marriageOrCivilPartnership");
+        caseDataBuilder.primaryApplicantAliasReason("Marriage");
         caseDataBuilder.primaryApplicantOtherReason("Married");
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
@@ -1810,7 +1810,7 @@ class CallbackResponseTransformerTest {
 
         assertEquals(YES, callbackResponse.getData().getPrimaryApplicantSameWillName());
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
-        assertEquals("marriageOrCivilPartnership", callbackResponse.getData().getPrimaryApplicantAliasReason());
+        assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
         assertNull(callbackResponse.getData().getPrimaryApplicantOtherReason());
     }
 
