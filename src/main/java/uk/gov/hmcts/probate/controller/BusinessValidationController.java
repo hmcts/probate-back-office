@@ -680,6 +680,13 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
+
+    @PostMapping(path = "/setLastModifiedDate", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> setLastModifiedDateForDormant(
+            @RequestBody CallbackRequest callbackRequest) {
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
+    }
+
     @PostMapping(path = "/invalidEvent", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> invalidEvent(@RequestBody CallbackRequest callbackRequest) {
         log.info("invalid creation event");
