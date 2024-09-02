@@ -21,7 +21,7 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
     private final TaskStateRenderer taskStateRenderer;
     private final NoDocumentsRequiredBusinessRule noDocumentsRequiredBusinessRule;
     private static final String SEND_DOCS = "<gridRow><gridCol-two-thirds>"
-            + "<p>Send documents<br/><sendDocsLink/></p>"
+            + "<p>Send documents<br/>Anfon dogfennau<br/><sendDocsLink/></p>"
             + "</gridCol-two-thirds><gridCol-one-third>"
             + "<status-sendDocuments/>"
             + "</gridCol-one-third></gridRow>\n"

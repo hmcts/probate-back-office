@@ -79,17 +79,30 @@ import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLIC
 @RequiredArgsConstructor
 public class TaskStateRenderer {
     private static final String ADD_SOLICITOR_DETAILS_TEXT = "Add Probate practitioner details";
+    private static final String ADD_SOLICITOR_DETAILS_TEXT_WELSH = "Ychwanegu manylion ymarferydd profiant";
     private static final String ADD_DECEASED_DETAILS_TEXT = "Add deceased details";
+    private static final String ADD_DECEASED_DETAILS_TEXT_WELSH = "Ychwanegu manylion yr ymadawedig ";
     private static final String ADD_APPLICATION_DETAILS_TEXT = "Add application details";
+    private static final String ADD_APPLICATION_DETAILS_TEXT_WELSH = "Ychwanegu manylion y cais";
     private static final String REVIEW_OR_SUBMIT_TEXT = "Review and sign legal statement and submit application";
+    private static final String REVIEW_OR_SUBMIT_TEXT_WELSH
+            = "Adolygwch a llofnodwch y datganiad cyfreithiol a chyflwynwch y cais";
     private static final String MAKE_PAYMENT_TEXT = "Make payment";
+    private static final String MAKE_PAYMENT_TEXT_WELSH = "Gwneud taliad";
     private static final String NO_PAYMENT_REQUIRED_TEXT = "</p><p><secText>No payment is required.</secText>";
+    private static final String NO_PAYMENT_REQUIRED_TEXT_WELSH = "</p><p>Nid oes angen unrhyw daliad.</secText>";
     private static final String PAYMENT_HINT_TEXT = "</p><p><secText>Once payment is made, "
         + "you'll need to refresh the page or  re-enter the case for the payment status to update.</secText>";
+    private static final String PAYMENT_HINT_TEXT_WELSH = "</p><p><secText>Unwaith y bydd y taliad wedi'i wneud, "
+            + "bydd angen i chi ail-lwytho'r dudalen neu fynd i mewn i'r "
+            + "achos eto er mwyn i'r statws talu gael ei ddiweddaru.</secText>";
     static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
+    private static final String AUTH_DOCS_TEXT_WELSH = "Dilysu dogfennau";
     private static final String EXAMINE_APP_TEXT = "Examine application";
-    private static final String ISSUE_GRANT_TEXT = "Issue grant of representation<";
+    private static final String EXAMINE_APP_TEXT_WELSH = "Archwilio'r cais";
+    private static final String ISSUE_GRANT_TEXT = "Issue grant of representation";
+    private static final String ISSUE_GRANT_TEXT_WELSH = "Cyhoeddi grant cynrychiolaeth";
     private static final String COVERSHEET = "coversheet";
     private static final String IHT_400421 = "IHT400421";
     private static final String LIST_ITEM_START = "<li>";
@@ -147,33 +160,54 @@ public class TaskStateRenderer {
         return html == null ? null : html
                 .replaceFirst("<addSolicitorLink/>",
                     renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
-                        currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details))
+                        currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details)
+                        )
+                .replaceFirst("<addSolicitorLinkWelsh/>",
+                    renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
+                        currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT_WELSH, caseIdStr, willType, details)
+                )
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
+                .replaceFirst("<status-addSolicitorwelsh/>", renderTaskStateTag(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                         currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType, details))
+                .replaceFirst("<addDeceasedLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
+                        currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-addDeceasedDetails/>", renderTaskStateTag(addDeceasedState))
                 .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                         currState, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr, willType, details))
+                .replaceFirst("<addAppLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
+                        currState, addAppState, ADD_APPLICATION_DETAILS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-addApplicationDetails/>", renderTaskStateTag(addAppState))
                 .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
+                .replaceFirst("<rvwLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
+                        currState, rvwState, REVIEW_OR_SUBMIT_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, currState, caseIdStr,
                         willType))
-                .replaceFirst("<paymentHintText/>", renderPaymentHintText(currState, details))
+                .replaceFirst("<paymentTabLinkWelsh/>", renderPaymentLinkOrTextWelsh(paymentState, currState, caseIdStr,
+                        willType))
+                .replaceFirst("<paymentHintText/>", renderPaymentHintTextWelsh(currState, details))
+                .replaceFirst("<paymentHintTextWelsh/>", renderPaymentHintText(currState, details))
                 .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType, details))
+                .replaceFirst("<authDocsLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
+                        currState, authDocsState, AUTH_DOCS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
                 .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, examineState, EXAMINE_APP_TEXT, caseIdStr, willType, details))
+                .replaceFirst("<examAppLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
+                        currState, examineState, EXAMINE_APP_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
                 .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT,
                         currState, issueState, ISSUE_GRANT_TEXT, caseIdStr, willType, details))
+                .replaceFirst("<issueGrantLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT,
+                        currState, issueState, ISSUE_GRANT_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState))
                 .replaceFirst("<coversheet/>", renderLinkOrText(TaskListState.TL_STATE_SEND_DOCUMENTS,
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
@@ -204,6 +238,17 @@ public class TaskStateRenderer {
                 : MAKE_PAYMENT_TEXT;
     }
 
+    private String renderPaymentLinkOrTextWelsh(TaskState currTaskState, TaskListState currState, String caseId,
+                                           String willType) {
+        String linkUrlTemplate = getLinkUrlTemplate(currState, willType);
+        return linkUrlTemplate != null
+                && (currState == TaskListState.TL_STATE_MAKE_PAYMENT
+                || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED)
+                && (currTaskState == TaskState.NOT_STARTED || currTaskState == TaskState.IN_PROGRESS)
+                ? LinkRenderer.render(MAKE_PAYMENT_TEXT_WELSH, linkUrlTemplate.replaceFirst(CASE_ID_STRING, caseId))
+                : MAKE_PAYMENT_TEXT_WELSH;
+    }
+
     private String renderPaymentHintText(TaskListState currState, CaseDetails details) {
         if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
                 && (details.getData().getTotalFee() == null
@@ -212,6 +257,16 @@ public class TaskStateRenderer {
         }
         return currState == TaskListState.TL_STATE_MAKE_PAYMENT
                 || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED ? PAYMENT_HINT_TEXT : "";
+    }
+
+    private String renderPaymentHintTextWelsh(TaskListState currState, CaseDetails details) {
+        if (currState == TaskListState.TL_STATE_SEND_DOCUMENTS
+                && (details.getData().getTotalFee() == null
+                || details.getData().getTotalFee().compareTo(BigDecimal.ZERO) == 0)) {
+            return NO_PAYMENT_REQUIRED_TEXT_WELSH;
+        }
+        return currState == TaskListState.TL_STATE_MAKE_PAYMENT
+                || currState == TaskListState.TL_STATE_PAYMENT_ATTEMPTED ? PAYMENT_HINT_TEXT_WELSH : "";
     }
 
     private TaskState getTaskState(TaskListState currState, TaskListState renderState,
