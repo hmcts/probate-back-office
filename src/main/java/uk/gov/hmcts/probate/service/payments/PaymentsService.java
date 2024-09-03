@@ -69,6 +69,7 @@ public class PaymentsService {
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        log.info("securityDTO:{}", securityDTO);
         String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
         DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
