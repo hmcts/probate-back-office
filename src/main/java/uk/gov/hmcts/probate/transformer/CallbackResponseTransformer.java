@@ -506,7 +506,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
-        responseCaseDataBuilder.lastModifiedDateForDormant(null);
+        responseCaseDataBuilder.applicantOrganisationPolicy(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -1814,6 +1814,16 @@ public class CallbackResponseTransformer {
             if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
                 grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
             }
+
+            grantOfRepresentationData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
+                .OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                    .organisationID(null)
+                    .organisationName(null)
+                    .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build());
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
