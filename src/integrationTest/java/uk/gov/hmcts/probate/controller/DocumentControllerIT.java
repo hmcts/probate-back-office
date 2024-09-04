@@ -530,8 +530,9 @@ class DocumentControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this applicant. "
-                    + "Add an email address or contact them by post."))
+                .value("There is no email address for this applicant. Add an email address or contact "
+                        + "them by post.\nNid oes cyfeiriad e-bost ar gyfer y ceisydd hwn. Ychwanegwch gyfeiriad "
+                        + "e-bost neu cysylltwch â nhw drwy'r post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -625,7 +626,8 @@ class DocumentControllerIT {
         mockMvc
             .perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+            .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital "
+                    + "cases.\nDim ond ar gyfer achosion digidol y gallwch ddefnyddio'r adnodd hwn."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
