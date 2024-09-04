@@ -70,7 +70,7 @@ public class PaymentsService {
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         log.info("securityDTO:{}", securityDTO);
-        List<String> roles= securityUtils.getRoles(securityDTO.getAuthorisation());
+        List<String> roles = securityUtils.getRoles(securityDTO.getAuthorisation());
         log.info("roles:{}", roles);
         String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
