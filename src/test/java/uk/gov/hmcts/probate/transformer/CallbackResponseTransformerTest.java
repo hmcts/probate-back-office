@@ -307,6 +307,7 @@ class CallbackResponseTransformerTest {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+    private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
@@ -4465,6 +4466,36 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+    }
+
+    @Test
+    void shouldReturnNoMatchesWhenNoMatches() {
+        caseDataBuilder.applicationType(SOLICITOR);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                underTest.addMatches(callbackRequestMock, caseMatches);
+
+        assertEquals(callbackResponse.getData().getMatches(), "No matches found");
+    }
+
+    @Test
+    void shouldReturnPossibleMatchesWhenMatchesFound() {
+        List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
+        CollectionMember<CaseMatch> match =
+                new CollectionMember<>(null, CaseMatch
+                        .builder()
+                        .id("123")
+                        .build());
+        caseMatch.add(match);
+        caseDataBuilder.applicationType(SOLICITOR);
+        caseDataBuilder.caseMatches(caseMatch);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                underTest.addMatches(callbackRequestMock, caseMatches);
+
+        assertEquals(callbackResponse.getData().getMatches(), "Possible case matches");
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
