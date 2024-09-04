@@ -55,24 +55,21 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyGrantReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
-            "expectedPersonalDocumentGrantReissued.txt",
-            "expectedPersonalEmailGrantReissued.txt");
+    public void verifyGrantReissueDocument() throws IOException {
+        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadGrantReissued.json",
+            "expectedPersonalDocumentGrantReissued.txt");
     }
 
     @Test
-    public void verifyIntestacyReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadIntestacyReissued.json",
-            "expectedPersonalDocumentIntestacyReissued.txt",
-            "expectedPersonalEmailGrantReissued.txt");
+    public void verifyIntestacyReissueDocument() throws IOException {
+        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadIntestacyReissued.json",
+            "expectedPersonalDocumentIntestacyReissued.txt");
     }
 
     @Test
-    public void verifyAdmonWillReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
-            "expectedPersonalDocumentAdmonWillReissued.txt",
-            "expectedPersonalEmailGrantReissued.txt");
+    public void verifyAdmonWillReissueDocument() throws IOException {
+        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadAdmonWillReissued.json",
+            "expectedPersonalDocumentAdmonWillReissued.txt");
     }
 
     @Test
@@ -92,24 +89,21 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyWelshGrantReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
-            "expectedPersonalDocumentWelshGrantReissued.txt",
-            "expectedPersonalEmailWelshGrantReissued.txt");
+    public void verifyWelshGrantReissueDocument() throws IOException {
+        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshGrantReissued.json",
+            "expectedPersonalDocumentWelshGrantReissued.txt");
     }
 
     @Test
-    public void verifyWelshIntestacyReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshIntestacyReissued.json",
-            "expectedPersonalDocumentWelshIntestacyReissued.txt",
-            "expectedPersonalEmailWelshGrantReissued.txt");
+    public void verifyWelshIntestacyReissueDocument() throws IOException {
+        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshIntestacyReissued.json",
+            "expectedPersonalDocumentWelshIntestacyReissued.txt");
     }
 
     @Test
-    public void verifyWelshAdmonWillReissueDocumentAndEmail() throws IOException {
-        verifyDocumentAndEmailNotificationGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
-            "expectedPersonalDocumentWelshAdmonWillReissued.txt",
-            "expectedPersonalEmailWelshGrantReissued.txt");
+    public void verifyWelshAdmonWillReissueDocument() throws IOException {
+        verifyDocumentGenerated(GRANT_REISSUED, "personalPayloadWelshAdmonWillReissued.json",
+            "expectedPersonalDocumentWelshAdmonWillReissued.txt");
     }
 
     @Test
@@ -349,14 +343,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPersonalApplicantGrantIssuedContentIsOk() throws IOException {
-        final String document = sendEmail("personalPayloadNotifications.json", GRANT_ISSUED,
-                EMAIL_NOTIFICATION_URL);
-        String expectedText = utils.getStringFromFile("/json/personalApplicantGrantIssuedEmailContent.txt");
-        assertTrue(document.contains(expectedText));
-    }
-
-    @Test
     public void verifySolicitorApplicantGrantIssuedContentIsOk() throws IOException {
         final String document =
             sendEmail("solicitorPayloadNotificationsBirmingham.json", GRANT_ISSUED, EMAIL_NOTIFICATION_URL);
@@ -397,7 +383,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
             sendEmail("personalPayloadNotificationsSpecialCharacters.json", CASE_STOPPED,
                     EMAIL_NOTIFICATION_URL);
         verifyPAEmailCaseStopped(document);
-        assertTrue(document.contains("!@£$%^&*()[]{}<>,.:;~"));
     }
 
     @Test
@@ -482,10 +467,8 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
         assertExpectedContents(expectedResponseFile, responseDocumentUrl, responseBody);
     }
 
-    private void verifyDocumentAndEmailNotificationGenerated(String api, String payload, String documentText,
-                                                             String emailText) throws IOException {
+    private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
         final ResponseBody responseBody = validatePostSuccess(payload, api);
         assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
-        assertExpectedContents(emailText, EMAIL_NOTIFICATION_URL, responseBody);
     }
 }

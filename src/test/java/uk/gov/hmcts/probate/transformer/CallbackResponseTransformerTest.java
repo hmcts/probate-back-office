@@ -93,6 +93,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -303,6 +304,8 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
+    private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
@@ -2707,8 +2710,26 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformCaseForLetter() {
+    void shouldTransformOrgPolicy() {
+        OrganisationPolicy policy = OrganisationPolicy.builder()
+                .organisation(Organisation.builder()
+                        .organisationID("ABC")
+                        .organisationName("OrgName")
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole("[APPLICANTSOLICITOR]")
+                .build();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .applicantOrganisationPolicy(policy);
 
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
+        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
+    }
+
+    @Test
+    void shouldTransformCaseForLetter() {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
@@ -3701,6 +3722,24 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void bulkScanGrantOfRepresentationTransformSolsCaseWithOrgPolicy() {
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy orgPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+        CaseCreationDetails grantOfRepresentationDetails
+                = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
+        GrantOfRepresentationData grantOfRepresentationData =
+                (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
+        assertEquals(orgPolicy, grantOfRepresentationData.getApplicantOrganisationPolicy());
+    }
+
+    @Test
     void shouldSetCorrectPrintIdForBulkScanGrantRaise() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -4407,14 +4446,26 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void rollbackShouldSetApplicationSubmittedDateToNull() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
-                .applicationSubmittedDate(LocalDate.now().toString());
-
+    void shouldReturnNewDateWhenExcludedEventIsNotMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("eventId");
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getApplicationSubmittedDate());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+    }
+
+    @Test
+    void shouldReturnExistingDateWhenExcludedEventIsMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .lastModifiedDateForDormant(dateTime);
+        when(callbackRequestMock.getEventId()).thenReturn("boHistoryCorrection");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
     }
 
     @Test
