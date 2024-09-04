@@ -32,8 +32,8 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOReadyToIssue", "Name": "Ready to issue", "Description": "Ready to issue", "DisplayOrder": 31},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BORedecNotificationSent", "Name": "Redeclaration notifications sent", "Description": "Redeclaration notifications sent", "DisplayOrder": 32},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BORegistrarEscalation", "Name": "Registrar escalation", "Description": "Registrar escalation", "DisplayOrder": 33},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOGrantIssuedRegistrarEscalation", "Name": "Grant Issued", "Description": "Registrar escalation", "DisplayOrder": 34},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOPostGrantIssuedRegistrarEscalation", "Name": "Post Grant Issued", "Description": "Registrar escalation", "DisplayOrder": 35},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOGrantIssuedRegistrarEscalation", "Name": "Registrar escalation(Grant Issued)", "Description": "Registrar escalation", "DisplayOrder": 34},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOPostGrantIssuedRegistrarEscalation", "Name": "Registrar escalation(Post Grant Issued)", "Description": "Registrar escalation", "DisplayOrder": 35},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "BOCaseWorkerEscalation", "Name": "SME Referral", "Description": "SME Referral", "DisplayOrder": 36},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "Stopped", "Name": "Stopped", "Description": "Stopped", "DisplayOrder": 37}
 ]
