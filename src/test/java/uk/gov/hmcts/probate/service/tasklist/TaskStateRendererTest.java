@@ -135,7 +135,7 @@ class TaskStateRendererTest {
                 + "<div></div>\n"
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
-                + "<div>Issue grant of representation<</div>\n"
+                + "<div>Issue grant of representation</div>\n"
                 + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
@@ -175,7 +175,7 @@ class TaskStateRendererTest {
             + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
+            + "<div>Issue grant of representation</div>\n"
             + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -218,7 +218,7 @@ class TaskStateRendererTest {
                 + "<div></div>\n"
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
-                + "<div>Issue grant of representation<</div>\n"
+                + "<div>Issue grant of representation</div>\n"
                 + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
@@ -266,7 +266,7 @@ class TaskStateRendererTest {
             + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
+            + "<div>Issue grant of representation</div>\n"
             + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -323,7 +323,7 @@ class TaskStateRendererTest {
             + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
+            + "<div>Issue grant of representation</div>\n"
             + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -374,7 +374,7 @@ class TaskStateRendererTest {
             + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
+            + "<div>Issue grant of representation</div>\n"
             + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -425,7 +425,7 @@ class TaskStateRendererTest {
             + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
+            + "<div>Issue grant of representation</div>\n"
             + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH

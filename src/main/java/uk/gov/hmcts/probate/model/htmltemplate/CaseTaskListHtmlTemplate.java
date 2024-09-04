@@ -61,8 +61,7 @@ public class CaseTaskListHtmlTemplate {
         + "You can review, change any details, "
         + "then sign and submit your application.</secText></p>"
         + "<p><secText>Cynhyrchwyd y datganiad cyfreithiol.  "
-        + "Gallwch adolygu, "
-        + "newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</secText></p>"
+        + "Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + OPEN_ROW
@@ -117,7 +116,7 @@ public class CaseTaskListHtmlTemplate {
         + "adolygu gan ein tîm:</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + "<ul>\n<li>Examining</li>\n<li>Archwilio</li>\n"
-        + "\n<li>Case Matching</li>\n<li>Paru Achos</li>\n"
+        + "<li>Case Matching</li>\n<li>Paru Achos</li>\n"
         + "<li>Case selected for Quality Assurance</li>\n<li>Achos wedi’i ddethol ar gyfer Sicrhau Ansawdd</li>\n"
         + "<li>Ready to issue</li>\n<li>Barod i’w gychwyn</li>\n</ul>"
         + SEPARATOR
@@ -130,7 +129,8 @@ public class CaseTaskListHtmlTemplate {
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + OPEN_ROW
-        + "<p><issueGrantLink/>/p><p><issueGrantLinkWelsh/>/p>"
+        + "<p><issueGrantLink/>/p>"
+        + "<p><issueGrantLinkWelsh/>/p>"
         + "</gridCol-two-thirds><gridCol-one-third><status-issueGrant/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW

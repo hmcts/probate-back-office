@@ -160,14 +160,13 @@ public class TaskStateRenderer {
         return html == null ? null : html
                 .replaceFirst("<addSolicitorLink/>",
                     renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
-                        currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details)
-                        )
+                        currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<addSolicitorLinkWelsh/>",
                     renderLinkOrText(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                         currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT_WELSH, caseIdStr, willType, details)
                 )
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
-                .replaceFirst("<status-addSolicitorwelsh/>", renderTaskStateTag(addSolState))
+                .replaceFirst("<status-addSolicitorWelsh/>", renderTaskStateTag(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                         currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<addDeceasedLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
@@ -188,8 +187,8 @@ public class TaskStateRenderer {
                         willType))
                 .replaceFirst("<paymentTabLinkWelsh/>", renderPaymentLinkOrTextWelsh(paymentState, currState, caseIdStr,
                         willType))
-                .replaceFirst("<paymentHintText/>", renderPaymentHintTextWelsh(currState, details))
-                .replaceFirst("<paymentHintTextWelsh/>", renderPaymentHintText(currState, details))
+                .replaceFirst("<paymentHintText/>", renderPaymentHintText(currState, details))
+                .replaceFirst("<paymentHintTextWelsh/>", renderPaymentHintTextWelsh(currState, details))
                 .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
