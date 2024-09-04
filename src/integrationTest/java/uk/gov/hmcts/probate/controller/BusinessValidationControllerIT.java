@@ -518,7 +518,8 @@ class BusinessValidationControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("A codicil cannot be made before the will was signed"));
+                        .value("A codicil cannot be made before the will was signed\nNi ellir gwneud "
+                                + "codisil cyn llofnodi'r ewyllys"));
     }
 
     @Test
@@ -724,7 +725,7 @@ class BusinessValidationControllerIT {
                     .value("caseDetails.data.deceasedSurname"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
             .andExpect(jsonPath("$.fieldErrors[0].message")
-                    .value("Deceased surname cannot be empty"));
+                    .value("Deceased surname cannot be empty\nNi all cyfenw?r ymadawedig fod yn wag"));
     }
 
     private void validateAddressIsNullError(String url) throws Exception {
