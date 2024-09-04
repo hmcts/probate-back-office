@@ -10,12 +10,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
+
+import java.util.List;
 
 @Slf4j
 @Controller
@@ -32,8 +35,15 @@ public class LifeEventController {
 
     @PostMapping(path = "/update")
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        log.info("securityDTO:{}", securityDTO);
+        List<String> roles = securityUtils.getRoles(securityDTO.getAuthorisation());
+        log.info("roles:{}", roles);
+        if(roles.contains("caseworker-probate")) {
+            securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+        }
         final CaseDetails caseDetails = request.getCaseDetails();
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityUtils.getSecurityDTO());
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
