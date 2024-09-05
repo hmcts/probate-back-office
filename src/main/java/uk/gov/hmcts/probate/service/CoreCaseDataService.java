@@ -22,7 +22,5 @@ public interface CoreCaseDataService {
     CaseDetails updateCaseAsCitizen(CcdCaseType ccdCaseType, String caseId, CaseData caseData, EventId eventId,
                                        SecurityDTO securityDTO, String description, String summary);
 
-    Optional<CaseDetails> findCaseById(String caseId, SecurityDTO securityDTO);
-
     CaseDetails readForCaseWorker(CcdCaseType caseType, String caseId, SecurityDTO securityDTO);
 }

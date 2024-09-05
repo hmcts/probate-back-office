@@ -139,7 +139,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(), true);
         responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
             callbackRequest.getCaseDetails(), authToken));
@@ -147,7 +147,7 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(), true);
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -159,7 +159,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
                 callbackRequest.getEventId(), true);
         OriginalDocuments originalDocuments = OriginalDocuments.builder()
                 .originalDocsGenerated(caseData.getProbateDocumentsGenerated())
@@ -439,6 +439,11 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        if (!storedMatches.isEmpty()) {
+            responseCaseDataBuilder.matches("Possible case matches");
+        } else {
+            responseCaseDataBuilder.matches("No matches found");
+        }
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -506,7 +511,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
-        responseCaseDataBuilder.lastModifiedDateForDormant(null);
+        responseCaseDataBuilder.applicantOrganisationPolicy(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -536,8 +541,10 @@ public class CallbackResponseTransformer {
 
     private BigDecimal getNetValueLabel(CaseData caseData) {
         boolean isOnOrAfterSwitchDate = dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath());
-        if (((!isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormId()))
-                || (isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormEstate())))
+        if (ApplicationType.SOLICITOR.equals(caseData.getApplicationType())
+                && CHANNEL_CHOICE_DIGITAL.equals(caseData.getChannelChoice())
+                && (!isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormId()))
+                || (isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormEstate()))
                 && caseData.getIhtFormNetValue() != null) {
             return caseData.getIhtFormNetValue();
         } else {
@@ -1812,6 +1819,16 @@ public class CallbackResponseTransformer {
             if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
                 grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
             }
+
+            grantOfRepresentationData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
+                .OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                    .organisationID(null)
+                    .organisationName(null)
+                    .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build());
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
