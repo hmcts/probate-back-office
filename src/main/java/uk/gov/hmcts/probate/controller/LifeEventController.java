@@ -39,7 +39,7 @@ public class LifeEventController {
         log.info("securityDTO:{}", securityDTO);
         List<String> roles = securityUtils.getRoles(securityDTO.getAuthorisation());
         log.info("roles:{}", roles);
-        if(roles.contains("caseworker-probate")) {
+        if (roles.contains("caseworker-probate")) {
             securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
         }
         final CaseDetails caseDetails = request.getCaseDetails();
