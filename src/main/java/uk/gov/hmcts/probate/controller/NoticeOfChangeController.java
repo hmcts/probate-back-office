@@ -35,6 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.NOC;
 
 @Slf4j
@@ -92,7 +93,7 @@ public class NoticeOfChangeController {
 
         List<Document> documents = new ArrayList<>();
         response = eventValidationService.validateCaveatNocEmail(caveatData, nocEmailAddressNotifyValidationRule);
-        if (response.getErrors().isEmpty()) {
+        if (response.getErrors().isEmpty() && !isFirstNOCOnPaperForm(caveatData)) {
             log.info("Initiate call to notify Solicitor for case id {} ",
                     callbackRequest.getCaseDetails().getId());
             Document nocSentEmail = notificationService.sendCaveatNocEmail(NOC, caveatDetails);
@@ -104,5 +105,10 @@ public class NoticeOfChangeController {
             log.info("No email sent or document returned to case: {}", caveatDetails.getId());
         }
         return ResponseEntity.ok(response);
+    }
+
+    private boolean isFirstNOCOnPaperForm(CaveatData caveatData) {
+        return YES.equals(caveatData.getPaperForm())
+                && caveatData.getChangeOfRepresentatives().size() == 1;
     }
 }

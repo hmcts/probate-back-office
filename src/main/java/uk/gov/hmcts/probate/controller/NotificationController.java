@@ -51,6 +51,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
@@ -282,7 +283,7 @@ public class NotificationController {
 
         List<Document> documents = new ArrayList<>();
         response = eventValidationService.validateNocEmail(caseData, nocEmailAddressNotifyValidationRule);
-        if (response.getErrors().isEmpty()) {
+        if (response.getErrors().isEmpty() && !isFirstNOCOnBulkScan(caseData)) {
             log.info("Initiate call to notify Solicitor for case id {} ",
                     callbackRequest.getCaseDetails().getId());
             Document nocSentEmail = notificationService.sendNocEmail(NOC, caseDetails);
@@ -291,7 +292,8 @@ public class NotificationController {
                     callbackRequest.getCaseDetails().getId());
             response = callbackResponseTransformer.addNocDocuments(callbackRequest, documents);
         } else {
-            log.info("No email sent or document returned to case: {}", caseDetails.getId());
+            log.info("No email sent or document returned to {} case: {}",
+                    caseData.getChannelChoice(), caseDetails.getId());
         }
         return ResponseEntity.ok(response);
     }
@@ -315,4 +317,8 @@ public class NotificationController {
         return !YES.equalsIgnoreCase(caseData.getPaperForm());
     }
 
+    private boolean isFirstNOCOnBulkScan(CaseData caseData) {
+        return CHANNEL_CHOICE_BULKSCAN.equals(caseData.getChannelChoice())
+                && caseData.getChangeOfRepresentatives().size() == 1;
+    }
 }
