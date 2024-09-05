@@ -47,12 +47,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -984,6 +979,7 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1558,29 +1554,6 @@ public class CallbackResponseTransformer {
             }
         }
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
-        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
-            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
-                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
-                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
-        }
-        if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .map(this::buildDeceasedAliasNameExecutor)
-                    .map(alias -> new CollectionMember<>(null, alias))
-                    .toList());
-        }
-        if (deceasedAliasNames.isEmpty()) {
-            builder
-                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
-        } else {
-            builder
-                    .solsDeceasedAliasNamesList(deceasedAliasNames)
-                    .deceasedAliasNamesList(null);
-        }
-
         solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
@@ -1592,30 +1565,7 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
-
-        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
-        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
-            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
-                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
-                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
-        }
-        if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .map(this::buildDeceasedAliasNameExecutor)
-                    .map(alias -> new CollectionMember<>(null, alias))
-                    .toList());
-        }
-        if (deceasedAliasNames.isEmpty()) {
-            builder
-                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
-        } else {
-            builder
-                    .solsDeceasedAliasNamesList(deceasedAliasNames)
-                    .deceasedAliasNamesList(null);
-        }
-
+        
         if (caseData.getApplicationType() != PERSONAL) {
             builder
                     .solsSOTForenames(caseData.getSolsSOTForenames())
@@ -1851,5 +1801,30 @@ public class CallbackResponseTransformer {
             return LocalDateTime.now(ZoneOffset.UTC);
         }
         return lastModifiedDateForDormant;
+    }
+
+    private List<CollectionMember<AliasName>> getSolsDeceasedAliasNamesList(CaseData caseData) {
+
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildDeceasedAliasNameExecutor)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .toList());
+        }
+        if (caseData.getSolsDeceasedAliasNamesList() != null) {
+            deceasedAliasNames.addAll(caseData.getSolsDeceasedAliasNamesList());
+        }
+        Set<String> seenAliasNames = new HashSet<>();
+        return deceasedAliasNames.stream()
+                .filter(aliasMember -> seenAliasNames.add(aliasMember.getValue().getSolsAliasname()))
+                .collect(Collectors.toList());
     }
 }
