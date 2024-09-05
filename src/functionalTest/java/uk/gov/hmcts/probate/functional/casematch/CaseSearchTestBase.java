@@ -7,7 +7,8 @@ import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import java.io.IOException;
 
 public abstract class CaseSearchTestBase extends IntegrationTestBase {
-    protected static final String ERROR_MSG = "You may only select one legacy record for import at a time.";
+    protected static final String ERROR_MSG = "You may only select one legacy record for import at a time.\nDim ond un "
+            + "cofnod etifeddiaeth y gallwch ei ddewis i'w fewnfudo ar y tro.";
     protected static final String GRANT_OF_PROBATE_MATCH_CASE_JSON = "casematch/grantOfProbateMatchCase.json";
     protected static final String CAVEAT_MATCH_CASE_JSON = "casematch/caveatFlowSearchMatchCase.json";
     protected static final String STANDING_SEARCH_MATCH_CASE_JSON = "casematch/standingSearchMatchCase.json";

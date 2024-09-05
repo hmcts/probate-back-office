@@ -300,7 +300,9 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         response.then().assertThat().statusCode(200);
         assertThat(jsonPath.get("errors[0]"),
-            is(equalTo("There is no email address for this caveator. Add an email address or contact them by post.")));
+            is(equalTo("There is no email address for this caveator. Add an email address or contact them by "
+                    + "post.\nNid oes cyfeiriad e-bost ar gyfer yr cafeatydd hwn. Ychwanegwch gyfeiriad e-bost neu "
+                    + "cysylltwch â nhw drwy'r post.")));
     }
 
     @Test
@@ -408,7 +410,8 @@ public class SolsBoCaveatsServiceTests extends IntegrationTestBase {
 
         response.then().assertThat().statusCode(200);
         assertThat(jsonPath.get("data"), is(nullValue()));
-        assertThat(jsonPath.get("errors[0]"), is(equalTo("Cannot extend an already expired caveat.")));
+        assertThat(jsonPath.get("errors[0]"), is(equalTo("Cannot extend an already expired caveat.\nNi ellir "
+                + "ymestyn cafeat sydd eisoes wedi dod i ben.")));
     }
 
     @Test
