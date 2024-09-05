@@ -238,7 +238,7 @@ public class SolCcdServiceCheckYourAnswersTests extends IntegrationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(response.getBody().prettyPrint());
         assertEquals(400, response.getStatusCode());
-        assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty\\nNi "
+        assertEquals(jsonPath.get("fieldErrors[0].message"), "Primary applicant forenames cannot be empty\nNi "
                 + "all enwau cyntaf y prif geisydd fod yn wag");
         assertEquals(jsonPath.get("message"), "Invalid payload");
     }

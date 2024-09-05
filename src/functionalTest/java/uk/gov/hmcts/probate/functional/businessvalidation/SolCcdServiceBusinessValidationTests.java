@@ -182,7 +182,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
             "\"solsIHT400Date\": \"" + solsIHT400Date + "\",");
         String errorMessage1 = "You must wait until 20 working days after submitting the IHT 400 and 421 to HMRC "
-                + "before you apply for probate.\\nRhaid i chi aros hyd nes 20 diwrnod gwaith ar ôl cyflwyno'r IHT 400 "
+                + "before you apply for probate.\nRhaid i chi aros hyd nes 20 diwrnod gwaith ar ôl cyflwyno'r IHT 400 "
                 + "a 421 i CThEM cyn i chi wneud cais am brofiant.";
         String errorMessage2 = "Based on what you've told us about when you submitted the IHT 400 and 421, you can "
                 + "submit this case on " + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(
@@ -322,7 +322,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailure("failure.practitionerExecAndApplyingTCTNoT.json",
             "If you have selected 'none of these' because the title and clearing is not covered by the "
                     + "options above, you will not be able to continue making this application online. Please apply "
-                    + "with a paper form.\\nOs ydych wedi dewis 'dim un o'r rhain' oherwydd nad yw'r teitl a'r cliriad "
+                    + "with a paper form.\nOs ydych wedi dewis 'dim un o'r rhain' oherwydd nad yw'r teitl a'r cliriad "
                     + "yn dod o dan yr opsiynau uchod, ni fyddwch yn gallu parhau i wneud y cais hwn ar-lein. Gwnewch "
                     + "gais gyda ffurflen bapur.", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
