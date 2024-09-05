@@ -185,11 +185,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
                 + "before you apply for probate.\\nRhaid i chi aros hyd nes 20 diwrnod gwaith ar ôl cyflwyno'r IHT 400 "
                 + "a 421 i CThEM cyn i chi wneud cais am brofiant.";
         String errorMessage2 = "Based on what you've told us about when you submitted the IHT 400 and 421, you can "
-                + "submit this case on " + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays
-                (solsIHT400Date, 20)) + ".\nYn seiliedig ar yr hyn yr ydych wedi dweud wrthym amdano pan "
+                + "submit this case on " + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(
+                solsIHT400Date, 20)) + ".\nYn seiliedig ar yr hyn yr ydych wedi dweud wrthym amdano pan "
                 + "gyflwynwyd yr IHT 400 a 421, gallwch gyflwyno'r achos hwn ar "
-            + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
-            + ".";
+                + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
+                + ".";
         String errorMessage3 = "You should not try to continue with the application by entering a false date, as this "
                 + "may delay this case.\nNi ddylech geisio parhau â'r cais drwy nodi dyddiad ffug, gan y gallai hyn "
                 + "oedi'r achos hwn.";
