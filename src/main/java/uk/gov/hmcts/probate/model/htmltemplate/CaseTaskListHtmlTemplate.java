@@ -23,7 +23,6 @@ public class CaseTaskListHtmlTemplate {
         + "<p><addSolicitorLinkWelsh/></p>"
         + CLOSE_COL1_OPEN_COL2
         + "<status-addSolicitor/>"
-        + "<status-addSolicitorWelsh/>"
         + CLOSE_GRID_ROW
         + SEPARATOR
         + OPEN_ROW
@@ -129,8 +128,8 @@ public class CaseTaskListHtmlTemplate {
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + SEPARATOR
         + OPEN_ROW
-        + "<p><issueGrantLink/>/p>"
-        + "<p><issueGrantLinkWelsh/>/p>"
+        + "<p><issueGrantLink/></p>"
+        + "<p><issueGrantLinkWelsh/></p>"
         + "</gridCol-two-thirds><gridCol-one-third><status-issueGrant/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW

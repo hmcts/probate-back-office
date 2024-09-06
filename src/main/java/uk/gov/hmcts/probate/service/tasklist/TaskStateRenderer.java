@@ -166,7 +166,6 @@ public class TaskStateRenderer {
                         currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT_WELSH, caseIdStr, willType, details)
                 )
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
-                .replaceFirst("<status-addSolicitorWelsh/>", renderTaskStateTag(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                         currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<addDeceasedLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
