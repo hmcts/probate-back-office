@@ -25,6 +25,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,6 +157,24 @@ class LifeEventCCDServiceTest {
                 eq(securityDTO),
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION),
                 eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
+
+    }
+
+    @Test
+    void shouldUpdateCCDWithCaseworkerWhenDeathRecordVerificationUnsuccessful() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
+                .thenReturn(emptyList());
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, false);
+        verify(ccdClientApi, timeout(100))
+                .updateCaseAsCaseworker(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                        eq(caseId.toString()),
+                        eq(LocalDateTime.of(2020, 1, 1, 0, 0, 0,
+                                0)),
+                        grantOfRepresentationDataCaptor.capture(),
+                        eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                        eq(securityDTO),
+                        eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION),
+                        eq(LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY));
 
     }
 

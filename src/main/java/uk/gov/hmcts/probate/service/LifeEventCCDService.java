@@ -129,7 +129,7 @@ public class LifeEventCCDService {
             ccdClientApi.updateCaseAsCaseworker(
                 CcdCaseType.GRANT_OF_REPRESENTATION,
                 caseId,
-                LocalDateTime.now(ZoneOffset.UTC),
+                LocalDateTime.of(2020, 1, 1, 0, 0, 0, 0),
                 grantOfRepresentationData,
                 EventId.DEATH_RECORD_VERIFICATION_FAILED,
                 securityDTO,
