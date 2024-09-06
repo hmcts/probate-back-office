@@ -18,6 +18,7 @@ import uk.gov.hmcts.probate.model.ccd.EventId;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.security.SecurityDTO;
+import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
@@ -29,6 +30,7 @@ import java.util.List;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
 import static org.mockito.Mockito.mock;
@@ -73,6 +75,8 @@ class LifeEventCCDServiceTest {
     List<CollectionMember<DeathRecord>> mappedRecords;
     LocalDate localDate;
     V1Death v1Death;
+    @Mock
+    SecurityUtils securityUtils;
 
     @BeforeEach
     public void setup() {
@@ -100,11 +104,17 @@ class LifeEventCCDServiceTest {
         mappedRecords = mock(List.class);
 
         when(deathRecordService.mapDeathRecords(any())).thenReturn(mappedRecords);
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH_TOKEN")
+                .serviceAuthorisation("serviceAuth")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getRoles(anyString())).thenReturn(List.of("citizen"));
     }
 
     @Test
     void shouldSearchForDeathRecordsByNamesAndDate() {
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
 
         verify(deathService, timeout(1000))
             .searchForDeathRecordsByNamesAndDate(eq("Wibble"), eq("Wobble"), eq(localDate));
@@ -112,13 +122,13 @@ class LifeEventCCDServiceTest {
 
     @Test
     void shouldConvertReturnedDeathRecords() {
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
         verify(deathRecordService, timeout(1000)).mapDeathRecords(same(deathRecords));
     }
 
     @Test
     void shouldUpdateCCDWhenOneRecordFound() {
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
                 eq(caseId.toString()),
@@ -137,7 +147,7 @@ class LifeEventCCDServiceTest {
     void shouldUpdateCCDWhenDeathRecordVerificationUnsuccessful() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(emptyList());
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
                 eq(caseId.toString()),
@@ -154,7 +164,7 @@ class LifeEventCCDServiceTest {
         deathRecords.add(v1Death);
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(deathRecords);
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
                 eq(caseId.toString()),
@@ -173,7 +183,7 @@ class LifeEventCCDServiceTest {
     void shouldUpdateCCDWhenError() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
             "Test exception"));
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
                 eq(caseId.toString()),

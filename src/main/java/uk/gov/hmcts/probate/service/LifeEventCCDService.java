@@ -52,7 +52,7 @@ public class LifeEventCCDService {
     }
 
     @Async
-    public void verifyDeathRecord(final CaseDetails caseDetails, final SecurityDTO securityDTO) {
+    public void verifyDeathRecord(final CaseDetails caseDetails, final SecurityDTO securityDTO, boolean isCitizenUser) {
         final CaseData caseData = caseDetails.getData();
         final String deceasedForenames = caseData.getDeceasedForenames();
         final String deceasedSurname = caseData.getDeceasedSurname();
@@ -72,7 +72,7 @@ public class LifeEventCCDService {
         if (1 == records.size()) {
             updateCCDLifeEventVerified(caseDetails, caseId, records, securityDTO);
         } else if (records.isEmpty()) {
-            updateCCDLifeEventVerificationNoRecordsFound(caseDetails, caseId, securityDTO);
+            updateCCDLifeEventVerificationNoRecordsFound(caseDetails, caseId, securityDTO, isCitizenUser);
         } else {
             updateCCDLifeEventVerificationMultipleRecordsFound(caseDetails, caseId, records, securityDTO);
         }
@@ -104,7 +104,8 @@ public class LifeEventCCDService {
     }
 
     private void updateCCDLifeEventVerificationNoRecordsFound(final CaseDetails caseDetails,
-                                                              final String caseId, final SecurityDTO securityDTO) {
+                                                              final String caseId, final SecurityDTO securityDTO,
+                                                              final boolean isCitizenUser) {
 
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
@@ -114,15 +115,28 @@ public class LifeEventCCDService {
 
         log.info("LEV updateCCDLifeEventVerificationNoRecordsFound: " + caseId);
 
-        ccdClientApi.updateCaseAsCitizen(
-            CcdCaseType.GRANT_OF_REPRESENTATION,
-            caseId,
-            grantOfRepresentationData,
-            EventId.DEATH_RECORD_VERIFICATION_FAILED,
-            securityDTO,
-            LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION,
-            LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY
-        );
+        if (isCitizenUser) {
+            ccdClientApi.updateCaseAsCitizen(
+                CcdCaseType.GRANT_OF_REPRESENTATION,
+                caseId,
+                grantOfRepresentationData,
+                EventId.DEATH_RECORD_VERIFICATION_FAILED,
+                securityDTO,
+                LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION,
+                LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY
+            );
+        } else {
+            ccdClientApi.updateCaseAsCaseworker(
+                CcdCaseType.GRANT_OF_REPRESENTATION,
+                caseId,
+                LocalDateTime.now(ZoneOffset.UTC),
+                grantOfRepresentationData,
+                EventId.DEATH_RECORD_VERIFICATION_FAILED,
+                securityDTO,
+                LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_DESCRIPTION,
+                LIFE_EVENT_VERIFICATION_UNSUCCESSFUL_SUMMARY
+            );
+        }
     }
 
     private void updateCCDLifeEventVerificationMultipleRecordsFound(final CaseDetails caseDetails,

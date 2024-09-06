@@ -30,6 +30,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -94,7 +95,7 @@ class LifeEventControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
+        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any(), anyBoolean());
         final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
         assertEquals(caseDetailsArgumentCaptorValue.getId().longValue(), 1621002468661478L);
         final CaseData data = caseDetailsArgumentCaptorValue.getData();

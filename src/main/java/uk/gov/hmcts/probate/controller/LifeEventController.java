@@ -37,13 +37,15 @@ public class LifeEventController {
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
         log.info("securityDTO:{}", securityDTO);
+        boolean isCitizenUser = true;
         List<String> roles = securityUtils.getRoles(securityDTO.getAuthorisation());
         log.info("roles:{}", roles);
         if (roles.contains("caseworker-probate")) {
             securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            isCitizenUser = false;
         }
         final CaseDetails caseDetails = request.getCaseDetails();
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, isCitizenUser);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
