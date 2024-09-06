@@ -106,6 +106,33 @@ class LifeEventControllerIT {
     }
 
     @Test
+    void lifeEventUpdateShouldReturnDataPayloadOkResponseCodeForCaseworkerUser() throws Exception {
+
+        String payload = testUtils.getStringFromFile("lifeEventPayload.json");
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH_TOKEN")
+                .serviceAuthorisation("serviceAuth")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getRoles(anyString())).thenReturn(List.of("caseworker-probate"));
+
+        mockMvc.perform(post("/lifeevent/update")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any(), anyBoolean());
+        final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
+        assertEquals(caseDetailsArgumentCaptorValue.getId().longValue(), 1621002468661478L);
+        final CaseData data = caseDetailsArgumentCaptorValue.getData();
+        assertEquals("John", data.getDeceasedForenames());
+        assertEquals("Cook", data.getDeceasedSurname());
+        assertEquals("2006-11-16", data.getDeceasedDateOfDeath().toString());
+        verify(securityUtils).getSecurityDTO();
+    }
+
+    @Test
     void shouldCountDeathRecords() throws Exception {
         String payload = testUtils.getStringFromFile("lifeEventSelectFromMultipleRecordsAboutToStart.json");
 
