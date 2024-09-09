@@ -168,8 +168,7 @@ class LifeEventCCDServiceTest {
         verify(ccdClientApi, timeout(100))
                 .updateCaseAsCaseworker(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
                         eq(caseId.toString()),
-                        eq(LocalDateTime.of(2020, 1, 1, 0, 0, 0,
-                                0)),
+                        any(),
                         grantOfRepresentationDataCaptor.capture(),
                         eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
                         eq(securityDTO),

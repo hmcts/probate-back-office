@@ -16,9 +16,11 @@ import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Slf4j
@@ -36,6 +38,7 @@ public class LifeEventCCDService {
         + "make a selection";
     public static final String LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION = "LEV API failed";
     public static final String LIFE_EVENT_VERIFICATION_ERROR_SUMMARY = "Use the dropdown to manually verify life event";
+    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private DeathService deathService;
     private CcdClientApi ccdClientApi;
     private DeathRecordService deathRecordService;
@@ -129,7 +132,7 @@ public class LifeEventCCDService {
             ccdClientApi.updateCaseAsCaseworker(
                 CcdCaseType.GRANT_OF_REPRESENTATION,
                 caseId,
-                LocalDateTime.of(2020, 1, 1, 0, 0, 0, 0),
+                getLastModifiedDate(caseDetails),
                 grantOfRepresentationData,
                 EventId.DEATH_RECORD_VERIFICATION_FAILED,
                 securityDTO,
@@ -185,5 +188,21 @@ public class LifeEventCCDService {
             LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION,
             LIFE_EVENT_VERIFICATION_ERROR_SUMMARY
         );
+    }
+
+    private LocalDateTime getLastModifiedDate(CaseDetails caseDetails) {
+        String[] lastModifiedArray = caseDetails.getLastModified();
+        if (lastModifiedArray != null) {
+            for (String lastModified : lastModifiedArray) {
+                try {
+                    return LocalDateTime.parse(lastModified, DATE_FORMAT);
+                } catch (DateTimeException e) {
+                    log.warn("LifeEventCCDService.getLastModifiedDate for case {}, error {}", caseDetails.getId(),
+                            e.getMessage());
+                }
+            }
+        }
+        // If no valid date is found, return null
+        return null;
     }
 }
