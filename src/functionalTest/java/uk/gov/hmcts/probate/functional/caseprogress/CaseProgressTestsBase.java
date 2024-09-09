@@ -13,7 +13,9 @@ import java.time.format.DateTimeFormatter;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
     protected static final String TASKLIST_UPDATE_URL = "/tasklist/update";
@@ -96,6 +98,9 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
+        if (jsonFile.indexOf("/application-updated-html.txt") > 0) {
+            log.info("*****-->" + removeCrLfs(taskList));
+        }
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
 
