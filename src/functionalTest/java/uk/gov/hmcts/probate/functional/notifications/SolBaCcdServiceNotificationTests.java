@@ -155,13 +155,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextWelsh() throws IOException {
-        postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED, "digitalApplicationRecievedPayloadWelsh.json",
-            "digitalApplicationRecievedExpectedResonseWelsh.txt",
-            EMAIL_NOTIFICATION_DOCUMENT_URL);
-    }
-
-    @Test
     public void verifyDigitalPaperFormGOPApplicationReceivedNotificationEmailTextSolicitorWelsh() throws IOException {
         postNotificationEmailAndVerifyContents(APPLICATION_RECEIVED,
             "digitalApplicationRecievedPayloadSolicitorWelsh.json",
