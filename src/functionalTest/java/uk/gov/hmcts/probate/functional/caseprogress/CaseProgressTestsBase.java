@@ -98,6 +98,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
+        log.info("*****indexOf-->" + jsonFile.indexOf("/application-updated-html.txt"));
         if (jsonFile.indexOf("/application-updated-html.txt") > 0) {
             log.info("*****-->" + removeCrLfs(taskList));
         }
