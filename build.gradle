@@ -343,7 +343,7 @@ dependencies {
   integrationTestImplementation sourceSets.test.runtimeClasspath
 }
 
-configurations.implementation {
+configurations.all {
   exclude group: 'commons-logging', module: 'commons-logging'
 }
 
