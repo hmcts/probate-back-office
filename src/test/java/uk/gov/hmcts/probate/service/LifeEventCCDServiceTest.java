@@ -23,8 +23,6 @@ import uk.gov.hmcts.probate.service.ccd.CcdClientApi;
 import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
-
-import java.time.DateTimeException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -247,7 +245,6 @@ class LifeEventCCDServiceTest {
 
     @Test
     void shouldReturnNullWithInvalidStringArrayInput() {
-        String dateTimeStr = "2022-01-01T10:10:10.000";
         when(caseDetails.getLastModified()).thenReturn(new String[]{"2022", "1", "50","10","10","10","0"});
         when(caseDetails.getId()).thenReturn(1234L);
 
