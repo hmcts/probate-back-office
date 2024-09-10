@@ -23,6 +23,8 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import static java.lang.Integer.parseInt;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -190,19 +192,22 @@ public class LifeEventCCDService {
         );
     }
 
-    private LocalDateTime getLastModifiedDate(CaseDetails caseDetails) {
-        String[] lastModifiedArray = caseDetails.getLastModified();
-        if (lastModifiedArray != null) {
-            for (String lastModified : lastModifiedArray) {
-                try {
-                    return LocalDateTime.parse(lastModified, DATE_FORMAT);
-                } catch (DateTimeException e) {
-                    log.warn("LifeEventCCDService.getLastModifiedDate for case {}, error {}", caseDetails.getId(),
-                            e.getMessage());
-                }
+    LocalDateTime getLastModifiedDate(CaseDetails caseDetails) {
+        String[] lastModified = caseDetails.getLastModified();
+        if (lastModified != null && lastModified.length >= 7 && lastModified[0] != null && lastModified[1] != null
+                && lastModified[2] != null && lastModified[3] != null && lastModified[4] != null
+                && lastModified[5] != null && lastModified[6] != null) {
+            try {
+                return LocalDateTime.of(parseInt(lastModified[0]), parseInt(lastModified[1]), parseInt(lastModified[2]),
+                        parseInt(lastModified[3]), parseInt(lastModified[4]), parseInt(lastModified[5]),
+                        parseInt(lastModified[6]));
+            } catch (NumberFormatException | DateTimeException e) {
+                log.warn("LifeEventCCDService.getLastModifiedDate for case {}, error {}", caseDetails.getId(),
+                        e.getMessage());
+                return null;
             }
+        } else {
+            return null;
         }
-        // If no valid date is found, return null
-        return null;
     }
 }

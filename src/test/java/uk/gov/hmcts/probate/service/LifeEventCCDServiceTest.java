@@ -24,12 +24,17 @@ import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.DeathRecord;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 
+import java.time.DateTimeException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.eq;
@@ -210,5 +215,46 @@ class LifeEventCCDServiceTest {
                 eq(LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION),
                 eq(LIFE_EVENT_VERIFICATION_ERROR_SUMMARY));
     }
+
+    @Test
+    void shouldReturnLastModifiedDateWithStringArrayInput() {
+        String dateTimeStr = "2022-01-01T10:10:10.000";
+
+        when(caseDetails.getLastModified()).thenReturn(new String[]{"2022", "1", "1","10","10","10","0"});
+
+        LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
+
+        assertEquals(LocalDateTime.parse(dateTimeStr), lastModified);
+    }
+
+    @Test
+    void shouldReturnNullLastModifiedDateWithEmptyStringArrayInput() {
+        when(caseDetails.getLastModified()).thenReturn(new String[]{""});
+
+        LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
+
+        assertNull(lastModified);
+    }
+
+    @Test
+    void shouldReturnNullLastModifiedDateWithNullStringArrayInput() {
+        when(caseDetails.getLastModified()).thenReturn(new String[]{null});
+
+        LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
+
+        assertNull(lastModified);
+    }
+
+    @Test
+    void shouldReturnNullWithInvalidStringArrayInput() {
+        String dateTimeStr = "2022-01-01T10:10:10.000";
+        when(caseDetails.getLastModified()).thenReturn(new String[]{"2022", "1", "50","10","10","10","0"});
+        when(caseDetails.getId()).thenReturn(1234L);
+
+        LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
+
+        assertNull(lastModified);
+    }
+
 
 }
