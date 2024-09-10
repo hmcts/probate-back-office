@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.transformer;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -15,8 +16,10 @@ import uk.gov.hmcts.probate.transformer.solicitorexecutors.LegalStatementExecuto
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.SolicitorApplicationCompletionTransformer;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.time.LocalDate;
 
+import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -242,6 +245,25 @@ class CaseDataTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         caseDataTransformer.transformFormCaseData(callbackRequestMock);
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfterIHT400() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("IHT400")
+                .ihtFormEstateValuesCompleted("Yes")
+                .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("1000"), 0)).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), is("IHT400"));
+        assertThat(caseDataMock.getIhtEstateGrossValue(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateNetValue(), CoreMatchers.is(nullValue()));
+        assertThat(caseDataMock.getIhtEstateNetQualifyingValue(), CoreMatchers.is(nullValue()));
     }
 
     @Test

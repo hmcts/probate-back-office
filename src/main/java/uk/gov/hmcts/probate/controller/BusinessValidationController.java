@@ -140,12 +140,12 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/validate-iht-estate")
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
+        caseDataTransformer.transformFormCaseData(request);
         naValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(request);
             return ResponseEntity.ok(callbackResponseTransformer.transformValuesPage(request));
         }
         return ResponseEntity.ok(response);
