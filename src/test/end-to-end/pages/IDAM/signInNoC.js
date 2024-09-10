@@ -13,7 +13,7 @@ module.exports = async function (useProfessionalUser, signInDelay = testConfig.S
     await I.fillField('#username', useProfessionalUser ? testConfig.TestEnvProfUser : testConfig.TestEnvProfUserNoc);
     await I.fillField('#password', useProfessionalUser ? testConfig.TestEnvProfPassword : testConfig.TestEnvProfPasswordNoc);
     await I.waitForNavigationToComplete('input[type="submit"]', signInDelay);
-    await I.dontSee({css: '#username'});
+    await I.dontSeeElement({css: '#username'});
     await I.rejectCookies();
     await I.wait(signInDelay);
 };
