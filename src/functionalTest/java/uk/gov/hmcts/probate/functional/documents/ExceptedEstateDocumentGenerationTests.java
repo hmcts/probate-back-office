@@ -10,7 +10,9 @@ import org.junit.runner.RunWith;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RunWith(SpringIntegrationSerenityRunner.class)
 public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTestBase {
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
@@ -22,6 +24,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
@@ -36,6 +39,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
@@ -50,6 +54,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
@@ -65,6 +70,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
+        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
