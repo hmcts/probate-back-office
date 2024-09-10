@@ -182,17 +182,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
             "\"solsIHT400Date\": \"" + solsIHT400Date + "\",");
         String errorMessage1 = "You must wait until 20 working days after submitting the IHT 400 and 421 to HMRC "
-                + "before you apply for probate.\nRhaid i chi aros hyd nes 20 diwrnod gwaith ar ôl cyflwyno'r IHT 400 "
-                + "a 421 i CThEM cyn i chi wneud cais am brofiant.";
-        String errorMessage2 = "Based on what you've told us about when you submitted the IHT 400 and 421, you can "
-                + "submit this case on " + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(
-                solsIHT400Date, 20)) + ".\nYn seiliedig ar yr hyn yr ydych wedi dweud wrthym amdano pan "
-                + "gyflwynwyd yr IHT 400 a 421, gallwch gyflwyno'r achos hwn ar "
+                + "before you apply for probate.";
+        String errorMessage2 = "Based on what you've told us about when you submitted the IHT 400 and 421, you"
+                + " can submit this case on "
                 + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
                 + ".";
-        String errorMessage3 = "You should not try to continue with the application by entering a false date, as this "
-                + "may delay this case.\nNi ddylech geisio parhau â'r cais drwy nodi dyddiad ffug, gan y gallai hyn "
-                + "oedi'r achos hwn.";
+        String errorMessage3 = "You should not try to continue with the application by entering a false date, as "
+                + "this may delay this case.";
 
         final Response response = RestAssured.given()
             .config(config)
@@ -338,9 +334,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyErrorMessageNoPartnersAddedTrustCorp() throws IOException {
         validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersTrustCorp.json",
-            "You need to add at least 1 other partner that acts on behalf of the trust corporation\nMae "
-                    + "angen i chi ychwanegu o leiaf un partner arall sy'n gweithredu ar ran y gorfforaeth "
-                    + "ymddiriedolaeth", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "You need to add at least 1 other partner that acts on behalf of the trust corporation",
+                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -729,8 +724,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyRequestValidationsErrorForRedeclarationSOTForPaperFormCase() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("redeclarationSOTPaperForm.json",
             REDECLARATION_SOT);
-        Assert.assertTrue(responseBody.asString().contains("You can only use this event for digital cases.\nDim ond ar "
-                + "gyfer achosion digidol y gallwch ddefnyddio'r adnodd hwn."));
+        Assert.assertTrue(responseBody.asString().contains("You can only use this event for digital cases."));
     }
 
     @Test
