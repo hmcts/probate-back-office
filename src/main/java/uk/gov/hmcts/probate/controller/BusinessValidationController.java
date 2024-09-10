@@ -208,12 +208,11 @@ public class BusinessValidationController {
         BindingResult bindingResult,
         HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-
+        caseDataTransformer.transformFormCaseData(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         CaseDetails details = callbackRequest.getCaseDetails();
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(callbackRequest);
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
@@ -346,13 +345,12 @@ public class BusinessValidationController {
         HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-
+        caseDataTransformer.transformFormCaseData(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(callbackRequest);
             response = callbackResponseTransformer.transform(callbackRequest);
         }
         return ResponseEntity.ok(response);

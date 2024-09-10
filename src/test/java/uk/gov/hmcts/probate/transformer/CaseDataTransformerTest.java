@@ -254,7 +254,7 @@ class CaseDataTransformerTest {
                 .ihtFormEstateValuesCompleted("Yes")
                 .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
                 .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
-                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("1000"), 0)).build();
+                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("100"), 0)).build();
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
@@ -264,6 +264,26 @@ class CaseDataTransformerTest {
         assertThat(caseDataMock.getIhtEstateGrossValue(), CoreMatchers.is(nullValue()));
         assertThat(caseDataMock.getIhtEstateNetValue(), CoreMatchers.is(nullValue()));
         assertThat(caseDataMock.getIhtEstateNetQualifyingValue(), CoreMatchers.is(nullValue()));
+    }
+
+    @Test
+    void shouldTransformFormSelectionForDiedAfterIhtNA() {
+        caseDataMock = CaseData.builder().applicationType(ApplicationType.PERSONAL)
+                .ihtFormEstate("NA")
+                .ihtFormEstateValuesCompleted("Yes")
+                .ihtEstateGrossValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetValue(new BigDecimal(new BigInteger("100"), 0))
+                .ihtEstateNetQualifyingValue(new BigDecimal(new BigInteger("100"), 0)).build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
+        caseDataTransformer.transformFormCaseData(callbackRequestMock);
+        assertThat(caseDataMock.getIhtFormEstate(), is("NA"));
+        assertThat(caseDataMock.getIhtEstateGrossValue(), is(new BigDecimal(new BigInteger("100"), 0)));
+        assertThat(caseDataMock.getIhtEstateNetValue(), is(new BigDecimal(new BigInteger("100"), 0)));
+        assertThat(caseDataMock.getIhtEstateNetQualifyingValue(),
+                is(new BigDecimal(new BigInteger("100"), 0)));
     }
 
     @Test
