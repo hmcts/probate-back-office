@@ -27,6 +27,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import static java.util.Collections.emptyList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -106,7 +107,7 @@ class LifeEventCCDServiceTest {
         mappedRecords = mock(List.class);
 
         when(deathRecordService.mapDeathRecords(any())).thenReturn(mappedRecords);
-        SecurityDTO securityDTO = SecurityDTO.builder()
+        securityDTO = SecurityDTO.builder()
                 .authorisation("AUTH_TOKEN")
                 .serviceAuthorisation("serviceAuth")
                 .build();
@@ -129,7 +130,7 @@ class LifeEventCCDServiceTest {
     }
 
     @Test
-    void shouldUpdateCCDWhenOneRecordFound() {
+    void shouldUpdateCCDWithCitizenTokenWhenOneRecordFound() {
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
         verify(ccdClientApi, timeout(100))
             .updateCaseAsCitizen(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
@@ -146,7 +147,25 @@ class LifeEventCCDServiceTest {
     }
 
     @Test
-    void shouldUpdateCCDWhenDeathRecordVerificationUnsuccessful() {
+    void shouldUpdateCCDWithCaseworkerTokenWhenOneRecordFound() {
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, false);
+        verify(ccdClientApi, timeout(100))
+                .updateCaseAsCaseworker(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                        eq(caseId.toString()),
+                        any(),
+                        grantOfRepresentationDataCaptor.capture(),
+                        eq(EventId.DEATH_RECORD_VERIFIED),
+                        eq(securityDTO),
+                        eq(LIFE_EVENT_VERIFICATION_SUCCESSFUL_DESCRIPTION),
+                        eq(LIFE_EVENT_VERIFICATION_SUCCESSFUL_SUMMARY));
+
+        final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
+                .getValue().getDeathRecords();
+        assertSame(capturedDeathRecords, mappedRecords);
+    }
+
+    @Test
+    void shouldUpdateCCDWithCitizenTokenWhenDeathRecordVerificationUnsuccessful() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(emptyList());
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
@@ -162,7 +181,7 @@ class LifeEventCCDServiceTest {
     }
 
     @Test
-    void shouldUpdateCCDWithCaseworkerWhenDeathRecordVerificationUnsuccessful() {
+    void shouldUpdateCCDWithCaseworkerTokenWhenDeathRecordVerificationUnsuccessful() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
                 .thenReturn(emptyList());
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, false);
@@ -179,7 +198,7 @@ class LifeEventCCDServiceTest {
     }
 
     @Test
-    void shouldUpdateCCDWhenMultipleRecordsFound() {
+    void shouldUpdateCCDWithCitizenTokenWhenMultipleRecordsFound() {
         deathRecords.add(v1Death);
         when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
             .thenReturn(deathRecords);
@@ -199,7 +218,28 @@ class LifeEventCCDServiceTest {
     }
 
     @Test
-    void shouldUpdateCCDWhenError() {
+    void shouldUpdateCCDWithCaseworkerTokenWhenMultipleRecordsFound() {
+        deathRecords.add(v1Death);
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(), any(), any()))
+                .thenReturn(deathRecords);
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, false);
+        verify(ccdClientApi, timeout(100))
+                .updateCaseAsCaseworker(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                        eq(caseId.toString()),
+                        any(),
+                        grantOfRepresentationDataCaptor.capture(),
+                        eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                        eq(securityDTO),
+                        eq(LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_DESCRIPTION),
+                        eq(LIFE_EVENT_VERIFICATION_MULTIPLE_RECORDS_SUMMARY));
+
+        final List<CollectionMember<DeathRecord>> capturedDeathRecords = grantOfRepresentationDataCaptor
+                .getValue().getDeathRecords();
+        assertSame(capturedDeathRecords, mappedRecords);
+    }
+
+    @Test
+    void shouldUpdateCCDWithCitizenTokenWhenError() {
         when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
             "Test exception"));
         lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, true);
@@ -211,6 +251,22 @@ class LifeEventCCDServiceTest {
                 eq(securityDTO),
                 eq(LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION),
                 eq(LIFE_EVENT_VERIFICATION_ERROR_SUMMARY));
+    }
+
+    @Test
+    void shouldUpdateCCDWithCaseworkerTokenWhenError() {
+        when(deathService.searchForDeathRecordsByNamesAndDate(any(),any(),any())).thenThrow(new RuntimeException(
+                "Test exception"));
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, false);
+        verify(ccdClientApi, timeout(100))
+                .updateCaseAsCaseworker(eq(CcdCaseType.GRANT_OF_REPRESENTATION),
+                        eq(caseId.toString()),
+                        any(),
+                        grantOfRepresentationDataCaptor.capture(),
+                        eq(EventId.DEATH_RECORD_VERIFICATION_FAILED),
+                        eq(securityDTO),
+                        eq(LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION),
+                        eq(LIFE_EVENT_VERIFICATION_ERROR_SUMMARY));
     }
 
     @Test
@@ -236,6 +292,24 @@ class LifeEventCCDServiceTest {
     @Test
     void shouldReturnNullLastModifiedDateWithNullStringArrayInput() {
         when(caseDetails.getLastModified()).thenReturn(new String[]{null});
+
+        LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
+
+        assertNull(lastModified);
+    }
+
+    @Test
+    void shouldReturnNullLastModifiedDateWithAllNullValuesInStringArrayInput() {
+        when(caseDetails.getLastModified()).thenReturn(new String[]{null, null, null, null, null, null});
+
+        LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
+
+        assertNull(lastModified);
+    }
+
+    @Test
+    void shouldReturnNullLastModifiedDateWithFewEmptyValuesInStringArrayInput() {
+        when(caseDetails.getLastModified()).thenReturn(new String[]{"", "", null});
 
         LocalDateTime lastModified = lifeEventCCDService.getLastModifiedDate(caseDetails);
 
