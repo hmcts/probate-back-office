@@ -84,16 +84,16 @@
 <div class="govuk-grid-column-two-thirds">
 <p class="govuk-body-s">Send documents<br/>Anfon dogfennau<br/>
 <details class="govuk-details" data-module="govuk-details">
-<summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      View the documents needed by HM Courts and Tribunal Service    </span>  </summary>
-<div class="govuk-details__text">
-You now need to send us<br/>
+  <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      View the documents needed by HM Courts and Tribunal Service    </span>  </summary>
+  <div class="govuk-details__text">
+    You now need to send us<br/>
 <ul>
 <li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1528365719153338 written on a sheet of paper</li>
 <li>a photocopy of the signed legal statement and declaration</li>
 <li>the original will</li>
 <li>the inheritance tax form IHT205</li>
 </ul>
-</div>
+  </div>
 </details>
 </p>
 </div>

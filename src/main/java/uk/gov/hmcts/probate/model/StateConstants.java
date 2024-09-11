@@ -49,9 +49,14 @@ public class StateConstants {
 
     // inset text for case progress tab
     public static final String STATE_DESC_DEFAULT = "Default";
+    public static final String STATE_DESC_WELSH_DEFAULT = "Default";
     public static final String STATE_DESC_ESCALATED = "Case escalated to a Registrar";
+
+    public static final String STATE_DESC_WELSH_ESCALATED = "Case escalated to a Registrar";
     public static final String STATE_DESC_CASE_STOPPED = "Case stopped";
+    public static final String STATE_DESC_WELSH_CASE_STOPPED = "Mae'r achos wedi'i atal";
     public static final String STATE_DESC_APPLICATION_STOPPED = "Paper application needed";
+    public static final String STATE_DESC_WELSH_APPLICATION_STOPPED = "Paper application needed";
 
     private StateConstants() {
         throw new IllegalStateException("Utility class");
