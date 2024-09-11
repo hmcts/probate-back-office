@@ -20,10 +20,14 @@ class AppStoppedTaskListRendererTest {
         final CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         caseDetails.setState(STOPPED.getId());
         final String expected = "<div class=\"width-50\">\n\n"
-            + "<h2 class=\"govuk-heading-l\">Case progress</h2>\n\n"
+            + "<h2 class=\"govuk-heading-l\">Case progress</h2>"
+            + "<h2 class=\"govuk-heading-l\">Cynnydd yr achos</h2>\n\n"
             + "<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Paper application "
-            + "needed</div>\n\n"
-            + "<h2 class=\"govuk-heading-l\">What to do next</h2>\n\n"
+            + "needed</div>"
+            + "<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">Angen cais papur"
+            + "</div>\n\n"
+            + "<h2 class=\"govuk-heading-l\">What to do next</h2>"
+            + "<h2 class=\"govuk-heading-l\">Beth i'w wneud nesaf</h2>\n\n"
             + "<p class=\"govuk-body-s\">This application has been stopped. "
             + "Based on the information you have entered, "
             + "our online service cannot yet handle this type of application.<br/>"

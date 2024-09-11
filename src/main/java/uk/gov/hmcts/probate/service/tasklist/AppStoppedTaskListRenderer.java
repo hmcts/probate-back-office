@@ -33,4 +33,8 @@ public class AppStoppedTaskListRenderer extends NoTaskListRenderer {
     protected String getWhatNextText() {
         return "What to do next";
     }
+
+    protected String getWhatNextTextWelsh() {
+        return "Beth i'w wneud nesaf";
+    }
 }

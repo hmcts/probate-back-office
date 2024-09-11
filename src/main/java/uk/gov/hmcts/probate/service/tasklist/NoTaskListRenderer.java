@@ -44,7 +44,7 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     }
 
     private String renderBodyHeader() {
-        return HeadingRenderer.render(getWhatNextText());
+        return HeadingRenderer.render(getWhatNextText(), getWhatNextTextWelsh());
     }
 
     protected abstract String renderContactDetails();
@@ -52,4 +52,6 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     protected abstract String renderBody(CaseDetails caseDetails);
 
     protected abstract String getWhatNextText();
+
+    protected abstract String getWhatNextTextWelsh();
 }

@@ -15,7 +15,7 @@ public abstract class NoTaskListCaseRenderer extends NoTaskListRenderer {
     public String renderContactDetails() {
         final List<String> lines = new LinkedList<>();
 
-        lines.add(HeadingRenderer.render("Get help with your application"));
+        lines.add(HeadingRenderer.render("Get help with your application", "Cael help gyda'ch cais"));
         lines.add(SubheadingRenderer.render("Telephone"));
         lines.add(ParagraphRenderer.renderByReplace(ContactDetailsHtmlTemplate.CONTACT_TEMPLATE)
             .replaceFirst("<englishPhoneNumber/>", "0300 303 0648")
@@ -38,5 +38,9 @@ public abstract class NoTaskListCaseRenderer extends NoTaskListRenderer {
 
     protected String getWhatNextText() {
         return "What happens next";
+    }
+
+    protected String getWhatNextTextWelsh() {
+        return "Beth fydd yn digwydd nesaf";
     }
 }
