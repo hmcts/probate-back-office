@@ -101,6 +101,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         if (jsonFile.indexOf("04b-caseCreated.json") >= 0
                 || jsonFile.indexOf("issueGrant.json") >= 0) {
             log.info("*****-->" + removeCrLfs(taskList));
+            log.info("eeeee-->" + removeCrLfs(expected));
         }
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
     }
