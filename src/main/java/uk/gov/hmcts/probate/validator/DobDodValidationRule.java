@@ -47,7 +47,7 @@ class DobDodValidationRule implements SolicitorCreateValidationRule,
                     }
 
                     if (dod.isBefore(dob)) {
-                        codes.add(CODE_DOD_BEFORE_DOB.replace("\\n", "<br/>"));
+                        codes.add(CODE_DOD_BEFORE_DOB);
                     }
 
                     return codes;
