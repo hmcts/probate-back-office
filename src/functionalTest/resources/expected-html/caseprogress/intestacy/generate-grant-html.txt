@@ -123,7 +123,7 @@
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p><strong>Authenticated on 10 Sep 2024</strong></p>
+<p><strong>Authenticated on <today/></strong></p>
 </div>
 <div class="govuk-grid-column-one-third">&nbsp;</div>
 </div>

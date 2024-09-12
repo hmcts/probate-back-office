@@ -1,6 +1,6 @@
 <div class="width-50">
 
-<h2 class="govuk-heading-l">Case progress</h2>
+<h2 class="govuk-heading-l">Case progress</h2><h2 class="govuk-heading-l">Cynnydd yr achos</h2>
 
 <div class="govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48">Case escalated to a Registrar</div>
 
