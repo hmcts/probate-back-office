@@ -36,10 +36,9 @@ public class LifeEventController {
     @PostMapping(path = "/update")
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        log.info("securityDTO:{}", securityDTO);
         boolean isCitizenUser = true;
         List<String> roles = securityUtils.getRoles(securityDTO.getAuthorisation());
-        log.info("roles:{}", roles);
+        log.info("User roles from the token:{}", roles);
         if (roles.contains("caseworker-probate")) {
             securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
             isCitizenUser = false;
