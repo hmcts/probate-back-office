@@ -32,6 +32,8 @@ class ExecutorsAddressValidationRule implements SolExecutorDetailsValidationRule
             .forEach(address -> {
                 if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
                     errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "executorAddressIsNull"));
+                    errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "executorAddressIsNullWelsh"));
                 }
             });
 

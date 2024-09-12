@@ -22,6 +22,7 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
     public static final String IHT_DATE_IS_INVALID2 = "iht400DateInvalid2";
     public static final String IHT_DATE_IS_INVALID3 = "iht400DateInvalid3";
     public static final String IHT_DATE_IS_IN_FUTURE = "iht400DateIsInFuture";
+    public static final String IHT_DATE_IS_IN_FUTURE_WELSH = "iht400DateIsInFutureWelsh";
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
@@ -84,19 +85,21 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
     @Override
     public void validate(CaseDetails caseDetails) {
         LocalDate iht400Date = caseDetails.getData().getSolsIHT400Date();
+        String[] empty = {};
         String[] args = {caseDetails.getData().convertDate(addBusinessDays(iht400Date, 20))};
         String userMessage;
 
         if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 0) {
             userMessage = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE, args, UK);
+            String error = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_IN_FUTURE_WELSH, args, UK);
             throw new BusinessValidationException(userMessage,
-                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past");
+                "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ") needs to be in the past",
+                    error);
         }
 
         if (countBusinessDaysBetween(iht400Date, LocalDate.now()) < 20) {
             userMessage = "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")"
                 + " needs to be before 20 working days before current date";
-            String[] empty = {};
             String error1 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, empty, UK);
             String error2 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID2, args, UK);
             String error3 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID3, empty, UK);
