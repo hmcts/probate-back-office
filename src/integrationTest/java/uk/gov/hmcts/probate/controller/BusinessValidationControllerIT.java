@@ -1035,9 +1035,9 @@ class BusinessValidationControllerIT {
         mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.errors[0]")
-                .value("The gross probate value cannot be less than the net probate value\nNi all gwerth "
-                        + "gros y cais am brofiant fod yn llai na gwerth net y cais am brofiant"));
+            .andExpect(jsonPath("$.errors[1]")
+                .value("Ni all gwerth gros y cais am brofiant fod yn llai na gwerth net y cais am "
+                        + "brofiant"));
     }
 
     @Test
@@ -1056,8 +1056,7 @@ class BusinessValidationControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$.errors[0]")
-                .value("The gross IHT value cannot be less than the net IHT value\nNi all gwerth gros y "
-                        + "dreth etifeddiaeth fod yn llai na gwerth net y dreth etifeddiaeth"));
+                .value("The gross IHT value cannot be less than the net IHT value"));
     }
 
     @Test

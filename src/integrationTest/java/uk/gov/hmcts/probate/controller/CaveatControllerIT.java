@@ -218,8 +218,7 @@ class CaveatControllerIT {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("Date of death cannot be in the future\nNi all dyddiad marwolaeth fod yn "
-                                + "y dyfodol"));
+                        .value("Date of death cannot be in the future"));
     }
 
     @Test
