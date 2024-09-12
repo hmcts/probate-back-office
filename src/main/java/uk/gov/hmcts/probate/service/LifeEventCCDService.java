@@ -40,7 +40,6 @@ public class LifeEventCCDService {
         + "make a selection";
     public static final String LIFE_EVENT_VERIFICATION_ERROR_DESCRIPTION = "LEV API failed";
     public static final String LIFE_EVENT_VERIFICATION_ERROR_SUMMARY = "Use the dropdown to manually verify life event";
-    public static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
     private DeathService deathService;
     private CcdClientApi ccdClientApi;
     private DeathRecordService deathRecordService;
