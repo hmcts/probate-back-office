@@ -114,7 +114,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorFirmName"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor firm name "
-                        + "cannot be empty\nNi all enw?r cyfreithiwr fod yn wag"));
+                        + "cannot be empty"));
     }
 
     @Test
@@ -149,7 +149,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTForenames"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT forenames "
-                        + "cannot be empty\nNi all enwau cyntaf cyfreithiwr SOT fod yn wag"));
+                        + "cannot be empty"));
     }
 
     @Test
@@ -166,7 +166,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSOTSurname"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("Solicitor SOT surname "
-                        + "cannot be empty\nNi all cyfenw cyfreithiwr SOT fod yn wag"));
+                        + "cannot be empty"));
     }
 
 

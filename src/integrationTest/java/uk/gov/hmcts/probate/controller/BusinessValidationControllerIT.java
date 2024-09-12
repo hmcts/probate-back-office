@@ -644,8 +644,7 @@ class BusinessValidationControllerIT {
                     .value("caseDetails.data.solsSolicitorIsExec"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
             .andExpect(jsonPath("$.fieldErrors[0].message")
-                    .value("Solicitor named as an exec must be chosen\nRhaid i gyfreithiwr a enwir fel "
-                            + "ysgutor gael ei ddewis"));
+                    .value("Solicitor named as an exec must be chosen"));
     }
 
     @Test
@@ -682,7 +681,7 @@ class BusinessValidationControllerIT {
                     .value("caseDetails.data.deceasedDateOfDeath"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
             .andExpect(jsonPath("$.fieldErrors[0].message")
-                    .value("Date of death cannot be empty\nNi all dyddiad marwolaeth fod yn wag"));
+                    .value("Date of death cannot be empty"));
     }
 
     private void validateDobIsNullError(String url) throws Exception {
@@ -699,7 +698,7 @@ class BusinessValidationControllerIT {
                     .value("caseDetails.data.deceasedDateOfBirth"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
             .andExpect(jsonPath("$.fieldErrors[0].message")
-                    .value("Date of birth cannot be empty\nNi all dyddiad geni fod yn wag"));
+                    .value("Date of birth cannot be empty"));
     }
 
     private void validateForenameIsNullError(String url) throws Exception {
@@ -716,8 +715,7 @@ class BusinessValidationControllerIT {
                     .value("caseDetails.data.deceasedForenames"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
             .andExpect(jsonPath("$.fieldErrors[0].message")
-                    .value("Deceased forename cannot be empty\nNi all enw cyntaf yr ymadawedig fod yn wag"
-                    ));
+                    .value("Deceased forename cannot be empty"));
     }
 
     private void validateSurnameIsNullError(String url) throws Exception {
@@ -735,7 +733,7 @@ class BusinessValidationControllerIT {
                     .value("caseDetails.data.deceasedSurname"))
             .andExpect(jsonPath("$.fieldErrors[0].code").value("NotBlank"))
             .andExpect(jsonPath("$.fieldErrors[0].message")
-                    .value("Deceased surname cannot be empty\nNi all cyfenw?r ymadawedig fod yn wag"));
+                    .value("Deceased surname cannot be empty"));
     }
 
     private void validateAddressIsNullError(String url) throws Exception {
