@@ -21,6 +21,7 @@ class DobDodValidationRule implements SolicitorCreateValidationRule,
     CaseworkerAmendAndCreateValidationRule {
 
     public static final String CODE_DOD_BEFORE_DOB = "dodIsBeforeDob";
+    public static final String CODE_DOD_BEFORE_DOB_WELSH = "dodIsBeforeDobWelsh";
     public static final String CODE_DOB_IN_FUTURE = "dobIsInTheFuture";
     public static final String CODE_DOD_IN_FUTURE = "dodIsInTheFuture";
 
@@ -48,6 +49,7 @@ class DobDodValidationRule implements SolicitorCreateValidationRule,
 
                     if (dod.isBefore(dob)) {
                         codes.add(CODE_DOD_BEFORE_DOB);
+                        codes.add(CODE_DOD_BEFORE_DOB_WELSH);
                     }
 
                     return codes;
