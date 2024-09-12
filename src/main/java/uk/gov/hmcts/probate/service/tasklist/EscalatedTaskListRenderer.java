@@ -20,6 +20,9 @@ public class EscalatedTaskListRenderer extends NoTaskListCaseRenderer {
 
         return ParagraphRenderer.renderByReplace(CaseEscalatedToRegistrarHtmlTemplate.BASE_TEMPLATE
                 .replaceFirst("<escalationDate>", escalatedDate == null ? "Unknown" : escalatedDate.format(dateFormat))
-                .replaceFirst("<numWeeks>", "6"));
+                .replaceFirst("<escalationDateWelsh>", escalatedDate == null
+                        ? "Unknown" : escalatedDate.format(dateFormat))
+                .replaceFirst("<numWeeks>", "6")
+                .replaceFirst("<numWeeksWelsh>", "6"));
     }
 }
