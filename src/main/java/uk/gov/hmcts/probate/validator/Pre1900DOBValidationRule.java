@@ -32,12 +32,12 @@ public class Pre1900DOBValidationRule implements CaseDetailsValidationRule {
                         "Date of birth cannot be a future date for case: " + caseDetails.getId());
             }
             if (dob.isAfter(dod)) {
-                String userMessage = businessValidationMessageRetriever.getMessage("dobIsAfterDod",
+                String userMessage1 = businessValidationMessageRetriever.getMessage("dobIsAfterDod",
                         null, Locale.UK);
                 String userMessage2 = businessValidationMessageRetriever.getMessage("dobIsAfterDodWelsh",
                         null, Locale.UK);
-                throw new BusinessValidationException(userMessage + "/n" + userMessage2,
-                        "Date of birth cannot be after date of death for case: " + caseDetails.getId());
+                throw new BusinessValidationException(userMessage1,
+                        "Date of birth cannot be after date of death for case: " + caseDetails.getId(), userMessage2);
             }
         } catch (DateTimeParseException dtpe) {
             String userMessage = businessValidationMessageRetriever.getMessage("dobOverrideDateInvalid",
