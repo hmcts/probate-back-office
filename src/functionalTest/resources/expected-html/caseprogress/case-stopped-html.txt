@@ -5,8 +5,8 @@
 <div class="govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48">Mae'r achos wedi'i atal</div>
 <h2 class="govuk-heading-l">What happens next</h2>
 <h2 class="govuk-heading-l">Beth fydd yn digwydd nesaf</h2>
-<p class="govuk-body-s">The case was stopped on 12 Sept 2024 for one of two reasons:</p>
-<p class="govuk-body-s">Cafodd yr achos ei atal ar 12 Sept 2024 am un o ddau reswm:</p>
+<p class="govuk-body-s">The case was stopped on <today/> for one of two reasons:</p>
+<p class="govuk-body-s">Cafodd yr achos ei atal ar <today/> am un o ddau reswm:</p>
 <ul class="govuk-list govuk-list--bullet">
 <li>an internal review is needed</li>
 <li>Mae angen adolygiad mewnol</li>
