@@ -121,7 +121,7 @@ public class CaseData extends CaseDataParent {
 
     // Not final as field set in CaseDataTransformer
     @NotBlank(groups = {ApplicationUpdatedGroup.class, AmendCaseDetailsGroup.class},
-        message = "{deceasedForenameIsNull}\n{deceasedForenameIsNullWelsh}")
+        message = "{deceasedForenameIsNull}")
     private String deceasedForenames;
 
     // Not final as field set in CaseDataTransformer
