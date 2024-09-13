@@ -20,6 +20,7 @@ public class NotificationExecutorsApplyingValidationRule implements CaseDetailsV
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String SEND_NOTIFICATION_EMPTY = "sendNotificationEmpty";
+    private static final String SEND_NOTIFICATION_EMPTY_WELSH = "sendNotificationEmptyWelsh";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -28,6 +29,8 @@ public class NotificationExecutorsApplyingValidationRule implements CaseDetailsV
         String[] args = {caseDetails.getId().toString()};
         CaseData caseData = caseDetails.getData();
         String userMessage = businessValidationMessageRetriever.getMessage(SEND_NOTIFICATION_EMPTY, args, Locale.UK);
+        String userMessage2 = businessValidationMessageRetriever.getMessage(SEND_NOTIFICATION_EMPTY_WELSH, args,
+                Locale.UK);
 
         for (CollectionMember<ExecutorsApplyingNotification> executor : caseData.getExecutorsApplyingNotifications()) {
             if (executor.getValue().getNotification().equals(NO)) {
@@ -36,7 +39,7 @@ public class NotificationExecutorsApplyingValidationRule implements CaseDetailsV
         }
         if (counter == caseData.getExecutorsApplyingNotifications().size()) {
             throw new BusinessValidationException(userMessage,
-                    "No applicant selected to send notification for case id " + caseDetails.getId());
+                    "No applicant selected to send notification for case id " + caseDetails.getId(), userMessage2);
         }
     }
 }

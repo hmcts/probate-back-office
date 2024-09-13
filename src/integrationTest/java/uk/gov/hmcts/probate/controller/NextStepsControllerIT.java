@@ -132,7 +132,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.solsSolicitorAddress.postCode"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
                 .andExpect(jsonPath("$.fieldErrors[0].message").value("The deceased postcode "
-                        + "cannot be empty\nNi all cod post yr ymadawedig fod yn wag"));
+                        + "cannot be empty"));
     }
 
     @Test
@@ -185,7 +185,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.applicationFee"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
                 .andExpect(jsonPath("$.fieldErrors[0].message")
-                        .value("Application Fee cannot be null\nNi all Ffi?r Cais fod yn ddi-rym"));
+                        .value("Application Fee cannot be null"));
     }
 
     @Test
@@ -203,8 +203,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.totalFee"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
                 .andExpect(jsonPath("$.fieldErrors[0].message")
-                        .value("Fee payment amount cannot be null\nNi all y swm ar gyfer talu ffi fod yn "
-                                + "ddi-rym"));
+                        .value("Fee payment amount cannot be null"));
     }
 
     @Test
@@ -222,8 +221,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.feeForUkCopies"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
                 .andExpect(jsonPath("$.fieldErrors[0].message")
-                        .value("Fee for UK Copies cannot be null\nNi all y ffi am gopïau o'r DU fod yn "
-                                + "ddi-rym"));
+                        .value("Fee for UK Copies cannot be null"));
     }
 
     @Test
@@ -241,8 +239,7 @@ class NextStepsControllerIT {
                 .andExpect(jsonPath("$.fieldErrors[0].field").value("caseDetails.data.feeForNonUkCopies"))
                 .andExpect(jsonPath("$.fieldErrors[0].code").value("NotNull"))
                 .andExpect(jsonPath("$.fieldErrors[0].message")
-                        .value("Fee for non UK Copies cannot be null\nNi all y ffi am gopïau nad ydynt "
-                                + "yn gopïau o'r DU fod yn ddi-rym"));
+                        .value("Fee for non UK Copies cannot be null"));
     }
 
     @Test

@@ -50,7 +50,7 @@ class ExecutorsAddressPostcodeValidationRuleTest {
 
 
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR),
-                eq("executorPostcodeIsNullWelsh"))).thenReturn(executorPostcodeIsNullError);
+                eq("executorPostcodeIsNull"))).thenReturn(executorPostcodeIsNullError);
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR),
                 eq("executorPostcodeIsNullWelsh"))).thenReturn(executorPostcodeIsNullError2);
     }

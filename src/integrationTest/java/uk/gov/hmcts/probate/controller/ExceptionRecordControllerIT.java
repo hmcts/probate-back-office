@@ -509,7 +509,7 @@ class ExceptionRecordControllerIT {
             .andExpect(status().isUnprocessableEntity())
             .andExpect(content().string(
                 containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired "
-                        + "caveat.\\nNi ellir ymestyn cafeat sydd eisoes wedi dod i ben.\"]")));
+                        + "caveat.\"]")));
     }
 
     @Test

@@ -124,7 +124,9 @@ class NoticeOfChangeControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
                         .value("There is no email address for this solicitor. Add an email address or "
-                                + "contact them by post.\nNid oes cyfeiriad e-bost ar gyfer y cyfreithiwr hwn. "
+                                + "contact them by post."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Nid oes cyfeiriad e-bost ar gyfer y cyfreithiwr hwn. "
                                 + "Ychwanegwch gyfeiriad e-bost neu cysylltwch â nhw drwy'r post."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }

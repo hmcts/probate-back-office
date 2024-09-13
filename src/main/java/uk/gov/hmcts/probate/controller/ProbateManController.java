@@ -93,7 +93,9 @@ public class ProbateManController {
 
         log.info("submitting legacy search - invalid action");
         List<String> errors = Arrays.asList(businessValidationMessageService
-            .generateError(SUBMISSION_NOT_ALLOWED, "legacyCaseSubmissionNotAllowed").getMessage());
+            .generateError(SUBMISSION_NOT_ALLOWED, "legacyCaseSubmissionNotAllowed").getMessage(),
+                businessValidationMessageService.generateError(SUBMISSION_NOT_ALLOWED,
+                        "legacyCaseSubmissionNotAllowedWelsh").getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
             .errors(errors)
             .build();

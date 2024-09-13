@@ -18,6 +18,7 @@ public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsV
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String EMAIL_NOT_FOUND_PA = "multipleEmailsNotProvidedPA";
+    private static final String EMAIL_NOT_FOUND_PA_WELSH = "multipleEmailsNotProvidedPAWelsh";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -25,15 +26,16 @@ public class EmailAddressExecutorsApplyingValidationRule implements CaseDetailsV
         CaseData caseData = caseDetails.getData();
         String[] args = {caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA, args, Locale.UK);
+        String userMessage2 = businessValidationMessageRetriever.getMessage(EMAIL_NOT_FOUND_PA_WELSH, args, Locale.UK);
 
         caseData.getExecutorsApplyingNotifications().forEach(executor -> {
             if (executor.getValue().getNotification().equals(YES)) {
                 if (executor.getValue().getEmail() == null) {
                     throw new BusinessValidationException(userMessage,
-                            "An applying exec email is null for case id " + caseDetails.getId());
+                            "An applying exec email is null for case id " + caseDetails.getId(), userMessage2);
                 } else if (executor.getValue().getEmail().isEmpty()) {
                     throw new BusinessValidationException(userMessage,
-                            "An applying exec email is empty for case id " + caseDetails.getId());
+                            "An applying exec email is empty for case id " + caseDetails.getId(), userMessage2);
                 }
             }
         });

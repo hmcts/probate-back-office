@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,12 +22,14 @@ public class NocEmailAddressNotifyValidationRule {
     private final BusinessValidationMessageService businessValidationMessageService;
 
     public List<FieldErrorResponse> validate(ApplicationType applicationType, String solicitorEmail) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
+        Set<FieldErrorResponse> errors = new LinkedHashSet<>();
 
         if (SOLICITOR.equals(applicationType) && StringUtils
                 .isEmpty(solicitorEmail)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     "notifyApplicantNoEmailSOLS"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "notifyApplicantNoEmailSOLSWelsh"));
         }
         return new ArrayList<>(errors);
     }
