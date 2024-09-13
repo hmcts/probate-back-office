@@ -36,8 +36,8 @@ public class Pre1900DOBValidationRule implements CaseDetailsValidationRule {
                         null, Locale.UK);
                 String userMessage2 = businessValidationMessageRetriever.getMessage("dobIsAfterDodWelsh",
                         null, Locale.UK);
-                throw new BusinessValidationException(userMessage1,
-                        "Date of birth cannot be after date of death for case: " + caseDetails.getId(), userMessage2);
+                throw new BusinessValidationException(userMessage1 + "/n" + userMessage2,
+                        "Date of birth cannot be after date of death for case: " + caseDetails.getId());
             }
         } catch (DateTimeParseException dtpe) {
             String userMessage = businessValidationMessageRetriever.getMessage("dobOverrideDateInvalid",
