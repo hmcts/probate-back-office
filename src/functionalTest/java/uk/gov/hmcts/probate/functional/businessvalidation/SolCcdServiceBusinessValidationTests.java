@@ -98,33 +98,32 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithDobNullReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsNull.json",
-            "Date of birth cannot be empty\nNi all dyddiad geni fod yn wag", 400);
+            "Date of birth cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodNullReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsNull.json",
-            "Date of death cannot be empty\nNi all dyddiad marwolaeth fod yn wag", 400);
+            "Date of death cannot be empty", 400);
     }
 
     @Test
     public void verifyRequestWithDodBeforeDobReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
-            "Date of death cannot be before date of birth\nNi all dyddiad marwolaeth fod cyn dyddiad geni",
+            "Date of death cannot be before date of birth",
                 200);
     }
 
     @Test
     public void verifyRequestWithDobInFutureReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsInTheFuture.json",
-            "Date of birth cannot be in the future\nNi all dyddiad geni fod yn y dyfodol", 200);
+            "Date of birth cannot be in the future", 200);
     }
 
     @Test
     public void verifyRequestWithDodInFutureReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsInTheFuture.json",
-            "Date of death cannot be in the future\nNi all dyddiad marwolaeth fod yn y dyfodol",
-                200);
+            "Date of death cannot be in the future", 200);
     }
 
     @Test
@@ -135,8 +134,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
         validatePostFailure("failure.ihtNetIsGreaterThanGross.json",
-                "The gross probate value cannot be less than the net probate value\nNi all gwerth gros y "
-                        + "cais am brofiant fod yn llai na gwerth net y cais am brofiant", 200,
+                "The gross probate value cannot be less than the net probate value", 200,
                 SOLS_VALIDATE_IHT_ESTATE);
 
     }
@@ -144,14 +142,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithNegativeIhtNetReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsNegative.json",
-            "Net IHT cannot be negative\nNi all y dreth etifeddiaeth net fod yn negyddol", 400);
+            "Net IHT cannot be negative", 400);
     }
 
     @Test
     public void verifyRequestWithNegativeIhtGrossReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsNegative.json",
-            "Gross IHT cannot be negative\nNi all y dreth etifeddiaeth gros fod yn negyddol",
-                400);
+            "Gross IHT cannot be negative", 400);
     }
 
     @Test
@@ -169,8 +166,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
             "\"solsIHT400Date\": \"" + LocalDate.now().plusDays(10) + "\",");
         validatePostFailureWithPayload(payload,
-            "The date you sent the IHT400 and IHT421 to HMRC must be in the past\nRhaid i'r dyddiad yr "
-                    + "anfonwyd yr IHT400 ac IHT421 i CThEM fod yn y gorffennol",
+            "The date you sent the IHT400 and IHT421 to HMRC must be in the past",
             200, VALIDATE_IHT_400_DATE);
     }
 
@@ -209,38 +205,34 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithoutDeceasedAddressReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedAddress.json",
-            "The deceased address line 1 cannot be empty\nNi all llinell 1 cyfeiriad yr ymadawedig fod yn "
-                    + "wag", 200);
+            "The deceased address line 1 cannot be empty", 200);
     }
 
     @Test
     public void verifyRequestWithoutDeceasedPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedPostcode.json",
-            "The deceased postcode cannot be empty\nNi all cod post yr ymadawedig fod yn wag",
+            "The deceased postcode cannot be empty",
                 200);
     }
 
     @Test
     public void verifyRequestWithoutExecutorAddressReturnsError() throws IOException {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorAddress.json",
-            "The executor address line 1 cannot be empty\nNi all llinell 1 cyfeiriad yr ysgutor fod yn wag"
-        );
+            "The executor address line 1 cannot be empty");
         validatePostFailureForCaseAmend("failure.missingExecutorAddress.json",
-            "The executor address line 1 cannot be empty\nNi all llinell 1 cyfeiriad yr ysgutor fod yn wag"
-        );
+            "The executor address line 1 cannot be empty");
     }
 
     @Test
     public void verifyRequestWithoutExecutorPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorPostcode.json",
-            "The executor postcode cannot be empty\nNi all cod post yr ysgutor fod yn wag");
+            "The executor postcode cannot be empty");
     }
 
     @Test
     public void verifyRequestWithoutSolicitorPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorPostcode("failure.missingPostcodeSolicitorCreate.json",
-                "Enter your firm's postcode, for example, 'SW1H 9AJ'\nRhowch god post eich cwmni, er "
-                        + "enghraifft, 'SW1H 9AJ'");
+                "Enter your firm's postcode, for example, 'SW1H 9AJ'");
     }
 
     @Test
@@ -265,8 +257,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestCheckListAnswerEqualsNo() throws IOException {
         validatePostFailureForCheckList("failure.checkList.json",
-            "Ensure all checks have been completed, cancel to return to the examining state\nSicrhewch bod "
-                    + "yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam arholi");
+            "Ensure all checks have been completed, cancel to return to the examining state");
     }
 
     @Test
@@ -300,17 +291,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyErrorMessageSuccAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingSuccAllRenouncing.json",
-            "Probate practitioner cannot be applying if part of a group which is all renouncing\nNi all "
-                    + "ymarferydd profiant wneud cais os yw'n rhan o gr?p sydd yn ymwrthod", 200,
-                SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "Probate practitioner cannot be applying if part of a group which is all renouncing",
+                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     public void verifyErrorMessageAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingAllRenouncing.json",
-            "Probate practitioner cannot be applying if part of a group which is all renouncing\nNi all "
-                    + "ymarferydd profiant wneud cais os yw'n rhan o gr?p sydd yn ymwrthod", 200,
-                SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "Probate practitioner cannot be applying if part of a group which is all renouncing",
+                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -318,16 +307,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         validatePostFailure("failure.practitionerExecAndApplyingTCTNoT.json",
             "If you have selected 'none of these' because the title and clearing is not covered by the "
                     + "options above, you will not be able to continue making this application online. Please apply "
-                    + "with a paper form.\nOs ydych wedi dewis 'dim un o'r rhain' oherwydd nad yw'r teitl a'r cliriad "
-                    + "yn dod o dan yr opsiynau uchod, ni fyddwch yn gallu parhau i wneud y cais hwn ar-lein. Gwnewch "
-                    + "gais gyda ffurflen bapur.", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+                    + "with a paper form.", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     public void verifyErrorMessageNoPartnersAdded() throws IOException {
         validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersAdded.json",
-            "You need to add at least 1 other partner that acts as an executor\nMae angen i chi ychwanegu "
-                    + "o leiaf un partner arall sy'n gweithredu fel ysgutor",
+            "You need to add at least 1 other partner that acts as an executor",
             200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
@@ -342,9 +328,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     public void verifyErrorMessageNoPositionInTrustTrustCorp() throws IOException {
         validatePostFailure("failure.practitionerNoPositionInTrust.json",
             "You must specify the probate pactitioner's position within the trust corporation as per the "
-                    + "resolution if they are acting as an executor\nRhaid i chi nodi sefyllfa'r ymarferydd profiant o "
-                    + "fewn corfforaeth yr ymddiriedolaeth yn unol â'r penderfyniad os ydynt yn gweithredu fel ysgutor",
-            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+                    + "resolution if they are acting as an executor", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -361,12 +345,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
             "\"originalWillSignedDate\": \"" + TODAY_YYYY_MM_DD + "\",");
 
-        validatePostFailureWithPayload(payload, "Original will signed date must be in the past\nRhaid i'r "
-                        + "dyddiad gwreiddiol a lofnodwyd yr ewyllys fod yn y gorffennol",
+        validatePostFailureWithPayload(payload, "Original will signed date must be in the past",
             200, VALIDATE_URL);
 
-        validatePostFailureWithPayload(payload, "Original will signed date must be in the past\nRhaid i'r "
-                        + "dyddiad gwreiddiol a lofnodwyd yr ewyllys fod yn y gorffennol",
+        validatePostFailureWithPayload(payload, "Original will signed date must be in the past",
             200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
@@ -377,13 +359,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
             "\"dateCodicilAdded\": \"" + TODAY_YYYY_MM_DD + "\"");
 
-        validatePostFailureWithPayload(payload, "Codicil date must be in the past\nRhaid i ddyddiad y "
-                        + "codisil fod yn y gorffennol",
-            200, VALIDATE_URL);
+        validatePostFailureWithPayload(payload, "Codicil date must be in the past", 200,
+                VALIDATE_URL);
 
-        validatePostFailureWithPayload(payload, "Codicil date must be in the past\nRhaid i ddyddiad y "
-                        + "codisil fod yn y gorffennol",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+        validatePostFailureWithPayload(payload, "Codicil date must be in the past", 200,
+                SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -394,12 +374,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             "\"originalWillSignedDate\": \"2018-01-02\",");
 
         validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of "
-                        + "death\nRhaid bod yr ewyllys wedi?i llofnodi a'i dyddio cyn dyddiad y farwolaeth",
-            200, VALIDATE_URL);
+                        + "death", 200, VALIDATE_URL);
 
         validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of "
-                        + "death\nRhaid bod yr ewyllys wedi?i llofnodi a'i dyddio cyn dyddiad y farwolaeth",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+                        + "death", 200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -421,12 +399,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
             "\"dateCodicilAdded\": \"2017-10-09\"");
 
-        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed\nNi "
-                        + "ellir gwneud codisil cyn llofnodi'r ewyllys", 200, VALIDATE_URL);
+        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
+                200, VALIDATE_URL);
 
-        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed\nNi "
-                        + "ellir gwneud codisil cyn llofnodi'r ewyllys", 200,
-                SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+        validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -443,10 +420,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyNegativeCopiesValues() throws IOException {
         validatePostFailure("failure.negativeUKCopies.json",
-            "Uk Grant copies cannot be negative\nNi all nifer copïau grant y DU fod yn negyddol",
+            "Uk Grant copies cannot be negative",
                 400, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.negativeOverseasCopies.json",
-            "Overseas Grant copies cannot be negative\nNi all nifer y copïau Grant Tramor fod yn negyddol",
+            "Overseas Grant copies cannot be negative",
                 400, VALIDATE_CASE_AMEND_URL);
     }
 
