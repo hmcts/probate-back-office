@@ -26,12 +26,16 @@ public class LifeEventValidationRule implements CaseDetailsValidationRule {
             || deathRecords.stream().anyMatch(r -> r.getValue().getSystemNumber() == null)) {
             final String message = businessValidationMessageRetriever.getMessage("dontAddOrRemoveRecords", null,
                 Locale.UK);
-            throw new BusinessValidationException(message, message);
+            final String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage("dontAddOrRemoveRecordsWelsh", null, Locale.UK);
+            throw new BusinessValidationException(message, message, userMessageWelsh);
         }
         if (1 != deathRecords.stream().filter(r -> r.getValue().getValid().equalsIgnoreCase("Yes")).count()) {
             final String message = businessValidationMessageRetriever.getMessage("selectOneDeathRecord",
                 null, Locale.UK);
-            throw new BusinessValidationException(message, message);
+            final String userMessageWelsh = businessValidationMessageRetriever.getMessage("selectOneDeathRecordWelsh",
+                    null, Locale.UK);
+            throw new BusinessValidationException(message, message, userMessageWelsh);
         }
     }
 }

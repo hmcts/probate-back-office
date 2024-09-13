@@ -35,7 +35,8 @@ class LifeEventValidationRuleIT {
             lifeEventValidationRule.validate(caseDetails);
         })
             .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("Don't add or remove records here\nPeidiwch ag ychwanegu na dileu cofnodion yma");
+            .hasMessage("Don't add or remove records here",
+                    "Peidiwch ag ychwanegu na dileu cofnodion yma");
     }
 
     @Test
@@ -51,7 +52,8 @@ class LifeEventValidationRuleIT {
             lifeEventValidationRule.validate(caseDetails);
         })
             .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("Don't add or remove records here\nPeidiwch ag ychwanegu na dileu cofnodion yma");
+            .hasMessage("Don't add or remove records here",
+                    "Peidiwch ag ychwanegu na dileu cofnodion yma");
     }
 
     @Test
@@ -77,7 +79,7 @@ class LifeEventValidationRuleIT {
             lifeEventValidationRule.validate(caseDetails);
         })
             .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("Select one death record\nDewiswch un cofnod marwolaeth");
+            .hasMessage("Select one death record", "Dewiswch un cofnod marwolaeth");
     }
 
     @Test
@@ -103,7 +105,7 @@ class LifeEventValidationRuleIT {
             lifeEventValidationRule.validate(caseDetails);
         })
             .isInstanceOf(BusinessValidationException.class)
-            .hasMessage("Select one death record\nDewiswch un cofnod marwolaeth");
+            .hasMessage("Select one death record","Dewiswch un cofnod marwolaeth");
     }
 
 

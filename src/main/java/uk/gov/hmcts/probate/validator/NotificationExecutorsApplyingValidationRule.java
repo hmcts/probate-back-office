@@ -29,7 +29,7 @@ public class NotificationExecutorsApplyingValidationRule implements CaseDetailsV
         String[] args = {caseDetails.getId().toString()};
         CaseData caseData = caseDetails.getData();
         String userMessage = businessValidationMessageRetriever.getMessage(SEND_NOTIFICATION_EMPTY, args, Locale.UK);
-        String userMessage2 = businessValidationMessageRetriever.getMessage(SEND_NOTIFICATION_EMPTY_WELSH, args,
+        String userMessageWelsh = businessValidationMessageRetriever.getMessage(SEND_NOTIFICATION_EMPTY_WELSH, args,
                 Locale.UK);
 
         for (CollectionMember<ExecutorsApplyingNotification> executor : caseData.getExecutorsApplyingNotifications()) {
@@ -39,7 +39,7 @@ public class NotificationExecutorsApplyingValidationRule implements CaseDetailsV
         }
         if (counter == caseData.getExecutorsApplyingNotifications().size()) {
             throw new BusinessValidationException(userMessage,
-                    "No applicant selected to send notification for case id " + caseDetails.getId(), userMessage2);
+                    "No applicant selected to send notification for case id " + caseDetails.getId(), userMessageWelsh);
         }
     }
 }

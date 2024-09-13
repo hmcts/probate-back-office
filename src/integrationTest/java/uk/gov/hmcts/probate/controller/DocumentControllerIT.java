@@ -629,7 +629,9 @@ class DocumentControllerIT {
             .perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital "
-                    + "cases.\nDim ond ar gyfer achosion digidol y gallwch ddefnyddio'r adnodd hwn."))
+                    + "cases."))
+            .andExpect(jsonPath("$.errors[1]").value("Dim ond ar gyfer achosion digidol y "
+                    + "gallwch ddefnyddio'r adnodd hwn."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 

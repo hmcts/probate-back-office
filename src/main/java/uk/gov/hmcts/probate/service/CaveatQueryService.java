@@ -74,10 +74,10 @@ public class CaveatQueryService {
         if (foundCaveats.size() != 1) {
             String[] args = {caveatId};
             String userMessage = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
-            String userMessage2 = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE_WELSH, args,
+            String userMessageWelsh = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE_WELSH, args,
                     Locale.UK);
             throw new BusinessValidationException(userMessage,
-                "Could not find any caveats for the entered caveat id: " + caveatId, userMessage2);
+                "Could not find any caveats for the entered caveat id: " + caveatId, userMessageWelsh);
         }
         return foundCaveats.get(0).getData();
     }

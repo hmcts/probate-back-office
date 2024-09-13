@@ -25,7 +25,8 @@ public class AddressExecutorsApplyingValidationRule implements CaseDetailsValida
         CaseData caseData = caseDetails.getData();
         String[] args = {caseDetails.getId().toString()};
         String userMessage = businessValidationMessageRetriever.getMessage(ADDRESS_NOT_FOUND, args, Locale.UK);
-        String userMessage2 = businessValidationMessageRetriever.getMessage(ADDRESS_NOT_FOUND_WELSH, args, Locale.UK);
+        String userMessageWelsh = businessValidationMessageRetriever.getMessage(ADDRESS_NOT_FOUND_WELSH, args,
+                Locale.UK);
 
         caseData.getExecutorsApplyingNotifications().forEach(executor -> {
             if (executor.getValue().getNotification().equals(YES)) {
@@ -33,12 +34,12 @@ public class AddressExecutorsApplyingValidationRule implements CaseDetailsValida
                         || executor.getValue().getAddress().getPostCode() == null) {
                     throw new BusinessValidationException(userMessage,
                             "An applying exec address has null value for Address line 1 or postcode with case id "
-                                    + caseDetails.getId(), userMessage2);
+                                    + caseDetails.getId(), userMessageWelsh);
                 } else if (executor.getValue().getAddress().getAddressLine1().isEmpty()
                         || executor.getValue().getAddress().getPostCode().isEmpty()) {
                     throw new BusinessValidationException(userMessage,
                             "An applying exec address has empty value for Address line 1 or postcode with case id "
-                                    + caseDetails.getId(), userMessage2);
+                                    + caseDetails.getId(), userMessageWelsh);
                 }
             }
         });
