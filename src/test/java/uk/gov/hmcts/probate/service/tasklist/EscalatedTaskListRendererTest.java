@@ -43,7 +43,7 @@ class EscalatedTaskListRendererTest {
             + "<h2 class=\"govuk-heading-l\">What happens next</h2>"
             + "<h2 class=\"govuk-heading-l\">Beth fydd yn digwydd nesaf</h2>\n\n"
             + "<p class=\"govuk-body-s\">The case was escalated on 01 Jan 2020.</p>\n"
-            + "<p class=\"govuk-body-s\">Cyfeiriwyd yr achos ar 01 Jan 2020.</p>\n"
+            + "<p class=\"govuk-body-s\">Cyfeiriwyd yr achos ar 01 Ion 2020.</p>\n"
             + "<p class=\"govuk-body-s\">The case will be reviewed by a Registrar and you will be notified "
             + "by email if we need any "
             + "information from you to progress the case.</p>\n"

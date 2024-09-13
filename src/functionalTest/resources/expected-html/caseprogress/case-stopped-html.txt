@@ -6,7 +6,7 @@
 <h2 class="govuk-heading-l">What happens next</h2>
 <h2 class="govuk-heading-l">Beth fydd yn digwydd nesaf</h2>
 <p class="govuk-body-s">The case was stopped on <today/> for one of two reasons:</p>
-<p class="govuk-body-s">Cafodd yr achos ei atal ar <today/> am un o ddau reswm:</p>
+<p class="govuk-body-s">Cafodd yr achos ei atal ar <today-welsh/> am un o ddau reswm:</p>
 <ul class="govuk-list govuk-list--bullet">
 <li>an internal review is needed</li>
 <li>Mae angen adolygiad mewnol</li>

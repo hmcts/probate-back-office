@@ -42,7 +42,7 @@ class StoppedTaskListRendererTest {
             + "<h2 class=\"govuk-heading-l\">What happens next</h2>"
             + "<h2 class=\"govuk-heading-l\">Beth fydd yn digwydd nesaf</h2>\n\n"
             + "<p class=\"govuk-body-s\">The case was stopped on 01 Jan 2020 for one of two reasons:</p>\n"
-            + "<p class=\"govuk-body-s\">Cafodd yr achos ei atal ar 01 Jan 2020 am un o ddau reswm:</p>\n"
+            + "<p class=\"govuk-body-s\">Cafodd yr achos ei atal ar 01 Ion 2020 am un o ddau reswm:</p>\n"
             + "<ul class=\"govuk-list govuk-list--bullet\">\n"
             + "<li>an internal review is needed</li>\n"
             + "<li>Mae angen adolygiad mewnol</li>\n"

@@ -6,7 +6,7 @@
 <h2 class="govuk-heading-l">What happens next</h2>
 <h2 class="govuk-heading-l">Beth fydd yn digwydd nesaf</h2>
 <p class="govuk-body-s">The case was escalated on <today/>.</p>
-<p class="govuk-body-s">Cyfeiriwyd yr achos ar <today/>.</p>
+<p class="govuk-body-s">Cyfeiriwyd yr achos ar <today-welsh/>.</p>
 <p class="govuk-body-s">The case will be reviewed by a Registrar and you will be notified by email if we need any information from you to progress the case.</p>
 <p class="govuk-body-s">Bydd yr achos yn cael ei adolygu gan Gofrestrydd a byddwch yn cael eich hysbysu drwy e-bost os bydd arnom angen unrhyw wybodaeth gennych i symud yr achos yn ei flaen.</p>
 <p class="govuk-body-s">Only contact the CTSC staff if your case has been escalated for 6 weeks or more and you have not received any communication since then.</p>
