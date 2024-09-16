@@ -16,7 +16,7 @@
 <p class="govuk-body-s">Ychwanegu manylion ymarferydd profiant</p>
 </div>
 <div class="govuk-grid-column-one-third">
-<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div>
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
@@ -26,7 +26,7 @@
 <p class="govuk-body-s">Ychwanegu manylion yr ymadawedig </p>
 </div>
 <div class="govuk-grid-column-one-third">
-<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div>
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
@@ -36,7 +36,7 @@
 <p class="govuk-body-s">Ychwanegu manylion y cais</p>
 </div>
 <div class="govuk-grid-column-one-third">
-<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div>
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
@@ -57,7 +57,7 @@
 <p class="govuk-body-s">Adolygwch a llofnodwch y datganiad cyfreithiol a chyflwynwch y cais</p>
 </div>
 <div class="govuk-grid-column-one-third">
-<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div>
 </div>
 <div class="govuk-grid-row">
@@ -76,7 +76,7 @@
 <p class="govuk-body-s"><font color="#505a5f"></font></p>
 </div>
 <div class="govuk-grid-column-one-third">
-<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
+<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed.png" alt="COMPLETED" title="COMPLETED" /></p>
 </div>
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
@@ -95,10 +95,14 @@
 <li>if applicable, send us the appropriate renunciation form <a href="https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights" target="_blank">PA15</a> / <a href="https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners" target="_blank">PA17</a> for executors who have renounced their right to apply</li>
 </ul>  </div>
 </details>
+<details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      Gweld y dogfennau sydd eu hangen gan Wasanaeth Llysoedd a Thribiwnlysoedd EF    </span>  </summary>
+  <div class="govuk-details__text">    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/>  </div>
+</details>
 </p>
 </div>
 <div class="govuk-grid-column-one-third">
-<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
+<p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
 </div>
 </div>
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
