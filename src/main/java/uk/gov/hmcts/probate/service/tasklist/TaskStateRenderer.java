@@ -43,11 +43,15 @@ import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_WITH_CODICILS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ORIGINAL_WILL_WITH_CODICILS_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_RENUNCIATION;
 import static uk.gov.hmcts.probate.model.Constants.REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE;
 import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
 import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
@@ -57,6 +61,7 @@ import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
+import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA14_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA15_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
@@ -361,7 +366,7 @@ public class TaskStateRenderer {
         return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE_WELSH,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS_WELSH.replaceFirst("<refNum/>", caseId)
-                                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
+                                .replaceFirst(ORIGINAL_WILL_WELSH, keyValues.getOrDefault("originalWillWelsh", ""))
                                 .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
                                 .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
                                 .replaceFirst(PA14_FORM, keyValues.getOrDefault("pa14Form", ""))
@@ -450,8 +455,9 @@ public class TaskStateRenderer {
     private Map<String, String> getKeyValues(CaseData data) {
         Map<String, String> keyValue = new HashMap<>();
         String willText = getWillCaseTypeLabel(data);
+        String willTextWelsh = getWillCaseTypeLabelWelsh(data);
         keyValue.put("originalWill", willText);
-
+        keyValue.put("originalWillWelsh", willTextWelsh);
         String ihtFormValue = data.getIhtFormId() == null ? "" : data.getIhtFormId();
         String ihtText = "";
         String ihtForm = "";
@@ -532,6 +538,22 @@ public class TaskStateRenderer {
         } else if (YES.equals(data.getWillAccessNotarial())) {
             willText = LIST_ITEM_START + NOTARIAL_COPY_WILL_TEXT + LIST_ITEM_END
                 + LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT + LIST_ITEM_END;
+        }
+        return willText;
+    }
+
+    private String getWillCaseTypeLabelWelsh(CaseData data) {
+        String solsWillType = data.getSolsWillType() == null ? "" : data.getSolsWillType();
+        String willHasCodicils = data.getWillHasCodicils() == null ? "" : data.getWillHasCodicils();
+
+        String willText = LIST_ITEM_START + ORIGINAL_WILL_TEXT_WELSH + LIST_ITEM_END;
+        if (solsWillType.equals(GRANT_TYPE_INTESTACY)) {
+            willText = "";
+        } else if (YES.equals(willHasCodicils)) {
+            willText = LIST_ITEM_START + ORIGINAL_WILL_WITH_CODICILS_TEXT_WELSH + LIST_ITEM_END;
+        } else if (YES.equals(data.getWillAccessNotarial())) {
+            willText = LIST_ITEM_START + NOTARIAL_COPY_WILL_TEXT_WELSH + LIST_ITEM_END
+                    + LIST_ITEM_START + STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT_WELSH + LIST_ITEM_END;
         }
         return willText;
     }

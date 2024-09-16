@@ -7,9 +7,18 @@ public class PageTextConstants {
     public static final String DOCUMENT_YOUR_REF_NUM =
         "the printed coversheet (accessed in the cover sheet tab) or your reference number <refNum/> written"
             + " on a sheet of paper";
+
+    public static final String DOCUMENT_YOUR_REF_NUM_WELSH =
+            "Y ddalen flaen wedi’i hargraffu (yn y tab dalen flaen) neu'ch cyfeirnod wedi'i ysgrifennu <refNum/> "
+                    + "ar ddalen o bapur";
     public static final String DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY =
         "a photocopy of the signed legal statement and declaration";
+
+    public static final String DOCUMENT_LEGAL_STATEMENT_PHOTOCOPY_WELSH =
+            "llungopi o'r datganiad cyfreithiol a’r datganiad wedi’u llofnodi";
     public static final String ORIGINAL_WILL = "<originalWill/>";
+
+    public static final String ORIGINAL_WILL_WELSH = "<originalWillWelsh/>";
     public static final String AUTHENTICATED_TRANSLATION = "<authenticatedTranslation/>";
     public static final String IHT_TEXT = "<ihtText/>";
     public static final String IHT_FORM = "<ihtForm/>";
