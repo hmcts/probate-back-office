@@ -5,6 +5,7 @@
 <div><paymentTabLink/></div>
 <div><paymentHintText/></div>
 <div><sendDocsLink/></div>
+<div><sendDocsLinkWelsh/></div>
 <div><authDocsLink/></div>
 <div><examAppLink/></div>
 <div><issueGrantLink/></div>

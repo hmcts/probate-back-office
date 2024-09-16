@@ -23,6 +23,11 @@ public class SendDocumentsDetailsHtmlTemplate {
                     PageTextConstants.AUTHENTICATED_TRANSLATION,
                     PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS);
 
+    public static final String DOC_DETAILS_WELSH =
+            format("%s<br/>",
+                    PageTextConstants.DOCUMENT_NOW_SEND_US_WELSH
+                    );
+
     private SendDocumentsDetailsHtmlTemplate() {
         throw new IllegalStateException("Utility class");
     }

@@ -97,6 +97,9 @@ public class TaskStateRenderer {
             + "bydd angen i chi ail-lwytho'r dudalen neu fynd i mewn i'r "
             + "achos eto er mwyn i'r statws talu gael ei ddiweddaru.</secText>";
     static final String SEND_DOCS_DETAILS_TITLE = "View the documents needed by HM Courts and Tribunal Service";
+
+    static final String SEND_DOCS_DETAILS_TITLE_WELSH = "Gweld y dogfennau sydd eu hangen gan Wasanaeth "
+            + "Llysoedd a Thribiwnlysoedd EF";
     private static final String AUTH_DOCS_TEXT = "Authenticate documents";
     private static final String AUTH_DOCS_TEXT_WELSH = "Dilysu dogfennau";
     private static final String EXAMINE_APP_TEXT = "Examine application";
@@ -190,6 +193,7 @@ public class TaskStateRenderer {
                 .replaceFirst("<paymentHintTextWelsh/>", renderPaymentHintTextWelsh(currState, details))
                 .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
+                .replaceFirst("<sendDocsLinkWelsh/>", renderSendDocsDetailsWelsh(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType, details))
@@ -346,6 +350,33 @@ public class TaskStateRenderer {
                     keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
                 .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
                     keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
+                );
+    }
+
+    String renderSendDocsDetailsWelsh(TaskState sendDocsState, String caseId, CaseDetails details) {
+        if (noDocumentsRequiredBusinessRule.isApplicable(details.getData())) {
+            return DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE_WELSH,"");
+        }
+        Map<String, String> keyValues = getKeyValues(details.getData());
+        return sendDocsState == TaskState.NOT_AVAILABLE ? "" :
+                DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE_WELSH,
+                        SendDocumentsDetailsHtmlTemplate.DOC_DETAILS_WELSH.replaceFirst("<refNum/>", caseId)
+                                .replaceFirst(ORIGINAL_WILL, keyValues.getOrDefault("originalWill", ""))
+                                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
+                                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
+                                .replaceFirst(PA14_FORM, keyValues.getOrDefault("pa14Form", ""))
+                                .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa15Form", ""))
+                                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
+                                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
+                                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
+                                .replaceFirst(AUTHENTICATED_TRANSLATION,
+                                        keyValues.getOrDefault("authenticatedTranslation", ""))
+                                .replaceFirst(ADMON_WILL_RENUNCIATION,
+                                        keyValues.getOrDefault("admonWillRenForms", ""))
+                                .replaceFirst(TC_RESOLUTION_WITH_APP,
+                                        keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
+                                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
+                                        keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
                 );
     }
 

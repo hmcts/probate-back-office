@@ -2,6 +2,8 @@ package uk.gov.hmcts.probate.model;
 
 public class PageTextConstants {
     public static final String DOCUMENT_NOW_SEND_US = "You now need to send us";
+
+    public static final String DOCUMENT_NOW_SEND_US_WELSH = "Nawr, mae'n rhaid i chi anfon y canlynol atom";
     public static final String DOCUMENT_YOUR_REF_NUM =
         "the printed coversheet (accessed in the cover sheet tab) or your reference number <refNum/> written"
             + " on a sheet of paper";
