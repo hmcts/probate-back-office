@@ -673,8 +673,9 @@ public class BusinessValidationController {
     @PostMapping(path = "/invalidEvent", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> invalidEvent(@RequestBody CallbackRequest callbackRequest) {
         log.info("invalid creation event");
-        List<String> errors = Arrays.asList(businessValidationMessageService
-                .generateError(INVALID_CREATION_EVENT, "invalidCreationEvent").getMessage());
+        List<String> errors = Arrays.asList(businessValidationMessageService.generateError(INVALID_CREATION_EVENT,
+                "invalidCreationEvent").getMessage(), businessValidationMessageService
+                .generateError(INVALID_CREATION_EVENT, "invalidCreationEventWelsh").getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
                 .errors(errors)
                 .build();

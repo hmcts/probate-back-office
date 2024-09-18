@@ -508,7 +508,8 @@ class ExceptionRecordControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isUnprocessableEntity())
             .andExpect(content().string(
-                containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired caveat.\"]")));
+                containsString("\"warnings\":[\"OCR Data Mapping Error: Cannot extend an already expired "
+                        + "caveat.\"]")));
     }
 
     @Test

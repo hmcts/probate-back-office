@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -24,14 +24,18 @@ public class EmailAddressNotifyApplicantValidationRule implements EmailAddressNo
 
     @Override
     public List<FieldErrorResponse> validate(CCDData ccdData) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
+        Set<FieldErrorResponse> errors = new LinkedHashSet<>();
 
         if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(PERSONAL))
             && StringUtils.isEmpty(ccdData.getPrimaryApplicantEmailAddress())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailPA"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "notifyApplicantNoEmailPAWelsh"));
         } else if (ccdData.getApplicationType().equalsIgnoreCase(String.valueOf(SOLICITOR)) && StringUtils
             .isEmpty(ccdData.getSolsSolicitorEmail())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "notifyApplicantNoEmailSOLS"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "notifyApplicantNoEmailSOLSWelsh"));
         }
         return new ArrayList<>(errors);
     }

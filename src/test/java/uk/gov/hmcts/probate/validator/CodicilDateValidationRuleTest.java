@@ -53,7 +53,7 @@ class CodicilDateValidationRuleTest {
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
-        assertEquals(1, validationError.size());
+        assertEquals(2, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
     }
 
@@ -75,7 +75,7 @@ class CodicilDateValidationRuleTest {
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
-        assertEquals(1, validationError.size());
+        assertEquals(2, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
     }
 
@@ -94,7 +94,7 @@ class CodicilDateValidationRuleTest {
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
-        assertEquals(1, validationError.size());
+        assertEquals(2, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
     }
 
@@ -139,9 +139,9 @@ class CodicilDateValidationRuleTest {
 
         List<FieldErrorResponse> validationError = underTest.validate(ccdDataMock);
 
-        assertEquals(2, validationError.size());
+        assertEquals(4, validationError.size());
         assertEquals(fieldErrorResponse, validationError.get(0));
-        assertEquals(fieldErrorResponse, validationError.get(1));
+        assertEquals(fieldErrorResponse, validationError.get(2));
     }
 
     @Test

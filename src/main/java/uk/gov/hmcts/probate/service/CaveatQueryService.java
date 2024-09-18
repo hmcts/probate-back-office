@@ -47,6 +47,7 @@ public class CaveatQueryService {
     private static final String PA_APP_CREATED = "PAAppCreated";
     private static final String STATE = "state";
     private static final String CAVEAT_NOT_FOUND_CODE = "caveatNotFound";
+    private static final String CAVEAT_NOT_FOUND_CODE_WELSH = "caveatNotFoundWelsh";
 
     private final RestTemplate restTemplate;
     private final AppInsights appInsights;
@@ -73,8 +74,10 @@ public class CaveatQueryService {
         if (foundCaveats.size() != 1) {
             String[] args = {caveatId};
             String userMessage = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE, args, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever.getMessage(CAVEAT_NOT_FOUND_CODE_WELSH, args,
+                    Locale.UK);
             throw new BusinessValidationException(userMessage,
-                "Could not find any caveats for the entered caveat id: " + caveatId);
+                "Could not find any caveats for the entered caveat id: " + caveatId, userMessageWelsh);
         }
         return foundCaveats.get(0).getData();
     }

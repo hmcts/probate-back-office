@@ -357,11 +357,15 @@ public class NotificationService {
         } else if (caseData.getApplicationType().equals(ApplicationType.SOLICITOR)) {
             throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 "emailNotProvidedSOLS").getMessage(),
-                "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId());
+                "Invalid email exception: No email address provided for application type SOLS: " + caseDetails.getId(),
+                    businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "emailNotProvidedSOLSWelsh").getMessage());
         } else {
             throw new InvalidEmailException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 "emailNotProvidedPA").getMessage(),
-                "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId());
+                "Invalid email exception: No email address provided for application type PA: " + caseDetails.getId(),
+                    businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "emailNotProvidedPAWelsh").getMessage());
         }
 
         return sentEmail;

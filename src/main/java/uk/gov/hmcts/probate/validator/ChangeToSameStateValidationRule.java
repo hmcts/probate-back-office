@@ -15,14 +15,17 @@ public class ChangeToSameStateValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String CHANGE_TO_SAME_STATE = "changeToSameState";
+    private static final String CHANGE_TO_SAME_STATE_WELSH = "changeToSameStateWelsh";
 
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
         if (caseData.getTransferToState().equals(caseDetails.getState())) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage(CHANGE_TO_SAME_STATE, null, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage(CHANGE_TO_SAME_STATE_WELSH, null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "The change case state cannot be the same: " + caseDetails.getId());
+                    "The change case state cannot be the same: " + caseDetails.getId(), userMessageWelsh);
         }
     }
 }

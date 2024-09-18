@@ -6,4 +6,8 @@ public class InvalidEmailException extends BusinessValidationException {
         super(userMessage, message);
     }
 
+    public InvalidEmailException(String userMessage, String message, String... additionalMessages) {
+        super(userMessage, message, additionalMessages);
+    }
+
 }

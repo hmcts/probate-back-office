@@ -35,12 +35,14 @@ class ExecutorsAddressValidationRuleTest {
     private Executor executor;
 
     private FieldErrorResponse executorAddressIsNullError;
+    private FieldErrorResponse executorAddressIsNullError2;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         executorAddressIsNullError = FieldErrorResponse.builder().message("executorAddressIsNull").build();
+        executorAddressIsNullError2 = FieldErrorResponse.builder().message("executorAddressIsNullWelsh").build();
 
         when(executor.isApplying()).thenReturn(true);
 
@@ -48,6 +50,8 @@ class ExecutorsAddressValidationRuleTest {
 
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorAddressIsNull")))
                 .thenReturn(executorAddressIsNullError);
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorAddressIsNullWelsh")))
+                .thenReturn(executorAddressIsNullError2);
 
     }
 
@@ -57,7 +61,7 @@ class ExecutorsAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorAddressIsNullError));
     }
 
@@ -67,8 +71,8 @@ class ExecutorsAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = executorsAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
-        assertTrue(errors.contains(executorAddressIsNullError));
+        assertEquals(2, errors.size());
+        assertTrue(errors.contains(executorAddressIsNullError2));
     }
 
     @Test
