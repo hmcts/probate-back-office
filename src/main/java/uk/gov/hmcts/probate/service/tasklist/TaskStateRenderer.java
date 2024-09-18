@@ -38,9 +38,12 @@ import java.util.stream.Collectors;
 
 import static java.lang.String.format;
 import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.DISPENSE_NOTICE_SUPPORT_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.AUTHENTICATED_TRANSLATION_WILL_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.GRANT_TYPE_INTESTACY;
 import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.IHT_ESTATE_207_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.NOTARIAL_COPY_WILL_TEXT_WELSH;
@@ -54,19 +57,31 @@ import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBI
 import static uk.gov.hmcts.probate.model.Constants.STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS;
+import static uk.gov.hmcts.probate.model.PageTextConstants.DISPENSE_NOTICE_SUPPORT_DOCS_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION;
+import static uk.gov.hmcts.probate.model.PageTextConstants.AUTHENTICATED_TRANSLATION_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION;
+import static uk.gov.hmcts.probate.model.PageTextConstants.ADMON_WILL_RENUNCIATION_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP;
+import static uk.gov.hmcts.probate.model.Constants.TC_RESOLUTION_LODGED_WITH_APP_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_ESTATE_207_WELSH;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_FORM_WELSH;
+import static uk.gov.hmcts.probate.model.PageTextConstants.IHT_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL;
 import static uk.gov.hmcts.probate.model.PageTextConstants.ORIGINAL_WILL_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA14_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA15_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM;
 import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA14_FORM_WELSH;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA15_FORM_WELSH;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA16_FORM_WELSH;
+import static uk.gov.hmcts.probate.model.PageTextConstants.PA17_FORM_WELSH;
 import static uk.gov.hmcts.probate.model.PageTextConstants.TC_RESOLUTION_WITH_APP;
+import static uk.gov.hmcts.probate.model.PageTextConstants.TC_RESOLUTION_WITH_APP_WELSH;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_GOP;
 import static uk.gov.hmcts.probate.model.caseprogress.UrlConstants.ADD_APPLICATION_DETAILS_URL_TEMPLATE_INTESTACY;
@@ -367,21 +382,21 @@ public class TaskStateRenderer {
                 DetailsComponentRenderer.renderByReplace(SEND_DOCS_DETAILS_TITLE_WELSH,
                         SendDocumentsDetailsHtmlTemplate.DOC_DETAILS_WELSH.replaceFirst("<refNum/>", caseId)
                                 .replaceFirst(ORIGINAL_WILL_WELSH, keyValues.getOrDefault("originalWillWelsh", ""))
-                                .replaceFirst(IHT_TEXT, keyValues.getOrDefault("ihtText", ""))
-                                .replaceFirst(IHT_FORM, keyValues.getOrDefault("ihtForm", ""))
-                                .replaceFirst(PA14_FORM, keyValues.getOrDefault("pa14Form", ""))
-                                .replaceFirst(PA15_FORM, keyValues.getOrDefault("pa15Form", ""))
-                                .replaceFirst(PA16_FORM, keyValues.getOrDefault("pa16Form", ""))
-                                .replaceFirst(PA17_FORM, keyValues.getOrDefault("pa17Form", ""))
-                                .replaceFirst(IHT_ESTATE_207, keyValues.getOrDefault("ihtEstate207", ""))
-                                .replaceFirst(AUTHENTICATED_TRANSLATION,
-                                        keyValues.getOrDefault("authenticatedTranslation", ""))
-                                .replaceFirst(ADMON_WILL_RENUNCIATION,
-                                        keyValues.getOrDefault("admonWillRenForms", ""))
-                                .replaceFirst(TC_RESOLUTION_WITH_APP,
-                                        keyValues.getOrDefault("tcResolutionLodgedWithApp", ""))
-                                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS,
-                                        keyValues.getOrDefault("dispenseWithNoticeSupportingDocs", ""))
+                                .replaceFirst(IHT_TEXT_WELSH, keyValues.getOrDefault("ihtTextWelsh", ""))
+                                .replaceFirst(IHT_FORM_WELSH, keyValues.getOrDefault("ihtFormWelsh", ""))
+                                .replaceFirst(PA14_FORM_WELSH, keyValues.getOrDefault("pa14FormWelsh", ""))
+                                .replaceFirst(PA15_FORM_WELSH, keyValues.getOrDefault("pa15FormWelsh", ""))
+                                .replaceFirst(PA16_FORM_WELSH, keyValues.getOrDefault("pa16FormWelsh", ""))
+                                .replaceFirst(PA17_FORM_WELSH, keyValues.getOrDefault("pa17FormWelsh", ""))
+                                .replaceFirst(IHT_ESTATE_207_WELSH, keyValues.getOrDefault("ihtEstate207Welsh", ""))
+                                .replaceFirst(AUTHENTICATED_TRANSLATION_WELSH,
+                                        keyValues.getOrDefault("authenticatedTranslationWelsh", ""))
+                                .replaceFirst(ADMON_WILL_RENUNCIATION_WELSH,
+                                        keyValues.getOrDefault("admonWillRenFormsWelsh", ""))
+                                .replaceFirst(TC_RESOLUTION_WITH_APP_WELSH,
+                                        keyValues.getOrDefault("tcResolutionLodgedWithAppWelsh", ""))
+                                .replaceFirst(DISPENSE_NOTICE_SUPPORT_DOCS_WELSH,
+                                        keyValues.getOrDefault("dispenseWithNoticeSupportingDocsWelsh", ""))
                 );
     }
 
@@ -460,60 +475,124 @@ public class TaskStateRenderer {
         keyValue.put("originalWillWelsh", willTextWelsh);
         String ihtFormValue = data.getIhtFormId() == null ? "" : data.getIhtFormId();
         String ihtText = "";
+        String ihtTextWelsh = "";
         String ihtForm = "";
+        String ihtFormWelsh = "";
         if (!"".equals(ihtFormValue) && !ihtFormValue.contentEquals(IHT400_VALUE)
                 && !ihtFormValue.contentEquals(IHT_400421)
                 && !ihtFormValue.contentEquals(NOT_APPLICABLE_VALUE)) {
             ihtText = LIST_ITEM_START + "the inheritance tax form ";
+            ihtTextWelsh = LIST_ITEM_START + "y ffurflen treth etifeddiant ";
             if (YES.equals(data.getIht217())) {
                 ihtForm = "IHT205 and IHT217" + LIST_ITEM_END;
+                ihtFormWelsh = "IHT205 ac IHT217" + LIST_ITEM_END;
             } else {
                 ihtForm = ihtFormValue + LIST_ITEM_END;
+                ihtFormWelsh = ihtFormValue + LIST_ITEM_END;
             }
         }
 
         keyValue.put("ihtText", ihtText);
+        keyValue.put("ihtTextWelsh", ihtTextWelsh);
         keyValue.put("ihtForm", ihtForm);
+        keyValue.put("ihtFormWelsh", ihtFormWelsh);
         String pa14Form = "";
         if (pa14FormBusinessRule.isApplicable(data)) {
             pa14Form = buildPA14NotApplyingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
         }
         keyValue.put("pa14Form", pa14Form);
+
+        String pa14FormWelsh = "";
+        if (pa14FormBusinessRule.isApplicable(data)) {
+            pa14FormWelsh = buildPA14NotApplyingExecutorsLinksWelsh(data, REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE);
+        }
+        keyValue.put("pa14FormWelsh", pa14FormWelsh);
+
         String pa15Form = "";
         if (pa15FormBusinessRule.isApplicable(data)) {
             pa15Form = buildPA15NotApplyingExecutorsLinks(data, REASON_FOR_NOT_APPLYING_RENUNCIATION);
         }
         keyValue.put("pa15Form", pa15Form);
+
+        String pa15FormWelsh = "";
+        if (pa15FormBusinessRule.isApplicable(data)) {
+            pa15FormWelsh = buildPA15NotApplyingExecutorsLinksWelsh(data, REASON_FOR_NOT_APPLYING_RENUNCIATION);
+        }
+        keyValue.put("pa15FormWelsh", pa15FormWelsh);
+
         String pa16Form = "";
         if (pa16FormBusinessRule.isApplicable(data)) {
             pa16Form = LIST_ITEM_START + sendDocumentsRenderer.getPA16FormText() + LIST_ITEM_END;
         }
         keyValue.put("pa16Form", pa16Form);
+
+        String pa16FormWelsh = "";
+        if (pa16FormBusinessRule.isApplicable(data)) {
+            pa16FormWelsh = LIST_ITEM_START + sendDocumentsRenderer.getPA16FormTextWelsh() + LIST_ITEM_END;
+        }
+        keyValue.put("pa16FormWelsh", pa16FormWelsh);
+
         String pa17Form = "";
         if (pa17FormBusinessRule.isApplicable(data)) {
             pa17Form = LIST_ITEM_START + sendDocumentsRenderer.getPA17FormText() + LIST_ITEM_END;
         }
         keyValue.put("pa17Form", pa17Form);
+
+        String pa17FormWelsh = "";
+        if (pa17FormBusinessRule.isApplicable(data)) {
+            pa17FormWelsh = LIST_ITEM_START + sendDocumentsRenderer.getPA17FormTextWelsh() + LIST_ITEM_END;
+        }
+        keyValue.put("pa17FormWelsh", pa17FormWelsh);
+
         String ihtEstate207 = "";
         if (ihtEstate207BusinessRule.isApplicable(data)) {
             ihtEstate207 = LIST_ITEM_START + IHT_ESTATE_207_TEXT + LIST_ITEM_END;
         }
         keyValue.put("ihtEstate207", ihtEstate207);
+
+        String ihtEstate207Welsh = "";
+        if (ihtEstate207BusinessRule.isApplicable(data)) {
+            ihtEstate207Welsh = LIST_ITEM_START + IHT_ESTATE_207_TEXT_WELSH + LIST_ITEM_END;
+        }
+        keyValue.put("ihtEstate207Welsh", ihtEstate207Welsh);
+
         String admonWillRenForms = "";
         if (admonWillRenunicationRule.isApplicable(data)) {
             admonWillRenForms = LIST_ITEM_START + sendDocumentsRenderer.getAdmonWillRenunciationText() + LIST_ITEM_END;
         }
         keyValue.put("admonWillRenForms", admonWillRenForms);
+
+        String admonWillRenFormsWelsh = "";
+        if (admonWillRenunicationRule.isApplicable(data)) {
+            admonWillRenFormsWelsh = LIST_ITEM_START + sendDocumentsRenderer.getAdmonWillRenunciationTextWelsh()
+                    + LIST_ITEM_END;
+        }
+        keyValue.put("admonWillRenFormsWelsh", admonWillRenFormsWelsh);
+
         String tcResolutionLodgedWithApp = "";
         if (tcResolutionLodgedWithApplicationRule.isApplicable(data)) {
             tcResolutionLodgedWithApp = LIST_ITEM_START + TC_RESOLUTION_LODGED_WITH_APP + LIST_ITEM_END;
         }
         keyValue.put("tcResolutionLodgedWithApp", tcResolutionLodgedWithApp);
+
+        String tcResolutionLodgedWithAppWelsh = "";
+        if (tcResolutionLodgedWithApplicationRule.isApplicable(data)) {
+            tcResolutionLodgedWithAppWelsh = LIST_ITEM_START + TC_RESOLUTION_LODGED_WITH_APP_WELSH + LIST_ITEM_END;
+        }
+        keyValue.put("tcResolutionLodgedWithAppWelsh", tcResolutionLodgedWithAppWelsh);
+
         String authenticatedTranslation = "";
         if (authenticatedTranslationBusinessRule.isApplicable(data)) {
             authenticatedTranslation = LIST_ITEM_START + AUTHENTICATED_TRANSLATION_WILL_TEXT + LIST_ITEM_END;
         }
         keyValue.put("authenticatedTranslation", authenticatedTranslation);
+
+        String authenticatedTranslationWelsh = "";
+        if (authenticatedTranslationBusinessRule.isApplicable(data)) {
+            authenticatedTranslationWelsh = LIST_ITEM_START + AUTHENTICATED_TRANSLATION_WILL_TEXT_WELSH + LIST_ITEM_END;
+        }
+        keyValue.put("authenticatedTranslationWelsh", authenticatedTranslationWelsh);
+
         String dispenseWithNoticeSupportingDocs = "";
         String dispenseWithNotice = NO;
         if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
@@ -523,6 +602,16 @@ public class TaskStateRenderer {
         }
         keyValue.put("dispenseWithNotice", dispenseWithNotice);
         keyValue.put("dispenseWithNoticeSupportingDocs", dispenseWithNoticeSupportingDocs);
+
+        String dispenseWithNoticeSupportingDocsWelsh = "";
+        String dispenseWithNoticeWelsh = NO;
+        if (dispenseNoticeSupportDocsRule.isApplicable(data)) {
+            dispenseWithNoticeWelsh = YES;
+            dispenseWithNoticeSupportingDocsWelsh = LIST_ITEM_START + DISPENSE_NOTICE_SUPPORT_TEXT_WELSH
+                    + data.getDispenseWithNoticeSupportingDocs() + LIST_ITEM_END;
+        }
+        keyValue.put("dispenseWithNoticeWelsh", dispenseWithNoticeWelsh);
+        keyValue.put("dispenseWithNoticeSupportingDocsWelsh", dispenseWithNoticeSupportingDocsWelsh);
         return keyValue;
     }
 
@@ -566,6 +655,14 @@ public class TaskStateRenderer {
             .collect(Collectors.joining());
     }
 
+    private String buildPA14NotApplyingExecutorsLinksWelsh(CaseData caseData, String reason) {
+        List<AdditionalExecutorNotApplying> notApplyingExecs =
+                notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
+        return notApplyingExecs.stream()
+                .map(executor -> buildPA14NotApplyingExecLabelWelsh(executor.getNotApplyingExecutorName()))
+                .collect(Collectors.joining());
+    }
+
     private String buildPA15NotApplyingExecutorsLinks(CaseData caseData, String reason) {
         List<AdditionalExecutorNotApplying> notApplyingExecs =
             notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
@@ -575,13 +672,32 @@ public class TaskStateRenderer {
 
     }
 
+    private String buildPA15NotApplyingExecutorsLinksWelsh(CaseData caseData, String reason) {
+        List<AdditionalExecutorNotApplying> notApplyingExecs =
+                notApplyingExecutorsMapper.getAllExecutorsNotApplying(caseData, reason);
+        return notApplyingExecs.stream()
+                .map(executor -> buildPA15NotApplyingExecLabelWelsh(executor.getNotApplyingExecutorName()))
+                .collect(Collectors.joining());
+
+    }
+
     private String buildPA15NotApplyingExecLabel(String renouncingExecutorName) {
         return LIST_ITEM_START + sendDocumentsRenderer.getPA15NotApplyingExecutorText(renouncingExecutorName)
             + LIST_ITEM_END;
     }
 
+    private String buildPA15NotApplyingExecLabelWelsh(String renouncingExecutorName) {
+        return LIST_ITEM_START + sendDocumentsRenderer.getPA15NotApplyingExecutorTextWelsh(renouncingExecutorName)
+                + LIST_ITEM_END;
+    }
+
     private String buildPA14NotApplyingExecLabel(String renouncingExecutorName) {
         return LIST_ITEM_START + sendDocumentsRenderer.getPA14NotApplyingExecutorText(renouncingExecutorName)
             + LIST_ITEM_END;
+    }
+
+    private String buildPA14NotApplyingExecLabelWelsh(String renouncingExecutorName) {
+        return LIST_ITEM_START + sendDocumentsRenderer.getPA14NotApplyingExecutorTextWelsh(renouncingExecutorName)
+                + LIST_ITEM_END;
     }
 }

@@ -33,7 +33,7 @@ public class AppStoppedTaskListRenderer extends NoTaskListRenderer {
                         "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"))
             .replaceFirst("<guidanceLinkWelsh/>",
                     LinkRenderer.renderOutside(
-                            "Guidance on exemptions, conditions and when applications must be submitted by paper.",
+                            "Arweiniad ar esemptiadau, amodau a pha bryd y mae’n rhaid cyflwyno ceisiadau ar bapur.",
                             "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"));
     }
 

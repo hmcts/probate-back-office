@@ -47,7 +47,7 @@
     </span>
   </summary>
   <div class="govuk-details__text">
-    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/>
+    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/><ul><li>Y ddalen flaen wedi’i hargraffu (yn y tab dalen flaen) neu'ch cyfeirnod wedi'i ysgrifennu 1528365719153338 ar ddalen o bapur</li><li>llungopi o'r datganiad cyfreithiol a’r datganiad wedi’u llofnodi</li><li>yr ewyllys wreiddiol</li></ul>
   </div>
 </details></p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/master/src/main/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
 </div></div>

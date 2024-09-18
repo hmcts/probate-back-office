@@ -503,6 +503,10 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA17FormText()).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" "
             + "target=\"_blank\">Give up probate executor rights for probate practitioners paper form (PA17)</a>");
+        when(sendDocumentsRenderer.getPA17FormTextWelsh()).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" "
+                + "target=\"_blank\">Ffurflen bapur rhoi’r gorau i hawliau ysgutor profiant ar gyfer ymarferwyr "
+                + "profiant (PA17)</a>");
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -553,6 +557,9 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Medical "
             + "certificate completed by a health professional</a> (PA14) for Tim Smith");
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorTextWelsh("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Tystysgrif "
+                + "feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol</a> (PA14) ar gyfer Tim Smith");
 
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -603,6 +610,9 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up "
             + "probate administrator rights paper form</a> (PA15) for Tim Smith");
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorTextWelsh("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Ffurflen "
+                + "bapur rhoi’r gorau i hawliau gweinyddwr profiant</a> (PA15) ar gyfer Tim Smith");
 
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -784,6 +794,9 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA16FormText()).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">Give up"
             + " probate administrator rights paper form (PA16)</a>");
+        when(sendDocumentsRenderer.getPA16FormTextWelsh()).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">"
+                + "Ffurflen bapur rhoi’r gorau i hawliau gweinyddwr profiant (PA16)</a>");
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -1035,6 +1048,13 @@ class TaskStateRendererTest {
             + " <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for"
             + "-probate-practitioners\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA17</a>"
             + " for executors who have renounced their right to apply");
+
+        when(sendDocumentsRenderer.getAdmonWillRenunciationTextWelsh()).thenReturn("os yw’n berthnasol, anfonwch "
+                + "y ffurflen ymwrthod briodol atom <a href=\"https://www.gov.uk/government/publications/form-pa15-give-up-probate-"
+                + "executor-rights\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA15</a> /"
+                + " <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for"
+                + "-probate-practitioners\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA17</a>"
+                + " ar gyfer ysgutorion sydd wedi rhoi’r gorau i’w hawl i wneud cais");
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",
