@@ -195,7 +195,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .thenReturn();
 
         response.then().assertThat().statusCode(200)
-            .and().body("errors", hasSize(equalTo(3)))
+            .and().body("errors", hasSize(equalTo(6)))
             .and().body("errors", hasItem(containsString(errorMessage1)))
             .and().body("errors", hasItem(containsString(errorMessage2)))
             .and().body("errors", hasItem(containsString(errorMessage3)));
