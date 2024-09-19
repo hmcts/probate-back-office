@@ -19,8 +19,11 @@ import static java.util.Locale.UK;
 public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule {
 
     public static final String IHT_DATE_IS_INVALID = "iht400DateInvalid";
+    public static final String IHT_DATE_IS_INVALID_WELSH = "iht400DateInvalidWelsh";
     public static final String IHT_DATE_IS_INVALID2 = "iht400DateInvalid2";
+    public static final String IHT_DATE_IS_INVALID2_WELSH = "iht400DateInvalid2Welsh";
     public static final String IHT_DATE_IS_INVALID3 = "iht400DateInvalid3";
+    public static final String IHT_DATE_IS_INVALID3_WELSH = "iht400DateInvalid3Welsh";
     public static final String IHT_DATE_IS_IN_FUTURE = "iht400DateIsInFuture";
     public static final String IHT_DATE_IS_IN_FUTURE_WELSH = "iht400DateIsInFutureWelsh";
 
@@ -101,9 +104,13 @@ public class IHTFourHundredDateValidationRule implements IHTFourHundredDateRule 
             userMessage = "Case ID " + caseDetails.getId() + ": IHT400421 date (" + iht400Date + ")"
                 + " needs to be before 20 working days before current date";
             String error1 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID, empty, UK);
+            String errorWelsh1 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID_WELSH, empty, UK);
             String error2 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID2, args, UK);
+            String errorWelsh2 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID2_WELSH, args, UK);
             String error3 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID3, empty, UK);
-            throw new BusinessValidationException(error1, userMessage, error2, error3);
+            String errorWelsh3 = businessValidationMessageRetriever.getMessage(IHT_DATE_IS_INVALID3_WELSH, empty, UK);
+            throw new BusinessValidationException(error1, userMessage, errorWelsh1, error2, errorWelsh2, error3,
+                    errorWelsh3);
         }
     }
 }
