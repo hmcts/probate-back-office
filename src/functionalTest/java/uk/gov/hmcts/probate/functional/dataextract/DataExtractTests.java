@@ -8,11 +8,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import io.restassured.RestAssured;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Value;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.ccd.raw.BigDecimalSerializer;
@@ -21,7 +20,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@ExtendWith(SerenityJUnit5Extension.class)
 public class DataExtractTests extends IntegrationTestBase {
     private static final String IRONMOUNTAIN_URL = "/data-extract/iron-mountain";
     private static final String RESEND_IRONMOUNTAIN_URL = "/data-extract/resend-iron-mountain";
@@ -40,13 +41,13 @@ public class DataExtractTests extends IntegrationTestBase {
     @Value("${probate.caseworker.id}")
     private Integer id;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void verifyValidDateRequestReturnsAcceptedStatusForIronMountain() {
+    void verifyValidDateRequestReturnsAcceptedStatusForIronMountain() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -58,7 +59,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyValidDateRequestReturnsAcceptedStatusForResendIronMountain() throws JsonProcessingException {
+    void verifyValidDateRequestReturnsAcceptedStatusForResendIronMountain() throws JsonProcessingException {
 
         SimpleModule module = new SimpleModule();
         module.addSerializer(BigDecimal.class, new BigDecimalSerializer());
@@ -86,7 +87,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyValidDateRequestReturnsAcceptedStatusForHMRC() {
+    void verifyValidDateRequestReturnsAcceptedStatusForHMRC() {
         final String response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -98,12 +99,12 @@ public class DataExtractTests extends IntegrationTestBase {
             .then().assertThat().statusCode(202)
             .extract().response().getBody().prettyPrint();
 
-        Assert.assertEquals(HMRC_DATA_EXTRACT_COMPLETION_MESSAGE, response);
+        assertEquals(HMRC_DATA_EXTRACT_COMPLETION_MESSAGE, response);
 
     }
 
     @Test
-    public void verifyNoDateFormatReturnsBadResponseForHMRC() {
+    void verifyNoDateFormatReturnsBadResponseForHMRC() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation().headers(utils.getHeaders(email,
@@ -114,7 +115,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyIncorrectDateFormatReturnsBadResponseForHMRC() {
+    void verifyIncorrectDateFormatReturnsBadResponseForHMRC() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -128,7 +129,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyNoDateFormatReturnsBadRequestForIronMountain() {
+    void verifyNoDateFormatReturnsBadRequestForIronMountain() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -139,7 +140,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyIncorrectDateFormatReturnsBadRequestForIronMountain() {
+    void verifyIncorrectDateFormatReturnsBadRequestForIronMountain() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -151,7 +152,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyValidDateRequestReturnsAcceptedStatusForExela() {
+    void verifyValidDateRequestReturnsAcceptedStatusForExela() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -164,7 +165,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyNoDateFormatReturnsBadRequestForExela() {
+    void verifyNoDateFormatReturnsBadRequestForExela() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -175,7 +176,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyIncorrectDateFormatReturnsBadRequestForExela() {
+    void verifyIncorrectDateFormatReturnsBadRequestForExela() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -187,7 +188,7 @@ public class DataExtractTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyValidDateRequestReturnsAcceptedStatusForSmeeAndFord() {
+    void verifyValidDateRequestReturnsAcceptedStatusForSmeeAndFord() {
         RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()

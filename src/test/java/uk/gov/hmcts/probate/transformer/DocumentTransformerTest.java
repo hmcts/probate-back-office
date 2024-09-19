@@ -485,7 +485,7 @@ class DocumentTransformerTest {
     }
 
     @Test
-    public void shouldAddBlankLetterToGeneratedDocuments() {
+    void shouldAddBlankLetterToGeneratedDocuments() {
         assertTrue(callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated().isEmpty());
 
         documentTransformer

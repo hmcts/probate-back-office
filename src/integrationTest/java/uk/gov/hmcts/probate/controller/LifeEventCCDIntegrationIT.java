@@ -74,10 +74,10 @@ class LifeEventCCDIntegrationIT {
         wireMockServer.stubFor(post(urlEqualTo("/idam/lease"))
             .willReturn(ok("idamToken")));
 
-        wireMockServer.stubFor(get(urlPathMatching("/ccd/citizens/jurisdictions/.*"))
+        wireMockServer.stubFor(get(urlPathMatching("/ccd/citizens//jurisdictions/.*"))
             .willReturn(okJson("{ \"token\": \"dummyCcdToken\"}")));
 
-        wireMockServer.stubFor(post(urlPathMatching("/ccd/citizens/.*"))
+        wireMockServer.stubFor(post(urlPathMatching("/ccd/citizens//jurisdictions/.*"))
             .willReturn(aResponse()
                 .withStatus(200)
             )
@@ -88,6 +88,7 @@ class LifeEventCCDIntegrationIT {
     public void reset() {
         wireMockServer.resetAll();
     }
+
 
     @Test
     void shouldUpdateCCDIfSingleRecordReturned() throws Exception {
@@ -112,12 +113,12 @@ class LifeEventCCDIntegrationIT {
             .atMost(2, SECONDS)
             .untilAsserted(() ->
                 wireMockServer.verify(postRequestedFor(urlEqualTo(
-                    "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
+                    "/ccd/citizens//jurisdictions/PROBATE/case-types/GrantOfRepresentation"
                         + "/cases/1621002468661478/events?ignore-warning=false"))));
 
 
         wireMockServer.verify(getRequestedFor(urlEqualTo(
-            "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
+            "/ccd/citizens//jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
                 + "-triggers/deathRecordVerified/token")));
     }
 
@@ -134,11 +135,11 @@ class LifeEventCCDIntegrationIT {
             .atMost(2, SECONDS)
             .untilAsserted(() ->
                 wireMockServer.verify(postRequestedFor(urlEqualTo(
-                    "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
+                    "/ccd/citizens//jurisdictions/PROBATE/case-types/GrantOfRepresentation"
                         + "/cases/1621002468661478/events?ignore-warning=false"))));
 
         wireMockServer.verify(getRequestedFor(urlEqualTo(
-            "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
+            "/ccd/citizens//jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
                 + "-triggers/deathRecordVerificationFailed/token")));
 
     }
@@ -176,11 +177,11 @@ class LifeEventCCDIntegrationIT {
             .atMost(2, SECONDS)
             .untilAsserted(() ->
                 wireMockServer.verify(postRequestedFor(urlEqualTo(
-                    "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation"
+                    "/ccd/citizens//jurisdictions/PROBATE/case-types/GrantOfRepresentation"
                         + "/cases/1621002468661478/events?ignore-warning=false"))));
 
         wireMockServer.verify(getRequestedFor(urlEqualTo(
-            "/ccd/citizens/jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
+            "/ccd/citizens//jurisdictions/PROBATE/case-types/GrantOfRepresentation/cases/1621002468661478/event"
                 + "-triggers/deathRecordVerificationFailed/token")));
 
     }
