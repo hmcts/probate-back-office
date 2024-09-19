@@ -126,7 +126,6 @@ public class EventValidationService {
 
     public CallbackResponse validateBulkPrintResponse(String letterId,
                                                       List<? extends BulkPrintValidationRule> rules) {
-
         CCDData ccdData = ccdBeanTransformer.transformBulkPrint(letterId);
         List<FieldErrorResponse> businessErrors = validateBulkPrint(ccdData, rules);
         return CallbackResponse.builder()
