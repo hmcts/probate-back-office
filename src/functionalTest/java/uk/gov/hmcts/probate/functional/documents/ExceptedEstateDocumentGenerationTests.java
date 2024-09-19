@@ -24,7 +24,6 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
@@ -39,7 +38,6 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
@@ -54,7 +52,6 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
@@ -70,7 +67,6 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         String payload = dir + "caseCreate.json";
         JsonPath jsonPath = postAndGetJsonPathResponse(payload, VALIDATE_PROBATE_URL);
         String caseProgressExpectedText = utils.getJsonFromFile(dir + "expectedCaseProgress.txt");
-        log.info("*****-->" + jsonPath.get("data.taskList"));
         assertEquals(caseProgressExpectedText, jsonPath.get("data.taskList"));
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
