@@ -110,8 +110,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithDodBeforeDobReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
-            "Date of death cannot be before date of birth",
-                200);
+            "Date of death cannot be before date of birth", 200);
     }
 
     @Test
@@ -134,8 +133,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
         validatePostFailure("failure.ihtNetIsGreaterThanGross.json",
-                "The gross probate value cannot be less than the net probate value", 200,
-                SOLS_VALIDATE_IHT_ESTATE);
+                "The gross probate value cannot be less than the net probate value", 200, SOLS_VALIDATE_IHT_ESTATE);
 
     }
 
@@ -178,13 +176,13 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
             "\"solsIHT400Date\": \"" + solsIHT400Date + "\",");
         String errorMessage1 = "You must wait until 20 working days after submitting the IHT 400 and 421 to HMRC "
-                + "before you apply for probate.";
+            + "before you apply for probate.";
         String errorMessage2 = "Based on what you've told us about when you submitted the IHT 400 and 421, you"
-                + " can submit this case on "
-                + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
-                + ".";
+            + " can submit this case on "
+            + caseData.convertDate(IHTFourHundredDateValidationRule.addBusinessDays(solsIHT400Date, 20))
+            + ".";
         String errorMessage3 = "You should not try to continue with the application by entering a false date, as "
-                + "this may delay this case.";
+            + "this may delay this case.";
 
         final Response response = RestAssured.given()
             .config(config)
@@ -211,8 +209,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyRequestWithoutDeceasedPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedPostcode.json",
-            "The deceased postcode cannot be empty",
-                200);
+            "The deceased postcode cannot be empty", 200);
     }
 
     @Test
@@ -291,15 +288,15 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyErrorMessageSuccAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingSuccAllRenouncing.json",
-            "Probate practitioner cannot be applying if part of a group which is all renouncing",
-                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+                "Probate practitioner cannot be applying if "
+                        + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     public void verifyErrorMessageAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingAllRenouncing.json",
-            "Probate practitioner cannot be applying if part of a group which is all renouncing",
-                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "Probate practitioner cannot be applying if "
+                    + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -420,11 +417,9 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     public void verifyNegativeCopiesValues() throws IOException {
         validatePostFailure("failure.negativeUKCopies.json",
-            "Uk Grant copies cannot be negative",
-                400, VALIDATE_CASE_AMEND_URL);
+            "Uk Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.negativeOverseasCopies.json",
-            "Overseas Grant copies cannot be negative",
-                400, VALIDATE_CASE_AMEND_URL);
+            "Overseas Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
