@@ -3,20 +3,20 @@ package uk.gov.hmcts.probate.functional.documents;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTestBase {
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
+    void verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesBeforeSwitchDate
         String dir = "/exceptedEstates/ihtEstateBeforeSwitchDate/";
         String payload = dir + "caseCreate.json";
@@ -30,7 +30,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesNo() throws IOException {
+    void verifyGenerateSolsGopExpectedEstatesNo() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesNo
         String dir = "/exceptedEstates/ihtEstateCompletedNo/";
         String payload = dir + "caseCreate.json";
@@ -44,7 +44,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
     }
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
+    void verifyGenerateSolsGopExpectedEstatesCompletedYes207() throws IOException {
         //confirmation page for this at SolCcdServiceNextStepsTests.verifyGenerateSolsGopExpectedEstatesCompletedYes207
         String dir = "/exceptedEstates/ihtEstateCompletedYes207/";
         String payload = dir + "caseCreate.json";
@@ -59,7 +59,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
 
     @Test
-    public void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
+    void verifyGenerateSolsGopExpectedEstatesCompletedYes400421() throws IOException {
         //confirmation page for this at SolCcd....verifyGenerateSolsGopExpectedEstatesCompletedYes400421
         String dir = "/exceptedEstates/ihtEstateCompletedYes400421/";
         String payload = dir + "caseCreate.json";

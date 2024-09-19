@@ -2,8 +2,6 @@ package uk.gov.hmcts.probate.service.payments;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.jayway.jsonpath.DocumentContext;
-import com.jayway.jsonpath.JsonPath;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +16,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestUpdateResponseDto;
 import uk.gov.hmcts.probate.security.SecurityDTO;
@@ -69,11 +68,10 @@ public class PaymentsService {
 
     public String createServiceRequest(ServiceRequestDto serviceRequestDto) {
         SecurityDTO securityDTO = securityUtils.getSecurityDTO();
-        String serviceRequestResponse = serviceRequestClient.createServiceRequest(securityDTO.getAuthorisation(),
+        PaymentServiceResponse paymentServiceResponse = serviceRequestClient
+                .createServiceRequest(securityDTO.getAuthorisation(),
                 securityDTO.getServiceAuthorisation(), serviceRequestDto);
-        DocumentContext jsonContext = JsonPath.parse(serviceRequestResponse);
-        String readPath = "$['" + SERVICE_REQUEST_REFERENCE_KEY + "']";
-        return jsonContext.read(readPath);
+        return paymentServiceResponse.getServiceRequestReference();
     }
 
     public void updateCaseFromServiceRequest(ServiceRequestUpdateResponseDto response, CcdCaseType ccdCaseType) {
