@@ -63,11 +63,9 @@ import uk.gov.hmcts.probate.validator.SolicitorPostcodeValidationRule;
 import uk.gov.hmcts.probate.validator.TitleAndClearingPageValidationRule;
 import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
-
 import uk.gov.service.notify.NotificationClientException;
 
-
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -127,18 +125,17 @@ public class BusinessValidationController {
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
 
-
-    @PostMapping(path = "/update-task-list")
+    @PostMapping(path = "/update-task-list", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
-    @PostMapping(path = "/default-iht-estate")
+    @PostMapping(path = "/default-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIhtEstateFromDateOfDeath(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.defaultIhtEstateFromDateOfDeath(request));
     }
 
-    @PostMapping(path = "/validate-iht-estate")
+    @PostMapping(path = "/validate-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
         naValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
@@ -151,13 +148,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/validate-further-evidence")
+    @PostMapping(path = "/validate-further-evidence", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateFurtherEvidence(@RequestBody CallbackRequest request) {
         furtherEvidenceForApplicationValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.transform(request));
     }
 
-    @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/cw-create-validate-default-iht-estate", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateSolsCreateDefaultIhtEstate(
             @RequestBody CallbackRequest callbackRequest) {
 
@@ -169,7 +167,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-create-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateSolsCreate(
             @Validated({ApplicationCreatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest) {
@@ -183,7 +182,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-created")
+    @PostMapping(path = "/sols-created", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> createSolsCaseWithOrganisation(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestBody CallbackRequest request) {
@@ -191,7 +190,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.createSolsCase(request, authToken));
     }
 
-    @PostMapping(path = "/sols-access")
+    @PostMapping(path = "/sols-access", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<AfterSubmitCallbackResponse> solicitorAccess(
         @RequestHeader(value = "Authorization") String authToken,
         @RequestParam(value = "caseTypeId") String caseTypeId,
@@ -201,7 +200,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(afterSubmitCallbackResponse);
     }
 
-    @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidate(
         @Validated({ApplicationCreatedGroup.class, ApplicationUpdatedGroup.class}) @RequestBody
             CallbackRequest callbackRequest,
@@ -226,7 +226,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-probate", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-probate", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbate(
         @Validated({ApplicationProbateGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -249,7 +250,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-intestacy", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-intestacy", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateIntestacy(
         @Validated({ApplicationIntestacyGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -269,7 +271,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-executors", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateExecutors(
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
@@ -285,7 +288,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-will-and-codicil-dates", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateProbatePage1(
             @RequestBody CallbackRequest callbackRequest,
             HttpServletRequest request) {
@@ -304,7 +308,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-admon", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/sols-validate-admon", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateAdmon(
         @Validated({ApplicationAdmonGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -328,18 +333,20 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/sols-validate-iht400", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> solsValidateIHT400Date(@RequestBody CallbackRequest callbackRequest) {
         validateIHT400Date(callbackRequest);
         return ResponseEntity.ok(callbackResponseTransformer.transform(callbackRequest));
     }
 
-    @PostMapping(path = "/sols-default-iht400421Page")
+    @PostMapping(path = "/sols-default-iht400421Page", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> defaultIht400DatePage(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.defaultIht400421DatePageFlow(request));
     }
 
-    @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -358,7 +365,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/validateCheckListDetails", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/validateCheckListDetails", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateCheckListDetails(
         @Validated({CheckListAmendCaseValidationRule.class}) @RequestBody CallbackRequest callbackRequest,
         HttpServletRequest request) {
@@ -375,7 +383,8 @@ public class BusinessValidationController {
     }
 
 
-    @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/case-stopped", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> startDelayedNotificationPeriod(
         @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
@@ -400,7 +409,8 @@ public class BusinessValidationController {
     }
 
 
-    @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/case-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> caseEscalated(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
@@ -418,7 +428,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/case-worker-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/case-worker-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> caseworkerEscalated(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
@@ -434,7 +445,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/resolve-case-worker-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(path = "/resolve-case-worker-escalated", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> resolveCaseworkerEscalated(
             @RequestBody CallbackRequest callbackRequest,
             BindingResult bindingResult,
@@ -452,7 +464,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/resolveStop", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> resolveStopState(@RequestBody CallbackRequest callbackRequest,
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
@@ -463,7 +476,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/changeCaseState", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/changeCaseState", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> changeCaseState(@RequestBody CallbackRequest callbackRequest,
                                                              HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
@@ -473,7 +487,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
                                                             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
@@ -483,7 +498,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/validate-unique-code")
+    @PostMapping(path = "/validate-unique-code", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
@@ -492,7 +507,7 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/validate-values-page")
+    @PostMapping(path = "/validate-values-page", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateValuesPage(@RequestBody CallbackRequest callbackRequest,
                                                                HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
@@ -500,7 +515,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(path = "/rollback", consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> rollbackDataMigration(@RequestBody CallbackRequest callbackRequest,
                                                             HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
@@ -603,8 +619,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest));
     }
 
-    @PostMapping(path = "/redeclarationComplete", consumes = APPLICATION_JSON_VALUE, produces = {
-        APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/redeclarationComplete", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> redeclarationComplete(
         @RequestBody CallbackRequest callbackRequest) {
         Optional<String> state =
@@ -656,7 +672,8 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.transformCaseWithRegistrarDirection(callbackRequest));
     }
 
-    @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE, produces = {APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> registrarsDecision(
             @RequestBody CallbackRequest callbackRequest) {
         registrarDirectionService.addAndOrderDirectionsToGrant(callbackRequest.getCaseDetails().getData());

@@ -40,7 +40,7 @@ class CasePaymentBuilderTest {
     }
 
     @Test
-    public void shouldGetAllPaymentsIncludingExisitingWithPBASuccess() {
+    void shouldGetAllPaymentsIncludingExistingWithPBASuccess() {
         Payment payment1 = buildPayment(0, "Success", "method");
         paymentsList.add(new CollectionMember<>(null, payment1));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
@@ -66,7 +66,7 @@ class CasePaymentBuilderTest {
     }
 
     @Test
-    public void shouldGetAllPaymentsIncludingExisitingWithPBANotPaid() {
+    void shouldGetAllPaymentsIncludingExistingWithPBANotPaid() {
         Payment payment1 = buildPayment(0, "Success", "method");
         paymentsList.add(new CollectionMember<>(null, payment1));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
@@ -92,7 +92,7 @@ class CasePaymentBuilderTest {
     }
 
     @Test
-    public void shouldGetAllPaymentsIncludingExisitingWithPBAPartiallyPaid() {
+    void shouldGetAllPaymentsIncludingExistingWithPBAPartiallyPaid() {
         Payment payment1 = buildPayment(0, "Success", "method");
         paymentsList.add(new CollectionMember<>(null, payment1));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
@@ -118,7 +118,7 @@ class CasePaymentBuilderTest {
     }
 
     @Test
-    public void shouldGetAllPaymentsIncludingExisitingWithCardSuccess() {
+    void shouldGetAllPaymentsIncludingExistingWithCardSuccess() {
         Payment payment1 = buildPayment(0, "Success", "method");
         paymentsList.add(new CollectionMember<>(null, payment1));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
@@ -144,7 +144,7 @@ class CasePaymentBuilderTest {
     }
 
     @Test
-    public void shouldThrowExceptionForInvalidPaymentMethod() {
+    void shouldThrowExceptionForInvalidPaymentMethod() {
         Payment payment1 = buildPayment(0, "Success", "method");
         paymentsList.add(new CollectionMember<>(null, payment1));
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
@@ -162,7 +162,7 @@ class CasePaymentBuilderTest {
     }
 
     @Test
-    public void shouldOnlyGetNewPayment() {
+    void shouldOnlyGetNewPayment() {
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestPaymentResponseDto())
                 .thenReturn(serviceRequestPaymentResponseDtoMock);
         when(serviceRequestUpdateResponseDtoMock.getServiceRequestStatus()).thenReturn("Paid");

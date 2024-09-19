@@ -1,16 +1,18 @@
 package uk.gov.hmcts.probate.model.ccd.raw;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Before;
-import org.junit.Test;
 
-public class AdditionalExecutorApplyingTest {
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+class AdditionalExecutorApplyingTest {
 
     private static final String APPLYING_EXECUTOR_AGREED = "true";
     private static final String APPLYING_EXECUTOR_INVITATION_ID = "1234567890";
     private AdditionalExecutorApplying additionalExecutorApplying;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         additionalExecutorApplying = AdditionalExecutorApplying.builder()
             .applyingExecutorAgreed(APPLYING_EXECUTOR_AGREED)
@@ -18,12 +20,12 @@ public class AdditionalExecutorApplyingTest {
     }
 
     @Test
-    public void testGetApplyingExecutorAgreed() {
+    void testGetApplyingExecutorAgreed() {
         assertEquals(APPLYING_EXECUTOR_AGREED, additionalExecutorApplying.getApplyingExecutorAgreed());
     }
 
     @Test
-    public void testGetApplyingExecutorInvitationId() {
+    void testGetApplyingExecutorInvitationId() {
         assertEquals(APPLYING_EXECUTOR_INVITATION_ID, additionalExecutorApplying.getApplyingExecutorInvitationId());
     }
 }
