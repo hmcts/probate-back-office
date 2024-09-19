@@ -59,9 +59,9 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().asString().contains(
             "You can't currently use this service if the primary executor is not applying and there are no other "
-                    + "executors applying.\\nNi allwch ddefnyddio'r gwasanaeth hwn ar hyn o bryd os nad yw'r prif "
+                    + "executors applying.\\n\\nNi allwch ddefnyddio'r gwasanaeth hwn ar hyn o bryd os nad yw'r prif "
                     + "ysgutor yn gwneud cais ac nad oes ysgutorion eraill yn gwneud cais. \\n\\nFollow your existing "
-                    + "process for applying for probate for this client"
-                    + ".\\n"));
+                    + "process for applying for probate for this client.\\n\\nDilynwch eich proses bresennol i wneud "
+                    + "cais am brofiant ar gyfer y cleient hwn.\\n"));
     }
 }
