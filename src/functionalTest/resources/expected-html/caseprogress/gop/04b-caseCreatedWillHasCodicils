@@ -97,7 +97,15 @@
 </details>
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      Gweld y dogfennau sydd eu hangen gan Wasanaeth Llysoedd a Thribiwnlysoedd EF    </span>  </summary>
-  <div class="govuk-details__text">    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/>  </div>
+  <div class="govuk-details__text">
+    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/>
+<ul>
+<li>Y ddalen flaen wedi’i hargraffu (yn y tab dalen flaen) neu'ch cyfeirnod wedi'i ysgrifennu 1528365719153338 ar ddalen o bapur</li>
+<li>llungopi o'r datganiad cyfreithiol a’r datganiad wedi’u llofnodi</li>
+<li>yr ewyllys wreiddiol ac unrhyw godisiliau</li>
+<li>y ffurflen treth etifeddiant IHT205</li>
+</ul>
+  </div>
 </details>
 </p>
 </div>
