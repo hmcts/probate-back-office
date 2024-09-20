@@ -9,9 +9,8 @@ import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit.spring.integration.SpringIntegrationMethodRule;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Rule;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.test.context.ContextConfiguration;
@@ -22,10 +21,11 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.HashMap;
 
-import static junit.framework.TestCase.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 @ContextConfiguration(classes = TestContextConfiguration.class)
 public abstract class IntegrationTestBase {
 
@@ -34,7 +34,6 @@ public abstract class IntegrationTestBase {
     @Autowired
     protected SolCCDServiceAuthTokenGenerator serviceAuthTokenGenerator;
 
-    @Rule
     public SpringIntegrationMethodRule springIntegration;
 
     private String solCcdServiceUrl;

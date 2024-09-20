@@ -30,7 +30,7 @@ import uk.gov.hmcts.probate.validator.CaveatsEmailValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;

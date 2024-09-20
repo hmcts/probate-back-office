@@ -62,4 +62,5 @@ public class ResponseWillLodgementData {
 
     //transient in-event vars
     private final OriginalDocuments originalDocuments;
+    private String matches;
 }

@@ -22,6 +22,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.CaseEscalatedService;
 import uk.gov.hmcts.probate.service.CaseStoppedService;
 import uk.gov.hmcts.probate.service.ConfirmationResponseService;
@@ -58,7 +59,7 @@ import uk.gov.hmcts.probate.validator.UniqueCodeValidationRule;
 import uk.gov.hmcts.probate.validator.ValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -176,6 +177,8 @@ class BusinessValidationUnitTest {
     private NaValidationRule naValidationRule;
     @Mock
     private Pre1900DOBValidationRule pre1900DOBValidationRuleMock;
+    @Mock
+    private BusinessValidationMessageService businessValidationMessageServiceMock;
 
 
     @Mock
@@ -217,7 +220,8 @@ class BusinessValidationUnitTest {
             changeToSameStateValidationRule,
             handOffLegacyTransformer,
             registrarDirectionServiceMock,
-            pre1900DOBValidationRuleMock);
+            pre1900DOBValidationRuleMock,
+            businessValidationMessageServiceMock);
 
         when(httpServletRequest.getRequestURI()).thenReturn("/test-uri");
     }
@@ -1035,5 +1039,17 @@ class BusinessValidationUnitTest {
         verify(caseDataTransformerMock).transformCaseDataForPaperForm(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
         assertThat(response.getBody().getData().getChannelChoice(), is(PAPERFORM));
+    }
+
+    @Test
+    void shouldTransformLastModifiedDateForDormant() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.setLastModifiedDateForDormant(callbackRequestMock);
+        verify(callbackResponseTransformerMock, times(1))
+                .transformCase(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 }
