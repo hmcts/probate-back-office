@@ -347,7 +347,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifySolicitorCaseStoppedShouldReturnOkResponseCode() throws IOException {
+    void verifySolicitorCaseStoppedShouldReturnOkResponseCode() throws IOException, InterruptedException {
         String caseId = createCase();
         String payload = utils.getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
@@ -357,7 +357,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifyPersonalApplicantCaseStoppedContentIsOk() throws IOException {
+    void verifyPersonalApplicantCaseStoppedContentIsOk() throws IOException, InterruptedException {
         String caseId = createCase();
         String payload = utils.getJsonFromFile("personalPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
@@ -368,7 +368,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     }
 
     @Test
-    void verifySpecialCharacterEncodingIsOk() throws IOException {
+    void verifySpecialCharacterEncodingIsOk() throws IOException, InterruptedException {
         String caseId = createCase();
         String payload = utils.getJsonFromFile("personalPayloadNotificationsSpecialCharacters.json");
         payload = replaceAllInString(payload, "\"boCaseStopCaveatId\": \"1691481848274878\",",
