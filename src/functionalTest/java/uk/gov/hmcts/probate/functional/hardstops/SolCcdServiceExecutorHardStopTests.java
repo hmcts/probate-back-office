@@ -1,10 +1,10 @@
 package uk.gov.hmcts.probate.functional.hardstops;
 
 import io.restassured.response.Response;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
@@ -14,18 +14,18 @@ import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
 
     public static final String VALIDATE_URL = "/case/sols-validate-probate";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void validateDeceasedDetailWithoutDomicileHardStop() throws IOException {
+    void validateDeceasedDetailWithoutDomicileHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -35,7 +35,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopForDomicile() throws IOException {
+    void validateHardStopForDomicile() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -48,7 +48,7 @@ public class SolCcdServiceExecutorHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopMessageForNoDomicile() throws IOException {
+    void validateHardStopMessageForNoDomicile() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()

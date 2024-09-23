@@ -4,9 +4,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.ImmutableList;
-import org.apache.http.client.config.RequestConfig;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.hc.client5.http.config.RequestConfig;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
+import org.apache.hc.client5.http.impl.classic.HttpClientBuilder;
+import org.apache.hc.core5.util.Timeout;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.hateoas.mediatype.hal.Jackson2HalModule;
@@ -68,8 +69,8 @@ public class EvidenceManagementRestTemplate extends RestTemplate {
 
     private ClientHttpRequestFactory getClientHttpRequestFactory() {
         RequestConfig config = RequestConfig.custom()
-                .setConnectTimeout(httpConnectTimeout)
-                .setConnectionRequestTimeout(httpConnectRequestTimeout)
+                .setConnectTimeout(Timeout.ofDays(httpConnectTimeout))
+                .setConnectionRequestTimeout(Timeout.ofDays(httpConnectRequestTimeout))
                 .build();
 
         CloseableHttpClient client = HttpClientBuilder

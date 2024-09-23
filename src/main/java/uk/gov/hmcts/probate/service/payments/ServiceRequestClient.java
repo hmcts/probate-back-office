@@ -5,6 +5,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+import uk.gov.hmcts.probate.model.payments.PaymentServiceResponse;
 import uk.gov.hmcts.probate.model.payments.servicerequest.ServiceRequestDto;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
@@ -17,7 +18,7 @@ public interface ServiceRequestClient {
         value = "/service-request",
         consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    String createServiceRequest(
+    PaymentServiceResponse createServiceRequest(
         @RequestHeader(AUTHORIZATION) String authorisation,
         @RequestHeader(SERVICE_AUTHORIZATION) String serviceAuthorization,
         @RequestBody final ServiceRequestDto serviceRequestDto
