@@ -160,7 +160,7 @@ gitProperties {
 
 def versions = [
         authCheckerLib                  : '3.0.1',
-        ccdClient                       : '5.0.1',
+        ccdClient                       : '5.0.3',
         commonsIO                       : '2.16.1',
         commonsValidator                : '1.9.0',
         documentClient                  : '1.8.1',
