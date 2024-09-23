@@ -1,7 +1,7 @@
 plugins {
   id 'application'
   id 'io.spring.dependency-management' version '1.1.6'
-  id 'org.springframework.boot' version '3.3.0'
+  id 'org.springframework.boot' version '3.3.4'
   id 'uk.gov.hmcts.java' version '0.12.63'
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.2'
@@ -176,8 +176,8 @@ def versions = [
         serenity                        : '4.1.6',
         serenityreporter                : '4.1.6',
         serviceAuthVersion              : '5.1.2',
-        springBootVersion               : '3.3.0',
-        springBootStarterHateoas        : '3.3.0',
+        springBootVersion               : '3.3.4',
+        springBootStarterHateoas        : '3.3.4',
         springCloud                     : '4.1.2',
         springCloudStarterNetflixHystrix: '4.1.1',
         springDocOpenUi                 : '2.5.0',
