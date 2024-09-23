@@ -315,7 +315,7 @@ java:
         - name: probate-bo-grantSignatureFile
           alias: pdf.service.grantSignatureEncryptedFile
         - name: pdfServiceBaseUrl
-          alias: docmosis.service.uri
+          alias: PDF_SERVICE_BASEURL
         - name: pdfServiceAccessKey
           alias: docmosis.service.accessKey
         - name: pdfServiceHealthUrl
