@@ -181,7 +181,7 @@ def versions = [
         springCloud                     : '4.1.2',
         springCloudStarterNetflixHystrix: '4.1.1',
         springDocOpenUi                 : '2.5.0',
-        springSecurityVersion           : '6.3.0'
+        springSecurityVersion           : '6.3.3'
 ]
 
 jacocoTestReport {
