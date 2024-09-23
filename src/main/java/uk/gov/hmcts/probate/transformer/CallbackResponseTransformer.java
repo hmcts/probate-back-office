@@ -1228,6 +1228,8 @@ public class CallbackResponseTransformer {
             .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
+            .informationNeeded(caseData.getInformationNeeded())
+            .deceasedName(caseData.getDeceasedFullName())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {

@@ -394,4 +394,6 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String deceasedAliasFirstNameOnWill;
     private final String deceasedAliasLastNameOnWill;
     private String matches;
+    private final String informationNeeded;
+    private final String deceasedName;
 }
