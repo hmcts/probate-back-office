@@ -20,6 +20,9 @@ public enum DocumentType {
     @JsonProperty("legalStatementIntestacy")
     LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy"),
 
+    @JsonProperty("legalStatement")
+    LEGAL_STATEMENT("legalStatement"),
+
     @JsonProperty("uploadedLegalStatement")
     UPLOADED_LEGAL_STATEMENT("uploadedLegalStatement"),
 
