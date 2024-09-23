@@ -262,7 +262,7 @@ public class HandOffLegacyServiceTest {
     }
 
     @Test
-    void handOffReasonSetExtendedIntestacyWhenAppTypeIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
+    void handOffReasonExtendedIntestacyWhenAppIsSolicitorCaseTypeIntestacyAndApplicantRelationshipIsChildAdopted() {
         caseDataBuilder
                 .caseHandedOffToLegacySite(null)
                 .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
@@ -276,7 +276,7 @@ public class HandOffLegacyServiceTest {
     }
 
     @Test
-    void handOffReasonSetExtendedIntestacyWhenAppTypeIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
+    void handOffReasonExtendedIntestacyWhenAppIsPersonalCaseTypeIntestacyApplicantRelationshipIsAdoptedAndInEngIsYes() {
         caseDataBuilder.caseHandedOffToLegacySite(null)
                 .titleAndClearingType(TITLE_AND_CLEARING_SOLE_PRINCIPLE)
                 .applicationType(PERSONAL)

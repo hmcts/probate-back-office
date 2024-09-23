@@ -4428,7 +4428,8 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldTransformWithHandOffReason() {
         List<CollectionMember<HandoffReason>> reason = new ArrayList();
-        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason(HandoffReasonId.POA).build()));
+        reason.add(new CollectionMember<>(null,
+                HandoffReason.builder().caseHandoffReason(HandoffReasonId.POA).build()));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .boHandoffReasonList(reason)
                 .caseHandedOffToLegacySite("Yes");
