@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -69,6 +68,8 @@ import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -4427,7 +4428,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldTransformWithHandOffReason() {
         List<CollectionMember<HandoffReason>> reason = new ArrayList();
-        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason("Reason").build()));
+        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason(HandoffReasonId.POA).build()));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .boHandoffReasonList(reason)
                 .caseHandedOffToLegacySite("Yes");

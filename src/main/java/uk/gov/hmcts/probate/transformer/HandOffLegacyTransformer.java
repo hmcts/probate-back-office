@@ -5,7 +5,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.service.HandOffLegacyService;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+
+import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -22,8 +26,23 @@ public class HandOffLegacyTransformer {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (handOffLegacyService.setCaseToHandedOffToLegacySite(callbackRequest.getCaseDetails())) {
             caseData.setCaseHandedOffToLegacySite(YES);
+            List<CollectionMember<HandoffReason>> handoffReasonsList =
+                    handOffLegacyService.setHandoffReason(callbackRequest.getCaseDetails())
+                        .stream()
+                        .map(uk.gov.hmcts.reform.probate.model.cases.CollectionMember::getValue)
+                        .map(this::buildHandOffReason)
+                        .toList();
+            caseData.setBoHandoffReasonList(handoffReasonsList);
         } else {
             caseData.setCaseHandedOffToLegacySite(NO);
         }
+    }
+
+    private CollectionMember<HandoffReason>
+        buildHandOffReason(HandoffReason reason) {
+        HandoffReason handoffReason = HandoffReason.builder()
+                    .caseHandoffReason(reason.getCaseHandoffReason())
+                    .build();
+        return new CollectionMember<>(null, handoffReason);
     }
 }

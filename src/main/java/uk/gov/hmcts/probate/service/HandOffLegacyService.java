@@ -8,6 +8,13 @@ import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.reform.probate.model.cases.CollectionMember;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -71,5 +78,62 @@ public class HandOffLegacyService {
         } else {
             return YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite());
         }
+    }
+
+    public List<CollectionMember<HandoffReason>> setHandoffReason(CaseDetails caseDetails) {
+        CaseData caseData = caseDetails.getData();
+
+        if ((StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
+                || YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite()))
+                && (null == caseData.getBoHandoffReasonList() || caseData.getBoHandoffReasonList().isEmpty())) {
+            List<CollectionMember<HandoffReason>> handoffReasonsList = new ArrayList<>();
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (TITLE_AND_CLEARING_TRUST_CORP_SDJ.equals(caseData.getTitleAndClearingType())
+                    || TITLE_AND_CLEARING_TRUST_CORP.equals(caseData.getTitleAndClearingType()))) {
+                handoffReasonsList.add(buildHandOffReason(HandoffReasonId.TRUST_CORPORATION));
+            }
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
+                handoffReasonsList.add(buildHandOffReason(HandoffReasonId.FOREIGN_DOMICILE));
+            }
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType()))
+                    && NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
+                    && YES.equalsIgnoreCase(caseData.getWillAccessNotarial())) {
+                handoffReasonsList.add(buildHandOffReason(HandoffReasonId.FOREIGN_WILL));
+            }
+
+            if (SOLICITOR.equals(caseData.getApplicationType())
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                    && SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
+                    .equals(caseData.getSolsApplicantRelationshipToDeceased())) {
+                handoffReasonsList.add(buildHandOffReason(HandoffReasonId.EXTENDED_INTESTACY));
+            }
+
+            if (PERSONAL.equals(caseData.getApplicationType())
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                    && PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
+                    .equals(caseData.getPrimaryApplicantRelationshipToDeceased())
+                    && YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
+                handoffReasonsList.add(buildHandOffReason(HandoffReasonId.EXTENDED_INTESTACY));
+            }
+
+            return handoffReasonsList;
+        }
+
+        return Collections.emptyList();
+    }
+
+    private CollectionMember buildHandOffReason(HandoffReasonId reasonId) {
+        HandoffReason handoffReason = HandoffReason.builder()
+                .caseHandoffReason(reasonId)
+                .build();
+        return new CollectionMember(null, handoffReason);
     }
 }
