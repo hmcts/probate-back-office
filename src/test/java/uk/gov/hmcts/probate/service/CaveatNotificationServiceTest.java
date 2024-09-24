@@ -408,6 +408,41 @@ class CaveatNotificationServiceTest {
     }
 
     @Test
+    void testGenerateExpiryDateWithApplicationSubmittedDate() throws NotificationClientException {
+        LocalDate submittedDate = LocalDate.of(2024,1,1).plusMonths(CAVEAT_LIFESPAN);
+        caveatData = CaveatData.builder()
+                .caveatRaisedEmailNotificationRequested("Yes")
+                .applicationSubmittedDate(submittedDate)
+                .applicationType(ApplicationType.SOLICITOR)
+                .build();
+
+        documents.add(sentEmail);
+
+        responseCaveatData = ResponseCaveatData.builder()
+                .notificationsGenerated(DOCUMENTS_LIST)
+                .expiryDate(submittedDate.plusMonths(CAVEAT_LIFESPAN).toString())
+                .build();
+
+        caveatDetails = new CaveatDetails(caveatData, LAST_MODIFIED, ID);
+        caveatCallbackRequest = new CaveatCallbackRequest(caveatDetails);
+        paymentResponse = PaymentResponse.builder().build();
+
+        when(eventValidationService.validateCaveatRequest(any(CaveatCallbackRequest.class), any(List.class)))
+                .thenReturn(caveatCallbackResponse.builder().errors(new ArrayList<>()).build());
+        when(notificationService.sendCaveatEmail(State.CAVEAT_RAISED, caveatDetails)).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+
+        caveatCallbackResponse = CaveatCallbackResponse.builder().caveatData(responseCaveatData).build();
+        when(caveatCallbackResponseTransformer.caveatRaised(caveatCallbackRequest, documents, null))
+                .thenReturn(caveatCallbackResponse);
+
+        caveatNotificationService.caveatRaise(caveatCallbackRequest);
+
+        assertEquals(submittedDate.plusMonths(CAVEAT_LIFESPAN).toString(),
+                caveatCallbackResponse.getCaveatData().getExpiryDate());
+    }
+
+    @Test
     void testCaveatExtendWithError() throws NotificationClientException {
         caveatData = CaveatData.builder()
             .caveatRaisedEmailNotificationRequested("Yes")

@@ -21,7 +21,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(SpringExtension.class)
-public class StandingSearchControllerUnitTest {
+class StandingSearchControllerUnitTest {
 
     @Mock
     private StandingSearchCallbackResponseTransformer standingSearchCallbackResponseTransformer;
@@ -50,7 +50,7 @@ public class StandingSearchControllerUnitTest {
     }
 
     @Test
-    public void shouldCreateStandingSearch() {
+    void shouldCreateStandingSearch() {
         when(standingSearchCallbackResponseTransformer.standingSearchCreated(callbackRequest))
                 .thenReturn(standingSearchCallbackResponse);
         ResponseEntity<StandingSearchCallbackResponse> response =
@@ -60,7 +60,7 @@ public class StandingSearchControllerUnitTest {
     }
 
     @Test
-    public void shouldReturnErrorIfThereAreNoFilesInTheRequest() {
+    void shouldReturnErrorIfThereAreNoFilesInTheRequest() {
         when(standingSearchCallbackResponseTransformer.setupOriginalDocumentsForRemoval(callbackRequest))
                 .thenReturn(standingSearchCallbackResponse);
         ResponseEntity<StandingSearchCallbackResponse> response =

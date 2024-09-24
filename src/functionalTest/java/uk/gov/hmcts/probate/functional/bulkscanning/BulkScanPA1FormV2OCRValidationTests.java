@@ -3,15 +3,16 @@ package uk.gov.hmcts.probate.functional.bulkscanning;
 import io.restassured.RestAssured;
 import static java.util.Collections.emptyList;
 import java.util.List;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
 import static org.hamcrest.Matchers.containsString;
-import org.junit.Before;
-import org.junit.Test;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import org.junit.runner.RunWith;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
 
     private static final String VALIDATE_OCR_DATA = "/forms/%s/validate-ocr";
@@ -20,13 +21,13 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     private static final String SUCCESS = "SUCCESS";
     private static final String WARNINGS = "WARNINGS";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void testPost2022PA1PAllMandatoryFieldsPresentReturnNoWarning() {
+    void testPost2022PA1PAllMandatoryFieldsPresentReturnNoWarning() {
         String jsonRequest =
             utils.getStringFromFile(
                 "/json/bulkscan/version2/validation/requestPayload/Post2022PA1PAllMandatoryFilled.json");
@@ -35,7 +36,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testPost2022PA1PMissingMandatoryFieldsPresentReturnSomeWarnings() {
+    void testPost2022PA1PMissingMandatoryFieldsPresentReturnSomeWarnings() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/Post2022PA1PMissingNQV.json");
         List<String> expectedWarnings =
@@ -44,7 +45,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testPost2022PA1AAllMandatoryFieldsPresentReturnNoWarning() {
+    void testPost2022PA1AAllMandatoryFieldsPresentReturnNoWarning() {
         String jsonRequest =
             utils.getStringFromFile(
                 "/json/bulkscan/version2/validation/requestPayload/Post2022PA1AAllMandatoryFilled.json");
@@ -53,7 +54,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void testPost2022PA1AMissingMandatoryFieldsPresentReturnSomeWarnings() {
+    void testPost2022PA1AMissingMandatoryFieldsPresentReturnSomeWarnings() {
         String jsonRequest =
             utils.getStringFromFile(
                 "/json/bulkscan/version2/validation/requestPayload/Post2022PA1AMissingNQV.json");
@@ -63,7 +64,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnWhenIHT400421Missing() {
+    void shouldWarnWhenIHT400421Missing() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingIHT400421completed.json");
@@ -74,7 +75,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnWhenIHT207Missing() {
+    void shouldWarnWhenIHT207Missing() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingIHT207completed.json");
@@ -85,7 +86,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnWhenDiedAfterSwitchDateMissing() {
+    void shouldWarnWhenDiedAfterSwitchDateMissing() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingDiedAfterSwitchDate.json");
@@ -96,7 +97,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnWhenDiedAfterSwitchDateInconsistentWithDOD() {
+    void shouldWarnWhenDiedAfterSwitchDateInconsistentWithDOD() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PDiedAfterSwitchDateWrong.json");
@@ -106,7 +107,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnForMissingEstateValues() {
+    void shouldWarnForMissingEstateValues() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingEstateValues.json");
@@ -117,7 +118,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnForMissingIHT205CompletedOnline() {
+    void shouldWarnForMissingIHT205CompletedOnline() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1PMissingIHT205CompletedOnline.json");
@@ -128,7 +129,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void invalidApplyingExecutor0EmailAddress() {
+    void invalidApplyingExecutor0EmailAddress() {
         String jsonRequest =
                 utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                         + "Post2022PA1PInvalidExecutor0EmailAddress.json");
@@ -139,7 +140,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validApplyingExecutor0EmailAddress() {
+    void validApplyingExecutor0EmailAddress() {
         String jsonRequest =
                 utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                         + "Post2022PA1PValidExecutor0EmailAddress.json");
@@ -148,7 +149,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnForMissingIhtUnusedAllowanceClaimed() {
+    void shouldWarnForMissingIhtUnusedAllowanceClaimed() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1AMissingUnusedAllowanceClaimed.json");
@@ -159,7 +160,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldNotWarnForMissingIhtUnusedAllowanceClaimedIfNotWidowed() {
+    void shouldNotWarnForMissingIhtUnusedAllowanceClaimedIfNotWidowed() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1AMissingUnusedAllowanceClaimedNotWidowed.json");
@@ -168,7 +169,7 @@ public class BulkScanPA1FormV2OCRValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldWarnForMissingIhtUnusedAllowanceClaimedIfNQVOutOfRange() {
+    void shouldWarnForMissingIhtUnusedAllowanceClaimedIfNQVOutOfRange() {
         String jsonRequest =
             utils.getStringFromFile("/json/bulkscan/version2/validation/requestPayload/"
                 + "Post2022PA1AMissingUnusedAllowanceClaimedNQVOutOfRange.json");

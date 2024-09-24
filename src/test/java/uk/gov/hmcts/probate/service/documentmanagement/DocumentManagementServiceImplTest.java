@@ -30,14 +30,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 
-public class DocumentManagementServiceImplTest {
+class DocumentManagementServiceImplTest {
     @InjectMocks
     private DocumentManagementServiceImpl documentManagementService;
 
@@ -45,6 +45,7 @@ public class DocumentManagementServiceImplTest {
     private DocumentManagementRequestBuilder documentManagementRequestBuilder;
     @Mock
     private CaseDocumentClient caseDocumentClient;
+
     @Mock
     private SecurityUtils securityUtils;
     @Mock
@@ -64,7 +65,7 @@ public class DocumentManagementServiceImplTest {
     }
 
     @Test
-    public void shouldStoreFile() {
+    void shouldStoreFile() {
         EvidenceManagementFileUpload evidenceManagementFileUpload =
             new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
 
@@ -87,7 +88,7 @@ public class DocumentManagementServiceImplTest {
     }
 
     @Test
-    public void shouldStoreFileWithCaseworkerAuthorisation() {
+    void shouldStoreFileWithCaseworkerAuthorisation() {
         EvidenceManagementFileUpload evidenceManagementFileUpload =
                 new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, new byte[100]);
 
@@ -113,7 +114,7 @@ public class DocumentManagementServiceImplTest {
     }
 
     @Test
-    public void shouldStoreFileForCitizen() {
+    void shouldStoreFileForCitizen() {
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation("AUTH")
             .serviceAuthorisation("S2S")
@@ -136,7 +137,7 @@ public class DocumentManagementServiceImplTest {
     }
 
     @Test
-    public void shouldExpire() throws IOException {
+    void shouldExpire() throws IOException {
         SecurityDTO securityDTO = SecurityDTO.builder()
             .authorisation("AUTH")
             .serviceAuthorisation("S2S")
@@ -151,7 +152,7 @@ public class DocumentManagementServiceImplTest {
     }
 
     @Test
-    public void shoulGetDocument() throws IOException {
+    void shoulGetDocument() throws IOException {
         when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
         when(securityUtils.generateServiceToken()).thenReturn("S2S");
         when(caseDocumentClient.getDocumentBinary(anyString(), anyString(), anyString())).thenReturn(getResponseMock);
@@ -169,7 +170,7 @@ public class DocumentManagementServiceImplTest {
     }
 
     @Test
-    public void shoulThrowExceptionForNoBodyGetDocument() throws IOException {
+    void shoulThrowExceptionForNoBodyGetDocument() throws IOException {
         assertThrows(ClientException.class, () -> {
             when(securityUtils.getCaseworkerToken()).thenReturn("AUTH");
             when(securityUtils.generateServiceToken()).thenReturn("S2S");

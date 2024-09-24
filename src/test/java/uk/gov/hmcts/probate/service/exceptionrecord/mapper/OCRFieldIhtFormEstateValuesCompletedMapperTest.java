@@ -35,8 +35,23 @@ class OCRFieldIhtFormEstateValuesCompletedMapperTest {
     }
 
     @Test
-    void shouldReturnFalseWhenIhtEstateFieldsAreAllPresent() {
+    void shouldReturnFalseWhenIhtEstateFieldsAreAllPresentFormVersion2() {
         ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("2")
+            .deceasedDiedOnAfterSwitchDate("True")
+            .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
+            .ihtEstateGrossValue("1000000")
+            .ihtEstateNetValue("900000")
+            .ihtEstateNetQualifyingValue("800000")
+            .build();
+        assertFalse(ocrFieldIhtFormEstateValuesCompletedMapper.toIhtFormEstateValuesCompleted(ocrFields));
+    }
+
+    @Test
+    void shouldReturnFalseWhenIhtEstateFieldsAreAllPresentFormVersion3() {
+        ExceptionRecordOCRFields ocrFields = ExceptionRecordOCRFields.builder()
+            .formVersion("3")
+            .exceptedEstate("True")
             .deceasedDateOfDeath(POST_EE_DECEASED_DATE_OF_DEATH)
             .ihtEstateGrossValue("1000000")
             .ihtEstateNetValue("900000")

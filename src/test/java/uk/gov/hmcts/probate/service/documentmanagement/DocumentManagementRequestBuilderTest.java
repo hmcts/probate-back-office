@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.service.documentmanagement;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -13,17 +13,18 @@ import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(MockitoJUnitRunner.class)
+
+@ExtendWith(MockitoExtension.class)
 public class DocumentManagementRequestBuilderTest {
 
     @InjectMocks
     private DocumentManagementRequestBuilder documentManagementRequestBuilder;
 
     @Test
-    public void shouldPrepareRequestForGrantDoc() {
+    void shouldPrepareRequestForGrantDoc() {
         byte[] bytes = {32, 43, 86};
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 
@@ -39,7 +40,7 @@ public class DocumentManagementRequestBuilderTest {
     }
     
     @Test
-    public void shouldPrepareRequestForCaveatDoc() {
+    void shouldPrepareRequestForCaveatDoc() {
         byte[] bytes = {32, 43, 86};
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 
@@ -55,7 +56,7 @@ public class DocumentManagementRequestBuilderTest {
     }
 
     @Test
-    public void shouldPrepareRequestForWillDoc() {
+    void shouldPrepareRequestForWillDoc() {
         byte[] bytes = {32, 43, 86};
         EvidenceManagementFileUpload fileUpload = new EvidenceManagementFileUpload(MediaType.APPLICATION_PDF, bytes);
 
@@ -71,7 +72,7 @@ public class DocumentManagementRequestBuilderTest {
     }
 
     @Test
-    public void shouldPrepareRequestForCitizenDoc() {
+    void shouldPrepareRequestForCitizenDoc() {
         List<MultipartFile> multipartFileList = new ArrayList<>();
 
         DocumentUploadRequest documentUploadRequest = documentManagementRequestBuilder

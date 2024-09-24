@@ -32,6 +32,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -92,6 +93,7 @@ import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -105,6 +107,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
@@ -302,6 +305,11 @@ class CallbackResponseTransformerTest {
     private static final String NOT_APPLICABLE = "NotApplicable";
     private static final String USER_ID = "User-ID";
     private static final String uniqueCode = "CTS 0405231104 3tpp s8e9";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
+    private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
+    private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+    private List<CaseMatch> caseMatches = new ArrayList<>();
+
     @Mock
     private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
 
@@ -1634,6 +1642,7 @@ class CallbackResponseTransformerTest {
         caseDataBuilder.solsDeceasedAliasNamesList(deceasedAliasNamesList);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
 
         CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
 
@@ -2702,7 +2711,7 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformChannelChoice() {
+    void shouldTransformOrgPolicy() {
         OrganisationPolicy policy = OrganisationPolicy.builder()
                 .organisation(Organisation.builder()
                         .organisationID("ABC")
@@ -2717,12 +2726,11 @@ class CallbackResponseTransformerTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.rollback(callbackRequestMock);
-        assertNull(callbackResponse.getData().getChannelChoice());
+        assertNull(callbackResponse.getData().getApplicantOrganisationPolicy());
     }
 
     @Test
     void shouldTransformCaseForLetter() {
-
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse = underTest.transformCaseForLetter(callbackRequestMock);
@@ -3715,6 +3723,24 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void bulkScanGrantOfRepresentationTransformSolsCaseWithOrgPolicy() {
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy orgPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                        .organisationID(null)
+                        .organisationName(null)
+                        .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build();
+        CaseCreationDetails grantOfRepresentationDetails
+                = underTest.bulkScanGrantOfRepresentationCaseTransform(bulkScanGrantOfRepresentationDataSols);
+        GrantOfRepresentationData grantOfRepresentationData =
+                (GrantOfRepresentationData) grantOfRepresentationDetails.getCaseData();
+        assertEquals(orgPolicy, grantOfRepresentationData.getApplicantOrganisationPolicy());
+    }
+
+    @Test
     void shouldSetCorrectPrintIdForBulkScanGrantRaise() {
         List<Document> documents = new ArrayList<>();
         Document document = Document.builder()
@@ -4186,17 +4212,33 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldTransformForFormNetValue() {
-        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+    void shouldTransformWithFormNetValueAndDigitalSolicitor() {
+        caseDataBuilder.applicationType(ApplicationType.SOLICITOR)
                 .ihtFormNetValue(IHT_NET)
                 .ihtFormId("IHT400")
-                .ihtNetValue(null);
+                .ihtNetValue(null)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void shouldTransformWithFormNetValueAndDigitalPersonal() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtFormNetValue(IHT_NET)
+                .ihtFormId("IHT400")
+                .ihtNetValue(null)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(null, callbackResponse.getData().getIhtNetValue());
     }
 
     @Test
@@ -4240,6 +4282,237 @@ class CallbackResponseTransformerTest {
 
         CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
         assertEquals(IHT_NET, callbackResponse.getData().getIhtNetValue());
+    }
+
+    @Test
+    void testDefaultDateOfDeathDefaultsToDiedOn() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .dateOfDeathType(null)
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.defaultDateOfDeathType(callbackRequestMock);
+        assertEquals(DEFAULT_DATE_OF_DEATHTYPE, callbackResponse.getData().getDateOfDeathType());
+    }
+
+    @Test
+    void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilder() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAliasFirstNameOnWill("John")
+                .deceasedAliasLastNameOnWill("Doe");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
+        assertEquals("John Doe",
+                callbackResponse.getData()
+                .getSolsDeceasedAliasNamesList()
+                .get(0)
+                .getValue()
+                .getSolsAliasname());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
+    void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderForTransformCase() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .ihtReferenceNumber("020e920e920e902e2")
+                .deceasedAliasFirstNameOnWill("Jane")
+                .deceasedAliasLastNameOnWill("Smith")
+                .solsExecutorAliasNames("Dee ceased lol");
+
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+        CallbackResponse response = underTest.setupOriginalDocumentsForRemoval(callbackRequestMock);
+
+        assertEquals(1, response.getData().getSolsDeceasedAliasNamesList().size());
+
+        assertEquals("Jane Smith",
+                callbackResponse.getData()
+                        .getSolsDeceasedAliasNamesList()
+                        .get(0)
+                        .getValue()
+                        .getSolsAliasname());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
+    void testUpdateCaseBuilderForTransformCaseAddsDeceasedAlias() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+
+        caseDataBuilder.deceasedAliasNameList(deceasedAliasNamesList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.updateTaskList(callbackRequestMock);
+
+        assertCommonDetails(callbackResponse);
+        assertLegacyInfo(callbackResponse);
+        assertEquals(ALIAS_FORENAME + " " + ALIAS_SURNAME, callbackResponse
+                .getData()
+                .getSolsDeceasedAliasNamesList()
+                .get(0)
+                .getValue()
+                .getSolsAliasname());
+        assertEquals(1, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
+    void shouldSetApplicationSubmittedDateWhenNull() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .applicationSubmittedDate(null);
+
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.GRANT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+        assertCommon(callbackResponse);
+
+        assertEquals("123-456", callbackResponse
+                .getData().getBulkPrintId().get(0).getValue().getSendLetterId());
+        assertEquals(callbackResponse.getData().getApplicationSubmittedDate(),
+                LocalDate.now().toString());
+    }
+
+    @Test
+    void shouldNotUpdateApplicationSubmittedDateIfExists() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .applicationSubmittedDate("2024-07-10");
+
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.GRANT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.grantRaised(callbackRequestMock, documents, letterId);
+        assertCommon(callbackResponse);
+        assertEquals(callbackResponse.getData().getApplicationSubmittedDate(), "2024-07-10");
+    }
+
+    @Test
+    void shouldSetDefaultDateOfDeathTypeToDiedOn() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.defaultDateOfDeathType(callbackRequestMock);
+        assertEquals("diedOn", callbackResponse.getData().getDateOfDeathType());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldTransformWithHandOffReason() {
+        List<CollectionMember<HandoffReason>> reason = new ArrayList();
+        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason("Reason").build()));
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .boHandoffReasonList(reason)
+                .caseHandedOffToLegacySite("Yes");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(reason, callbackResponse.getData().getBoHandoffReasonList());
+    }
+
+    @SuppressWarnings("unchecked")
+    @Test
+    void shouldReturnNullForEmptyHandOffReason() {
+        List<CollectionMember<HandoffReason>> reason = new ArrayList();
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .boHandoffReasonList(reason);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
+    }
+
+    @Test
+    void shouldReturnNullWhenHandOffSiteIsNo() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .caseHandedOffToLegacySite("No");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertThat(callbackResponse.getData().getBoHandoffReasonList(), empty());
+    }
+
+    @Test
+    void shouldReturnNewDateWhenExcludedEventIsNotMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+        when(callbackRequestMock.getEventId()).thenReturn("eventId");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertNotEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+    }
+
+    @Test
+    void shouldReturnExistingDateWhenExcludedEventIsMatched() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .lastModifiedDateForDormant(dateTime);
+        when(callbackRequestMock.getEventId()).thenReturn("boHistoryCorrection");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transform(callbackRequestMock);
+        assertEquals(dateTime, callbackResponse.getData().getLastModifiedDateForDormant());
+    }
+
+    @Test
+    void shouldReturnNoMatchesWhenNoMatches() {
+        caseDataBuilder.applicationType(SOLICITOR);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                underTest.addMatches(callbackRequestMock, caseMatches);
+
+        assertEquals(callbackResponse.getData().getMatches(), "No matches found");
+    }
+
+    @Test
+    void shouldReturnPossibleMatchesWhenMatchesFound() {
+        List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
+        CollectionMember<CaseMatch> match =
+                new CollectionMember<>(null, CaseMatch
+                        .builder()
+                        .id("123")
+                        .build());
+        caseMatch.add(match);
+        caseDataBuilder.applicationType(SOLICITOR);
+        caseDataBuilder.caseMatches(caseMatch);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                underTest.addMatches(callbackRequestMock, caseMatches);
+
+        assertEquals(callbackResponse.getData().getMatches(), "Possible case matches");
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

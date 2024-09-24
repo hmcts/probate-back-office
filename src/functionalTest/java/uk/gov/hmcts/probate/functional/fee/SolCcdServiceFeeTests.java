@@ -4,11 +4,10 @@ import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import lombok.extern.slf4j.Slf4j;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
@@ -16,12 +15,13 @@ import java.util.HashMap;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Slf4j
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceFeeTests extends IntegrationTestBase {
 
     private static final int APP_FEE = 30000; //comment this out for local tests - keep for commits
@@ -30,75 +30,75 @@ public class SolCcdServiceFeeTests extends IntegrationTestBase {
     private static final double MAX_UK_COPIES = 50;
     private static final double MAX_NON_UK_COPIES = 50;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void shouldIncludePA17Link() throws IOException {
+    void shouldIncludePA17Link() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutorsPA17.json",
             true, true);
         assertTrue(response.getBody().asPrettyString().contains("(PA17)"));
     }
 
     @Test
-    public void shouldTransformSolicitorExecutorFields() throws IOException {
+    void shouldTransformSolicitorExecutorFields() throws IOException {
         Response response = validatePostRequestSuccessForFee("solicitorValidateProbateExecutors.json", true,
             true);
 
         final JsonPath jsonPath = JsonPath.from(response.getBody().asPrettyString());
 
         final HashMap executorNotApplying = jsonPath.get("data.executorsNotApplying[0].value");
-        Assert.assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
-        Assert.assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
-        Assert.assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
+        assertEquals("Exfn Exln", executorNotApplying.get("notApplyingExecutorName"));
+        assertEquals("DiedBefore", executorNotApplying.get("notApplyingExecutorReason"));
+        assertEquals("alias name", executorNotApplying.get("notApplyingExecutorNameOnWill"));
 
         final HashMap executorApplying1 = jsonPath.get("data.executorsApplying[0].value");
-        Assert.assertEquals("Exfn1 Exln1", executorApplying1.get("applyingExecutorName"));
+        assertEquals("Exfn1 Exln1", executorApplying1.get("applyingExecutorName"));
 
         final HashMap executorApplying2 = jsonPath.get("data.executorsApplying[1].value");
-        Assert.assertEquals("Exfn2 Exln2", executorApplying2.get("applyingExecutorName"));
-        Assert.assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
-        Assert.assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+        assertEquals("Exfn2 Exln2", executorApplying2.get("applyingExecutorName"));
+        assertEquals("Alias name exfn2", executorApplying2.get("applyingExecutorOtherNames"));
+        assertEquals("addressline 1", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
             .get("AddressLine1"));
-        Assert.assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+        assertEquals("addressline 2", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
             .get("AddressLine2"));
-        Assert.assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
+        assertEquals("addressline 3", ((HashMap)executorApplying2.get("applyingExecutorAddress"))
             .get("AddressLine3"));
-        Assert.assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
-        Assert.assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
-        Assert.assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
-        Assert.assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
+        assertEquals("posttown", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostTown"));
+        assertEquals("postcode", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("PostCode"));
+        assertEquals("country", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("Country"));
+        assertEquals("county", ((HashMap)executorApplying2.get("applyingExecutorAddress")).get("County"));
     }
 
     @Test
-    public void verifyAllFeesAboveThreshold() throws IOException {
+    void verifyAllFeesAboveThreshold() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue10000.json", true, true);
     }
 
     @Test
-    public void verifyAllFeesBelowThreshold() throws IOException {
+    void verifyAllFeesBelowThreshold() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, true);
     }
 
     @Test
-    public void shouldValidatePBAPaymentNoFees() throws IOException {
+    void shouldValidatePBAPaymentNoFees() throws IOException {
         validatePostRequestSuccessForFee("success.feeNetValue1000.json", false, false);
     }
 
     @Test
-    public void verifyIncorrectJsonReturns400() throws IOException {
+    void verifyIncorrectJsonReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.fee.json", "Invalid Request");
     }
 
     @Test
-    public void verifyNegativeUKCopiesFeeReturns400() throws IOException {
+    void verifyNegativeUKCopiesFeeReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.negativeUKCopies.json", "Uk Grant copies cannot be negative");
     }
 
     @Test
-    public void verifyNegativeOverseasCopiesFeeReturns400() throws IOException {
+    void verifyNegativeOverseasCopiesFeeReturns400() throws IOException {
         verifyIncorrectPostRequestReturns400("failure.negativeOverseasCopies.json", "Overseas Grant copies cannot be "
             + "negative");
     }

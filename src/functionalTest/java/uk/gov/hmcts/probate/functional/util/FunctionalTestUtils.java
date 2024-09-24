@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.io.IOUtils;
@@ -91,7 +91,7 @@ public class FunctionalTestUtils {
     @Value("${case_document_am.url}")
     private String caseDocumentManagermentUrl;
 
-    private final Cache<String, String> cache = Caffeine.newBuilder().expireAfterWrite(2, TimeUnit.HOURS).build();
+    private final Cache<String, String> cache = Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).build();
 
     @PostConstruct
     public void init() {
@@ -202,6 +202,7 @@ public class FunctionalTestUtils {
 
     private Response getDocumentResponse(String documentUrl, Headers headers) {
         log.info("caseDocumentManagermentUrl:" + caseDocumentManagermentUrl);
+        log.info("FunctionalTestUtils.getDocumentResponse:" + documentUrl);
         String docUrl = documentUrl.replaceAll("/binary", "");
         final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
         return getDocumentResponseFromId(documentId, headers);
@@ -257,7 +258,7 @@ public class FunctionalTestUtils {
     }
 
     public String getUserId(String email, String password) {
-        final String caseworkerToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(email, password);
+        final String caseworkerToken = getCachedIdamOpenIdToken(email, password);
         final Headers headers = Headers.headers(
             new Header("Authorization", caseworkerToken));
 
@@ -272,8 +273,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithCaseworkerUser() {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(caseworkerEmail,
-            caseworkerPassword);
+        final String authorizationToken = getCachedIdamOpenIdToken(caseworkerEmail, caseworkerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -287,8 +287,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSolicitorUser() {
-        String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(solicitorEmail,
-            solicitorPassword);
+        String authorizationToken = getCachedIdamOpenIdToken(solicitorEmail, solicitorPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -296,8 +295,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSolicitor2User() {
-        String authorizationToken = "Bearer " + serviceAuthTokenGenerator
-            .generateOpenIdToken(solicitor2Email, solicitor2Password);
+        String authorizationToken = getCachedIdamOpenIdToken(solicitor2Email, solicitor2Password);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),
             new Header("Content-Type", ContentType.JSON.toString()),
@@ -305,8 +303,7 @@ public class FunctionalTestUtils {
     }
 
     public Headers getHeadersWithSchedulerCaseworkerUser() {
-        final String authorizationToken = "Bearer " + serviceAuthTokenGenerator.generateOpenIdToken(schedulerEmail,
-            schedulerPassword);
+        final String authorizationToken = getCachedIdamOpenIdToken(schedulerEmail, schedulerPassword);
         final String id = getUserId(schedulerEmail, schedulerPassword);
         return Headers.headers(
             new Header("ServiceAuthorization", serviceToken),

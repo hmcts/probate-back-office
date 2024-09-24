@@ -19,7 +19,7 @@ import uk.gov.hmcts.reform.ccd.document.am.feign.CaseDocumentClient;
 import uk.gov.hmcts.reform.ccd.document.am.model.DocumentUploadRequest;
 import uk.gov.hmcts.reform.ccd.document.am.model.UploadResponse;
 
-import javax.annotation.Nullable;
+import jakarta.annotation.Nullable;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
@@ -55,10 +55,9 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
         if (!auth.contains(BEARER_PREFIX)) {
             auth = BEARER_PREFIX + auth;
         }
-
         return caseDocumentClient.uploadDocuments(auth, securityDTO.getServiceAuthorisation(),
-            documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
-            documentUploadRequest.getFiles(), PRIVATE);
+                documentUploadRequest.getCaseTypeId(), documentUploadRequest.getJurisdictionId(),
+                documentUploadRequest.getFiles(), PRIVATE);
     }
 
     @Override
@@ -101,9 +100,7 @@ public class DocumentManagementServiceImpl implements DocumentManagementService 
     public byte[] getDocumentByBinaryUrl(String binaryUrl) throws IOException {
         String auth = securityUtils.getCaseworkerToken();
         String s2s = securityUtils.generateServiceToken();
-
-        ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s,
-                binaryUrl);
+        ResponseEntity<Resource> response = caseDocumentClient.getDocumentBinary(auth, s2s, binaryUrl);
         Resource body = response.getBody();
         if (body != null) {
             return IOUtils.toByteArray(body.getInputStream());

@@ -17,6 +17,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -43,16 +44,18 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepr
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
-import static java.util.Collections.EMPTY_LIST;
 import static java.util.Optional.ofNullable;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -118,7 +121,7 @@ public class CallbackResponseTransformer {
     private static final String PBA_PAYMENT_METHOD = "pba";
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final String IHT400 = "IHT400";
-
+    private static final List<String> EXCLUDED_EVENT_LIST = Arrays.asList("boHistoryCorrection", "boCorrection");
     private final DocumentTransformer documentTransformer;
     private final AssembleLetterTransformer assembleLetterTransformer;
     private final ExecutorsApplyingNotificationService executorsApplyingNotificationService;
@@ -136,14 +139,16 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
 
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), true);
         responseCaseDataBuilder.applicantOrganisationPolicy(buildOrganisationPolicy(
             callbackRequest.getCaseDetails(), authToken));
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse updateTaskList(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), true);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -154,7 +159,8 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse setupOriginalDocumentsForRemoval(CallbackRequest callbackRequest) {
         CaseData caseData = callbackRequest.getCaseDetails().getData();
-        ResponseCaseDataBuilder responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(), true);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), true);
         OriginalDocuments originalDocuments = OriginalDocuments.builder()
                 .originalDocsGenerated(caseData.getProbateDocumentsGenerated())
                 .originalDocsScanned(caseData.getScannedDocuments())
@@ -166,7 +172,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse defaultIhtEstateFromDateOfDeath(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
-            true);
+                callbackRequest.getEventId(), true);
         ihtEstateDefaulter.defaultPageFlowIhtSwitchDate(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
@@ -174,7 +180,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse defaultIht400421DatePageFlow(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?,?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
-            true);
+                callbackRequest.getEventId(), true);
         iht400421Defaulter.defaultPageFlowForIht400421(callbackRequest.getCaseDetails().getData(),
             responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
@@ -186,7 +192,7 @@ public class CallbackResponseTransformer {
         // set here to ensure tasklist html is correctly generated
         cd.setState(newState.orElse(null));
 
-        ResponseCaseData responseCaseData = getResponseCaseData(cd, false)
+        ResponseCaseData responseCaseData = getResponseCaseData(cd, callbackRequest.getEventId(), false)
                 // set here again to make life easier mocking
                 .state(newState.orElse(null))
                 .build();
@@ -200,7 +206,7 @@ public class CallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
 
         ResponseCaseData.ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(caseDetails, false);
+                getResponseCaseData(caseDetails, callbackRequest.getEventId(), false);
 
         if (documentTransformer.hasDocumentWithType(documents, GRANT_RAISED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, GRANT_RAISED.getTemplateName());
@@ -209,6 +215,9 @@ public class CallbackResponseTransformer {
             responseCaseDataBuilder
                     .bulkPrintId(caseData.getBulkPrintId())
                     .build();
+        }
+        if (caseData.getApplicationSubmittedDate() == null) {
+            responseCaseDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
         }
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -220,7 +229,7 @@ public class CallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, true));
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         if (documentTransformer.hasDocumentWithType(documents, CAVEAT_STOPPED) && letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, CAVEAT_STOPPED.getTemplateName());
@@ -245,7 +254,8 @@ public class CallbackResponseTransformer {
 
         List<CollectionMember<ExecutorsApplyingNotification>> exec =
                 executorsApplyingNotificationService.createExecutorList(caseDetails.getData());
-        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, false)
+        ResponseCaseData responseCaseData = getResponseCaseData(caseDetails, callbackRequest.getEventId(),
+                false)
                 .executorsApplyingNotifications(exec)
                 .build();
 
@@ -256,7 +266,7 @@ public class CallbackResponseTransformer {
                                                            List<String> letterIds) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
@@ -287,7 +297,7 @@ public class CallbackResponseTransformer {
         caseData.setAuthenticatedDate(LocalDate.now());
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         if (documents.isEmpty()) {
             responseCaseDataBuilder.boEmailDocsReceivedNotificationRequested(
@@ -359,7 +369,7 @@ public class CallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -369,7 +379,7 @@ public class CallbackResponseTransformer {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
         CaseData caseData = caseDetails.getData();
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         List<Document> documents = Arrays.asList(document);
         if (documentTransformer.hasDocumentWithType(documents, DIGITAL_GRANT)
@@ -412,7 +422,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse addSOTDocument(CallbackRequest callbackRequest, Document document) {
         documentTransformer.addDocument(callbackRequest, document, false);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -428,14 +438,19 @@ public class CallbackResponseTransformer {
         storedMatches.sort(Comparator.comparingInt(m -> ofNullable(m.getValue().getValid()).orElse("").length()));
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        if (!storedMatches.isEmpty()) {
+            responseCaseDataBuilder.matches("Possible case matches");
+        } else {
+            responseCaseDataBuilder.matches("No matches found");
+        }
 
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse selectForQA(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-            getResponseCaseData(callbackRequest.getCaseDetails(), false);
+            getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         if (ANSWER_YES.equalsIgnoreCase(callbackRequest.getCaseDetails().getData()
                 .getBoExaminationChecklistRequestQA())) {
             responseCaseDataBuilder.state(QA_CASE_STATE);
@@ -444,8 +459,9 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse resolveStop(CallbackRequest callbackRequest) {
+        setState(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         switch (callbackRequest.getCaseDetails().getData().getResolveStopState()) {
             case CASE_MATCHING_ISSUE_GRANT:
                 responseCaseDataBuilder.state(CASE_MATCHING_ISSUE_GRANT);
@@ -463,6 +479,24 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseDataBuilder.build());
     }
 
+    private void setState(CallbackRequest callbackRequest) {
+        CaseDetails details = callbackRequest.getCaseDetails();
+        switch (details.getData().getResolveStopState()) {
+            case CASE_MATCHING_ISSUE_GRANT:
+                details.setState(CASE_MATCHING_ISSUE_GRANT);
+                break;
+            case QA_CASE_STATE:
+                details.setState(QA_CASE_STATE);
+                break;
+            case READY_FOR_ISSUE:
+                details.setState(READY_FOR_ISSUE);
+                break;
+            default:
+                details.setState(CASE_PRINTED);
+                break;
+        }
+    }
+
     public CallbackResponse resolveCaseWorkerEscalationState(CallbackRequest callbackRequest) {
         return transformWithConditionalStateChange(callbackRequest,
                 ofNullable(callbackRequest.getCaseDetails().getData().getResolveCaseWorkerEscalationState()));
@@ -470,29 +504,27 @@ public class CallbackResponseTransformer {
 
 
     public CallbackResponse transferToState(CallbackRequest callbackRequest) {
-        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.state(callbackRequest.getCaseDetails().getData().getTransferToState());
-        return transformResponse(responseCaseDataBuilder.build());
+        return transformWithConditionalStateChange(callbackRequest, Optional.of(callbackRequest.getCaseDetails()
+                .getData().getTransferToState()));
     }
 
     public CallbackResponse rollback(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
-        responseCaseDataBuilder.channelChoice(null);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        responseCaseDataBuilder.applicantOrganisationPolicy(null);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse changeDob(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         responseCaseDataBuilder.deceasedDateOfBirth(callbackRequest.getCaseDetails().getData().getDeceasedDob());
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse transformUniqueProbateCode(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         showAssetsValuePageFlow(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.uniqueProbateCodeId(callbackRequest.getCaseDetails()
                 .getData().getUniqueProbateCodeId() != null ? callbackRequest.getCaseDetails()
@@ -502,15 +534,17 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformValuesPage(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         showAssetsValuePageFlow(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
     private BigDecimal getNetValueLabel(CaseData caseData) {
         boolean isOnOrAfterSwitchDate = dateOfDeathIsOnOrAfterSwitchDate(caseData.getDeceasedDateOfDeath());
-        if (((!isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormId()))
-                || (isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormEstate())))
+        if (ApplicationType.SOLICITOR.equals(caseData.getApplicationType())
+                && CHANNEL_CHOICE_DIGITAL.equals(caseData.getChannelChoice())
+                && (!isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormId()))
+                || (isOnOrAfterSwitchDate && IHT400.equals(caseData.getIhtFormEstate()))
                 && caseData.getIhtFormNetValue() != null) {
             return caseData.getIhtFormNetValue();
         } else {
@@ -567,7 +601,8 @@ public class CallbackResponseTransformer {
             documentTransformer.addDocument(callbackRequest, sentEmail, false);
         }
 
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), false)
             // Applications are always new schema but when application becomes a case we retain a mix of schemas for
             // in-flight submitted cases, and bulk scan
             .schemaVersion(schemaVersion)
@@ -608,7 +643,7 @@ public class CallbackResponseTransformer {
         CallbackResponse response = transformWithConditionalStateChange(callbackRequest, newState);
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
                 callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
@@ -626,7 +661,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transformForSolicitorExecutorNames(CallbackRequest callbackRequest) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
 
         solicitorExecutorTransformer.mapSolicitorExecutorFieldsToExecutorNamesLists(
                 callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
@@ -636,7 +671,7 @@ public class CallbackResponseTransformer {
 
     public CallbackResponse transform(CallbackRequest callbackRequest, Document document, String caseType) {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         responseCaseDataBuilder.solsSOTNeedToUpdate(null);
 
         if (Arrays.asList(LEGAL_STATEMENTS).contains(document.getDocumentType())) {
@@ -647,7 +682,8 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), false)
                 .build();
 
         return transformResponse(responseCaseData);
@@ -657,14 +693,16 @@ public class CallbackResponseTransformer {
 
         boolean transform = doTransform(callbackRequest);
 
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), transform)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), transform)
                 .build();
 
         return transformResponse(responseCaseData);
     }
 
     public CallbackResponse transformCaseWithRegistrarDirection(CallbackRequest callbackRequest) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(), false)
+        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(), false)
                 .registrarDirectionToAdd(RegistrarDirection.builder()
                         .build())
                 .build();
@@ -678,7 +716,7 @@ public class CallbackResponseTransformer {
             documentTransformer.addDocument(callbackRequest, document, false);
         }
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), transform);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), transform);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
         return transformResponse(responseCaseDataBuilder.build());
@@ -687,7 +725,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCaseForLetter(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), doTransform);
         assembleLetterTransformer
                 .setupAllLetterParagraphDetails(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
@@ -700,7 +738,7 @@ public class CallbackResponseTransformer {
         boolean doTransform = doTransform(callbackRequest);
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), doTransform);
 
         if (letterId != null) {
             CollectionMember<BulkPrint> bulkPrint = buildBulkPrint(letterId, ASSEMBLED_LETTER.getTemplateName());
@@ -723,7 +761,7 @@ public class CallbackResponseTransformer {
         boolean doTransform = doTransform(callbackRequest);
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), doTransform);
         responseCaseDataBuilder.previewLink(letterPreview.getDocumentLink());
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -732,7 +770,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCaseForReprint(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), doTransform);
         reprintTransformer.transformReprintDocuments(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
         return transformResponse(responseCaseDataBuilder.build());
@@ -741,7 +779,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCaseForSolicitorLegalStatementRegeneration(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), doTransform);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), doTransform);
         solicitorLegalStatementNextStepsDefaulter
                 .transformLegalStatmentAmendStates(callbackRequest.getCaseDetails(), responseCaseDataBuilder);
 
@@ -862,7 +900,7 @@ public class CallbackResponseTransformer {
     public CallbackResponse transformCaseForSolicitorPayment(CallbackRequest callbackRequest) {
         boolean doTransform = doTransform(callbackRequest);
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder = getResponseCaseData(callbackRequest.getCaseDetails(),
-            doTransform);
+                callbackRequest.getEventId(), doTransform);
         solicitorPaymentReferenceDefaulter.defaultSolicitorReference(callbackRequest.getCaseDetails().getData(),
                 responseCaseDataBuilder);
 
@@ -890,7 +928,7 @@ public class CallbackResponseTransformer {
             documentTransformer.addDocument(callbackRequest, document, false);
         }
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
-                getResponseCaseData(callbackRequest.getCaseDetails(), false);
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         getCaseCreatorResponseCaseBuilder(callbackRequest.getCaseDetails().getData(), responseCaseDataBuilder);
         responseCaseDataBuilder.probateNotificationsGenerated(
                 callbackRequest.getCaseDetails().getData().getProbateNotificationsGenerated());
@@ -917,7 +955,8 @@ public class CallbackResponseTransformer {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, boolean transform) {
+    private ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, String eventId,
+                                                              boolean transform) {
         CaseData caseData = caseDetails.getData();
 
         ResponseCaseDataBuilder<?, ?> builder = ResponseCaseData.builder()
@@ -1188,6 +1227,11 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
+            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
+            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
+            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
+            .boHandoffReasonList(getHandoffReasonList(caseData))
+            .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
@@ -1521,14 +1565,19 @@ public class CallbackResponseTransformer {
             }
         }
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .collect(Collectors.toList());
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1551,14 +1600,19 @@ public class CallbackResponseTransformer {
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = EMPTY_LIST;
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
         if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames = caseData.getDeceasedAliasNameList()
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
                     .map(CollectionMember::getValue)
                     .map(this::buildDeceasedAliasNameExecutor)
                     .map(alias -> new CollectionMember<>(null, alias))
-                    .toList();
+                    .toList());
         }
         if (deceasedAliasNames.isEmpty()) {
             builder
@@ -1757,10 +1811,6 @@ public class CallbackResponseTransformer {
             grantOfRepresentationData.setPaperForm(true);
         }
 
-        if (grantOfRepresentationData.getApplicationSubmittedDate() == null) {
-            grantOfRepresentationData.setApplicationSubmittedDate(LocalDate.now());
-        }
-
         if (grantOfRepresentationData.getEvidenceHandled() == null) {
             grantOfRepresentationData.setEvidenceHandled(false);
         }
@@ -1769,6 +1819,16 @@ public class CallbackResponseTransformer {
             if (TRUE == grantOfRepresentationData.getLanguagePreferenceWelsh()) {
                 grantOfRepresentationData.setRegistryLocation(RegistryLocation.CARDIFF);
             }
+
+            grantOfRepresentationData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
+                .OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                    .organisationID(null)
+                    .organisationName(null)
+                    .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build());
         }
 
         return CaseCreationDetails.builder().<ResponseCaveatData>
@@ -1790,5 +1850,23 @@ public class CallbackResponseTransformer {
             return null;
         }
         return collectionMembers;
+    }
+
+    private List<CollectionMember<HandoffReason>> getHandoffReasonList(
+            CaseData caseData) {
+        List<CollectionMember<HandoffReason>> collectionMembers = caseData.getBoHandoffReasonList();
+        if (collectionMembers == null || collectionMembers.isEmpty()
+                || NO.equals(caseData.getCaseHandedOffToLegacySite())) {
+            return Collections.emptyList();
+        }
+        return collectionMembers;
+    }
+
+    private LocalDateTime getLastModifiedDate(String eventId, LocalDateTime lastModifiedDateForDormant) {
+        boolean shouldSetDate = EXCLUDED_EVENT_LIST.stream().noneMatch(s -> s.equals(eventId));
+        if (shouldSetDate) {
+            return LocalDateTime.now(ZoneOffset.UTC);
+        }
+        return lastModifiedDateForDormant;
     }
 }

@@ -5,11 +5,11 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
@@ -29,7 +29,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     public static final String NOTIFICATION_DOCUMENT_BINARY_URL =
@@ -68,19 +68,19 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Autowired
     protected FunctionalTestUtils utils;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void verifyRequestWithDobBeforeDod() throws IOException {
+    void verifyRequestWithDobBeforeDod() throws IOException {
         validatePostSuccess("success.solicitorCreate.json",
             VALIDATE_URL);
     }
 
     @Test
-    public void verifySolicitorCreateRequestWithDodSameAsDob() throws IOException {
+    void verifySolicitorCreateRequestWithDodSameAsDob() throws IOException {
         String payload = utils.getJsonFromFile("success.solicitorCreate.json");
         payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",",
                 "\"deceasedDateOfBirth\": \"2018-01-01\",");
@@ -88,7 +88,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySolicitorAmendRequestWithDodSameAsDob() throws IOException {
+    void verifySolicitorAmendRequestWithDodSameAsDob() throws IOException {
         String payload = utils.getJsonFromFile("success.solicitorCreate.json");
         payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1987-01-01\",",
                 "\"deceasedDateOfBirth\": \"2018-01-01\",");
@@ -96,61 +96,61 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithDobNullReturnsError() throws IOException {
+    void verifyRequestWithDobNullReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsNull.json",
             "Date of birth cannot be empty", 400);
     }
 
     @Test
-    public void verifyRequestWithDodNullReturnsError() throws IOException {
+    void verifyRequestWithDodNullReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsNull.json",
             "Date of death cannot be empty", 400);
     }
 
     @Test
-    public void verifyRequestWithDodBeforeDobReturnsError() throws IOException {
+    void verifyRequestWithDodBeforeDobReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsAfterDod.json",
             "Date of death cannot be before date of birth", 200);
     }
 
     @Test
-    public void verifyRequestWithDobInFutureReturnsError() throws IOException {
+    void verifyRequestWithDobInFutureReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dobIsInTheFuture.json",
             "Date of birth cannot be in the future", 200);
     }
 
     @Test
-    public void verifyRequestWithDodInFutureReturnsError() throws IOException {
+    void verifyRequestWithDodInFutureReturnsError() throws IOException {
         validatePostFailureForSolicitorCreateAndCaseAmend("failure.dodIsInTheFuture.json",
             "Date of death cannot be in the future", 200);
     }
 
     @Test
-    public void verifyRequestWithIhtNetLessThanGross() throws IOException {
+    void verifyRequestWithIhtNetLessThanGross() throws IOException {
         validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json", VALIDATE_URL);
     }
 
     @Test
-    public void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
+    void verifyRequestWithIhtNetGreaterThanGrossReturnsError() throws IOException {
         validatePostFailure("failure.ihtNetIsGreaterThanGross.json",
                 "The gross probate value cannot be less than the net probate value", 200, SOLS_VALIDATE_IHT_ESTATE);
 
     }
 
     @Test
-    public void verifyRequestWithNegativeIhtNetReturnsError() throws IOException {
+    void verifyRequestWithNegativeIhtNetReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtNetIsNegative.json",
             "Net IHT cannot be negative", 400);
     }
 
     @Test
-    public void verifyRequestWithNegativeIhtGrossReturnsError() throws IOException {
+    void verifyRequestWithNegativeIhtGrossReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.ihtGrossIsNegative.json",
             "Gross IHT cannot be negative", 400);
     }
 
     @Test
-    public void verifyRequestWithIhtDateIsValid() throws IOException {
+    void verifyRequestWithIhtDateIsValid() throws IOException {
         String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
             "\"solsIHT400Date\": \""
@@ -159,7 +159,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithIhtDateIsInFutureReturnsError() throws IOException {
+    void verifyRequestWithIhtDateIsInFutureReturnsError() throws IOException {
         String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
         payload = replaceAllInString(payload, "\"solsIHT400Date\": \"2019-12-01\",",
             "\"solsIHT400Date\": \"" + LocalDate.now().plusDays(10) + "\",");
@@ -169,7 +169,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithIhtDateIsAfter20DaysBeforeCurrentDateReturnsError() throws IOException {
+    void verifyRequestWithIhtDateIsAfter20DaysBeforeCurrentDateReturnsError() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final LocalDate solsIHT400Date = IHTFourHundredDateValidationRule.minusBusinessDays(LocalDate.now(), 5);
         String payload = utils.getJsonFromFile("success.solicitorAppWithIHT400Date.json");
@@ -201,19 +201,19 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithoutDeceasedAddressReturnsError() throws IOException {
+    void verifyRequestWithoutDeceasedAddressReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedAddress.json",
             "The deceased address line 1 cannot be empty", 200);
     }
 
     @Test
-    public void verifyRequestWithoutDeceasedPostcodeReturnsError() throws IOException {
+    void verifyRequestWithoutDeceasedPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorAddDeceasedEstateDetails("failure.missingDeceasedPostcode.json",
             "The deceased postcode cannot be empty", 200);
     }
 
     @Test
-    public void verifyRequestWithoutExecutorAddressReturnsError() throws IOException {
+    void verifyRequestWithoutExecutorAddressReturnsError() throws IOException {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorAddress.json",
             "The executor address line 1 cannot be empty");
         validatePostFailureForCaseAmend("failure.missingExecutorAddress.json",
@@ -221,24 +221,24 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestWithoutExecutorPostcodeReturnsError() throws IOException {
+    void verifyRequestWithoutExecutorPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorExecutorDetails("failure.missingExecutorPostcode.json",
             "The executor postcode cannot be empty");
     }
 
     @Test
-    public void verifyRequestWithoutSolicitorPostcodeReturnsError() throws IOException {
+    void verifyRequestWithoutSolicitorPostcodeReturnsError() throws IOException {
         validatePostFailureForSolicitorPostcode("failure.missingPostcodeSolicitorCreate.json",
                 "Enter your firm's postcode, for example, 'SW1H 9AJ'");
     }
 
     @Test
-    public void verifyRequestWithSolicitorPostcodeReturnsSuccess() throws IOException {
+    void verifyRequestWithSolicitorPostcodeReturnsSuccess() throws IOException {
         validatePostSuccess("success.solicitorCreate.json", CASE_CREATE_VALIDATE_URL);
     }
 
     @Test
-    public void verifyRequestCheckListAnswerEqualsYesAndCheckQAState() throws IOException {
+    void verifyRequestCheckListAnswerEqualsYesAndCheckQAState() throws IOException {
         final ResponseBody body = validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
         final JsonPath jsonPath = JsonPath.from(body.asString());
         final String state = jsonPath.get("data.state");
@@ -247,24 +247,24 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestCheckListAnswerEqualsYes() throws IOException {
+    void verifyRequestCheckListAnswerEqualsYes() throws IOException {
         validatePostSuccess("solicitorPayloadNotifications.json", CHECKLIST_URL);
     }
 
     @Test
-    public void verifyRequestCheckListAnswerEqualsNo() throws IOException {
+    void verifyRequestCheckListAnswerEqualsNo() throws IOException {
         validatePostFailureForCheckList("failure.checkList.json",
             "Ensure all checks have been completed, cancel to return to the examining state");
     }
 
     @Test
-    public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() throws IOException {
+    void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoError() throws IOException {
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_URL);
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
-    public void verifyEmptyRequestReturnsError() {
+    void verifyEmptyRequestReturnsError() {
         RestAssured.given().relaxedHTTPSValidation().headers(utils.getHeadersWithCaseworkerUser())
             .config(config)
             .contentType(ContentType.JSON)
@@ -274,33 +274,33 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyNoOfApplyingExecutorsLessThanFour() throws IOException {
+    void verifyNoOfApplyingExecutorsLessThanFour() throws IOException {
         validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_URL);
         validatePostSuccess("success.LessThanFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
-    public void verifyNoOfApplyingExecutorsEqualToFour() throws IOException {
+    void verifyNoOfApplyingExecutorsEqualToFour() throws IOException {
         validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_URL);
         validatePostSuccess("success.equalToFourExecutors.json", VALIDATE_CASE_AMEND_URL);
     }
 
     @Test
-    public void verifyErrorMessageSuccAllRenouncing() throws IOException {
+    void verifyErrorMessageSuccAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingSuccAllRenouncing.json",
             "Probate practitioner cannot be applying if "
                 + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
-    public void verifyErrorMessageAllRenouncing() throws IOException {
+    void verifyErrorMessageAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingAllRenouncing.json",
             "Probate practitioner cannot be applying if "
                 + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
-    public void verifyErrorMessageNoneOfThese() throws IOException {
+    void verifyErrorMessageNoneOfThese() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingTCTNoT.json",
             "If you have selected none of these because the title and clearing is not "
                 + "covered by the options above, you will not be able to continue making this application online. "
@@ -308,21 +308,21 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyErrorMessageNoPartnersAdded() throws IOException {
+    void verifyErrorMessageNoPartnersAdded() throws IOException {
         validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersAdded.json",
             "You need to add at least 1 other partner that acts as an executor",
             200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
-    public void verifyErrorMessageNoPartnersAddedTrustCorp() throws IOException {
+    void verifyErrorMessageNoPartnersAddedTrustCorp() throws IOException {
         validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersTrustCorp.json",
             "You need to add at least 1 other partner that acts on behalf of the trust corporation",
             200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
-    public void verifyErrorMessageNoPositionInTrustTrustCorp() throws IOException {
+    void verifyErrorMessageNoPositionInTrustTrustCorp() throws IOException {
         validatePostFailure("failure.practitionerNoPositionInTrust.json",
             "You must specify the probate pactitioner's position within the trust corporation "
                 + "as per the resolution if they are acting as an executor",
@@ -330,14 +330,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() throws IOException {
+    void shouldPassOriginalWillAndCodicilDateValidationWithValidDates() throws IOException {
         validatePostSuccess("success.validWillAndCodicilDates.json", VALIDATE_URL);
         validatePostSuccess("success.validWillAndCodicilDates.json",
             SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWithInvalidWillDate() throws IOException {
+    void shouldFailOriginalWillAndCodicilDateValidationWithInvalidWillDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
         payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
@@ -351,7 +351,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWithInvalidCodicilDate() throws IOException {
+    void shouldFailOriginalWillAndCodicilDateValidationWithInvalidCodicilDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
         payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
@@ -365,7 +365,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWhenWillDateIsAfterDeathDate() throws IOException {
+    void shouldFailOriginalWillAndCodicilDateValidationWhenWillDateIsAfterDeathDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
         payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
@@ -379,7 +379,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldPassOriginalWillAndCodicilDateValidationWhenWillDateIsBeforeDeathDate() throws IOException {
+    void shouldPassOriginalWillAndCodicilDateValidationWhenWillDateIsBeforeDeathDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
         payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
@@ -391,7 +391,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
 
     @Test
-    public void shouldFailOriginalWillAndCodicilDateValidationWithCodicilDateBeforeWillDate() throws IOException {
+    void shouldFailOriginalWillAndCodicilDateValidationWithCodicilDateBeforeWillDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
         payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
@@ -405,7 +405,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldPassOriginalWillAndCodicilDateValidationWithCodicilDateOneDayAfterWillDate() throws IOException {
+    void shouldPassOriginalWillAndCodicilDateValidationWithCodicilDateOneDayAfterWillDate() throws IOException {
         String payload = utils.getJsonFromFile("success.validWillAndCodicilDates.json");
 
         payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
@@ -416,7 +416,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyNegativeCopiesValues() throws IOException {
+    void verifyNegativeCopiesValues() throws IOException {
         validatePostFailure("failure.negativeUKCopies.json",
             "Uk Grant copies cannot be negative", 400, VALIDATE_CASE_AMEND_URL);
         validatePostFailure("failure.negativeOverseasCopies.json",
@@ -424,21 +424,21 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessPaperFormYes() throws IOException {
+    void verifySuccessPaperFormYes() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "Yes");
     }
 
     @Test
-    public void verifySuccessPaperFormNo() throws IOException {
+    void verifySuccessPaperFormNo() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         validatePostSuccessAndCheckValue(payload, PAPER_FORM_URL, "paperForm", "No");
     }
 
     @Test
-    public void verifySchemaVersionNullWhenPaperFormNoForIntestacy() throws IOException {
+    void verifySchemaVersionNullWhenPaperFormNoForIntestacy() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,
@@ -447,7 +447,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersionNullWhenPaperFormNoForAdmonWill() throws IOException {
+    void verifySchemaVersionNullWhenPaperFormNoForAdmonWill() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,
@@ -458,7 +458,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersionPaperFormNull() throws IOException {
+    void verifySchemaVersionPaperFormNull() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,
             "\"caseType\": \"intestacy\",", "\"caseType\": \"gop\",");
@@ -468,7 +468,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersionPaperFormYes() throws IOException {
+    void verifySchemaVersionPaperFormYes() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"Yes\",");
         payload = replaceAllInString(payload,
@@ -479,7 +479,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersionPaperFormNo() throws IOException {
+    void verifySchemaVersionPaperFormNo() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,
@@ -490,7 +490,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySchemaVersionPaperFormNoPersonalApplication() throws IOException {
+    void verifySchemaVersionPaperFormNoPersonalApplication() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload,
@@ -499,7 +499,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithoutEmail() throws IOException {
+    void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithoutEmail() throws IOException {
         String payload = getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,
             "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
@@ -511,7 +511,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithoutEmail() throws IOException {
+    void verifyCaseworkerCreatedPersonalApplicationPaperFormNoWithoutEmail() throws IOException {
         String payload = getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload,
             "\"primaryApplicantEmailAddress\": \"primary@probate-test.com\",",
@@ -523,7 +523,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithEmail() throws IOException {
+    void verifyCaseworkerCreatedPersonalApplicationPaperFormYesWithEmail() throws IOException {
         String payload = getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
@@ -533,7 +533,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessCaseworkerCreatedPersonalApplicationSameDobAndDod() throws IOException {
+    void verifySuccessCaseworkerCreatedPersonalApplicationSameDobAndDod() throws IOException {
         String payload = utils.getJsonFromFile("success.paperForm.json");
         payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1960-01-01\",",
                 "\"deceasedDateOfBirth\": \"2018-01-01\",");
@@ -541,7 +541,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessCaseworkerCreatedSolicitorApplicationSameDobAndDod() throws IOException {
+    void verifySuccessCaseworkerCreatedSolicitorApplicationSameDobAndDod() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"deceasedDateOfBirth\": \"1900-01-01\",",
                 "\"deceasedDateOfBirth\": \"2000-01-01\",");
@@ -549,7 +549,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithoutEmail() throws IOException {
+    void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithoutEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"solicitor@probate-test.com\",",
             "\"solsSolicitorEmail\": null,");
@@ -560,7 +560,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithoutEmail() throws IOException {
+    void verifyCaseworkerCreatedSolicitorApplicationPaperFormNoWithoutEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"solsSolicitorEmail\": \"solicitor@probate-test.com\",",
             "\"solsSolicitorEmail\": null,");
@@ -571,7 +571,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmail() throws IOException {
+    void verifyCaseworkerCreatedSolicitorApplicationPaperFormYesWithEmail() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadNotifications.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"channelChoice\": \"PaperForm\",");
 
@@ -581,7 +581,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_NotTrustCorp() throws IOException {
+    void verifyCaseworkerCreatedSolicitorApplicationTcSchema_NotTrustCorp() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
 
@@ -589,7 +589,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerCreatedSolicitorApplicationTcSchema_TrustCorps() throws IOException {
+    void verifyCaseworkerCreatedSolicitorApplicationTcSchema_TrustCorps() throws IOException {
         String payload = getJsonFromFile("solicitorPayloadTrustCorpsSchema.json");
         payload = replaceAllInString(payload, "\"paperForm\": null,", "\"paperForm\": \"No\",");
         payload = replaceAllInString(payload, "\"titleAndClearingType\": \"TCTTrustCorpResWithApp\",",
@@ -600,37 +600,37 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseworkerDefaultDateOfDeathType() throws IOException {
+    void verifyCaseworkerDefaultDateOfDeathType() throws IOException {
         validatePostSuccessAndCheckValue("{\"case_details\":{}}", INIT_PAPER_FORM_URL, "dateOfDeathType", "diedOn");
     }
 
     @Test
-    public void verifyNoOfApplyingExecutorsLessThanFourTransformCase() throws IOException {
+    void verifyNoOfApplyingExecutorsLessThanFourTransformCase() throws IOException {
         validatePostSuccess("success.LessThanFourExecutors.json", TRANSFORM_URL);
     }
 
     @Test
-    public void verifyNoOfApplyingExecutorsEqualToFourTransformCase() throws IOException {
+    void verifyNoOfApplyingExecutorsEqualToFourTransformCase() throws IOException {
         validatePostSuccess("success.equalToFourExecutors.json", TRANSFORM_URL);
     }
 
     @Test
-    public void verifyRequestWithDobBeforeDodTransformCase() throws IOException {
+    void verifyRequestWithDobBeforeDodTransformCase() throws IOException {
         validatePostSuccess("success.solicitorCreate.json", TRANSFORM_URL);
     }
 
     @Test
-    public void verifyRequestWithIhtNetLessThanGrossTransformCase() throws IOException {
+    void verifyRequestWithIhtNetLessThanGrossTransformCase() throws IOException {
         validatePostSuccess("success.SolicitorAddDeceasedEstateDetails.json", TRANSFORM_URL);
     }
 
     @Test
-    public void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoErrorTransformCase() throws IOException {
+    void verifyRequestWithoutExecutorAddressWhileNotApplyingReturnsNoErrorTransformCase() throws IOException {
         validatePostSuccess("success.missingExecutorAddressWhileNotApplying.json", TRANSFORM_URL);
     }
 
     @Test
-    public void verifyRequestSuccessForCaseStopped() throws IOException {
+    void verifyRequestSuccessForCaseStopped() throws IOException {
         final String payload = utils.getJsonFromFile("solicitorExecutorsCaseStopped.json");
         final ResponseBody result = validatePostSuccessForPayload(payload, CASE_STOPPED_URL);
         final JsonPath jsonPath = JsonPath.from(result.prettyPrint());
@@ -639,17 +639,17 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForResolveStop() throws IOException {
+    void verifyRequestSuccessForResolveStop() throws IOException {
         validatePostSuccess("solicitorPayloadResolveStop.json", RESOLVE_STOP_URL);
     }
 
     @Test
-    public void verifyRequestSuccessForChangeCaseState() throws IOException {
+    void verifyRequestSuccessForChangeCaseState() throws IOException {
         validatePostSuccess("solicitorPayloadChangeCaseState.json", CHANGE_CASE_STATE_URL);
     }
 
     @Test
-    public void verifyRequestSuccessForEscalateToRegistrar() throws IOException {
+    void verifyRequestSuccessForEscalateToRegistrar() throws IOException {
         final String payload = utils.getJsonFromFile("solicitorExecutorsCaseStopped.json");
         final ResponseBody result = validatePostSuccessForPayload(payload, ESCALATE_TO_REGISTRAR_URL);
         final JsonPath jsonPath = JsonPath.from(result.prettyPrint());
@@ -658,12 +658,12 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForRedeclarationCompleteWithStateChange() throws IOException {
+    void verifyRequestSuccessForRedeclarationCompleteWithStateChange() throws IOException {
         validatePostSuccess("personalPayloadNotifications.json", REDEC_COMPLETE);
     }
 
     @Test
-    public void verifyRequestSuccessForCaseWorkerEscalation() throws IOException {
+    void verifyRequestSuccessForCaseWorkerEscalation() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("solicitorPayloadCaseWorkerEscalation.json",
                 CASE_WORKER_ESCALATED);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -672,7 +672,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForCaseWorkerResolveEscalation() throws IOException {
+    void verifyRequestSuccessForCaseWorkerResolveEscalation() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(
                 "solicitorPayloadCaseWorkerResolveEscalation.json", CASE_WORKER_RESOLVED_ESCALATED);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -681,7 +681,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForRedeclarationSOTForDigitalCase() throws IOException {
+    void verifyRequestSuccessForRedeclarationSOTForDigitalCase() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("successRedeclarationnSOT.json",
             REDECLARATION_SOT);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -694,24 +694,24 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestValidationsErrorForRedeclarationSOTForPaperFormCase() throws IOException {
+    void verifyRequestValidationsErrorForRedeclarationSOTForPaperFormCase() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("redeclarationSOTPaperForm.json",
             REDECLARATION_SOT);
-        Assert.assertTrue(responseBody.asString().contains("You can only use this event for digital cases"));
+        Assertions.assertTrue(responseBody.asString().contains("You can only use this event for digital cases"));
     }
 
     @Test
-    public void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() throws IOException {
+    void verifyRequestSuccessForRedeclarationCompleteWithoutStateChange() throws IOException {
         final ResponseBody body = validatePostSuccess("payloadWithResponseRecorded.json", REDEC_COMPLETE);
         final JsonPath jsonPath = JsonPath.from(body.asString());
 
 
-        assertNull(jsonPath.get("data.errors"));
-        assertEquals(jsonPath.get("data.solsSOTNeedToUpdate"), "No");
+        Assertions.assertNull(jsonPath.get("data.errors"));
+        Assertions.assertEquals(jsonPath.get("data.solsSOTNeedToUpdate"), "No");
     }
 
     @Test
-    public void verifyTitleAndClearingListsReset() throws IOException {
+    void verifyTitleAndClearingListsReset() throws IOException {
         ResponseBody body = validatePostSuccess("solicitorAmendTitleAndClearingMultipleExecutors.json",
             VALIDATE_PROBATE_URL);
 
@@ -724,7 +724,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestInTestacySuccessForDefaultNext() throws IOException {
+    void verifyRequestInTestacySuccessForDefaultNext() throws IOException {
         final ResponseBody body = validatePostSuccessForPayload(utils.getJsonFromFile("solicitorPDFPayloadIntestacy"
             + ".json"), DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
 
@@ -737,7 +737,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForDefaultIhtEstate() throws IOException {
+    void verifyRequestSuccessForDefaultIhtEstate() throws IOException {
         //adjust with app yml iht-estate.switch-date
         String json = utils.getJsonFromFile("solicitorPayloadIhtEstateDefault.json");
         json = json.replaceAll("<DOD-DATE>", "2022-01-01");
@@ -753,7 +753,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForDefaultIhtEstateNo() throws IOException {
+    void verifyRequestSuccessForDefaultIhtEstateNo() throws IOException {
         //adjust with app yml iht-estate.switch-date
         String json = utils.getJsonFromFile("solicitorPayloadIhtEstateDefault.json");
         json = json.replaceAll("<DOD-DATE>", "2021-12-31");
@@ -769,7 +769,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyRequestSuccessForValidateIhtEstate() throws IOException {
+    void verifyRequestSuccessForValidateIhtEstate() throws IOException {
         //adjust with app yml iht-estate.switch-date
         String json = utils.getJsonFromFile("solicitorPayloadIhtEstateValidate.json");
         json = json.replaceAll("<DOD-DATE>", "2022-01-01");
@@ -779,7 +779,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForDefaultNextStepsWithProbateSingleExecutorPayload() throws IOException {
+    void verifySuccessForDefaultNextStepsWithProbateSingleExecutorPayload() throws IOException {
         final ResponseBody body = validatePostSuccessForPayload(
             utils.getJsonFromFile("solicitorPDFPayloadProbateSingleExecutor.json"),
             DEFAULT_SOLS_NEXT_STEP, utils.getHeadersWithCaseworkerUser());
@@ -792,7 +792,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifySuccessForDefaultNextStepsWithProbateMultipleExecutorPayload() throws IOException {
+    void verifySuccessForDefaultNextStepsWithProbateMultipleExecutorPayload() throws IOException {
         ResponseBody response = validatePostSuccess("solicitorPDFPayloadProbateMultipleExecutors.json",
             DEFAULT_SOLS_NEXT_STEP);
 
@@ -805,7 +805,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseHandedOffToLegacySite() throws IOException {
+    void verifyCaseHandedOffToLegacySite() throws IOException {
         final ResponseBody body = validatePostSuccess("success.caseHandedOffToLegacySite.json",
             VALIDATE_CASE_AMEND_URL);
         final JsonPath jsonPath = JsonPath.from(body.asString());
@@ -814,7 +814,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyCaseNotHandedToLegacySite() throws IOException {
+    void verifyCaseNotHandedToLegacySite() throws IOException {
         final ResponseBody body = validatePostSuccess("success.caseNotHandedOffToLegacySite.json",
             VALIDATE_CASE_AMEND_URL);
         final JsonPath jsonPath = JsonPath.from(body.asString());
@@ -823,7 +823,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCasePADeceasedAliasOneField() throws IOException {
+    void shouldTransformCasePADeceasedAliasOneField() throws IOException {
         final String response = transformCase("personalPayloadNotifications.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -833,7 +833,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithScannedDocuments() throws IOException {
+    void shouldTransformCaseWithScannedDocuments() throws IOException {
         final String response = transformCase("success.scannedDocuments.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -858,7 +858,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithIht217Attributes() throws IOException {
+    void shouldTransformCaseWithIht217Attributes() throws IOException {
         final String response = transformCase("success.iht217Saved.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -868,7 +868,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithCitizenAttributes() throws IOException {
+    void shouldTransformCaseWithCitizenAttributes() throws IOException {
         final String response = transformCase("success.CitizenAttribtesSaved.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -896,7 +896,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformSolicitorInfoAttributes() throws IOException {
+    void shouldTransformSolicitorInfoAttributes() throws IOException {
         final String response = transformCase("success.SolicitorInfoAttributes.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -910,7 +910,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithTrustCorpAttributes() throws IOException {
+    void shouldTransformCaseWithTrustCorpAttributes() throws IOException {
         String response = transformCase("success.trustCorpAttributesSaved.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -945,7 +945,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithPartnerAttributes() throws IOException {
+    void shouldTransformCaseWithPartnerAttributes() throws IOException {
         final String response = transformCase("success.nonTrustCorpOptionsSaved.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
@@ -971,7 +971,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithFurtherEvidenceForApplication() throws IOException {
+    void shouldTransformCaseWithFurtherEvidenceForApplication() throws IOException {
         final String response = transformCase("success.solicitorFurtherEvidenceForApplication.json",
             TRANSFORM_URL);
 
@@ -980,7 +980,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldTransformCaseWithApplicantOrganisationPolicy() throws IOException {
+    void shouldTransformCaseWithApplicantOrganisationPolicy() throws IOException {
         String json = utils.getJsonFromFile("success.solsCreateShareACase.json");
         final ResponseBody body = validatePostSuccessForPayload(json, SOLS_CREATED_URL,
                 utils.getHeadersWithSolicitorUser());
@@ -996,7 +996,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturnSuccessReactivateCase() throws IOException {
+    void shouldReturnSuccessReactivateCase() throws IOException {
         validatePostSuccessForPayload(utils.getJsonFromFile("success.paperForm.json"),
             REACTIVATE_CASE, utils.getHeadersWithUserId());
     }

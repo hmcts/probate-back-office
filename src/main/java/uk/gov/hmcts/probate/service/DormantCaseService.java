@@ -40,6 +40,7 @@ public class DormantCaseService {
             GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                         .moveToDormantDateTime(LocalDateTime.now(ZoneOffset.UTC)
                         .plusMinutes(makeDormantAddTimeMinutes))
+                        .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
                         .build();
             log.info("Updating case to Dormant in CCD by scheduler for case id : {}",returnedCaseDetails.getId());
             try {
@@ -70,7 +71,7 @@ public class DormantCaseService {
                     if (returnedCaseDetails.getLastModified().isAfter(moveToDormantDateTime)) {
                         GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData.builder()
                                 .evidenceHandled(false)
-
+                                .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
                                 .build();
                         log.info("Updating case to Stopped from Dormant in CCD by scheduler for case id : {}",
                                 returnedCaseDetails.getId());

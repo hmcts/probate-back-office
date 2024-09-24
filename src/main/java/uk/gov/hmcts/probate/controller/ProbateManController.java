@@ -23,7 +23,7 @@ import uk.gov.hmcts.probate.service.LegacyImportService;
 import uk.gov.hmcts.probate.service.LegacySearchService;
 import uk.gov.hmcts.probate.service.ProbateManService;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;

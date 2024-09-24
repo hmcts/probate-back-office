@@ -40,6 +40,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_EXTENDED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_RAISED;
 import static uk.gov.hmcts.probate.model.DocumentType.CAVEAT_WITHDRAWN;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 
 @Component
 @RequiredArgsConstructor
@@ -50,6 +51,8 @@ public class CaveatCallbackResponseTransformer {
     public static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
     public static final String EXCEPTION_RECORD_CASE_TYPE_ID = "Caveat";
     public static final String EXCEPTION_RECORD_EVENT_ID = "raiseCaveatFromBulkScan";
+
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     public static final RegistryLocation EXCEPTION_RECORD_REGISTRY_LOCATION = RegistryLocation.CTSC;
     private final DocumentTransformer documentTransformer;
     private final SolicitorPaymentReferenceDefaulter solicitorPaymentReferenceDefaulter;
@@ -63,7 +66,9 @@ public class CaveatCallbackResponseTransformer {
         ResponseCaveatDataBuilder responseCaveatDataBuilder = getResponseCaveatData(caveatDetails);
 
         updateBulkPrint(documents, letterId, caveatData, responseCaveatDataBuilder, CAVEAT_RAISED);
-        responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        if (null == caveatData.getApplicationSubmittedDate()) {
+            responseCaveatDataBuilder.applicationSubmittedDate(dateTimeFormatter.format(LocalDate.now()));
+        }
 
         if (null == caveatData.getPaperForm()) {
             responseCaveatDataBuilder.paperForm(YES);
@@ -323,16 +328,24 @@ public class CaveatCallbackResponseTransformer {
             caveatData.setPaperForm(true);
         }
 
-        if (caveatData.getApplicationSubmittedDate() == null) {
-            caveatData.setApplicationSubmittedDate(LocalDate.now());
-        }
-
         if (caveatData.getCaveatorEmailAddress() == null || caveatData.getCaveatorEmailAddress().isEmpty()) {
             caveatData.setSendToBulkPrintRequested(Boolean.TRUE);
             caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.FALSE);
         } else {
             caveatData.setCaveatRaisedEmailNotificationRequested(Boolean.TRUE);
             caveatData.setSendToBulkPrintRequested(Boolean.FALSE);
+        }
+
+        if (SOLICITORS.equals(caveatData.getApplicationType())) {
+            caveatData.setApplicantOrganisationPolicy(uk.gov.hmcts.reform.probate.model.cases
+                .OrganisationPolicy.builder()
+                .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                    .organisationID(null)
+                    .organisationName(null)
+                    .build())
+                .orgPolicyReference(null)
+                .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                .build());
         }
 
         caveatData.setBulkScanCaseReference((caveatData.getBulkScanCaseReference()));

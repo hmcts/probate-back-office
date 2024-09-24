@@ -64,6 +64,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -136,6 +137,8 @@ class NotificationServiceIT {
     private static final String PERSONALISATION_NOC_SUBMITTED_DATE = "noc_date";
     private static final String PERSONALISATION_OLD_SOLICITOR_NAME = "old_solicitor_name";
     private static final DateTimeFormatter NOC_DATE = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final String MARKDOWN_ERROR_MESSAGE
+            = "Markdown Link detected in case data, stop sending notification email.";
 
     @Autowired
     private NotificationService notificationService;
@@ -222,6 +225,8 @@ class NotificationServiceIT {
     private CaveatData caveatData;
     private CallbackRequest callbackRequest;
     private CaveatDetails caveatStoppedCtscCaseData;
+    private CaseDetails  markdownLinkCaseData;
+    private CaveatDetails markdownLinkCaveatData;
 
     @Mock
     private RegistriesProperties registriesPropertiesMock;
@@ -596,6 +601,23 @@ class NotificationServiceIT {
             .caveatorEmailAddress("caveator@probate-test.com")
             .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
             .build(), LAST_MODIFIED, ID);
+
+        markdownLinkCaseData = new CaseDetails(CaseData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Oxford")
+                .solsSOTName("SOTName")
+                .deceasedForenames("Some text [example](http://example.com)")
+                .primaryApplicantEmailAddress("primary@probate-test.com")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
+
+        markdownLinkCaveatData = new CaveatDetails(CaveatData.builder()
+                .applicationType(PERSONAL)
+                .registryLocation("Oxford")
+                .caveatorEmailAddress("caveator@probate-test.com")
+                .messageContent("Some text [example](http://example.com)")
+                .deceasedDateOfDeath(LocalDate.of(2000, 12, 12))
+                .build(), LAST_MODIFIED, ID);
 
         CollectionMember<CaseMatch> caseMatchMember = new CollectionMember<>(CaseMatch.builder().build());
         List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
@@ -2135,5 +2157,56 @@ class NotificationServiceIT {
                 eq(""));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
+    }
+
+    @Test
+    void throwExceptionSendEmailWhenInvalidPersonalisationExists() {
+        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+                () -> notificationService.sendEmail(CASE_STOPPED, markdownLinkCaseData));
+        assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
+    }
+
+    @Test
+    void throwExceptionSendExecutorEmailWhenInvalidPersonalisationExists() {
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(personalCaseDataCtscRequestInformation.getData().getPrimaryApplicantFullName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("primary@probate-test.com")
+                .notification("Yes").build();
+        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+                () -> notificationService.sendEmail(CASE_STOPPED_REQUEST_INFORMATION,
+                        markdownLinkCaseData, executorsApplyingNotification));
+        assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
+    }
+
+    @Test
+    void throwExceptionSendCaveatEmailWhenInvalidPersonalisationExists() {
+        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+                () -> notificationService.sendCaveatEmail(GENERAL_CAVEAT_MESSAGE, markdownLinkCaveatData));
+        assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
+    }
+
+    @Test
+    void throwExceptionSendEmailWithDocumentAttachedWhenInvalidPersonalisationExists() {
+        CollectionMember<Document> doc = new CollectionMember<>(Document.builder().build());
+
+        markdownLinkCaseData.getData().getProbateSotDocumentsGenerated().add(doc);
+        ExecutorsApplyingNotification executorsApplyingNotification = ExecutorsApplyingNotification.builder()
+                .name(markdownLinkCaseData.getData().getSolsSOTName())
+                .address(SolsAddress.builder()
+                        .addressLine1("Addressline1")
+                        .postCode("postcode")
+                        .postTown("posttown")
+                        .build())
+                .email("primary@probate-test.com")
+                .notification("Yes").build();
+        NotificationClientException expectException =  assertThrows(NotificationClientException.class,
+                () -> notificationService.sendEmailWithDocumentAttached(markdownLinkCaseData,
+                        executorsApplyingNotification, REDECLARATION_SOT));
+        assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
     }
 }

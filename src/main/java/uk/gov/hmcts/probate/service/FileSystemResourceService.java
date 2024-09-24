@@ -49,11 +49,10 @@ public class FileSystemResourceService {
             if (fileSystemResource.isPresent()) {
                 return FileUtils.readFileToString(fileSystemResource.get().getFile(), Charset.defaultCharset());
             }
-            return null;
-        } catch (IOException e) {
-            log.error("Cannot read file system resource: " + resourcePath, e);
-            return null;
+        } catch (IOException | NullPointerException e) {
+            log.error("Cannot read file system resource: {}", resourcePath, e);
         }
+        return null;
     }
 
 }

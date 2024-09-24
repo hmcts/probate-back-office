@@ -11,7 +11,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import uk.gov.hmcts.reform.ccd.client.model.CaseDetails;
 
-import static junit.framework.TestCase.assertNotNull;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertBackOfficeCaseData;
 import static uk.gov.hmcts.probate.service.consumer.util.AssertionHelper.assertCaseDetails;
 import static uk.gov.hmcts.reform.probate.pact.dsl.PactDslBuilderForCaseDetailsList.buildCaseDetailsDsl;

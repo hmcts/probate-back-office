@@ -27,6 +27,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
+import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.LegalStatement;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ParagraphDetail;
@@ -43,6 +44,7 @@ import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,6 +146,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String boEmailDocsReceivedNotification;
     private final String boEmailGrantIssuedNotification;
     private final List<CollectionMember<StopReason>> boCaseStopReasonList;
+    private final List<CollectionMember<HandoffReason>> boHandoffReasonList;
     private final String boStopDetails;
     private final String boDeceasedTitle;
     private final String boDeceasedHonours;
@@ -368,6 +371,7 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String ihtUnusedAllowanceClaimed;
     private final String showIht400421Page;
     private final String moveToDormantDateTime;
+    private final LocalDateTime lastModifiedDateForDormant;
     private final String letterType;
     private final String caseworkerName;
     private final String letterText;
@@ -386,4 +390,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final BigDecimal ihtFormNetValue;
     private final String iht400Switch;
     private final String ihtNetValueSwitch;
+    private final String deceasedAnyOtherNameOnWill;
+    private final String deceasedAliasFirstNameOnWill;
+    private final String deceasedAliasLastNameOnWill;
+    private String matches;
 }

@@ -61,6 +61,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.reform.probate.model.cases.ApplicationType.SOLICITORS;
 
 @ContextConfiguration(classes = {CaveatCallbackResponseTransformer.class})
 @ExtendWith(MockitoExtension.class)
@@ -70,6 +71,7 @@ class CaveatCallbackResponseTransformerTest {
     public static final String ORG_ID = "OrgID";
     private static final String REPRESENTATIVE_NAME = "Representative Name";
     private static final String DX_NUMBER = "1234567890";
+    private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @Mock
@@ -314,6 +316,8 @@ class CaveatCallbackResponseTransformerTest {
             .documentType(DocumentType.CAVEAT_RAISED)
             .build();
         documents.add(0, document);
+        caveatDataBuilder.applicationSubmittedDate(null);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
         String letterId = null;
         CaveatCallbackResponse caveatCallbackResponse =
             underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
@@ -342,6 +346,26 @@ class CaveatCallbackResponseTransformerTest {
 
         assertEquals("123-456",
             caveatCallbackResponse.getCaveatData().getBulkPrintId().get(0).getValue().getSendLetterId());
+    }
+
+    @Test
+    void shouldKeepApplicationSubmittedDateWhenNotNullCaveatRaised() {
+        setupMocks();
+        LocalDate newSubmittedDate = LocalDate.now().minusDays(5);
+        caveatDataBuilder.applicationSubmittedDate(newSubmittedDate);
+        when(caveatDetailsMock.getData()).thenReturn(caveatDataBuilder.build());
+        List<Document> documents = new ArrayList<>();
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(DocumentType.CAVEAT_RAISED)
+                .build();
+        documents.add(0, document);
+        String letterId = "123-456";
+        CaveatCallbackResponse caveatCallbackResponse =
+                underTest.caveatRaised(caveatCallbackRequestMock, documents, letterId);
+
+        assertEquals(newSubmittedDate.toString(),
+                caveatCallbackResponse.getCaveatData().getApplicationSubmittedDate());
     }
 
     @Test
@@ -390,6 +414,24 @@ class CaveatCallbackResponseTransformerTest {
     void bulkScanCaveatTransform() {
         CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
         assertBulkScanCaseCreationDetails(caveatDetails);
+    }
+
+    @Test
+    void bulkScanCaveatTransformForOrgPolicy() {
+        uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy orgPolicy =
+                uk.gov.hmcts.reform.probate.model.cases.OrganisationPolicy.builder()
+                        .organisation(uk.gov.hmcts.reform.probate.model.cases.Organisation.builder()
+                                .organisationID(null)
+                                .organisationName(null)
+                                .build())
+                        .orgPolicyReference(null)
+                        .orgPolicyCaseAssignedRole(POLICY_ROLE_APPLICANT_SOLICITOR)
+                        .build();
+        bulkScanCaveatData.setApplicationType(SOLICITORS);
+        CaseCreationDetails caveatDetails = underTest.bulkScanCaveatCaseTransform(bulkScanCaveatData);
+        uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData caveatData =
+                (uk.gov.hmcts.reform.probate.model.cases.caveat.CaveatData) caveatDetails.getCaseData();
+        assertEquals(orgPolicy, caveatData.getApplicantOrganisationPolicy());
     }
 
     @Test
