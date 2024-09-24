@@ -232,7 +232,7 @@ class HandOffLegacyTransformerTest {
                 .applicationType(SOLICITOR);
 
         CollectionMember collectionMember = new CollectionMember(null, HandoffReason.builder()
-                .caseHandoffReason(HandoffReasonId.TRUST_CORPORATION).build());
+                .caseHandoffReason(HandoffReasonId.TRUST_CORPORATION.getCode()).build());
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -240,7 +240,7 @@ class HandOffLegacyTransformerTest {
         when(handOffLegacyService.setHandoffReason(caseDetailsMock)).thenReturn(List.of(collectionMember));
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
-        assertEquals(HandoffReasonId.TRUST_CORPORATION,
+        assertEquals(HandoffReasonId.TRUST_CORPORATION.getCode(),
                 callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList().get(0).getValue()
                         .getCaseHandoffReason());
     }

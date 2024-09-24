@@ -82,11 +82,10 @@ public class HandOffLegacyService {
 
     public List<CollectionMember<HandoffReason>> setHandoffReason(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
-
+        List<CollectionMember<HandoffReason>> handoffReasonsList = new ArrayList<>();
         if ((StringUtils.isEmpty(caseData.getCaseHandedOffToLegacySite())
                 || YES.equalsIgnoreCase(caseData.getCaseHandedOffToLegacySite()))
                 && (null == caseData.getBoHandoffReasonList() || caseData.getBoHandoffReasonList().isEmpty())) {
-            List<CollectionMember<HandoffReason>> handoffReasonsList = new ArrayList<>();
             if (SOLICITOR.equals(caseData.getApplicationType())
                     && (TITLE_AND_CLEARING_TRUST_CORP_SDJ.equals(caseData.getTitleAndClearingType())
                     || TITLE_AND_CLEARING_TRUST_CORP.equals(caseData.getTitleAndClearingType()))) {
@@ -123,16 +122,14 @@ public class HandOffLegacyService {
                     && YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
                 handoffReasonsList.add(buildHandOffReason(HandoffReasonId.EXTENDED_INTESTACY));
             }
-
-            return handoffReasonsList;
         }
 
-        return Collections.emptyList();
+        return handoffReasonsList;
     }
 
     private CollectionMember buildHandOffReason(HandoffReasonId reasonId) {
         HandoffReason handoffReason = HandoffReason.builder()
-                .caseHandoffReason(reasonId)
+                .caseHandoffReason(reasonId.getCode())
                 .build();
         return new CollectionMember(null, handoffReason);
     }
