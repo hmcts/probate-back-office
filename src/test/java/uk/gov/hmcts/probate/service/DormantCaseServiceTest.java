@@ -54,8 +54,14 @@ class DormantCaseServiceTest {
         CaseData caseData = CaseData.builder()
                 .deceasedSurname("Smith")
                 .build();
-        caseList = new ImmutableList.Builder<ReturnedCaseDetails>().add(new ReturnedCaseDetails(caseData,
-                LocalDateTime.now(ZoneOffset.UTC), 1L)).build();
+        CaseData migratedCaseData = CaseData.builder()
+                .deceasedSurname("Smith")
+                .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
+                .build();
+        caseList = new ImmutableList.Builder<ReturnedCaseDetails>()
+                .add(new ReturnedCaseDetails(caseData, LocalDateTime.now(ZoneOffset.UTC), 1L))
+                .add(new ReturnedCaseDetails(migratedCaseData, LocalDateTime.now(ZoneOffset.UTC).minusMonths(1), 1L))
+                .build();
         CaseData caseData1 = CaseData.builder()
                 .deceasedSurname("Doe")
                 .moveToDormantDateTime(DATE_FORMAT.format(LocalDateTime.now(ZoneOffset.UTC)
@@ -74,10 +80,10 @@ class DormantCaseServiceTest {
         when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
         when(caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10")).thenReturn(caseList);
         dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
-        verify(ccdClientApi, times(1))
+        verify(ccdClientApi, times(2))
                 .updateCaseAsCaseworker(any(), any(), any(), any(),
                  any(), any(), any(), any());
-        assertEquals(1, caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10").size());
+        assertEquals(2, caseQueryService.findCaseToBeMadeDormant("2022-01-01", "2022-01-10").size());
     }
 
     @Test
@@ -133,7 +139,7 @@ class DormantCaseServiceTest {
                 .updateCaseAsCaseworker(any(), any(), any(), any(),
                         any(), any(), any(), any());
         dormantCaseService.makeCasesDormant("2022-01-01", "2022-01-10");
-        verify(ccdClientApi, times(1))
+        verify(ccdClientApi, times(2))
                 .updateCaseAsCaseworker(any(), any(), any(), any(),
                         any(), any(), any(), any());
         verifyNoInteractions(coreCaseDataApi);

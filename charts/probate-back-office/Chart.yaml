@@ -2,7 +2,7 @@ apiVersion: v2
 description: A Helm chart for the HMCTS probate back office service
 name: probate-back-office
 home: https://github.com/hmcts/probate-back-office
-version: 1.0.46
+version: 1.0.47
 maintainers:
   - name: HMCTS Probate Team
     email: probate-action-group@HMCTS.NET
@@ -11,7 +11,7 @@ dependencies:
     version:  5.2.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
   - name: ccd
-    version: 9.2.0
+    version: 9.2.1
     repository: 'https://hmctspublic.azurecr.io/helm/v1/repo/'
     tags:
       - probate-ccd-stack

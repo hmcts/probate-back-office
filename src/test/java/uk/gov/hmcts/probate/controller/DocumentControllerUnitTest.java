@@ -1,7 +1,6 @@
 package uk.gov.hmcts.probate.controller;
 
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -47,10 +46,10 @@ import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasItems;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
@@ -263,7 +262,7 @@ class DocumentControllerUnitTest {
         ResponseEntity<CallbackResponse> response =
                 documentController.setupForPermanentRemovalGrant(callbackRequest);
         verify(callbackResponseTransformer, times(1)).setupOriginalDocumentsForRemoval(callbackRequest);
-        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
@@ -276,7 +275,7 @@ class DocumentControllerUnitTest {
                 documentController.permanentlyDeleteRemovedGrant(callbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForGrant(callbackRequest);
         verify(callbackResponseTransformer, times(1)).updateTaskList(callbackRequest);
-        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
@@ -288,7 +287,7 @@ class DocumentControllerUnitTest {
         ResponseEntity<WillLodgementCallbackResponse> response =
                 documentController.setupForPermanentRemovalWillLodgement(callbackRequest);
         verify(willLodgementCallbackResponseTransformer, times(1)).setupOriginalDocumentsForRemoval(callbackRequest);
-        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
     @Test
@@ -301,7 +300,7 @@ class DocumentControllerUnitTest {
                 documentController.permanentlyDeleteRemovedWillLodgement(callbackRequest);
         verify(documentGeneratorService, times(1)).permanentlyDeleteRemovedDocumentsForWillLodgement(callbackRequest);
         verify(willLodgementCallbackResponseTransformer, times(1)).transform(callbackRequest);
-        MatcherAssert.assertThat(response.getStatusCode(), is(HttpStatus.OK));
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
 }

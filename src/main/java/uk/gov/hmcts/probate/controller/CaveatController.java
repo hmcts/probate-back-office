@@ -41,7 +41,7 @@ import uk.gov.hmcts.probate.validator.CaveatsExpiryValidationRule;
 import uk.gov.hmcts.probate.validator.CaveatDodValidationRule;
 import uk.gov.service.notify.NotificationClientException;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;

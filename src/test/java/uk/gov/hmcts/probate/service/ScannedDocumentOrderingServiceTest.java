@@ -1,8 +1,6 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.extern.slf4j.Slf4j;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
@@ -21,6 +19,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.mockito.Mockito.when;
 
 @Slf4j
@@ -69,7 +69,7 @@ class ScannedDocumentOrderingServiceTest {
     }
 
     @Test
-    public void shouldOrderScannedDocuments() throws IOException {
+    void shouldOrderScannedDocuments() throws IOException {
         MockitoAnnotations.openMocks(this);
         List<CollectionMember<ScannedDocument>> unorderedScannedDocuments
                 = createScannedDocumentListFromJsonFile("scannedDocuments/unorderedScannedDocuments.json");
@@ -94,7 +94,7 @@ class ScannedDocumentOrderingServiceTest {
     }
 
     @Test
-    public void shouldNotChangeOrderedScannedDocuments() throws IOException {
+    void shouldNotChangeOrderedScannedDocuments() throws IOException {
         MockitoAnnotations.openMocks(this);
         List<CollectionMember<ScannedDocument>> orderedScannedDocuments
                 = createScannedDocumentListFromJsonFile("scannedDocuments/orderedScannedDocuments.json");
@@ -111,7 +111,7 @@ class ScannedDocumentOrderingServiceTest {
     }
 
     @Test
-    public void shouldOrderSubtypesAlphabetically() throws IOException {
+    void shouldOrderSubtypesAlphabetically() throws IOException {
         MockitoAnnotations.openMocks(this);
         List<CollectionMember<ScannedDocument>> unorderedScannedSupportingDocs
                 = createScannedDocumentListFromJsonFile("scannedDocuments/unorderedScannedSupportingDocs.json");

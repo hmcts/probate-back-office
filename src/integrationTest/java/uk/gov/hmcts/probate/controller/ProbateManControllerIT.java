@@ -59,11 +59,11 @@ class ProbateManControllerIT {
 
     private static final String STANDING_SEARCH_URL = "/probateManTypes/STANDING_SEARCH/cases/";
 
-    private static final String LEGACY_SEARCH_URL = "/legacy/search/";
+    private static final String LEGACY_SEARCH_URL = "/legacy/search";
 
-    private static final String LEGACY_IMPORT_URL = "/legacy/doImport/";
+    private static final String LEGACY_IMPORT_URL = "/legacy/doImport";
 
-    private static final String LEGACY_RESET_SEARCH_URL = "/legacy/resetSearch/";
+    private static final String LEGACY_RESET_SEARCH_URL = "/legacy/resetSearch";
 
     @MockBean
     private ProbateManService probateManService;

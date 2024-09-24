@@ -179,6 +179,16 @@ class WillLodgementCallbackResponseTransformerTest {
 
         assertCommonDetails(response);
         assertEquals(2, response.getResponseWillLodgementData().getCaseMatches().size());
+        assertEquals("Possible case matches", response.getResponseWillLodgementData().getMatches());
+    }
+
+    @Test
+    void shouldReturnNoMatchesWhenNoMatches() {
+        List<CaseMatch> matches = new ArrayList<>();
+
+        WillLodgementCallbackResponse response = underTest.addMatches(willLodgementCallbackRequestMock, matches);
+
+        assertEquals("No matches found", response.getResponseWillLodgementData().getMatches());
     }
 
     private void assertCommon(WillLodgementCallbackResponse willLodgementCallbackResponse) {

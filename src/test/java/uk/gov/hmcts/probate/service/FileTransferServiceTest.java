@@ -8,7 +8,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.util.ResourceUtils;
-import uk.gov.hmcts.probate.util.FileUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -54,7 +53,7 @@ class FileTransferServiceTest {
         when(fileTransferApi.sendFile(any(), any(), any(), any(), any(), any(), any(),
             any(), any(), any(), any())).thenReturn(response);
 
-        file = ResourceUtils.getFile(FileUtils.class.getResource("/FileTransferFile.dat"));
+        file = ResourceUtils.getFile("classpath:FileTransferFile.dat");
 
         fileTransferService.uploadFile(file);
 

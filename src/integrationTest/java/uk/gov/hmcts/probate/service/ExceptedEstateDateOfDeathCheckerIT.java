@@ -43,26 +43,26 @@ class ExceptedEstateDateOfDeathCheckerIT {
     }
 
     @Test
-    public void localDateShouldReturnFalse() {
+    void localDateShouldReturnFalse() {
         LocalDate preDate = LocalDate.parse(PRE_EE_DECEASED_DATE_OF_DEATH, DATE_TIME_FORMATTER);
         assertFalse(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(preDate));
 
     }
 
     @Test
-    public void localDateShouldReturnFalseWhenNull() {
+    void localDateShouldReturnFalseWhenNull() {
         assertFalse(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) null));
     }
 
     @Test
-    public void localDateShouldReturnTrue() {
+    void localDateShouldReturnTrue() {
         LocalDate postDate = LocalDate.parse(POST_EE_DECEASED_DATE_OF_DEATH, DATE_TIME_FORMATTER);
         assertTrue(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(postDate));
 
     }
 
     @Test
-    public void shouldThrowExceptionForInvalidDate() {
+    void shouldThrowExceptionForInvalidDate() {
         OCRMappingException expectedEx = assertThrows(OCRMappingException.class, () -> {
             exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(INVALID_DATE);
         });

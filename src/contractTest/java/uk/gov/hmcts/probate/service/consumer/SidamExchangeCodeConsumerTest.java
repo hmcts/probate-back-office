@@ -11,7 +11,7 @@ import au.com.dius.pact.core.model.annotations.PactFolder;
 import org.apache.http.HttpHeaders;
 import org.apache.http.client.fluent.Executor;
 import org.json.JSONException;
-import org.junit.After;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -27,7 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static io.pactfoundation.consumer.dsl.LambdaDsl.newJsonBody;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VALUE;
 
 @ExtendWith(PactConsumerTestExt.class)
@@ -37,7 +37,7 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @SpringBootTest({"auth.provider.client.user: http://localhost:8863"})
 @TestPropertySource(locations = {"/application.properties"})
 @ContextConfiguration(classes = {BusinessRulesValidationApplication.class})
-public class SidamExchangeCodeConsumerTest {
+class SidamExchangeCodeConsumerTest {
 
     @Autowired
     private IdamApi idamApi;
@@ -47,7 +47,7 @@ public class SidamExchangeCodeConsumerTest {
     private static final String REDIRECT_URL = "auth.provider.client.redirect";
     private static final String CODE = "someCode";
 
-    @After
+    @AfterEach
     public void teardown() {
         Executor.closeIdleConnections();
     }
@@ -75,7 +75,7 @@ public class SidamExchangeCodeConsumerTest {
     public void verifyIdamExchangeCodePact() {
         TokenExchangeResponse tokenExchangeResponse = idamApi.exchangeCode(CODE, GRANT_TYPE, REDIRECT_URL,
             CLIENT_ID, CLIENT_SECRET);
-        assertEquals("Token is not exchanged", "accessToken", tokenExchangeResponse.getAccessToken());
+        assertEquals("accessToken", tokenExchangeResponse.getAccessToken());
     }
 
     private DslPart buildIdamAuthenticateResponseDsl() {

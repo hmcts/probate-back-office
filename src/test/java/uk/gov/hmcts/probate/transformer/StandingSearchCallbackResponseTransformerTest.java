@@ -9,6 +9,7 @@ import org.mockito.Mockito;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
+import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.ProbateAddress;
 import uk.gov.hmcts.probate.model.ccd.ProbateFullAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -63,6 +64,7 @@ class StandingSearchCallbackResponseTransformerTest {
     private static final String SS_RECORD_ID = "12345";
     private static final String SS_LEGACY_CASE_URL = "someUrl";
     private static final String SS_LEGACY_CASE_TYPE = "someCaseType";
+    private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @InjectMocks
     private StandingSearchCallbackResponseTransformer underTest;
@@ -171,6 +173,35 @@ class StandingSearchCallbackResponseTransformerTest {
                 .setupOriginalDocumentsForRemoval(standingSearchCallbackRequestMock);
         OriginalDocuments originalDocuments = response.getResponseStandingSearchData().getOriginalDocuments();;
         assertEquals("3", originalDocuments.getOriginalDocsUploaded().get(0).getId());
+    }
+
+    @Test
+    void shouldReturnNoMatchesWhenNoMatches() {
+        StandingSearchCallbackResponse standingSearchCallbackResponse =
+                underTest.addMatches(standingSearchCallbackRequestMock, caseMatches);
+
+        assertEquals(standingSearchCallbackResponse.getResponseStandingSearchData().getMatches(),
+                "No matches found");
+    }
+
+    @Test
+    void shouldReturnPossibleMatchesWhenMatchesFound() {
+        List<CollectionMember<CaseMatch>> caseMatch = new ArrayList<>();
+        CollectionMember<CaseMatch> match =
+                new CollectionMember<>(null, CaseMatch
+                        .builder()
+                        .id("123")
+                        .build());
+        caseMatch.add(match);
+        standingSearchDataBuilder
+                .deceasedForenames(SS_DECEASED_FORENAMES).caseMatches(caseMatch);
+        when(standingSearchCallbackRequestMock.getCaseDetails()).thenReturn(standingSearchDetailsMock);
+        when(standingSearchDetailsMock.getData()).thenReturn(standingSearchDataBuilder.build());
+        StandingSearchCallbackResponse standingSearchCallbackResponse =
+                underTest.addMatches(standingSearchCallbackRequestMock, caseMatches);
+
+        assertEquals(standingSearchCallbackResponse.getResponseStandingSearchData().getMatches(),
+                "Possible case matches");
     }
 
     private void assertCommon(StandingSearchCallbackResponse standingSearchCallbackResponse) {

@@ -28,7 +28,7 @@ import uk.gov.hmcts.probate.service.docmosis.assembler.AssembleWitness;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphField;
 
-import javax.validation.Valid;
+import jakarta.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

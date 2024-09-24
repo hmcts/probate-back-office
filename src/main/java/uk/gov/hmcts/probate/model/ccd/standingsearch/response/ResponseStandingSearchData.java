@@ -49,4 +49,5 @@ public class ResponseStandingSearchData {
 
     //transient in-event vars
     private final OriginalDocuments originalDocuments;
+    private String matches;
 }

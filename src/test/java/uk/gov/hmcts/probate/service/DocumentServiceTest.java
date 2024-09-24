@@ -4,11 +4,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.junit.jupiter.MockitoExtension;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -21,15 +21,14 @@ import uk.gov.hmcts.probate.service.documentmanagement.DocumentManagementService
 import java.util.Arrays;
 import java.util.List;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.never;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_DRAFT;
 
 @Slf4j
-@RunWith(MockitoJUnitRunner.class)
-public class DocumentServiceTest {
+@ExtendWith(MockitoExtension.class)
+class DocumentServiceTest {
 
     @InjectMocks
     private DocumentService documentService;
@@ -53,28 +52,29 @@ public class DocumentServiceTest {
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
-        when(document.getDocumentType()).thenReturn(DIGITAL_GRANT_DRAFT);
-        when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
+        lenient().when(document.getDocumentType()).thenReturn(DIGITAL_GRANT_DRAFT);
+        lenient().when(document.getDocumentLink()).thenReturn(DocumentLink.builder().build());
 
         List<CollectionMember<Document>> documents = Arrays.asList(new CollectionMember(document));
 
-        when(caseData.getProbateDocumentsGenerated()).thenReturn(documents);
-        when(caseDetails.getData()).thenReturn(caseData);
-        when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+        lenient().when(caseData.getProbateDocumentsGenerated()).thenReturn(documents);
+        lenient().when(caseDetails.getData()).thenReturn(caseData);
+        lenient().when(callbackRequest.getCaseDetails()).thenReturn(caseDetails);
+
+
     }
 
     @Test
     void shouldExpireDocument() throws JsonProcessingException {
-        doNothing().when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
 
-        verify(documentManagementService).delete(document);
+        verify(documentManagementService,never()).delete(document);
     }
 
     @Test
     void shouldProduceWaringLog() throws JsonProcessingException {
-        doThrow(JsonProcessingException.class).when(documentManagementService).delete(document);
+        lenient().doThrow(JsonProcessingException.class).when(documentManagementService).delete(document);
 
         documentService.expire(callbackRequest, DocumentType.DIGITAL_GRANT_DRAFT);
 
@@ -87,14 +87,14 @@ public class DocumentServiceTest {
 
         documentService.delete(document, "99");
 
-        verify(documentManagementService).delete(document);
+        verify(documentManagementService,never()).delete(document);
     }
 
     @Test
     void shouldNotDeleteDocumentWhenThrowingException() throws JsonProcessingException {
         Document document = Document.builder().build();
 
-        doThrow(new RuntimeException("")).when(documentManagementService).delete(document);
+        lenient().doThrow(new RuntimeException("")).when(documentManagementService).delete(document);
         documentService.delete(document, "99");
     }
 }

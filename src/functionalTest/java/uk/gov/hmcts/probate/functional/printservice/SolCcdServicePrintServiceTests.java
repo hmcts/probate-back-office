@@ -2,30 +2,30 @@ package uk.gov.hmcts.probate.functional.printservice;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void verifySuccessForGetPrintTemplateDocuments() throws IOException {
+    void verifySuccessForGetPrintTemplateDocuments() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -41,7 +41,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
 
 
     @Test
-    public void verifySolsTemplateDetails() {
+    void verifySolsTemplateDetails() {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -73,7 +73,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyPaTemplateDetails() {
+    void verifyPaTemplateDetails() {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -105,7 +105,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyprobateManLegacyCaseReturnsOkResponseCode() {
+    void verifyprobateManLegacyCaseReturnsOkResponseCode() {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -117,7 +117,7 @@ public class SolCcdServicePrintServiceTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyprobateManLegacyCaseReturnsBadResponseCode() {
+    void verifyprobateManLegacyCaseReturnsBadResponseCode() {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
