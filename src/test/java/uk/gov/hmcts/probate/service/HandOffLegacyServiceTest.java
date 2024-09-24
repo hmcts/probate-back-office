@@ -175,7 +175,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.TRUST_CORPORATION.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.TRUST_CORPORATION.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -187,7 +188,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.TRUST_CORPORATION.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.TRUST_CORPORATION.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -201,7 +203,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.FOREIGN_DOMICILE.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.FOREIGN_DOMICILE.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -215,7 +218,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.FOREIGN_DOMICILE.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.FOREIGN_DOMICILE.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -229,7 +233,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.FOREIGN_DOMICILE.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.FOREIGN_DOMICILE.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -244,7 +249,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.FOREIGN_WILL.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.FOREIGN_WILL.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -258,7 +264,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.FOREIGN_WILL.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.FOREIGN_WILL.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -272,7 +279,8 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.EXTENDED_INTESTACY.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.EXTENDED_INTESTACY.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 
     @Test
@@ -286,6 +294,7 @@ public class HandOffLegacyServiceTest {
 
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         List<CollectionMember<HandoffReason>> handoffReasonsList = handOffLegacyService.setHandoffReason(caseDetails);
-        assertEquals(HandoffReasonId.EXTENDED_INTESTACY.getCode(), handoffReasonsList.get(0).getValue().getCaseHandoffReason());
+        assertEquals(HandoffReasonId.EXTENDED_INTESTACY.getCode(),
+                handoffReasonsList.get(0).getValue().getCaseHandoffReason());
     }
 }

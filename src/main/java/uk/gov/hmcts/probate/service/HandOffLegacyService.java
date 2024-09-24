@@ -13,7 +13,6 @@ import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
