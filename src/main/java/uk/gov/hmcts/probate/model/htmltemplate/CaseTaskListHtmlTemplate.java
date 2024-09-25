@@ -39,6 +39,7 @@ public class CaseTaskListHtmlTemplate {
         + "<p><addAppLinkWelsh/></p>"
         + CLOSE_COL1_OPEN_COL2
         + "<status-addApplicationDetails/>"
+        + "<status-addApplicationDetailsWelsh/>"
         + CLOSE_GRID_ROW
         + SEPARATOR
         + "<br/>\n"
@@ -64,7 +65,7 @@ public class CaseTaskListHtmlTemplate {
         + OPEN_ROW
         + "<p><rvwLinkWelsh/></p>"
         + CLOSE_COL1_OPEN_COL2
-        + "<status-reviewAndSubmit/>"
+        + "<status-reviewAndSubmitWelsh/>"
         + CLOSE_GRID_ROW
         + "<reviewAndSubmitDate/>"
         + OPEN_ROW
@@ -79,6 +80,7 @@ public class CaseTaskListHtmlTemplate {
         + "<p><secText><paymentHintTextWelsh/></secText></p>"
         + CLOSE_COL1_OPEN_COL2
         + "<status-paymentMade/>"
+                + "<status-paymentMadeWelsh/>"
         + CLOSE_GRID_ROW
         + SEPARATOR
         + "<sendDocs/>"
@@ -105,7 +107,7 @@ public class CaseTaskListHtmlTemplate {
         + OPEN_ROW
         + "<p><authDocsLinkWelsh/></p>"
         + CLOSE_COL1_OPEN_COL2
-        + "<status-authDocuments/>"
+        + "<status-authDocumentsWelsh/>"
         + CLOSE_GRID_ROW
         + "<authenticatedDate/>"
         + OPEN_ROW
@@ -132,7 +134,7 @@ public class CaseTaskListHtmlTemplate {
         + OPEN_ROW
         + "<p><examAppLinkWelsh/></p>"
         + CLOSE_COL1_OPEN_COL2
-        + "<status-examineApp/>"
+        + "<status-examineAppWelsh/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW
         + "<p><secText>Byddwn yn adolygu eich cais am wybodaeth anghyflawn neu broblemau ac yn ei ddilysu "
@@ -164,7 +166,7 @@ public class CaseTaskListHtmlTemplate {
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN
         + OPEN_ROW
         + "<p><issueGrantLinkWelsh/></p>"
-        + "</gridCol-two-thirds><gridCol-one-third><status-issueGrant/>"
+        + "</gridCol-two-thirds><gridCol-one-third><status-issueGrantWelsh/>"
         + CLOSE_GRID_ROW
         + OPEN_ROW
         + "<p><secText>Bydd y grant yn cael ei anfon yn y post ychydig ddyddiau ar ôl ei gyhoeddi.</secText></p>"
