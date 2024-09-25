@@ -99,7 +99,7 @@
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s">Send documents<br/>Anfon dogfennau<br/>
+<p class="govuk-body-s">Send documents<br/>
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      View the documents needed by HM Courts and Tribunal Service    </span>  </summary>
   <div class="govuk-details__text">
@@ -114,6 +114,7 @@
 </ul>
   </div>
 </details>
+Anfon dogfennau<br/>
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      Gweld y dogfennau sydd eu hangen gan Wasanaeth Llysoedd a Thribiwnlysoedd EF    </span>  </summary>
   <div class="govuk-details__text">
