@@ -182,7 +182,8 @@ class NotificationServiceIT {
 
     @MockBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
-    @MockBean
+
+    @SpyBean
     private NotificationClientService notificationClientService;
 
     @SpyBean
@@ -247,6 +248,9 @@ class NotificationServiceIT {
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
+
+        when(templatePreviewResponse.getBody()).thenReturn("test-body");
+        doReturn(templatePreviewResponse).when(notificationClient).generateTemplatePreview(any(), any());
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument
             .builder().subtype("will").controlNumber("123456").build());
@@ -2220,8 +2224,6 @@ class NotificationServiceIT {
     void verifyEmailPreview()
             throws NotificationClientException {
 
-        when(templatePreviewResponse.getBody()).thenReturn("test-body");
-        when(notificationClientService.emailPreview(anyLong(), anyString(), any())).thenReturn(templatePreviewResponse);
         when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
                 .documentFileName(SENT_EMAIL_FILE_NAME).build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
@@ -2236,12 +2238,6 @@ class NotificationServiceIT {
                 .boStopDetailsDeclarationParagraph("No")
                 .build(), LAST_MODIFIED, ID);
         notificationService.emailPreview(caseDetails);
-
-        HashMap<String, Object> personalisation = new HashMap<>();
-
-        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
-        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
-        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
