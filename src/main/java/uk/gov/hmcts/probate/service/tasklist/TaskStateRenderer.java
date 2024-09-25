@@ -201,11 +201,13 @@ public class TaskStateRenderer {
                 .replaceFirst("<addAppLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                         currState, addAppState, ADD_APPLICATION_DETAILS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-addApplicationDetails/>", renderTaskStateTag(addAppState))
+                .replaceFirst("<status-addApplicationDetailsWelsh/>", renderTaskStateTagWelsh(addAppState))
                 .replaceFirst("<rvwLink/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<rvwLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_REVIEW_AND_SUBMIT,
                         currState, rvwState, REVIEW_OR_SUBMIT_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
+                .replaceFirst("<status-reviewAndSubmitWelsh/>", renderTaskStateTagWelsh(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
                 .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, currState, caseIdStr,
                         willType))
@@ -214,25 +216,30 @@ public class TaskStateRenderer {
                 .replaceFirst("<paymentHintText/>", renderPaymentHintText(currState, details))
                 .replaceFirst("<paymentHintTextWelsh/>", renderPaymentHintTextWelsh(currState, details))
                 .replaceFirst("<status-paymentMade/>", renderTaskStateTag(paymentState))
+                .replaceFirst("<status-paymentMadeWelsh/>", renderTaskStateTagWelsh(paymentState))
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<sendDocsLinkWelsh/>", renderSendDocsDetailsWelsh(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
+                .replaceFirst("<status-sendDocumentsWelsh/>", renderTaskStateTagWelsh(paymentState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<authDocsLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
+                .replaceFirst("<status-authDocumentsWelsh/>", renderTaskStateTagWelsh(paymentState))
                 .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, examineState, EXAMINE_APP_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<examAppLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, examineState, EXAMINE_APP_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
+                .replaceFirst("<status-examineAppWelsh/>", renderTaskStateTagWelsh(paymentState))
                 .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT,
                         currState, issueState, ISSUE_GRANT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<issueGrantLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT,
                         currState, issueState, ISSUE_GRANT_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState))
+                .replaceFirst("<status-issueGrantWelsh/>", renderTaskStateTagWelsh(paymentState))
                 .replaceFirst("<coversheet/>", renderLinkOrText(TaskListState.TL_STATE_SEND_DOCUMENTS,
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
     }
