@@ -9,7 +9,7 @@ import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
     public void verifyPersonalGenerateWelshReissueGOP() throws IOException {
