@@ -13,9 +13,9 @@ import java.util.List;
 
 
 import static org.bouncycastle.util.Longs.valueOf;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.Assert.assertThrows;
 
 class ExceptionRecordCaseDataValidatorTest {
 
@@ -59,8 +59,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtGrossValue(LOWER_VALUE)
                 .ihtNetValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_PROBATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
     }
@@ -71,8 +70,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(LOWER_VALUE)
                 .ihtEstateNetValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_ESTATE_NET_GREATER_THAN_GROSS, exception.getWarnings().get(0));
     }
@@ -108,8 +106,7 @@ class ExceptionRecordCaseDataValidatorTest {
         List<InputScannedDoc> invalidInputScannedDocWillList = new ArrayList<>(2);
         invalidInputScannedDocWillList.add(inputScannedDocWill);
         invalidInputScannedDocWillList.add(inputScannedDocInvalid);
-        OCRMappingException exception = assertThrows(SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR,
-                OCRMappingException.class, () -> ExceptionRecordCaseDataValidator
+        OCRMappingException exception = assertThrows(OCRMappingException.class, () -> ExceptionRecordCaseDataValidator
                         .validateInputScannedDocumentTypes(invalidInputScannedDocWillList,
                                 CaseType.GRANT_OF_REPRESENTATION));
         assertEquals(INVALID_SCAN_DOC_GOP, exception.getWarnings().get(0));
@@ -120,7 +117,7 @@ class ExceptionRecordCaseDataValidatorTest {
         List<InputScannedDoc> invalidInputScannedDocWillList = new ArrayList<>(2);
         invalidInputScannedDocWillList.add(inputScannedDocWill);
         invalidInputScannedDocWillList.add(inputScannedDocInvalid);
-        OCRMappingException exception = assertThrows(SCANNED_DOCUMENT_TYPE_VALDIATION_ERROR,
+        OCRMappingException exception = assertThrows(
                 OCRMappingException.class, () -> ExceptionRecordCaseDataValidator
                         .validateInputScannedDocumentTypes(invalidInputScannedDocWillList, CaseType.CAVEAT));
         assertEquals(INVALID_SCAN_DOC_CAVEAT, exception.getWarnings().get(0));
@@ -150,8 +147,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateGrossValue(LOWER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_GROSS_VAlUE, exception.getWarnings().get(0));
     }
@@ -162,8 +158,7 @@ class ExceptionRecordCaseDataValidatorTest {
                 .ihtEstateNetValue(LOWER_VALUE)
                 .ihtEstateNetQualifyingValue(HIGHER_VALUE)
                 .build();
-        OCRMappingException exception = assertThrows(IHT_VALDIATION_ERROR,
-                OCRMappingException.class,
+        OCRMappingException exception = assertThrows(OCRMappingException.class,
                 () -> ExceptionRecordCaseDataValidator.validateIhtValues(casedata));
         assertEquals(IHT_NETQUALIFYING_VALUE_GREATER_THAN_ESTATE_NET_VALUE, exception.getWarnings().get(0));
     }

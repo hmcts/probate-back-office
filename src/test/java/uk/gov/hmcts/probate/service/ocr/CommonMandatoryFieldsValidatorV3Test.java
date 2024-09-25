@@ -110,22 +110,19 @@ class CommonMandatoryFieldsValidatorV3Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(4, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_CODE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
+        List<GORCitizenMandatoryFields[]> capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
+        assertEquals(2, capturedArgs.size());
+        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(), capturedArgs.get(0)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_CODE.getValue(), capturedArgs.get(1)[0].getValue());
         assertEquals(GORCitizenMandatoryFields.PROBATE_GROSS_VALUE_IHT_400.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+                capturedArgs.get(1)[1].getValue());
         assertEquals(GORCitizenMandatoryFields.PROBATE_NET_VALUE_IHT_400.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
+                capturedArgs.get(1)[2].getValue());
     }
 
     @Test
@@ -164,20 +161,16 @@ class CommonMandatoryFieldsValidatorV3Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(3, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_421_GROSS_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_421_NET_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+        List<GORCitizenMandatoryFields[]> capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
+        assertEquals(2, capturedArgs.size());
+        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(), capturedArgs.get(0)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_421_GROSS_VALUE.getValue(), capturedArgs.get(1)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_421_NET_VALUE.getValue(), capturedArgs.get(1)[1].getValue());
     }
 
     @Test
@@ -211,18 +204,15 @@ class CommonMandatoryFieldsValidatorV3Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(2, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_421_GROSS_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_421_NET_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(2, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_421_GROSS_VALUE, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_421_NET_VALUE, capturedArgs[1]);
     }
 
     @Test
@@ -256,18 +246,15 @@ class CommonMandatoryFieldsValidatorV3Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(2, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_GROSS_VALUE_205.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_NET_VALUE_205.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(2, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_GROSS_VALUE_205, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_NET_VALUE_205, capturedArgs[1]);
     }
 
     @Test
@@ -301,18 +288,15 @@ class CommonMandatoryFieldsValidatorV3Test {
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(2, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_207_GROSS_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_207_NET_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(2, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_207_GROSS_VALUE, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_207_NET_VALUE, capturedArgs[1]);
     }
 
     @Test
@@ -348,26 +332,21 @@ class CommonMandatoryFieldsValidatorV3Test {
         when(mandatoryFieldsValidatorUtils.hasLateSpouseCivilPartner(any())).thenReturn(true);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(6, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+        List<GORCitizenMandatoryFields[]> capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
+        assertEquals(2, capturedArgs.size());
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(), capturedArgs.get(0)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(), capturedArgs.get(0)[1].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(), capturedArgs.get(0)[2].getValue());
         assertEquals(GORCitizenMandatoryFields.IHT_GROSS_VALUE_EXCEPTED_ESTATE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
+                capturedArgs.get(0)[3].getValue());
         assertEquals(GORCitizenMandatoryFields.IHT_NET_VALUE_EXCEPTED_ESTATE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(4).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(5).getValue());
+                capturedArgs.get(0)[4].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_UNUSED_ALLOWANCE.getValue(), capturedArgs.get(1)[0].getValue());
     }
 
 
@@ -403,24 +382,18 @@ class CommonMandatoryFieldsValidatorV3Test {
         when(ihtEstateValidationRule.isNqvBetweenValues(any())).thenReturn(false);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
 
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(1))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(5, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_GROSS_VALUE_EXCEPTED_ESTATE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_NET_VALUE_EXCEPTED_ESTATE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(4).getValue());
+        GORCitizenMandatoryFields[] capturedArgs = gorCitizenMandatoryFieldsArgumentCaptor.getValue();
+        assertEquals(5, capturedArgs.length);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_GROSS, capturedArgs[0]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NET, capturedArgs[1]);
+        assertEquals(GORCitizenMandatoryFields.IHT_ESTATE_NQV, capturedArgs[2]);
+        assertEquals(GORCitizenMandatoryFields.IHT_GROSS_VALUE_EXCEPTED_ESTATE, capturedArgs[3]);
+        assertEquals(GORCitizenMandatoryFields.IHT_NET_VALUE_EXCEPTED_ESTATE, capturedArgs[4]);
     }
 
     @Test
@@ -513,22 +486,20 @@ class CommonMandatoryFieldsValidatorV3Test {
         ocrFields.add(ihtCode);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
+        List<GORCitizenMandatoryFields[]> capturedArgs =
                 gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(4, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_CODE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
+        assertEquals(2, capturedArgs.size());
+        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(), capturedArgs.get(0)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_CODE.getValue(), capturedArgs.get(1)[0].getValue());
         assertEquals(GORCitizenMandatoryFields.PROBATE_GROSS_VALUE_IHT_400.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
+                capturedArgs.get(1)[1].getValue());
         assertEquals(GORCitizenMandatoryFields.PROBATE_NET_VALUE_IHT_400.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(3).getValue());
+                capturedArgs.get(1)[2].getValue());
     }
 
     @Test
@@ -561,20 +532,20 @@ class CommonMandatoryFieldsValidatorV3Test {
         ocrFields.add(iht400Process);
         HashMap<String, String> ocrFieldValues = ocrFieldTestUtils.addAllFields(ocrFields);
         commonMandatoryFieldsValidatorV3.addWarnings(ocrFieldValues, warnings);
-        ArgumentCaptor<GORCitizenMandatoryFields> gorCitizenMandatoryFieldsArgumentCaptor =
-                ArgumentCaptor.forClass(GORCitizenMandatoryFields.class);
+
+        ArgumentCaptor<GORCitizenMandatoryFields[]> gorCitizenMandatoryFieldsArgumentCaptor =
+                ArgumentCaptor.forClass(GORCitizenMandatoryFields[].class);
+
         verify(mandatoryFieldsValidatorUtils, times(2))
                 .addWarningsForConditionalFields(any(), any(),
                         gorCitizenMandatoryFieldsArgumentCaptor.capture());
-        List<GORCitizenMandatoryFields> citizenMandatoryFieldsArgumentCaptorAllValues =
-                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
-        assertEquals(3, citizenMandatoryFieldsArgumentCaptorAllValues.size());
-        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(0).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_421_GROSS_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(1).getValue());
-        assertEquals(GORCitizenMandatoryFields.IHT_421_NET_VALUE.getValue(),
-                citizenMandatoryFieldsArgumentCaptorAllValues.get(2).getValue());
 
+
+        List<GORCitizenMandatoryFields[]> capturedArgs =
+                gorCitizenMandatoryFieldsArgumentCaptor.getAllValues();
+        assertEquals(2, capturedArgs.size());
+        assertEquals(GORCitizenMandatoryFields.IHT_400_PROCESS.getValue(), capturedArgs.get(0)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_421_GROSS_VALUE.getValue(), capturedArgs.get(1)[0].getValue());
+        assertEquals(GORCitizenMandatoryFields.IHT_421_NET_VALUE.getValue(), capturedArgs.get(1)[1].getValue());
     }
 }

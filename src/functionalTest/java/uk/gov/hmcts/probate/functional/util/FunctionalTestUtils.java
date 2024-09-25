@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.pdfbox.cos.COSDocument;
 import org.apache.pdfbox.io.IOUtils;
@@ -202,6 +202,7 @@ public class FunctionalTestUtils {
 
     private Response getDocumentResponse(String documentUrl, Headers headers) {
         log.info("caseDocumentManagermentUrl:" + caseDocumentManagermentUrl);
+        log.info("FunctionalTestUtils.getDocumentResponse:" + documentUrl);
         String docUrl = documentUrl.replaceAll("/binary", "");
         final String documentId = docUrl.substring(docUrl.lastIndexOf("/") + 1);
         return getDocumentResponseFromId(documentId, headers);

@@ -3,10 +3,10 @@ package uk.gov.hmcts.probate.functional.search;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
@@ -18,7 +18,7 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.core.Is.is;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class StandingSearchTests extends IntegrationTestBase {
 
     public static final String STANDING_SEARCH_CREATE = "/standing-search/create";
@@ -26,13 +26,13 @@ public class StandingSearchTests extends IntegrationTestBase {
     private static final String DEFAULT_APPLICATION_TYPE = "Personal";
     private static final String DEFAULT_REGISTRY_LOCATION = "Leeds";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() throws IOException {
+    void standingSearchCreatedShouldReturnDataPayloadOkResponseCode() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -52,7 +52,7 @@ public class StandingSearchTests extends IntegrationTestBase {
     }
 
     @Test
-    public void standingSearchCreatedShouldReturnDefaultValues() throws IOException {
+    void standingSearchCreatedShouldReturnDefaultValues() throws IOException {
         //ARRANGE
         String jsonAsString = utils.getJsonFromFile("/search/standingSearchPayload.json");
         jsonAsString = jsonAsString.replaceFirst("\"registryLocation\": \"Manchester\",", "");
