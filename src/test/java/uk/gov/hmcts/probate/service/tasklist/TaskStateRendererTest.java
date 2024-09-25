@@ -137,7 +137,7 @@ class TaskStateRendererTest {
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
                 + "<div>Issue grant of representation</div>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
                 + "/src/main/resources/statusImages/"
@@ -178,12 +178,12 @@ class TaskStateRendererTest {
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
@@ -222,12 +222,12 @@ class TaskStateRendererTest {
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
                 + "<div>Issue grant of representation</div>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
                 + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
                 + "</p>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
                 + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>"
@@ -271,22 +271,22 @@ class TaskStateRendererTest {
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n"
@@ -329,17 +329,17 @@ class TaskStateRendererTest {
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
@@ -381,17 +381,17 @@ class TaskStateRendererTest {
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
@@ -433,17 +433,17 @@ class TaskStateRendererTest {
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
             + "<div>Issue grant of representation</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"

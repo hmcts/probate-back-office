@@ -189,11 +189,13 @@ public class TaskStateRenderer {
                         currState, addSolState, ADD_SOLICITOR_DETAILS_TEXT_WELSH, caseIdStr, willType, details)
                 )
                 .replaceFirst("<status-addSolicitor/>", renderTaskStateTag(addSolState))
+                .replaceFirst("<status-addSolicitorWelsh/>", renderTaskStateTagWelsh(addSolState))
                 .replaceFirst("<addDeceasedLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                         currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<addDeceasedLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                         currState, addDeceasedState, ADD_DECEASED_DETAILS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-addDeceasedDetails/>", renderTaskStateTag(addDeceasedState))
+                .replaceFirst("<status-addDeceasedDetailsWelsh/>", renderTaskStateTagWelsh(addDeceasedState))
                 .replaceFirst("<addAppLink/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                         currState, addAppState, ADD_APPLICATION_DETAILS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<addAppLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
@@ -336,6 +338,7 @@ public class TaskStateRenderer {
         return TaskState.NOT_AVAILABLE;
     }
 
+
     private String renderTaskStateTag(TaskState taskState) {
         if (taskState == TaskState.NOT_AVAILABLE) {
             return "";
@@ -344,6 +347,16 @@ public class TaskStateRenderer {
                 .replaceFirst("<imgSrc/>", taskState.imageUrl)
                 .replaceFirst("<imgAlt/>", taskState.displayText)
                 .replaceFirst("<imgTitle/>", taskState.displayText);
+    }
+
+    private String renderTaskStateTagWelsh(TaskState taskState) {
+        if (taskState == TaskState.NOT_AVAILABLE) {
+            return "";
+        }
+        return StatusTagHtmlTemplate.STATUS_TAG
+                .replaceFirst("<imgSrc/>", taskState.imageUrlWelsh)
+                .replaceFirst("<imgAlt/>", taskState.displayTextWelsh)
+                .replaceFirst("<imgTitle/>", taskState.displayTextWelsh);
     }
 
     String renderSendDocsDetails(TaskState sendDocsState, String caseId, CaseDetails details) {
