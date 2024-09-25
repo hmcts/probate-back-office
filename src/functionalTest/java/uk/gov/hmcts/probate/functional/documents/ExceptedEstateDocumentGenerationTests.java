@@ -10,7 +10,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
 public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTestBase {
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
@@ -26,6 +28,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        log.info("SwitchDate *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
@@ -40,6 +43,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        log.info("EstatesNo *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
@@ -54,6 +58,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        log.info("Yes207 *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
@@ -69,6 +74,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
+        log.info("Yes400421 *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
