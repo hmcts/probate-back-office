@@ -609,6 +609,7 @@ public class CaseData extends CaseDataParent {
     private ChangeOrganisationRequest changeOrganisationRequestField;
     private final String informationNeeded;
     private final String deceasedName;
+    private final DocumentLink emailPreview;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

@@ -17,6 +17,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class InformationRequestService {
+    private final NotificationService notificationService;
     private final NotificationExecutorsApplyingValidationRule notificationExecutorsApplyingValidationRule;
     private final InformationRequestCorrespondenceService informationRequestCorrespondenceService;
     private final CallbackResponseTransformer callbackResponseTransformer;
@@ -49,5 +50,14 @@ public class InformationRequestService {
             //    });
         }
         return callbackResponseTransformer.addInformationRequestDocuments(callbackRequest, documents, letterIds);
+    }
+
+    public Document emailPreview(CallbackRequest callbackRequest) {
+        try {
+            return notificationService.emailPreview(callbackRequest.getCaseDetails());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        }
+        return null;
     }
 }

@@ -188,6 +188,12 @@ public class NotificationController {
         return ResponseEntity.ok(informationRequestService.handleInformationRequest(callbackRequest));
     }
 
+    @PostMapping(path = "/information-request-email-preview")
+    public ResponseEntity<CallbackResponse> emailPreview(@RequestBody CallbackRequest callbackRequest) {
+        Document document = informationRequestService.emailPreview(callbackRequest);
+        return ResponseEntity.ok(callbackResponseTransformer.addDocumentPreview(callbackRequest, document));
+    }
+
     @PostMapping(path = "/redeclaration-sot")
     public ResponseEntity<CallbackResponse> redeclarationSot(@RequestBody CallbackRequest callbackRequest) {
         return ResponseEntity.ok(redeclarationNotificationService.handleRedeclarationNotification(callbackRequest));

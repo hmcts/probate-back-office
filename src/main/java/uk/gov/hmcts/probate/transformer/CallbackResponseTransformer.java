@@ -285,6 +285,16 @@ public class CallbackResponseTransformer {
 
     }
 
+    public CallbackResponse addDocumentPreview(CallbackRequest callbackRequest, Document document) {
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        //documentTransformer.addDocument(callbackRequest, document, false);
+        responseCaseDataBuilder.emailPreview(document.getDocumentLink());
+
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
                                          String letterId, String pdfSize) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();

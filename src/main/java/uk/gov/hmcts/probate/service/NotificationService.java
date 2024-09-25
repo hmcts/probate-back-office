@@ -45,6 +45,8 @@ import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
 
 import jakarta.validation.Valid;
+import uk.gov.service.notify.TemplatePreview;
+
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -56,6 +58,7 @@ import java.util.Optional;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
+import static uk.gov.hmcts.probate.model.State.CASE_STOPPED_REQUEST_INFORMATION;
 import static uk.gov.hmcts.probate.model.State.GRANT_REISSUED;
 import static uk.gov.service.notify.NotificationClient.prepareUpload;
 
@@ -180,6 +183,21 @@ public class NotificationService {
                 caseDetails.getId());
 
         return getSentEmailDocument(state, emailAddress, response);
+    }
+
+    public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
+        CaseData caseData = caseDetails.getData();
+        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
+
+        String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
+                caseData.getApplicationType(),
+                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+        Map<String, Object> personalisation =
+                grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
+                        registry);
+        TemplatePreview previewResponse =
+                notificationClientService.emailPreview(caseDetails.getId(), templateId, personalisation);
+        return getGeneratedDocument(previewResponse, null, SENT_EMAIL);
     }
 
     public Document sendNocEmail(State state, CaseDetails caseDetails) throws NotificationClientException {
@@ -422,6 +440,18 @@ public class NotificationService {
             .subject(response.getSubject())
             .body(markdownTransformationService.toHtml(response.getBody()))
             .build();
+
+        return pdfManagementService.generateAndUpload(sentEmail, docType);
+    }
+
+    private Document getGeneratedDocument(TemplatePreview response, String emailAddress,
+                                          DocumentType docType) {
+        SentEmail sentEmail = SentEmail.builder()
+                .sentOn(LocalDateTime.now().format(formatter))
+                .to(emailAddress)
+                .subject(response.getSubject().orElse(""))
+                .body(markdownTransformationService.toHtml(response.getBody()))
+                .build();
 
         return pdfManagementService.generateAndUpload(sentEmail, docType);
     }

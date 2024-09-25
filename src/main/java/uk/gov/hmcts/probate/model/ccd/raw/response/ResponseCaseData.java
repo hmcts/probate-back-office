@@ -396,4 +396,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private String matches;
     private final String informationNeeded;
     private final String deceasedName;
+    private final DocumentLink emailPreview;
 }

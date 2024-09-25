@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
+import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,7 +19,9 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -53,6 +56,8 @@ class InformationRequestServiceTest {
 
     @InjectMocks
     private InformationRequestService informationRequestService;
+    @Mock
+    private NotificationService notificationService;
     private CollectionMember<ExecutorsApplyingNotification> execApplying;
     private CollectionMember<ExecutorsApplyingNotification> execApplying2;
     private CaseData caseData;
@@ -201,6 +206,24 @@ class InformationRequestServiceTest {
     //    assertNull(informationRequestService.handleInformationRequest(callbackRequest)
     //            .getData().getProbateNotificationsGenerated());
     //}
+
+    @Test
+    void testEmailPreviewDocumentSuccessfully() throws NotificationClientException {
+        Document document = Document.builder()
+                .documentDateAdded(LocalDate.now())
+                .documentFileName("fileName")
+                .documentGeneratedBy("generatedBy")
+                .documentLink(
+                        DocumentLink.builder().documentUrl("url").documentFilename("file").documentBinaryUrl("binary")
+                                .build())
+                .documentType(DocumentType.DIGITAL_GRANT)
+                .build();
+
+        when(notificationService.emailPreview(any())).thenReturn(document);
+
+        assertEquals(document,
+                informationRequestService.emailPreview(callbackRequest));
+    }
 
     private CollectionMember<ExecutorsApplyingNotification> buildExec(String item, String name, String email,
                                                                       String applying) {

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
+import uk.gov.service.notify.TemplatePreview;
 
 import java.util.Base64;
 import java.util.Map;
@@ -38,6 +39,12 @@ public class NotificationClientService {
         log.info("Preparing to send email for case: {}, to email address: {}", caseId,
             getEmailEncodedBase64(emailAddress));
         return notificationClient.sendEmail(templateId, emailAddress, personalisation, reference, emailReplyToId);
+    }
+
+    public TemplatePreview emailPreview(Long caseId, String templateId, Map<String, Object> personalisation)
+            throws NotificationClientException {
+        log.info("Preparing to send email for case: {}", caseId);
+        return notificationClient.generateTemplatePreview(templateId, personalisation);
     }
 
     private String getEmailEncodedBase64(String emailAddress) {

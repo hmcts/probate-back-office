@@ -87,6 +87,7 @@ class NotificationControllerIT {
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled?date=aDate";
     private static final String GRANT_AWAITING_DOCS = "/notify/grant-awaiting-documents-scheduled?date=aDate";
     private static final String START_GRANT_DELAYED_NOTIFICATION_DATE = "/notify/start-grant-delayed-notify-period";
+    private static final String REQUEST_INFO_EMAIL_PREVIEW_URL = "/notify/information-request-email-preview";
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
     @Autowired
@@ -206,9 +207,11 @@ class NotificationControllerIT {
             .thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any()))
             .thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addDocumentPreview(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.grantRaised(any(), any(), any())).thenReturn(successfulResponse);
 
         when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
+        when(informationRequestService.emailPreview(any())).thenReturn(document);
 
         when(redeclarationNotificationService.handleRedeclarationNotification(any())).thenReturn(successfulResponse);
 
@@ -553,6 +556,17 @@ class NotificationControllerIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    void shouldReturnSuccessfulResponseForInformationRequestEmailPreview() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REQUEST_INFO_EMAIL_PREVIEW_URL).content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
