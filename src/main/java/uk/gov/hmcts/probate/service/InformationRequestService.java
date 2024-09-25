@@ -8,6 +8,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.NotificationExecutorsApplyingValidationRule;
+import uk.gov.service.notify.NotificationClientException;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -55,7 +56,7 @@ public class InformationRequestService {
     public Document emailPreview(CallbackRequest callbackRequest) {
         try {
             return notificationService.emailPreview(callbackRequest.getCaseDetails());
-        } catch (Exception e) {
+        } catch (NotificationClientException e) {
             log.error(e.getMessage());
         }
         return null;

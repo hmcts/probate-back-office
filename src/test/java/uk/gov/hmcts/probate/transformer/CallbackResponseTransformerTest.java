@@ -4525,7 +4525,6 @@ class CallbackResponseTransformerTest {
                 .documentLink(documentLinkMock)
                 .documentFileName(SENT_EMAIL.getTemplateName())
                 .build();
-        caseDataBuilder.applicationType(SOLICITOR);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
         CallbackResponse callbackResponse =
