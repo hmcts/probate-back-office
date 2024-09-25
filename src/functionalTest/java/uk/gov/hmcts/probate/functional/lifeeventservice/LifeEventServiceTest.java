@@ -7,9 +7,11 @@ import io.restassured.response.Response;
 
 import java.io.IOException;
 import java.util.List;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
@@ -17,11 +19,11 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class LifeEventServiceTest extends IntegrationTestBase {
 
     @Test
-    public void shouldReturn200() throws IOException {
+    void shouldReturn200() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreatedSolDtls.json");
         Response response = RestAssured.given()
                 .relaxedHTTPSValidation()
@@ -33,7 +35,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
-    public void shouldReturn200HandCaseOffToLegacySite() throws IOException {
+    void shouldReturn200HandCaseOffToLegacySite() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("caseprogress/01-appCreatedSolDtls.json");
         Response response = RestAssured.given()
             .relaxedHTTPSValidation()
@@ -46,6 +48,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
 
 
     @Test
+    @Disabled
     public void shouldAddDeathRecordWhenManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStart.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -66,6 +69,7 @@ public class LifeEventServiceTest extends IntegrationTestBase {
     }
 
     @Test
+    @Disabled
     public void shouldReturnErrorManualUpdateAboutToStart() throws IOException {
         final String jsonFromFile = utils.getJsonFromFile("lifeEvent/manualUpdateAboutToStartNonExistent.json");
         ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());

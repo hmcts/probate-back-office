@@ -2,20 +2,20 @@ package uk.gov.hmcts.probate.functional.hardstops;
 
 
 import io.restassured.response.Response;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
 
 import static io.restassured.RestAssured.given;
-import static junit.framework.TestCase.assertEquals;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     public static final String VALIDATE_PROBATE_URL = "/case/sols-validate-probate";
@@ -23,13 +23,13 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     public static final String VALIDATE_URL = "/case/sols-validate";
     private static final String CASE_STOP_CONFIRMATION = "/case/stopConfirmation";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void validateWillUpdateProbateWithoutHardStop() throws IOException {
+    void validateWillUpdateProbateWithoutHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -42,7 +42,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validate400WillUpdateProbateWithoutHardStop() throws IOException {
+    void validate400WillUpdateProbateWithoutHardStop() throws IOException {
         given()
                 .config(config)
                 .relaxedHTTPSValidation()
@@ -55,7 +55,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateWithNoHmrc400WillUpdateProbateWithoutHardStop() throws IOException {
+    void validateWithNoHmrc400WillUpdateProbateWithoutHardStop() throws IOException {
         given()
                 .config(config)
                 .relaxedHTTPSValidation()
@@ -68,7 +68,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateWillUpdateIntestacyWithoutHardStop() throws IOException {
+    void validateWillUpdateIntestacyWithoutHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -81,7 +81,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateWillUpdateAnnexedWithoutHardStop() throws IOException {
+    void validateWillUpdateAnnexedWithoutHardStop() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -94,7 +94,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopWithNoWillAccessOriginalProbate() throws IOException {
+    void validateHardStopWithNoWillAccessOriginalProbate() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -107,7 +107,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
     }
 
     @Test
-    public void validateHardStopWithNoWillAccessOriginalAdmon() throws IOException {
+    void validateHardStopWithNoWillAccessOriginalAdmon() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -121,7 +121,7 @@ public class SolCcdServiceWillUpdateHardStopTests extends IntegrationTestBase {
 
     // We no longer stop these
     @Test
-    public void validateHardMessageWithNoOriginalWill() throws IOException {
+    void validateHardMessageWithNoOriginalWill() throws IOException {
         final Response response = given()
             .config(config)
             .relaxedHTTPSValidation()
