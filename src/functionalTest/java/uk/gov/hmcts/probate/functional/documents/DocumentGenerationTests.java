@@ -4,10 +4,10 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.docmosis.assembler.ParagraphCode;
 
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class DocumentGenerationTests extends DocumentGenerationTestBase {
 
     private static final String ASSEMBLE_LETTER = "/document/assembleLetter";
@@ -33,13 +33,13 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     private static final String NON_PROBATE_DOC_NAME = "documentsGenerated[0].value.DocumentLink";
     private static final String EVIDENCE_ADDED = "/document/evidenceAdded";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void verifySuccessForWillLodgementForCardiff() throws IOException {
+    void verifySuccessForWillLodgementForCardiff() throws IOException {
         final CaseData caseData = CaseData.builder().build();
         final String response = generateNonProbateDocument(DEFAULT_WILL_NO_DOCS_PAYLOAD, GENERATE_DEPOSIT_RECEIPT);
 
@@ -56,7 +56,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifyAssembleLetterShouldReturnOkResponseCode() throws IOException {
+    void verifyAssembleLetterShouldReturnOkResponseCode() throws IOException {
         final ResponseBody response = validatePostSuccess("/document/assembleLetterPayLoad.json",
             ASSEMBLE_LETTER);
         final JsonPath jsonPath = JsonPath.from(response.asString());
@@ -68,7 +68,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyAssembleLetterShouldReturnIHTReferenceNumber() throws IOException {
+    void verifyAssembleLetterShouldReturnIHTReferenceNumber() throws IOException {
         final String jsonAsString = getJsonFromFile("/document/assembleLetterTransform.json");
         final Response response = RestAssured.given()
             .config(config)
@@ -84,7 +84,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyDefaultRePrintValuesReturnsOkResponseCode() throws IOException {
+    void verifyDefaultRePrintValuesReturnsOkResponseCode() throws IOException {
         final ResponseBody response =
             validatePostSuccess("/document/rePrintDefaultGrantOfProbate.json", DEFAULT_PRINT_VALUES);
 
@@ -94,7 +94,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyDefaultRePrintValuesReturnsIhtReferenceNumber() throws IOException {
+    void verifyDefaultRePrintValuesReturnsIhtReferenceNumber() throws IOException {
         String jsonAsString = getJsonFromFile("/document/rePrintDefaultGrantOfProbate.json");
         jsonAsString = jsonAsString.replaceFirst("\"paperForm\": \"Yes\",", "\"paperForm\": \"No\",");
 
@@ -111,13 +111,13 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorGenerateLetterReturnOkResponseCode() throws IOException {
+    void verifySolicitorGenerateLetterReturnOkResponseCode() throws IOException {
         final String response = getFirstProbateDocumentsText(GENERATE_LETTER_PAYLOAD, GENERATE_LETTER);
         assertEquals(getJsonFromFile("/document/assembledLetter.txt"), response);
     }
 
     @Test
-    public void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() throws IOException {
+    void verifySolicitorGenerateLetterReturnsIHTReferenceNumber() throws IOException {
         final ResponseBody responseBody =
             validatePostSuccess("/document/generateLetterDefaultLocation.json", GENERATE_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -126,7 +126,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorPreviewLetterReturnsCorrectResponse() throws IOException {
+    void verifySolicitorPreviewLetterReturnsCorrectResponse() throws IOException {
         final Response jsonResponse = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -141,7 +141,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() throws IOException {
+    void verifySolicitorPreviewLetterReturnsIHTReferenceNumber() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
                 PREVIEW_LETTER);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -150,7 +150,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyEvidenceAdded() throws IOException {
+    void verifyEvidenceAdded() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("/document/generateLetterDefaultLocation.json",
                 EVIDENCE_ADDED);
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
@@ -158,7 +158,7 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySolicitorRePrintReturnBadResponseCode() throws IOException {
+    void verifySolicitorRePrintReturnBadResponseCode() throws IOException {
         final Response response = RestAssured.given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -171,13 +171,13 @@ public class DocumentGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void shouldPostForDocumentRemovalsGrant() throws IOException {
+    void shouldPostForDocumentRemovalsGrant() throws IOException {
         validatePostSuccess("document/rePrintDefaultGrantOfProbate.json", "/document/setup-for-permanent-removal");
         validatePostSuccess("document/grantDocumentsPayload.json", "/document/permanently-delete-removed");
     }
 
     @Test
-    public void shouldPostForDocumentRemovalsWill() throws IOException {
+    void shouldPostForDocumentRemovalsWill() throws IOException {
         validatePostSuccess("willLodgementPayload.json", "/document/setup-for-permanent-removal-will");
         validatePostSuccess("willLodgementDocumentsPayload.json", "/document/permanently-delete-removed-will");
     }

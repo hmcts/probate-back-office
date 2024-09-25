@@ -1,9 +1,9 @@
 package uk.gov.hmcts.probate.functional.serviceauth;
 
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
@@ -11,16 +11,16 @@ import java.io.IOException;
 import static io.restassured.RestAssured.given;
 
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
 
-    @Before
+    @BeforeEach
     public void setUp() {
         initialiseConfig();
     }
 
     @Test
-    public void verifyThatWithCorrectAuthorizationWeReceiveSuccess() throws IOException {
+    void verifyThatWithCorrectAuthorizationWeReceiveSuccess() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -31,7 +31,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyThatWithInCorrectAuthorizationWeReceive403() throws IOException {
+    void verifyThatWithInCorrectAuthorizationWeReceive403() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()
@@ -42,7 +42,7 @@ public class SolCcdServiceServiceAuthTests extends IntegrationTestBase {
     }
 
     @Test
-    public void verifyThatWithEmptyAuthorizationHeaderWeReceive403() throws IOException {
+    void verifyThatWithEmptyAuthorizationHeaderWeReceive403() throws IOException {
         given()
             .config(config)
             .relaxedHTTPSValidation()

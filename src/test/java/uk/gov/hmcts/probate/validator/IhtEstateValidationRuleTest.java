@@ -196,12 +196,12 @@ class IhtEstateValidationRuleTest {
     }
 
     @Test
-    public void testNvqBetweenValues() {
+    void testNvqBetweenValues() {
         assertTrue(ihtEstateValidationRule.isNqvBetweenValues(ESTATE_NQV_BETWEEN));
     }
 
     @Test
-    public void testNvqOutsideValues() {
+    void testNvqOutsideValues() {
         assertFalse(ihtEstateValidationRule.isNqvBetweenValues(ESTATE_NQV_SMALLER));
     }
 }
