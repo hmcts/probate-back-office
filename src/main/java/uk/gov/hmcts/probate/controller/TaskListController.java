@@ -12,6 +12,8 @@ import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 
+import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 @Slf4j
 @Controller
 @RequiredArgsConstructor
@@ -21,12 +23,12 @@ public class TaskListController {
     private final CallbackResponseTransformer callbackResponseTransformer;
     private final CaseDataTransformer caseDataTransformer;
 
-    @PostMapping(path = "/update")
+    @PostMapping(path = "/update", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 
-    @PostMapping(path = "/updateCasePrinted")
+    @PostMapping(path = "/updateCasePrinted", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateCasePrinted(@RequestBody CallbackRequest request) {
         caseDataTransformer.transformCaseDataForEvidenceHandled(request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
