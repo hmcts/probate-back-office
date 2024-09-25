@@ -220,26 +220,26 @@ public class TaskStateRenderer {
                 .replaceFirst("<sendDocsLink/>", renderSendDocsDetails(sendDocsState, caseIdStr, details))
                 .replaceFirst("<sendDocsLinkWelsh/>", renderSendDocsDetailsWelsh(sendDocsState, caseIdStr, details))
                 .replaceFirst("<status-sendDocuments/>", renderTaskStateTag(sendDocsState))
-                .replaceFirst("<status-sendDocumentsWelsh/>", renderTaskStateTagWelsh(paymentState))
+                .replaceFirst("<status-sendDocumentsWelsh/>", renderTaskStateTagWelsh(sendDocsState))
                 .replaceFirst("<authDocsLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<authDocsLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
-                .replaceFirst("<status-authDocumentsWelsh/>", renderTaskStateTagWelsh(paymentState))
+                .replaceFirst("<status-authDocumentsWelsh/>", renderTaskStateTagWelsh(authDocsState))
                 .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, examineState, EXAMINE_APP_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<examAppLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, examineState, EXAMINE_APP_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-examineApp/>", renderTaskStateTag(examineState))
-                .replaceFirst("<status-examineAppWelsh/>", renderTaskStateTagWelsh(paymentState))
+                .replaceFirst("<status-examineAppWelsh/>", renderTaskStateTagWelsh(examineState))
                 .replaceFirst("<issueGrantLink/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT,
                         currState, issueState, ISSUE_GRANT_TEXT, caseIdStr, willType, details))
                 .replaceFirst("<issueGrantLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_ISSUE_GRANT,
                         currState, issueState, ISSUE_GRANT_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<status-issueGrant/>", renderTaskStateTag(issueState))
-                .replaceFirst("<status-issueGrantWelsh/>", renderTaskStateTagWelsh(paymentState))
+                .replaceFirst("<status-issueGrantWelsh/>", renderTaskStateTagWelsh(issueState))
                 .replaceFirst("<coversheet/>", renderLinkOrText(TaskListState.TL_STATE_SEND_DOCUMENTS,
                         currState, sendDocsState, COVERSHEET, caseIdStr, willType, details));
     }
