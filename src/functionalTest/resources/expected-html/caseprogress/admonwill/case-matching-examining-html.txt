@@ -82,7 +82,7 @@
 <hr class="govuk-section-break govuk-section-break--m govuk-section-break--visible">
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p class="govuk-body-s">Send documents<br/>Anfon dogfennau<br/>
+<p class="govuk-body-s">Send documents<br/>
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      View the documents needed by HM Courts and Tribunal Service    </span>  </summary>
   <div class="govuk-details__text">    You now need to send us<br/>
@@ -94,6 +94,7 @@
 <li>if applicable, send us the appropriate renunciation form <a href="https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights" target="_blank">PA15</a> / <a href="https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners" target="_blank">PA17</a> for executors who have renounced their right to apply</li>
 </ul>  </div>
 </details>
+Anfon dogfennau<br/>
 <details class="govuk-details" data-module="govuk-details">
   <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      Gweld y dogfennau sydd eu hangen gan Wasanaeth Llysoedd a Thribiwnlysoedd EF    </span>  </summary>
   <div class="govuk-details__text">
