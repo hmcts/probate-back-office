@@ -49,6 +49,7 @@ import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
 import uk.gov.service.notify.NotificationClientException;
 import uk.gov.service.notify.SendEmailResponse;
+import uk.gov.service.notify.TemplatePreview;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -65,10 +66,7 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.ArgumentMatchers.isNull;
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -151,6 +149,8 @@ class NotificationServiceIT {
 
     @MockBean
     private SendEmailResponse sendEmailResponse;
+    @MockBean
+    private TemplatePreview templatePreviewResponse;
 
     @MockBean
     private PDFManagementService pdfManagementService;
@@ -178,6 +178,8 @@ class NotificationServiceIT {
 
     @MockBean
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
+    @MockBean
+    private NotificationClientService notificationClientService;
 
     @SpyBean
     private NotificationClient notificationClient;
@@ -2208,5 +2210,35 @@ class NotificationServiceIT {
                 () -> notificationService.sendEmailWithDocumentAttached(markdownLinkCaseData,
                         executorsApplyingNotification, REDECLARATION_SOT));
         assertEquals(MARKDOWN_ERROR_MESSAGE, expectException.getMessage());
+    }
+
+    @Test
+    void verifyEmailPreview()
+            throws NotificationClientException {
+
+        CaseDetails caseDetails = new CaseDetails(CaseData.builder()
+                .applicationType(SOLICITOR)
+                .solsSolicitorEmail("solicitor@probate-test.com")
+                .registryLocation("Manchester")
+                .languagePreferenceWelsh("No")
+                .deceasedForenames("Deceased")
+                .deceasedSurname("DeceasedL")
+                .deceasedDateOfDeath(LocalDate.of(2022,12,12))
+                .boStopDetails("stopDetails")
+                .boStopDetailsDeclarationParagraph("No")
+                .build(), LAST_MODIFIED, ID);
+        when(templatePreviewResponse.getBody()).thenReturn("test-body");
+        when(notificationClientService.emailPreview(anyLong(), anyString(), any())).thenReturn(templatePreviewResponse);
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
+        notificationService.emailPreview(caseDetails);
+
+        HashMap<String, Object> personalisation = new HashMap<>();
+
+        personalisation.put(PERSONALISATION_OLD_SOLICITOR_NAME, "FirstName LastName");
+        personalisation.put(PERSONALISATION_CCD_REFERENCE, caseDetails.getId().toString());
+        personalisation.put(PERSONALISATION_DECEASED_NAME, caseDetails.getData().getDeceasedFullName());
+
+        verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
 }
