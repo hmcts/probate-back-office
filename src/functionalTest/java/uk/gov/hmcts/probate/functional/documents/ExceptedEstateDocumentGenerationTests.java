@@ -28,7 +28,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        log.info("SwitchDate *****-->" + jsonPath.get("data.taskList"));
+        log.error("SwitchDate *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
@@ -43,7 +43,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        log.info("EstatesNo *****-->" + jsonPath.get("data.taskList"));
+        log.error("EstatesNo *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
@@ -58,7 +58,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        log.info("Yes207 *****-->" + jsonPath.get("data.taskList"));
+        log.error("Yes207 *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
@@ -74,7 +74,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
 
         String legalStatementText = getDocumentText(jsonPath, "solsLegalStatementDocument");
         String legalStatementExpectedText = utils.getJsonFromFile(dir + "expectedLegalStatement.txt");
-        log.info("Yes400421 *****-->" + jsonPath.get("data.taskList"));
+        log.error("Yes400421 *****-->" + jsonPath.get("data.taskList"));
         assertEquals(legalStatementExpectedText, legalStatementText);
     }
 
