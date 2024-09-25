@@ -105,9 +105,9 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         // which happens prior to first state change
         System.out.println("ffffff-->" + jsonFile);
         System.out.println("ffffff-jsonFile.indexOf(\"issueGrant.json\")->" + jsonFile.indexOf("issueGrant.json"));
-        if (jsonFile.indexOf("04b-caseCreated.json") >= 0 || jsonFile.indexOf("issueGrant.json") >= 0) {
+        if (jsonFile.indexOf("02-appUpdated.json") >= 0 ||
+                jsonFile.indexOf("issueGrant.json") >= 0 || jsonFile.indexOf("04a-caseCreated.json") >= 0) {
             System.out.println("*****-->" + removeCrLfs(taskList));
-            assertEquals("--", "");
         }
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
 
