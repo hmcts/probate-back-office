@@ -65,7 +65,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
         final var jsonPath = JsonPath.from(response);
         final String taskList = jsonPath.get("data.taskList");
-
+        log.error("0000--->ffffff-->" + jsonFile);
         var expected = utils.getStringFromFile("/expected-html/caseprogress" + expectedHtmlFile);
         expected = replaceAllInString(expected, "{code-branch}", TaskState.CODE_BRANCH);
         expected = replaceAllInString(expected, "{next-step-url}", nextStepUrl);
@@ -103,15 +103,14 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
-        //assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
-        log.error("ffffff-->" + jsonFile);
-        log.error("ffffff-jsonFile.indexOf(\"issueGrant.json\")->" + jsonFile.indexOf("issueGrant.json"));
-        if (jsonFile.indexOf("04b-caseCreated.json") >= 0
-                || jsonFile.indexOf("issueGrant.json") >= 0) {
-            log.error("*****-->" + removeCrLfs(taskList));
-            //log.info("eeeee-->" + removeCrLfs(expected));
+        System.out.println("ffffff-->" + jsonFile);
+        System.out.println("ffffff-jsonFile.indexOf(\"issueGrant.json\")->" + jsonFile.indexOf("issueGrant.json"));
+        if (jsonFile.indexOf("04b-caseCreated.json") >= 0 || jsonFile.indexOf("issueGrant.json") >= 0) {
+            System.out.println("*****-->" + removeCrLfs(taskList));
+            assertEquals("--", "");
         }
-        assertEquals("", "");
+        assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
+
 
     }
 
