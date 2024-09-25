@@ -289,7 +289,6 @@ public class CallbackResponseTransformer {
 
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
-        //documentTransformer.addDocument(callbackRequest, document, false);
         responseCaseDataBuilder.emailPreview(document.getDocumentLink());
 
         return transformResponse(responseCaseDataBuilder.build());

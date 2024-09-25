@@ -4515,6 +4515,25 @@ class CallbackResponseTransformerTest {
         assertEquals(callbackResponse.getData().getMatches(), "Possible case matches");
     }
 
+    @Test
+    void shouldReturnEmailPreview() {
+        when(documentLinkMock.getDocumentBinaryUrl()).thenReturn(DOC_BINARY_URL);
+        when(documentLinkMock.getDocumentUrl()).thenReturn(DOC_URL);
+        when(documentLinkMock.getDocumentFilename()).thenReturn(DOC_NAME);
+        Document document = Document.builder()
+                .documentType(SENT_EMAIL)
+                .documentLink(documentLinkMock)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+        caseDataBuilder.applicationType(SOLICITOR);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse =
+                underTest.addDocumentPreview(callbackRequestMock, document);
+
+        assertEquals(documentLinkMock, callbackResponse.getData().getEmailPreview());
+    }
+
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
     }

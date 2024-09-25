@@ -66,7 +66,11 @@ import java.util.Optional;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -2216,6 +2220,10 @@ class NotificationServiceIT {
     void verifyEmailPreview()
             throws NotificationClientException {
 
+        when(templatePreviewResponse.getBody()).thenReturn("test-body");
+        when(notificationClientService.emailPreview(anyLong(), anyString(), any())).thenReturn(templatePreviewResponse);
+        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
+                .documentFileName(SENT_EMAIL_FILE_NAME).build());
         CaseDetails caseDetails = new CaseDetails(CaseData.builder()
                 .applicationType(SOLICITOR)
                 .solsSolicitorEmail("solicitor@probate-test.com")
@@ -2227,10 +2235,6 @@ class NotificationServiceIT {
                 .boStopDetails("stopDetails")
                 .boStopDetailsDeclarationParagraph("No")
                 .build(), LAST_MODIFIED, ID);
-        when(templatePreviewResponse.getBody()).thenReturn("test-body");
-        when(notificationClientService.emailPreview(anyLong(), anyString(), any())).thenReturn(templatePreviewResponse);
-        when(pdfManagementService.generateAndUpload(any(SentEmail.class), any())).thenReturn(Document.builder()
-                .documentFileName(SENT_EMAIL_FILE_NAME).build());
         notificationService.emailPreview(caseDetails);
 
         HashMap<String, Object> personalisation = new HashMap<>();
