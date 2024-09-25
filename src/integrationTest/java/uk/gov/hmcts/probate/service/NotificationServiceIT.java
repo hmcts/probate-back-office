@@ -184,9 +184,6 @@ class NotificationServiceIT {
     private SmeeAndFordPersonalisationService smeeAndFordPersonalisationService;
 
     @SpyBean
-    private NotificationClientService notificationClientService;
-
-    @SpyBean
     private NotificationClient notificationClient;
 
     private CaseDetails personalCaseDataOxford;
