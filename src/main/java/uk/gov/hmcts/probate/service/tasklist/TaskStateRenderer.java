@@ -231,6 +231,7 @@ public class TaskStateRenderer {
                 .replaceFirst("<authDocsLinkWelsh/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
                         currState, authDocsState, AUTH_DOCS_TEXT_WELSH, caseIdStr, willType, details))
                 .replaceFirst("<authenticatedDate/>", renderAuthenticatedDate(authDate))
+                .replaceFirst("<authenticatedDateWelsh/>", renderAuthenticatedDateWelsh(authDate))
                 .replaceFirst("<status-authDocuments/>", renderTaskStateTag(authDocsState))
                 .replaceFirst("<status-authDocumentsWelsh/>", renderTaskStateTagWelsh(authDocsState))
                 .replaceFirst("<examAppLink/>", renderLinkOrText(TaskListState.TL_STATE_EXAMINE_APPLICATION,
@@ -454,6 +455,16 @@ public class TaskStateRenderer {
         return GridRenderer.renderByReplace(authDateTemplate);
     }
 
+    private static String renderAuthenticatedDateWelsh(LocalDate authDate) {
+        if (authDate == null) {
+            return ""; // mustn't be null as we are chaining .replaceFirst methods
+        }
+        String authDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
+                .replaceFirst("<stateChangeDateText/>",
+                        format("Dilyswyd ar %s", authDate.format(welshDateFormat)));
+        return GridRenderer.renderByReplace(authDateTemplate);
+    }
+
     private String renderSubmitDate(LocalDate submitDate) {
         if (submitDate == null) {
             return ""; // mustn't be null as we are chaining .replaceFirst methods
@@ -470,7 +481,7 @@ public class TaskStateRenderer {
         }
         String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
                 .replaceFirst("<stateChangeDateText/>",
-                        format("Cyflwynwyd ar  %s", submitDate.format(welshDateFormat)));
+                        format("Cyflwynwyd ar %s", submitDate.format(welshDateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 

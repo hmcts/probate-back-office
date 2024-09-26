@@ -109,7 +109,7 @@ public class CaseTaskListHtmlTemplate {
         + CLOSE_COL1_OPEN_COL2
         + "<status-authDocumentsWelsh/>"
         + CLOSE_GRID_ROW
-        + "<authenticatedDate/>"
+        + "<authenticatedDateWelsh/>"
         + OPEN_ROW
         + "<p><secText>Byddwn yn dilysu eich dogfennau ac yn eu paru â'ch cais.</secText></p>"
         + CLOSE_GRID_ROW_WITH_EMPTY_COLUMN

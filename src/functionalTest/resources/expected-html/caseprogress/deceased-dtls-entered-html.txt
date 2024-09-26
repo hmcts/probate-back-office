@@ -78,7 +78,7 @@
 </div>
 <div class="govuk-grid-column-one-third"></div>
 </div>
-<reviewAndSubmitDate/>
+<p><strong>Cyflwynwyd ar  12 Dec 2023</strong></p>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
 <p class="govuk-body-s"><font color="#505a5f">Cynhyrchwyd y datganiad cyfreithiol.  Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</font></p>
