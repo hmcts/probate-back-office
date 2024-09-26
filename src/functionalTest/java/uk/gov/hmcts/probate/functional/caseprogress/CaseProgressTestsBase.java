@@ -104,7 +104,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
         System.out.println("ffffff-->" + jsonFile);
-        System.out.println("ffffff-jsonFile.indexOf(04b-caseCreated.json)->" + jsonFile.indexOf("04b-caseCreated.json"));
+        System.out.println("ff-jsonFile.indexOf(04b-caseCreated.json)->" + jsonFile.indexOf("04b-caseCreated.json"));
         if (jsonFile.indexOf("04b-caseCreated.json") >= 0) {
             System.out.println("*****-->" + removeCrLfs(taskList));
         }
