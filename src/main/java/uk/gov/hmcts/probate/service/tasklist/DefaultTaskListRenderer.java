@@ -23,7 +23,7 @@ public class DefaultTaskListRenderer extends BaseTaskListRenderer {
     private static final String SEND_DOCS = "<gridRow><gridCol-two-thirds>"
             + "<p>Send documents<br/><sendDocsLink/>Anfon dogfennau<br/><sendDocsLinkWelsh/></p>"
             + "</gridCol-two-thirds><gridCol-one-third>"
-            + "<status-sendDocuments/><status-sendDocumentsWelsh/>"
+            + "<status-sendDocuments/>"
             + "</gridCol-one-third></gridRow>\n"
             + "<gridRowSeparator/>\n";
 
