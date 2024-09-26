@@ -31,6 +31,8 @@ public class StoppedTaskListRenderer extends NoTaskListCaseRenderer {
                 .replaceFirst("<stopDateWelsh>", stoppedDate == null ? "Unknown" : stoppedDate.format(welshDateFormat))
                 .replaceFirst("<caseStopReasonsList>",
                         UnorderedListRenderer.render(CaseStoppedHtmlTemplate.CASE_STOP_REASONS))
+                .replaceFirst("<caseStopReasonsListWelsh>",
+                        UnorderedListRenderer.render(CaseStoppedHtmlTemplate.CASE_STOP_REASONS_WELSH))
                 .replaceFirst("<numWeeks>", grandDelayNumberOfWeeks)
                 .replaceFirst("<numWeeksWelsh>", grandDelayNumberOfWeeks);
     }
