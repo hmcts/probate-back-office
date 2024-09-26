@@ -90,13 +90,13 @@ class SolsHealthIndicatorTest {
     void shouldReturnStatusOfDownWhenUnknownHttpStatusCodeExceptionIsThrown() {
         final String statusText = "status text";
         when(restTemplate.getForEntity(URL + HEALTH, String.class))
-            .thenThrow(new UnknownHttpStatusCodeException(1000, statusText, null, null, null));
+            .thenThrow(new UnknownHttpStatusCodeException(999, statusText, null, null, null));
 
         Health health = solsHealthIndicator.health();
 
         assertThat(health.getStatus(), is(Status.DOWN));
         assertThat(health.getDetails().get("url"), is(URL));
-        assertThat(health.getDetails().get("message"), is("Unknown status code [1000] status text"));
+        assertThat(health.getDetails().get("message"), is("Unknown status code [999] status text"));
         assertThat(health.getDetails().get("exception"), is("UnknownHttpStatusCodeException - " + statusText));
     }
 }
