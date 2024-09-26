@@ -31,7 +31,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         System.out.println("SwitchDate eeeee-->");
         System.out.println("SwitchDate *****-->" + jsonPath.get("data.taskList"));
         //assertEquals(legalStatementExpectedText, legalStatementText);
-        assertEquals("legalStatementExpectedText", "legalStatementText");
+        assertEquals("0", "1");
     }
 
     @Test
@@ -48,7 +48,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         System.out.println("EstatesNo eeeee-->");
         System.out.println("EstatesNo *****-->" + jsonPath.get("data.taskList"));
         //assertEquals(legalStatementExpectedText, legalStatementText);
-        assertEquals("legalStatementExpectedText", "legalStatementText");
+        assertEquals("0", "1");
     }
 
     @Test
@@ -65,7 +65,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         //System.out.println("Yes207 eeeee-->");
         //System.out.println("Yes207 *****-->" + jsonPath.get("data.taskList"));
         //assertEquals(legalStatementExpectedText, legalStatementText);
-        assertEquals("legalStatementExpectedText", "legalStatementText");
+        assertEquals("0", "1");
     }
 
 
@@ -83,7 +83,7 @@ public class ExceptedEstateDocumentGenerationTests  extends DocumentGenerationTe
         //System.out.println("Yes400421 eeeee-->");
         //System.out.println("Yes400421 *****-->" + jsonPath.get("data.taskList"));
         //assertEquals(legalStatementExpectedText, legalStatementText);
-        assertEquals("legalStatementExpectedText", "legalStatementText");
+        assertEquals("0", "1");
     }
 
     protected JsonPath postAndGetJsonPathResponse(String jsonFileName, String path) throws IOException {
