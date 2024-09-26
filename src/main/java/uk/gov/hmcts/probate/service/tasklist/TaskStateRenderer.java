@@ -33,6 +33,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -132,6 +133,8 @@ public class TaskStateRenderer {
     private static final String LIST_ITEM_END = "</li>";
     private static final String CASE_ID_STRING = "<CASE_ID>";
     private static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private static final Locale welshLocale = new Locale("cy", "GB");
+    private static final DateTimeFormatter welshDateFormat = DateTimeFormatter.ofPattern("dd MMM yyyy", welshLocale);
     private final AuthenticatedTranslationBusinessRule authenticatedTranslationBusinessRule;
     private final PA14FormBusinessRule pa14FormBusinessRule;
     private final PA15FormBusinessRule pa15FormBusinessRule;
@@ -209,6 +212,8 @@ public class TaskStateRenderer {
                 .replaceFirst("<status-reviewAndSubmit/>", renderTaskStateTag(rvwState))
                 .replaceFirst("<status-reviewAndSubmitWelsh/>", renderTaskStateTagWelsh(rvwState))
                 .replaceFirst("<reviewAndSubmitDate/>", renderSubmitDate(submitDate))
+                .replaceFirst("<reviewAndSubmitDateWelsh/>", renderSubmitDateWelsh(submitDate))
+                .replaceFirst("<reviewAndSubmitDateWelsh/>", renderSubmitDate(submitDate))
                 .replaceFirst("<paymentTabLink/>", renderPaymentLinkOrText(paymentState, currState, caseIdStr,
                         willType))
                 .replaceFirst("<paymentTabLinkWelsh/>", renderPaymentLinkOrTextWelsh(paymentState, currState, caseIdStr,
@@ -456,6 +461,16 @@ public class TaskStateRenderer {
         String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
                 .replaceFirst("<stateChangeDateText/>",
                     format("Submitted on %s", submitDate.format(dateFormat)));
+        return GridRenderer.renderByReplace(submitDateTemplate);
+    }
+
+    private String renderSubmitDateWelsh(LocalDate submitDate) {
+        if (submitDate == null) {
+            return ""; // mustn't be null as we are chaining .replaceFirst methods
+        }
+        String submitDateTemplate = StateChangeDateHtmlTemplate.STATE_CHANGE_DATE_TEMPLATE
+                .replaceFirst("<stateChangeDateText/>",
+                        format("Cyflwynwyd ar  %s", submitDate.format(welshDateFormat)));
         return GridRenderer.renderByReplace(submitDateTemplate);
     }
 

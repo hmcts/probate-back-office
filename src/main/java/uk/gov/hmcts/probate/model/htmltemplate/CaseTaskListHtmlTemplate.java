@@ -67,7 +67,7 @@ public class CaseTaskListHtmlTemplate {
         + CLOSE_COL1_OPEN_COL2
         + "<status-reviewAndSubmitWelsh/>"
         + CLOSE_GRID_ROW
-        + "<reviewAndSubmitDate/>"
+        + "<reviewAndSubmitDateWelsh/>"
         + OPEN_ROW
         + "<p><secText>Cynhyrchwyd y datganiad cyfreithiol.  "
         + "Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</secText></p>"
