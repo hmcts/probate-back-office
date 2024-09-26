@@ -195,8 +195,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -205,8 +205,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" title=\"HEB DDECHRAU\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
                 + "<p></p>\n"
@@ -254,8 +254,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
@@ -314,8 +314,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -324,8 +324,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -334,8 +334,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" title=\"YN MYND RHAGDDO\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -344,8 +344,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" title=\"YN MYND RHAGDDO\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Submitted on 01 Nov 2020</strong></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
@@ -397,8 +397,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -407,8 +407,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -417,8 +417,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" title=\"HEB DDECHRAU\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
                 + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>"
@@ -467,8 +467,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -477,8 +477,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -487,8 +487,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" title=\"HEB DDECHRAU\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
                 + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on "
@@ -537,8 +537,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" "
+                + "title=\"CWBLHAWYD\" /></p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -547,8 +547,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
             + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
@@ -557,8 +557,8 @@ class TaskStateRendererTest {
                 + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" title=\"HEB DDECHRAU\" /></p>\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
                 + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on "
