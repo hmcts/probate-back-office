@@ -172,7 +172,7 @@ Anfon dogfennau<br/>
 </div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
-<p><strong>Dilyswyd ar <today/></strong></p>
+<p><strong>Dilyswyd ar <today-welsh/></strong></p>
 </div>
 <div class="govuk-grid-column-one-third">&nbsp;</div>
 </div>
