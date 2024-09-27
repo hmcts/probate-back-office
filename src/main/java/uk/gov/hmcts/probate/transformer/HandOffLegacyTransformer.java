@@ -38,11 +38,7 @@ public class HandOffLegacyTransformer {
         }
     }
 
-    private CollectionMember<HandoffReason>
-        buildHandOffReason(HandoffReason reason) {
-        HandoffReason handoffReason = HandoffReason.builder()
-                    .caseHandoffReason(reason.getCaseHandoffReason())
-                    .build();
-        return new CollectionMember<>(null, handoffReason);
+    private CollectionMember<HandoffReason> buildHandOffReason(HandoffReason reason) {
+        return new CollectionMember<>(null, reason);
     }
 }
