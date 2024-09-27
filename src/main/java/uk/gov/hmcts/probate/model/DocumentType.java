@@ -8,11 +8,20 @@ import lombok.Getter;
 
 @Getter
 public enum DocumentType {
-    @JsonProperty("legalStatement")
+    @JsonProperty("legalStatementAdmon")
     LEGAL_STATEMENT_ADMON("legalStatementAdmon"),
+
+    @JsonProperty("legalStatementProbate")
     LEGAL_STATEMENT_PROBATE("legalStatementProbate"),
+
+    @JsonProperty("legalStatementGrantOfProbate")
     LEGAL_STATEMENT_PROBATE_TRUST_CORPS("legalStatementGrantOfProbate"),
+
+    @JsonProperty("legalStatementIntestacy")
     LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy"),
+
+    @JsonProperty("legalStatement")
+    LEGAL_STATEMENT("legalStatement"),
 
     @JsonProperty("uploadedLegalStatement")
     UPLOADED_LEGAL_STATEMENT("uploadedLegalStatement"),
