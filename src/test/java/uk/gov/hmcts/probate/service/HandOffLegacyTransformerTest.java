@@ -231,8 +231,8 @@ class HandOffLegacyTransformerTest {
                 .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP_SDJ)
                 .applicationType(SOLICITOR);
 
-        CollectionMember collectionMember = new CollectionMember(null, HandoffReason.builder()
-                .caseHandoffReason(HandoffReasonId.TRUST_CORPORATION.getCode()).build());
+        CollectionMember<HandoffReason> collectionMember = new CollectionMember<>(null, HandoffReason.builder()
+                .caseHandoffReason(HandoffReasonId.TRUST_CORPORATION).build());
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
@@ -240,7 +240,7 @@ class HandOffLegacyTransformerTest {
         when(handOffLegacyService.setHandoffReason(caseDetailsMock)).thenReturn(List.of(collectionMember));
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequestMock);
 
-        assertEquals(HandoffReasonId.TRUST_CORPORATION.getCode(),
+        assertEquals(HandoffReasonId.TRUST_CORPORATION,
                 callbackRequestMock.getCaseDetails().getData().getBoHandoffReasonList().get(0).getValue()
                         .getCaseHandoffReason());
     }

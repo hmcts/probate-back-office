@@ -41,31 +41,32 @@ public class HandOffLegacyService {
                 return true;
             }
 
+            final String caseType = caseData.getCaseType();
             if (SOLICITOR.equals(caseData.getApplicationType())
-                && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
-                || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType())
-                || DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                && (DocumentCaseType.GOP.getCaseType().equals(caseType)
+                || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseType)
+                || DocumentCaseType.INTESTACY.getCaseType().equals(caseType))
                 && NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
                 return true;
             }
 
             if (SOLICITOR.equals(caseData.getApplicationType())
-                && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
-                || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType()))
+                && (DocumentCaseType.GOP.getCaseType().equals(caseType)
+                || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseType))
                 && NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
                 && YES.equalsIgnoreCase(caseData.getWillAccessNotarial())) {
                 return true;
             }
 
             if (SOLICITOR.equals(caseData.getApplicationType())
-                && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                && DocumentCaseType.INTESTACY.getCaseType().equals(caseType)
                 && SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
                 .equals(caseData.getSolsApplicantRelationshipToDeceased())) {
                 return true;
             }
 
             if (PERSONAL.equals(caseData.getApplicationType())
-                && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                && DocumentCaseType.INTESTACY.getCaseType().equals(caseType)
                 && PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
                 .equals(caseData.getPrimaryApplicantRelationshipToDeceased())
                 && YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
@@ -91,31 +92,32 @@ public class HandOffLegacyService {
                 handoffReasonsList.add(buildHandOffReason(HandoffReasonId.TRUST_CORPORATION));
             }
 
+            final String caseType = caseData.getCaseType();
             if (SOLICITOR.equals(caseData.getApplicationType())
-                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
-                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType())
-                    || DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType()))
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseType)
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseType)
+                    || DocumentCaseType.INTESTACY.getCaseType().equals(caseType))
                     && NO.equalsIgnoreCase(caseData.getDeceasedDomicileInEngWales())) {
                 handoffReasonsList.add(buildHandOffReason(HandoffReasonId.FOREIGN_DOMICILE));
             }
 
             if (SOLICITOR.equals(caseData.getApplicationType())
-                    && (DocumentCaseType.GOP.getCaseType().equals(caseData.getCaseType())
-                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseData.getCaseType()))
+                    && (DocumentCaseType.GOP.getCaseType().equals(caseType)
+                    || DocumentCaseType.ADMON_WILL.getCaseType().equals(caseType))
                     && NO.equalsIgnoreCase(caseData.getWillAccessOriginal())
                     && YES.equalsIgnoreCase(caseData.getWillAccessNotarial())) {
                 handoffReasonsList.add(buildHandOffReason(HandoffReasonId.FOREIGN_WILL));
             }
 
             if (SOLICITOR.equals(caseData.getApplicationType())
-                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseType)
                     && SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
                     .equals(caseData.getSolsApplicantRelationshipToDeceased())) {
                 handoffReasonsList.add(buildHandOffReason(HandoffReasonId.EXTENDED_INTESTACY));
             }
 
             if (PERSONAL.equals(caseData.getApplicationType())
-                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType())
+                    && DocumentCaseType.INTESTACY.getCaseType().equals(caseType)
                     && PRIMARY_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
                     .equals(caseData.getPrimaryApplicantRelationshipToDeceased())
                     && YES.equalsIgnoreCase(caseData.getPrimaryApplicantAdoptionInEnglandOrWales())) {
@@ -126,10 +128,10 @@ public class HandOffLegacyService {
         return handoffReasonsList;
     }
 
-    private CollectionMember buildHandOffReason(HandoffReasonId reasonId) {
+    private CollectionMember<HandoffReason> buildHandOffReason(HandoffReasonId reasonId) {
         HandoffReason handoffReason = HandoffReason.builder()
-                .caseHandoffReason(reasonId.getCode())
+                .caseHandoffReason(reasonId)
                 .build();
-        return new CollectionMember(null, handoffReason);
+        return new CollectionMember<>(null, handoffReason);
     }
 }

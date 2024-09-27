@@ -4429,7 +4429,7 @@ class CallbackResponseTransformerTest {
     void shouldTransformWithHandOffReason() {
         List<CollectionMember<HandoffReason>> reason = new ArrayList();
         reason.add(new CollectionMember<>(null,
-                HandoffReason.builder().caseHandoffReason(HandoffReasonId.POA.getCode()).build()));
+                HandoffReason.builder().caseHandoffReason(HandoffReasonId.POA).build()));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .boHandoffReasonList(reason)
                 .caseHandedOffToLegacySite("Yes");
