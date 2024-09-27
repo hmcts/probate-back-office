@@ -172,7 +172,12 @@ Anfon dogfennau<br/>
 <p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
 </div>
 </div>
-<p><strong>Dilyswyd ar  <today/></strong></p>
+<div class="govuk-grid-row">
+<div class="govuk-grid-column-two-thirds">
+<p><strong>Dilyswyd ar <today/></strong></p>
+</div>
+<div class="govuk-grid-column-one-third">&nbsp;</div>
+</div>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
 <p class="govuk-body-s"><font color="#505a5f">Byddwn yn dilysu eich dogfennau ac yn eu paru â'ch cais.</font></p>
