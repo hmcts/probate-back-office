@@ -76,7 +76,6 @@
 <p align="right"><img width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/DTSPB-4054_PP_Case_Progress_Tab/src/main/resources/statusImages/completed-welsh.png" alt="CWBLHAWYD" title="CWBLHAWYD" /></p>
 </div>
 </div>
-<reviewAndSubmitDate/>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
 <p class="govuk-body-s"><font color="#505a5f">Cynhyrchwyd y datganiad cyfreithiol.  Gallwch adolygu, newid unrhyw fanylion, llofnodi a chyflwyno eich cais.</font></p>

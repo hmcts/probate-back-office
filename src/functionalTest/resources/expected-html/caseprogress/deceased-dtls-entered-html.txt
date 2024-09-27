@@ -132,7 +132,6 @@
 </div>
 <div class="govuk-grid-column-one-third"></div>
 </div>
-<authenticatedDate/>
 <div class="govuk-grid-row">
 <div class="govuk-grid-column-two-thirds">
 <p class="govuk-body-s"><font color="#505a5f">Byddwn yn dilysu eich dogfennau ac yn eu paru â'ch cais.</font></p>
