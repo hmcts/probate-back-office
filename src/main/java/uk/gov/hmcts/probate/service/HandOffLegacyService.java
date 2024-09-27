@@ -99,8 +99,7 @@ public class HandOffLegacyService {
     }
 
     private boolean isExtendedIntestacy(CaseData caseData) {
-        final String caseType = caseData.getCaseType();
-        final boolean isIntestacyCase = DocumentCaseType.INTESTACY.getCaseType().equals(caseType);
+        final boolean isIntestacyCase = DocumentCaseType.INTESTACY.getCaseType().equals(caseData.getCaseType());
         return (SOLICITOR.equals(caseData.getApplicationType())
                 && isIntestacyCase
                 && SOLS_APP_RELATIONSHIP_TO_DECEASED_ADOPTED_CHILD
