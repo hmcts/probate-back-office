@@ -1238,7 +1238,7 @@ public class CallbackResponseTransformer {
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .informationNeeded(caseData.getInformationNeeded())
-            .deceasedName(caseData.getDeceasedFullName())
+            .informationNeededByPost(caseData.getInformationNeededByPost())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
