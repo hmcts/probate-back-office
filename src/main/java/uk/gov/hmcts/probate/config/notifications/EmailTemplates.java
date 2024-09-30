@@ -22,6 +22,7 @@ public class EmailTemplates {
     private String caveatRaisedCtsc;
     private String caveatRaisedSols;
     private String requestInformation;
+    private String requestInformationByPost;
     private String redeclarationSot;
     private String caveatWithdrawn;
     private String grantIssuedIntestacy;

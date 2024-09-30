@@ -82,7 +82,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
@@ -258,8 +257,7 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents,
-                                                           List<String> letterIds) {
+    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
@@ -267,18 +265,6 @@ public class CallbackResponseTransformer {
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
-        }
-
-        if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST) && !letterIds.isEmpty()) {
-            letterIds.forEach(letterId -> {
-                CollectionMember<BulkPrint> bulkPrint =
-                        buildBulkPrint(letterId, SOT_INFORMATION_REQUEST.getTemplateName());
-                appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
-            });
-            responseCaseDataBuilder
-                    .boRequestInfoSendToBulkPrintRequested(
-                            callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint())
-                    .bulkPrintId(callbackRequest.getCaseDetails().getData().getBulkPrintId());
         }
 
         return transformResponse(responseCaseDataBuilder.build());

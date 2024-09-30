@@ -203,9 +203,9 @@ class NotificationControllerIT {
         when(callbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList)))
             .thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>())))
             .thenReturn(successfulResponse);
         when(callbackResponseTransformer.addDocumentPreview(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.grantRaised(any(), any(), any())).thenReturn(successfulResponse);
