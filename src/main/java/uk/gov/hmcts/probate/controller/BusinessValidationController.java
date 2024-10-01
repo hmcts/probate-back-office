@@ -137,12 +137,12 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/validate-iht-estate", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateIhtEstateData(@RequestBody CallbackRequest request) {
+        caseDataTransformer.transformFormCaseData(request);
         naValidationRule.validate(request.getCaseDetails());
         ihtEstateValidationRule.validate(request.getCaseDetails());
         final List<ValidationRule> ihtValidation = Arrays.asList(ihtValidationRule);
         CallbackResponse response = eventValidationService.validateRequest(request, ihtValidation);
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(request);
             return ResponseEntity.ok(callbackResponseTransformer.transformValuesPage(request));
         }
         return ResponseEntity.ok(response);
@@ -208,12 +208,11 @@ public class BusinessValidationController {
         BindingResult bindingResult,
         HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-
+        caseDataTransformer.transformFormCaseData(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         CallbackResponse response = eventValidationService.validateRequest(callbackRequest, allValidationRules);
         CaseDetails details = callbackRequest.getCaseDetails();
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(callbackRequest);
             if (YES.equals(details.getData().getHmrcLetterId()) || null == details.getData().getHmrcLetterId()) {
                 Optional<String> newState =
                         stateChangeService.getChangedStateForGrantType(callbackRequest.getCaseDetails().getData());
@@ -353,13 +352,12 @@ public class BusinessValidationController {
         HttpServletRequest request) {
 
         logRequest(request.getRequestURI(), callbackRequest);
-
+        caseDataTransformer.transformFormCaseData(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
         if (response.getErrors().isEmpty()) {
-            caseDataTransformer.transformFormCaseData(callbackRequest);
             response = callbackResponseTransformer.transform(callbackRequest);
         }
         return ResponseEntity.ok(response);
