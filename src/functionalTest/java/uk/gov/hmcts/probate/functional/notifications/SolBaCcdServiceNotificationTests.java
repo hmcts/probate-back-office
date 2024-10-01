@@ -455,8 +455,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     private void verifyPAEmailInformationRequestRedec(String document) {
         assertTrue(document.contains("primary@probate-test.com"));
         assertTrue(document.contains("Deceased First Name Deceased Last Name"));
-        assertTrue(document.contains("Birmingham"));
-        assertTrue(document.contains(BIRMINGHAM_NO));
+        assertTrue(document.contains("stop details"));
         assertTrue(document.contains("Declaration"));
     }
 

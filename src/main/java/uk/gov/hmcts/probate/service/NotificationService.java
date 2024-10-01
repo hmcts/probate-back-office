@@ -115,13 +115,13 @@ public class NotificationService {
         Registry registry = getRegistry(caseData.getRegistryLocation(), caseData.getLanguagePreference());
         log.info(
             "template params, state={}, applicationType()={}, regLocation={}, language={}, for case: "
-                + "{}, origin: {}, channelChoice: {}",
+                + "{}, origin: {}, channelChoice: {}, informationNeededByPost: {}",
             state, caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
                 caseDetails.getId(), caseOriginOptional.isEmpty() ? "none" : caseOriginOptional.get(),
-                caseData.getChannelChoice());
+                caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
             caseData.getRegistryLocation(), caseData.getLanguagePreference(),
-            caseOriginOptional.orElse(null),caseData.getChannelChoice());
+            caseOriginOptional.orElse(null), caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         log.info("Got templateId: {}", templateId);
         Map<String, Object> personalisation =
             grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
@@ -156,42 +156,13 @@ public class NotificationService {
         return getSentEmailDocument(state, emailAddress, response);
     }
 
-
-    public Document sendEmail(State state, CaseDetails caseDetails, ExecutorsApplyingNotification executor)
-        throws NotificationClientException {
-        CaseData caseData = caseDetails.getData();
-        Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
-
-        String templateId = templateService.getTemplateId(state, caseData.getApplicationType(),
-            caseData.getRegistryLocation(), caseData.getLanguagePreference());
-        String emailAddress = executor.getEmail();
-        Map<String, Object> personalisation =
-            grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
-                registry);
-        String reference = caseData.getSolsSolicitorAppReference();
-        String emailReplyToId = registry.getEmailReplyToId();
-
-        personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
-        List<String> invalidPersonalisation = personalisationValidationRule.validatePersonalisation(personalisation);
-        if (!invalidPersonalisation.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidPersonalisation);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        }
-        SendEmailResponse response =
-            getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
-                caseDetails.getId());
-
-        return getSentEmailDocument(state, emailAddress, response);
-    }
-
     public Document emailPreview(CaseDetails caseDetails) throws NotificationClientException {
         CaseData caseData = caseDetails.getData();
         Registry registry = registriesProperties.getRegistries().get(caseData.getRegistryLocation().toLowerCase());
 
         String templateId = templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION,
-                caseData.getApplicationType(),
-                caseData.getRegistryLocation(), caseData.getLanguagePreference());
+                caseData.getApplicationType(), caseData.getRegistryLocation(), caseData.getLanguagePreference(),
+                null, caseData.getChannelChoice(), caseData.getInformationNeededByPost());
         Map<String, Object> personalisation =
                 grantOfRepresentationPersonalisationService.getPersonalisation(caseDetails,
                         registry);
