@@ -8,9 +8,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
@@ -60,8 +58,7 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
         expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
         expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
-        log.info("expectedFile *****>>:" + expectedText.trim());
-        log.info("response.trim() *****>>:" + response.trim());
+
         assertEquals(expectedText.trim(), response.trim());
     }
 
