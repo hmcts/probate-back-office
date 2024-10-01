@@ -125,13 +125,13 @@ public class NotificationController {
         @RequestBody CallbackRequest callbackRequest)
         throws NotificationClientException {
 
-        CaseDetails caseDetails = callbackRequest.getCaseDetails();
-        CallbackResponse response = CallbackResponse.builder().errors(new ArrayList<>()).build();
 
         Document document;
         List<Document> documents = new ArrayList<>();
         String letterId = null;
-        response = eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
+        CaseDetails caseDetails = callbackRequest.getCaseDetails();
+        CallbackResponse response =
+                eventValidationService.validateEmailRequest(callbackRequest, emailAddressNotifyValidationRules);
         if (response.getErrors().isEmpty()) {
             log.info("Initiate call to send caveat email for case id {} ",
                     callbackRequest.getCaseDetails().getId());
