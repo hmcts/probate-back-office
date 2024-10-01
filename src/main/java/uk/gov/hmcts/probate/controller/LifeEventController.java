@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.transformer.HandOffLegacyTransformer;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
@@ -18,7 +19,10 @@ import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
+import java.util.List;
+
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
+
 
 @Slf4j
 @Controller
@@ -35,8 +39,16 @@ public class LifeEventController {
 
     @PostMapping(path = "/update", consumes = MediaType.APPLICATION_JSON_VALUE,  produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> update(@RequestBody CallbackRequest request) {
+        SecurityDTO securityDTO = securityUtils.getSecurityDTO();
+        boolean isCitizenUser = true;
+        List<String> roles = securityUtils.getRoles(securityDTO.getAuthorisation());
+        log.info("User roles from the token:{}", roles);
+        if (roles.contains("caseworker-probate")) {
+            securityDTO = securityUtils.getUserBySchedulerTokenAndServiceSecurityDTO();
+            isCitizenUser = false;
+        }
         final CaseDetails caseDetails = request.getCaseDetails();
-        lifeEventCCDService.verifyDeathRecord(caseDetails, securityUtils.getSecurityDTO());
+        lifeEventCCDService.verifyDeathRecord(caseDetails, securityDTO, isCitizenUser);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request));
     }
 

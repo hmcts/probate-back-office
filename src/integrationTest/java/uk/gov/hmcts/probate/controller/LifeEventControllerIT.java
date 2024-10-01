@@ -18,16 +18,22 @@ import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.security.SecurityDTO;
 import uk.gov.hmcts.probate.security.SecurityUtils;
 import uk.gov.hmcts.probate.service.LifeEventCCDService;
 import uk.gov.hmcts.probate.service.LifeEventCallbackResponseService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.probate.validator.LifeEventValidationRule;
 
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyBoolean;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -76,6 +82,12 @@ class LifeEventControllerIT {
     void lifeEventUpdateShouldReturnDataPayloadOkResponseCode() throws Exception {
 
         String payload = testUtils.getStringFromFile("lifeEventPayload.json");
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH_TOKEN")
+                .serviceAuthorisation("serviceAuth")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getRoles(anyString())).thenReturn(List.of("citizen"));
 
         mockMvc.perform(post("/lifeevent/update")
                 .content(payload)
@@ -83,7 +95,34 @@ class LifeEventControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("data")));
 
-        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any());
+        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any(), anyBoolean());
+        final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
+        assertEquals(caseDetailsArgumentCaptorValue.getId().longValue(), 1621002468661478L);
+        final CaseData data = caseDetailsArgumentCaptorValue.getData();
+        assertEquals("John", data.getDeceasedForenames());
+        assertEquals("Cook", data.getDeceasedSurname());
+        assertEquals("2006-11-16", data.getDeceasedDateOfDeath().toString());
+        verify(securityUtils).getSecurityDTO();
+    }
+
+    @Test
+    void lifeEventUpdateShouldReturnDataPayloadOkResponseCodeForCaseworkerUser() throws Exception {
+
+        String payload = testUtils.getStringFromFile("lifeEventPayload.json");
+        SecurityDTO securityDTO = SecurityDTO.builder()
+                .authorisation("AUTH_TOKEN")
+                .serviceAuthorisation("serviceAuth")
+                .build();
+        when(securityUtils.getSecurityDTO()).thenReturn(securityDTO);
+        when(securityUtils.getRoles(anyString())).thenReturn(List.of("caseworker-probate"));
+
+        mockMvc.perform(post("/lifeevent/update")
+                        .content(payload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().string(containsString("data")));
+
+        verify(lifeEventCCDService).verifyDeathRecord(caseDetailsArgumentCaptor.capture(), any(), anyBoolean());
         final CaseDetails caseDetailsArgumentCaptorValue = caseDetailsArgumentCaptor.getValue();
         assertEquals(caseDetailsArgumentCaptorValue.getId().longValue(), 1621002468661478L);
         final CaseData data = caseDetailsArgumentCaptorValue.getData();
