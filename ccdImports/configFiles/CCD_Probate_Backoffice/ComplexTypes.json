@@ -205,7 +205,7 @@
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "removedRepresentative", "FieldType": "RemovedRepresentative", "ElementLabel": "Removed Representative", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "ChangeOfRepresentative", "ListElementCode": "addedRepresentative", "FieldType": "AddedRepresentative", "ElementLabel": "Added Representative", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "ID": "boHandoffReason", "ListElementCode": "caseHandoffReason", "FieldType": "FixedList", "FieldTypeParameter": "handoffReasonFixedList", "ElementLabel": "Select a reason for Handoff", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "citizenDocument", "ListElementCode": "DocumentLink", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "citizenDocument", "ListElementCode": "DocumentDateAdded", "FieldType": "Date", "ElementLabel": "Date added", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "ID": "citizenDocument", "ListElementCode": "DocumentFileName", "FieldType": "Text", "ElementLabel": "File name", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "ID": "CitizenDocument", "ListElementCode": "DocumentLink", "FieldType": "Document", "ElementLabel": "Document Url", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CitizenDocument", "ListElementCode": "DocumentDateAdded", "FieldType": "Date", "ElementLabel": "Date added", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "ID": "CitizenDocument", "ListElementCode": "DocumentFileName", "FieldType": "Text", "ElementLabel": "File name", "SecurityClassification": "Public"}
 ]
