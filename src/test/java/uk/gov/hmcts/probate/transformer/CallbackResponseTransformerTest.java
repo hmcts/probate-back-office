@@ -1819,6 +1819,22 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformCaseForPAWithPrimaryApplicantAliasToBeDifferentSpelling() {
+        caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
+        caseDataBuilder.primaryApplicantSameWillName(NO);
+        caseDataBuilder.primaryApplicantAliasReason("differentSpelling");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantSameWillName());
+        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
+        assertEquals("differentSpelling", callbackResponse.getData().getPrimaryApplicantAliasReason());
+    }
+
+    @Test
     void shouldTransformCaseForPAWithIHTOnlineNo() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
         caseDataBuilder.ihtFormCompletedOnline(NO);
