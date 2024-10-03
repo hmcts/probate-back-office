@@ -77,7 +77,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     void verifyGrantReissueDocumentAppNameWithApostrophe() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(
             "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
-        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
+        assertExpectedContent("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
             GENERATED_DOCUMENT_URL, responseBody);
     }
 
