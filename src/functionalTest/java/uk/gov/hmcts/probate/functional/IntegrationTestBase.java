@@ -158,8 +158,12 @@ public abstract class IntegrationTestBase {
         final JsonPath jsonPath = JsonPath.from(responseBody.asString());
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
-        log.info("response ****_>" + response + " response.length-->" + response.length());
-        log.info("expectedText eeee_>" + expectedText + " expectedText.length-->" + expectedText.length());
+        if (expectedResponseFile.indexOf("expectedPersonalDocumentAdmonWillReissued.txt") >= 0 ||
+                expectedResponseFile.indexOf("expectedPersonalDocumentWelshGrantReissuedNameWithApostrophe.txt") >= 0 ||
+        expectedResponseFile.indexOf("expectedPersonalDocumentWelshAdmonWillReissued.txt") >= 0) {
+            log.info("*****-->" + removeCrLfs(expectedText));
+            log.info("eeeee-->" + removeCrLfs(response));
+        }
         assertTrue(response.contains(expectedText));
     }
 
