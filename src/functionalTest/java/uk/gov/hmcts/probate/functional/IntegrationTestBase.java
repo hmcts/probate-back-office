@@ -159,7 +159,8 @@ public abstract class IntegrationTestBase {
         final String documentUrl = jsonPath.get(responseDocumentUrl);
         final String response = removeCrLfs(utils.downloadPdfAndParseToString(documentUrl));
         if (expectedResponseFile.indexOf("expectedPersonalDocumentAdmonWillReissued.txt") >= 0
-                || expectedResponseFile.indexOf("expectedPersonalDocumentWelshGrantReissuedNameDoubleBarrelled.txt") >= 0
+                || expectedResponseFile
+                .indexOf("expectedPersonalDocumentWelshGrantReissuedNameDoubleBarrelled.txt") >= 0
                 || expectedResponseFile.indexOf("expectedPersonalDocumentWelshAdmonWillReissued.txt") >= 0) {
             log.info("*****-->" + removeCrLfs(expectedText));
             log.info("eeeee-->" + removeCrLfs(response));
