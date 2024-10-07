@@ -70,6 +70,8 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getProbateDocumentsGeneratedTextAtIndex(payload, GENERATE_GRANT_REISSUE, "2");
 
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
+        log.info("expectedFile *****>>:" + expectedText.trim());
+        log.info("response.trim() *****>>:" + response.trim());
 
         assertEquals(expectedText.trim(), response.trim());
     }
