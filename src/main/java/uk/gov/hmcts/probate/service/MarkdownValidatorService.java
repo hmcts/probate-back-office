@@ -21,6 +21,7 @@ import org.commonmark.node.IndentedCodeBlock;
 import org.commonmark.node.Link;
 import org.commonmark.node.LinkReferenceDefinition;
 import org.commonmark.node.ListItem;
+import org.commonmark.node.Node;
 import org.commonmark.node.OrderedList;
 import org.commonmark.node.Paragraph;
 import org.commonmark.node.SoftLineBreak;
@@ -45,6 +46,24 @@ public class MarkdownValidatorService {
         private boolean invalid = false;
 
         private final String key;
+
+        @Override
+        public void visitChildren(Node parent) {
+            Node node = parent.getFirstChild();
+            while (node != null) {
+                // If we have seen any failure we do not need to continue searching the Node tree, so short circuit
+                if (invalid) {
+                    log.trace("{}: has been rejected, short circuit", key);
+                    return;
+                }
+
+                // A subclass of this visitor might modify the node, resulting in getNext returning a different node or
+                // no node after visiting it. So get the next node before visiting.
+                final Node next = node.getNext();
+                node.accept(this);
+                node = next;
+            }
+        }
 
         @Override
         public void visit(BlockQuote blockQuote) {
