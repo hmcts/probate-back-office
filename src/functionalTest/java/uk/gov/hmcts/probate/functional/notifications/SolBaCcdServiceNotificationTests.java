@@ -463,7 +463,6 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
         final ResponseBody responseBody = validatePostSuccess(payload, api);
-
         assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
     }
 }
