@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.validator;
 
+import org.commonmark.node.Image;
 import org.commonmark.parser.Parser;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -162,6 +165,26 @@ class PersonalisationValidationRuleTest {
                 () -> assertEquals(0, result.size(), "Expected validation to pass")
         );
         assertAll(assertions);
+    }
+
+    @Test
+    void givenNonpermittedMarkdown_whenValidated_thenVisitorShortCircuits() {
+        final var builder = new StringBuilder();
+
+        builder.append("first para\n")
+                .append("\n")
+                .append("second para with [link](http://example.com)\n")
+                .append("\n")
+                .append("third para with ![img](http://example.com/img.png)\n");
+        final var personalisation = Map.ofEntries(Map.entry("multiple_failures", builder.toString()));
+
+        final var visitorSpy = spy(markdownValidatorService.getNontextVisitor("key"));
+
+        when(markdownValidatorService.getNontextVisitor(any())).thenReturn(visitorSpy);
+
+        personalisationValidationRule.validatePersonalisation(personalisation);
+
+        verify(visitorSpy, times(0)).visit((Image) any());
     }
 
     @Test
