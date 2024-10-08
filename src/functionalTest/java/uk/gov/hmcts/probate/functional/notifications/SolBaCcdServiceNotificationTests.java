@@ -77,7 +77,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
     void verifyGrantReissueDocumentAppNameWithApostrophe() throws IOException {
         final ResponseBody responseBody = validatePostSuccess(
             "personalPayloadGrantReissuedNameWithApostrophe.json", GRANT_REISSUED);
-        assertExpectedContent("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
+        assertExpectedContents("expectedPersonalDocumentGrantReissuedNameWithApostrophe.txt",
             GENERATED_DOCUMENT_URL, responseBody);
     }
 
@@ -463,8 +463,7 @@ public class SolBaCcdServiceNotificationTests extends IntegrationTestBase {
 
     private void verifyDocumentGenerated(String api, String payload, String documentText) throws IOException {
         final ResponseBody responseBody = validatePostSuccess(payload, api);
-        log.info("expectedFile *****>>:" + documentText.trim());
-        log.info("response.trim() *****>>:" + payload.trim());
+
         assertExpectedContents(documentText, GENERATED_DOCUMENT_URL, responseBody);
     }
 }
