@@ -31,6 +31,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class MarkdownValidatorService {
 
     public NontextVisitor getNontextVisitor(final String key) {
@@ -47,139 +48,139 @@ public class MarkdownValidatorService {
 
         @Override
         public void visit(BlockQuote blockQuote) {
-            log.debug("{}: visit BlockQuote", key);
+            log.trace("{}: reject BlockQuote", key);
             invalid = true;
         }
 
         @Override
         public void visit(BulletList bulletList) {
-            log.debug("{}: visit BulletList", key);
-            invalid = true;
+            log.trace("{}: visit BulletList", key);
+            visitChildren(bulletList);
         }
 
         @Override
         public void visit(Code code) {
-            log.debug("{}: visit Code", key);
+            log.trace("{}: reject Code", key);
             invalid = true;
         }
 
         @Override
         public void visit(Document document) {
-            log.debug("{}: visit Document", key);
+            log.trace("{}: visit Document", key);
             visitChildren(document);
         }
 
         @Override
         public void visit(Emphasis emphasis) {
-            log.debug("{}: visit Emphasis", key);
+            log.trace("{}: reject Emphasis", key);
             invalid = true;
         }
 
         @Override
         public void visit(FencedCodeBlock fencedCodeBlock) {
-            log.debug("{}: visit FencedCodeBlock", key);
+            log.trace("{}: reject FencedCodeBlock", key);
             invalid = true;
         }
 
         @Override
         public void visit(HardLineBreak hardLineBreak) {
-            log.debug("{}: visit HardLineBreak", key);
-            invalid = true;
+            log.trace("{}: visit HardLineBreak", key);
+            visitChildren(hardLineBreak);
         }
 
         @Override
         public void visit(Heading heading) {
-            log.debug("{}: visit Heading", key);
-            invalid = true;
+            log.trace("{}: visit Heading", key);
+            visitChildren(heading);
         }
 
         @Override
         public void visit(ThematicBreak thematicBreak) {
-            log.debug("{}: visit ThematicBreak", key);
-            invalid = true;
+            log.trace("{}: visit ThematicBreak", key);
+            visitChildren(thematicBreak);
         }
 
         @Override
         public void visit(HtmlInline htmlInline) {
-            log.debug("{}: visit HtmlInline", key);
+            log.trace("{}: reject HtmlInline", key);
             invalid = true;
         }
 
         @Override
         public void visit(HtmlBlock htmlBlock) {
-            log.debug("{}: visit HtmlBlock", key);
+            log.trace("{}: reject HtmlBlock", key);
             invalid = true;
         }
 
         @Override
         public void visit(Image image) {
-            log.debug("{}: visit Image", key);
+            log.trace("{}: reject Image", key);
             invalid = true;
         }
 
         @Override
         public void visit(IndentedCodeBlock indentedCodeBlock) {
-            log.debug("{}: visit IndentedCodeBlock", key);
+            log.trace("{}: reject IndentedCodeBlock", key);
             invalid = true;
         }
 
         @Override
         public void visit(Link link) {
-            log.debug("{}: visit Link", key);
+            log.trace("{}: reject Link", key);
             invalid = true;
         }
 
         @Override
         public void visit(ListItem listItem) {
-            log.debug("{}: visit ListItem", key);
-            invalid = true;
+            log.trace("{}: visit ListItem", key);
+            visitChildren(listItem);
         }
 
         @Override
         public void visit(OrderedList orderedList) {
-            log.debug("{}: visit OrderedList", key);
-            invalid = true;
+            log.trace("{}: visit OrderedList", key);
+            visitChildren(orderedList);
         }
 
         @Override
         public void visit(Paragraph paragraph) {
-            log.debug("{}: visit Paragraph", key);
+            log.trace("{}: visit Paragraph", key);
             visitChildren(paragraph);
         }
 
         @Override
         public void visit(SoftLineBreak softLineBreak) {
-            log.debug("{}: visit SoftLineBreak", key);
-            invalid = true;
+            log.trace("{}: visit SoftLineBreak", key);
+            visitChildren(softLineBreak);
         }
 
         @Override
         public void visit(StrongEmphasis strongEmphasis) {
-            log.debug("{}: visit StrongEmphasis", key);
+            log.trace("{}: reject StrongEmphasis", key);
             invalid = true;
         }
 
         @Override
         public void visit(Text text) {
-            log.debug("{}: visit Text", key);
+            log.trace("{}: visit Text", key);
             visitChildren(text);
         }
 
         @Override
         public void visit(LinkReferenceDefinition linkReferenceDefinition) {
-            log.debug("{}: visit LinkReferenceDefinition", key);
+            log.trace("{}: reject LinkReferenceDefinition", key);
             invalid = true;
         }
 
         @Override
         public void visit(CustomBlock customBlock) {
-            log.debug("{}: visit CustomBlock", key);
+            log.trace("{}: reject CustomBlock", key);
             invalid = true;
         }
 
         @Override
         public void visit(CustomNode customNode) {
-            log.debug("{}: visit CustomNode", key);
+            log.trace("{}: reject CustomNode", key);
             invalid = true;
         }
     }

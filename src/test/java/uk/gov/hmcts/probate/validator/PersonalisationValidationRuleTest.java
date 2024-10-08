@@ -18,6 +18,7 @@ import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -48,7 +49,7 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
-    void givenMixedValidAndInvalidInputs_whenValidated_thenReturnsInvalidFields() {
+    void givenPermittedMarkdownInputs_whenValidated_thenPasses() {
         final Map<String, Object> personalisation = new HashMap<>();
 
         personalisation.put("valid", "Valid text");
@@ -64,6 +65,25 @@ class PersonalisationValidationRuleTest {
         personalisation.put("numlist_alt", "1) list");
         personalisation.put("hrule", "---");
         personalisation.put("hrule_alt", "***");
+
+        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
+
+        final Function<String, Executable> assertNotContains = name -> {
+            return () -> assertFalse(result.contains(name), "result should not contain " + name);
+        };
+
+        final List<Executable> assertions = new ArrayList<Executable>();
+        assertions.add(() -> assertEquals(0, result.size(), "All inputs should pass validation"));
+        for (String key : personalisation.keySet()) {
+            assertions.add(assertNotContains.apply(key));
+        }
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void givenNonpermittedMarkdownInputs_whenValidated_thenReturnsInvalid() {
+        final Map<String, Object> personalisation = new HashMap<>();
 
         // Documented as unsupported by Notify
         personalisation.put("with_bold", "bold **text**");
@@ -90,7 +110,6 @@ class PersonalisationValidationRuleTest {
         personalisation.put("single_image", "Some text ![example](http://example.com/img.png)");
         personalisation.put("image_with_ref", "Some text ![link][1]\n\nMore text\n\n[1]: http://example.com/img.png");
 
-
         final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
 
         final Function<String, Executable> assertContains = name -> {
@@ -98,11 +117,9 @@ class PersonalisationValidationRuleTest {
         };
 
         final List<Executable> assertions = new ArrayList<Executable>();
-        assertions.add(() -> assertEquals(personalisation.size() - 1, result.size(), "Did not identify all issues"));
+        assertions.add(() -> assertEquals(personalisation.size(), result.size(), "Did not identify all issues"));
         for (String key : personalisation.keySet()) {
-            if (!key.equals("valid")) {
-                assertions.add(assertContains.apply(key));
-            }
+            assertions.add(assertContains.apply(key));
         }
 
         assertAll(assertions);
