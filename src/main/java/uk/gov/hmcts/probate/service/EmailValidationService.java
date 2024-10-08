@@ -1,11 +1,11 @@
 package uk.gov.hmcts.probate.service;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Component;
 
 import lombok.extern.slf4j.Slf4j;
 
-import java.util.Base64;
 import java.util.regex.Pattern;
 
 import static uk.gov.hmcts.probate.model.Constants.EMAIL_REGEX;
@@ -27,13 +27,19 @@ public class EmailValidationService {
 
         if (!Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE).matcher(emailAddress).matches()) {
             log.info("Notification not sent due to invalid email address: {}",
-                getEmailEncodedBase64(emailAddress));
+                getHashedEmail(emailAddress));
             return false;
         }
         return true;
     }
 
-    private String getEmailEncodedBase64(String emailAddress) {
-        return new String(Base64.getEncoder().encode(emailAddress.getBytes()));
+    public String getHashedEmail(final String emailAddress) {
+        final String digest = DigestUtils.sha256Hex(emailAddress);
+        final StringBuilder builder = new StringBuilder();
+
+        builder.append("SHA-256[");
+        builder.append(digest);
+        builder.append("]");
+        return builder.toString();
     }
 }
