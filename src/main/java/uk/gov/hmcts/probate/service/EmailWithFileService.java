@@ -28,17 +28,19 @@ public class EmailWithFileService {
 
     private final NotificationClient notificationClient;
 
+    private final EmailAddresses emailAddresses;
+
+    private final EmailValidationService emailValidationService;
+
     @Value("${extract.templates.hmrcExtract}")
     private String templateId;
-
-    @Autowired
-    private final EmailAddresses emailAddresses;
 
     public boolean emailFile(File file, String date) {
         if (null == file || !file.exists()) {
             log.error("Error HMRC file does not exist");
             return false;
         }
+
 
         byte[] fileContents;
         try {
@@ -78,8 +80,9 @@ public class EmailWithFileService {
                     null,
                     null);
                 if (null != response) {
-                    log.info("HMRC email to: {} response: {}",
-                        new String(Base64.getEncoder().encode(email.getBytes())),response.toString());
+                    log.info("HMRC email to: {} notificationId: {}",
+                            emailValidationService.getHashedEmail(email),
+                            response.getNotificationId());
                 }
             }
         } catch (NotificationClientException e) {
