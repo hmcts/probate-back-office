@@ -2,15 +2,14 @@ package uk.gov.hmcts.probate.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.MessageFormat;
 import java.time.temporal.ChronoUnit;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -68,13 +67,15 @@ public class EmailWithFileService {
 
     }
 
-    public boolean sendEmail(Map<String, Object> personalisation) {
+    private boolean sendEmail(final Map<String, Object> personalisation) {
+        boolean allSuccessful = true;
+
         //list of emails in secrets need to be sent separately for service
-        emailAddresses.getHmrcEmail();
-        String[] emails = StringUtils.split(emailAddresses.getHmrcEmail(), ";");
-        try {
-            for (String email : emails) {
-                SendEmailResponse response = notificationClient.sendEmail(templateId,
+        final String emailsStr = emailAddresses.getHmrcEmail();
+        final String[] emails = StringUtils.split(emailsStr, ";");
+        for (final String email : emails) {
+            try {
+                final SendEmailResponse response = notificationClient.sendEmail(templateId,
                     email,
                     personalisation,
                     null,
@@ -84,13 +85,15 @@ public class EmailWithFileService {
                             emailValidationService.getHashedEmail(email),
                             response.getNotificationId());
                 }
+            } catch (NotificationClientException e) {
+                final String message = MessageFormat.format("HMRC email to: {0} failed to send",
+                        emailValidationService.getHashedEmail(email));
+                log.error(message, e);
+                allSuccessful = false;
             }
-        } catch (NotificationClientException e) {
-            log.error("Error Preparing to send email to HMRC: {} ", e.getMessage());
-            return false;
         }
 
-        return true;
+        return allSuccessful;
     }
 
     private boolean prepareUpload(byte[] fileContents, HashMap<String, Object> personalisation) {
