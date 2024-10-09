@@ -8,9 +8,9 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.Assert.assertEquals;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
+
+
 @ExtendWith(SerenityJUnit5Extension.class)
 public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
 
