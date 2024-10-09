@@ -60,8 +60,7 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
         expectedText = expectedText.replaceAll("1st August 2021", utils.formatDate(LocalDate.now()));
         expectedText = expectedText.replaceAll("1 Awst 2021", utils.convertToWelsh(LocalDate.now()));
-        log.info("expectedFile *****>>:" + expectedText.trim());
-        log.info("response.trim() *****>>:" + response.trim());
+
         assertEquals(expectedText.trim(), response.trim());
     }
 
@@ -69,8 +68,7 @@ public class WelshGrantGenerationTests extends DocumentGenerationTestBase {
         final String response = getProbateDocumentsGeneratedTextAtIndex(payload, GENERATE_GRANT_REISSUE, "2");
 
         String expectedText = removeCrLfs(utils.getJsonFromFile(expectedFile));
-        log.info("expectedFile *****>>:" + expectedText.trim());
-        log.info("response.trim() *****>>:" + response.trim());
+
         assertEquals(expectedText.trim(), response.trim());
     }
 
