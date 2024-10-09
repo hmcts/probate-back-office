@@ -4336,6 +4336,30 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderEvenIfOneExists() {
+        List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAliasFirstNameOnWill("John")
+                .deceasedAliasLastNameOnWill("Doe")
+                .deceasedAliasNameList(deceasedAliasNamesList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
+        assertEquals("John Doe",
+                callbackResponse.getData()
+                        .getSolsDeceasedAliasNamesList()
+                        .get(0)
+                        .getValue()
+                        .getSolsAliasname());
+        assertEquals(2, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
     void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderForTransformCase() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtReferenceNumber("020e920e920e902e2")
