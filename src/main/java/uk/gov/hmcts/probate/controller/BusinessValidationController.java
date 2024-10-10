@@ -91,6 +91,7 @@ public class BusinessValidationController {
     private static final String DEFAULT_LOG_ERROR = "Case Id: {} ERROR: {}";
     private static final String INVALID_PAYLOAD = "Invalid payload";
     private static final String INVALID_CREATION_EVENT = "Invalid creation event";
+    private static final String USE_DIFFERENT_EVENT = "Use different event";
     private final EventValidationService eventValidationService;
     private final NotificationService notificationService;
     private final ObjectMapper objectMapper;
@@ -690,6 +691,32 @@ public class BusinessValidationController {
         log.info("invalid creation event");
         List<String> errors = Arrays.asList(businessValidationMessageService
                 .generateError(INVALID_CREATION_EVENT, "invalidCreationEvent").getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(errors)
+                .build();
+
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(path = "/use-caveat-notification-event", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> useCaveatEvent() {
+        log.info("Use Caveat Notification event");
+        List<String> errors = Arrays.asList(businessValidationMessageService
+                .generateError(USE_DIFFERENT_EVENT, "caveatNotificationEvent").getMessage());
+        CallbackResponse callbackResponse = CallbackResponse.builder()
+                .errors(errors)
+                .build();
+
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(path = "/use-assemble-letter-event", consumes = APPLICATION_JSON_VALUE,
+            produces = {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> useAssembleLetterEvent() {
+        log.info("Use Assemble Letter event");
+        List<String> errors = Arrays.asList(businessValidationMessageService
+                .generateError(USE_DIFFERENT_EVENT, "AssembleLetterEvent").getMessage());
         CallbackResponse callbackResponse = CallbackResponse.builder()
                 .errors(errors)
                 .build();
