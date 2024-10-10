@@ -12,6 +12,7 @@ public class LinkRenderer {
     }
 
     public static String renderOutside(String linkText, String link) {
-        return format("<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">%s</a>", link, linkText);
+        return format("<a href=\"%s\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">%s</a>",
+                link, linkText);
     }
 }
