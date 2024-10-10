@@ -168,7 +168,7 @@ def versions = [
         hmctsJavaLogging                : '6.1.6',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.34',
-        mapStruct                       : '1.2.0.Final',
+        mapStruct                       : '1.6.2',
         pact_version                    : '4.1.34',
         probateCommonsVersion           : '2.0.6',
         probatePactCommonsVersion       : '1.0.2',
@@ -261,7 +261,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'core-case-data-store-client', version: versions.ccdClient
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.4'
-  implementation group: 'org.mapstruct', name: 'mapstruct-jdk8', version: versions.mapStruct
+  implementation group: 'org.mapstruct', name: 'mapstruct', version: versions.mapStruct
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   // Notifications client API
