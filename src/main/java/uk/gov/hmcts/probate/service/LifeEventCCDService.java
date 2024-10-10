@@ -94,6 +94,7 @@ public class LifeEventCCDService {
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
             .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
+            .boHandoffReasonList(handOffLegacyService.setHandoffReason(caseDetails))
             .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
             .build();
 
@@ -109,6 +110,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
+            .boHandoffReasonList(handOffLegacyService.setHandoffReason(caseDetails))
             .lastModifiedDateForDormant(LocalDateTime.now(ZoneOffset.UTC))
             .build();
 
@@ -131,6 +133,7 @@ public class LifeEventCCDService {
             .builder()
             .deathRecords(deathRecordService.mapDeathRecords(records))
             .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
+            .boHandoffReasonList(handOffLegacyService.setHandoffReason(caseDetails))
             .build();
 
         updateCaseAsCitizenOrCaseworker(caseDetails, grantOfRepresentationData,
@@ -147,6 +150,7 @@ public class LifeEventCCDService {
         final GrantOfRepresentationData grantOfRepresentationData = GrantOfRepresentationData
             .builder()
             .caseHandedOffToLegacySite(handOffLegacyService.setCaseToHandedOffToLegacySite(caseDetails))
+            .boHandoffReasonList(handOffLegacyService.setHandoffReason(caseDetails))
             .build();
 
         updateCaseAsCitizenOrCaseworker(caseDetails, grantOfRepresentationData,
