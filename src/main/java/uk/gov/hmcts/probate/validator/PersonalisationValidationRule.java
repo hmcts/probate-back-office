@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.service.MarkdownValidatorService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -33,6 +34,6 @@ public class PersonalisationValidationRule {
                 }
             }
         }
-        return invalidFields;
+        return Collections.unmodifiableList(invalidFields);
     }
 }
