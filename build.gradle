@@ -265,7 +265,7 @@ dependencies {
   implementation group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
   // Notifications client API
-  implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.0.1-RELEASE'
+  implementation group: 'uk.gov.service.notify', name: 'notifications-java-client', version: '5.2.1-RELEASE'
   implementation group: 'com.github.ben-manes.caffeine', name: 'caffeine', version: '3.1.8'
   annotationProcessor group: 'org.mapstruct', name: 'mapstruct-processor', version: versions.mapStruct
 
