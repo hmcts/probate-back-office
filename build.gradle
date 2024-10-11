@@ -5,13 +5,13 @@ plugins {
   id 'uk.gov.hmcts.java' version '0.12.63'
   id 'com.github.ben-manes.versions' version '0.51.0'
   id 'com.gorylenko.gradle-git-properties' version '2.4.2'
-  id 'info.solidsoft.pitest' version '1.6.0'
+  id 'info.solidsoft.pitest' version '1.15.0'
   id 'jacoco'
   id 'project-report'
   id 'au.com.dius.pact' version '4.6.14'
-  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.0.1'
-  id 'org.sonarqube' version '4.3.0.3225'
-  id 'com.github.hmcts.rse-cft-lib' version '0.19.1381'
+  id 'net.serenity-bdd.serenity-gradle-plugin' version '4.2.1'
+  id 'org.sonarqube' version '5.1.0.4882'
+  id 'com.github.hmcts.rse-cft-lib' version '0.19.1394'
 }
 
 application {
@@ -164,7 +164,7 @@ def versions = [
         commonsIO                       : '2.17.0',
         commonsValidator                : '1.9.0',
         documentClient                  : '1.8.1',
-        elasticSearchVersion            : '7.15.0',
+        elasticSearchVersion            : '7.17.24',
         hmctsJavaLogging                : '6.1.6',
         jacksonDatabind                 : '2.17.1',
         lombok                          : '1.18.34',
@@ -216,7 +216,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-bootstrap', version: versions.springCloud
   implementation group: 'com.github.hmcts', name: 'ccd-case-document-am-client', version: versions.documentClient
-  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.4'
+  implementation group: 'io.github.openfeign', name: 'feign-jackson', version: '13.5'
   implementation group: 'org.springframework.cloud', name: 'spring-cloud-starter-openfeign', version: versions.springCloudStarterNetflixHystrix
   implementation ('io.github.openfeign.form:feign-form-spring')
 
@@ -229,7 +229,7 @@ dependencies {
   implementation group: 'com.github.hmcts', name: 'cmc-pdf-service-client', version: '8.0.1'
   implementation group: 'com.github.hmcts', name: 'send-letter-client', version: '4.0.4'
   implementation group: 'com.github.hmcts', name: 'life-events-client', version: '1.2.1'
-  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.28.0'
+  implementation group: 'com.azure', name: 'azure-storage-blob', version: '12.28.1'
   implementation group: 'net.logstash.logback', name: 'logstash-logback-encoder', version: '8.0'
 
   implementation group: 'com.fasterxml.jackson.datatype', name: 'jackson-datatype-jsr310', version: versions.jacksonDatabind
@@ -249,7 +249,7 @@ dependencies {
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
   implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
-  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.4'
+  implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
@@ -322,9 +322,9 @@ dependencies {
   contractTestImplementation group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'java8',  version: versions.pact_version
   contractTestRuntimeOnly group: 'au.com.dius.pact.consumer', name: 'junit5', version: versions.pact_version
-  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.1")
-  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.11.1')
-  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.11.1'
+  contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.2")
+  contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.11.2')
+  contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.11.2'
   contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
 
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
