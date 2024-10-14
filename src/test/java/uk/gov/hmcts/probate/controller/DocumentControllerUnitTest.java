@@ -108,7 +108,7 @@ class DocumentControllerUnitTest {
 
         documentValidation = new DocumentValidation();
         ReflectionTestUtils.setField(documentValidation,
-            "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png .pdf");
+            "allowedFileExtensions", ".pdf .jpeg .bmp .tif .tiff .png");
         ReflectionTestUtils.setField(documentValidation,
             "allowedMimeTypes", "image/jpeg application/pdf image/tiff image/png image/bmp");
 

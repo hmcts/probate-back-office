@@ -398,7 +398,6 @@ public class DocumentController {
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
-    @ResponseBody
     public List<String> upload(
         @RequestHeader(value = "Authorization") String authorizationToken,
         @RequestHeader(value = "ServiceAuthorization") String serviceAuthorizationToken,
@@ -413,13 +412,13 @@ public class DocumentController {
 
         log.info("Uploading document at BackOffice");
         UploadResponse uploadResponse = documentManagementService
-            .uploadForCitizen(files, authorizationToken, DocumentType.DIGITAL_GRANT);
+            .uploadForCitizen(files, authorizationToken, DocumentType.CITIZEN_HUB_UPLOAD);
         if (uploadResponse != null) {
             result = uploadResponse
                 .getDocuments()
                 .stream()
                 .map(f -> f.links.self.href)
-                .collect(Collectors.toList());
+                .toList();
         }
 
         return result;
