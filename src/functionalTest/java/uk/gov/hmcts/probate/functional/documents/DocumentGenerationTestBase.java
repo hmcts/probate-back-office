@@ -4,9 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.apache.commons.lang3.StringUtils;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 
 import java.io.IOException;
+import java.text.MessageFormat;
 
 @Slf4j
 public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
@@ -77,10 +79,21 @@ public abstract class DocumentGenerationTestBase extends IntegrationTestBase {
                 .body(payload)
                 .when().post(path).andReturn();
 
-        JsonPath jsonPath = JsonPath.from(jsonResponse.getBody().asString());
+        final String jsonBody = jsonResponse.getBody().asString();
+        JsonPath jsonPath = JsonPath.from(jsonBody);
 
-        final String documentUrl =
-                jsonPath.get("data." + documentName + ".document_binary_url");
+        final String query = "data." + documentName + ".document_binary_url";
+        final String documentUrl = jsonPath.get(query);
+
+        if (StringUtils.isEmpty(documentUrl)) {
+            final String err = MessageFormat.format(
+                    "Reponse data with statusLine [{3}] expected to contain document url for {0} but query {1} "
+                    + "did not match anything in document\n\n{2}\n\n",
+                    documentName, query, jsonBody, jsonResponse.getStatusLine());
+            log.error(err);
+            throw new RuntimeException(err);
+        }
+
         final String response = utils.downloadPdfAndParseToString(documentUrl);
         return removeCrLfs(response);
     }
