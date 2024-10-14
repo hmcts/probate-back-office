@@ -1227,7 +1227,7 @@ public class CallbackResponseTransformer {
             .informationNeededByPost(caseData.getInformationNeededByPost())
             .citizenResponse(caseData.getCitizenResponse())
             .documentUploadIssue(caseData.getDocumentUploadIssue())
-            .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox)
+            .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox())
             .citizenResponseSubmittedDate(caseData.getCitizenResponseSubmittedDate())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
