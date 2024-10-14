@@ -397,4 +397,8 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String informationNeeded;
     private final String informationNeededByPost;
     private final DocumentLink emailPreview;
+    private final String citizenResponse;
+    private final String documentUploadIssue;
+    private final String citizenResponseCheckbox;
+    private final String citizenResponseSubmittedDate;
 }

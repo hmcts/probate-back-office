@@ -609,6 +609,10 @@ public class CaseData extends CaseDataParent {
     private ChangeOrganisationRequest changeOrganisationRequestField;
     private final String informationNeeded;
     private final String informationNeededByPost;
+    private final String citizenResponse;
+    private final String documentUploadIssue;
+    private final String citizenResponseCheckbox;
+    private final String citizenResponseSubmittedDate;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

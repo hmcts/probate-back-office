@@ -1225,6 +1225,10 @@ public class CallbackResponseTransformer {
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .informationNeeded(caseData.getInformationNeeded())
             .informationNeededByPost(caseData.getInformationNeededByPost())
+            .citizenResponse(caseData.getCitizenResponse())
+            .documentUploadIssue(caseData.getDocumentUploadIssue())
+            .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox)
+            .citizenResponseSubmittedDate(caseData.getCitizenResponseSubmittedDate())
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
         if (transform) {
