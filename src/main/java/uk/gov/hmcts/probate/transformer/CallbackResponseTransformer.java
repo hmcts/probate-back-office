@@ -17,7 +17,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
-import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -41,6 +40,7 @@ import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -53,6 +53,8 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -982,6 +984,7 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
+                .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1562,29 +1565,6 @@ public class CallbackResponseTransformer {
             }
         }
 
-        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
-        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
-            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
-                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
-                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
-        }
-        if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .map(this::buildDeceasedAliasNameExecutor)
-                    .map(alias -> new CollectionMember<>(null, alias))
-                    .toList());
-        }
-        if (deceasedAliasNames.isEmpty()) {
-            builder
-                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
-        } else {
-            builder
-                    .solsDeceasedAliasNamesList(deceasedAliasNames)
-                    .deceasedAliasNamesList(null);
-        }
-
         solicitorExecutorTransformer.setFieldsIfSolicitorIsNotNamedInWillAsAnExecutor(caseData);
         resetResponseCaseDataTransformer.resetTitleAndClearingFields(caseData, builder);
 
@@ -1596,29 +1576,6 @@ public class CallbackResponseTransformer {
                 .ihtReferenceNumber(caseData.getIhtReferenceNumber())
                 .primaryApplicantAlias(caseData.getPrimaryApplicantAlias())
                 .solsExecutorAliasNames(caseData.getSolsExecutorAliasNames());
-
-        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
-        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
-            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
-                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
-                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
-        }
-        if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .map(this::buildDeceasedAliasNameExecutor)
-                    .map(alias -> new CollectionMember<>(null, alias))
-                    .toList());
-        }
-        if (deceasedAliasNames.isEmpty()) {
-            builder
-                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList());
-        } else {
-            builder
-                    .solsDeceasedAliasNamesList(deceasedAliasNames)
-                    .deceasedAliasNamesList(null);
-        }
 
         if (caseData.getApplicationType() != PERSONAL) {
             builder
@@ -1865,5 +1822,30 @@ public class CallbackResponseTransformer {
             return LocalDateTime.now(ZoneOffset.UTC);
         }
         return lastModifiedDateForDormant;
+    }
+
+    private List<CollectionMember<AliasName>> getSolsDeceasedAliasNamesList(CaseData caseData) {
+
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
+            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
+                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
+                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+        }
+        if (caseData.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(this::buildDeceasedAliasNameExecutor)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .toList());
+        }
+        if (caseData.getSolsDeceasedAliasNamesList() != null) {
+            deceasedAliasNames.addAll(caseData.getSolsDeceasedAliasNamesList());
+        }
+        Set<String> seenAliasNames = new HashSet<>();
+        return deceasedAliasNames.stream()
+                .filter(aliasMember -> seenAliasNames.add(aliasMember.getValue().getSolsAliasname()))
+                .collect(Collectors.toList());
     }
 }
