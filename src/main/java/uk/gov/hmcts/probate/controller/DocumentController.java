@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
@@ -401,8 +400,7 @@ public class DocumentController {
     public List<String> upload(
         @RequestHeader(value = "Authorization") String authorizationToken,
         @RequestHeader(value = "ServiceAuthorization") String serviceAuthorizationToken,
-        @RequestPart("file") List<MultipartFile> files
-    ) {
+        @RequestPart("file") List<MultipartFile> files ) {
         List<String> result = new ArrayList<>();
         List<String> fileValidationErrors = documentValidation.validateFiles(files);
         if (!fileValidationErrors.isEmpty()) {
