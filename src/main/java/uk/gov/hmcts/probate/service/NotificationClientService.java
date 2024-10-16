@@ -46,8 +46,4 @@ public class NotificationClientService {
         log.info("Preparing to send email for case: {}", caseId);
         return notificationClient.generateTemplatePreview(templateId, personalisation);
     }
-
-    private String getEmailEncodedBase64(String emailAddress) {
-        return new String(Base64.getEncoder().encode(emailAddress.getBytes()));
-    }
 }
