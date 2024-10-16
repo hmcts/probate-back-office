@@ -54,7 +54,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
@@ -400,7 +399,7 @@ public class DocumentController {
     public List<String> upload(
         @RequestHeader(value = "Authorization") String authorizationToken,
         @RequestHeader(value = "ServiceAuthorization") String serviceAuthorizationToken,
-        @RequestPart("file") List<MultipartFile> files ) {
+        @RequestPart("file") List<MultipartFile> files) {
         List<String> result = new ArrayList<>();
         List<String> fileValidationErrors = documentValidation.validateFiles(files);
         if (!fileValidationErrors.isEmpty()) {
