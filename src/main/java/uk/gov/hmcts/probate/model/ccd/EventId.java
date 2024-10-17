@@ -24,7 +24,8 @@ public enum EventId {
     DEATH_RECORD_VERIFICATION_FAILED("deathRecordVerificationFailed"),
     MAKE_CASE_DORMANT("makeCaseDormant"),
     REACTIVATE_DORMANT_CASE("reactivateDormantCase"),
-    RESEND_DATA("dataExtractResendData");
+    RESEND_DATA("dataExtractResendData"),
+    CITIZEN_HUB_RESPONSE("citizenHubResponse");
     @Getter
     private final String name;
 
