@@ -392,7 +392,7 @@ public class DocumentController {
     }
 
     @PostMapping(
-        value = "/upload",
+        path = "/upload",
         consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
     )
@@ -419,6 +419,13 @@ public class DocumentController {
         }
 
         return result;
+    }
+
+    @PostMapping(path = "/citizenHubResponse", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<CallbackResponse> citizenHubResponse(@RequestBody CallbackRequest callbackRequest) {
+        log.info("Citizen Hub Response for caseId: {}  Checkbox: {}", callbackRequest.getCaseDetails().getId(),
+                callbackRequest.getCaseDetails().getData().getCitizenResponseCheckbox());
+        return ResponseEntity.ok(callbackResponseTransformer.transformCitizenHubResponse(callbackRequest));
     }
 
     @PostMapping(path = "/setup-for-permanent-removal", consumes = MediaType.APPLICATION_JSON_VALUE)

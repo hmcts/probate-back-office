@@ -2505,6 +2505,31 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldResetCitizenHubFieldsWhenHubResponseRequired() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .citizenResponseSubmittedDate("some date")
+                .documentUploadIssue(YES);
+
+        Document document = Document.builder()
+                .documentLink(documentLinkMock)
+                .documentType(SENT_EMAIL)
+                .documentFileName(SENT_EMAIL.getTemplateName())
+                .build();
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
+                Arrays.asList(document));
+        assertNull(callbackResponse.getData().getCitizenResponseCheckbox());
+        assertNull(callbackResponse.getData().getCitizenResponseSubmittedDate());
+        assertNull(callbackResponse.getData().getDocumentUploadIssue());
+    }
+
+    @Test
     void shouldResolveStopCaseQA() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
             .resolveStopState(QA_CASE_STATE);
@@ -4553,6 +4578,56 @@ class CallbackResponseTransformerTest {
                 underTest.addDocumentPreview(callbackRequestMock, document);
 
         assertEquals(documentLinkMock, callbackResponse.getData().getEmailPreview());
+    }
+
+    @Test
+    void shouldTransformCitizenHubResponseWhenCheckboxYes() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertEquals(callbackResponse.getData().getCitizenResponseSubmittedDate(), LocalDate.now().toString());
+        assertEquals(callbackResponse.getData().getEvidenceHandled(), NO);
+    }
+
+    @Test
+    void shouldSetEvidenceHandledYesWhenHaveDocumentUploadIssue() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .documentUploadIssue(YES);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertEquals(callbackResponse.getData().getCitizenResponseSubmittedDate(), LocalDate.now().toString());
+        assertEquals(callbackResponse.getData().getEvidenceHandled(), YES);
+    }
+
+    @Test
+    void shouldNotTransformCitizenHubResponseWhenCheckboxIsNotYes() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertEquals(callbackResponse.getData().getInformationNeeded(), YES);
+        assertEquals(callbackResponse.getData().getInformationNeededByPost(), NO);
+        assertNull(callbackResponse.getData().getCitizenResponseSubmittedDate());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

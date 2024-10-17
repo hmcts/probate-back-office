@@ -303,4 +303,18 @@ class DocumentControllerUnitTest {
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 
+    @Test
+    void shouldTransformForCitizenHubResponse() {
+        CallbackRequest callbackRequest = mock(CallbackRequest.class);
+        CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        CaseData mockCaseData = CaseData.builder()
+                .build();
+        when(callbackRequest.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(mockCaseData);
+
+        ResponseEntity<CallbackResponse> response =
+                documentController.citizenHubResponse(callbackRequest);
+        verify(callbackResponseTransformer, times(1)).transformCitizenHubResponse(callbackRequest);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }

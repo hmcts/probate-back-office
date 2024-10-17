@@ -263,14 +263,41 @@ public class CallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
-
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (isHubResponseRequired(caseData)) {
+            responseCaseDataBuilder.citizenResponseCheckbox(null)
+                    .citizenResponseSubmittedDate(null)
+                    .documentUploadIssue(null);
+        }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
         return transformResponse(responseCaseDataBuilder.build());
+    }
 
+    public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())) {
+            responseCaseDataBuilder.evidenceHandled(YES);
+        }
+
+        if (isHubResponseRequired(caseData) && YES.equalsIgnoreCase(caseData.getCitizenResponseCheckbox())) {
+            responseCaseDataBuilder.citizenResponseSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                    .informationNeeded(null)
+                    .informationNeededByPost(null)
+                    .boStopDetails(null)
+                    .boStopDetailsDeclarationParagraph(null);
+
+            if (!YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())) {
+                responseCaseDataBuilder.evidenceHandled(NO);
+            }
+        }
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse addDocumentPreview(CallbackRequest callbackRequest, Document document) {
@@ -1304,6 +1331,13 @@ public class CallbackResponseTransformer {
 
     private boolean isForeignDeathCerticateInEnglish(CaseData caseData) {
         return YES.equals(caseData.getDeceasedForeignDeathCertInEnglish());
+    }
+
+    private boolean isHubResponseRequired(CaseData caseData) {
+        return (PERSONAL.equals(caseData.getApplicationType())
+            && CHANNEL_CHOICE_DIGITAL.equals(caseData.getChannelChoice())
+            && YES.equals(caseData.getInformationNeeded())
+            && NO.equals(caseData.getInformationNeededByPost()));
     }
 
     private ResponseCaseDataBuilder<?, ?> getCaseCreatorResponseCaseBuilder(CaseData caseData,
