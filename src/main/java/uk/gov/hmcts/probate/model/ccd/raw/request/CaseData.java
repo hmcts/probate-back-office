@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.experimental.SuperBuilder;
 import lombok.extern.jackson.Jacksonized;
+import lombok.extern.slf4j.Slf4j;
 import uk.gov.hmcts.probate.controller.validation.AmendCaseDetailsGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationAdmonGroup;
 import uk.gov.hmcts.probate.controller.validation.ApplicationCreatedGroup;
@@ -73,6 +74,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Jacksonized
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Slf4j
 public class CaseData extends CaseDataParent {
 
     // Tasklist update
@@ -696,6 +698,24 @@ public class CaseData extends CaseDataParent {
 
     public boolean isLanguagePreferenceWelsh() {
         return YES.equals(getLanguagePreferenceWelsh());
+    }
+
+    public void clearPrimaryApplicant() {
+        log.debug("Clearing primary applicant information from CaseData");
+
+
+        this.setPrimaryApplicantIsApplying(null);
+
+        this.setPrimaryApplicantForenames(null);
+        this.setPrimaryApplicantSurname(null);
+
+        this.setPrimaryApplicantHasAlias(null);
+        this.setPrimaryApplicantAlias(null);
+
+        this.setPrimaryApplicantAddress(null);
+
+        this.setPrimaryApplicantEmailAddress(null);
+        this.setPrimaryApplicantPhoneNumber(null);
     }
 
 }
