@@ -74,6 +74,7 @@ public final class Constants {
     public static final String TITLE_AND_CLEARING_PARTNER_OTHERS_RENOUNCING = "TCTPartOthersRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_SUCC_ALL_RENOUNCING = "TCTPartSuccAllRenouncing";
     public static final String TITLE_AND_CLEARING_PARTNER_ALL_RENOUNCING = "TCTPartAllRenouncing";
+    public static final String TITLE_AND_CLEARING_NONE_OF_THESE = "TCTNoT";
     public static final String REASON_FOR_NOT_APPLYING_RENUNCIATION = "Renunciation";
     public static final String REASON_FOR_NOT_APPLYING_MENTALLY_INCAPABLE = "MentallyIncapable";
     public static final String REASON_FOR_NOT_APPLYING_DIED_BEFORE = "DiedBefore";
