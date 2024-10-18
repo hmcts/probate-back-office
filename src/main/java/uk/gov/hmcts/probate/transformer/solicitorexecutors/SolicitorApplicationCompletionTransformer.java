@@ -14,6 +14,7 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_THESE;
 
 @Component
 @Slf4j
@@ -61,6 +62,23 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         if (totalAmount.compareTo(BigDecimal.ZERO) == 0) {
             caseDetails.getData().setPaymentTaken(NOT_APPLICABLE);
             caseDetails.setState(CASE_PRINTED.getId());
+        }
+    }
+
+    public void clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(CaseDetails caseDetails) {
+        final var caseId = caseDetails.getId();
+        final var caseData = caseDetails.getData();
+
+        final var titleAndClearingType = caseDetails.getData().getTitleAndClearingType();
+        final var primaryApplicantApplying = caseData.isPrimaryApplicantApplying();
+
+        if ((!TITLE_AND_CLEARING_NONE_OF_THESE.equalsIgnoreCase(titleAndClearingType)) && primaryApplicantApplying) {
+            log.info("In case {} we have primary applicant applying for non-NoneOfThese TitleAndClearingType {},"
+                            + " clear PrimaryApplicant fields",
+                    caseId,
+                    titleAndClearingType);
+
+            caseData.clearPrimaryApplicant();
         }
     }
 }
