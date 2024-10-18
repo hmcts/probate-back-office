@@ -56,9 +56,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 class SolicitorApplicationCompletionTransformerTest {
 
     @Mock
-    private CaseDetails caseDetailsMock;
-
-    @Mock
     private DateFormatterService dateFormatterServiceMock;
 
     @Mock
@@ -113,8 +110,7 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
-
-        CaseData caseData = CaseData.builder()
+        final CaseData caseData = CaseData.builder()
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
                 .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
@@ -134,7 +130,8 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
-        CaseData caseData = CaseData.builder()
+        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        final CaseData caseData = CaseData.builder()
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
                 .additionalExecutorsTrustCorpList(null)
@@ -160,7 +157,8 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
-        CaseData caseData = CaseData.builder()
+        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        final CaseData caseData = CaseData.builder()
                 .primaryApplicantForenames(EXEC_FIRST_NAME)
                 .primaryApplicantSurname(EXEC_SURNAME)
                 .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
@@ -180,7 +178,8 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
-        CaseData caseData = CaseData.builder()
+        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        final CaseData caseData = CaseData.builder()
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorIsExec(YES)
@@ -199,7 +198,8 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
-        CaseData caseData = CaseData.builder()
+        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
+        final CaseData caseData = CaseData.builder()
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorIsExec(YES)
@@ -224,7 +224,7 @@ class SolicitorApplicationCompletionTransformerTest {
         final List<CollectionMember<String>> formattedDate =
                 Arrays.asList(new CollectionMember<>("Formatted Date"));
 
-        CaseData caseData = CaseData.builder()
+        final CaseData caseData = CaseData.builder()
                 .willHasCodicils(NO)
                 .codicilAddedDateList(codicilDates)
                 .codicilAddedFormattedDateList(formattedDate)
@@ -238,9 +238,9 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetServiceRequest() {
-        BigDecimal totalAmount = BigDecimal.valueOf(100000);
-        CaseData caseData = CaseData.builder().build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+        final BigDecimal totalAmount = BigDecimal.valueOf(100000);
+        final CaseData caseData = CaseData.builder().build();
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
         solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
         assertNull(caseData.getPaymentTaken());
@@ -248,9 +248,9 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetPaymentTakenNotApplicableWhenNoServiceRequest() {
-        BigDecimal totalAmount = BigDecimal.ZERO;
-        CaseData caseData = CaseData.builder().build();
-        CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+        final BigDecimal totalAmount = BigDecimal.ZERO;
+        final CaseData caseData = CaseData.builder().build();
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
         solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
         assertEquals(NOT_APPLICABLE, caseData.getPaymentTaken());
