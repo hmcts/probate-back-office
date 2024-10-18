@@ -423,8 +423,11 @@ public class DocumentController {
 
     @PostMapping(path = "/citizenHubResponse", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> citizenHubResponse(@RequestBody CallbackRequest callbackRequest) {
-        log.info("Citizen Hub Response for caseId: {}  Checkbox: {}", callbackRequest.getCaseDetails().getId(),
-                callbackRequest.getCaseDetails().getData().getCitizenResponseCheckbox());
+        log.info("Citizen Hub Response for caseId: {}  Checkbox: {} citizenResponse: {} documentUploadIssue: {}",
+                callbackRequest.getCaseDetails().getId(),
+                callbackRequest.getCaseDetails().getData().getCitizenResponseCheckbox(),
+                callbackRequest.getCaseDetails().getData().getCitizenResponse(),
+                callbackRequest.getCaseDetails().getData().getDocumentUploadIssue());
         return ResponseEntity.ok(callbackResponseTransformer.transformCitizenHubResponse(callbackRequest));
     }
 

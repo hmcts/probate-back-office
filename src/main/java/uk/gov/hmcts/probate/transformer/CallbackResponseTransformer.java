@@ -1011,7 +1011,7 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-                .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
+            .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1253,13 +1253,13 @@ public class CallbackResponseTransformer {
             .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
+            .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
             .informationNeeded(caseData.getInformationNeeded())
             .informationNeededByPost(caseData.getInformationNeededByPost())
             .citizenResponse(caseData.getCitizenResponse())
             .documentUploadIssue(caseData.getDocumentUploadIssue())
             .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox())
-            .citizenResponseSubmittedDate(caseData.getCitizenResponseSubmittedDate())
-            .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
+            .citizenResponseSubmittedDate(caseData.getCitizenResponseSubmittedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
