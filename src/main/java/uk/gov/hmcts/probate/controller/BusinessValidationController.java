@@ -31,7 +31,14 @@ import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.AfterSubmitCallbackResponse;
 import uk.gov.hmcts.probate.model.ccd.raw.response.CallbackResponse;
-import uk.gov.hmcts.probate.service.*;
+import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.service.CaseEscalatedService;
+import uk.gov.hmcts.probate.service.CaseStoppedService;
+import uk.gov.hmcts.probate.service.ConfirmationResponseService;
+import uk.gov.hmcts.probate.service.EventValidationService;
+import uk.gov.hmcts.probate.service.NotificationService;
+import uk.gov.hmcts.probate.service.RegistrarDirectionService;
+import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.caseaccess.AssignCaseAccessService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
@@ -117,7 +124,6 @@ public class BusinessValidationController {
     private final RegistrarDirectionService registrarDirectionService;
     private final Pre1900DOBValidationRule pre1900DOBValidationRule;
     private final BusinessValidationMessageService businessValidationMessageService;
-    private final DormantCaseService dormantCaseService;
 
     @PostMapping(path = "/update-task-list", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> updateTaskList(@RequestBody CallbackRequest request) {
