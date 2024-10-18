@@ -13,9 +13,12 @@ import uk.gov.hmcts.probate.model.LanguagePreference;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
+import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.YES;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED;
 import static uk.gov.hmcts.probate.model.State.APPLICATION_RECEIVED_NO_DOCS;
 import static uk.gov.hmcts.probate.model.State.CASE_STOPPED;
@@ -213,23 +216,63 @@ class TemplateServiceIT {
     void getCaseStoppedRequestForInfoPA() {
 
         String response =
-            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.ENGLISH);
+            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.ENGLISH,
+                null, CHANNEL_CHOICE_DIGITAL, NO);
         assertEquals("pa-request-information", response);
 
         String responseWelsh =
-            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.WELSH);
+            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC, LanguagePreference.WELSH,
+                null, CHANNEL_CHOICE_DIGITAL, NO);
         assertEquals("pa-request-information-welsh", responseWelsh);
+
+        String byPostResponse =
+                templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC,
+                        LanguagePreference.ENGLISH,null, CHANNEL_CHOICE_DIGITAL, YES);
+        assertEquals("pa-request-information-by-post", byPostResponse);
+
+        String byPostResponseWelsh =
+                templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC,
+                        LanguagePreference.WELSH,null, CHANNEL_CHOICE_DIGITAL, YES);
+        assertEquals("pa-request-information-by-post-welsh", byPostResponseWelsh);
+    }
+
+    @Test
+    void getCaseStoppedRequestForInfoPaperPA() {
+        String response =
+                templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC,
+                        LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_BULKSCAN, null);
+        assertEquals("pa-request-information-by-post", response);
+
+        String responseWelsh =
+                templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, PERSONAL, CTSC,
+                        LanguagePreference.WELSH, null, CHANNEL_CHOICE_PAPERFORM, NO);
+        assertEquals("pa-request-information-by-post-welsh", responseWelsh);
+    }
+
+    @Test
+    void getCaseStoppedRequestForInfoPaperSols() {
+        String response =
+                templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC,
+                        LanguagePreference.ENGLISH,null, CHANNEL_CHOICE_BULKSCAN, null);
+        assertEquals("sols-request-information", response);
+
+        String responseWelsh =
+                templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC,
+                        LanguagePreference.WELSH,null, CHANNEL_CHOICE_PAPERFORM, null);
+        assertEquals("sols-request-information-welsh", responseWelsh);
     }
 
     @Test
     void getCaseStoppedRequestForInfoSols() {
 
         String response = templateService
-            .getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.ENGLISH);
+            .getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.ENGLISH,
+                    null, CHANNEL_CHOICE_DIGITAL, null);
         assertEquals("sols-request-information", response);
 
         String responseWelsh =
-            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.WELSH);
+            templateService.getTemplateId(CASE_STOPPED_REQUEST_INFORMATION, SOLICITOR, CTSC, LanguagePreference.WELSH,
+                    null, CHANNEL_CHOICE_DIGITAL, null);
         assertEquals("sols-request-information-welsh", responseWelsh);
     }
 
@@ -282,19 +325,19 @@ class TemplateServiceIT {
     void shouldGetGrantRaisedTemplateForDigital() {
 
         String response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
-            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_DIGITAL);
+            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_DIGITAL, null);
         assertEquals("pa-grant-raised", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
-            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_DIGITAL);
+            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_DIGITAL, null);
         assertEquals("sol-grant-raised", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
-                LanguagePreference.WELSH, null, CHANNEL_CHOICE_DIGITAL);
+                LanguagePreference.WELSH, null, CHANNEL_CHOICE_DIGITAL, null);
         assertEquals("pa-grant-raised-welsh", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH, null, CHANNEL_CHOICE_DIGITAL);
+                LanguagePreference.WELSH, null, CHANNEL_CHOICE_DIGITAL, null);
         assertEquals("sol-grant-raised-welsh", response);
     }
 
@@ -322,19 +365,19 @@ class TemplateServiceIT {
     void shouldGetGrantRaisedTemplateForPaperForm() {
 
         String response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
-            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_PAPERFORM);
+            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("pa-grant-raised-paper-bulk-scan", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
-            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_PAPERFORM);
+            LanguagePreference.ENGLISH, null, CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("sol-grant-raised-paper-bulk-scan", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, PERSONAL, CTSC,
-                LanguagePreference.WELSH, null, CHANNEL_CHOICE_PAPERFORM);
+                LanguagePreference.WELSH, null, CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("pa-grant-raised-paper-bulk-scan-welsh", response);
 
         response = templateService.getTemplateId(GRANT_RAISED, SOLICITOR, CTSC,
-                LanguagePreference.WELSH, null, CHANNEL_CHOICE_PAPERFORM);
+                LanguagePreference.WELSH, null, CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("sol-grant-raised-paper-bulk-scan-welsh", response);
     }
 
@@ -342,11 +385,11 @@ class TemplateServiceIT {
     void getApplicationReceivedPACaseworkerOrigin() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
-            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER, CHANNEL_CHOICE_PAPERFORM);
+            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER, CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("pa-application-received-cw", response);
 
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
-            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM);
+            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("sol-application-received-cw", response);
     }
 
@@ -354,11 +397,11 @@ class TemplateServiceIT {
     void getApplicationReceivedPACaseworkerOriginPaperFormNo() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
-            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER,null);
+            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER,null, null);
         assertEquals("pa-application-received", response);
 
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
-            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER,null);
+            LanguagePreference.ENGLISH, CaseOrigin.CASEWORKER,null, null);
         assertEquals("sol-application-received", response);
     }
 
@@ -366,11 +409,11 @@ class TemplateServiceIT {
     void getApplicationReceivedPACaseworkerOriginWelsh() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
-            LanguagePreference.WELSH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM);
+            LanguagePreference.WELSH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("pa-application-received-cw-welsh", response);
 
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
-            LanguagePreference.WELSH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM);
+            LanguagePreference.WELSH, CaseOrigin.CASEWORKER,CHANNEL_CHOICE_PAPERFORM, null);
         assertEquals("sol-application-received-cw-welsh", response);
     }
 
@@ -378,12 +421,11 @@ class TemplateServiceIT {
     void getApplicationReceivedPAOtherOrigin() {
 
         String response = templateService.getTemplateId(APPLICATION_RECEIVED, PERSONAL, CTSC,
-            LanguagePreference.ENGLISH, CaseOrigin.CITIZEN,null);
+            LanguagePreference.ENGLISH, CaseOrigin.CITIZEN,null, null);
         assertEquals("pa-application-received", response);
 
         response = templateService.getTemplateId(APPLICATION_RECEIVED, SOLICITOR, CTSC,
-            LanguagePreference.ENGLISH, CaseOrigin.CITIZEN,null);
+            LanguagePreference.ENGLISH, CaseOrigin.CITIZEN,null, null);
         assertEquals("sol-application-received", response);
     }
-
 }

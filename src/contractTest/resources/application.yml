@@ -225,7 +225,8 @@ notifications:
           grantRaisedCtsc: "2b877b12-2fdc-45e9-bf07-60285c377b9b"
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "7888704d-b4fb-409f-9dd9-0869b2e293c0"
+          requestInformation: "c871adf7-c902-4a18-934f-abeb504ab5d9"
+          requestInformationByPost: "8eca356b-ce59-400b-8b43-d470bb1b6be7"
           redeclarationSot: "4bd0e8f1-5cbd-4093-813f-f97dedcd0f5f"
           grantIssuedIntestacy: "cda48ea1-6ee4-4cde-a3e2-0e1f87f9e702"
           caveatWithdrawn: "99b9ba1a-a2a1-4b85-ae83-e1652e9d342b"
@@ -248,7 +249,7 @@ notifications:
           caveatRaised: "5688c5fb-750b-4b78-b74a-07599d84873f"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "2fb640dd-f21e-496c-b8a4-bddbd87b8981"
+          requestInformation: "7567b568-0df4-4b2a-88a0-232693e3fa00"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           caveatWithdrawn: "f2000756-a309-4dc7-b6a6-4953fee4d8e2"
@@ -272,7 +273,8 @@ notifications:
           grantRaisedPaperFormBulkScan: "727981ab-eec0-46c1-a261-9e90ae10cabd"
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
-          requestInformation: "67ddef82-707d-418d-a7a1-4af42b9910c5"
+          requestInformation: "3d9ee152-ffbd-4eee-a781-951e708c9c81"
+          requestInformationByPost: "d51cdb17-3e65-4c0e-ad2e-c228c97d8012"
           redeclarationSot: "253fa4a9-ef84-4b15-a059-0a0359f4ca5b"
           grantIssuedIntestacy: "fc9748a7-6e92-480d-9ee8-fdd4fc45552d"
           caveatWithdrawn: "c63bc430-9868-4f10-924b-408c7ac3cbd8"
@@ -295,7 +297,7 @@ notifications:
           caveatRaised: "93b505ce-d6ba-4706-ab8b-639fa3842b75"
           caveatExtend: "6a8d36f5-75cf-4a4c-9cae-c0b561143c86"
           caveatRaisedSols: "f49df1a3-83de-4348-8e9f-26744aaed5e2"
-          requestInformation: "9a843d4e-103e-4776-be58-7333ee87555b"
+          requestInformation: "98233470-7aa6-4165-bf62-a663dc9f3c53"
           redeclarationSot: "bcd9e4cc-db0c-4810-8172-8bcb2277b775"
           grantIssuedIntestacy: "0ba9fc37-acfc-47ee-b1ca-f630c921f14d"
           caveatWithdrawn: "d8bedc4d-a11e-4f56-bd18-8261fba90e2a"
@@ -519,7 +521,7 @@ case_document_am:
 
 document_management:
   fileupload:
-    extensions: ".pdf .jpeg .bmp .tif .tiff .png .pdf"
+    extensions: ".pdf .jpeg .bmp .tif .tiff .png"
     mimetypes: "image/jpeg application/pdf image/tiff image/png image/bmp"
 
 dormancy:

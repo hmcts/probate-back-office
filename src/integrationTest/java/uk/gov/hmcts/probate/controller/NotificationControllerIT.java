@@ -40,6 +40,7 @@ import uk.gov.hmcts.probate.transformer.CallbackResponseTransformer;
 import uk.gov.hmcts.probate.transformer.CaseDataTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.ccd.client.CoreCaseDataApi;
+import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
 import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
@@ -48,6 +49,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -85,6 +87,7 @@ class NotificationControllerIT {
     private static final String GRANT_DELAYED = "/notify/grant-delayed-scheduled?date=aDate";
     private static final String GRANT_AWAITING_DOCS = "/notify/grant-awaiting-documents-scheduled?date=aDate";
     private static final String START_GRANT_DELAYED_NOTIFICATION_DATE = "/notify/start-grant-delayed-notify-period";
+    private static final String REQUEST_INFO_EMAIL_PREVIEW_URL = "/notify/information-request-email-preview";
     private static final Map<String, Object> EMPTY_MAP = new HashMap();
     private static final Document EMPTY_DOC = Document.builder().documentType(CAVEAT_STOPPED).build();
     @Autowired
@@ -200,13 +203,15 @@ class NotificationControllerIT {
         when(callbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList)))
             .thenReturn(successfulResponse);
-        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>()), any()))
+        when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(new ArrayList<>())))
             .thenReturn(successfulResponse);
+        when(callbackResponseTransformer.addDocumentPreview(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.grantRaised(any(), any(), any())).thenReturn(successfulResponse);
 
         when(informationRequestService.handleInformationRequest(any())).thenReturn(successfulResponse);
+        when(informationRequestService.emailPreview(any())).thenReturn(document);
 
         when(redeclarationNotificationService.handleRedeclarationNotification(any())).thenReturn(successfulResponse);
 
@@ -403,8 +408,8 @@ class NotificationControllerIT {
     @Test
     void caseStoppedWithNoEmailNotificationRequestedShouldReturnBulkPrintError() throws Exception {
         when(bulkPrintService
-            .sendToBulkPrintForGrant(any(CallbackRequest.class), eq(Document.builder().build()), eq(Document
-                .builder().build()))).thenReturn(null);
+            .sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+                    any(Document.class))).thenReturn(null);
         String solicitorPayload = testUtils.getStringFromFile("stopNotificationNoEmailRequested.json");
 
         mockMvc.perform(post(CASE_STOPPED_URL)
@@ -497,12 +502,15 @@ class NotificationControllerIT {
     @Test
     void shouldReturnEmailSolsValidateUnSuccessfulCaseStopped() throws Exception {
         String solicitorPayload = testUtils.getStringFromFile("solicitorPayloadNoEmail.json");
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService
+                .sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+                        any(Document.class))).thenReturn(sendLetterResponse);
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this solicitor. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().string(containsString("data")));
 
     }
 
@@ -518,12 +526,15 @@ class NotificationControllerIT {
     @Test
     void shouldReturnEmailPAValidateUnSuccessfulCaseStopped() throws Exception {
         String personalPayload = testUtils.getStringFromFile("personalPayloadNotificationsNoEmail.json");
+        SendLetterResponse sendLetterResponse = new SendLetterResponse(UUID.randomUUID());
+        when(bulkPrintService
+                .sendToBulkPrintForGrant(any(CallbackRequest.class), any(Document.class),
+                        any(Document.class))).thenReturn(sendLetterResponse);
 
         mockMvc.perform(post(CASE_STOPPED_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this applicant. Add an email address or contact them by post."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andExpect(content().string(containsString("data")));
 
     }
 
@@ -545,6 +556,17 @@ class NotificationControllerIT {
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().string(containsString("data")));
+    }
+
+    @Test
+    void shouldReturnSuccessfulResponseForInformationRequestEmailPreview() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REQUEST_INFO_EMAIL_PREVIEW_URL).content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+                .andExpect(content().string(containsString("data")));
     }
 
     @Test
