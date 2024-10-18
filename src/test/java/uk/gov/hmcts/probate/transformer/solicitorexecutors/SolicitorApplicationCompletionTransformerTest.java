@@ -27,14 +27,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_THESE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
@@ -55,8 +54,6 @@ import static uk.gov.hmcts.probate.util.CommonVariables.YES;
 
 @ExtendWith(SpringExtension.class)
 class SolicitorApplicationCompletionTransformerTest {
-
-    private final CaseData.CaseDataBuilder<?, ?> caseDataBuilder = CaseData.builder();
 
     @Mock
     private CaseDetails caseDetailsMock;
@@ -117,15 +114,14 @@ class SolicitorApplicationCompletionTransformerTest {
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
 
-        caseDataBuilder
+        CaseData caseData = CaseData.builder()
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(YES)
                 .titleAndClearingType(TITLE_AND_CLEARING_TRUST_CORP)
                 .anyOtherApplyingPartnersTrustCorp(YES)
                 .additionalExecutorsTrustCorpList(trustCorpsExecutorList)
-                .solsAdditionalExecutorList(solsAdditionalExecutorList);
-
-        CaseData caseData = caseDataBuilder.build();
+                .solsAdditionalExecutorList(solsAdditionalExecutorList)
+                .build();
 
         SolicitorApplicationCompletionTransformer solJourneyCompletion =
             new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService());
@@ -138,15 +134,14 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
-        caseDataBuilder
+        CaseData caseData = CaseData.builder()
                 .solsSolicitorIsExec(YES)
                 .solsSolicitorIsApplying(NO)
                 .additionalExecutorsTrustCorpList(null)
                 .otherPartnersApplyingAsExecutors(null)
                 .dispenseWithNoticeOtherExecsList(dispenseWithNoticeExecList)
-                .solsAdditionalExecutorList(solsAdditionalExecutorList);
-
-        CaseData caseData = caseDataBuilder.build();
+                .solsAdditionalExecutorList(solsAdditionalExecutorList)
+                .build();
 
         when(caseDetailsMock.getData()).thenReturn(caseData);
         when(executorListMapperServiceMock.mapFromDispenseWithNoticeExecsToNotApplyingExecutors(
@@ -165,18 +160,18 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
-        caseDataBuilder
-            .primaryApplicantForenames(EXEC_FIRST_NAME)
-            .primaryApplicantSurname(EXEC_SURNAME)
-            .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
-            .primaryApplicantAddress(EXEC_ADDRESS)
-            .primaryApplicantIsApplying(YES);
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantForenames(EXEC_FIRST_NAME)
+                .primaryApplicantSurname(EXEC_SURNAME)
+                .primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES)
+                .primaryApplicantAddress(EXEC_ADDRESS)
+                .primaryApplicantIsApplying(YES)
+                .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getData()).thenReturn(caseData);
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
                 caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
-        CaseData caseData = caseDetailsMock.getData();
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         assertEquals(additionalExecutorApplying, caseData.getExecutorsApplyingLegalStatement());
@@ -185,17 +180,17 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
-        caseDataBuilder
+        CaseData caseData = CaseData.builder()
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
-                .solsSolicitorIsExec(YES);
+                .solsSolicitorIsExec(YES)
+                .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getData()).thenReturn(caseData);
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
                 caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
                     ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
-        CaseData caseData = caseDetailsMock.getData();
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
@@ -204,17 +199,17 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
-        caseDataBuilder
-            .primaryApplicantIsApplying(NO)
-            .solsSolicitorIsApplying(NO)
-            .solsSolicitorIsExec(YES);
+        CaseData caseData = CaseData.builder()
+                .primaryApplicantIsApplying(NO)
+                .solsSolicitorIsApplying(NO)
+                .solsSolicitorIsExec(YES)
+                .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getData()).thenReturn(caseData);
         when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
             caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
             ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
-        CaseData caseData = caseDetailsMock.getData();
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
 
         assertEquals(additionalExecutorNotApplying, caseData.getExecutorsNotApplyingLegalStatement());
@@ -228,12 +223,13 @@ class SolicitorApplicationCompletionTransformerTest {
                         .dateCodicilAdded(LocalDate.now().minusDays(1)).build()));
         final List<CollectionMember<String>> formattedDate =
                 Arrays.asList(new CollectionMember<>("Formatted Date"));
-        caseDataBuilder
+
+        CaseData caseData = CaseData.builder()
                 .willHasCodicils(NO)
                 .codicilAddedDateList(codicilDates)
-                .codicilAddedFormattedDateList(formattedDate);
+                .codicilAddedFormattedDateList(formattedDate)
+                .build();
 
-        CaseData caseData = caseDataBuilder.build();
         solicitorApplicationCompletionTransformer.eraseCodicilAddedDateIfWillHasNoCodicils(caseData);
 
         assertNull(caseData.getCodicilAddedDateList());
@@ -243,7 +239,7 @@ class SolicitorApplicationCompletionTransformerTest {
     @Test
     void shouldSetServiceRequest() {
         BigDecimal totalAmount = BigDecimal.valueOf(100000);
-        CaseData caseData = caseDataBuilder.build();
+        CaseData caseData = CaseData.builder().build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
         solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
@@ -253,7 +249,7 @@ class SolicitorApplicationCompletionTransformerTest {
     @Test
     void shouldSetPaymentTakenNotApplicableWhenNoServiceRequest() {
         BigDecimal totalAmount = BigDecimal.ZERO;
-        CaseData caseData = caseDataBuilder.build();
+        CaseData caseData = CaseData.builder().build();
         CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
         solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
