@@ -68,6 +68,7 @@ import java.util.List;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @SuperBuilder
@@ -709,10 +710,16 @@ public class CaseData extends CaseDataParent {
         this.setPrimaryApplicantForenames(null);
         this.setPrimaryApplicantSurname(null);
 
-        this.setPrimaryApplicantHasAlias(null);
+        // This is to be consistent with the behaviour currently exhibited by the service when creating
+        // a case with a non-NoneOfThese TitleAndClearingType.
+        this.setPrimaryApplicantHasAlias(ANSWER_NO);
         this.setPrimaryApplicantAlias(null);
 
-        this.setPrimaryApplicantAddress(null);
+
+        // As above this is to be consistent with the behaviour currently exhibited by the service when
+        // creating a case with a non-NoneOfThese TitleAndClearingType.
+        final SolsAddress nullAddress = SolsAddress.builder().build();
+        this.setPrimaryApplicantAddress(nullAddress);
 
         this.setPrimaryApplicantEmailAddress(null);
         this.setPrimaryApplicantPhoneNumber(null);
