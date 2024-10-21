@@ -247,6 +247,11 @@ class SolicitorApplicationCompletionTransformerTest {
         assertEquals(NOT_APPLICABLE, caseData.getPaymentTaken());
     }
 
+    // given Case
+    // and TitleClearingType is not NoneOfThese
+    // and PrimaryApplicantApplying is true
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is called
     @Test
     void givenCaseWithoutNoneOfTheseTitleClearingTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataCleared() {
         final CaseData caseData = mock(CaseData.class);
@@ -261,6 +266,11 @@ class SolicitorApplicationCompletionTransformerTest {
         verify(caseData, times(1)).clearPrimaryApplicant();
     }
 
+    // given Case
+    // and TitleClearingType is NoneOfThese
+    // and PrimaryApplicantApplying is true
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is not called
     @Test
     void givenCaseWithNoneOfTheseTitleClearingTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataNOTCleared() {
         final CaseData caseData = mock(CaseData.class);
@@ -275,8 +285,13 @@ class SolicitorApplicationCompletionTransformerTest {
         verify(caseData, times(0)).clearPrimaryApplicant();
     }
 
+    // given Case
+    // and TitleClearingType is not NoneOfThese
+    // and PrimaryApplicantApplying is false
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is not called
     @Test
-    void givenCaseWithoutNoneOfTheseTitleClearingTypeANDWithoutPrimaryApplicant_whenChecked_thenPrimaryApplicantDataNOTCleared() {
+    void givenCaseWoutNoneOfTheseTitleClearingTypeANDWoutPrmryApplicant_whenChecked_thenPrmryApplicantDataNOTCleared() {
         final CaseData realCaseData = CaseData.builder().build();
         final CaseData spyCaseData = spy(realCaseData);
         final CaseDetails caseDetails = new CaseDetails(spyCaseData, null, 0L);
