@@ -52,7 +52,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
@@ -1029,12 +1028,12 @@ class BusinessValidationControllerIT {
         when(notificationService.sendEmail(any(State.class), any(CaseDetails.class), any(Optional.class)))
             .thenReturn(document);
         mockMvc.perform(post(REDECE_SOT).content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]")
-                    .value("You can only use this event for digital cases."))
-            .andExpect(jsonPath("$.errors[1]")
-                    .value("Dim ond ar gyfer achosion digidol y gallwch ddefnyddio'r adnodd hwn."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]")
+                        .value("You can only use this event for digital cases."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Dim ond ar gyfer achosion digidol y gallwch ddefnyddio'r adnodd hwn."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

@@ -18,6 +18,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
 import uk.gov.hmcts.probate.insights.AppInsights;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
@@ -33,10 +34,8 @@ import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.BulkPrintService;
 import uk.gov.hmcts.probate.service.DocumentGeneratorService;
-import uk.gov.hmcts.probate.service.DocumentService;
 import uk.gov.hmcts.probate.service.EvidenceUploadService;
 import uk.gov.hmcts.probate.service.IdamApi;
-import uk.gov.hmcts.probate.service.NotificationService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.hmcts.reform.sendletter.api.SendLetterResponse;
@@ -44,7 +43,6 @@ import uk.gov.service.notify.NotificationClientException;
 
 import java.time.LocalDate;
 import java.util.UUID;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.ArgumentMatchers.any;
@@ -52,7 +50,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -278,6 +275,26 @@ class DocumentControllerIT {
         verify(bulkPrintService)
             .optionallySendToBulkPrint(any(CallbackRequest.class), any(Document.class), any(Document.class), eq(true));
     }
+
+    @Test
+    void generateDigitalGrantReissueWithBulkPrintWillLeftAnnexed() throws Exception {
+
+        String solicitorPayload = testUtils.getStringFromFile("payloadWithBulkPrintWillLeftAnnexed.json");
+
+        MvcResult result = mockMvc.perform(post("/document/generate-grant-reissue")
+                        .content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.data.probateDocumentsGenerated[1].value.DocumentType",
+                        is(DIGITAL_GRANT_REISSUE.getTemplateName())))
+                .andReturn();
+
+        verify(bulkPrintService)
+                .optionallySendToBulkPrint(any(CallbackRequest.class),
+                        any(Document.class), any(Document.class), eq(true));
+    }
+
+
 
     @Test
     void generateDigitalGrantIfLocalPrint() throws Exception {
@@ -626,13 +643,13 @@ class DocumentControllerIT {
         String solicitorPayload = testUtils.getStringFromFile("paperForm.json");
 
         mockMvc
-            .perform(post("/document/generate-sot").content(solicitorPayload).contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())
-            .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital "
-                    + "cases."))
-            .andExpect(jsonPath("$.errors[1]").value("Dim ond ar gyfer achosion digidol y "
-                    + "gallwch ddefnyddio'r adnodd hwn."))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+                .perform(post("/document/generate-sot").content(solicitorPayload)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.errors[0]").value("You can only use this event for digital cases."))
+                .andExpect(jsonPath("$.errors[1]").value("Dim ond ar gyfer achosion digidol y "
+                        + "gallwch ddefnyddio'r adnodd hwn."))
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
     @Test

@@ -2,16 +2,16 @@ package uk.gov.hmcts.probate.functional.documents;
 
 import io.restassured.RestAssured;
 import io.restassured.response.Response;
-import net.serenitybdd.junit.spring.integration.SpringIntegrationSerenityRunner;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.IOException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-@RunWith(SpringIntegrationSerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
     // Legal statement fields
@@ -89,7 +89,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() throws IOException {
+    void verifySuccessForGetPdfLegalStatementProbateWithSingleExecutorSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -103,7 +103,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() throws IOException {
+    void verifySuccessForGetPdfLegalStatementProbateWithMultipleExecutorSols() throws IOException {
         final String response = generateSotDocument(MULTIPLE_EXEC_SOLS_PDF_PROBATE_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -117,7 +117,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementIntestacyWithSingleExecutorSols() throws IOException {
+    void verifySuccessForGetPdfLegalStatementIntestacyWithSingleExecutorSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -131,7 +131,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForGetPdfLegalStatementAdmonWillSols() throws IOException {
+    void verifySuccessForGetPdfLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(LEGAL_STATEMENT));
         assertTrue(response.contains(DECLARATION_CIVIL_WORDING));
@@ -143,7 +143,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForFurtherEvidenceAdmonWill() throws IOException {
+    void verifySuccessForFurtherEvidenceAdmonWill() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
@@ -153,7 +153,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForFurtherEvidenceAdmonWillWithWillDateAndCodicils() throws IOException {
+    void verifySuccessForFurtherEvidenceAdmonWillWithWillDateAndCodicils() throws IOException {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_CODICILS_DATES, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
@@ -165,7 +165,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForAdmonWillWithWillAndOneCodicilAdded() throws IOException {
+    void verifySuccessForAdmonWillWithWillAndOneCodicilAdded() throws IOException {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_ONE_CODICILS, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -176,7 +176,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForAdmonWillWithWillAndMultipleCodicilAdded() throws IOException {
+    void verifySuccessForAdmonWillWithWillAndMultipleCodicilAdded() throws IOException {
         final String response = generateSotDocument(ADMON_PAYLOAD_WILL_AND_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -186,7 +186,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForAdmonWillWithWillAndNoCodicil() throws IOException {
+    void verifySuccessForAdmonWillWithWillAndNoCodicil() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(LEGAL_STATEMENT));
@@ -197,14 +197,14 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForFurtherEvidenceIntestacy() throws IOException {
+    void verifySuccessForFurtherEvidenceIntestacy() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(FURTHER_EVIDENCE));
     }
 
     @Test
-    public void verifySuccessForCodicilsIntestacy() throws IOException {
+    void verifySuccessForCodicilsIntestacy() throws IOException {
         final String response = generateSotDocument(CODICILS_SOLS_PDF_INTESTACY_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(DOMICILITY_SENTENCE_NON_UK));
@@ -212,7 +212,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySuccessForFurtherEvidenceTrustCorpProbate() throws IOException {
+    void verifySuccessForFurtherEvidenceTrustCorpProbate() throws IOException {
         final String response = generateSotDocument(TRUST_CORPS_GOP_PAYLOAD, GENERATE_LEGAL_STATEMENT);
 
         assertTrue(response.contains(SIGNED_DATE));
@@ -221,7 +221,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTDomiciledInEnglandAndWales() throws IOException {
+    void verifySoTDomiciledInEnglandAndWales() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Main Applicant of Test, Test, A1 2BC, UK make the following"
             + " statement:The person who diedDe Ceased, of Test, Test, Test, A1 2BC, was born on"
@@ -229,7 +229,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTIndividualExecutorPowerReserved() throws IOException {
+    void verifySoTIndividualExecutorPowerReserved() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor4_name, another executor named in the will,"
@@ -237,7 +237,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTIndividualExecutorRenunciation() throws IOException {
+    void verifySoTIndividualExecutorRenunciation() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("executor3_name, another executor named in the will, "
@@ -246,7 +246,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTExecutorDiedBeforeAndAfterDeceased() throws IOException {
+    void verifySoTExecutorDiedBeforeAndAfterDeceased() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -258,7 +258,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTExecutorLacksMentalCapacity() throws IOException {
+    void verifySoTExecutorLacksMentalCapacity() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -267,7 +267,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTExecutorPowerReservedAndNoticeDispenseGiven() throws IOException {
+    void verifySoTExecutorPowerReservedAndNoticeDispenseGiven() throws IOException {
         final String response = generateSotDocument("solicitorPayloadDispenseNotGiven.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Notice of this application has on the 10th October 2010 "
@@ -276,7 +276,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTExecutorConcurrentApplication() throws IOException {
+    void verifySoTExecutorConcurrentApplication() throws IOException {
         final String response = generateSotDocument("solicitorExecutorsNotApplyingReasons.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("We are concurrently applying for notice of this application"
@@ -285,7 +285,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFirstParagraphPersonWhoDiedForClearingOne() throws IOException {
+    void verifySoTFirstParagraphPersonWhoDiedForClearingOne() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -295,7 +295,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFirstParagraphPersonWhoDiedForClearingTwo() throws IOException {
+    void verifySoTFirstParagraphPersonWhoDiedForClearingTwo() throws IOException {
         final String response = generateSotDocument("solicitorPayloadPartnersInFirm.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -306,7 +306,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifySecondParagraphFirmSuccessionForClearingThree() throws IOException {
+    void verifySecondParagraphFirmSuccessionForClearingThree() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -317,7 +317,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTSecondParagraphFirmSuccessionForClearingFour() throws IOException {
+    void verifySoTSecondParagraphFirmSuccessionForClearingFour() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSolePrin.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor Partner Exec, is the only profit-sharing partner and "
             + "stakeholder in the firm Firmname will, at the date of death of the deceased."));
@@ -325,7 +325,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTThirdParagraphOthersRenouncingInSuccessorClearingNine() throws IOException {
+    void verifySoTThirdParagraphOthersRenouncingInSuccessorClearingNine() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmRenounce.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -337,7 +337,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTThirdParagraphOthersRenouncingInPartnerFirmClearingTen() throws IOException {
+    void verifySoTThirdParagraphOthersRenouncingInPartnerFirmClearingTen() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmRenounce.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -349,7 +349,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() throws IOException {
+    void verifySoTFourthParagraphAllSuccessorPartnersRenouncingClearingFive() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmAllRenounceNoAdditional.json",
             GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
@@ -358,7 +358,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() throws IOException {
+    void verifySoTFourthParagraphAllPartnerFirmsRenouncingClearingSix() throws IOException {
         final String response = generateSotDocument("solicitorPayloadPartnersAllRenounce.json",
             GENERATE_LEGAL_STATEMENT);
         // all partners are renouncing, so other partners in the collection are ignored, and wording is
@@ -367,7 +367,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFifthParagraphSeniorJudgeDistrictClearingSeven() throws IOException {
+    void verifySoTFifthParagraphSeniorJudgeDistrictClearingSeven() throws IOException {
         final String response = generateSotDocument("solicitorPayloadJudgeSeniorDistrict.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -380,7 +380,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFifthParagraphLodgedApplicationClearingEight() throws IOException {
+    void verifySoTFifthParagraphLodgedApplicationClearingEight() throws IOException {
         final String response = generateSotDocument("solicitorPayloadLodgeApp.json", GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, certified copy"
             + " of which is lodged with this application, in which Exfn1 Exln1 identified by the position"
@@ -391,7 +391,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifySoTFirstParagraphClearancePartnerSucceeded() throws IOException {
+    void verifySoTFirstParagraphClearancePartnerSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmLegalStatement.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -402,7 +402,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTSecondParagraphSoleSucceeded() throws IOException {
+    void verifySoTSecondParagraphSoleSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSoleSuccessorLegalStatement.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -413,7 +413,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTThirdParagraphPartnerRenounceSucceeded() throws IOException {
+    void verifySoTThirdParagraphPartnerRenounceSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmRenounce.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains(
@@ -424,14 +424,14 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTFourthParagraphPartnerAllRenounceSucceeded() throws IOException {
+    void verifySoTFourthParagraphPartnerAllRenounceSucceeded() throws IOException {
         final String response = generateSotDocument("solicitorPayloadSuccessorFirmAllRenounce.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Probate Practioner, an executor named in the will, is applying for probate."));
     }
 
     @Test
-    public void verifySoTFifthParagraphJudgeSeniorDistrict() throws IOException {
+    void verifySoTFifthParagraphJudgeSeniorDistrict() throws IOException {
         final String response = generateSotDocument("solicitorPayloadJudgeSeniorDistrict.json",
             GENERATE_LEGAL_STATEMENT);
 
@@ -450,7 +450,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTSixthParagraphTrustCorpResolutionLodged() throws IOException {
+    void verifySoTSixthParagraphTrustCorpResolutionLodged() throws IOException {
         final String response = generateSotDocument("verifySolPayloadTrustCorpResolutionLodged.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("The executor named in the will has by a resolution, "
@@ -461,7 +461,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTNoDuplicateSolExecutors() throws IOException {
+    void verifySoTNoDuplicateSolExecutors() throws IOException {
         final String response = generateSotDocument(NO_DUPE_SOL_EXECUTORS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("The executor believes that all the information stated in the legal statement is true."));
@@ -471,7 +471,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTAliasNameForExec() throws IOException {
+    void verifySoTAliasNameForExec() throws IOException {
         final String response = generateSotDocument(EXEC_WITH_ALIAS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("Carlos Juan otherwise known as Karakiozis of"));
     }
@@ -491,7 +491,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTPartSuccAllRenouncingWording() throws IOException {
+    void verifySoTPartSuccAllRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_SUCC_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("I am the executor named in the will. The profit-sharing partners and stakeholders in the firm"
@@ -500,7 +500,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTPartOthersRenouncingWording() throws IOException {
+    void verifySoTPartOthersRenouncingWording() throws IOException {
         final String response = generateSotDocument(PART_ALL_OTHERS_RENOUNCING, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("The executor Partner Exec, is a profit-sharing partner and stakeholder in the firm "
@@ -508,7 +508,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTSolPartnersWording() throws IOException {
+    void verifySoTSolPartnersWording() throws IOException {
         final String response = generateSotDocument(SOLE_PRIN_OTHER_PARTNERS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("The executors Probate Practitioner, Partner Exec, are the profit-sharing partners and "
@@ -516,7 +516,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTSolPartnersWordingSingleExec() throws IOException {
+    void verifySoTSolPartnersWordingSingleExec() throws IOException {
         final String response = generateSotDocument(SOLE_PRIN_OTHER_PARTNERS_SINGLE, GENERATE_LEGAL_STATEMENT);
         assertTrue(response
             .contains("The executor Partner Exec, is the only profit-sharing partner and "
@@ -524,7 +524,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifySoTSolNotRepeated() throws IOException {
+    void verifySoTSolNotRepeated() throws IOException {
         final String response = generateSotDocument(SOL_NOT_REPEATED, GENERATE_LEGAL_STATEMENT);
         assertFalse(response
             .contains("Jim Smith (executor)"));
@@ -543,7 +543,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyDefaultEvidenceToYesFromNo() throws IOException {
+    void verifyDefaultEvidenceToYesFromNo() throws IOException {
         Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
@@ -553,7 +553,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyDefaultEvidenceToYesFromYes() throws IOException {
+    void verifyDefaultEvidenceToYesFromYes() throws IOException {
         Response jsonResponse = RestAssured.given()
             .relaxedHTTPSValidation()
             .headers(utils.getHeadersWithUserId())
@@ -564,7 +564,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
 
 
     @Test
-    public void verifyWillAccessNoLegalStatementAdmonWillSols() throws IOException {
+    void verifyWillAccessNoLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument("solicitorPDFPayloadAdmonWillNoAccess.json",
             GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("I authorise Firm Name to send on my behalf what I believe to be the true"
@@ -572,7 +572,7 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyWillAccessYesLegalStatementAdmonWillSols() throws IOException {
+    void verifyWillAccessYesLegalStatementAdmonWillSols() throws IOException {
         final String response = generateSotDocument(DEFAULT_SOLS_PDF_ADMON_PAYLOAD, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("I authorise Firm Name to send on my behalf what "
             + "I believe to be the true and original last will and"
@@ -580,42 +580,42 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     }
 
     @Test
-    public void verifyGOPLegalStatementMultipleCodicils() throws IOException {
+    void verifyGOPLegalStatementMultipleCodicils() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will and codicils) of"));
     }
 
     @Test
-    public void verifyGOPLegalStatementSingleCodicil() throws IOException {
+    void verifyGOPLegalStatementSingleCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_SINGLE_CODICIL, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will and codicil) of"));
     }
 
     @Test
-    public void verifyGOPLegalStatementNoCodicil() throws IOException {
+    void verifyGOPLegalStatementNoCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will) of"));
     }
 
     @Test
-    public void verifyTrustCorpGOPLegalStatementMultipleCodicils() throws IOException {
+    void verifyTrustCorpGOPLegalStatementMultipleCodicils() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_MULTIPLE_CODICILS, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will and codicils) of"));
     }
 
     @Test
-    public void verifyTrustCorpGOPLegalStatementSingleCodicil() throws IOException {
+    void verifyTrustCorpGOPLegalStatementSingleCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_SINGLE_CODICIL, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will and codicil) of"));
     }
 
     @Test
-    public void verifyTrustCorpGOPLegalStatementNoCodicil() throws IOException {
+    void verifyTrustCorpGOPLegalStatementNoCodicil() throws IOException {
         final String response = generateSotDocument(GOP_PAYLOAD_TRUSTCORP_NO_CODICIL, GENERATE_LEGAL_STATEMENT);
         assertTrue(response.contains("which was settled previously to the death "
                 + "(and not by the will) of"));
@@ -628,6 +628,4 @@ public class LegalStatementGenerationTests extends DocumentGenerationTestBase {
     private String generateSotDocumentFromPayload(String payload, String path) {
         return generateDocumentFromPayload(payload, path, SOT_DOC_NAME);
     }
-
-
 }

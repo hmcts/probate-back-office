@@ -28,10 +28,8 @@ import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.transformer.ServiceRequestTransformer;
 import uk.gov.hmcts.probate.util.TestUtils;
 import uk.gov.service.notify.NotificationClientException;
-
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
@@ -215,10 +213,8 @@ class CaveatControllerIT {
         LocalDate futureDoD = LocalDate.now().plusDays(1);
         caveatPayload = caveatPayload.replace("2017-12-31", caveatDateFormatter.format(futureDoD));
 
-        mockMvc.perform(post("/caveat/raise-caveat-validate")
-                        .content(caveatPayload)
-                        .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
+        mockMvc.perform(post("/caveat/raise-caveat-validate").content(caveatPayload)
+                        .contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Date of death cannot be in the future"));
     }

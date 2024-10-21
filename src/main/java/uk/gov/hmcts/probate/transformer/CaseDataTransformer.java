@@ -130,6 +130,9 @@ public class CaseDataTransformer {
                 }
             } else if (NO.equals(caseData.getIhtFormEstateValuesCompleted())) {
                 resetIhtFormAndHmrcLetter(caseData);
+            } else if (caseData.getIhtFormEstate() != null && !caseData.getIhtFormEstate().equals("NA")
+                    && YES.equals(caseData.getIhtFormEstateValuesCompleted())) {
+                resetExceptedEstateFields(caseData);
             }
         } else {
             resetIhtFormEstateCompleted(caseData);

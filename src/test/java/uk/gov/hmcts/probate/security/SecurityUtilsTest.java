@@ -18,8 +18,9 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collections;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -269,4 +270,12 @@ class SecurityUtilsTest {
         assertEquals(Boolean.FALSE, securityUtils.checkIfServiceIsAllowed("TestService"));
     }
 
+    @Test
+    void shouldGetUserRole() {
+        UserInfo userInfo = UserInfo.builder().roles(List.of("caseworker-probate")).build();
+        when(idamApi.retrieveUserInfo("AuthToken")).thenReturn(userInfo);
+        List<String> roles = securityUtils.getRoles("AuthToken");
+
+        assertEquals(List.of("caseworker-probate"), roles);
+    }
 }

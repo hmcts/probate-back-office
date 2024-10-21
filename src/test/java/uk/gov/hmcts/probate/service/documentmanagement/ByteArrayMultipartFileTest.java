@@ -1,17 +1,18 @@
 package uk.gov.hmcts.probate.service.documentmanagement;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class ByteArrayMultipartFileTest {
+class ByteArrayMultipartFileTest {
 
     @Test
-    public void shouldGetAllAttributes() {
+    void shouldGetAllAttributes() {
         MediaType contentType = MediaType.APPLICATION_JSON;
         byte[] bytes = "SomeString".getBytes(StandardCharsets.UTF_8);
         ByteArrayMultipartFile byteArrayMultipartFile = ByteArrayMultipartFile.builder()
@@ -30,7 +31,7 @@ public class ByteArrayMultipartFileTest {
         assertEquals(true, byteArrayMultipartFile.getInputStream() != null);
     }
 
-    @Test(expected = UnsupportedOperationException.class)
+    @Test
     public void shotNotTransfer() throws IllegalStateException {
         MediaType contentType = MediaType.APPLICATION_JSON;
         byte[] bytes = "SomeString".getBytes(StandardCharsets.UTF_8);
@@ -39,11 +40,13 @@ public class ByteArrayMultipartFileTest {
             .contentType(contentType)
             .name("name")
             .build();
-        byteArrayMultipartFile.transferTo(new File(""));
+        assertThrows(UnsupportedOperationException.class, () -> {
+            byteArrayMultipartFile.transferTo(new File(""));
+        });
     }
 
     @Test
-    public void shouldEqual() throws IllegalStateException {
+    void shouldEqual() throws IllegalStateException {
         MediaType contentType = MediaType.APPLICATION_JSON;
         byte[] bytes = "SomeString".getBytes(StandardCharsets.UTF_8);
         ByteArrayMultipartFile byteArrayMultipartFile1 = ByteArrayMultipartFile.builder()

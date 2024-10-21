@@ -16,7 +16,7 @@ import uk.gov.hmcts.reform.probate.model.idam.TokenRequest;
 import uk.gov.hmcts.reform.probate.model.idam.TokenResponse;
 import uk.gov.hmcts.reform.probate.model.idam.UserInfo;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
@@ -242,5 +242,10 @@ public class SecurityUtils {
         UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
         String result = Objects.requireNonNull(userInfo.getSub());
         return result.toLowerCase();
+    }
+
+    public List<String> getRoles(String authToken) {
+        UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
+        return userInfo.getRoles();
     }
 }
