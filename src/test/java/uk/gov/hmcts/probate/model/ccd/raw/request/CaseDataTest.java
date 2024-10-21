@@ -32,6 +32,7 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.transformer.CallbackResponseTransformer.ANSWER_NO;
 
 class CaseDataTest {
 
@@ -964,7 +965,11 @@ class CaseDataTest {
 
     @Test
     void clearPrimaryApplicantClearsPrimaryApplicant() {
-        final CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
+        final SolsAddress nullAddress = SolsAddress.builder().build();
+
+        final CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder()
+                .primaryApplicantHasAlias(ANSWER_NO)
+                .primaryApplicantAddress(nullAddress);
 
         final CaseData baseCaseData = caseDataBuilder.build();
 
