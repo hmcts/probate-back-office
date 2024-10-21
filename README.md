@@ -376,7 +376,7 @@ Checkout the probate-conf branch and build the docker image
    git checkout probate-conf
    docker build . -t ccd-logstash:probate
 ```   
- In probate-back-office/compose/elasticsearch.yml replace
+ In probate-back-office/compose/elasticsearch.yml  replace
    image: hmcts/ccd-logstash:latest with image: "ccd-logstash:probate"
    
 ##### 5) Start up docker 
