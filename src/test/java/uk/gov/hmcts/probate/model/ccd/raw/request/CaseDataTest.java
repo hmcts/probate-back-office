@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -92,10 +93,12 @@ class CaseDataTest {
 
     private CaseData underTest;
 
+    private AutoCloseable closeableMocks;
+
     @BeforeEach
     public void setup() {
 
-        openMocks(this);
+        closeableMocks = openMocks(this);
 
         when(additionalExecutors1Mock.getValue()).thenReturn(additionalExecutor1Mock);
         when(additionalExecutors2Mock.getValue()).thenReturn(additionalExecutor2Mock);
@@ -134,6 +137,11 @@ class CaseDataTest {
             .solsAdditionalExecutorList(additionalExecutorsList)
             .otherExecutorExists(YES)
             .build();
+    }
+
+    @AfterEach
+    void tearDown() throws Exception {
+        closeableMocks.close();
     }
 
     @Test
@@ -952,5 +960,38 @@ class CaseDataTest {
         assertEquals("9/2021", caseData.getCodicilsDamageDate());
 
         assertEquals("Yes", caseData.getDeceasedWrittenWishes());
+    }
+
+    @Test
+    void clearPrimaryApplicantClearsPrimaryApplicant() {
+        final CaseData.CaseDataBuilder caseDataBuilder = CaseData.builder();
+
+        final CaseData baseCaseData = caseDataBuilder.build();
+
+        final SolsAddress applAddress = SolsAddress.builder()
+                .addressLine1("addr1")
+                .addressLine2("addr2")
+                .addressLine3("addr3")
+                .country("country")
+                .county("county")
+                .postCode("postcode")
+                .postTown("town")
+                .build();
+
+        final CaseData applCaseData =  caseDataBuilder
+                .primaryApplicantIsApplying("yes")
+                .primaryApplicantHasAlias("yes")
+                .primaryApplicantForenames("fname")
+                .primaryApplicantSurname("sname")
+                .primaryApplicantHasAlias("yes")
+                .primaryApplicantAlias("alias")
+                .primaryApplicantEmailAddress("email")
+                .primaryApplicantPhoneNumber("phone")
+                .primaryApplicantAddress(applAddress)
+                .build();
+
+        applCaseData.clearPrimaryApplicant();
+
+        assertEquals(baseCaseData, applCaseData);
     }
 }
