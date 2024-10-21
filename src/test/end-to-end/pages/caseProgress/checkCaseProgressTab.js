@@ -13,31 +13,31 @@ module.exports = async function (opts) {
     await I.wait(3);
     const texts = await I.grabTextFromAll('markdown  p.govuk-body-s');
     await I.wait(3);
-    assert (texts.length === 19);
+    assert (texts.length === 37);
     assert (texts[0] === 'These steps are to be completed by the Probate practitioner.');
-    assert (texts[1] === 'Add Probate practitioner details');
-    assert (texts[2] === 'Add deceased details');
-    assert (texts[3] === 'Add application details');
-    assert (texts[4] === 'These steps are to be completed by the Probate practitioner.');
-    assert (texts[5] === 'Review and sign legal statement and submit application');
-    assert (texts[6] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
-    assert (texts[7] === 'Make payment');
+    assert (texts[3] === 'Add Probate practitioner details');
+    assert (texts[5] === 'Add deceased details');
+    assert (texts[7] === 'Add application details');
+    assert (texts[9] === 'These steps are to be completed by the Probate practitioner.');
+    assert (texts[11] === 'Review and sign legal statement and submit application');
+    assert (texts[12] === 'The legal statement is generated. You can review, change any details, then sign and submit your application.');
+    assert (texts[15] === 'Make payment');
     await I.wait(3);
-    if (texts[8] === '') {
-        assert (texts[8] === '');
+    if (texts[17] === '') {
+        assert (texts[17] === '');
     } else {
-        assert (texts[8] === 'Once payment is made, you\'ll need to refresh the page or re-enter the case for the payment status to update.');
+        assert (texts[17] === 'Once payment is made, you\'ll need to refresh the page or re-enter the case for the payment status to update.');
     }
-    assert (texts[9] === 'Send documents\n');
-    assert (texts[10] === 'These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.');
-    assert (texts[11] === 'Authenticate documents');
-    assert (texts[12] === 'We will authenticate your documents and match them with your application.');
-    assert (texts[13] === 'Examine application');
-    assert (texts[14] === 'We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.');
-    assert (texts[15] === 'Your application will update through any of these case states as it is reviewed by our team:');
-    assert (texts[16] === 'This step is completed by HM Courts and Tribunals Service staff.');
-    assert (texts[17] === 'Issue grant of representation');
-    assert (texts[18] === 'The grant will be delivered in the post a few days after issuing.');
+    assert (texts[19] === 'Send documents\n');
+    assert (texts[20] === 'These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.');
+    assert (texts[22] === 'Authenticate documents');
+    assert (texts[23] === 'We will authenticate your documents and match them with your application.');
+    assert (texts[26] === 'Examine application');
+    assert (texts[27] === 'We review your application for incomplete information or problems and validate it against other cases or caveats. After the review we prepare the grant.');
+    assert (texts[28] === 'Your application will update through any of these case states as it is reviewed by our team:');
+    assert (texts[32] === 'This step is completed by HM Courts and Tribunals Service staff.');
+    assert (texts[34] === 'Issue grant of representation');
+    assert (texts[35] === 'The grant will be delivered in the post a few days after issuing.');
 
     if (opts.linkText && opts.linkUrl) {
         await I.seeNumberOfVisibleElements('p.govuk-body-s a', 1);
