@@ -157,7 +157,6 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantApplying() {
-        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
         final CaseData caseData = CaseData.builder()
                 .primaryApplicantForenames(EXEC_FIRST_NAME)
                 .primaryApplicantSurname(EXEC_SURNAME)
@@ -166,9 +165,9 @@ class SolicitorApplicationCompletionTransformerTest {
                 .primaryApplicantIsApplying(YES)
                 .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-        when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
+
+        when(executorListMapperServiceMock.mapFromPrimaryApplicantToApplyingExecutor(caseData))
+                .thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_APPLYING));
 
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -178,17 +177,14 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo_PrimaryApplicantNotApplying() {
-        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
         final CaseData caseData = CaseData.builder()
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorIsExec(YES)
                 .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-        when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
-                caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
-                    ADDITIONAL_EXECUTOR_NOT_APPLYING));
+        when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(caseData))
+                .thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
 
@@ -198,17 +194,15 @@ class SolicitorApplicationCompletionTransformerTest {
 
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfoYesNo() {
-        final CaseDetails caseDetailsMock = mock(CaseDetails.class);
         final CaseData caseData = CaseData.builder()
                 .primaryApplicantIsApplying(NO)
                 .solsSolicitorIsApplying(NO)
                 .solsSolicitorIsExec(YES)
                 .build();
 
-        when(caseDetailsMock.getData()).thenReturn(caseData);
-        when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(
-            caseDetailsMock.getData())).thenReturn(new CollectionMember<>(EXEC_ID,
-            ADDITIONAL_EXECUTOR_NOT_APPLYING));
+
+        when(executorListMapperServiceMock.mapFromPrimaryApplicantToNotApplyingExecutor(caseData))
+                .thenReturn(new CollectionMember<>(EXEC_ID, ADDITIONAL_EXECUTOR_NOT_APPLYING));
 
         solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnAppDetailsComplete(caseData);
 
