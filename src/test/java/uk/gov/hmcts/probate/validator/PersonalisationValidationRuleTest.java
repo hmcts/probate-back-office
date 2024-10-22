@@ -69,7 +69,8 @@ class PersonalisationValidationRuleTest {
         personalisation.put("hrule", "---");
         personalisation.put("hrule_alt", "***");
 
-        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
+        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields();
 
         final Function<String, Executable> assertNotContains = name -> {
             return () -> assertFalse(result.contains(name), "result should not contain " + name);
@@ -113,7 +114,8 @@ class PersonalisationValidationRuleTest {
         personalisation.put("single_image", "Some text ![example](http://example.com/img.png)");
         personalisation.put("image_with_ref", "Some text ![link][1]\n\nMore text\n\n[1]: http://example.com/img.png");
 
-        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
+        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields();
 
         final Function<String, Executable> assertContains = name -> {
             return () -> assertTrue(result.contains(name), "result did not contain " + name);
@@ -137,7 +139,7 @@ class PersonalisationValidationRuleTest {
         when(markdownValidatorService.getNontextVisitor(key)).thenReturn(visitorMock);
         when(visitorMock.isInvalid()).thenReturn(true);
 
-        final var result = personalisationValidationRule.validatePersonalisation(personalisation);
+        final var result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
 
         final List<Executable> assertions = List.of(
                 () -> verify(markdownValidatorService).getNontextVisitor(any()),
@@ -157,7 +159,7 @@ class PersonalisationValidationRuleTest {
         when(markdownValidatorService.getNontextVisitor(key)).thenReturn(visitorMock);
         when(visitorMock.isInvalid()).thenReturn(false);
 
-        final var result = personalisationValidationRule.validatePersonalisation(personalisation);
+        final var result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
 
         final List<Executable> assertions = List.of(
                 () -> verify(markdownValidatorService).getNontextVisitor(any()),
@@ -193,7 +195,7 @@ class PersonalisationValidationRuleTest {
         personalisation.put("field1", "Some text");
         personalisation.put("field2", "Another  text");
 
-        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
+        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
 
         assertTrue(result.isEmpty());
     }
@@ -203,7 +205,7 @@ class PersonalisationValidationRuleTest {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", null);
 
-        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation);
+        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
 
         assertTrue(result.isEmpty());
     }
