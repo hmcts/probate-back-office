@@ -21,7 +21,9 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String MUST_ANSWER_UNUSED_ALLOWANCE = "answerUnusedAllowanceClaimed";
+    private static final String MUST_ANSWER_UNUSED_ALLOWANCE_WELSH = "answerUnusedAllowanceClaimedWelsh";
     private static final String IHT_ESTATE_VALUE_NEEDS_TAX = "ihtEstateValueNeedsTax";
+    private static final String IHT_ESTATE_VALUE_NEEDS_TAX_WELSH = "ihtEstateValueNeedsTaxWelsh";
     public static final double NQV_LOWER = 32500000;
     public static final double NQV_UPPER = 65000000;
 
@@ -40,8 +42,11 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
             if (nqvBetweenValues && unusedClaimedNotSet && deceasedHadLateSpouseOrCivilPartner) {
                 String userMessage = businessValidationMessageRetriever.getMessage(MUST_ANSWER_UNUSED_ALLOWANCE, null,
                     Locale.UK);
+                String userMessageWelsh = businessValidationMessageRetriever
+                        .getMessage(MUST_ANSWER_UNUSED_ALLOWANCE_WELSH, null, Locale.UK);
                 throw new BusinessValidationException(userMessage,
-                    "User must answer iht estate unused allowance question for case:" + caseDetails.getId());
+                    "User must answer iht estate unused allowance question for case:" + caseDetails.getId(),
+                        userMessageWelsh);
             }
             boolean nqvLarger = nqv.doubleValue() > NQV_UPPER;
             boolean deceasedNOTHaveLateSpouseOrCivilPartner =
@@ -49,8 +54,10 @@ public class IhtEstateValidationRule implements CaseDetailsValidationRule {
             if (nqvLarger && (deceasedHadLateSpouseOrCivilPartner || deceasedNOTHaveLateSpouseOrCivilPartner)) {
                 String userMessage = businessValidationMessageRetriever.getMessage(IHT_ESTATE_VALUE_NEEDS_TAX, null,
                     Locale.UK);
+                String userMessageWelsh = businessValidationMessageRetriever
+                        .getMessage(IHT_ESTATE_VALUE_NEEDS_TAX_WELSH, null, Locale.UK);
                 throw new BusinessValidationException(userMessage,
-                    "The estate does not qualify as excepted for case:" + caseDetails.getId());
+                    "The estate does not qualify as excepted for case:" + caseDetails.getId(), userMessageWelsh);
             }
         }
     }

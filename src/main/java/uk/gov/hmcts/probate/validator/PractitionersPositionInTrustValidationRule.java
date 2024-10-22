@@ -19,6 +19,7 @@ public class PractitionersPositionInTrustValidationRule implements TitleAndClear
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String POS_TRUST_NEEDED = "practitionerPosTrustNeeded";
+    private static final String POS_TRUST_NEEDED_WELSH = "practitionerPosTrustNeededWelsh";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -32,10 +33,13 @@ public class PractitionersPositionInTrustValidationRule implements TitleAndClear
             && getTrustCorpTitleClearingTypes().contains(caseData.getTitleAndClearingType())) {
 
             final String userMessage = businessValidationMessageRetriever.getMessage(POS_TRUST_NEEDED, null, Locale.UK);
+            final String userMessageWelsh = businessValidationMessageRetriever.getMessage(POS_TRUST_NEEDED_WELSH, null,
+                    Locale.UK);
 
             throw new BusinessValidationException(userMessage,
                     "Position in Trust must be specified for question probatePractitionersPositionInTrust for case id "
-                            + caseDetails.getId() + " if practitioner is not named in the will and is applying.");
+                            + caseDetails.getId() + " if practitioner is not named in the will and is applying.",
+                    userMessageWelsh);
         }
     }
 }

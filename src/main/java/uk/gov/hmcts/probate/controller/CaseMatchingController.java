@@ -227,6 +227,8 @@ public class CaseMatchingController {
         List<FieldErrorResponse> errors = new ArrayList<>();
         if (!legacyImportService.areLegacyRowsValidToImport(caseMatches)) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "onlySingleImportAllowed"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "onlySingleImportAllowedWelsh"));
         }
 
         return errors;
