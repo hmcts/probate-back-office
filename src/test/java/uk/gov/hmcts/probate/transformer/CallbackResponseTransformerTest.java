@@ -2615,6 +2615,16 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldTransformSuperUserMakeCaseDormant() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.superUserMakeCaseDormant(callbackRequestMock);
+        assertNotNull(callbackResponse.getData().getMoveToDormantDateTime());
+    }
+
+    @Test
     void shouldTransformDOB() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .deceasedDob("1889-03-31");;

@@ -1052,4 +1052,16 @@ class BusinessValidationUnitTest {
                 .transformCase(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
+
+    @Test
+    void shouldTransformSuperUserMakeCaseForDormant() {
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(bindingResultMock.hasErrors()).thenReturn(false);
+        when(caseDetailsMock.getData()).thenReturn(caseDataMock);
+        ResponseEntity<CallbackResponse> response =
+                underTest.superUserMakeDormantCase(callbackRequestMock, httpServletRequest);
+        verify(callbackResponseTransformerMock, times(1))
+                .superUserMakeCaseDormant(callbackRequestMock);
+        assertThat(response.getStatusCode(), is(HttpStatus.OK));
+    }
 }

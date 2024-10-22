@@ -142,7 +142,8 @@ public class CallbackResponseTransformer {
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
 
-    public static final DateTimeFormatter DORMANT_DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    public static final DateTimeFormatter DORMANT_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
 
