@@ -36,17 +36,21 @@ class DeceasedAddressValidationRuleTest {
     private SolsAddress addressMock;
 
     private FieldErrorResponse executorAddressIsNullError;
+    private FieldErrorResponse executorAddressIsNullError2;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         executorAddressIsNullError = FieldErrorResponse.builder().message("deceasedAddressIsNull").build();
+        executorAddressIsNullError2 = FieldErrorResponse.builder().message("deceasedAddressIsNullWelsh").build();
 
         when(ccdData.getDeceased()).thenReturn(deceasedMock);
 
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("deceasedAddressIsNull")))
                 .thenReturn(executorAddressIsNullError);
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("deceasedAddressIsNullWelsh")))
+                .thenReturn(executorAddressIsNullError2);
 
     }
 
@@ -56,7 +60,7 @@ class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorAddressIsNullError));
     }
 
@@ -67,8 +71,8 @@ class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
-        assertTrue(errors.contains(executorAddressIsNullError));
+        assertEquals(2, errors.size());
+        assertTrue(errors.contains(executorAddressIsNullError2));
     }
 
     @Test
@@ -76,7 +80,7 @@ class DeceasedAddressValidationRuleTest {
         when(deceasedMock.getAddress()).thenReturn(null);
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorAddressIsNullError));
     }
 
@@ -88,7 +92,7 @@ class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorAddressIsNullError));
     }
 
@@ -100,7 +104,7 @@ class DeceasedAddressValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorAddressIsNullError));
     }
 

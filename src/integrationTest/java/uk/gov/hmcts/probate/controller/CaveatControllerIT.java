@@ -184,7 +184,11 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                .value("There is no email address for this caveator. Add an email address or contact them "
+                        + "by post."))
+            .andExpect(jsonPath("$.errors[1]")
+                .value("Nid oes cyfeiriad e-bost ar gyfer yr cafeatydd hwn. Ychwanegwch gyfeiriad e-bost "
+                                + "neu cysylltwch â nhw drwy'r post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -226,6 +230,9 @@ class CaveatControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Bulk Print is currently unavailable please contact support desk."))
+            .andExpect(jsonPath("$.errors[1]")
+                        .value("Nid yw Argraffu Swmp ar gael ar hyn o bryd, cysylltwch â'r ddesg "
+                                + "gymorth."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -251,7 +258,11 @@ class CaveatControllerIT {
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
-                .value("There is no email address for this caveator. Add an email address or contact them by post."))
+                    .value("There is no email address for this caveator. Add an email address or contact them "
+                        + "by post."))
+            .andExpect(jsonPath("$.errors[1]")
+                    .value("Nid oes cyfeiriad e-bost ar gyfer yr cafeatydd hwn. Ychwanegwch gyfeiriad e-bost "
+                                + "neu cysylltwch â nhw drwy'r post."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -297,6 +308,8 @@ class CaveatControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Cannot extend an already expired caveat."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Ni ellir ymestyn cafeat sydd eisoes wedi dod i ben."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -314,6 +327,8 @@ class CaveatControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Cannot extend a caveat that is more than 1 month from expiry."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Ni ellir ymestyn cafeat sy'n fwy na 1 mis o?r dyddiad dod i ben."))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
