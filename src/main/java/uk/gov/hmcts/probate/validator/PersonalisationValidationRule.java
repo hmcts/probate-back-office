@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.validator;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.commonmark.node.Node;
 import org.commonmark.parser.Parser;
 import org.springframework.stereotype.Component;
@@ -14,13 +15,14 @@ import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class PersonalisationValidationRule {
 
     private final Parser markdownParser;
 
     private final MarkdownValidatorService markdownValidatorService;
 
-    public <T> PersonalisationValidationResult validatePersonalisation(final Map<String, T> personalisation) {
+    public PersonalisationValidationResult validatePersonalisation(final Map<String, ?> personalisation) {
         final Map<String, String> invalidFields = new HashMap<>();
         final List<String> htmlFields = new ArrayList<>();
         for (final var entry : personalisation.entrySet()) {

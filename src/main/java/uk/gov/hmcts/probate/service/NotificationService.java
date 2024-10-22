@@ -3,7 +3,6 @@ package uk.gov.hmcts.probate.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.config.notifications.EmailAddresses;
@@ -38,7 +37,6 @@ import uk.gov.hmcts.probate.service.notification.TemplateService;
 import uk.gov.hmcts.probate.service.template.pdf.PDFManagementService;
 import uk.gov.hmcts.probate.validator.EmailAddressNotifyValidationRule;
 import uk.gov.hmcts.probate.validator.PersonalisationValidationRule;
-import uk.gov.hmcts.probate.validator.PersonalisationValidationRule.PersonalisationValidationResult;
 import uk.gov.hmcts.reform.authorisation.generators.AuthTokenGenerator;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.service.notify.NotificationClient;
@@ -53,7 +51,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
@@ -74,7 +71,6 @@ public class NotificationService {
     private static final String INVALID_PERSONALISATION_ERROR_MESSAGE =
             "Markdown Link detected in case data, stop sending notification email.";
 
-    @Autowired
     private final EmailAddresses emailAddresses;
     private final NotificationTemplates notificationTemplates;
     private final RegistriesProperties registriesProperties;
@@ -92,8 +88,8 @@ public class NotificationService {
     private final NotificationClientService notificationClientService;
     private final DocumentManagementService documentManagementService;
     private final PersonalisationValidationRule personalisationValidationRule;
-    @Autowired
-    private BusinessValidationMessageService businessValidationMessageService;
+    private final BusinessValidationMessageService businessValidationMessageService;
+
     @Value("${notifications.grantDelayedNotificationPeriodDays}")
     private Long grantDelayedNotificationPeriodDays;
     @Value("${notifications.grantAwaitingDocumentationNotificationPeriodDays}")
@@ -144,19 +140,7 @@ public class NotificationService {
         String emailAddress = getEmail(caseData);
         String reference = caseData.getSolsSolicitorAppReference();
 
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Map<String, String> invalidFields = validationResult.invalidFields();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for case: {} fields: {}",
-                    caseDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         log.info("Personlisation complete now get the email repsonse");
         SendEmailResponse response =
@@ -183,20 +167,7 @@ public class NotificationService {
 
         personalisation.replace(PERSONALISATION_APPLICANT_NAME, executor.getName());
 
-
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Map<String, String> invalidFields = validationResult.invalidFields();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for case: {} fields: {}",
-                    caseDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, emailAddress, personalisation, reference,
@@ -221,20 +192,7 @@ public class NotificationService {
                         solicitorName, deceasedName);
         String emailReplyToId = registry.getEmailReplyToId();
 
-
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Map<String, String> invalidFields = validationResult.invalidFields();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for case: {} fields: {}",
-                    caseDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         log.info("Personlisation complete now get the email response");
 
@@ -261,19 +219,7 @@ public class NotificationService {
         String emailReplyToId = registry.getEmailReplyToId();
         String reference = caveatData.getSolsSolicitorAppReference();
 
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Map<String, String> invalidFields = validationResult.invalidFields();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for caveat: {} fields: {}",
-                    caveatDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for caveat: {} fields: {}",
-                    caveatDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caveatDetails.getId());
 
         log.info("Personlisation complete now get the email response");
 
@@ -303,19 +249,7 @@ public class NotificationService {
 
         String reference = caveatDetails.getId().toString();
 
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Map<String, String> invalidFields = validationResult.invalidFields();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for caveat: {} fields: {}",
-                    caveatDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for caveat: {} fields: {}",
-                    caveatDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caveatDetails.getId());
 
         SendEmailResponse response = notificationClientService.sendEmail(
                 caveatDetails.getId(), templateId, emailAddress, personalisation, reference);
@@ -394,19 +328,7 @@ public class NotificationService {
                 caseDetails.getData().getLanguagePreference());
         String emailReplyToId = registry.getEmailReplyToId();
 
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Map<String, String> invalidFields = validationResult.invalidFields();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for case: {} fields: {}",
-                    caseDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         SendEmailResponse response =
             getSendEmailResponse(state, templateId, emailReplyToId, executor.getEmail(), personalisation, reference,
@@ -469,19 +391,7 @@ public class NotificationService {
         String emailAddress = caseDetails.getData().getApplicationType().equals(ApplicationType.PERSONAL)
             ? caseDetails.getData().getPrimaryApplicantEmailAddress() : caseDetails.getData().getSolsSolicitorEmail();
 
-        final PersonalisationValidationResult validationResult = personalisationValidationRule
-                .validatePersonalisation(personalisation);
-        final Set<String> invalidFields = validationResult.invalidFields().keySet();
-        final List<String> htmlFields = validationResult.htmlFields();
-
-        if (!invalidFields.isEmpty()) {
-            log.error("Personalisation validation failed for case: {} fields: {}",
-                    caseDetails.getId(), invalidFields);
-            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
-        } else if (!htmlFields.isEmpty()) {
-            log.info("Personalisation validation found HTML for case: {} fields: {}",
-                    caseDetails.getId(), validationResult.htmlFields());
-        }
+        doCommonNotificationServiceHandling(personalisation, caseDetails.getId());
 
         SendEmailResponse response = notificationClientService.sendEmail(caseDetails.getId(), templateId, emailAddress,
             personalisation, reference);
@@ -613,5 +523,30 @@ public class NotificationService {
         return caseData.getRemovedRepresentative() != null
                 ? String.join(" ", caseData.getRemovedRepresentative().getSolicitorFirstName(),
                 caseData.getRemovedRepresentative().getSolicitorLastName()) : null;
+    }
+
+    CommonNotificationResult doCommonNotificationServiceHandling(
+            final Map<String, ?> personalisation,
+            final Long caseId) throws NotificationClientException {
+        final PersonalisationValidationRule.PersonalisationValidationResult validationResult =
+                personalisationValidationRule.validatePersonalisation(personalisation);
+        final Map<String, String> invalidFields = validationResult.invalidFields();
+        final List<String> htmlFields = validationResult.htmlFields();
+
+        if (!invalidFields.isEmpty()) {
+            log.error("Personalisation validation failed for case: {} fields: {}",
+                    caseId, invalidFields);
+            throw new NotificationClientException(INVALID_PERSONALISATION_ERROR_MESSAGE);
+        } else if (!htmlFields.isEmpty()) {
+            log.info("Personalisation validation found HTML for case: {} fields: {}",
+                    caseId, validationResult.htmlFields());
+            return CommonNotificationResult.FOUND_HTML;
+        }
+        return CommonNotificationResult.ALL_OK;
+    }
+
+    enum CommonNotificationResult {
+        ALL_OK,
+        FOUND_HTML;
     }
 }
