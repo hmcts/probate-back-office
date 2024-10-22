@@ -29,6 +29,8 @@ class DeceasedAddressValidationRule implements SolExecutorDetailsValidationRule,
         SolsAddress address = ccdData.getDeceased().getAddress();
         if (address == null || Strings.isNullOrEmpty(address.getAddressLine1())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "deceasedAddressIsNull"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "deceasedAddressIsNullWelsh"));
         }
 
         return new ArrayList<>(errors);

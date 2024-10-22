@@ -28,20 +28,27 @@ public class Pre1900DOBValidationRule implements CaseDetailsValidationRule {
             if (dob.isAfter(LocalDate.now())) {
                 String userMessage = businessValidationMessageRetriever.getMessage("dobIsInTheFuture",
                         null, Locale.UK);
-                throw new BusinessValidationException(userMessage,
-                        "Date of birth cannot be a future date for case: " + caseDetails.getId());
-            }
-            if (dob.isAfter(dod)) {
-                String userMessage = businessValidationMessageRetriever.getMessage("dobIsAfterDod",
+                String userMessageWelsh = businessValidationMessageRetriever.getMessage("dobIsInTheFutureWelsh",
                         null, Locale.UK);
                 throw new BusinessValidationException(userMessage,
-                        "Date of birth cannot be after date of death for case: " + caseDetails.getId());
+                        "Date of birth cannot be a future date for case: " + caseDetails.getId(), userMessageWelsh);
+            }
+            if (dob.isAfter(dod)) {
+                String userMessage1 = businessValidationMessageRetriever.getMessage("dobIsAfterDod",
+                        null, Locale.UK);
+                String userMessageWelsh = businessValidationMessageRetriever.getMessage("dobIsAfterDodWelsh",
+                        null, Locale.UK);
+                throw new BusinessValidationException(userMessage1,
+                        "Date of birth cannot be after date of death for case: " + caseDetails.getId(),
+                        userMessageWelsh);
             }
         } catch (DateTimeParseException dtpe) {
             String userMessage = businessValidationMessageRetriever.getMessage("dobOverrideDateInvalid",
                     null, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever.getMessage("dobOverrideDateInvalidWelsh",
+                    null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Date of birth is invalid format for case: " + caseDetails.getId());
+                    "Date of birth is invalid format for case: " + caseDetails.getId(), userMessageWelsh);
         }
     }
 

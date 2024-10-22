@@ -193,7 +193,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             .thenReturn();
 
         response.then().assertThat().statusCode(200)
-            .and().body("errors", hasSize(equalTo(3)))
+            .and().body("errors", hasSize(equalTo(6)))
             .and().body("errors", hasItem(containsString(errorMessage1)))
             .and().body("errors", hasItem(containsString(errorMessage2)))
             .and().body("errors", hasItem(containsString(errorMessage3)));
@@ -288,23 +288,23 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Test
     void verifyErrorMessageSuccAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingSuccAllRenouncing.json",
-            "Probate practitioner cannot be applying if "
-                + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+                "Probate practitioner cannot be applying if "
+                        + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     void verifyErrorMessageAllRenouncing() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingAllRenouncing.json",
             "Probate practitioner cannot be applying if "
-                + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+                    + "part of a group which is all renouncing", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     void verifyErrorMessageNoneOfThese() throws IOException {
         validatePostFailure("failure.practitionerExecAndApplyingTCTNoT.json",
-            "If you have selected none of these because the title and clearing is not "
-                + "covered by the options above, you will not be able to continue making this application online. "
-                + "Please apply with a paper form.", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "If you have selected 'none of these' because the title and clearing is not covered by the "
+                    + "options above, you will not be able to continue making this application online. Please apply "
+                    + "with a paper form.", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -318,15 +318,14 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     void verifyErrorMessageNoPartnersAddedTrustCorp() throws IOException {
         validatePostFailure("failure.practitionerNotAnExecNotApplyingNoPartnersTrustCorp.json",
             "You need to add at least 1 other partner that acts on behalf of the trust corporation",
-            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+                200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
     void verifyErrorMessageNoPositionInTrustTrustCorp() throws IOException {
         validatePostFailure("failure.practitionerNoPositionInTrust.json",
-            "You must specify the probate pactitioner's position within the trust corporation "
-                + "as per the resolution if they are acting as an executor",
-            200, SOL_VALIDATE_MAX_EXECUTORS_URL);
+            "You must specify the probate pactitioner's position within the trust corporation as per the "
+                    + "resolution if they are acting as an executor", 200, SOL_VALIDATE_MAX_EXECUTORS_URL);
     }
 
     @Test
@@ -357,11 +356,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"dateCodicilAdded\": \"2020-10-11\"",
             "\"dateCodicilAdded\": \"" + TODAY_YYYY_MM_DD + "\"");
 
-        validatePostFailureWithPayload(payload, "Codicil date must be in the past",
-            200, VALIDATE_URL);
+        validatePostFailureWithPayload(payload, "Codicil date must be in the past", 200,
+                VALIDATE_URL);
 
-        validatePostFailureWithPayload(payload, "Codicil date must be in the past",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+        validatePostFailureWithPayload(payload, "Codicil date must be in the past", 200,
+                SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -371,11 +370,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         payload = replaceAllInString(payload, "\"originalWillSignedDate\": \"2017-10-10\",",
             "\"originalWillSignedDate\": \"2018-01-02\",");
 
-        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of death",
-            200, VALIDATE_URL);
+        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of "
+                        + "death", 200, VALIDATE_URL);
 
-        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of death",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+        validatePostFailureWithPayload(payload, "The will must be signed and dated before the date of "
+                        + "death", 200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -398,10 +397,10 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
             "\"dateCodicilAdded\": \"2017-10-09\"");
 
         validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
-            200, VALIDATE_URL);
+                200, VALIDATE_URL);
 
         validatePostFailureWithPayload(payload, "A codicil cannot be made before the will was signed",
-            200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
+                200, SOLS_VALIDATE_WILL_AND_CODICIL_DATES_URL);
     }
 
     @Test
@@ -697,7 +696,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     void verifyRequestValidationsErrorForRedeclarationSOTForPaperFormCase() throws IOException {
         final ResponseBody responseBody = validatePostSuccess("redeclarationSOTPaperForm.json",
             REDECLARATION_SOT);
-        Assertions.assertTrue(responseBody.asString().contains("You can only use this event for digital cases"));
+        Assertions.assertTrue(responseBody.asString().contains("You can only use this event for digital cases."));
     }
 
     @Test
