@@ -19,8 +19,9 @@ public class PersonalisationValidationRule {
 
     private final MarkdownValidatorService markdownValidatorService;
 
-    public <T> List<String> validatePersonalisation(final Map<String, T> personalisation) {
+    public <T> PersonalisationValidationResult validatePersonalisation(final Map<String, T> personalisation) {
         final List<String> invalidFields = new ArrayList<>();
+        final List<String> htmlFields = new ArrayList<>();
         for (final var entry : personalisation.entrySet()) {
             if (entry.getValue() != null) {
                 final String key = entry.getKey();
@@ -32,8 +33,17 @@ public class PersonalisationValidationRule {
                 if (nontextVisit.isInvalid()) {
                     invalidFields.add(key);
                 }
+                if (nontextVisit.isHasHtml()) {
+                    htmlFields.add(key);
+                }
             }
         }
-        return Collections.unmodifiableList(invalidFields);
+
+        return new PersonalisationValidationResult(invalidFields, htmlFields);
+    }
+
+    public record PersonalisationValidationResult(
+        List<String> invalidFields,
+        List<String> htmlFields) {
     }
 }

@@ -45,6 +45,9 @@ public class MarkdownValidatorService {
         @Getter
         private boolean invalid = false;
 
+        @Getter
+        private boolean hasHtml = false;
+
         private final String key;
 
         @Override
@@ -121,14 +124,16 @@ public class MarkdownValidatorService {
 
         @Override
         public void visit(HtmlInline htmlInline) {
-            log.trace("{}: reject HtmlInline", key);
-            invalid = true;
+            log.trace("{}: visit HtmlInline", key);
+            hasHtml = true;
+            visitChildren(htmlInline);
         }
 
         @Override
         public void visit(HtmlBlock htmlBlock) {
-            log.trace("{}: reject HtmlBlock", key);
-            invalid = true;
+            log.trace("{}: visit HtmlBlock", key);
+            hasHtml = true;
+            visitChildren(htmlBlock);
         }
 
         @Override
