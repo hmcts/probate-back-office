@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Function;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -69,8 +70,9 @@ class PersonalisationValidationRuleTest {
         personalisation.put("hrule", "---");
         personalisation.put("hrule_alt", "***");
 
-        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
-                .invalidFields();
+        final Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
 
         final Function<String, Executable> assertNotContains = name -> {
             return () -> assertFalse(result.contains(name), "result should not contain " + name);
@@ -114,8 +116,9 @@ class PersonalisationValidationRuleTest {
         personalisation.put("single_image", "Some text ![example](http://example.com/img.png)");
         personalisation.put("image_with_ref", "Some text ![link][1]\n\nMore text\n\n[1]: http://example.com/img.png");
 
-        final List<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
-                .invalidFields();
+        final Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
 
         final Function<String, Executable> assertContains = name -> {
             return () -> assertTrue(result.contains(name), "result did not contain " + name);
@@ -139,7 +142,9 @@ class PersonalisationValidationRuleTest {
         when(markdownValidatorService.getNontextVisitor(key)).thenReturn(visitorMock);
         when(visitorMock.isInvalid()).thenReturn(true);
 
-        final var result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
+        final var result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
 
         final List<Executable> assertions = List.of(
                 () -> verify(markdownValidatorService).getNontextVisitor(any()),
@@ -195,7 +200,9 @@ class PersonalisationValidationRuleTest {
         personalisation.put("field1", "Some text");
         personalisation.put("field2", "Another  text");
 
-        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
+        Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
 
         assertTrue(result.isEmpty());
     }
@@ -205,7 +212,9 @@ class PersonalisationValidationRuleTest {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", null);
 
-        List<String> result = personalisationValidationRule.validatePersonalisation(personalisation).invalidFields();
+        Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
 
         assertTrue(result.isEmpty());
     }

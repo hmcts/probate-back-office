@@ -53,6 +53,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 import static uk.gov.hmcts.probate.model.Constants.CAVEAT_SOLICITOR_NAME;
@@ -145,7 +146,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Map<String, String> invalidFields = validationResult.invalidFields();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {
@@ -185,7 +186,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Map<String, String> invalidFields = validationResult.invalidFields();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {
@@ -223,7 +224,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Map<String, String> invalidFields = validationResult.invalidFields();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {
@@ -262,7 +263,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Map<String, String> invalidFields = validationResult.invalidFields();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {
@@ -304,7 +305,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Map<String, String> invalidFields = validationResult.invalidFields();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {
@@ -395,7 +396,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Map<String, String> invalidFields = validationResult.invalidFields();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {
@@ -470,7 +471,7 @@ public class NotificationService {
 
         final PersonalisationValidationResult validationResult = personalisationValidationRule
                 .validatePersonalisation(personalisation);
-        final List<String> invalidFields = validationResult.invalidFields();
+        final Set<String> invalidFields = validationResult.invalidFields().keySet();
         final List<String> htmlFields = validationResult.htmlFields();
 
         if (!invalidFields.isEmpty()) {

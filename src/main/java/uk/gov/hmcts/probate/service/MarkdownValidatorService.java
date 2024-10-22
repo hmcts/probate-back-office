@@ -43,19 +43,23 @@ public class MarkdownValidatorService {
     @RequiredArgsConstructor
     public static class NontextVisitor extends AbstractVisitor {
         @Getter
-        private boolean invalid = false;
+        private String whyInvalid = null;
 
         @Getter
         private boolean hasHtml = false;
 
         private final String key;
 
+        public boolean isInvalid() {
+            return whyInvalid != null;
+        }
+
         @Override
         public void visitChildren(Node parent) {
             Node node = parent.getFirstChild();
             while (node != null) {
                 // If we have seen any failure we do not need to continue searching the Node tree, so short circuit
-                if (invalid) {
+                if (isInvalid()) {
                     log.trace("{}: has been rejected, short circuit", key);
                     return;
                 }
@@ -71,7 +75,7 @@ public class MarkdownValidatorService {
         @Override
         public void visit(BlockQuote blockQuote) {
             log.trace("{}: reject BlockQuote", key);
-            invalid = true;
+            whyInvalid = "BlockQuote";
         }
 
         @Override
@@ -83,7 +87,7 @@ public class MarkdownValidatorService {
         @Override
         public void visit(Code code) {
             log.trace("{}: reject Code", key);
-            invalid = true;
+            whyInvalid = "Code";
         }
 
         @Override
@@ -95,13 +99,13 @@ public class MarkdownValidatorService {
         @Override
         public void visit(Emphasis emphasis) {
             log.trace("{}: reject Emphasis", key);
-            invalid = true;
+            whyInvalid = "Emphasis";
         }
 
         @Override
         public void visit(FencedCodeBlock fencedCodeBlock) {
             log.trace("{}: reject FencedCodeBlock", key);
-            invalid = true;
+            whyInvalid = "FencedCodeBlock";
         }
 
         @Override
@@ -139,19 +143,19 @@ public class MarkdownValidatorService {
         @Override
         public void visit(Image image) {
             log.trace("{}: reject Image", key);
-            invalid = true;
+            whyInvalid = "Image";
         }
 
         @Override
         public void visit(IndentedCodeBlock indentedCodeBlock) {
             log.trace("{}: reject IndentedCodeBlock", key);
-            invalid = true;
+            whyInvalid = "IndentedCodeBlock";
         }
 
         @Override
         public void visit(Link link) {
             log.trace("{}: reject Link", key);
-            invalid = true;
+            whyInvalid = "Link";
         }
 
         @Override
@@ -181,7 +185,7 @@ public class MarkdownValidatorService {
         @Override
         public void visit(StrongEmphasis strongEmphasis) {
             log.trace("{}: reject StrongEmphasis", key);
-            invalid = true;
+            whyInvalid = "StrongEmphasis";
         }
 
         @Override
@@ -193,19 +197,19 @@ public class MarkdownValidatorService {
         @Override
         public void visit(LinkReferenceDefinition linkReferenceDefinition) {
             log.trace("{}: reject LinkReferenceDefinition", key);
-            invalid = true;
+            whyInvalid = "LinkReferenceDefinition";
         }
 
         @Override
         public void visit(CustomBlock customBlock) {
             log.trace("{}: reject CustomBlock", key);
-            invalid = true;
+            whyInvalid = "CustomBlock";
         }
 
         @Override
         public void visit(CustomNode customNode) {
             log.trace("{}: reject CustomNode", key);
-            invalid = true;
+            whyInvalid = "CustomNode";
         }
     }
 }
