@@ -7,8 +7,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.MarkdownValidatorService;
 
 import java.util.ArrayList;
@@ -36,6 +38,9 @@ class PersonalisationValidationRuleTest {
 
     @Spy
     MarkdownValidatorService markdownValidatorService;
+
+    @Mock
+    FeatureToggleService featureToggleService;
 
     @InjectMocks
     private PersonalisationValidationRule personalisationValidationRule;
@@ -69,6 +74,8 @@ class PersonalisationValidationRuleTest {
         personalisation.put("numlist_alt", "1) list");
         personalisation.put("hrule", "---");
         personalisation.put("hrule_alt", "***");
+
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(true);
 
         final Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
                 .invalidFields()
@@ -116,6 +123,8 @@ class PersonalisationValidationRuleTest {
         personalisation.put("single_image", "Some text ![example](http://example.com/img.png)");
         personalisation.put("image_with_ref", "Some text ![link][1]\n\nMore text\n\n[1]: http://example.com/img.png");
 
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(true);
+
         final Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
                 .invalidFields()
                 .keySet();
@@ -134,9 +143,86 @@ class PersonalisationValidationRuleTest {
     }
 
     @Test
+    void givenNonpermittedMarkdownInputsAndNewHandlingDisabled_whenValidated_thenReturnsFewerInvalid() {
+        final Map<String, Object> personalisation = new HashMap<>();
+
+        // Link handling
+        personalisation.put("single_link", "Some text [example](http://example.com)");
+        personalisation.put("bypass_with_early_rsqb", "[example\\]](http://example.com)");
+
+        // Images (not mentioned in Notify documentation, but seems like we shouldn't be permitting this
+        personalisation.put("single_image", "Some text ![example](http://example.com/img.png)");
+
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(false);
+
+        final Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
+
+        final Function<String, Executable> assertContains = name -> {
+            return () -> assertTrue(result.contains(name), "result did not contain " + name);
+        };
+
+        final List<Executable> assertions = new ArrayList<Executable>();
+        assertions.add(() -> assertEquals(personalisation.size(), result.size(), "Did not identify all issues"));
+        for (String key : personalisation.keySet()) {
+            assertions.add(assertContains.apply(key));
+        }
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void givenNonpermittedMarkdownInputsAndNewHandlingDisabled_whenValidated_thenReturnsMoreValid() {
+        final Map<String, Object> personalisation = new HashMap<>();
+
+        // Documented as unsupported by Notify
+        personalisation.put("with_bold", "bold **text**");
+        personalisation.put("with_ital", "ital *text*");
+        personalisation.put("with_bold_alt", "bold __text__");
+        personalisation.put("with_ital_alt", "ital _text_");
+        personalisation.put("inline_code", "`inline code`");
+        personalisation.put("code_block", "```\ncode\nblock\n```");
+        personalisation.put("code_block_alt", "    code\n    block");
+
+        // Not explicitly documented as supported or unsupported (the documentation refers to "inset text"
+        // but uses: " ^ inset text" as the example. Unclear if this is just a nonstandard alternative, but
+        // a stock markdown implementation will not catch it. This is likely because `>` would be removed
+        // by any html filtering.
+        personalisation.put("block_quote", "> block_quote");
+
+        // Link handling
+        personalisation.put("bypass_using_match_before", "[) [example](http://example.com)");
+        personalisation.put("link_with_ref", "Some text [link][1]\n\nMore text\n\n[1]: http://example.com");
+
+        // Images (not mentioned in Notify documentation, but seems like we shouldn't be permitting this
+        personalisation.put("image_with_ref", "Some text ![link][1]\n\nMore text\n\n[1]: http://example.com/img.png");
+
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(false);
+
+        final Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
+                .invalidFields()
+                .keySet();
+
+        final Function<String, Executable> assertContains = name -> {
+            return () -> assertFalse(result.contains(name), "result should not contain " + name);
+        };
+
+        final List<Executable> assertions = new ArrayList<Executable>();
+        assertions.add(() -> assertEquals(0, result.size(), "Old handling unexpectly identified issues"));
+        for (String key : personalisation.keySet()) {
+            assertions.add(assertContains.apply(key));
+        }
+
+        assertAll(assertions);
+    }
+
+    @Test
     void givenInput_whenValidatorFlags_thenRejected() {
         final var key = "key";
         final var personalisation = Map.ofEntries(Map.entry(key, "value"));
+
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(true);
 
         final var visitorMock = mock(MarkdownValidatorService.NontextVisitor.class);
         when(markdownValidatorService.getNontextVisitor(key)).thenReturn(visitorMock);
@@ -159,6 +245,8 @@ class PersonalisationValidationRuleTest {
     void givenInput_whenValidatorPasses_thenAccepted() {
         final var key = "key";
         final var personalisation = Map.ofEntries(Map.entry(key, "value"));
+
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(true);
 
         final var visitorMock = mock(MarkdownValidatorService.NontextVisitor.class);
         when(markdownValidatorService.getNontextVisitor(key)).thenReturn(visitorMock);
@@ -188,6 +276,7 @@ class PersonalisationValidationRuleTest {
         final var visitorSpy = spy(markdownValidatorService.getNontextVisitor("key"));
 
         when(markdownValidatorService.getNontextVisitor(any())).thenReturn(visitorSpy);
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(true);
 
         personalisationValidationRule.validatePersonalisation(personalisation);
 
@@ -211,6 +300,8 @@ class PersonalisationValidationRuleTest {
     void shouldRetunEmptyListForNullValid() {
         Map<String, Object> personalisation = new HashMap<>();
         personalisation.put("field1", null);
+
+        when(featureToggleService.enableNewMarkdownFiltering()).thenReturn(true);
 
         Set<String> result = personalisationValidationRule.validatePersonalisation(personalisation)
                 .invalidFields()
