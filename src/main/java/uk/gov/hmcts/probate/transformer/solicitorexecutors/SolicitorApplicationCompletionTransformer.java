@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.math.BigDecimal;
@@ -22,11 +23,16 @@ import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_TH
 // for caseworker or solicitor journeys
 public class SolicitorApplicationCompletionTransformer extends LegalStatementExecutorTransformer {
 
+    private final FeatureToggleService featureToggleService;
+
     private static final String NOT_APPLICABLE = "NotApplicable";
 
-    public SolicitorApplicationCompletionTransformer(ExecutorListMapperService executorListMapperService,
-                                                     DateFormatterService dateFormatterService) {
+    public SolicitorApplicationCompletionTransformer(
+            final ExecutorListMapperService executorListMapperService,
+            final DateFormatterService dateFormatterService,
+            final FeatureToggleService featureToggleService) {
         super(executorListMapperService, dateFormatterService);
+        this.featureToggleService = featureToggleService;
     }
 
     /**
@@ -66,19 +72,22 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
     }
 
     public void clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(CaseDetails caseDetails) {
-        final var caseId = caseDetails.getId();
-        final var caseData = caseDetails.getData();
+        if (featureToggleService.enableDuplicateExecutorFiltering()) {
+            final var caseId = caseDetails.getId();
+            final var caseData = caseDetails.getData();
 
-        final var titleAndClearingType = caseDetails.getData().getTitleAndClearingType();
-        final var primaryApplicantApplying = caseData.isPrimaryApplicantApplying();
+            final var titleAndClearingType = caseDetails.getData().getTitleAndClearingType();
+            final var primaryApplicantApplying = caseData.isPrimaryApplicantApplying();
 
-        if ((!TITLE_AND_CLEARING_NONE_OF_THESE.equalsIgnoreCase(titleAndClearingType)) && primaryApplicantApplying) {
-            log.info("In case {} we have primary applicant applying for non-NoneOfThese TitleAndClearingType {},"
-                            + " clear PrimaryApplicant fields",
-                    caseId,
-                    titleAndClearingType);
+            if ((!TITLE_AND_CLEARING_NONE_OF_THESE.equalsIgnoreCase(titleAndClearingType))
+                    && primaryApplicantApplying) {
+                log.info("In case {} we have primary applicant applying for non-NoneOfThese TitleAndClearingType {},"
+                                + " clear PrimaryApplicant fields",
+                        caseId,
+                        titleAndClearingType);
 
-            caseData.clearPrimaryApplicant();
+                caseData.clearPrimaryApplicant();
+            }
         }
     }
 }

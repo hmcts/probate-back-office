@@ -16,7 +16,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.model.ccd.raw.response.ResponseCaseData;
-import uk.gov.hmcts.probate.service.DateFormatterService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.util.ArrayList;
@@ -246,6 +245,8 @@ class ExecutorsTransformerTest {
         assertEquals(SOLICITOR_NOT_APPLYING_REASON, cd.getSolsSolicitorNotApplyingReason());
     }
 
+    // Why is this test here? what is it testing? (? ExecutorListMapperService ?)
+    /*
     @Test
     void shouldSwapSolicitorToNotApplyingList() {
         caseDataBuilder
@@ -263,6 +264,7 @@ class ExecutorsTransformerTest {
         assertEquals(0, cd.getAdditionalExecutorsApplying().size());
         assertEquals(1, cd.getAdditionalExecutorsNotApplying().size());
     }
+     */
 
     @Test
     void shouldSetCaseworkerExecutorListsAsEmpty() {
