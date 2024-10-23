@@ -84,7 +84,6 @@ import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.SENT_EMAIL;
-import static uk.gov.hmcts.probate.model.DocumentType.SOT_INFORMATION_REQUEST;
 import static uk.gov.hmcts.probate.model.DocumentType.STATEMENT_OF_TRUTH;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
@@ -242,10 +241,6 @@ public class CallbackResponseTransformer {
                     .boCaveatStopSendToBulkPrintRequested(caseData.getBoCaveatStopSendToBulkPrint())
                     .build();
         }
-        responseCaseDataBuilder
-                .boCaveatStopEmailNotificationRequested(caseData.getValueForCaveatStopEmailNotification())
-                .boStopDetails("")
-                .build();
 
         return transformResponse(responseCaseDataBuilder.build());
     }
@@ -264,31 +259,54 @@ public class CallbackResponseTransformer {
         return transformResponse(responseCaseData);
     }
 
-    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents,
-                                                           List<String> letterIds) {
+    public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents) {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
-
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+        if (isHubResponseRequired(caseData)) {
+            responseCaseDataBuilder.citizenResponseCheckbox(null)
+                    .citizenResponseSubmittedDate(null)
+                    .documentUploadIssue(null);
+        }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
             responseCaseDataBuilder.boEmailRequestInfoNotificationRequested(
                     callbackRequest.getCaseDetails().getData().getBoEmailRequestInfoNotification());
         }
 
-        if (documentTransformer.hasDocumentWithType(documents, SOT_INFORMATION_REQUEST) && !letterIds.isEmpty()) {
-            letterIds.forEach(letterId -> {
-                CollectionMember<BulkPrint> bulkPrint =
-                        buildBulkPrint(letterId, SOT_INFORMATION_REQUEST.getTemplateName());
-                appendToBulkPrintCollection(bulkPrint, callbackRequest.getCaseDetails().getData());
-            });
-            responseCaseDataBuilder
-                    .boRequestInfoSendToBulkPrintRequested(
-                            callbackRequest.getCaseDetails().getData().getBoRequestInfoSendToBulkPrint())
-                    .bulkPrintId(callbackRequest.getCaseDetails().getData().getBulkPrintId());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse transformCitizenHubResponse(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        final CaseData caseData = callbackRequest.getCaseDetails().getData();
+
+        if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())) {
+            responseCaseDataBuilder.evidenceHandled(YES);
         }
 
-        return transformResponse(responseCaseDataBuilder.build());
+        if (isHubResponseRequired(caseData) && YES.equalsIgnoreCase(caseData.getCitizenResponseCheckbox())) {
+            responseCaseDataBuilder.citizenResponseSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+                    .informationNeeded(null)
+                    .informationNeededByPost(null)
+                    .boStopDetails(null)
+                    .boStopDetailsDeclarationParagraph(null);
 
+            if (!YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())) {
+                responseCaseDataBuilder.evidenceHandled(NO);
+            }
+        }
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse addDocumentPreview(CallbackRequest callbackRequest, Document document) {
+
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        responseCaseDataBuilder.emailPreview(document.getDocumentLink());
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse addDocuments(CallbackRequest callbackRequest, List<Document> documents,
@@ -993,7 +1011,7 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-                .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
+            .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1235,7 +1253,13 @@ public class CallbackResponseTransformer {
             .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
-            .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
+            .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
+            .informationNeeded(caseData.getInformationNeeded())
+            .informationNeededByPost(caseData.getInformationNeededByPost())
+            .citizenResponse(caseData.getCitizenResponse())
+            .documentUploadIssue(caseData.getDocumentUploadIssue())
+            .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox())
+            .citizenResponseSubmittedDate(caseData.getCitizenResponseSubmittedDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1307,6 +1331,13 @@ public class CallbackResponseTransformer {
 
     private boolean isForeignDeathCerticateInEnglish(CaseData caseData) {
         return YES.equals(caseData.getDeceasedForeignDeathCertInEnglish());
+    }
+
+    private boolean isHubResponseRequired(CaseData caseData) {
+        return (PERSONAL.equals(caseData.getApplicationType())
+            && CHANNEL_CHOICE_DIGITAL.equals(caseData.getChannelChoice())
+            && YES.equals(caseData.getInformationNeeded())
+            && NO.equals(caseData.getInformationNeededByPost()));
     }
 
     private ResponseCaseDataBuilder<?, ?> getCaseCreatorResponseCaseBuilder(CaseData caseData,

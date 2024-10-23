@@ -7,13 +7,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.exception.NotFoundException;
-import uk.gov.hmcts.probate.model.ApplicationType;
-import static uk.gov.hmcts.probate.model.Constants.NO;
 import uk.gov.hmcts.probate.model.DocumentCaseType;
 import uk.gov.hmcts.probate.model.DocumentIssueType;
 import uk.gov.hmcts.probate.model.DocumentStatus;
 import uk.gov.hmcts.probate.model.DocumentType;
-import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatCallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.caveat.request.CaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
@@ -73,8 +70,6 @@ public class DocumentGeneratorService {
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String WATERMARK = "draftbackground";
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
-    private static final String FULL_REDEC = "fullRedec";
-    private static final String APP_NAME = "applicantName";
     private static final String LETTER_TYPE = "letterType";
     private static final String BLANK = "blank";
     private static final String TEMPLATE = "template";
@@ -156,27 +151,6 @@ public class DocumentGeneratorService {
             callbackRequest.getCaseDetails().getId());
 
         return coversheet;
-    }
-
-    public Document generateRequestForInformation(CaseDetails caseDetails, ExecutorsApplyingNotification exec) {
-        log.info("Initiate call to generate information request letter for case id {}", caseDetails.getId());
-        Map<String, Object> placeholders = genericMapperService.addCaseDataWithRegistryProperties(caseDetails);
-        String appName;
-
-        if (caseDetails.getData().getApplicationType() == ApplicationType.SOLICITOR) {
-            appName = caseDetails.getData().getSolsSOTName();
-        } else {
-            appName = exec.getName();
-        }
-
-        placeholders.put(APP_NAME, appName);
-        placeholders.put(FULL_REDEC, NO);
-
-        Document letter = pdfManagementService.generateDocmosisDocumentAndUpload(placeholders,
-            DocumentType.SOT_INFORMATION_REQUEST);
-        log.info("Successful response for letter for case id {}", caseDetails.getId());
-
-        return letter;
     }
 
     public Document generateSoT(CallbackRequest callbackRequest) {

@@ -28,6 +28,7 @@
       "outsideUKGrantCopies": null,
       "boSendToBulkPrint": "No",
       "applicationType": "Solicitor",
+      "boCaseStopCaveatId": "1691481848274878",
       "deceasedAddress": {
         "County": "",
         "Country": "",
