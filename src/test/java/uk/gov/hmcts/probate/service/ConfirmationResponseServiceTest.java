@@ -140,6 +140,7 @@ class ConfirmationResponseServiceTest {
         when(willBodyTemplateResponseMock.getTemplate()).thenReturn(CONFIRMATION_BODY);
 
         when(executorMock.isApplying()).thenReturn(true);
+        when(messageResourceServiceMock.getMessage(anyString())).thenReturn("someMessage1:someMessage2");
         when(renouncingExecutorMock.isApplying()).thenReturn(false);
         when(renouncingExecutorMock.getReasonNotApplying()).thenReturn("Renunciation");
         when(deadBeforeExecutorMock.isApplying()).thenReturn(false);
@@ -153,6 +154,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(applicantSiblingsRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(applicantSiblingsRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
@@ -182,6 +184,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(immovableEstateRule.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
@@ -197,6 +200,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(immovableEstateRule.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(immovableEstateRule.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -226,6 +230,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(diedOrNotApplyingRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(diedOrNotApplyingRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -256,6 +261,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(entitledMinorityRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(entitledMinorityRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -285,6 +291,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(executorsRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(executorsRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_PROBATE);
@@ -314,6 +321,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(lifeInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(lifeInterestRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -343,6 +351,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(minorityInterestRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(minorityInterestRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
@@ -372,6 +381,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(renouncingRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(renouncingRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
@@ -401,6 +411,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(residuaryRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(residuaryRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_ADMON);
@@ -430,6 +441,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(solsExecutorRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(solsExecutorRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);
@@ -459,6 +471,7 @@ class ConfirmationResponseServiceTest {
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         when(spouseOrCivilRuleMock.isChangeNeeded(caseDataMock)).thenReturn(true);
+        when(spouseOrCivilRuleMock.getConfirmationBodyMessageKey()).thenReturn("someMessage1:someMessage2");
         when(markdownSubstitutionServiceMock.generatePage(anyString(), any(MarkdownTemplate.class), anyMap()))
             .thenReturn(willBodyTemplateResponseMock);
         when(caseDataMock.getSolsWillType()).thenReturn(GRANT_TYPE_INTESTACY);

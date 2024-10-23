@@ -22,7 +22,10 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 public class CodicilDateValidationRule implements ValidationRule {
 
     private static final String CODICIL_DATE_MUST_BE_IN_THE_PAST = "codicilDateMustBeInThePast";
+    private static final String CODICIL_DATE_MUST_BE_IN_THE_PAST_WELSH = "codicilDateMustBeInThePastWelsh";
     private static final String CODICIL_DATE_MUST_BE_AFTER_WILL_DATE = "codicilDateMustBeAfterOriginalWillSignedDate";
+    private static final String CODICIL_DATE_MUST_BE_AFTER_WILL_DATE_WELSH
+            = "codicilDateMustBeAfterOriginalWillSignedDateWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
 
@@ -46,12 +49,16 @@ public class CodicilDateValidationRule implements ValidationRule {
             LocalDate codicilDate = date.getDateCodicilAdded();
             if (codicilDate != null) {
                 if (!codicilDate.isBefore(LocalDate.now())
-                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_IN_THE_PAST)) {
+                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_IN_THE_PAST)
+                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_IN_THE_PAST_WELSH)) {
                     allErrorCodes.add(CODICIL_DATE_MUST_BE_IN_THE_PAST);
+                    allErrorCodes.add(CODICIL_DATE_MUST_BE_IN_THE_PAST_WELSH);
                 }
                 if (willSignedDate != null && codicilDate.isBefore(willSignedDate)
-                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE)) {
+                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE)
+                        && !allErrorCodes.contains(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE_WELSH)) {
                     allErrorCodes.add(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE);
+                    allErrorCodes.add(CODICIL_DATE_MUST_BE_AFTER_WILL_DATE_WELSH);
                 }
             }
         }
