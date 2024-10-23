@@ -19,7 +19,9 @@ public class PartnersAddedValidationRule implements TitleAndClearingPageValidati
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String PARTNERS_NEEDED = "partnersNeeded";
+    private static final String PARTNERS_NEEDED_WELSH = "partnersNeededWelsh";
     private static final String PARTNERS_NEEDED_TRUST_CORPS = "partnersNeededTrustCorp";
+    private static final String PARTNERS_NEEDED_TRUST_CORPS_WELSH = "partnersNeededTrustCorpWelsh";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -28,8 +30,12 @@ public class PartnersAddedValidationRule implements TitleAndClearingPageValidati
         final var args = new String[] {caseDetails.getId().toString()};
         final var titleAndClearing = caseData.getTitleAndClearingType();
         final var userMessage = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED, args, Locale.UK);
+        final var userMessageWelsh = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED_WELSH, args,
+                Locale.UK);
         final var userMessageTrustCorps = businessValidationMessageRetriever.getMessage(PARTNERS_NEEDED_TRUST_CORPS,
                 args, Locale.UK);
+        final var userMessageTrustCorpsWelsh = businessValidationMessageRetriever
+                .getMessage(PARTNERS_NEEDED_TRUST_CORPS_WELSH, args, Locale.UK);
 
         // Must have other partners for trust corp / firm if NOT (not named in will, and applying)
 
@@ -38,14 +44,14 @@ public class PartnersAddedValidationRule implements TitleAndClearingPageValidati
                     && getNonTrustPtnrNotAllRenouncingTitleClearingTypes().contains(titleAndClearing)) {
                 throw new BusinessValidationException(userMessage,
                         "'Yes' needs to be selected for question anyOtherApplyingPartners for case id "
-                                + caseDetails.getId());
+                                + caseDetails.getId(), userMessageWelsh);
             }
 
             if (NO.equals(caseData.getAnyOtherApplyingPartnersTrustCorp())
                     && getTrustCorpTitleClearingTypes().contains(titleAndClearing)) {
                 throw new BusinessValidationException(userMessageTrustCorps,
                         "'Yes' needs to be selected for question anyOtherApplyingPartnersTrustCorp for case id "
-                                + caseDetails.getId());
+                                + caseDetails.getId(), userMessageTrustCorpsWelsh);
             }
         }
     }

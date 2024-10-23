@@ -20,8 +20,12 @@ import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
 @RequiredArgsConstructor
 public class OriginalWillSignedDateValidationRule implements ValidationRule {
     private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST = "originalWillSignedDateMustBeInThePast";
+    private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST_WELSH
+            = "originalWillSignedDateMustBeInThePastWelsh";
     private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH
             = "originalWillSignedDateMustBeBeforeDateOfDeath";
+    private static final String ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH_WELSH
+            = "originalWillSignedDateMustBeBeforeDateOfDeathWelsh";
 
     private final BusinessValidationMessageService businessValidationMessageService;
     
@@ -43,9 +47,11 @@ public class OriginalWillSignedDateValidationRule implements ValidationRule {
         }
         if (!willSignedDate.isBefore(now())) {
             allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST);
+            allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_IN_THE_PAST_WELSH);
         }
         if (willSignedDate.isAfter(dateOfDeath)) {
             allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH);
+            allErrorCodes.add(ORIGINAL_WILL_SIGNED_DATE_MUST_BE_BEFORE_DATE_OF_DEATH_WELSH);
         }
         return allErrorCodes;
     }
