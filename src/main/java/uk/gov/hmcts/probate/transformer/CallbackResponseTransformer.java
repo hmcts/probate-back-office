@@ -266,7 +266,7 @@ public class CallbackResponseTransformer {
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (isHubResponseRequired(caseData)) {
             responseCaseDataBuilder.citizenResponseCheckbox(null)
-                    .citizenResponseSubmittedDate(null)
+                    .expectedResponseDate(null)
                     .documentUploadIssue(null);
         }
         if (documentTransformer.hasDocumentWithType(documents, SENT_EMAIL)) {
@@ -287,7 +287,7 @@ public class CallbackResponseTransformer {
         }
 
         if (isHubResponseRequired(caseData) && YES.equalsIgnoreCase(caseData.getCitizenResponseCheckbox())) {
-            responseCaseDataBuilder.citizenResponseSubmittedDate(dateTimeFormatter.format(LocalDate.now()))
+            responseCaseDataBuilder
                     .informationNeeded(null)
                     .informationNeededByPost(null)
                     .boStopDetails(null)
@@ -1259,7 +1259,7 @@ public class CallbackResponseTransformer {
             .citizenResponse(caseData.getCitizenResponse())
             .documentUploadIssue(caseData.getDocumentUploadIssue())
             .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox())
-            .citizenResponseSubmittedDate(caseData.getCitizenResponseSubmittedDate());
+            .expectedResponseDate(caseData.getExpectedResponseDate());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

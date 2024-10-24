@@ -508,5 +508,5 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponse", "Label": "Citizen's response", "FieldType": "TextArea", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadIssue", "Label": "I'm having trouble uploading some or all of my documents", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponseCheckbox", "Label": "I confirm that I understand and accept this declaration", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponseSubmittedDate", "Label": "Response Submitted Date", "FieldType": "Date", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "expectedResponseDate", "Label": "Response Submitted Date", "FieldType": "Date", "SecurityClassification": "Public"}
 ]

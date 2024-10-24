@@ -2511,7 +2511,7 @@ class CallbackResponseTransformerTest {
                 .informationNeeded(YES)
                 .informationNeededByPost(NO)
                 .citizenResponseCheckbox(YES)
-                .citizenResponseSubmittedDate("some date")
+                .expectedResponseDate("some date")
                 .documentUploadIssue(YES);
 
         Document document = Document.builder()
@@ -2525,7 +2525,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.addInformationRequestDocuments(callbackRequestMock,
                 Arrays.asList(document));
         assertNull(callbackResponse.getData().getCitizenResponseCheckbox());
-        assertNull(callbackResponse.getData().getCitizenResponseSubmittedDate());
+        assertNull(callbackResponse.getData().getExpectedResponseDate());
         assertNull(callbackResponse.getData().getDocumentUploadIssue());
     }
 
@@ -4593,7 +4593,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
-        assertEquals(callbackResponse.getData().getCitizenResponseSubmittedDate(), LocalDate.now().toString());
+        assertEquals(callbackResponse.getData().getExpectedResponseDate(), LocalDate.now().toString());
         assertEquals(callbackResponse.getData().getEvidenceHandled(), NO);
     }
 
@@ -4611,7 +4611,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
-        assertEquals(callbackResponse.getData().getCitizenResponseSubmittedDate(), LocalDate.now().toString());
+        assertEquals(callbackResponse.getData().getExpectedResponseDate(), LocalDate.now().toString());
         assertEquals(callbackResponse.getData().getEvidenceHandled(), YES);
     }
 
@@ -4627,7 +4627,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertEquals(callbackResponse.getData().getInformationNeeded(), YES);
         assertEquals(callbackResponse.getData().getInformationNeededByPost(), NO);
-        assertNull(callbackResponse.getData().getCitizenResponseSubmittedDate());
+        assertNull(callbackResponse.getData().getExpectedResponseDate());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

@@ -612,7 +612,7 @@ public class CaseData extends CaseDataParent {
     private final String citizenResponse;
     private final String documentUploadIssue;
     private final String citizenResponseCheckbox;
-    private final String citizenResponseSubmittedDate;
+    private final String expectedResponseDate;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);

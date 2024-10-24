@@ -401,5 +401,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String citizenResponse;
     private final String documentUploadIssue;
     private final String citizenResponseCheckbox;
-    private final String citizenResponseSubmittedDate;
+    private final String expectedResponseDate;
 }
