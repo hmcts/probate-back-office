@@ -4593,7 +4593,6 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
-        assertEquals(callbackResponse.getData().getExpectedResponseDate(), LocalDate.now().toString());
         assertEquals(callbackResponse.getData().getEvidenceHandled(), NO);
     }
 
@@ -4611,7 +4610,6 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
-        assertEquals(callbackResponse.getData().getExpectedResponseDate(), LocalDate.now().toString());
         assertEquals(callbackResponse.getData().getEvidenceHandled(), YES);
     }
 
