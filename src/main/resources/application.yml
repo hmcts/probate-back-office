@@ -105,9 +105,9 @@ docmosis:
     sentEmail:
       templateName: FL-PRB-EML-ENG-00086.doc
     statementOfTruth:
-      templateName: FL-PRB-SOT-ENG-00091.doc
+      templateName: FL-PRB-SOT-ENG-00092.doc
     welshStatementOfTruth:
-      templateName: FL-PRB-SOT-WEL-00235.doc
+      templateName: FL-PRB-SOT-WEL-00236.doc
     assembledLetter:
       templateName: FL-PRB-GNO-ENG-00133-DTSPB-2638.docx
     blankLetter:
