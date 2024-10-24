@@ -30,17 +30,21 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     private String renderInset(CaseDetails caseDetails) {
         String caseState = caseDetails.getState();
         String progressStateName = "Unknown";
+        String progressStateNameWelsh = "Unknown";
         if (caseState != null) {
             CaseProgressState progressState = CaseProgressState.mapCaseState(caseState);
             progressStateName = progressState.getDisplayText();
+            progressStateNameWelsh = progressState.getDisplayWelshText();
         }
 
         return format("<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">%s</div>",
-                progressStateName);
+                progressStateName)
+                + format("<div class=\"govuk-inset-text govuk-!-font-weight-bold govuk-!-font-size-48\">%s</div>",
+                progressStateNameWelsh);
     }
 
     private String renderBodyHeader() {
-        return HeadingRenderer.render(getWhatNextText());
+        return HeadingRenderer.render(getWhatNextText(), getWhatNextTextWelsh());
     }
 
     protected abstract String renderContactDetails();
@@ -48,4 +52,6 @@ public abstract class NoTaskListRenderer extends BaseTaskListRenderer {
     protected abstract String renderBody(CaseDetails caseDetails);
 
     protected abstract String getWhatNextText();
+
+    protected abstract String getWhatNextTextWelsh();
 }
