@@ -35,7 +35,7 @@ public final class Constants {
     public static final String DOC_TYPE_CHERISHED = "cherished";
     public static final String DOC_TYPE_OTHER = "other";
     public static final String DATE_OF_DEATH_TYPE_DEFAULT = "diedOn";
-    public static final String CASE_TYPE_DEFAULT = "gop";
+    public static final String CASE_TYPE_GRANT_OF_PROBATE = "gop";
     public static final String DOCMOSIS_OUTPUT_PDF = "pdf";
     public static final String DOCMOSIS_OUTPUT_HTML = "html";
     public static final String REDEC_NOTIFICATION_SENT_STATE = "BORedecNotificationSent";
