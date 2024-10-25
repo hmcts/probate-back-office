@@ -247,7 +247,7 @@ dependencies {
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-high-level-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch.client', name: 'elasticsearch-rest-client', version: versions.elasticSearchVersion
   implementation group: 'org.elasticsearch', name: 'elasticsearch', version: versions.elasticSearchVersion
-  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
+  implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '7.6.0'
 
   implementation group: 'io.github.openfeign', name: 'feign-hc5', version: '13.5'
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
@@ -325,7 +325,7 @@ dependencies {
   contractTestRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.2")
   contractTestImplementation('org.junit.jupiter:junit-jupiter-api:5.11.2')
   contractTestRuntimeOnly group: 'org.junit.platform', name: 'junit-platform-commons', version: '1.11.2'
-  contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '6.3.0'
+  contractTestImplementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk', version: '7.6.0'
 
   contractTestImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
   contractTestRuntimeOnly group: 'org.springframework.boot', name: 'spring-boot-starter-test'
