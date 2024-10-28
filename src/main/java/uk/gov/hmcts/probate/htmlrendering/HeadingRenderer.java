@@ -12,8 +12,9 @@ public class HeadingRenderer {
         throw new IllegalStateException("Utility class");
     }
 
-    public static String render(String headerText) {
-        return format(OPEN_TAG + "%s" + CLOSE_TAG, headerText);
+    public static String render(String headerText, String headerTextWelsh) {
+        return format(OPEN_TAG + "%s" + CLOSE_TAG, headerText)
+                + format(OPEN_TAG + "%s" + CLOSE_TAG, headerTextWelsh);
     }
 
     public static String renderByReplace(String html) {

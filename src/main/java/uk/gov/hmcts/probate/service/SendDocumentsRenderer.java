@@ -5,17 +5,25 @@ import org.springframework.stereotype.Service;
 
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT_AFTER;
+import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT_WELSH;
+import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_TEXT_AFTER_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.PA14_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_AFTER;
+import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_TEXT_AFTER_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.PA15_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.PA16_FORM_URL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT;
+import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_WELSH;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_TEXT_ADMON_WILL;
 import static uk.gov.hmcts.probate.model.Constants.PA17_FORM_URL;
 
@@ -29,17 +37,35 @@ public class SendDocumentsRenderer {
             PA14_FORM_TEXT_AFTER + notApplyingExecutorName);
     }
 
+    public String getPA14NotApplyingExecutorTextWelsh(String notApplyingExecutorName) {
+        return linkFormatterService.formatLink("", PA14_FORM_URL, PA14_FORM_TEXT_WELSH,
+                PA14_FORM_TEXT_AFTER_WELSH + notApplyingExecutorName);
+    }
+
     public String getPA15NotApplyingExecutorText(String notApplyingExecutorName) {
         return linkFormatterService.formatLink("", PA15_FORM_URL, PA15_FORM_TEXT,
             PA15_FORM_TEXT_AFTER + notApplyingExecutorName);
+    }
+
+    public String getPA15NotApplyingExecutorTextWelsh(String notApplyingExecutorName) {
+        return linkFormatterService.formatLink("", PA15_FORM_URL, PA15_FORM_TEXT_WELSH,
+                PA15_FORM_TEXT_AFTER_WELSH + notApplyingExecutorName);
     }
 
     public String getPA16FormText() {
         return linkFormatterService.formatLink("", PA16_FORM_URL, PA16_FORM_TEXT, "");
     }
 
+    public String getPA16FormTextWelsh() {
+        return linkFormatterService.formatLink("", PA16_FORM_URL, PA16_FORM_TEXT_WELSH, "");
+    }
+
     public String getPA17FormText() {
         return linkFormatterService.formatLink("", PA17_FORM_URL, PA17_FORM_TEXT, "");
+    }
+
+    public String getPA17FormTextWelsh() {
+        return linkFormatterService.formatLink("", PA17_FORM_URL, PA17_FORM_TEXT_WELSH, "");
     }
 
     public String getAdmonWillRenunciationText() {
@@ -47,5 +73,12 @@ public class SendDocumentsRenderer {
             PA15_FORM_URL, PA15_FORM_TEXT_ADMON_WILL, ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT)
             + linkFormatterService.formatLink("", PA17_FORM_URL, PA17_FORM_TEXT_ADMON_WILL,
             ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT);
+    }
+
+    public String getAdmonWillRenunciationTextWelsh() {
+        return linkFormatterService.formatLink(ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT_WELSH,
+                PA15_FORM_URL, PA15_FORM_TEXT_ADMON_WILL, ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT)
+                + linkFormatterService.formatLink("", PA17_FORM_URL, PA17_FORM_TEXT_ADMON_WILL,
+                ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT_WELSH);
     }
 }

@@ -24,13 +24,24 @@ public class AppStoppedTaskListRenderer extends NoTaskListRenderer {
             .replaceFirst("<paperformLink/>",
                 LinkRenderer.renderOutside("paper form",
                     "https://www.gov.uk/government/collections/probate-forms"))
+            .replaceFirst("<paperformLinkWelsh/>",
+                    LinkRenderer.renderOutside("ffurflen bapur",
+                            "https://www.gov.uk/government/collections/probate-forms"))
             .replaceFirst("<guidanceLink/>",
                 LinkRenderer.renderOutside(
                     "Guidance on exemptions, conditions and when applications must be submitted by paper.",
-                        "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"));
+                        "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"))
+            .replaceFirst("<guidanceLinkWelsh/>",
+                    LinkRenderer.renderOutside(
+                            "Arweiniad ar esemptiadau, amodau a pha bryd y mae’n rhaid cyflwyno ceisiadau ar bapur.",
+                            "https://www.gov.uk/guidance/probate-paper-applications-for-legal-professionals"));
     }
 
     protected String getWhatNextText() {
         return "What to do next";
+    }
+
+    protected String getWhatNextTextWelsh() {
+        return "Beth i'w wneud nesaf";
     }
 }
