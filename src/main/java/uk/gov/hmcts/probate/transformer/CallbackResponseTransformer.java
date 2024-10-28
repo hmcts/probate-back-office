@@ -38,6 +38,7 @@ import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
 import uk.gov.hmcts.probate.transformer.assembly.AssembleLetterTransformer;
 import uk.gov.hmcts.probate.transformer.reset.ResetResponseCaseDataTransformer;
 import uk.gov.hmcts.probate.transformer.solicitorexecutors.ExecutorsTransformer;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
@@ -291,7 +292,11 @@ public class CallbackResponseTransformer {
                     .informationNeeded(null)
                     .informationNeededByPost(null)
                     .boStopDetails(null)
-                    .boStopDetailsDeclarationParagraph(null);
+                    .boStopDetailsDeclarationParagraph(null)
+                    .citizenResponse(null)
+                    .citizenDocumentsUploaded(null)
+                    .citizenResponses(getCitizenResponsesList(caseData))
+                    .boDocumentsUploaded(addCitizenUploadDocument(caseData));
 
             if (!YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())) {
                 responseCaseDataBuilder.evidenceHandled(NO);
@@ -1881,5 +1886,34 @@ public class CallbackResponseTransformer {
         return deceasedAliasNames.stream()
                 .filter(aliasMember -> seenAliasNames.add(aliasMember.getValue().getSolsAliasname()))
                 .collect(Collectors.toList());
+    }
+
+    private List<CollectionMember<CitizenResponse>> getCitizenResponsesList(CaseData caseData) {
+        if (caseData.getCitizenResponses() == null) {
+            caseData.setCitizenResponses(Arrays.asList(
+                    buildCitizenResponse(caseData.getCitizenResponse())));
+        } else {
+            caseData.getCitizenResponses().add(buildCitizenResponse(caseData.getCitizenResponse()));
+        }
+        return caseData.getCitizenResponses();
+    }
+
+    private CollectionMember<CitizenResponse> buildCitizenResponse(String response) {
+        return new CollectionMember<>(null, CitizenResponse.builder()
+                .response(response)
+                .submittedDate(LocalDateTime.now())
+                .build());
+    }
+
+    private List<CollectionMember<UploadDocument>> addCitizenUploadDocument(CaseData caseData) {
+        List<CollectionMember<UploadDocument>> currentUploads = caseData.getBoDocumentsUploaded();
+        if (currentUploads == null) {
+            currentUploads = new ArrayList<>();
+        }
+        List<CollectionMember<UploadDocument>> uploadedDocs = caseData.getCitizenDocumentsUploaded();
+        if (uploadedDocs != null) {
+            currentUploads.addAll(uploadedDocs);
+        }
+        return currentUploads;
     }
 }

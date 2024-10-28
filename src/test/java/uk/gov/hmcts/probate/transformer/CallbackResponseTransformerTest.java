@@ -4540,7 +4540,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse =
                 underTest.addMatches(callbackRequestMock, caseMatches);
 
-        assertEquals(callbackResponse.getData().getMatches(), "No matches found");
+        assertEquals("No matches found", callbackResponse.getData().getMatches());
     }
 
     @Test
@@ -4559,7 +4559,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse =
                 underTest.addMatches(callbackRequestMock, caseMatches);
 
-        assertEquals(callbackResponse.getData().getMatches(), "Possible case matches");
+        assertEquals("Possible case matches", callbackResponse.getData().getMatches());
     }
 
     @Test
@@ -4582,18 +4582,26 @@ class CallbackResponseTransformerTest {
 
     @Test
     void shouldTransformCitizenHubResponseWhenCheckboxYes() {
+        List<CollectionMember<UploadDocument>> documents = new ArrayList<>();
+        documents.add(createUploadDocuments("0"));
+
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .channelChoice(CHANNEL_CHOICE_DIGITAL)
                 .informationNeeded(YES)
                 .informationNeededByPost(NO)
-                .citizenResponseCheckbox(YES);
+                .citizenResponseCheckbox(YES)
+                .citizenResponse("responses")
+                .citizenDocumentsUploaded(documents);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
-        assertEquals(callbackResponse.getData().getEvidenceHandled(), NO);
+        assertEquals(NO, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertEquals("responses",
+                callbackResponse.getData().getCitizenResponses().get(0).getValue().getResponse());
     }
 
     @Test
@@ -4610,7 +4618,7 @@ class CallbackResponseTransformerTest {
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
         assertNull(callbackResponse.getData().getInformationNeeded());
         assertNull(callbackResponse.getData().getInformationNeededByPost());
-        assertEquals(callbackResponse.getData().getEvidenceHandled(), YES);
+        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
     }
 
     @Test
@@ -4623,8 +4631,8 @@ class CallbackResponseTransformerTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
         CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
-        assertEquals(callbackResponse.getData().getInformationNeeded(), YES);
-        assertEquals(callbackResponse.getData().getInformationNeededByPost(), NO);
+        assertEquals(YES, callbackResponse.getData().getInformationNeeded());
+        assertEquals(NO, callbackResponse.getData().getInformationNeededByPost());
         assertNull(callbackResponse.getData().getExpectedResponseDate());
     }
 

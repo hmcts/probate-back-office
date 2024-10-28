@@ -53,6 +53,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.DecimalMin;
@@ -613,6 +614,8 @@ public class CaseData extends CaseDataParent {
     private final String documentUploadIssue;
     private final String citizenResponseCheckbox;
     private final String expectedResponseDate;
+    private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
+    private List<CollectionMember<CitizenResponse>> citizenResponses;
 
     // @Getter(lazy = true)
     // private final String reissueDateFormatted = convertDate(reissueDate);
