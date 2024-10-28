@@ -34,6 +34,10 @@
   <div class="govuk-details__text">
     You now need to send us<br/><ul><li>the printed coversheet (accessed in the cover sheet tab) or your reference number 1528365719153338 written on a sheet of paper</li><li>a photocopy of the signed legal statement and declaration</li>{willExists}<li>the inheritance tax form IHT205</li></ul>
   </div>
+</details>
+<details class="govuk-details" data-module="govuk-details">
+  <summary class="govuk-details__summary">    <span class="govuk-details__summary-text">      Gweld y dogfennau sydd eu hangen gan Wasanaeth Llysoedd a Thribiwnlysoedd EF    </span>  </summary>
+  <div class="govuk-details__text">    Nawr, mae'n rhaid i chi anfon y canlynol atom<br/>  </div>
 </details></p></div><div class="govuk-grid-column-one-third"><p><img align="right" width="114px" height="31px" src="https://raw.githubusercontent.com/hmcts/probate-back-office/{code-branch}/src/m
 ain/resources/statusImages/in-progress.png" alt="IN PROGRESS" title="IN PROGRESS" /></p>
 </div></div>
