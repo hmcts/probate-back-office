@@ -5,15 +5,19 @@ import uk.gov.hmcts.probate.model.StateConstants;
 
 @Getter
 public enum CaseProgressState {
-    DEFAULT(StateConstants.STATE_DESC_DEFAULT),
-    CASE_ESCALATED(StateConstants.STATE_DESC_ESCALATED),
-    CASE_STOPPED(StateConstants.STATE_DESC_CASE_STOPPED),
-    APPLICATION_STOPPED(StateConstants.STATE_DESC_APPLICATION_STOPPED);
+    DEFAULT(StateConstants.STATE_DESC_DEFAULT, StateConstants.STATE_DESC_WELSH_DEFAULT),
+    CASE_ESCALATED(StateConstants.STATE_DESC_ESCALATED, StateConstants.STATE_DESC_WELSH_ESCALATED),
+    CASE_STOPPED(StateConstants.STATE_DESC_CASE_STOPPED, StateConstants.STATE_DESC_WELSH_CASE_STOPPED),
+    APPLICATION_STOPPED(StateConstants.STATE_DESC_APPLICATION_STOPPED,
+            StateConstants.STATE_DESC_WELSH_APPLICATION_STOPPED);
 
     private String displayText;
 
-    CaseProgressState(String displayText) {
+    private String displayWelshText;
+
+    CaseProgressState(String displayText,String displayTextWelsh) {
         this.displayText = displayText;
+        this.displayWelshText = displayTextWelsh;
     }
 
     public static CaseProgressState mapCaseState(String caseState) {

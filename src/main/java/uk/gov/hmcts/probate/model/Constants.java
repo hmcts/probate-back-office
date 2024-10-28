@@ -82,37 +82,79 @@ public final class Constants {
     public static final String SOLICITOR_ID = "solicitor";
     public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT
         = "an authenticated translation of the will in English or Welsh";
+
+    public static final String AUTHENTICATED_TRANSLATION_WILL_TEXT_WELSH
+            = "cyfieithiad wedi’i ddilysu o’r ewyllys yn Gymraeg neu Saesneg";
     public static final String PA14_FORM_URL = "https://www.gov.uk/government/publications/form-pa14-medical-certificate-probate";
     public static final String PA14_FORM_TEXT = "Medical certificate completed by a health professional";
+
+    public static final String PA14_FORM_TEXT_WELSH
+            = "Tystysgrif feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol ";
     public static final String PA14_FORM_TEXT_AFTER = "(PA14) for ";
+    public static final String PA14_FORM_TEXT_AFTER_WELSH = "(PA14) ar gyfer";
     public static final String PA15_FORM_URL = "https://www.gov.uk/government/publications/form-pa15-give-up-probate-executor-rights";
     public static final String PA15_FORM_TEXT = "Give up probate administrator rights paper form";
+    public static final String PA15_FORM_TEXT_WELSH = "Ffurflen bapur rhoi’r gorau i hawliau gweinyddwr profiant ";
     public static final String PA15_FORM_TEXT_AFTER = "(PA15) for ";
+    public static final String PA15_FORM_TEXT_AFTER_WELSH = "(PA15) ar gyfer ";
     public static final String PA16_FORM_URL = "https://www.gov.uk/government/publications/form-pa16-give-up-probate-administrator-rights";
     public static final String PA16_FORM_TEXT = "Give up probate administrator rights paper form (PA16)";
+
+    public static final String PA16_FORM_TEXT_WELSH
+            = "Ffurflen bapur rhoi’r gorau i hawliau gweinyddwr profiant (PA16)";
     public static final String PA17_FORM_URL = "https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for-probate-practitioners";
     public static final String PA17_FORM_TEXT = "Give up probate executor rights for probate practitioners paper form"
         + " (PA17)";
+
+    public static final String PA17_FORM_TEXT_WELSH = "Ffurflen bapur rhoi’r gorau i hawliau ysgutor profiant ar gyfer "
+            + "ymarferwyr profiant (PA17)";
     public static final String PA15_FORM_TEXT_ADMON_WILL = "PA15";
     public static final String PA17_FORM_TEXT_ADMON_WILL = "PA17";
     public static final String IHT_ESTATE_207_TEXT = "the inheritance tax form IHT 207";
+
+    public static final String IHT_ESTATE_207_TEXT_WELSH = "y ffurflen treth etifeddiant IHT 207";
     public static final String IHT_ESTATE_CONFIRM = "I confirm that the estate is an excepted estate";
     public static final String IHT_ESTATE_NOT_CONFIRM = "I confirm that the estate is not an excepted estate";
     public static final String DISPENSE_NOTICE_SUPPORT_TEXT =
             "the documents you listed to support your request to dispense with notice to non-applying executor(s): ";
+
+    public static final String DISPENSE_NOTICE_SUPPORT_TEXT_WELSH =
+            "y dogfennau a restrwyd gennych i gefnogi eich cais i hepgor hysbysu ysgutor nad yw/ysgutorion "
+                    + "nad ydynt yn gwneud cais ";
     public static final String TC_RESOLUTION_LODGED_WITH_APP = "a certified copy of the resolution";
+
+    public static final String TC_RESOLUTION_LODGED_WITH_APP_WELSH = "copi ardystiedig o’r datrysiad";
 
     public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT = "if applicable, send us the appropriate"
         + " renunciation form";
+
+    public static final String ADMON_WILL_RENUNCIATION_BEFORE_LINKS_TEXT_WELSH = "os yw’n berthnasol, "
+            + " anfonwch y ffurflen ymwrthod briodol atom";
     public static final String ADMON_WILL_RENUNCIATION_MID_LINKS_TEXT = "/ ";
     public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT = "for executors who have"
         + " renounced their right to apply";
+
+    public static final String ADMON_WILL_RENUNCIATION_AFTER_LINKS_TEXT_WELSH = "ar gyfer ysgutorion "
+            + " sydd wedi rhoi’r gorau i’w hawl i wneud cais";
     public static final String NOTARIAL_COPY_WILL_TEXT = "the notarial or court sealed copy of the will";
+
+    public static final String NOTARIAL_COPY_WILL_TEXT_WELSH
+            = "copi notarïol o’r ewyllys neu gopi wedi’i selio gan y llys";
     public static final String STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT
         = "statement of truth and Exhibits that lead to a R54 Order NCPR 1987 to prove the will is lost, "
          + "and that it has not been revoked";
+
+    public static final String STATEMENT_OF_TRUTH_AND_EXHIBITS_TEXT_WELSH
+            = "datganiad gwirionedd ac arddangosion sy’n arwain at Orchymyn R54 NCPR 1987 "
+            + "i brofi bod yr ewyllys ar goll, ac nad yw wedi'i dirymu";
     public static final String ORIGINAL_WILL_TEXT = "the original will";
+
+    public static final String ORIGINAL_WILL_TEXT_WELSH = "yr ewyllys wreiddiol";
+
+
     public static final String ORIGINAL_WILL_WITH_CODICILS_TEXT = "the original will and any codicils";
+
+    public static final String ORIGINAL_WILL_WITH_CODICILS_TEXT_WELSH = "yr ewyllys wreiddiol ac unrhyw godisiliau";
     // Is set when Solicitor completes.We currently have either 2.0.0 or null.
     // If we need to introduce more versions, we may need to change code where this is used
     // and possibly use more constants such as VERSION_TC_INTRODUCED, and use

@@ -32,6 +32,7 @@ import org.mockito.InjectMocks;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.service.MarkdownValidatorService.NontextVisitor;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -207,7 +208,9 @@ class MarkdownValidatorServiceTest {
 
         visitor.visit(node);
 
-        assertTrue(visitor.isInvalid(), "After visiting HtmlInline should be invalid");
+        assertAll(
+                () -> assertFalse(visitor.isInvalid(), "After visiting HtmlInline should be valid"),
+                () -> assertTrue(visitor.isHasHtml(), "After visiting HtmlInline should haveHtml"));
     }
 
     @Test
@@ -217,7 +220,9 @@ class MarkdownValidatorServiceTest {
 
         visitor.visit(node);
 
-        assertTrue(visitor.isInvalid(), "After visiting HtmlBlock should be invalid");
+        assertAll(
+                () -> assertFalse(visitor.isInvalid(), "After visiting HtmlBlock should be valid"),
+                () -> assertTrue(visitor.isHasHtml(), "After visiting HtmlBlock should haveHtml"));
     }
 
     @Test
