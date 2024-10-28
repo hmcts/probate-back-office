@@ -509,6 +509,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "documentUploadIssue", "Label": "I'm having trouble uploading some or all of my documents", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponseCheckbox", "Label": "I confirm that I understand and accept this declaration", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "expectedResponseDate", "Label": "Response Submitted Date", "FieldType": "Date", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponses", "Label": "Citizen's response", "FieldType": "Collection", "FieldTypeParameter": "citizenResponse", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponses", "Label": "Citizen's response", "FieldType": "Collection", "FieldTypeParameter": "citizenHubResponse", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenDocumentsUploaded", "Label": "Citizen Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"}
 ]
