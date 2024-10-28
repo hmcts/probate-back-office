@@ -283,7 +283,7 @@ public class CallbackResponseTransformer {
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
 
-        if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue()) && NO.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
+        if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue()) && !YES.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
             responseCaseDataBuilder.evidenceHandled(YES);
         }
 

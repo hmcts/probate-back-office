@@ -4611,7 +4611,8 @@ class CallbackResponseTransformerTest {
                 .informationNeeded(YES)
                 .informationNeededByPost(NO)
                 .citizenResponseCheckbox(YES)
-                .documentUploadIssue(YES);
+                .documentUploadIssue(YES)
+                .isSaveAndClose(NO);
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
 
