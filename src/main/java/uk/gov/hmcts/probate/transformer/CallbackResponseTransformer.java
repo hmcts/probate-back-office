@@ -1265,7 +1265,9 @@ public class CallbackResponseTransformer {
             .citizenResponse(caseData.getCitizenResponse())
             .documentUploadIssue(caseData.getDocumentUploadIssue())
             .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox())
-            .expectedResponseDate(caseData.getExpectedResponseDate());
+            .expectedResponseDate(caseData.getExpectedResponseDate())
+            .citizenResponses(caseData.getCitizenResponses())
+            .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

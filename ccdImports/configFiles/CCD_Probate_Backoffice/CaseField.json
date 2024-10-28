@@ -510,5 +510,6 @@
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponseCheckbox", "Label": "I confirm that I understand and accept this declaration", "FieldType": "YesOrNo", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "expectedResponseDate", "Label": "Response Submitted Date", "FieldType": "Date", "SecurityClassification": "Public"},
   {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenResponses", "Label": "Citizen's response", "FieldType": "Collection", "FieldTypeParameter": "citizenHubResponse", "SecurityClassification": "Public"},
-  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenDocumentsUploaded", "Label": "Citizen Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"}
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "citizenDocumentsUploaded", "Label": "Citizen Documents uploaded", "FieldType": "Collection", "FieldTypeParameter": "documentUpload", "SecurityClassification": "Public"},
+  {"LiveFrom": "01/01/2017", "CaseTypeID": "GrantOfRepresentation", "ID": "isSaveAndClose", "Label": "Is Save and Close", "FieldType": "YesOrNo", "SecurityClassification": "Public"}
 ]
