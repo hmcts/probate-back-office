@@ -17,6 +17,7 @@ import java.util.Locale;
 public class CaveatAcknowledgementValidationRule {
 
     public static final String PAYMENT_ACKNOWLEDGEMENT = "paymentAcknowledgementError";
+    public static final String PAYMENT_ACKNOWLEDGEMENT_WELSH = "paymentAcknowledgementErrorWelsh";
     public static final String PAYMENT_CONFIRMATION = "paymentAcknowledgement";
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
@@ -29,8 +30,10 @@ public class CaveatAcknowledgementValidationRule {
         if (!PAYMENT_CONFIRMATION.equals(confirmation)) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage(PAYMENT_ACKNOWLEDGEMENT, null, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage(PAYMENT_ACKNOWLEDGEMENT_WELSH, null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "Payment confirmation checkbox is not checked: " + caseDetails.getId());
+                    "Payment confirmation checkbox is not checked: " + caseDetails.getId(), userMessageWelsh);
         }
     }
 

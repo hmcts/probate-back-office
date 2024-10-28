@@ -36,17 +36,21 @@ class DeceasedAddressPostcodeValidationRuleTest {
     private SolsAddress addressMock;
 
     private FieldErrorResponse executorPostcodeIsNullError;
+    private FieldErrorResponse executorPostcodeIsNullError2;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         executorPostcodeIsNullError = FieldErrorResponse.builder().message("deceasedPostcodeIsNull").build();
+        executorPostcodeIsNullError2 = FieldErrorResponse.builder().message("deceasedPostcodeIsNullWelsh").build();
 
         when(ccdData.getDeceased()).thenReturn(deceasedMock);
 
         when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("deceasedPostcodeIsNull")))
             .thenReturn(executorPostcodeIsNullError);
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR),
+                eq("deceasedPostcodeIsNullWelsh"))).thenReturn(executorPostcodeIsNullError2);
     }
 
     @Test
@@ -55,7 +59,7 @@ class DeceasedAddressPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
@@ -66,8 +70,8 @@ class DeceasedAddressPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
-        assertTrue(errors.contains(executorPostcodeIsNullError));
+        assertEquals(2, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError2));
     }
 
     @Test
@@ -75,7 +79,7 @@ class DeceasedAddressPostcodeValidationRuleTest {
         when(deceasedMock.getAddress()).thenReturn(null);
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
@@ -87,7 +91,7 @@ class DeceasedAddressPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
@@ -99,7 +103,7 @@ class DeceasedAddressPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> errors = deceasedAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 

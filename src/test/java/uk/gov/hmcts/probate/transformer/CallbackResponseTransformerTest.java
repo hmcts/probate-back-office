@@ -32,7 +32,6 @@ import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
 import uk.gov.hmcts.probate.model.ccd.raw.EstateItem;
-import uk.gov.hmcts.probate.model.ccd.raw.HandoffReason;
 import uk.gov.hmcts.probate.model.ccd.raw.Payment;
 import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
@@ -69,6 +68,8 @@ import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantOfRepresentationData;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.GrantType;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReason;
+import uk.gov.hmcts.reform.probate.model.cases.HandoffReasonId;
 
 import java.math.BigDecimal;
 import java.text.DateFormat;
@@ -1815,6 +1816,22 @@ class CallbackResponseTransformerTest {
         assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
         assertEquals("Marriage", callbackResponse.getData().getPrimaryApplicantAliasReason());
         assertNull(callbackResponse.getData().getPrimaryApplicantOtherReason());
+    }
+
+    @Test
+    void shouldTransformCaseForPAWithPrimaryApplicantAliasToBeDifferentSpelling() {
+        caseDataBuilder.primaryApplicantAlias(PRIMARY_EXEC_ALIAS_NAMES);
+        caseDataBuilder.primaryApplicantSameWillName(NO);
+        caseDataBuilder.primaryApplicantAliasReason("differentSpelling");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertEquals(NO, callbackResponse.getData().getPrimaryApplicantSameWillName());
+        assertEquals(PRIMARY_EXEC_ALIAS_NAMES, callbackResponse.getData().getPrimaryApplicantAlias());
+        assertEquals("differentSpelling", callbackResponse.getData().getPrimaryApplicantAliasReason());
     }
 
     @Test
@@ -4319,6 +4336,30 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderEvenIfOneExists() {
+        List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
+        deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAliasFirstNameOnWill("John")
+                .deceasedAliasLastNameOnWill("Doe")
+                .deceasedAliasNameList(deceasedAliasNamesList);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCase(callbackRequestMock);
+
+        assertApplicationType(callbackResponse, ApplicationType.PERSONAL);
+        assertEquals("John Doe",
+                callbackResponse.getData()
+                        .getSolsDeceasedAliasNamesList()
+                        .get(0)
+                        .getValue()
+                        .getSolsAliasname());
+        assertEquals(2, callbackResponse.getData().getSolsDeceasedAliasNamesList().size());
+    }
+
+    @Test
     void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderForTransformCase() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtReferenceNumber("020e920e920e902e2")
@@ -4427,7 +4468,8 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldTransformWithHandOffReason() {
         List<CollectionMember<HandoffReason>> reason = new ArrayList();
-        reason.add(new CollectionMember<>(null, HandoffReason.builder().caseHandoffReason("Reason").build()));
+        reason.add(new CollectionMember<>(null,
+                HandoffReason.builder().caseHandoffReason(HandoffReasonId.POA).build()));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .boHandoffReasonList(reason)
                 .caseHandedOffToLegacySite("Yes");

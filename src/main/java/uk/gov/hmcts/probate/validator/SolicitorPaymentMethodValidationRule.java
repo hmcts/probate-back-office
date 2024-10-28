@@ -19,6 +19,7 @@ public class SolicitorPaymentMethodValidationRule implements CaseDetailsValidati
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
 
     private static final String SOLS_PAY_METHOD_NOT_FEE_ACCOUNT = "solsPayMethodNotFeeAccount";
+    private static final String SOLS_PAY_METHOD_NOT_FEE_ACCOUNT_WELSH = "solsPayMethodNotFeeAccountWelsh";
     private static final String PAYMENT_METHOD_VALUE_FEE_ACCOUNT = "fee account";
 
     @Override
@@ -45,8 +46,10 @@ public class SolicitorPaymentMethodValidationRule implements CaseDetailsValidati
             String[] args = {caseId};
             String userMessage = businessValidationMessageRetriever.getMessage(SOLS_PAY_METHOD_NOT_FEE_ACCOUNT,
                 args, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage(SOLS_PAY_METHOD_NOT_FEE_ACCOUNT_WELSH, args, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                "Fee Account payment method has not been selected: " + caseId);
+                "Fee Account payment method has not been selected: " + caseId, userMessageWelsh);
         }
     }
 }

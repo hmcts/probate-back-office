@@ -14,6 +14,7 @@ public class FurtherEvidenceForApplicationValidationRule {
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String EMPTY_FURTHER_EVIDENCE = "emptyFurtherEvidence";
+    private static final String EMPTY_FURTHER_EVIDENCE_WELSH = "emptyFurtherEvidenceWelsh";
 
     public void validate(CaseDetails caseDetails) {
         CaseData caseData = caseDetails.getData();
@@ -21,8 +22,10 @@ public class FurtherEvidenceForApplicationValidationRule {
                 || caseData.getFurtherEvidenceForApplication().trim().isBlank()) {
             String userMessage = businessValidationMessageRetriever
                     .getMessage(EMPTY_FURTHER_EVIDENCE, null, Locale.UK);
+            String userMessageWelsh = businessValidationMessageRetriever
+                    .getMessage(EMPTY_FURTHER_EVIDENCE, null, Locale.UK);
             throw new BusinessValidationException(userMessage,
-                    "The further evidence for application cannot be empty " + caseDetails.getId());
+                    "The further evidence for application cannot be empty " + caseDetails.getId(), userMessageWelsh);
         }
     }
 }
