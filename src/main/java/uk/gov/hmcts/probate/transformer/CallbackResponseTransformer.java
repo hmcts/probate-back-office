@@ -296,6 +296,7 @@ public class CallbackResponseTransformer {
                     .boStopDetailsDeclarationParagraph(null)
                     .citizenResponse(null)
                     .citizenDocumentsUploaded(null)
+                    .isSaveAndClose(null)
                     .citizenResponses(getCitizenResponsesList(caseData))
                     .boDocumentsUploaded(addCitizenUploadDocument(caseData));
 
@@ -1267,7 +1268,8 @@ public class CallbackResponseTransformer {
             .citizenResponseCheckbox(caseData.getCitizenResponseCheckbox())
             .expectedResponseDate(caseData.getExpectedResponseDate())
             .citizenResponses(caseData.getCitizenResponses())
-            .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded());
+            .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
+            .isSaveAndClose(caseData.getIsSaveAndClose());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);

@@ -405,4 +405,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final String expectedResponseDate;
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private final List<CollectionMember<CitizenResponse>> citizenResponses;
+    private final String isSaveAndClose;
 }
