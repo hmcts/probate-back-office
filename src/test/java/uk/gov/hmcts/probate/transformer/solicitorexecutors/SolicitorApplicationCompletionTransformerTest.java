@@ -27,15 +27,18 @@ import java.util.Arrays;
 import java.util.List;
 
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_GRANT_OF_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_THESE;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.DISPENSE_WITH_NOTICE_EXEC;
@@ -109,8 +112,10 @@ class SolicitorApplicationCompletionTransformerTest {
         closeableMocks.close();
     }
 
-    // Why is this test here? What is it actually testing? (? ExecutorListMapperService ?)
-    /*
+    /* Should this test be in this Test class? It's really relying on the ExecutorListMapperService
+     * to do the work being tested here. (Hence needing to create a new instance with a spy rather
+     * than the common handling with a mock.)
+     */
     @Test
     void shouldSetLegalStatementFieldsWithApplyingExecutorInfo() {
         final CaseData caseData = CaseData.builder()
@@ -122,15 +127,21 @@ class SolicitorApplicationCompletionTransformerTest {
                 .solsAdditionalExecutorList(solsAdditionalExecutorList)
                 .build();
 
-        SolicitorApplicationCompletionTransformer solJourneyCompletion =
-            new SolicitorApplicationCompletionTransformer(new ExecutorListMapperService(), new DateFormatterService());
+        final var executorListMapperSpy = spy(ExecutorListMapperService.class);
 
-        solicitorApplicationCompletionTransformer.mapSolicitorExecutorFieldsOnCompletion(caseData);
+        final var solApplComplXform = new SolicitorApplicationCompletionTransformer(
+                executorListMapperSpy,
+                dateFormatterServiceMock,
+                featureToggleServiceMock);
 
-        assertEquals(2, caseData.getAdditionalExecutorsApplying().size());
-        assertEquals(3, caseData.getExecutorsApplyingLegalStatement().size());
+        solApplComplXform.mapSolicitorExecutorFieldsOnCompletion(caseData);
+
+        assertAll(
+                () -> assertEquals(2, caseData.getAdditionalExecutorsApplying().size()),
+                () -> assertEquals(3, caseData.getExecutorsApplyingLegalStatement().size()),
+                () -> verifyNoInteractions(dateFormatterServiceMock, featureToggleServiceMock)
+        );
     }
-     */
 
     @Test
     void shouldSetLegalStatementFieldsWithNotApplyingExecutorInfo() {
