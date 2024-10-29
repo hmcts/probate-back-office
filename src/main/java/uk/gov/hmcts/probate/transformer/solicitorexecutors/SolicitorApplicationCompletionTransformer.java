@@ -7,6 +7,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
 import uk.gov.hmcts.probate.service.DateFormatterService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
 
 import java.math.BigDecimal;
@@ -21,11 +22,16 @@ import static uk.gov.hmcts.probate.model.Constants.NO;
 // for caseworker or solicitor journeys
 public class SolicitorApplicationCompletionTransformer extends LegalStatementExecutorTransformer {
 
+    private final FeatureToggleService featureToggleService;
+
     private static final String NOT_APPLICABLE = "NotApplicable";
 
-    public SolicitorApplicationCompletionTransformer(ExecutorListMapperService executorListMapperService,
-                                                     DateFormatterService dateFormatterService) {
+    public SolicitorApplicationCompletionTransformer(
+            final ExecutorListMapperService executorListMapperService,
+            final DateFormatterService dateFormatterService,
+            final FeatureToggleService featureToggleService) {
         super(executorListMapperService, dateFormatterService);
+        this.featureToggleService = featureToggleService;
     }
 
     /**
