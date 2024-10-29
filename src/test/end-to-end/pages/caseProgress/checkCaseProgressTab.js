@@ -29,7 +29,7 @@ module.exports = async function (opts) {
         assert (texts[17] === 'Once payment is made, you\'ll need to refresh the page or re-enter the case for the payment status to update.');
     }
 
-    assert (texts[18].split("\n")[0] === 'Send documents');
+    assert (texts[18].split('\n')[0] === 'Send documents');
     assert (texts[19] === 'These steps are completed by HM Courts and Tribunals Service staff. It can take a few weeks before the review starts.');
     assert (texts[21] === 'Authenticate documents');
     assert (texts[22] === 'We will authenticate your documents and match them with your application.');
