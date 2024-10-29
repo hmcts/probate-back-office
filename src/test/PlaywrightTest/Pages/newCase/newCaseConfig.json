@@ -1,8 +1,8 @@
 {
   "waitForText" : "Case list",
-  "page1_list1_application_type": "1: Personal",
-  "page1_list2_registry_location": "5: Liverpool",
-  "page1_list2_registry_location_update": "2: Birmingham",
+  "page1_list1_application_type": "Personal",
+  "page1_list2_registry_location": "Liverpool",
+  "page1_list2_registry_location_update": "Birmingham",
   "xuiCreateCaseLocator": "Create Case",
   "jurisdictionLocatorName": "Jurisdiction",
   "caseTypeLocatorName": "Case type",
