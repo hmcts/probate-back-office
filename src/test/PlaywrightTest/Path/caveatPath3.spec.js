@@ -1,5 +1,5 @@
 // @ts-check
-const {test,expect} = require('../Fixtures/fixtures');
+const {test, expect} = require('../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
 const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
@@ -35,7 +35,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             const scenarioName = 'Caseworker Caveat3 - Caveat expired';
 
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Caveat expired
-                // Test File
+            // Test File
             // get unique suffix for names - in order to match only against 1 case
             const unique_deceased_user = Date.now();
 
@@ -79,7 +79,7 @@ test.describe('Caseworker Caveat3 - Caveat expired', () => {
             nextStepName = 'Caveat match';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
-            await cwEventActionsPage.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
+            await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat matching';
             await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);

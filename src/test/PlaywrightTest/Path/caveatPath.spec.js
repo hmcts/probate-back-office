@@ -1,4 +1,4 @@
-const {test,expect} = require('../Fixtures/fixtures');
+const {test} = require('../Fixtures/fixtures');
 const dateFns = require('date-fns');
 
 const createCaseConfig = require('../Pages/createCase/createCaseConfig.json');
@@ -36,7 +36,7 @@ const {
 
 test.describe('Caseworker Caveat1 - Order summons', () => {
     test('Caseworker Caveat1 - Order summons',
-        async ({basePage, signInPage, createCasePage, cwEventActionsPage, makeAxeBuilder}, testInfo) => {
+        async ({basePage, signInPage, createCasePage, cwEventActionsPage}) => {
             const scenarioName = 'Caseworker Caveat1 - Order summons';
             // BO Caveat (Personal): Raise a caveat -> Caveat not matched -> Order summons
 
@@ -102,7 +102,7 @@ test.describe('Caseworker Caveat1 - Order summons', () => {
             nextStepName = 'Caveat match';
             await basePage.logInfo(scenarioName, nextStepName, caseRef);
             await cwEventActionsPage.chooseNextStep(nextStepName);
-            await cwEventActionsPage.selectCaseMatchesForCaveat(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
+            await cwEventActionsPage.selectCaseMatches(caseRef, nextStepName, true, caseMatchesConfig.addNewButton);
             await cwEventActionsPage.enterEventSummary(caseRef, nextStepName);
             endState = 'Caveat matching';
             await basePage.seeCaseDetails(caseRef, historyTabConfig, eventSummaryConfig, nextStepName, endState);
