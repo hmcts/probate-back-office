@@ -501,7 +501,7 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> superUserMakeDormantCase(@RequestBody CallbackRequest callbackRequest,
                                                                      HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
-        log.info("superuser make case Dormant");
+        log.info("superuser make case Dormant for case reference {}", callbackRequest.getCaseDetails().getId());
         CallbackResponse response = callbackResponseTransformer.superUserMakeCaseDormant(callbackRequest);
         return ResponseEntity.ok(response);
     }
