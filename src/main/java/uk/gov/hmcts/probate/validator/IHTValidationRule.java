@@ -10,7 +10,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -101,15 +100,12 @@ public class IHTValidationRule implements SolAddDeceasedEstateDetailsValidationR
     }
 
     private boolean shouldValidateIhtFormNetValue(CCDData ccdData) {
-        boolean isOnOrAfterSwitchDate = dateOfDeathIsOnOrAfterSwitchDate(ccdData.getDeceasedDateOfDeath());
+        boolean isOnOrAfterSwitchDate =
+                exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(ccdData.getDeceasedDateOfDeath());
         return (SOLICITOR.toString().equals(ccdData.getApplicationType())
                 && CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(ccdData.getChannelChoice()))
-                && (!isOnOrAfterSwitchDate && IHT400.equals(ccdData.getIht().getFormName()))
+            && ((!isOnOrAfterSwitchDate && IHT400.equals(ccdData.getIht().getFormName()))
                 || (isOnOrAfterSwitchDate && IHT400.equals(ccdData.getIht().getIhtFormEstate())
-                    && YES.equalsIgnoreCase(ccdData.getIht().getIhtFormEstateValuesCompleted()));
-    }
-
-    private boolean dateOfDeathIsOnOrAfterSwitchDate(LocalDate dateOfDeath) {
-        return exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate(dateOfDeath);
+                    && YES.equalsIgnoreCase(ccdData.getIht().getIhtFormEstateValuesCompleted())));
     }
 }
