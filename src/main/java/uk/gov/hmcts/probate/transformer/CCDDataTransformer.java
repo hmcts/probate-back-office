@@ -67,7 +67,8 @@ public class CCDDataTransformer {
             .titleAndClearingType(caseData.getTitleAndClearingType())
             .englishWill(caseData.getEnglishWill())
             .dispenseWithNotice(caseData.getDispenseWithNotice())
-            .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs());
+            .dispenseWithNoticeSupportingDocs(caseData.getDispenseWithNoticeSupportingDocs())
+            .channelChoice(caseData.getChannelChoice());
 
         if (caseData.getApplicationType() != null) {
             dataBuilder
