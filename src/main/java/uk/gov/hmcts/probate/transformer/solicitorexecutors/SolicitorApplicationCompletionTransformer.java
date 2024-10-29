@@ -14,7 +14,9 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static uk.gov.hmcts.probate.model.ApplicationState.CASE_PRINTED;
+import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_GRANT_OF_PROBATE;
 import static uk.gov.hmcts.probate.model.Constants.NO;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_THESE;
 
 @Component
 @Slf4j
@@ -67,6 +69,32 @@ public class SolicitorApplicationCompletionTransformer extends LegalStatementExe
         if (totalAmount.compareTo(BigDecimal.ZERO) == 0) {
             caseDetails.getData().setPaymentTaken(NOT_APPLICABLE);
             caseDetails.setState(CASE_PRINTED.getId());
+        }
+    }
+
+    public void clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(CaseDetails caseDetails) {
+        if (featureToggleService.enableDuplicateExecutorFiltering()) {
+            final var caseId = caseDetails.getId();
+            final var caseData = caseDetails.getData();
+
+            final var titleAndClearingType = caseData.getTitleAndClearingType();
+            final var caseType = caseData.getCaseType();
+
+            final var primaryApplicantApplying = caseData.isPrimaryApplicantApplying();
+            final var isNotNoneOfTheseTCT = titleAndClearingType != null
+                    && !TITLE_AND_CLEARING_NONE_OF_THESE.equalsIgnoreCase(titleAndClearingType);
+            final var isGrantOfProbate = CASE_TYPE_GRANT_OF_PROBATE.equalsIgnoreCase(caseType);
+
+            if (isNotNoneOfTheseTCT
+                    && primaryApplicantApplying
+                    && isGrantOfProbate) {
+                log.info("In GrantOfProbate case {} we have primary applicant applying for non-NoneOfThese "
+                        + "TitleAndClearingType {}, clear PrimaryApplicant fields",
+                        caseId,
+                        titleAndClearingType);
+
+                caseData.clearPrimaryApplicant();
+            }
         }
     }
 }

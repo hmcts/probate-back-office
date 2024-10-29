@@ -32,8 +32,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.Constants.CASE_TYPE_GRANT_OF_PROBATE;
+import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_NONE_OF_THESE;
 import static uk.gov.hmcts.probate.model.Constants.TITLE_AND_CLEARING_TRUST_CORP;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_APPLYING;
 import static uk.gov.hmcts.probate.util.CommonVariables.ADDITIONAL_EXECUTOR_NOT_APPLYING;
@@ -259,5 +263,122 @@ class SolicitorApplicationCompletionTransformerTest {
         solicitorApplicationCompletionTransformer.setFieldsOnServiceRequest(caseDetails, totalAmount);
 
         assertEquals(NOT_APPLICABLE, caseData.getPaymentTaken());
+    }
+
+    // given Case
+    // and CaseType is GrantOfProbate
+    // and TitleClearingType is not NoneOfThese
+    // and PrimaryApplicantApplying is true
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is called
+    @Test
+    void givenCaseWithoutNoneOfTheseTitleClearingTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataCleared() {
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+
+        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
+
+        when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
+        when(caseData.getTitleAndClearingType()).thenReturn("");
+        when(caseData.isPrimaryApplicantApplying()).thenReturn(true);
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
+        verify(caseData, times(1)).clearPrimaryApplicant();
+    }
+
+    // given Case
+    // and CaseType is NOT GrantOfProbate
+    // and TitleClearingType is not NoneOfThese
+    // and PrimaryApplicantApplying is true
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is NOT called
+    @Test
+    void givenCaseNotGOPWoutNoneOfTheseTCTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataNOTCleared() {
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+
+        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
+
+        when(caseData.getCaseType()).thenReturn("");
+        when(caseData.getTitleAndClearingType()).thenReturn("");
+        when(caseData.isPrimaryApplicantApplying()).thenReturn(true);
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
+        verify(caseData, times(0)).clearPrimaryApplicant();
+    }
+
+    // given Case
+    // and CaseType is GrantOfProbate
+    // and TitleClearingType is NoneOfThese
+    // and PrimaryApplicantApplying is true
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is not called
+    @Test
+    void givenCaseWithNoneOfTheseTitleClearingTypeANDPrimaryApplicant_whenChecked_thenPrimaryApplicantDataNOTCleared() {
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+
+        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
+
+        when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
+        when(caseData.getTitleAndClearingType()).thenReturn(TITLE_AND_CLEARING_NONE_OF_THESE);
+        when(caseData.isPrimaryApplicantApplying()).thenReturn(true);
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
+        verify(caseData, times(0)).clearPrimaryApplicant();
+    }
+
+    // given Case
+    // and CaseType is GrantOfProbate
+    // and TitleClearingType is not NoneOfThese
+    // and PrimaryApplicantApplying is false
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is not called
+    @Test
+    void givenCaseWoutNoneOfTheseTitleClearingTypeANDWoutPrmryApplicant_whenChecked_thenPrmryApplicantDataNOTCleared() {
+        final CaseData realCaseData = CaseData.builder().build();
+        final CaseData spyCaseData = spy(realCaseData);
+        final CaseDetails caseDetails = new CaseDetails(spyCaseData, null, 0L);
+
+        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(true);
+
+        when(spyCaseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
+        when(spyCaseData.getTitleAndClearingType()).thenReturn("");
+        when(spyCaseData.isPrimaryApplicantApplying()).thenReturn(false);
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
+        verify(spyCaseData, times(0)).clearPrimaryApplicant();
+    }
+
+    // given Case
+    // and CaseType is GrantOfProbate
+    // and TitleClearingType is not NoneOfThese
+    // and PrimaryApplicantApplying is true
+    // and enableDuplicateApplicant is false
+    // when transformer clearPrimaryForNoneOfThese called
+    // then primaryApplicantClear is called
+    @Test
+    void givenCaseWithoutNoneOfTheseTtlClrngTypeANDPrmryApplANDDuplDisabled_whenChecked_thenPrmryApplDataNOTCleared() {
+        final CaseData caseData = mock(CaseData.class);
+        final CaseDetails caseDetails = new CaseDetails(caseData, null, 0L);
+
+        when(featureToggleServiceMock.enableDuplicateExecutorFiltering()).thenReturn(false);
+
+        when(caseData.getCaseType()).thenReturn(CASE_TYPE_GRANT_OF_PROBATE);
+        when(caseData.getTitleAndClearingType()).thenReturn("");
+        when(caseData.isPrimaryApplicantApplying()).thenReturn(true);
+
+        solicitorApplicationCompletionTransformer.clearPrimaryApplicantWhenNotInNoneOfTheseTitleAndClearingType(
+                caseDetails);
+
+        verify(caseData, times(0)).clearPrimaryApplicant();
     }
 }
