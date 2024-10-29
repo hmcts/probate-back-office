@@ -1,6 +1,7 @@
 const {expect} = require('@playwright/test');
 const {testConfig} = require ('../../Configs/config');
 const {accessibilityPage} = require('../../Accessibility/runner');
+const assert = require('assert');
 
 exports.BasePage = class BasePage {
     constructor(page) {
@@ -8,7 +9,7 @@ exports.BasePage = class BasePage {
         this.rejectLocator = page.getByRole('button', {name: 'Reject analytics cookies'});
         this.continueButtonLocator = page.getByRole('button', {name: 'Continue'});
         this.submitButtonLocator = page.getByRole('button', {name: 'Submit'});
-        this.goButtonLocator = this.page.getByRole('button', {name: 'Go'});
+        this.goButtonLocator = page.getByRole('button', {name: 'Go'});
     }
 
     async logInfo(scenarioName, log, caseRef) {
@@ -69,11 +70,13 @@ exports.BasePage = class BasePage {
     }
 
     async waitForGoNavigationToComplete() {
-        const navigationPromise = this.page.waitForNavigation();
         await expect(this.goButtonLocator).toBeVisible();
         await expect(this.goButtonLocator).toBeEnabled();
-        this.goButtonLocator.click();
-        await navigationPromise;
+        await Promise.all([
+            this.goButtonLocator.waitFor({state: 'visible'}),
+            this.goButtonLocator.click(),
+            this.goButtonLocator.waitFor({state: 'detached'})
+        ]);
     }
 
     async waitForSignOutNavigationToComplete(signOutLocator) {
@@ -85,7 +88,7 @@ exports.BasePage = class BasePage {
     }
 
     async seeCaseDetails(caseRef, tabConfigFile, dataConfigFile, nextStep, endState, delay = testConfig.CaseDetailsDelayDefault) {
-        if (tabConfigFile.tabName) {
+        if (tabConfigFile.tabName && tabConfigFile.tabName !== 'Documents') {
             await expect(this.page.locator(`//div[contains(text(),"${tabConfigFile.tabName}")]`)).toBeEnabled();
         }
 
@@ -144,6 +147,18 @@ exports.BasePage = class BasePage {
                     await expect(this.page.getByRole('table', {name: 'case viewer table'})).toContainText(dataConfigFile[tabConfigFile.dataKeys[i]]);
                 }
             }
+        }
+    }
+
+    async dontSeeCaseDetails(fieldLabelsNotToBeShown) {
+        let visibleElements;
+        let numElements;
+
+        for (let i = 0; i < fieldLabelsNotToBeShown.length; i++) {
+            // eslint-disable-next-line
+            visibleElements = await this.page.locator(`xpath=//div[contains(@class, 'case-viewer-label')][text()='${fieldLabelsNotToBeShown[i]}']`).filter({ visible: true });
+            numElements = await visibleElements.count();
+            assert (numElements === 0);
         }
     }
 

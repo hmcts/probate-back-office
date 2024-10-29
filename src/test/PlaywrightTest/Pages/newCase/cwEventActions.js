@@ -8,6 +8,11 @@ const reopenCaveatConfig = require('../reopenningCases/caveat/reopenCaveatConfig
 const withdrawCaveatConfig = require('../withdrawCaveat/withdrawCaveatConfig');
 const registrarsDecisionConfig = require('../registrarsDecision/registrarsDecisionConfig');
 const assert = require('assert');
+const handleEvidenceConfig = require('../handleEvidence/handleEvidenceConfig');
+// const createGrantOfProbateConfig = require('../../../end-to-end/pages/createGrantOfProbate/createGrantOfProbateConfig.json');
+const createCaseConfig = require('../createCase/createCaseConfig.json');
+const issueGrantConfig = require('../issueGrant/issueGrantConfig');
+// const createGrantOfProbateConfig = require('../createGrantOfProbateManual/createGrantOfProbateManualConfig.json');
 
 exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
     constructor(page) {
@@ -33,17 +38,25 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         this.registrarDecisionHeadingLocator = this.page.getByText(registrarsDecisionConfig.waitForText);
         // this.registrarDecisionSelectionLocator = this.page.getByLabel(`${registrarsDecisionConfig.radioProbateRefused}`);
         this.registrarDecisionSelectionLocator = this.page.getByRole('radio').nth(0);
-        this.registrarDecisionReasonLocator = this.page.locator(`#registrarDirectionToAdd_furtherInformation`);
+        this.registrarDecisionReasonLocator = this.page.locator('#registrarDirectionToAdd_furtherInformation');
+        this.handleEvidenceHeadingLocator = this.page.getByRole('heading', {name: `${handleEvidenceConfig.waitForText}`});
+        this.handleEvideChkBoxLocator = this.page.locator(`#evidenceHandled_${handleEvidenceConfig.checkbox}`);
+        this.addCaseStopReasonLocator = this.page.locator('div.panel button');
+        this.caseStopReasonLocator = this.page.locator('#boCaseStopReasonList_0_caseStopReason');
+        this.resolveStopLocator = this.page.locator('#resolveStopState');
+        this.issueGrantHeadingLocator = this.page.getByRole('heading', {name: issueGrantConfig.waitForText});
+        this.bulkPrintLocator = this.page.locator(`#boSendToBulkPrint_${issueGrantConfig.list1_text}`);
+        this.emailGrantIssueNotificationLocator = this.page.locator(`#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`);
     }
 
     async chooseNextStep(nextStep) {
         await expect(this.nextStepLocator).toBeEnabled();
-        await this.nextStepLocator.selectOption(nextStep);
+        await this.nextStepLocator.selectOption({label: nextStep});
         await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
         await this.waitForGoNavigationToComplete(commonConfig.submitButton);
     }
 
-    async selectCaseMatchesForCaveat(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
+    async selectCaseMatches(caseRef, nextStepName, retainFirstItem=true, addNewButtonLocator=null, skipMatchingInfo=false) {
         await expect(this.page.getByText(nextStepName)).toBeVisible();
         await expect(this.page.getByText(caseRef)).toBeVisible();
         await this.page.waitForTimeout(testConfig.CaseMatchesInitialDelay);
@@ -54,8 +67,9 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
             // await I.waitForElement('#caseMatches_0_0', testConfig.WaitForTextTimeout);
             // await I.waitForVisible({css: '#caseMatches_0_valid_Yes'}, testConfig.WaitForTextTimeout);
         }
-        this.addNewButtonLocator = await this.page.getByText(addNewButtonLocator);
+
         if (numOfElements === 0 && retainFirstItem && addNewButtonLocator) {
+            this.addNewButtonLocator = await this.page.getByText(addNewButtonLocator);
             await this.page.waitForTimeout(testConfig.CaseMatchesAddNewButtonClickDelay);
             await expect(this.addNewButtonLocator).toBeEnabled();
             await this.addNewButtonLocator.click();
@@ -64,6 +78,7 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         if (retainFirstItem && (numOfElements > 0 || addNewButtonLocator)) {
             // Just a small delay - occasionally we get issues here but only relevant for local dev.
             // Only necessary where we have no auto delay (local dev).
+            this.addNewButtonLocator = await this.page.getByText(addNewButtonLocator);
             if (!testConfig.TestAutoDelayEnabled) {
                 await this.page.waitForTimeout(testConfig.ManualDelayMedium);
             }
@@ -192,11 +207,56 @@ exports.CwEventActionsPage = class CwEventActionsPage extends BasePage {
         await this.page.waitForTimeout(3);
         await this.registrarDecisionSelectionLocator.click();
         await this.registrarDecisionReasonLocator.fill(registrarsDecisionConfig.furtherInformation);
-        //await I.waitForEnabled({css: `#registrarDirectionToAdd_decision-${registrarsDecisionConfig.radioProbateRefused}`});
-        //await I.dontSeeCheckboxIsChecked({css: `#registrarDirectionToAdd_decision-${registrarsDecisionConfig.radioProbateRefused}`});
-        //await I.click({css: `#registrarDirectionToAdd_decision-${registrarsDecisionConfig.radioProbateRefused}`});
-        //await I.fillField('#registrarDirectionToAdd_furtherInformation', registrarsDecisionConfig.furtherInformation);
+
         await this.waitForNavigationToComplete(commonConfig.continueButton);
-        //await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async handleEvidence(caseRef, handled ='No') {
+        await expect(this.handleEvidenceHeadingLocator).toBeVisible();
+        this.caseRefLocator = this.page.getByRole('heading', {name: `${caseRef}`});
+        this.handleEvidenceChkBoxOptionLocator = this.page.locator(`#evidenceHandled_${handled}`);
+        await expect(this.caseRefLocator).toBeVisible();
+        await expect(this.handleEvideChkBoxLocator).toBeEnabled();
+        await this.handleEvidenceChkBoxOptionLocator.isChecked();
+        await this.handleEvideChkBoxLocator.click();
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async caseProgressStopEscalateIssueAddCaseStoppedReason() {
+        await expect(this.addCaseStopReasonLocator).toBeEnabled();
+        await this.addCaseStopReasonLocator.click();
+        await expect(this.caseStopReasonLocator).toBeEnabled();
+        await this.caseStopReasonLocator.click();
+        await this.caseStopReasonLocator.selectOption({label: `${createCaseConfig.stopReason}`});
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async chooseResolveStop(resolveStop) {
+        await expect(this.resolveStopLocator).toBeEnabled();
+        await this.resolveStopLocator.selectOption({label: `${resolveStop}`});
+        await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+    }
+
+    async issueGrant(caseRef) {
+        await expect(this.issueGrantHeadingLocator).toBeVisible();
+        await expect(this.page.getByText(caseRef)).toBeVisible();
+        await expect(this.bulkPrintLocator).toBeEnabled();
+        await this.bulkPrintLocator.click();
+        await expect(this.emailGrantIssueNotificationLocator).toBeEnabled();
+        await this.emailGrantIssueNotificationLocator.click();
+        await this.page.waitForTimeout(testConfig.CaseworkerGoButtonClickDelay);
+        await this.waitForSubmitNavigationToComplete(commonConfig.continueButton);
+        // await I.waitForText(issueGrantConfig.waitForText, testConfig.WaitForTextTimeout);
+
+        // await I.see(caseRef);
+
+        // await I.waitForElement({css: `#boSendToBulkPrint_${issueGrantConfig.list1_text}`});
+        // await I.waitForEnabled({css: `#boSendToBulkPrint_${issueGrantConfig.list1_text}`});
+        // await I.click(`#boSendToBulkPrint_${issueGrantConfig.list1_text}`);
+        // await I.waitForEnabled({css: `#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`});
+        // await I.click(`#boEmailGrantIssuedNotification_${issueGrantConfig.list2_text}`);
+
+        // await I.waitForNavigationToComplete(commonConfig.continueButton);
     }
 };

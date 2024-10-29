@@ -2,7 +2,7 @@
   "waitForText" : "Upload Documents",
   "documentType": ["Email", "Correspondence", "Will", "Codicil", "Uploaded Legal Statement", "Other", "Death Certificate"],
   "documentTypeSelected": "Email",
-  "fileToUploadUrl":"../../Documents/uploadDocuments/test_file.docx",
+  "fileToUploadUrl":"./src/test/PlaywrightTest/Documents/test_file.docx",
   "filename": "test_file.docx",
   "comment": "test file to upload",
   "id": "#boDocumentsUploaded"
