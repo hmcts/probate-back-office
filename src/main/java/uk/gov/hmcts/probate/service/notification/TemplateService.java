@@ -15,7 +15,7 @@ import static uk.gov.hmcts.probate.model.CaseOrigin.CASEWORKER;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_PAPERFORM;
-import static uk.gov.hmcts.probate.model.Constants.YES;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -59,11 +59,7 @@ public class TemplateService {
             case GENERAL_CAVEAT_MESSAGE:
                 return emailTemplates.getGeneralCaveatMessage();
             case CASE_STOPPED_REQUEST_INFORMATION:
-                if (ApplicationType.PERSONAL.equals(applicationType)
-                    && ((CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(channelChoice)
-                        && YES.equalsIgnoreCase(informationNeededByPost))
-                    || CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase(channelChoice)
-                    || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice))) {
+                if (requestInfoByPostForPersonalApplication(channelChoice, applicationType, informationNeededByPost)) {
                     return emailTemplates.getRequestInformationByPost();
                 } else {
                     return emailTemplates.getRequestInformation();
@@ -91,6 +87,15 @@ public class TemplateService {
             default:
                 throw new BadRequestException("Unsupported state");
         }
+    }
+
+    private boolean requestInfoByPostForPersonalApplication(String channelChoice, ApplicationType applicationType,
+                                                            String informationNeededByPost) {
+        return ApplicationType.PERSONAL.equals(applicationType)
+            && ((CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(channelChoice)
+                && !NO.equalsIgnoreCase(informationNeededByPost))
+                || CHANNEL_CHOICE_BULKSCAN.equalsIgnoreCase(channelChoice)
+                || CHANNEL_CHOICE_PAPERFORM.equalsIgnoreCase(channelChoice));
     }
 }
 

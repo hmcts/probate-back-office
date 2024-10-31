@@ -286,14 +286,16 @@ public class CallbackResponseTransformer {
         if (YES.equalsIgnoreCase(caseData.getDocumentUploadIssue())
                 && !YES.equalsIgnoreCase(caseData.getIsSaveAndClose())) {
             responseCaseDataBuilder.evidenceHandled(YES);
+
+            if (nothingSubmitted(caseData)) {
+                resetRequestInformationFields(responseCaseDataBuilder);
+            }
         }
 
         if (isHubResponseRequired(caseData) && YES.equalsIgnoreCase(caseData.getCitizenResponseCheckbox())) {
+            resetRequestInformationFields(responseCaseDataBuilder);
+
             responseCaseDataBuilder
-                    .informationNeeded(null)
-                    .informationNeededByPost(null)
-                    .boStopDetails(null)
-                    .boStopDetailsDeclarationParagraph(null)
                     .citizenResponse(null)
                     .citizenDocumentsUploaded(null)
                     .isSaveAndClose(null)
@@ -1350,6 +1352,10 @@ public class CallbackResponseTransformer {
             && NO.equals(caseData.getInformationNeededByPost()));
     }
 
+    private boolean nothingSubmitted(CaseData caseData) {
+        return caseData.getCitizenResponse().isEmpty() && caseData.getCitizenDocumentsUploaded().isEmpty();
+    }
+
     private ResponseCaseDataBuilder<?, ?> getCaseCreatorResponseCaseBuilder(CaseData caseData,
                                                                             ResponseCaseDataBuilder<?, ?> builder) {
 
@@ -1920,5 +1926,13 @@ public class CallbackResponseTransformer {
             currentUploads.addAll(uploadedDocs);
         }
         return currentUploads;
+    }
+
+    private void resetRequestInformationFields(ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        responseCaseDataBuilder
+                .informationNeeded(null)
+                .informationNeededByPost(null)
+                .boStopDetails(null)
+                .boStopDetailsDeclarationParagraph(null);
     }
 }
