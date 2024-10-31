@@ -572,3 +572,7 @@ reactivate_dormant:
 
 grand_delay:
   number_of_weeks: 16
+
+bulkscan:
+  default-value:
+    postcode: MI55 1NG

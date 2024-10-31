@@ -127,6 +127,8 @@ public class ExceptionRecordService {
             // Add bulkScanReferenceId
             grantOfRepresentationData.setBulkScanCaseReference(erRequest.getExceptionRecordId());
 
+            grantOfRepresentationData.setModifiedOCRFieldList(erRequest.getModifiedFields());
+
             // Add scanned documents
             log.info("About to map Grant of Representation Scanned Documents to CCD.");
             ExceptionRecordCaseDataValidator.validateInputScannedDocumentTypes(

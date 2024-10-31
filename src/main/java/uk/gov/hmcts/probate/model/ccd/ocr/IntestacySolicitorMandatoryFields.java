@@ -10,7 +10,6 @@ public enum IntestacySolicitorMandatoryFields {
     DECEASED_FORENAMES("deceasedForenames", "Deceased first names"),
     DECEASED_SURNAME("deceasedSurname", "Deceased last name"),
     DECEASED_ADDRESS_LINE1("deceasedAddressLine1", "Deceased address line 1"),
-    DECEASED_ADDRESS_POSTCODE("deceasedAddressPostCode", "Deceased postcode"),
     DECEASED_DIED_ON_AFTER_SWITCH_DATE("deceasedDiedOnAfterSwitchDate",
             "Did the person die on or after 1 January 2022?", "3"),
     DECEASED_DOB("deceasedDateOfBirth", "Deceased date of birth"),
