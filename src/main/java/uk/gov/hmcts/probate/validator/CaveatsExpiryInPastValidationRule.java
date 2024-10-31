@@ -8,7 +8,7 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -22,10 +22,12 @@ class CaveatsExpiryInPastValidationRule implements CaveatsExpiryValidationRule {
 
     @Override
     public List<FieldErrorResponse> validate(CaveatData ccdData) {
-        Set<FieldErrorResponse> errors = new HashSet<>();
+        Set<FieldErrorResponse> errors = new LinkedHashSet<>();
 
         if (ccdData.getExpiryDate().isBefore(LocalDate.now())) {
             errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR, "caveatExpiryInThePast"));
+            errors.add(businessValidationMessageService.generateError(BUSINESS_ERROR,
+                    "caveatExpiryInThePastWelsh"));
         }
         return new ArrayList<>(errors);
     }

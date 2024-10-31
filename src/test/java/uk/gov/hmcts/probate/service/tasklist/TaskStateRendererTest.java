@@ -133,25 +133,35 @@ class TaskStateRendererTest {
                 + "<div>Make payment</div>\n"
                 + "<div></div>\n"
                 + "<div></div>\n"
+                + "<div></div>\n"
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
-                + "<div>Issue grant of representation<</div>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<div>Issue grant of representation</div>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
                 + "/src/main/resources/statusImages/"
                 + "not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
                 + "</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/"
+                + "not-started-welsh.png\" alt=\"HEB DDECHRAU\" title=\"HEB DDECHRAU\" /></p>\n"
+                + "</p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
                 + "<p></p>\n"
                 + "<p></p>\n"
                 + "<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
-                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
+                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Authenticated on "
                 + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-                + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+                + "</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_SOLICITOR_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "No",
@@ -173,28 +183,44 @@ class TaskStateRendererTest {
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<div>Issue grant of representation</div>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
             + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Authenticated on "
             + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+            + "</p>\n<p></p>\n<p></p>\n<p></p>\n"
+                + "<p></p>\n<p></p>\n<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_DECEASED_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "No",
@@ -216,29 +242,41 @@ class TaskStateRendererTest {
                 + "<div>Make payment</div>\n"
                 + "<div></div>\n"
                 + "<div></div>\n"
+                + "<div></div>\n"
                 + "<div>Authenticate documents</div>\n"
                 + "<div>Examine application</div>\n"
-                + "<div>Issue grant of representation<</div>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<div>Issue grant of representation</div>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
                 + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
                 + "</p>\n"
-                + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
                 + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
                 + TaskState.CODE_BRANCH
-                + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>"
-                + "\n"
-                + "</p>\n"
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" />"
+                + "</p>\n</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
                 + "<p></p>\n"
                 + "<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Submitted on 01 Nov 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">"
-                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n"
+                + "&nbsp;</div></div>\n</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n"
                 + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
                 + "<p><strong>Authenticated on "
                 + "10 Oct 2020</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-                + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+                + "</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n";
 
         CaseDataBuilder caseDataBuilder = CaseData.builder()
                 .escalatedDate(LocalDate.of(2020, 1, 1))
@@ -264,42 +302,68 @@ class TaskStateRendererTest {
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<div>Issue grant of representation</div>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/in-progress.png\" alt=\"IN PROGRESS\" title=\"IN PROGRESS\" /></p>\n"
             + "</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/in-progress-welsh.png\" alt=\"YN MYND RHAGDDO\" "
+                + "title=\"YN MYND RHAGDDO\" /></p>\n</p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Submitted on 01 Nov 2020</strong></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\">"
             + "<p><strong>Authenticated on 10 Oct 2020</strong></p></div>"
             + "<div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-            + "<p></p>\n";
+            + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "Yes",
@@ -321,35 +385,54 @@ class TaskStateRendererTest {
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<div>Issue grant of representation</div>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>"
             + "Submitted on 01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated "
             + "on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+            + "</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeft", "No",
@@ -372,35 +455,54 @@ class TaskStateRendererTest {
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<div>Issue grant of representation</div>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on "
             + "01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>"
             + "Authenticated on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
-            + "</p>\n<p></p>\n<p></p>\n<p></p>\n";
+            + "</p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "NoWill", null,
@@ -423,38 +525,60 @@ class TaskStateRendererTest {
             + "<div>Make payment</div>\n"
             + "<div></div>\n"
             + "<div></div>\n"
+            + "<div></div>\n"
             + "<div>Authenticate documents</div>\n"
             + "<div>Examine application</div>\n"
-            + "<div>Issue grant of representation<</div>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+            + "<div>Issue grant of representation</div>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" "
+                + "title=\"CWBLHAWYD\" /></p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/completed.png\" alt=\"COMPLETED\" title=\"COMPLETED\" /></p>\n"
             + "</p>\n"
-            + "<p><p><img align=\"right\" width=\"114px\" height=\"31px\" "
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/completed-welsh.png\" alt=\"CWBLHAWYD\" title=\"CWBLHAWYD\" />"
+                + "</p>\n</p>\n"
+            + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
             + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
             + TaskState.CODE_BRANCH
             + "/src/main/resources/statusImages/not-started.png\" alt=\"NOT STARTED\" title=\"NOT STARTED\" /></p>\n"
             + "</p>\n"
+                + "<p><p align=\"right\"><img width=\"114px\" height=\"31px\" "
+                + "src=\"https://raw.githubusercontent.com/hmcts/probate-back-office/"
+                + TaskState.CODE_BRANCH
+                + "/src/main/resources/statusImages/not-started-welsh.png\" alt=\"HEB DDECHRAU\" "
+                + "title=\"HEB DDECHRAU\" /></p>\n</p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Submitted on "
             + "01 Nov 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
             + "<p><div class=\"govuk-grid-row\"><div class=\"govuk-grid-column-two-thirds\"><p><strong>Authenticated "
             + "on 10 Oct 2020"
             + "</strong></p></div><div class=\"govuk-grid-column-one-third\">&nbsp;</div></div>\n"
             + "</p>\n"
             + "<p></p>\n"
             + "<p></p>\n"
-            + "<p></p>\n";
+            + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n"
+                + "<p></p>\n";
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_ADD_APPLICATION_DETAILS,
                 testHtml, (long) 9999, "WillLeftAnnexed", "No",
@@ -496,6 +620,10 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA17FormText()).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" "
             + "target=\"_blank\">Give up probate executor rights for probate practitioners paper form (PA17)</a>");
+        when(sendDocumentsRenderer.getPA17FormTextWelsh()).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa17-give-up-probate-executor-rights-for-legal-professionals\" "
+                + "target=\"_blank\">Ffurflen bapur rhoi’r gorau i hawliau ysgutor profiant ar gyfer ymarferwyr "
+                + "profiant (PA17)</a>");
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -546,6 +674,9 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Medical "
             + "certificate completed by a health professional</a> (PA14) for Tim Smith");
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorTextWelsh("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa14-medical-certificate-probate\" target=\"_blank\">Tystysgrif "
+                + "feddygol wedi'i chwblhau gan weithiwr iechyd proffesiynol</a> (PA14) ar gyfer Tim Smith");
 
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -596,6 +727,9 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA15NotApplyingExecutorText("Tim Smith")).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Give up "
             + "probate administrator rights paper form</a> (PA15) for Tim Smith");
+        when(sendDocumentsRenderer.getPA15NotApplyingExecutorTextWelsh("Tim Smith")).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa15-give-up-probate-executor-rights\" target=\"_blank\">Ffurflen "
+                + "bapur rhoi’r gorau i hawliau gweinyddwr profiant</a> (PA15) ar gyfer Tim Smith");
 
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -777,6 +911,9 @@ class TaskStateRendererTest {
         when(sendDocumentsRenderer.getPA16FormText()).thenReturn("<a href=\"https://www.gov"
             + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">Give up"
             + " probate administrator rights paper form (PA16)</a>");
+        when(sendDocumentsRenderer.getPA16FormTextWelsh()).thenReturn("<a href=\"https://www.gov"
+                + ".uk/government/publications/form-pa16-give-up-probate-administrator-rights\" target=\"_blank\">"
+                + "Ffurflen bapur rhoi’r gorau i hawliau gweinyddwr profiant (PA16)</a>");
         CaseDetails caseDetails = new CaseDetails(caseData, LAST_MODIFIED, ID);
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
@@ -1028,6 +1165,13 @@ class TaskStateRendererTest {
             + " <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for"
             + "-probate-practitioners\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA17</a>"
             + " for executors who have renounced their right to apply");
+
+        when(sendDocumentsRenderer.getAdmonWillRenunciationTextWelsh()).thenReturn("os yw’n berthnasol, anfonwch "
+                + "y ffurflen ymwrthod briodol atom <a href=\"https://www.gov.uk/government/publications/form-pa15-give-up-probate-"
+                + "executor-rights\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA15</a> /"
+                + " <a href=\"https://www.gov.uk/government/publications/form-pa17-give-up-probate-executor-rights-for"
+                + "-probate-practitioners\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"govuk-link\">PA17</a>"
+                + " ar gyfer ysgutorion sydd wedi rhoi’r gorau i’w hawl i wneud cais");
 
         String result = taskStateRenderer.renderByReplace(TaskListState.TL_STATE_SEND_DOCUMENTS,
             testHtml, (long) 9999, caseDetails.getData().getSolsWillType(), "No",

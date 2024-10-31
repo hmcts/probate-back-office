@@ -113,7 +113,9 @@ public class BulkPrintService {
             if (!response.getErrors().isEmpty()) {
                 throw new BulkPrintException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                     "bulkPrintResponseNull").getMessage(),
-                    "Bulk print send letter response is null for: " + callbackRequest.getCaseDetails().getId());
+                    "Bulk print send letter response is null for: " + callbackRequest.getCaseDetails().getId(),
+                        businessValidationMessageService.generateError(BUSINESS_ERROR,
+                        "bulkPrintResponseNullWelsh").getMessage());
             }
         }
         return letterId;
@@ -128,7 +130,9 @@ public class BulkPrintService {
         if (!response.getErrors().isEmpty()) {
             throw new BulkPrintException(businessValidationMessageService.generateError(BUSINESS_ERROR,
                 "bulkPrintResponseNull").getMessage(),
-                "Bulk print send letter for reprint response is null for: " + callbackRequest.getCaseDetails().getId());
+                "Bulk print send letter for reprint response is null for: " + callbackRequest.getCaseDetails().getId(),
+                    businessValidationMessageService.generateError(BUSINESS_ERROR,
+                            "bulkPrintResponseNullWelsh").getMessage());
         }
         return sendLetterResponse;
     }

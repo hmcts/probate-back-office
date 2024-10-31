@@ -171,8 +171,10 @@ public class ConfirmationResponseService {
         if (changeRule.isChangeNeeded(caseData)) {
             String messageKey = changeRule.getConfirmationBodyMessageKey();
             String reasonText = messageResourceService.getMessage(messageKey);
+            String[] reasonsText = reasonText.split(":");
             Map<String, String> keyValue = new HashMap<>();
-            keyValue.put("{{reason}}", reasonText);
+            keyValue.put("{{reason}}", reasonsText[0]);
+            keyValue.put("{{reasonWelsh}}", reasonsText[1]);
             return Optional.of(markdownSubstitutionService.generatePage(templatesDirectory, template, keyValue));
         }
 
