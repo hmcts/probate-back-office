@@ -1353,7 +1353,8 @@ public class CallbackResponseTransformer {
     }
 
     private boolean nothingSubmitted(CaseData caseData) {
-        return caseData.getCitizenResponse().isEmpty() && caseData.getCitizenDocumentsUploaded().isEmpty();
+        return (caseData.getCitizenResponse() == null || caseData.getCitizenResponse().isEmpty()) &&
+                (caseData.getCitizenDocumentsUploaded() == null || caseData.getCitizenDocumentsUploaded().isEmpty());
     }
 
     private ResponseCaseDataBuilder<?, ?> getCaseCreatorResponseCaseBuilder(CaseData caseData,
