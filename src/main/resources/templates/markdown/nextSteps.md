@@ -24,12 +24,12 @@ Notes for this application
 What you need to do now
 ==================================================
 {{paymentInfo}}
-Print a copy of this page for your records.
-
+Print a copy of this page for your records. 
+ 
 You now need to send us:
 {{originalWill}}
 *   the printed coversheet (accessed in the cover sheet tab) or your reference number {{caseRef}} written on a sheet of paper{{ihtText}}{{ihtForm}}
-    {{legalPhotocopy}}{{pa14form}}{{pa15form}}{{pa16form}}{{pa17form}}{{admonWillRenunciation}}{{tcResolutionLodgedWithApp}}{{authenticatedTranslation}}{{dispenseWithNoticeSupportingDocs}}
+{{legalPhotocopy}}{{pa14form}}{{pa15form}}{{pa16form}}{{pa17form}}{{admonWillRenunciation}}{{tcResolutionLodgedWithApp}}{{authenticatedTranslation}}{{dispenseWithNoticeSupportingDocs}}
 
 Where to send us your documents
 -------------------------------
@@ -73,23 +73,22 @@ Mae'r cais am brofiant hwn bellach wedi'i gyflwyno
 
 Crynodeb o'r taliad
 -------------------------------------------------
-{{paymentSummary}}
+{{paymentSummaryWelsh}}
 
 Nodiadau ar gyfer y cais hwn
 -------------------------------------------------
 
-{{additionalInfo}}
-
+{{additionalInfoWelsh}}
 
 Beth sydd angen i chi ei wneud nawr
 ==================================================
-{{paymentInfo}}
+{{paymentInfoWelsh}}
 Argraffwch gopi o'r dudalen hon ar gyfer eich cofnodion.
 
 Nawr, mae angen i chi anfon y canlynol atom:
-{{originalWill}}
-*   the printed coversheet (accessed in the cover sheet tab) or your reference number {{caseRef}} written on a sheet of paper{{ihtText}}{{ihtForm}}
-    {{legalPhotocopy}}{{pa14form}}{{pa15form}}{{pa16form}}{{pa17form}}{{admonWillRenunciation}}{{tcResolutionLodgedWithApp}}{{authenticatedTranslation}}{{dispenseWithNoticeSupportingDocs}}
+{{originalWillWelsh}}
+*   Y ddalen flaen wedi’i hargraffu (yn y tab dalen flaen) neu'ch cyfeirnod wedi'i {{caseRef}} ysgrifennu ar ddalen o bapur{{ihtTextWelsh}}{{ihtFormWelsh}}
+{{legalPhotocopyWelsh}}{{pa14formWelsh}}{{pa15formWelsh}}{{pa16formWelsh}}{{pa17formWelsh}}{{admonWillRenunciationWelsh}}{{tcResolutionLodgedWithAppWelsh}}{{authenticatedTranslationWelsh}}{{dispenseWithNoticeSupportingDocsWelsh}}
 
 Ble i anfon eich dogfennau
 -------------------------------

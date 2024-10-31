@@ -709,7 +709,7 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        when(markdownDecoratorService.getAdmonWillRenunciationFormLabel(any(CaseData.class)))
+        when(markdownDecoratorService.getAdmonWillRenunciationFormLabel(any(CaseData.class), false))
             .thenReturn("PA15 and PA17 form text");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
@@ -728,7 +728,7 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        when(markdownDecoratorService.getPA14FormLabel(any(CaseData.class))).thenReturn("PA14Form text");
+        when(markdownDecoratorService.getPA14FormLabel(any(CaseData.class),false)).thenReturn("PA14Form text");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
             caseDataMock);
@@ -747,7 +747,7 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        when(markdownDecoratorService.getPA15FormLabel(any(CaseData.class))).thenReturn("PA15Form text");
+        when(markdownDecoratorService.getPA15FormLabel(any(CaseData.class),false)).thenReturn("PA15Form text");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
             caseDataMock);
@@ -766,7 +766,7 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class))).thenReturn("PA16Form text");
+        when(markdownDecoratorService.getPA16FormLabel(any(CaseData.class), false)).thenReturn("PA16Form text");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
             caseDataMock);
@@ -785,7 +785,7 @@ class ConfirmationResponseServiceTest {
             .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
             .thenReturn(willBodyTemplateResponseMock);
 
-        when(markdownDecoratorService.getPA17FormLabel(any(CaseData.class))).thenReturn("PA17Form text");
+        when(markdownDecoratorService.getPA17FormLabel(any(CaseData.class), false)).thenReturn("PA17Form text");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
             caseDataMock);
@@ -804,7 +804,7 @@ class ConfirmationResponseServiceTest {
                 .generatePage(any(String.class), any(MarkdownTemplate.class), nextStepsKeyValueMap.capture()))
                 .thenReturn(willBodyTemplateResponseMock);
 
-        when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class)))
+        when(markdownDecoratorService.getTcResolutionFormLabel(any(CaseData.class), false))
             .thenReturn("a certified copy of the resolution");
 
         AfterSubmitCallbackResponse afterSubmitCallbackResponse = underTest.getNextStepsConfirmation(ccdDataMock,
