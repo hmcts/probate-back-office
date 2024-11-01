@@ -62,6 +62,7 @@ import uk.gov.hmcts.reform.probate.model.IhtFormType;
 import uk.gov.hmcts.reform.probate.model.ProbateDocumentLink;
 import uk.gov.hmcts.reform.probate.model.Relationship;
 import uk.gov.hmcts.reform.probate.model.cases.Address;
+import uk.gov.hmcts.reform.probate.model.cases.CitizenResponse;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.MaritalStatus;
 import uk.gov.hmcts.reform.probate.model.cases.RegistryLocation;
@@ -308,6 +309,7 @@ class CallbackResponseTransformerTest {
     private static final String POLICY_ROLE_APPLICANT_SOLICITOR = "[APPLICANTSOLICITOR]";
     private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
+    private static final String RESPONSE_CONTENT = "I responded";
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @Mock
@@ -3482,6 +3484,14 @@ class CallbackResponseTransformerTest {
         return new CollectionMember<>(id, add1na);
     }
 
+    private CollectionMember<CitizenResponse> createCitizenResponse(String id) {
+        CitizenResponse newResponse = CitizenResponse.builder()
+                .response(RESPONSE_CONTENT)
+                .submittedDate(LocalDateTime.now())
+                .build();
+        return new CollectionMember<>(id, newResponse);
+    }
+
     private void assertCommon(CallbackResponse callbackResponse) {
         assertCommonDetails(callbackResponse);
         assertCommonPayments(callbackResponse);
@@ -4619,6 +4629,31 @@ class CallbackResponseTransformerTest {
         assertEquals(1, callbackResponse.getData().getBoDocumentsUploaded().size());
         assertEquals("responses",
                 callbackResponse.getData().getCitizenResponses().get(0).getValue().getResponse());
+    }
+
+    @Test
+    void shouldAddCitizenHubResponseWhenResponsesExist() {
+        List<CollectionMember<CitizenResponse>> citizenResponseList = new ArrayList<>();
+        citizenResponseList.add(createCitizenResponse("0"));
+
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL)
+                .informationNeeded(YES)
+                .informationNeededByPost(NO)
+                .citizenResponseCheckbox(YES)
+                .citizenResponses(citizenResponseList)
+                .citizenResponse("responses");
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+
+        CallbackResponse callbackResponse = underTest.transformCitizenHubResponse(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertEquals(NO, callbackResponse.getData().getEvidenceHandled());
+        assertEquals(0, callbackResponse.getData().getBoDocumentsUploaded().size());
+        assertEquals(2, callbackResponse.getData().getCitizenResponses().size());
+        assertEquals("responses",
+                callbackResponse.getData().getCitizenResponses().get(1).getValue().getResponse());
     }
 
     @Test
