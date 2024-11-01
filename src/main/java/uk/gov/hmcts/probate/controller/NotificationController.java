@@ -167,11 +167,19 @@ public class NotificationController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(path = "/request-information-default-values")
-    public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
+    @PostMapping(path = "/redeclaration-sot-default-values")
+    public ResponseEntity<CallbackResponse> redeclarationSOTDefaultValues(
         @RequestBody CallbackRequest callbackRequest) {
         CallbackResponse callbackResponse =
-            callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
+            callbackResponseTransformer.defaultRedeclarationSOTValues(callbackRequest);
+        return ResponseEntity.ok(callbackResponse);
+    }
+
+    @PostMapping(path = "/request-information-default-values")
+    public ResponseEntity<CallbackResponse> requestInformationDefaultValues(
+            @RequestBody CallbackRequest callbackRequest) {
+        CallbackResponse callbackResponse =
+                callbackResponseTransformer.defaultRequestInformationValues(callbackRequest);
         return ResponseEntity.ok(callbackResponse);
     }
 

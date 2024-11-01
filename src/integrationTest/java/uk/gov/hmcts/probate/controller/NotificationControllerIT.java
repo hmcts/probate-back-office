@@ -79,6 +79,7 @@ import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_DRAFT;
 class NotificationControllerIT {
     private static final String DOC_RECEIVED_URL = "/notify/documents-received";
     private static final String CASE_STOPPED_URL = "/notify/case-stopped";
+    private static final String REDECLARATION_SOT_DEFAULT_URL = "/notify/redeclaration-sot-default-values";
     private static final String REQUEST_INFO_DEFAULT_URL = "/notify/request-information-default-values";
     private static final String REQUEST_INFO_URL = "/notify/stopped-information-request";
     private static final String REDECLARATION_SOT = "/notify/redeclaration-sot";
@@ -202,6 +203,7 @@ class NotificationControllerIT {
         when(callbackResponseTransformer.addDocuments(any(), any(), any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.addNocDocuments(any(), any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.caseStopped(any(), any(), any())).thenReturn(successfulResponse);
+        when(callbackResponseTransformer.defaultRedeclarationSOTValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.defaultRequestInformationValues(any())).thenReturn(successfulResponse);
         when(callbackResponseTransformer.addInformationRequestDocuments(any(), eq(docList)))
             .thenReturn(successfulResponse);
@@ -551,6 +553,18 @@ class NotificationControllerIT {
         mockMvc.perform(post(REQUEST_INFO_DEFAULT_URL).content(personalPayload).contentType(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
+
+    }
+
+    @Test
+    void shouldReturnSuccessfulForRedeclarationSOTDefaultValues() throws Exception {
+        String personalPayload = testUtils.getStringFromFile("personalPayloadNotifications.json");
+
+        mockMvc.perform(post(REDECLARATION_SOT_DEFAULT_URL)
+                .content(personalPayload)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
 

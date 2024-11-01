@@ -247,7 +247,7 @@ public class CallbackResponseTransformer {
     }
 
 
-    public CallbackResponse defaultRequestInformationValues(CallbackRequest callbackRequest) {
+    public CallbackResponse defaultRedeclarationSOTValues(CallbackRequest callbackRequest) {
         CaseDetails caseDetails = callbackRequest.getCaseDetails();
 
         List<CollectionMember<ExecutorsApplyingNotification>> exec =
@@ -258,6 +258,14 @@ public class CallbackResponseTransformer {
                 .build();
 
         return transformResponse(responseCaseData);
+    }
+
+    public CallbackResponse defaultRequestInformationValues(CallbackRequest callbackRequest) {
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        resetRequestInformationFields(responseCaseDataBuilder);
+
+        return transformResponse(responseCaseDataBuilder.build());
     }
 
     public CallbackResponse addInformationRequestDocuments(CallbackRequest callbackRequest, List<Document> documents) {

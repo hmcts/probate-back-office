@@ -2475,14 +2475,31 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
-    void shouldDefaultRequestInformationValues() {
+    void shouldDefaultRedeclarationSOTValues() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL);
 
         when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
         when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
-        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        CallbackResponse callbackResponse = underTest.defaultRedeclarationSOTValues(callbackRequestMock);
         assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotification());
         assertEquals("Yes", callbackResponse.getData().getBoRequestInfoSendToBulkPrint());
+    }
+
+    @Test
+    void shouldDefaultRequestInformationValues() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .informationNeeded("Yes")
+                .informationNeededByPost("Yes")
+                .boStopDetails("Some stop details")
+                .boStopDetailsDeclarationParagraph("Yes");
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertNull(callbackResponse.getData().getInformationNeeded());
+        assertNull(callbackResponse.getData().getInformationNeededByPost());
+        assertNull(callbackResponse.getData().getBoStopDetails());
+        assertNull(callbackResponse.getData().getBoStopDetailsDeclarationParagraph());
     }
 
     @Test
