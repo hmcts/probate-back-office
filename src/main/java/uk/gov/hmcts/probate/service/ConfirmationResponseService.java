@@ -244,7 +244,7 @@ public class ConfirmationResponseService {
         String additionalInfoWelsh = ccdData.getSolsAdditionalInfo();
         if (Strings.isNullOrEmpty(additionalInfo)) {
             additionalInfo = "None provided";
-            additionalInfoWelsh = "None provided[Missing Welsh]";
+            additionalInfoWelsh = "Ni ddarparwyd un";
         }
 
         if (ccdData.getFee().getAmount().compareTo(BigDecimal.ZERO) > 0) {
