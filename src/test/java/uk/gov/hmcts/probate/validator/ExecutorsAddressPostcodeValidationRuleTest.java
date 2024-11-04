@@ -35,20 +35,24 @@ class ExecutorsAddressPostcodeValidationRuleTest {
     private Executor executor;
 
     private FieldErrorResponse executorPostcodeIsNullError;
+    private FieldErrorResponse executorPostcodeIsNullError2;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
 
         executorPostcodeIsNullError = FieldErrorResponse.builder().message("executorPostcodeIsNull").build();
+        executorPostcodeIsNullError2 = FieldErrorResponse.builder().message("executorPostcodeIsNullWelsh").build();
 
         when(executor.isApplying()).thenReturn(true);
 
         when(ccdData.getExecutors()).thenReturn(Collections.singletonList(executor));
 
 
-        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR), eq("executorPostcodeIsNull")))
-            .thenReturn(executorPostcodeIsNullError);
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR),
+                eq("executorPostcodeIsNull"))).thenReturn(executorPostcodeIsNullError);
+        when(businessValidationMessageService.generateError(eq(BUSINESS_ERROR),
+                eq("executorPostcodeIsNullWelsh"))).thenReturn(executorPostcodeIsNullError2);
     }
 
     @Test
@@ -57,7 +61,7 @@ class ExecutorsAddressPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
+        assertEquals(2, errors.size());
         assertTrue(errors.contains(executorPostcodeIsNullError));
     }
 
@@ -67,8 +71,8 @@ class ExecutorsAddressPostcodeValidationRuleTest {
 
         List<FieldErrorResponse> errors = executorsAddressPostcodeValidationRule.validate(ccdData);
 
-        assertEquals(1, errors.size());
-        assertTrue(errors.contains(executorPostcodeIsNullError));
+        assertEquals(2, errors.size());
+        assertTrue(errors.contains(executorPostcodeIsNullError2));
     }
 
     @Test

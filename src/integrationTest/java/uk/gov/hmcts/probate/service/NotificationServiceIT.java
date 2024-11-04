@@ -241,6 +241,7 @@ class NotificationServiceIT {
 
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(anyString(), anyString(), any(), isNull());
         doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any(), any());
+        doReturn(sendEmailResponse).when(notificationClient).sendEmail(any(), any(), any(), any());
 
         CollectionMember<ScannedDocument> scannedDocument = new CollectionMember<>(ScannedDocument
             .builder().subtype("will").controlNumber("123456").build());
@@ -2082,8 +2083,7 @@ class NotificationServiceIT {
                 eq("sol-application-received"),
                 eq("solicitor@probate-test.com"),
                 eq(personalisation),
-                eq("1234-5678-9012"),
-                eq(""));
+                eq("1234-5678-9012"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -2118,8 +2118,7 @@ class NotificationServiceIT {
                 eq("sols-noc"),
                 eq("solicitor@gmail.com"),
                 eq(personalisation),
-                eq("1234-5678-9012"),
-                eq(""));
+                eq("1234-5678-9012"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }
@@ -2153,8 +2152,7 @@ class NotificationServiceIT {
                 eq("sols-noc"),
                 eq("solicitor@gmail.com"),
                 eq(personalisation),
-                eq("1234-5678-9012"),
-                eq(""));
+                eq("1234-5678-9012"));
 
         verify(pdfManagementService).generateAndUpload(any(SentEmail.class), eq(SENT_EMAIL));
     }

@@ -171,6 +171,7 @@ class BusinessValidationControllerIT {
     private static final String CHANGE_DOB = "/case/changeDob";
     private static final String LAST_MODIFIED_DATE = "/case/setLastModifiedDate";
     private static final String INVALID_EVENT = "/case/invalidEvent";
+    private static final String SUPER_USER_MAKE_DORMANT = "/case/superUserMakeDormantCase";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -431,9 +432,16 @@ class BusinessValidationControllerIT {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("A codicil cannot be made before the will was signed"))
                 .andExpect(jsonPath("$.errors[1]")
-                        .value("Original will signed date must be in the past"))
+                        .value("Ni ellir gwneud codisil cyn llofnodi'r ewyllys"))
                 .andExpect(jsonPath("$.errors[2]")
-                        .value("The will must be signed and dated before the date of death"));
+                        .value("Original will signed date must be in the past"))
+                .andExpect(jsonPath("$.errors[3]")
+                        .value("Rhaid i'r dyddiad gwreiddiol a lofnodwyd yr ewyllys fod yn y gorffennol"))
+                .andExpect(jsonPath("$.errors[4]")
+                        .value("The will must be signed and dated before the date of death"))
+                .andExpect(jsonPath("$.errors[5]")
+                        .value("Rhaid bod yr ewyllys wedi?i llofnodi a'i dyddio cyn dyddiad y "
+                                + "farwolaeth"));
     }
 
     @Test
@@ -454,7 +462,9 @@ class BusinessValidationControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("Codicil date must be in the past"));
+                        .value("Codicil date must be in the past"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Rhaid i ddyddiad y codisil fod yn y gorffennol"));
     }
 
     @Test
@@ -477,9 +487,16 @@ class BusinessValidationControllerIT {
                 .andExpect(jsonPath("$.errors[0]")
                         .value("Codicil date must be in the past"))
                 .andExpect(jsonPath("$.errors[1]")
-                        .value("Original will signed date must be in the past"))
+                        .value("Rhaid i ddyddiad y codisil fod yn y gorffennol"))
                 .andExpect(jsonPath("$.errors[2]")
-                        .value("The will must be signed and dated before the date of death"));
+                        .value("Original will signed date must be in the past"))
+                .andExpect(jsonPath("$.errors[3]")
+                        .value("Rhaid i'r dyddiad gwreiddiol a lofnodwyd yr ewyllys fod yn y gorffennol"))
+                .andExpect(jsonPath("$.errors[4]")
+                        .value("The will must be signed and dated before the date of death"))
+                .andExpect(jsonPath("$.errors[5]")
+                        .value("Rhaid bod yr ewyllys wedi?i llofnodi a'i dyddio cyn dyddiad y "
+                                + "farwolaeth"));
     }
 
     @Test
@@ -496,7 +513,10 @@ class BusinessValidationControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("The will must be signed and dated before the date of death"));
+                        .value("The will must be signed and dated before the date of death"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Rhaid bod yr ewyllys wedi?i llofnodi a'i dyddio cyn dyddiad y "
+                                + "farwolaeth"));
     }
 
     @Test
@@ -517,7 +537,9 @@ class BusinessValidationControllerIT {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.errors[0]")
-                        .value("A codicil cannot be made before the will was signed"));
+                        .value("A codicil cannot be made before the will was signed"))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Ni ellir gwneud codisil cyn llofnodi'r ewyllys"));
     }
 
     @Test
@@ -779,6 +801,9 @@ class BusinessValidationControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Ensure all checks have been completed, cancel to return to the examining state"))
+            .andExpect(jsonPath("$.errors[1]")
+                    .value("Sicrhewch bod yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam "
+                            + "arholi"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -791,6 +816,9 @@ class BusinessValidationControllerIT {
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.errors[0]")
                 .value("Ensure all checks have been completed, cancel to return to the examining state"))
+            .andExpect(jsonPath("$.errors[1]")
+                    .value("Sicrhewch bod yr holl wiriadau wedi'u cwblhau, canslo i ddychwelyd i'r cam "
+                            + "arholi"))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON));
 
     }
@@ -1004,6 +1032,8 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.errors[0]")
                         .value("You can only use this event for digital cases."))
+                .andExpect(jsonPath("$.errors[1]")
+                        .value("Dim ond ar gyfer achosion digidol y gallwch ddefnyddio'r adnodd hwn."))
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON));
     }
 
@@ -1021,8 +1051,9 @@ class BusinessValidationControllerIT {
         mockMvc.perform(post(SOLS_VALIDATE_IHT_ESTATE_URL).content(caseCreatorJson)
             .contentType(MediaType.APPLICATION_JSON))
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.errors[0]")
-                .value("The gross probate value cannot be less than the net probate value"));
+            .andExpect(jsonPath("$.errors[1]")
+                .value("Ni all gwerth gros y cais am brofiant fod yn llai na gwerth net y cais am "
+                        + "brofiant"));
     }
 
     @Test
@@ -1284,6 +1315,16 @@ class BusinessValidationControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content().string(CoreMatchers.containsString(
                         "You must select the 'PA1P/PA1A/Solicitors Manual' event")));
+    }
+
+    @Test
+    void shouldSetDormantDateTime() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SUPER_USER_MAKE_DORMANT).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
 

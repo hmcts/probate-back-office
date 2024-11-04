@@ -243,4 +243,9 @@ public class SecurityUtils {
         String result = Objects.requireNonNull(userInfo.getSub());
         return result.toLowerCase();
     }
+
+    public List<String> getRoles(String authToken) {
+        UserInfo userInfo = idamApi.retrieveUserInfo(authToken);
+        return userInfo.getRoles();
+    }
 }

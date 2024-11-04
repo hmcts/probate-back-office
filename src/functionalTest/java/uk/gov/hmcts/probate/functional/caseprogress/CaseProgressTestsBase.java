@@ -10,10 +10,13 @@ import uk.gov.hmcts.probate.model.caseprogress.UrlConstants;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertEquals;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public abstract class CaseProgressTestsBase extends IntegrationTestBase {
 
     protected static final String TASKLIST_UPDATE_URL = "/tasklist/update";
@@ -34,6 +37,9 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
     protected static final String GENERATE_GRANT_URL = "/document/generate-grant";
 
     private static final String todaysDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd MMM yyyy"));
+
+    private static final String todaysDateWelsh = LocalDate.now().format(
+            DateTimeFormatter.ofPattern("dd MMM yyyy", new Locale("cy", "GB")));
 
     protected void verifyCaseProgressHtmlSolPost(String jsonFile, String postUrl, String expectedHtmlFile)
         throws IOException {
@@ -64,6 +70,7 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         expected = replaceAllInString(expected, "{code-branch}", TaskState.CODE_BRANCH);
         expected = replaceAllInString(expected, "{next-step-url}", nextStepUrl);
         expected = expected.replaceAll(Pattern.quote("<today/>"), this.todaysDate);
+        expected = expected.replaceAll(Pattern.quote("<today-welsh/>"), this.todaysDateWelsh);
 
         switch (jsonPath.get("data.caseType").toString()) {
             case "gop":
@@ -97,6 +104,8 @@ public abstract class CaseProgressTestsBase extends IntegrationTestBase {
         // make sure tasklist controller update in db works when called separately,
         // which happens prior to first state change
         assertEquals(removeCrLfs(expected), removeCrLfs(taskList));
+
+
     }
 
     private String postSolJson(String jsonFileName, String path) throws IOException {

@@ -17,6 +17,7 @@ public class NoneOfTheseSelectedValidationRule implements TitleAndClearingPageVa
 
     private final BusinessValidationMessageRetriever businessValidationMessageRetriever;
     private static final String NONE_OF_THESE_SELECTED = "noneOfTheseSelected";
+    private static final String NONE_OF_THESE_SELECTED_WELSH = "noneOfTheseSelectedWelsh";
 
     @Override
     public void validate(CaseDetails caseDetails) {
@@ -24,13 +25,16 @@ public class NoneOfTheseSelectedValidationRule implements TitleAndClearingPageVa
         var caseData = caseDetails.getData();
         var args = new String[]{caseDetails.getId().toString()};
         var userMessage = businessValidationMessageRetriever.getMessage(NONE_OF_THESE_SELECTED, args, Locale.UK);
+        var userMessageWelsh = businessValidationMessageRetriever.getMessage(NONE_OF_THESE_SELECTED_WELSH, args,
+                Locale.UK);
 
         if (NO.equals(caseData.getSolsSolicitorIsExec())
                 && YES.equals(caseData.getSolsSolicitorIsApplying())
                 && caseData.getTitleAndClearingType().matches("TCTNoT")) {
 
             throw new BusinessValidationException(userMessage,
-                    "None of these selected, you need to make a paper application for case id " + caseDetails.getId());
+                    "None of these selected, you need to make a paper application for case id " + caseDetails.getId(),
+                    userMessageWelsh);
         }
     }
 }
