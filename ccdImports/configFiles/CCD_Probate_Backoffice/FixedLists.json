@@ -410,7 +410,7 @@
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseQA", "ListElement": "Case selected for QA", "DisplayOrder": 8},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStopped", "ListElement": "Case stopped", "DisplayOrder": 9},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaseStoppedReissue", "ListElement": "Case stopped (reissue)", "DisplayOrder": 10},
-  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaveatPermenant", "ListElement": "Caveat permenant", "DisplayOrder": 11},
+  {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOCaveatPermenant", "ListElement": "Caveat stop", "DisplayOrder": 11},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOExaminingReissue", "ListElement": "Examining (reissue)", "DisplayOrder": 12},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOGrantIssued", "ListElement": "Grant issue", "DisplayOrder": 13},
   {"LiveFrom": "06/01/2017", "ID": "transferToStateFixedList", "ListElementCode": "BOSotGenerated", "ListElement": "Legal Statement Generated", "DisplayOrder": 14},
