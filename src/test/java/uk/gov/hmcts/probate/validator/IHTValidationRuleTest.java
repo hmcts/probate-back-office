@@ -10,8 +10,10 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
 import uk.gov.hmcts.probate.model.ccd.InheritanceTax;
 import uk.gov.hmcts.probate.service.BusinessValidationMessageService;
+import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -23,7 +25,9 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_ESTATE_NET_GREATER_THAN_GROSS;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_PROBATE_NET_GREATER_THAN_GROSS;
 import static uk.gov.hmcts.probate.validator.IHTValidationRule.IHT_VALUE_VALIDATION;
@@ -38,6 +42,8 @@ class IHTValidationRuleTest {
     @Mock
     private BusinessValidationMessageService businessValidationMessageService;
     @Mock
+    private ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    @Mock
     private CCDData ccdDataMock;
     @Mock
     private InheritanceTax inheritanceTaxMock;
@@ -51,7 +57,7 @@ class IHTValidationRuleTest {
         MockitoAnnotations.openMocks(this);
         businessValidationError = FieldErrorResponse.builder().build();
 
-        this.underTest = new IHTValidationRule(businessValidationMessageService);
+        this.underTest = new IHTValidationRule(businessValidationMessageService, exceptedEstateDateOfDeathChecker);
         when(ccdDataMock.getIht()).thenReturn(inheritanceTaxMock);
     }
 
@@ -168,6 +174,11 @@ class IHTValidationRuleTest {
     void testValidateFailureWhenFormNetHigherThanGross() {
         when(inheritanceTaxMock.getGrossValue()).thenReturn(LOWER_VALUE);
         when(inheritanceTaxMock.getIhtFormNetValue()).thenReturn(HIGHER_VALUE);
+        when(inheritanceTaxMock.getIhtFormEstate()).thenReturn("IHT400");
+        when(inheritanceTaxMock.getIhtFormEstateValuesCompleted()).thenReturn("Yes");
+        when(ccdDataMock.getChannelChoice()).thenReturn(CHANNEL_CHOICE_DIGITAL);
+        when(ccdDataMock.getApplicationType()).thenReturn(SOLICITOR.toString());
+        when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(true);
         when(businessValidationMessageService.generateError(BUSINESS_ERROR, IHT_PROBATE_NET_GREATER_THAN_GROSS))
                 .thenReturn(businessValidationError);
 
