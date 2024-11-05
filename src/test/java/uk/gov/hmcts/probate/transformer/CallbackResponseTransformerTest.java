@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ExecutorsApplyingNotification;
@@ -931,6 +932,7 @@ class CallbackResponseTransformerTest {
         when(taskListUpdateService.generateTaskList(any(CaseDetails.class),
             any(ResponseCaseData.ResponseCaseDataBuilder.class)))
             .thenAnswer(invocation -> invocation.getArgument(1));
+        ReflectionTestUtils.setField(underTest, "makeDormantAddTimeMinutes", 5);
     }
 
     @Test
@@ -2636,6 +2638,16 @@ class CallbackResponseTransformerTest {
         when(exceptedEstateDateOfDeathChecker.isOnOrAfterSwitchDate((LocalDate) any())).thenReturn(false);
         CallbackResponse callbackResponse = underTest.transformUniqueProbateCode(callbackRequestMock);
         assertEquals("CTS04052311043tpps8e9", callbackResponse.getData().getUniqueProbateCodeId());
+    }
+
+    @Test
+    void shouldTransformSuperUserMakeCaseDormant() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL);
+
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        CallbackResponse callbackResponse = underTest.superUserMakeCaseDormant(callbackRequestMock);
+        assertNotNull(callbackResponse.getData().getMoveToDormantDateTime());
     }
 
     @Test

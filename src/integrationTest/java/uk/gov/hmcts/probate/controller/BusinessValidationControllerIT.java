@@ -173,6 +173,7 @@ class BusinessValidationControllerIT {
     private static final String INVALID_EVENT = "/case/invalidEvent";
     private static final String CAVEAT_EVENT = "/case/use-caveat-notification-event";
     private static final String ASSEMBLE_LETTER_EVENT = "/case/use-assemble-letter-event";
+    private static final String SUPER_USER_MAKE_DORMANT = "/case/superUserMakeDormantCase";
 
     private static final DocumentLink SCANNED_DOCUMENT_URL = DocumentLink.builder()
         .documentBinaryUrl("http://somedoc")
@@ -1319,7 +1320,18 @@ class BusinessValidationControllerIT {
     }
 
     @Test
+    void shouldSetDormantDateTime() throws Exception {
+        CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
+        CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
+
+        String json = OBJECT_MAPPER.writeValueAsString(callbackRequest);
+        mockMvc.perform(post(SUPER_USER_MAKE_DORMANT).content(json).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     void shouldThrowErrorToUseCaveatNotificationForNoInformationNeeded() throws Exception {
+
         CaseDetails caseDetails = new CaseDetails(caseDataBuilder.build(), LAST_MODIFIED, ID);
         CallbackRequest callbackRequest = new CallbackRequest(caseDetails);
 

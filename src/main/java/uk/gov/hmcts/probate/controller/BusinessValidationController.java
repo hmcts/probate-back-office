@@ -497,6 +497,16 @@ public class BusinessValidationController {
         return ResponseEntity.ok(response);
     }
 
+    @PostMapping(path = "/superUserMakeDormantCase", consumes = APPLICATION_JSON_VALUE,
+            produces =  {APPLICATION_JSON_VALUE})
+    public ResponseEntity<CallbackResponse> superUserMakeDormantCase(@RequestBody CallbackRequest callbackRequest,
+                                                                     HttpServletRequest request) {
+        logRequest(request.getRequestURI(), callbackRequest);
+        log.info("superuser make case Dormant for case reference {}", callbackRequest.getCaseDetails().getId());
+        CallbackResponse response = callbackResponseTransformer.superUserMakeCaseDormant(callbackRequest);
+        return ResponseEntity.ok(response);
+    }
+
     @PostMapping(path = "/validate-unique-code", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateUniqueProbateCode(@RequestBody CallbackRequest callbackRequest,
                                                                       HttpServletRequest request) {

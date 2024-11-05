@@ -2,6 +2,7 @@ package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.model.ApplicationType;
 import uk.gov.hmcts.probate.model.DocumentType;
@@ -138,6 +139,11 @@ public class CallbackResponseTransformer {
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    @Value("${make_dormant.add_time_minutes}")
+    private int makeDormantAddTimeMinutes;
+
+    public static final DateTimeFormatter DORMANT_DATE_FORMAT = DateTimeFormatter
+            .ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
 
     public CallbackResponse createSolsCase(CallbackRequest callbackRequest, String authToken) {
 
@@ -556,6 +562,14 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         responseCaseDataBuilder.deceasedDateOfBirth(callbackRequest.getCaseDetails().getData().getDeceasedDob());
+        return transformResponse(responseCaseDataBuilder.build());
+    }
+
+    public CallbackResponse superUserMakeCaseDormant(CallbackRequest callbackRequest) {
+        LocalDateTime dormantDateTime = LocalDateTime.now(ZoneOffset.UTC).plusMinutes(makeDormantAddTimeMinutes);
+        ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
+                getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        responseCaseDataBuilder.moveToDormantDateTime(dormantDateTime.format(DORMANT_DATE_FORMAT));
         return transformResponse(responseCaseDataBuilder.build());
     }
 
