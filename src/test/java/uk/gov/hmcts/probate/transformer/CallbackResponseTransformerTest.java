@@ -108,8 +108,11 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
+import static uk.gov.hmcts.probate.model.ApplicationState.GRANT_ISSUED;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
+import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_BULKSCAN;
 import static uk.gov.hmcts.probate.model.Constants.CHANNEL_CHOICE_DIGITAL;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
@@ -2522,7 +2525,8 @@ class CallbackResponseTransformerTest {
             Arrays.asList(document));
         assertEquals(SENT_EMAIL.getTemplateName(),
             callbackResponse.getData().getProbateNotificationsGenerated().get(0).getValue().getDocumentFileName());
-        assertEquals("Yes", callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getBoEmailRequestInfoNotificationRequested());
+        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
     }
 
     @Test
@@ -2548,6 +2552,7 @@ class CallbackResponseTransformerTest {
         assertNull(callbackResponse.getData().getCitizenResponseCheckbox());
         assertNull(callbackResponse.getData().getExpectedResponseDate());
         assertNull(callbackResponse.getData().getDocumentUploadIssue());
+        assertEquals(YES, callbackResponse.getData().getEvidenceHandled());
     }
 
     @Test
@@ -4699,6 +4704,30 @@ class CallbackResponseTransformerTest {
         assertEquals(YES, callbackResponse.getData().getInformationNeeded());
         assertEquals(NO, callbackResponse.getData().getInformationNeededByPost());
         assertNull(callbackResponse.getData().getExpectedResponseDate());
+    }
+
+    @Test
+    void shouldDefaultInformationRequestSwitch() {
+        caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .channelChoice(CHANNEL_CHOICE_DIGITAL);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getState()).thenReturn(BO_CASE_STOPPED.getId());
+
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertEquals(YES, callbackResponse.getData().getInformationNeededByPostSwitch());
+    }
+
+    @Test
+    void shouldNotDefaultInformationRequestSwitch() {
+        caseDataBuilder.applicationType(SOLICITOR)
+                .channelChoice(CHANNEL_CHOICE_BULKSCAN);
+        when(callbackRequestMock.getCaseDetails()).thenReturn(caseDetailsMock);
+        when(caseDetailsMock.getData()).thenReturn(caseDataBuilder.build());
+        when(caseDetailsMock.getState()).thenReturn(GRANT_ISSUED.getId());
+
+        CallbackResponse callbackResponse = underTest.defaultRequestInformationValues(callbackRequestMock);
+        assertEquals(NO, callbackResponse.getData().getInformationNeededByPostSwitch());
     }
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {

@@ -406,4 +406,5 @@ public class ResponseCaseData extends ResponseCaseDataParent {
     private final List<CollectionMember<UploadDocument>> citizenDocumentsUploaded;
     private final List<CollectionMember<CitizenResponse>> citizenResponses;
     private final String isSaveAndClose;
+    private final String informationNeededByPostSwitch;
 }

@@ -61,6 +61,7 @@ import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
 import static java.util.Optional.ofNullable;
+import static uk.gov.hmcts.probate.model.ApplicationState.BO_CASE_STOPPED;
 import static uk.gov.hmcts.probate.model.ApplicationType.PERSONAL;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
@@ -270,7 +271,7 @@ public class CallbackResponseTransformer {
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
         resetRequestInformationFields(responseCaseDataBuilder);
-
+        defaultInformationRequestSwitch(callbackRequest, responseCaseDataBuilder);
         return transformResponse(responseCaseDataBuilder.build());
     }
 
@@ -278,6 +279,7 @@ public class CallbackResponseTransformer {
         documents.forEach(document -> documentTransformer.addDocument(callbackRequest, document, false));
         ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder =
                 getResponseCaseData(callbackRequest.getCaseDetails(), callbackRequest.getEventId(), false);
+        responseCaseDataBuilder.evidenceHandled(YES);
         final CaseData caseData = callbackRequest.getCaseDetails().getData();
         if (isHubResponseRequired(caseData)) {
             responseCaseDataBuilder.citizenResponseCheckbox(null)
@@ -1957,5 +1959,18 @@ public class CallbackResponseTransformer {
                 .informationNeededByPost(null)
                 .boStopDetails(null)
                 .boStopDetailsDeclarationParagraph(null);
+    }
+
+    public void defaultInformationRequestSwitch(CallbackRequest callbackRequest,
+                                                ResponseCaseDataBuilder<?, ?> responseCaseDataBuilder) {
+        final var caseDetails = callbackRequest.getCaseDetails();
+        final var caseData = caseDetails.getData();
+        if (BO_CASE_STOPPED.getId().equalsIgnoreCase(caseDetails.getState())
+            && CHANNEL_CHOICE_DIGITAL.equalsIgnoreCase(caseData.getChannelChoice())
+            && PERSONAL.equals(caseData.getApplicationType())) {
+            responseCaseDataBuilder.informationNeededByPostSwitch(YES);
+        } else {
+            responseCaseDataBuilder.informationNeededByPostSwitch(NO);
+        }
     }
 }
