@@ -269,9 +269,9 @@ public class ConfirmationResponseService {
                     + "**Swm y ffi** &pound;" + getAmountAsString(ccdData.getFee().getAmount()) + "\n\n"
                     + "**Cyfeirnod cais y cwsmer** " + ccdData.getFee().getSolsPBAPaymentReference();
 
-            paymentInfoWelsh = "**Mae'n rhaid i chi gwblhau'r broses dalu nesaf**\n"
-                    + "\n" + "Ewch i'r tab Cais am Daliad ym manylion eich achos\n"
-                    + "\n" + "Cwblhewch y broses dalu\n";
+            paymentInfoWelsh = "**Mae'n rhaid i chi gwblhau'r broses dalu nesaf**\n\n"
+                     + "Ewch i'r tab Cais am Daliad ym manylion eich achos\n\n"
+                     + "Cwblhewch y broses dalu\n";
         } else {
             paymentSummary = "Not applicable";
             paymentInfo = "";
