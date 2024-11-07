@@ -17,8 +17,8 @@ public enum DocumentType {
     @JsonProperty("legalStatementGrantOfProbate")
     LEGAL_STATEMENT_PROBATE_TRUST_CORPS("legalStatementGrantOfProbate"),
 
-    @JsonProperty("bilingualLegalStatementGrantOfProbate")
-    BILINGUAL_LEGAL_STATEMENT_PROBATE_TRUST_CORPS("bilingualLegalStatementGrantOfProbate"),
+    @JsonProperty("legalStatementGrantOfProbateBilingual")
+    LEGAL_STATEMENT_PROBATE_TRUST_CORPS_BILINGUAL("legalStatementGrantOfProbateBilingual"),
 
     @JsonProperty("legalStatementIntestacy")
     LEGAL_STATEMENT_INTESTACY("legalStatementIntestacy"),
