@@ -484,7 +484,7 @@ __metadata:
     chai-http: "npm:^4.3.0"
     chai-string: "npm:^1.5.0"
     codeceptjs: "npm:^3.4.0"
-    date-fns: "npm:^2.21.3"
+    date-fns: "npm:^4.0.0"
     eslint: "npm:^7.22.0"
     eslint-plugin-mocha: "npm:^8.0.0"
     html_codesniffer: "npm:^2.5.1"
@@ -1823,10 +1823,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"date-fns@npm:^2.1, date-fns@npm:^2.21.3":
+"date-fns@npm:^2.1":
   version: 2.29.3
   resolution: "date-fns@npm:2.29.3"
   checksum: 10/05b6ce6093ed2a09aafe89bb7a6d51ff72971341d7db1e531299d117df305c4a9f408bcdd533687622ae820ba9ea8859437b12074d7043b76325c7828e5d41fc
+  languageName: node
+  linkType: hard
+
+"date-fns@npm:^4.0.0":
+  version: 4.1.0
+  resolution: "date-fns@npm:4.1.0"
+  checksum: 10/d5f6e9de5bbc52310f786099e18609289ed5e30af60a71e0646784c8185ddd1d0eebcf7c96b7faaaefc4a8366f3a3a4244d099b6d0866ee2bec80d1361e64342
   languageName: node
   linkType: hard
 
