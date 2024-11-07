@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
+import static uk.gov.hmcts.probate.model.DocumentType.BILINGUAL_LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_DRAFT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
@@ -78,6 +79,7 @@ public class PDFDecoratorService {
     private String addExtraCaseData(String dataJson, Object data, DocumentType documentType) {
         String updatedJson = "";
         boolean legalStatement = documentType.equals(LEGAL_STATEMENT_PROBATE_TRUST_CORPS)
+                || documentType.equals(BILINGUAL_LEGAL_STATEMENT_PROBATE_TRUST_CORPS)
             || documentType.equals(LEGAL_STATEMENT_PROBATE)
             || documentType.equals(LEGAL_STATEMENT_INTESTACY)
             || documentType.equals(LEGAL_STATEMENT_ADMON);
