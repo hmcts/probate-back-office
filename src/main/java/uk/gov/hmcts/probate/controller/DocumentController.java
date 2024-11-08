@@ -371,7 +371,7 @@ public class DocumentController {
         log.info("Amend Legal Statement......");
         DocumentLink  amendLegalStatement = callbackRequest.getCaseDetails().getData().getAmendLegalStatement();
         amendLegalStatement.setDocumentFilename(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"))
-                + "_" + amendLegalStatement.getDocumentFilename());
+                + "_Amend_" + amendLegalStatement.getDocumentFilename());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
