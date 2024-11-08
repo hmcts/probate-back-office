@@ -368,12 +368,10 @@ public class DocumentController {
 
     @PostMapping(path = "/amendLegalStatement", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CallbackResponse> amendLegalStatement(@RequestBody CallbackRequest callbackRequest) {
-        //evidenceUploadService.updateLastEvidenceAddedDate(callbackRequest.getCaseDetails());
         log.info("Amend Legal Statement......");
-        log.info("Amend Legal Statement......" + LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         DocumentLink  amendLegalStatement = callbackRequest.getCaseDetails().getData().getAmendLegalStatement();
-        amendLegalStatement.setDocumentFilename(LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-                + amendLegalStatement.getDocumentFilename());
+        amendLegalStatement.setDocumentFilename(LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MMM-yyyy"))
+                + "_" + amendLegalStatement.getDocumentFilename());
         CallbackResponse response = callbackResponseTransformer.transformCase(callbackRequest);
         return ResponseEntity.ok(response);
     }
