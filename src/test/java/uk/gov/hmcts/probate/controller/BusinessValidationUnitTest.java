@@ -491,7 +491,7 @@ class BusinessValidationUnitTest {
     }
 
     @Test
-    void shouldValidateAmendCaseWithNoErrors() {
+    void shouldValidateAmendCaseWithNoErrors() throws Exception {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))
             .thenReturn(callbackResponseMock);
@@ -526,7 +526,7 @@ class BusinessValidationUnitTest {
     }
 
     @Test
-    void shouldValidateAmendCaseWithBusinessErrors() {
+    void shouldValidateAmendCaseWithBusinessErrors() throws Exception {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         List<FieldErrorResponse> businessErrors = Collections.singletonList(businessValidationErrorMock);
         when(eventValidationServiceMock.validateRequest(callbackRequestMock, caseworkerAmendAndCreateValidationRules))

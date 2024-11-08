@@ -349,16 +349,28 @@ public class BusinessValidationController {
     public ResponseEntity<CallbackResponse> validateCaseDetails(
         @Validated({AmendCaseDetailsGroup.class}) @RequestBody CallbackRequest callbackRequest,
         BindingResult bindingResult,
-        HttpServletRequest request) {
+        HttpServletRequest request) throws JsonProcessingException {
 
         logRequest(request.getRequestURI(), callbackRequest);
+
+        log.info("POST: validateCaseDetails: enter : {}", objectMapper.writeValueAsString(callbackRequest));
         caseDataTransformer.transformFormCaseData(callbackRequest);
+        log.info("POST: validateCaseDetails: after xform : {}", objectMapper.writeValueAsString(callbackRequest));
         validateForPayloadErrors(callbackRequest, bindingResult);
+        log.info("POST: validateCaseDetails: after validate : {}", objectMapper.writeValueAsString(callbackRequest));
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
+        log.info("POST: validateCaseDetails: after validate number of exec : {}",
+                objectMapper.writeValueAsString(callbackRequest));
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
+        log.info("POST: validateCaseDetails: after evtVal : {}", objectMapper.writeValueAsString(callbackRequest));
+        log.info("POST: validateCaseDetails: response : {}", objectMapper.writeValueAsString(response.getData()));
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
+            log.info("POST: validateCaseDetails: after callbackResponse : {}",
+                    objectMapper.writeValueAsString(callbackRequest));
+            log.info("POST: validateCaseDetails: response after callbackResponse : {}",
+                    objectMapper.writeValueAsString(response.getData()));
         }
         return ResponseEntity.ok(response);
     }
