@@ -25,7 +25,8 @@ public enum EventId {
     MAKE_CASE_DORMANT("makeCaseDormant"),
     REACTIVATE_DORMANT_CASE("reactivateDormantCase"),
     RESEND_DATA("dataExtractResendData"),
-    CITIZEN_HUB_RESPONSE("citizenHubResponse");
+    CITIZEN_HUB_RESPONSE("citizenHubResponse"),
+    CITIZEN_HUB_RESPONSE_DRAFT("citizenHubResponseDraft");
     @Getter
     private final String name;
 
