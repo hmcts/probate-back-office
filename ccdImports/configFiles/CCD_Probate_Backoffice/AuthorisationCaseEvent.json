@@ -889,7 +889,7 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "changeState", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "changeDob", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "citizenHubResponse", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
-  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "citizenHubResponseDraft", "UserRole": "caseworker-probate-superuser", "CRUD": "R"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "citizenHubResponseDraft", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "createCaseWithoutPayment", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boEscalateToRegistrar", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseEventID": "boAddCommentForPostGrantIssuedRegistrarEscalation", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
