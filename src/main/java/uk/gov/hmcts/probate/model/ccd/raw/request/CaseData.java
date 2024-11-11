@@ -2,6 +2,10 @@ package uk.gov.hmcts.probate.model.ccd.raw.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -33,6 +37,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.Categories;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOrganisationRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.CommonLog;
 import uk.gov.hmcts.probate.model.ccd.raw.DeathRecord;
 import uk.gov.hmcts.probate.model.ccd.raw.Declaration;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
@@ -73,7 +78,7 @@ import static uk.gov.hmcts.probate.model.Constants.YES;
 @Jacksonized
 @EqualsAndHashCode(callSuper = true)
 @Data
-public class CaseData extends CaseDataParent {
+public class CaseData extends CaseDataParent implements CommonLog {
 
     // Tasklist update
     private final String taskList;
@@ -696,6 +701,24 @@ public class CaseData extends CaseDataParent {
 
     public boolean isLanguagePreferenceWelsh() {
         return YES.equals(getLanguagePreferenceWelsh());
+    }
+
+    public String getRelevantFields(ObjectMapper objMap) throws JsonProcessingException {
+        ObjectNode objNode = objMap.createObjectNode();
+        objNode.put("decOtherNameOnWill", this.getDeceasedAnyOtherNameOnWill());
+        objNode.put("decAliasFNOnWill", this.getDeceasedAliasFirstNameOnWill());
+        objNode.put("decAliasLNOnWill", this.getDeceasedAliasLastNameOnWill());
+        objNode.put("decAnyOtherName", this.getDeceasedAnyOtherNames());
+
+        ArrayNode arrNode = objMap.createArrayNode();
+        List<CollectionMember<AliasName>> aliasNames = this.getSolsDeceasedAliasNamesList();
+        if (aliasNames != null) {
+            for (CollectionMember<AliasName> aliasName : aliasNames) {
+                arrNode.add(aliasName.getValue().getSolsAliasname());
+            }
+        }
+        objNode.put("solsAliasNames", arrNode);
+        return objMap.writeValueAsString(objNode);
     }
 
 }

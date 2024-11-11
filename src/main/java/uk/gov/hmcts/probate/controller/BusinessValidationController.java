@@ -25,6 +25,7 @@ import uk.gov.hmcts.probate.exception.model.FieldErrorResponse;
 import uk.gov.hmcts.probate.model.CaseOrigin;
 import uk.gov.hmcts.probate.model.DocumentType;
 import uk.gov.hmcts.probate.model.ccd.CCDData;
+import uk.gov.hmcts.probate.model.ccd.raw.CommonLog;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -344,6 +345,14 @@ public class BusinessValidationController {
         return ResponseEntity.ok(callbackResponseTransformer.defaultIht400421DatePageFlow(request));
     }
 
+    private String doCommonLog(CommonLog theObject, ObjectMapper objMap) throws JsonProcessingException {
+        if (theObject == null) {
+            return "NULL";
+        } else {
+            return theObject.getRelevantFields(objMap);
+        }
+    }
+
     @PostMapping(path = "/validateCaseDetails", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> validateCaseDetails(
@@ -353,24 +362,34 @@ public class BusinessValidationController {
 
         logRequest(request.getRequestURI(), callbackRequest);
 
-        log.info("POST: validateCaseDetails: enter : {}", objectMapper.writeValueAsString(callbackRequest));
+        log.info("POST: validateCaseDetails: enter : {}",
+                doCommonLog(callbackRequest.getCaseDetails().getData(), objectMapper));
+
         caseDataTransformer.transformFormCaseData(callbackRequest);
-        log.info("POST: validateCaseDetails: after xform : {}", objectMapper.writeValueAsString(callbackRequest));
+        log.info("POST: validateCaseDetails: after xform : {}",
+                doCommonLog(callbackRequest.getCaseDetails().getData(), objectMapper));
+
         validateForPayloadErrors(callbackRequest, bindingResult);
-        log.info("POST: validateCaseDetails: after validate : {}", objectMapper.writeValueAsString(callbackRequest));
+        log.info("POST: validateCaseDetails: after validate : {}",
+                doCommonLog(callbackRequest.getCaseDetails().getData(), objectMapper));
+
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
         log.info("POST: validateCaseDetails: after validate number of exec : {}",
-                objectMapper.writeValueAsString(callbackRequest));
+                doCommonLog(callbackRequest.getCaseDetails().getData(), objectMapper));
+
         CallbackResponse response =
             eventValidationService.validateRequest(callbackRequest, allCaseworkerAmendAndCreateValidationRules);
-        log.info("POST: validateCaseDetails: after evtVal : {}", objectMapper.writeValueAsString(callbackRequest));
-        log.info("POST: validateCaseDetails: response : {}", objectMapper.writeValueAsString(response.getData()));
+        log.info("POST: validateCaseDetails: after evtVal : {}",
+                doCommonLog(callbackRequest.getCaseDetails().getData(), objectMapper));
+
+        log.info("POST: validateCaseDetails: response : {}",
+                doCommonLog(response.getData(), objectMapper));
         if (response.getErrors().isEmpty()) {
             response = callbackResponseTransformer.transform(callbackRequest);
             log.info("POST: validateCaseDetails: after callbackResponse : {}",
-                    objectMapper.writeValueAsString(callbackRequest));
+                    doCommonLog(callbackRequest.getCaseDetails().getData(), objectMapper));
             log.info("POST: validateCaseDetails: response after callbackResponse : {}",
-                    objectMapper.writeValueAsString(response.getData()));
+                    doCommonLog(response.getData(), objectMapper));
         }
         return ResponseEntity.ok(response);
     }

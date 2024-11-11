@@ -13,4 +13,5 @@ public class CallbackRequest {
     private final CaseDetails caseDetails;
     @JsonProperty("event_id")
     private String eventId;
+
 }
