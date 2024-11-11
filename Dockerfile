@@ -6,6 +6,8 @@ LABEL maintainer="https://github.com/hmcts/probate-back-office"
 COPY build/libs/back-office.jar /opt/app/
 COPY lib/applicationinsights.json /opt/app/
 
-EXPOSE 4104
+EXPOSE 4104 5005
 
-CMD [ "back-office.jar" ]
+COPY hosts /etc/hosts
+
+CMD [ "back-office.jar", "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005" ]
