@@ -404,19 +404,32 @@ public class ResponseCaseData extends ResponseCaseDataParent implements CommonLo
 
     public String getRelevantFields(ObjectMapper objMap) throws JsonProcessingException {
         ObjectNode objNode = objMap.createObjectNode();
-        objNode.put("decOtherNameOnWill", this.getDeceasedAnyOtherNameOnWill());
-        objNode.put("decAliasFNOnWill", this.getDeceasedAliasFirstNameOnWill());
-        objNode.put("decAliasLNOnWill", this.getDeceasedAliasLastNameOnWill());
-        objNode.put("decAnyOtherName", this.getDeceasedAnyOtherNames());
 
-        ArrayNode arrNode = objMap.createArrayNode();
-        List<CollectionMember<AliasName>> aliasNames = this.getSolsDeceasedAliasNamesList();
-        if (aliasNames != null) {
-            for (CollectionMember<AliasName> aliasName : aliasNames) {
-                arrNode.add(aliasName.getValue().getSolsAliasname());
+        objNode.set("decOtherNameOnWill", objNode.textNode(this.getDeceasedAnyOtherNameOnWill()));
+        objNode.set("decAliasFNOnWill", objNode.textNode(this.getDeceasedAliasFirstNameOnWill()));
+        objNode.set("decAliasLNOnWill", objNode.textNode(this.getDeceasedAliasLastNameOnWill()));
+        objNode.set("decAnyOtherName", objNode.textNode(this.getDeceasedAnyOtherNames()));
+
+        ArrayNode solsArrNode = objMap.createArrayNode();
+        List<CollectionMember<AliasName>> solsAliasNames = this.getSolsDeceasedAliasNamesList();
+        if (solsAliasNames != null) {
+            for (CollectionMember<AliasName> aliasName : solsAliasNames) {
+                solsArrNode.add(aliasName.getValue().getSolsAliasname());
             }
         }
-        objNode.put("solsAliasNames", arrNode);
+        objNode.set("solsAliasNames", solsArrNode);
+
+        ArrayNode arrNode = objMap.createArrayNode();
+        List<CollectionMember<ProbateAliasName>> aliasNames = this.getDeceasedAliasNamesList();
+        if (aliasNames != null) {
+            for (CollectionMember<ProbateAliasName> aliasName : aliasNames) {
+                final var alias = aliasName.getValue();
+                final var name = alias.getForenames() + " " + alias.getLastName();
+                arrNode.add(name);
+            }
+        }
+        objNode.set("aliasNames", arrNode);
+
         return objMap.writeValueAsString(objNode);
     }
 }

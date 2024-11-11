@@ -1,17 +1,21 @@
 package uk.gov.hmcts.probate.model.ccd.raw.response;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
@@ -195,5 +199,34 @@ class ResponseCaseDataParentTest {
                 .build();
 
         assertEquals("TCTNoT", responseCaseDataParent.getTitleAndClearingType());
+    }
+
+    @Test
+    void testLogger() throws Exception {
+        final ObjectMapper objMap = new ObjectMapper();
+
+        final AliasName aliasName = AliasName.builder()
+                .solsAliasname("aliasName")
+                .build();
+        final CollectionMember<AliasName> aliasCollection = new CollectionMember<>(aliasName);
+
+        final ProbateAliasName probateAliasName = ProbateAliasName.builder()
+                .forenames("probateAliasFN")
+                .lastName("probateAliasLN")
+                .build();
+        final CollectionMember<ProbateAliasName> probateAliasCollection = new CollectionMember<>(probateAliasName);
+
+        final ResponseCaseData caseData = ResponseCaseData.builder()
+                .deceasedAnyOtherNameOnWill("Yes")
+                .deceasedAliasFirstNameOnWill("FN")
+                .deceasedAliasLastNameOnWill("LN")
+                .deceasedAnyOtherNames("Yes")
+                .solsDeceasedAliasNamesList(List.of(aliasCollection))
+                .deceasedAliasNamesList(List.of(probateAliasCollection))
+                .build();
+
+        final String result = caseData.getRelevantFields(objMap);
+
+        assertNotNull(result);
     }
 }

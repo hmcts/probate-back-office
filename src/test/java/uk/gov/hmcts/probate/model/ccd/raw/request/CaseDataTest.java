@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.model.ccd.raw.request;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -11,11 +12,13 @@ import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorNotApplying;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorPartners;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorTrustCorps;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicList;
 import uk.gov.hmcts.probate.model.ccd.raw.DynamicListItem;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.reform.probate.model.cases.CombinedName;
 import uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Damage;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -952,5 +956,34 @@ class CaseDataTest {
         assertEquals("9/2021", caseData.getCodicilsDamageDate());
 
         assertEquals("Yes", caseData.getDeceasedWrittenWishes());
+    }
+
+    @Test
+    void testLogger() throws Exception {
+        final ObjectMapper objMap = new ObjectMapper();
+
+        final AliasName aliasName = AliasName.builder()
+                .solsAliasname("aliasName")
+                .build();
+        final CollectionMember<AliasName> aliasCollection = new CollectionMember<>(aliasName);
+
+        final ProbateAliasName probateAliasName = ProbateAliasName.builder()
+                .forenames("probateAliasFN")
+                .lastName("probateAliasLN")
+                .build();
+        final CollectionMember<ProbateAliasName> probateAliasCollection = new CollectionMember<>(probateAliasName);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedAnyOtherNameOnWill("Yes")
+                .deceasedAliasFirstNameOnWill("FN")
+                .deceasedAliasLastNameOnWill("LN")
+                .deceasedAnyOtherNames("Yes")
+                .solsDeceasedAliasNamesList(List.of(aliasCollection))
+                .deceasedAliasNameList(List.of(probateAliasCollection))
+                .build();
+
+        final String result = caseData.getRelevantFields(objMap);
+
+        assertNotNull(result);
     }
 }
