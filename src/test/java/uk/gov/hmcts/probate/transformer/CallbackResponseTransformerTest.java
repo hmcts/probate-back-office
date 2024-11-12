@@ -4329,6 +4329,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilder() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill("John")
                 .deceasedAliasLastNameOnWill("Doe");
 
@@ -4352,6 +4353,7 @@ class CallbackResponseTransformerTest {
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
         deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill("John")
                 .deceasedAliasLastNameOnWill("Doe")
                 .deceasedAliasNameList(deceasedAliasNamesList);
@@ -4375,6 +4377,7 @@ class CallbackResponseTransformerTest {
     void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderForTransformCase() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtReferenceNumber("020e920e920e902e2")
+                .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill("Jane")
                 .deceasedAliasLastNameOnWill("Smith")
                 .solsExecutorAliasNames("Dee ceased lol");

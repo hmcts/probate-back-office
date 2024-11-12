@@ -1844,11 +1844,31 @@ public class CallbackResponseTransformer {
     private List<CollectionMember<AliasName>> getSolsDeceasedAliasNamesList(CaseData caseData) {
 
         List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
-        if (caseData.getDeceasedAliasFirstNameOnWill() != null && caseData.getDeceasedAliasLastNameOnWill() != null) {
-            deceasedAliasNames.add(new CollectionMember<>(null, AliasName.builder()
-                    .solsAliasname(caseData.getDeceasedAliasFirstNameOnWill() + " "
-                            + caseData.getDeceasedAliasLastNameOnWill()).build()));
+
+        // The variable name does not reflect what the actual use is. The question asked is:
+        //     Is the deceased name written the same way as on the will?
+        // So we care if this is No, not Yes
+        final String deceasedAnyOtherNameOnWill = caseData.getDeceasedAnyOtherNameOnWill();
+        final boolean paAlias = deceasedAliasNames != null && NO.equalsIgnoreCase(deceasedAnyOtherNameOnWill);
+
+        if (paAlias) {
+            final StringBuilder aliasNameBuilder = new StringBuilder();
+            aliasNameBuilder
+                    .append(caseData.getDeceasedAliasFirstNameOnWill())
+                    .append(" ")
+                    .append(caseData.getDeceasedAliasLastNameOnWill());
+
+            final String aliasNameValue = aliasNameBuilder.toString();
+
+            final AliasName aliasName = AliasName.builder()
+                    .solsAliasname(aliasNameValue)
+                    .build();
+
+            final CollectionMember<AliasName> aliasCollectionMember = new CollectionMember<>(aliasName);
+
+            deceasedAliasNames.add(aliasCollectionMember);
         }
+
         if (caseData.getDeceasedAliasNameList() != null) {
             deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
                     .stream()
@@ -1857,9 +1877,11 @@ public class CallbackResponseTransformer {
                     .map(alias -> new CollectionMember<>(null, alias))
                     .toList());
         }
+
         if (caseData.getSolsDeceasedAliasNamesList() != null) {
             deceasedAliasNames.addAll(caseData.getSolsDeceasedAliasNamesList());
         }
+
         Set<String> seenAliasNames = new HashSet<>();
         return deceasedAliasNames.stream()
                 .filter(aliasMember -> seenAliasNames.add(aliasMember.getValue().getSolsAliasname()))
