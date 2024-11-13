@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -100,6 +101,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CallbackResponseTransformer {
 
     public static final String ANSWER_YES = "Yes";
@@ -1244,12 +1246,11 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
-            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
-            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
+
+        addDecAliasOnWill(builder, caseData, caseDetails.getId());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
@@ -1263,6 +1264,36 @@ public class CallbackResponseTransformer {
 
 
         return builder;
+    }
+
+    private void addDecAliasOnWill(
+            final ResponseCaseDataBuilder<?, ?> builder,
+            final CaseData caseData,
+            final Long reference) {
+        final String deceasedAnyOtherNameOnWill = caseData.getDeceasedAnyOtherNameOnWill();
+        final String deceasedAliasFirstNameOnWill = caseData.getDeceasedAliasFirstNameOnWill();
+        final String deceasedAliasLastNameOnWill = caseData.getDeceasedAliasLastNameOnWill();
+
+        // The variable name does not reflect what the actual use is. The question asked is:
+        //     Is the deceased name written the same way as on the will?
+        // So we care if this is No, not Yes
+        final boolean shouldStoreAliasOnWill = deceasedAnyOtherNameOnWill != null
+                && NO.equalsIgnoreCase(deceasedAnyOtherNameOnWill);
+        final boolean shouldLogAliasOnWillRemoved = deceasedAnyOtherNameOnWill != null
+                && YES.equalsIgnoreCase(deceasedAnyOtherNameOnWill)
+                && (deceasedAliasLastNameOnWill != null
+                    || deceasedAliasFirstNameOnWill != null);
+
+        builder
+                .deceasedAnyOtherNameOnWill(deceasedAnyOtherNameOnWill);
+        if (shouldStoreAliasOnWill) {
+            builder.deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
+                    .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill());
+        } else if (shouldLogAliasOnWillRemoved) {
+            log.info("Removing deceasedAliasNameOnWill values for case [{}] as deceasedAnyOtherNameOnWill: [{}]",
+                    reference,
+                    deceasedAnyOtherNameOnWill);
+        }
     }
 
     OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
@@ -1849,16 +1880,15 @@ public class CallbackResponseTransformer {
         //     Is the deceased name written the same way as on the will?
         // So we care if this is No, not Yes
         final String deceasedAnyOtherNameOnWill = caseData.getDeceasedAnyOtherNameOnWill();
-        final boolean paAlias = deceasedAliasNames != null && NO.equalsIgnoreCase(deceasedAnyOtherNameOnWill);
+        final boolean shouldIncludeOtherNameOnWill = deceasedAnyOtherNameOnWill != null
+                && NO.equalsIgnoreCase(deceasedAnyOtherNameOnWill);
 
-        if (paAlias) {
-            final StringBuilder aliasNameBuilder = new StringBuilder();
-            aliasNameBuilder
+        if (shouldIncludeOtherNameOnWill) {
+            final String aliasNameValue = new StringBuilder()
                     .append(caseData.getDeceasedAliasFirstNameOnWill())
                     .append(" ")
-                    .append(caseData.getDeceasedAliasLastNameOnWill());
-
-            final String aliasNameValue = aliasNameBuilder.toString();
+                    .append(caseData.getDeceasedAliasLastNameOnWill())
+                    .toString();
 
             final AliasName aliasName = AliasName.builder()
                     .solsAliasname(aliasNameValue)
