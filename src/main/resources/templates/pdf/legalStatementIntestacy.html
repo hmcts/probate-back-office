@@ -256,7 +256,6 @@
         </td>
     </tr>
     </tbody>
-    {% else %}
     <tbody class="table-content">
     <tr>
         <td colspan="2" style="height: 15px;">
@@ -350,6 +349,211 @@
         <td colspan="2">
             <p>The gross value for the estate {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}in the United Kingdom {% else %}in England and Wales{% endif %} amounts to {% if case_extras != null %}&#163;{{ case_extras.grossValue }} and the net value for the estate amounts to &#163;{{ case_extras.netValue }}.</p>
                 {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
+            {% endif %}
+            <p>To the best of my knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">Applicant applying for letters of administration</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>
+                {% if case_details.case_data.applicationGrounds != null and case_details.case_data.applicationGrounds != "" %}The grounds for making this application and any supporting evidence are:
+                {{ case_details.case_data.applicationGrounds }}
+                {% endif %}
+                {% if case_details.case_data.furtherEvidenceForApplication != null and case_details.case_data.furtherEvidenceForApplication != "" %}Further evidence in support of this application is:
+                {{ case_details.case_data.furtherEvidenceForApplication }}
+                {% endif %}
+            </p>
+            <p>
+                {% if case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "SpouseOrCivil" %}I am the spouse or civil partner of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
+                {% else %}{{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}'s spouse or civil partner doesn't want to apply for letters of administration now or in the future. I am the
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and
+                {% if case_details.case_data.ihtNetValue/100 > 250000 %} one of the people entitled to the estate.
+                {% else %} the only person who may become entitled to the estate.
+                {% endif %}
+                {% endif %}
+                {% else %}I am the
+                {% if case_details.case_data.solsApplicantRelationshipToDeceased == "ChildAdopted" %} adopted {% endif %} child of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and the only person now entitled to the estate.
+                {% endif %}
+            </p>
+            <p>I am applying for letters of administration. I have provided what I believe to be true and accurate information about {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}.</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" style="font-weight: bold">Declaration</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>I confirm that I will deal with the estate of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}, according to law. I will:</p>
+            <ul>
+                <li>collect the whole estate</li>
+                <li>keep full details (an inventory) of the estate</li>
+                <li>keep a full account of how the estate has been distributed</li>
+            </ul>
+
+            <p>If the probate registry (court) asks me to do so, I will:</p>
+            <ul>
+                <li>provide the full details of the estate and how it has been distributed</li>
+                <li>return the letters of administration to the court</li>
+            </ul>
+
+            <p>I understand that:</p>
+            <ul>
+                <li>the application will be rejected if I do not provide information (if asked)</li>
+                <li>proceedings for contempt of court may be brought against the undersigned if it is found that the evidence provided is deliberately untruthful or dishonest, as well as revocation of the grant</li>
+            </ul>
+            <p>I authorise {{ case_details.case_data.solsSolicitorFirmName }}, as my appointed firm to
+                submit this application on my behalf.</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Name:</p>
+        </td>
+        <td>
+            <p>{{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} (applicant)</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Signature:</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Date (DD/MM/YYYY):</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Name:</p>
+        </td>
+        <td>
+            <p>{{ case_details.case_data.solsSOTForenames }} {{ case_details.case_data.solsSOTSurname }} (Probate practitioner{% if case_details.case_data.solsSolicitorIsApplying == "Yes" %} and executor{% endif %})</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Signature:</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    <tr>
+        <td>
+            <p>Date (DD/MM/YYYY):</p>
+        </td>
+        <td>
+            <p>..................................................</p>
+        </td>
+    </tr>
+    </tbody>
+    {% else %}
+    <tbody class="table-content">
+    <tr>
+        <td colspan="2" style="height: 15px;">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" class="legal-header">
+            <strong>IN THE HIGH COURT OF JUSTICE</strong><br />
+            FAMILY DIVISION<br />
+            (PROBATE)
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" style="height: 15px;">
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold"><h2>Legal statement</h2></td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>The applicant believes that all the information stated in the legal statement is true. {% if case_details.case_data.solsSolicitorFirmName!= null and case_details.case_data.solsSolicitorFirmName!= "" %}They have authorised {{case_details.case_data.solsSolicitorFirmName}} to sign a statement of truth on their behalf.{% endif %}</p>
+            <p>This statement is based on the information given in your application. It will be stored as a public record.</p>
+            <p>I, {{ case_details.case_data.primaryApplicantForenames }} {{ case_details.case_data.primaryApplicantSurname }} of
+                {% if case_details.case_data.primaryApplicantAddress.AddressLine1 != null and case_details.case_data.primaryApplicantAddress.AddressLine1 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine1 }},{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.AddressLine2 != null and case_details.case_data.primaryApplicantAddress.AddressLine2 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine2 }},{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.AddressLine3 != null and case_details.case_data.primaryApplicantAddress.AddressLine3 != "" %}{{ case_details.case_data.primaryApplicantAddress.AddressLine3 }},{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.PostTown != null and case_details.case_data.primaryApplicantAddress.PostTown != "" %}{{ case_details.case_data.primaryApplicantAddress.PostTown }},{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.County != null and case_details.case_data.primaryApplicantAddress.County != "" %}{{ case_details.case_data.primaryApplicantAddress.County }},{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.PostCode != null and case_details.case_data.primaryApplicantAddress.PostCode != ""%}{{ case_details.case_data.primaryApplicantAddress.PostCode }},{% endif %}
+                {% if case_details.case_data.primaryApplicantAddress.Country != null and case_details.case_data.primaryApplicantAddress.Country != ""%}{{ case_details.case_data.primaryApplicantAddress.Country }}{% endif %}
+                make the following statement:</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">The person who died</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>
+                {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }}{% if case_details.case_data.solsDeceasedAliasNamesList|length>0 %} also known as
+                {% for alias in case_details.case_data.solsDeceasedAliasNamesList %}
+                {{ alias.value.SolsAliasname }}{% if loop.length - loop.index > 2 %}, {% elseif loop.length - loop.index > 1 %} and{% endif %}{% endfor %}{% endif %}, of
+                {% if case_details.case_data.deceasedAddress.AddressLine1 != null and
+                case_details.case_data.deceasedAddress.AddressLine1 != "" %}{{
+                case_details.case_data.deceasedAddress.AddressLine1 }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.AddressLine2 != null and
+                case_details.case_data.deceasedAddress.AddressLine2 != "" %}{{
+                case_details.case_data.deceasedAddress.AddressLine2 }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.AddressLine3 != null and
+                case_details.case_data.deceasedAddress.AddressLine3 != "" %}{{
+                case_details.case_data.deceasedAddress.AddressLine3 }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.PostTown != null and
+                case_details.case_data.deceasedAddress.PostTown != "" %}{{
+                case_details.case_data.deceasedAddress.PostTown }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.County != null and
+                case_details.case_data.deceasedAddress.County != "" %}{{ case_details.case_data.deceasedAddress.County
+                }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.PostCode != null and
+                case_details.case_data.deceasedAddress.PostCode != "" %}{{
+                case_details.case_data.deceasedAddress.PostCode }},{% endif %}
+                {% if case_details.case_data.deceasedAddress.Country != null and
+                case_details.case_data.deceasedAddress.Country != "" %}{{
+                case_details.case_data.deceasedAddress.Country }}{% endif %}
+                was born on {{ case_details.case_data.deceasedDateOfBirth|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }}
+                and died on {{ case_details.case_data.deceasedDateOfDeath|date("dd/MM/yyyy", existingFormat="yyyy-MM-dd") }} intestate.
+            </p>
+            <p>They were
+                {% if case_details.case_data.deceasedMaritalStatus == "neverMarried" %}
+                never married
+                {% elseif case_details.case_data.deceasedMaritalStatus == "widowed" %}
+                widowed
+                {% elseif case_details.case_data.deceasedMaritalStatus == "marriedCivilPartnership" %}
+                married or in a civil partnership,
+                {% elseif case_details.case_data.deceasedMaritalStatus == "divorcedCivilPartnership" %}
+                divorced or their civil partnership was dissolved,
+                {% else %}
+                judicially separated
+                {% endif %}
+                and domiciled in {% if case_details.case_data.domicilityCountry != null and case_details.case_data.domicilityCountry != "" %}{{ case_details.case_data.domicilityCountry }}.{% else %}England and Wales.{% endif %}
+            </p>
+            <p>No children under 18 are entitled to the estate.</p>
+        </td>
+    </tr>
+
+    <tr>
+        <td colspan="2" valign="top" style="font-weight: bold">The estate of the person who died</td>
+    </tr>
+    <tr>
+        <td colspan="2">
+            <p>The gross value for the estate {% if case_details.case_data.deceasedDomicileInEngWales == "Yes" %}in the United Kingdom {% else %}in England and Wales{% endif %} amounts to {% if case_extras != null %}&#163;{{ case_extras.grossValue }} and the net value for the estate amounts to &#163;{{ case_extras.netValue }}.</p>
+            {% if case_extras.showIhtEstate == "Yes" %}<p>{{ case_extras.ihtEstateText }}</p>{% endif %}
             {% endif %}
             <p>To the best of my knowledge, information and belief, there was no land vested in {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} which was settled previously to the death of {{ case_details.case_data.deceasedForenames }} {{ case_details.case_data.deceasedSurname }} and which remained settled land notwithstanding such death.</p>
         </td>
