@@ -14,6 +14,7 @@ public class CaseEscalatedService {
 
     public void caseEscalated(CaseDetails caseDetails) {
         caseDetails.getData().setEscalatedDate(LocalDate.now());
+
     }
 
     public void setCaseWorkerEscalatedDate(CaseDetails caseDetails) {

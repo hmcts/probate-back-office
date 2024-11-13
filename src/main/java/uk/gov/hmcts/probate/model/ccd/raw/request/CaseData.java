@@ -524,6 +524,7 @@ public class CaseData extends CaseDataParent {
     private LocalDate grantDelayedNotificationDate;
     private LocalDate grantStoppedDate;
     private LocalDate escalatedDate;
+    private String registrarEscalateReason;
     private LocalDate caseWorkerEscalationDate;
     private LocalDate resolveCaseWorkerEscalationDate;
     private String resolveCaseWorkerEscalationState;
