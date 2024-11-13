@@ -74,7 +74,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 import static uk.gov.hmcts.probate.model.ApplicationType.SOLICITOR;
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS_BILINGUAL;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_ADMON;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_INTESTACY;
 import static uk.gov.hmcts.probate.model.DocumentType.LEGAL_STATEMENT_PROBATE_TRUST_CORPS;
@@ -244,10 +243,7 @@ public class BusinessValidationController {
 
             Optional<String> newState =
                 stateChangeService.getChangedStateForProbateUpdate(callbackRequest.getCaseDetails().getData());
-            response = callbackRequest.getCaseDetails().getData().isLanguagePreferenceWelsh()
-                    ? getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
-                    LEGAL_STATEMENT_PROBATE_TRUST_CORPS_BILINGUAL, GRANT_OF_PROBATE_NAME)
-                    : getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
+            response = getCallbackResponseForGenerateAndUpload(callbackRequest, newState,
                     LEGAL_STATEMENT_PROBATE_TRUST_CORPS, GRANT_OF_PROBATE_NAME);
         }
         return ResponseEntity.ok(response);
