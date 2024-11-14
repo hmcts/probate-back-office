@@ -2,12 +2,16 @@ package uk.gov.hmcts.probate.service.docmosis;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.function.Executable;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ApplicationType;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
+import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -18,12 +22,20 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static uk.gov.hmcts.probate.model.Constants.CTSC;
+import static uk.gov.hmcts.probate.model.Constants.NO;
 
 class GenericMapperServiceTest {
     private static final String DECEASED_FORNAME_KEY = "deceasedForenames";
@@ -89,6 +101,18 @@ class GenericMapperServiceTest {
     private static final String SEAL_FILE_PATH = "sealImage.txt";
     private static final String WATERMARK = "draftbackground";
     private static final String WATERMARK_FILE_PATH = "watermarkImage.txt";
+
+    private static final String SOLS_ALIAS_LIST = "solsDeceasedAliasNamesList";
+    private static final String WILL_ALIAS_FN = "WillFN";
+    private static final String WILL_ALIAS_LN = "WillLN";
+    private static final String WILL_ALIAS = WILL_ALIAS_FN + " " + WILL_ALIAS_LN;
+    private static final String ASSET_ALIAS_FN = "AssetFN";
+    private static final String ASSET_ALIAS_LN = "AssetLN";
+    private static final String ASSET_ALIAS = ASSET_ALIAS_FN + " " + ASSET_ALIAS_LN;
+    private static final String SOLS_ASSET_ALIAS_FN = "SolsAssetFN";
+    private static final String SOLS_ASSET_ALIAS_LN = "SolsAssetLN";
+    private static final String SOLS_ASSET_ALIAS = SOLS_ASSET_ALIAS_FN + " " + SOLS_ASSET_ALIAS_LN;
+
     private static Map<String, Object> DECEASED_ADDRESS_VALUE = new HashMap<>();
     private static Map<String, Object> PRIMARY_APPLICANT_ADDRESS_VALUE = new HashMap<>();
     private static Map<String, Object> SOLICITOR_ADDRESS_VALUE = new HashMap<>();
@@ -293,5 +317,151 @@ class GenericMapperServiceTest {
         expectedMap.put(SOT_NAME_KEY, SOT_NAME_VALUE);
 
         return expectedMap;
+    }
+
+    @Test
+    void testWhenDeferredAliasGatheringEnabledThenGathersAliases() {
+        when(featureToggleService.enableDeferredAliasGathering()).thenReturn(true);
+
+        final ProbateAliasName aliasValue = ProbateAliasName.builder()
+                .forenames(ASSET_ALIAS_FN)
+                .lastName(ASSET_ALIAS_LN)
+                .build();
+        final CollectionMember<ProbateAliasName> alias = new CollectionMember<>(aliasValue);
+        final var aliasList = List.of(alias);
+
+        final AliasName solsAliasValue = AliasName.builder()
+                .solsAliasname(SOLS_ASSET_ALIAS)
+                .build();
+        final CollectionMember<AliasName> solsAlias = new CollectionMember<>(solsAliasValue);
+        final var solsAliasList = List.of(solsAlias);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfBirth(LocalDate.now())
+                .deceasedDateOfDeath(LocalDate.now())
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(aliasList)
+                .solsDeceasedAliasNamesList(solsAliasList)
+                .build();
+
+        Map<String, Object> mapped = genericMapperService.addCaseData(caseData);
+
+        final Object solsListObj = mapped.get(SOLS_ALIAS_LIST);
+        assertNotNull(solsListObj, "Mapped result should contain '" + SOLS_ALIAS_LIST + "'");
+
+        // i love type erased generics (i.e. trust me this is the right type)
+        final List<Map<String, Map<String, String>>> solsList = (List) solsListObj;
+
+        final List<String> solsListFlattened = solsList.stream().map(m -> m.get("value").get("SolsAliasname")).toList();
+
+        final Function<String, Executable> assertContains = v -> () -> assertTrue(solsListFlattened.contains(v),
+                "Expected resulting list to contain '" + v + "'");
+
+        final Collection<Executable> assertions = new ArrayList<>();
+        assertions.add(() -> assertEquals(3, solsListFlattened.size(),
+                "Expected three entries in resulting mapped list"));
+        assertions.add(assertContains.apply(WILL_ALIAS));
+        assertions.add(assertContains.apply(ASSET_ALIAS));
+        assertions.add(assertContains.apply(SOLS_ASSET_ALIAS));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testWhenDeferredAliasGatheringDisabledThenDoesNotGatherAliases() {
+        when(featureToggleService.enableDeferredAliasGathering()).thenReturn(false);
+
+        final ProbateAliasName aliasValue = ProbateAliasName.builder()
+                .forenames(ASSET_ALIAS_FN)
+                .lastName(ASSET_ALIAS_LN)
+                .build();
+        final CollectionMember<ProbateAliasName> alias = new CollectionMember<>(aliasValue);
+        final var aliasList = List.of(alias);
+
+        final AliasName solsAliasValue = AliasName.builder()
+                .solsAliasname(SOLS_ASSET_ALIAS)
+                .build();
+        final CollectionMember<AliasName> solsAlias = new CollectionMember<>(solsAliasValue);
+        final var solsAliasList = List.of(solsAlias);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfBirth(LocalDate.now())
+                .deceasedDateOfDeath(LocalDate.now())
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(aliasList)
+                .solsDeceasedAliasNamesList(solsAliasList)
+                .build();
+
+        Map<String, Object> mapped = genericMapperService.addCaseData(caseData);
+
+        final Object solsListObj = mapped.get(SOLS_ALIAS_LIST);
+        assertNotNull(solsListObj, "Mapped result should contain '" + SOLS_ALIAS_LIST + "'");
+
+        // i love type erased generics (i.e. trust me this is the right type)
+        final List<Map<String, Map<String, String>>> solsList = (List) solsListObj;
+
+        final List<String> solsListFlattened = solsList.stream().map(m -> m.get("value").get("SolsAliasname")).toList();
+
+        final Function<String, Executable> assertContains = v -> () -> assertTrue(solsListFlattened.contains(v),
+                "Expected resulting list to contain '" + v + "'");
+
+        final Collection<Executable> assertions = new ArrayList<>();
+        assertions.add(() -> assertEquals(1, solsListFlattened.size(),
+                "Expected one entry in resulting mapped list"));
+        assertions.add(assertContains.apply(SOLS_ASSET_ALIAS));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testWhenDeferredAliasGatheringEnabledThenRemovesDuplicatesFromGatheredAliases() {
+        when(featureToggleService.enableDeferredAliasGathering()).thenReturn(true);
+
+        final ProbateAliasName aliasValue = ProbateAliasName.builder()
+                .forenames(WILL_ALIAS_FN)
+                .lastName(WILL_ALIAS_LN)
+                .build();
+        final CollectionMember<ProbateAliasName> alias = new CollectionMember<>(aliasValue);
+        final var aliasList = List.of(alias);
+
+        final AliasName solsAliasValue = AliasName.builder()
+                .solsAliasname(WILL_ALIAS)
+                .build();
+        final CollectionMember<AliasName> solsAlias = new CollectionMember<>(solsAliasValue);
+        final var solsAliasList = List.of(solsAlias);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedDateOfBirth(LocalDate.now())
+                .deceasedDateOfDeath(LocalDate.now())
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(aliasList)
+                .solsDeceasedAliasNamesList(solsAliasList)
+                .build();
+
+        Map<String, Object> mapped = genericMapperService.addCaseData(caseData);
+
+        final Object solsListObj = mapped.get(SOLS_ALIAS_LIST);
+        assertNotNull(solsListObj, "Mapped result should contain '" + SOLS_ALIAS_LIST + "'");
+
+        // i love type erased generics (i.e. trust me this is the right type)
+        final List<Map<String, Map<String, String>>> solsList = (List) solsListObj;
+
+        final List<String> solsListFlattened = solsList.stream().map(m -> m.get("value").get("SolsAliasname")).toList();
+
+        final Function<String, Executable> assertContains = v -> () -> assertTrue(solsListFlattened.contains(v),
+                "Expected resulting list to contain '" + v + "'");
+
+        final Collection<Executable> assertions = new ArrayList<>();
+        assertions.add(() -> assertEquals(1, solsListFlattened.size(),
+                "Expected one entries in resulting mapped list"));
+        assertions.add(assertContains.apply(WILL_ALIAS));
+
+        assertAll(assertions);
     }
 }
