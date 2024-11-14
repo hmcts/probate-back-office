@@ -1010,7 +1010,6 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-                .solsDeceasedAliasNamesList(caseData.generateCombineDeceasedAliases())
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1251,7 +1250,17 @@ public class CallbackResponseTransformer {
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy());
 
-        addDecAliasOnWill(builder, caseData, caseDetails.getId());
+        if (featureToggleService.enableDeferredAliasGathering()) {
+            addDecAliasOnWill(builder, caseData, caseDetails.getId());
+
+            builder
+                    .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
+                    .deceasedAliasNamesList(caseData.getDeceasedAliasNameList());
+
+        } else {
+            builder
+                    .solsDeceasedAliasNamesList(caseData.generateCombineDeceasedAliases());
+        }
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
