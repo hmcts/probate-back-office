@@ -10,6 +10,7 @@ import uk.gov.hmcts.probate.config.properties.registries.Registry;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.time.format.DateTimeFormatter;
@@ -34,8 +35,10 @@ public class GenericMapperService {
     private static final String COUNTY = "county";
     private static final String POSTCODE = "postCode";
     private static final String POST_TOWN = "postTown";
+
     private final RegistriesProperties registriesProperties;
     private final FileSystemResourceService fileSystemResourceService;
+    private final FeatureToggleService featureToggleService;
     private ObjectMapper mapper;
 
     public Map<String, Object> addCaseData(CaseData caseData) {

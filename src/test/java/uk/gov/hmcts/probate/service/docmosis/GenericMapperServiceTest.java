@@ -12,6 +12,7 @@ import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.math.BigDecimal;
@@ -101,6 +102,9 @@ class GenericMapperServiceTest {
 
     @Mock
     private FileSystemResourceService fileSystemResourceService;
+
+    @Mock
+    private FeatureToggleService featureToggleService;
 
     @InjectMocks
     private GenericMapperService genericMapperService;
