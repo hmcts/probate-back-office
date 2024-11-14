@@ -1,12 +1,18 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import lombok.extern.jackson.Jacksonized;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.probate.config.properties.registries.RegistriesProperties;
 import uk.gov.hmcts.probate.config.properties.registries.Registry;
+import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
+import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.SolsAddress;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseDetails;
@@ -15,6 +21,7 @@ import uk.gov.hmcts.probate.service.FileSystemResourceService;
 
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Service
@@ -46,7 +53,26 @@ public class GenericMapperService {
         Map<String, Object> placeholders = mapper.convertValue(caseData, Map.class);
         placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
         placeholders.replace(DECEASED_DATE_OF_BIRTH, DATE_FORMAT.format(caseData.getDeceasedDateOfBirth()));
+
+        if (featureToggleService.enableDeferredAliasGathering()) {
+            final var data = Data.builder()
+                    .combinedDeceasedAliases(caseData.generateCombineDeceasedAliases())
+                    .build();
+            final var dataMapped = mapper.convertValue(data, Map.class);
+
+            placeholders.replace("solsDeceasedAliasNamesList", dataMapped.get("combinedDeceasedAliases"));
+        }
+
         return placeholders;
+    }
+
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @SuperBuilder
+    @Jacksonized
+    @EqualsAndHashCode()
+    @lombok.Data
+    private static final class Data {
+        final List<CollectionMember<AliasName>> combinedDeceasedAliases;
     }
 
     public Map<String, Object> addCaseDataWithRegistryProperties(CaseDetails caseDetails) {
