@@ -55,8 +55,6 @@ import java.util.Comparator;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -1009,7 +1007,7 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-                .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
+                .solsDeceasedAliasNamesList(caseData.generateCombineDeceasedAliases())
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1870,51 +1868,5 @@ public class CallbackResponseTransformer {
             return LocalDateTime.now(ZoneOffset.UTC);
         }
         return lastModifiedDateForDormant;
-    }
-
-    private List<CollectionMember<AliasName>> getSolsDeceasedAliasNamesList(CaseData caseData) {
-
-        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
-
-        // The variable name does not reflect what the actual use is. The question asked is:
-        //     Is the deceased name written the same way as on the will?
-        // So we care if this is No, not Yes
-        final String deceasedAnyOtherNameOnWill = caseData.getDeceasedAnyOtherNameOnWill();
-        final boolean shouldIncludeOtherNameOnWill = deceasedAnyOtherNameOnWill != null
-                && NO.equalsIgnoreCase(deceasedAnyOtherNameOnWill);
-
-        if (shouldIncludeOtherNameOnWill) {
-            final String aliasNameValue = new StringBuilder()
-                    .append(caseData.getDeceasedAliasFirstNameOnWill())
-                    .append(" ")
-                    .append(caseData.getDeceasedAliasLastNameOnWill())
-                    .toString();
-
-            final AliasName aliasName = AliasName.builder()
-                    .solsAliasname(aliasNameValue)
-                    .build();
-
-            final CollectionMember<AliasName> aliasCollectionMember = new CollectionMember<>(aliasName);
-
-            deceasedAliasNames.add(aliasCollectionMember);
-        }
-
-        if (caseData.getDeceasedAliasNameList() != null) {
-            deceasedAliasNames.addAll(caseData.getDeceasedAliasNameList()
-                    .stream()
-                    .map(CollectionMember::getValue)
-                    .map(this::buildDeceasedAliasNameExecutor)
-                    .map(alias -> new CollectionMember<>(null, alias))
-                    .toList());
-        }
-
-        if (caseData.getSolsDeceasedAliasNamesList() != null) {
-            deceasedAliasNames.addAll(caseData.getSolsDeceasedAliasNamesList());
-        }
-
-        Set<String> seenAliasNames = new HashSet<>();
-        return deceasedAliasNames.stream()
-                .filter(aliasMember -> seenAliasNames.add(aliasMember.getValue().getSolsAliasname()))
-                .collect(Collectors.toList());
     }
 }
