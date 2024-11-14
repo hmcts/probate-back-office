@@ -38,4 +38,8 @@ public class FeatureToggleService {
         return this.ldClient.boolVariation(featureToggleCode, this.ldUser, defaultValue);
     }
 
+    public boolean enableDeferredAliasGathering() {
+        return isFeatureToggleOn("probate-enable-deferred-alias-gathering", false);
+    }
+
 }
