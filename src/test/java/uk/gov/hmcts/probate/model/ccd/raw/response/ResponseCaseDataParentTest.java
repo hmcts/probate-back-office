@@ -222,7 +222,7 @@ class ResponseCaseDataParentTest {
                 .deceasedAliasLastNameOnWill("LN")
                 .deceasedAnyOtherNames("Yes")
                 .solsDeceasedAliasNamesList(List.of(aliasCollection))
-                .deceasedAliasNamesList(List.of(probateAliasCollection))
+                .deceasedAliasNameList(List.of(probateAliasCollection))
                 .build();
 
         final String result = caseData.getRelevantFields(objMap);

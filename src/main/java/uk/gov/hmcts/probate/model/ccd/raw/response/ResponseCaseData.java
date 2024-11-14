@@ -145,7 +145,7 @@ public class ResponseCaseData extends ResponseCaseDataParent implements CommonLo
     private final String deceasedAnyOtherNames;
     private final SolsAddress primaryApplicantAddress;
     private final List<CollectionMember<AliasName>> solsDeceasedAliasNamesList;
-    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList;
+    private final List<CollectionMember<ProbateAliasName>> deceasedAliasNameList;
     private final String casePrinted;
     private final String boEmailDocsReceivedNotificationRequested;
     private final String boEmailGrantIssuedNotificationRequested;
@@ -420,7 +420,7 @@ public class ResponseCaseData extends ResponseCaseDataParent implements CommonLo
         objNode.set("solsAliasNames", solsArrNode);
 
         ArrayNode arrNode = objMap.createArrayNode();
-        List<CollectionMember<ProbateAliasName>> aliasNames = this.getDeceasedAliasNamesList();
+        List<CollectionMember<ProbateAliasName>> aliasNames = this.getDeceasedAliasNameList();
         if (aliasNames != null) {
             for (CollectionMember<ProbateAliasName> aliasName : aliasNames) {
                 final var alias = aliasName.getValue();

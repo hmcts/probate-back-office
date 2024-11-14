@@ -1253,7 +1253,7 @@ public class CallbackResponseTransformer {
 
             builder
                     .solsDeceasedAliasNamesList(caseData.getSolsDeceasedAliasNamesList())
-                    .deceasedAliasNamesList(caseData.getDeceasedAliasNameList());
+                    .deceasedAliasNameList(caseData.getDeceasedAliasNameList());
 
         } else {
             builder
