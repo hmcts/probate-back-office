@@ -1274,7 +1274,7 @@ public class CallbackResponseTransformer {
         return builder;
     }
 
-    private void addDecAliasOnWill(
+    void addDecAliasOnWill(
             final ResponseCaseDataBuilder<?, ?> builder,
             final CaseData caseData,
             final Long reference) {

@@ -105,6 +105,8 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -4578,5 +4580,75 @@ class CallbackResponseTransformerTest {
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
+    }
+
+    @Test
+    void testMaintainsExistingAliasWhenSameOnWillNO() {
+        final var willFN = "WillFN";
+        final var willLN = "WillLN";
+
+        final var builder = ResponseCaseData.builder();
+        final var builderSpy = spy(builder);
+
+        final CaseData caseData = CaseData.builder()
+                // This question is "Is the name the same on the will?" and NOT "Any other names on the will?"
+                // as the namemight imply
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(willFN)
+                .deceasedAliasLastNameOnWill(willLN)
+                .build();
+        final Long reference = 1L;
+
+        underTest.addDecAliasOnWill(builderSpy, caseData, reference);
+
+        verify(builderSpy).deceasedAnyOtherNameOnWill(NO);
+        verify(builderSpy).deceasedAliasFirstNameOnWill(willFN);
+        verify(builderSpy).deceasedAliasLastNameOnWill(willLN);
+    }
+
+    @Test
+    void testRemovesExistingAliasWhenSameOnWillYes() {
+        final var willFN = "WillFN";
+        final var willLN = "WillLN";
+
+        final var builder = mock(ResponseCaseData.ResponseCaseDataBuilder.class);
+
+        final CaseData caseData = CaseData.builder()
+                // This question is "Is the name the same on the will?" and NOT "Any other names on the will?"
+                // as the name might imply
+                .deceasedAnyOtherNameOnWill(YES)
+                .deceasedAliasFirstNameOnWill(willFN)
+                .deceasedAliasLastNameOnWill(willLN)
+                .build();
+        final Long reference = 1L;
+
+        underTest.addDecAliasOnWill(builder, caseData, reference);
+
+        verify(builder).deceasedAnyOtherNameOnWill(YES);
+        verify(builder, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builder, never()).deceasedAliasLastNameOnWill(any());
+    }
+
+    @Test
+    void testRemovesExistingAliasWhenSameOnWillNull() {
+        final var willFN = "WillFN";
+        final var willLN = "WillLN";
+
+        final var builder = mock(ResponseCaseData.ResponseCaseDataBuilder.class);
+
+        final CaseData caseData = CaseData.builder()
+                // This question is "Is the name the same on the will?" and NOT "Any other names on the will?"
+                // as the name might imply
+                .deceasedAnyOtherNameOnWill(null)
+                .deceasedAliasFirstNameOnWill(willFN)
+                .deceasedAliasLastNameOnWill(willLN)
+                .build();
+        final Long reference = 1L;
+
+        underTest.addDecAliasOnWill(builder, caseData, reference);
+
+        verify(builder).deceasedAnyOtherNameOnWill(null);
+        verify(builder, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builder, never()).deceasedAliasLastNameOnWill(any());
     }
 }
