@@ -13,14 +13,12 @@ import uk.gov.hmcts.probate.model.caseaccess.OrganisationPolicy;
 import uk.gov.hmcts.probate.model.ccd.CaseMatch;
 import uk.gov.hmcts.probate.model.ccd.caveat.response.ResponseCaveatData;
 import uk.gov.hmcts.probate.model.ccd.raw.AdditionalExecutorApplying;
-import uk.gov.hmcts.probate.model.ccd.raw.AliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.BulkPrint;
 import uk.gov.hmcts.probate.model.ccd.raw.ChangeOfRepresentative;
 import uk.gov.hmcts.probate.model.ccd.raw.CollectionMember;
 import uk.gov.hmcts.probate.model.ccd.raw.Document;
 import uk.gov.hmcts.probate.model.ccd.raw.DocumentLink;
 import uk.gov.hmcts.probate.model.ccd.raw.OriginalDocuments;
-import uk.gov.hmcts.probate.model.ccd.raw.ProbateAliasName;
 import uk.gov.hmcts.probate.model.ccd.raw.RegistrarDirection;
 import uk.gov.hmcts.probate.model.ccd.raw.UploadDocument;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CallbackRequest;
@@ -1720,12 +1718,6 @@ public class CallbackResponseTransformer {
             builder
                     .dateOfDeathType(DATE_OF_DEATH_TYPE_DEFAULT);
         }
-    }
-
-    private AliasName buildDeceasedAliasNameExecutor(ProbateAliasName aliasNames) {
-        return AliasName.builder()
-                .solsAliasname(aliasNames.getForenames() + " " + aliasNames.getLastName())
-                .build();
     }
 
     private String getOtherExecutorExists(CaseData caseData) {
