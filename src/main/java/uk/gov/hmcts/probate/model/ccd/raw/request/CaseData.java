@@ -68,7 +68,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static uk.gov.hmcts.probate.model.Constants.NO;
 import static uk.gov.hmcts.probate.model.Constants.YES;
@@ -732,6 +736,55 @@ public class CaseData extends CaseDataParent implements CommonLog {
         objNode.set("aliasNames", arrNode);
 
         return objMap.writeValueAsString(objNode);
+    }
+
+    public List<CollectionMember<AliasName>> generateCombineDeceasedAliases() {
+        List<CollectionMember<AliasName>> deceasedAliasNames = new ArrayList<>();
+
+        final Function<ProbateAliasName, AliasName> convertAliasType = (p) -> AliasName.builder()
+                .solsAliasname(p.getForenames() + " " + p.getLastName())
+                .build();
+
+        // The variable name does not reflect what the actual use is. The question asked is:
+        //     Is the deceased name written the same way as on the will?
+        // So we care if this is No, not Yes
+        final String deceasedAnyOtherNameOnWill = this.getDeceasedAnyOtherNameOnWill();
+        final boolean shouldIncludeOtherNameOnWill = deceasedAnyOtherNameOnWill != null
+                && NO.equalsIgnoreCase(deceasedAnyOtherNameOnWill);
+
+        if (shouldIncludeOtherNameOnWill) {
+            final String aliasNameValue = new StringBuilder()
+                    .append(this.getDeceasedAliasFirstNameOnWill())
+                    .append(" ")
+                    .append(this.getDeceasedAliasLastNameOnWill())
+                    .toString();
+
+            final AliasName aliasName = AliasName.builder()
+                    .solsAliasname(aliasNameValue)
+                    .build();
+
+            final CollectionMember<AliasName> aliasCollectionMember = new CollectionMember<>(aliasName);
+
+            deceasedAliasNames.add(aliasCollectionMember);
+        }
+
+        if (this.getDeceasedAliasNameList() != null) {
+            deceasedAliasNames.addAll(this.getDeceasedAliasNameList()
+                    .stream()
+                    .map(CollectionMember::getValue)
+                    .map(convertAliasType)
+                    .map(alias -> new CollectionMember<>(null, alias))
+                    .toList());
+        }
+
+        if (this.getSolsDeceasedAliasNamesList() != null) {
+            deceasedAliasNames.addAll(this.getSolsDeceasedAliasNamesList());
+        }
+
+        Set<String> seenAliasNames = new HashSet<>();
+        return deceasedAliasNames.stream()
+                .filter(aliasMember -> seenAliasNames.add(aliasMember.getValue().getSolsAliasname()))
+                .collect(Collectors.toList());
     }
 
 }
