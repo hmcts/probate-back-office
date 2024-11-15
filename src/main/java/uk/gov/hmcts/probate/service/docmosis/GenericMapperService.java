@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.service.docmosis;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.EqualsAndHashCode;
@@ -54,13 +55,21 @@ public class GenericMapperService {
         placeholders.replace(DECEASED_DATE_OF_DEATH, DATE_FORMAT.format(caseData.getDeceasedDateOfDeath()));
         placeholders.replace(DECEASED_DATE_OF_BIRTH, DATE_FORMAT.format(caseData.getDeceasedDateOfBirth()));
 
-        if (featureToggleService.enableDeferredAliasGathering()) {
-            final var data = Data.builder()
-                    .combinedDeceasedAliases(caseData.generateCombineDeceasedAliases())
-                    .build();
-            final var dataMapped = mapper.convertValue(data, Map.class);
+        try {
+            if (featureToggleService.enableDeferredAliasGathering()) {
+                log.info("Doing new behaviour");
+                final var origSolsDANL = placeholders.get("solsDeceasedAliasNamesList");
+                log.info("origSolsDANL: {}", mapper.writeValueAsString(origSolsDANL));
+                final var data = Data.builder()
+                        .combinedDeceasedAliases(caseData.generateCombineDeceasedAliases())
+                        .build();
+                final var dataMapped = mapper.convertValue(data, Map.class);
+                log.info("dataMapped: {}", mapper.writeValueAsString(dataMapped));
 
-            placeholders.replace("solsDeceasedAliasNamesList", dataMapped.get("combinedDeceasedAliases"));
+                placeholders.put("solsDeceasedAliasNamesList", dataMapped.get("combinedDeceasedAliases"));
+            }
+        } catch (JsonProcessingException e) {
+            log.error("Caught JsonProcessingException", e);
         }
 
         return placeholders;
