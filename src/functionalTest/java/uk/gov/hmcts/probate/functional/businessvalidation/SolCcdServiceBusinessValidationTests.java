@@ -5,7 +5,6 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.Assertions;
@@ -13,7 +12,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
@@ -35,8 +33,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @ExtendWith(SerenityJUnit5Extension.class)
-@Component
-@RequiredArgsConstructor
 @Slf4j
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
@@ -76,7 +72,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Autowired
     protected FunctionalTestUtils utils;
 
-    private final FeatureToggleService featureToggleService;
+    @Autowired
+    protected FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setUp() {
@@ -837,6 +834,7 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(response);
 
+        log.info("featureToggleService: {}", featureToggleService);
         final boolean deferredGathering = featureToggleService.enableDeferredAliasGathering();
         log.info("deferredGathering: {}", deferredGathering);
         if (featureToggleService.enableDeferredAliasGathering()) {
