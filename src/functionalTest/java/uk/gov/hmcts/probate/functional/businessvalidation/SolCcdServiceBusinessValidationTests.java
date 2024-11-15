@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
-import uk.gov.hmcts.probate.functional.TestContextConfiguration;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
 import uk.gov.hmcts.probate.service.FeatureToggleService;
@@ -73,11 +72,8 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     @Autowired
     protected FunctionalTestUtils utils;
 
-    //    @Autowired
-    //    protected FeatureToggleService featureToggleService;
-
     @Autowired
-    protected TestContextConfiguration testContextConfiguration;
+    protected FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setUp() {
@@ -838,21 +834,17 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
         final JsonPath jsonPath = JsonPath.from(response);
 
-        FeatureToggleService featureToggleService = testContextConfiguration.featureToggleService();
-        log.info("featureToggleService: {}", featureToggleService);
-        final boolean deferredGathering = featureToggleService.enableDeferredAliasGathering();
-        log.info("deferredGathering: {}", deferredGathering);
-        if (deferredGathering) {
-            final String aliasFN = jsonPath.get("data.deceasedAliasNamesList[0].value.Forenames");
-            final String aliasLN = jsonPath.get("data.deceasedAliasNamesList[0].value.LastName");
+        if (featureToggleService.enableDeferredAliasGathering()) {
+            final String aliasFN = jsonPath.get("data.deceasedAliasNameList[0].value.Forenames");
+            final String aliasLN = jsonPath.get("data.deceasedAliasNameList[0].value.LastName");
 
             assertAll(
-                    () -> assertEquals("Giacomo", aliasFN, "Expected FN to match"),
-                    () -> assertEquals("Terrel", aliasLN, "Expected LN to match"));
+                    () -> Assertions.assertEquals("Giacomo", aliasFN, "Expected FN to match"),
+                    () -> Assertions.assertEquals("Terrel", aliasLN, "Expected LN to match"));
         } else {
             final String alias = jsonPath.get("data.solsDeceasedAliasNamesList[0].value.SolsAliasname");
 
-            assertEquals("Giacomo Terrel", alias);
+            Assertions.assertEquals("Giacomo Terrel", alias, "Expect alias to match");
         }
     }
 

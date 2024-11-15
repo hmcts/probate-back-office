@@ -66,6 +66,7 @@ public class TestContextConfiguration {
         return dataSource;
     }
 
+    @Bean
     public FeatureToggleService featureToggleService() {
         log.info("create client");
         LDClient ldClient = new LDClient(ldSdkKey);
