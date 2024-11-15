@@ -5,15 +5,19 @@ import io.restassured.http.ContentType;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
 import io.restassured.response.ResponseBody;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import net.serenitybdd.junit5.SerenityJUnit5Extension;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import uk.gov.hmcts.probate.functional.IntegrationTestBase;
 import uk.gov.hmcts.probate.functional.util.FunctionalTestUtils;
 import uk.gov.hmcts.probate.model.ccd.raw.request.CaseData;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.validator.IHTFourHundredDateValidationRule;
 
 import java.io.IOException;
@@ -28,8 +32,12 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @ExtendWith(SerenityJUnit5Extension.class)
+@Component
+@RequiredArgsConstructor
+@Slf4j
 public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
 
     public static final String NOTIFICATION_DOCUMENT_BINARY_URL =
@@ -64,9 +72,11 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
     private static final String SOLS_CASE_CREATE_EVENT_ID = "solicitorCreateApplication";
     private static final String EVENT_PARM = "EVENT_PARM";
 
-
+    // This shadows a field from the parent class
     @Autowired
     protected FunctionalTestUtils utils;
+
+    private final FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setUp() {
@@ -826,9 +836,21 @@ public class SolCcdServiceBusinessValidationTests extends IntegrationTestBase {
         final String response = transformCase("personalPayloadNotifications.json", TRANSFORM_URL);
 
         final JsonPath jsonPath = JsonPath.from(response);
-        final String alias = jsonPath.get("data.solsDeceasedAliasNamesList[0].value.SolsAliasname");
 
-        assertEquals("Giacomo Terrel", alias);
+        final boolean deferredGathering = featureToggleService.enableDeferredAliasGathering();
+        log.info("deferredGathering: {}", deferredGathering);
+        if (featureToggleService.enableDeferredAliasGathering()) {
+            final String aliasFN = jsonPath.get("data.deceasedAliasNamesList[0].value.Forenames");
+            final String aliasLN = jsonPath.get("data.deceasedAliasNamesList[0].value.LastName");
+
+            assertAll(
+                    () -> assertEquals("Giacomo", aliasFN, "Expected FN to match"),
+                    () -> assertEquals("Terrel", aliasLN, "Expected LN to match"));
+        } else {
+            final String alias = jsonPath.get("data.solsDeceasedAliasNamesList[0].value.SolsAliasname");
+
+            assertEquals("Giacomo Terrel", alias);
+        }
     }
 
     @Test

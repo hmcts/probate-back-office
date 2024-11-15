@@ -1,5 +1,6 @@
 package uk.gov.hmcts.probate.functional;
 
+import com.launchdarkly.sdk.server.LDClient;
 import feign.Feign;
 import feign.jackson.JacksonEncoder;
 import lombok.extern.slf4j.Slf4j;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.reform.authorisation.ServiceAuthorisationApi;
 import uk.gov.hmcts.reform.authorisation.generators.ServiceAuthTokenGenerator;
 
@@ -29,6 +31,18 @@ public class TestContextConfiguration {
 
     @Value("${datasource.password}")
     private String datasourcePassword;
+
+    @Value("${ld.sdk.key}")
+    private String ldSdkKey;
+
+    @Value("${ld.user.key}")
+    private String ldUserKey;
+
+    @Value("${ld.user.firstName")
+    private String ldUserFirstName;
+
+    @Value("${ld.user.lastName")
+    private String ldUserLastName;
 
     @Bean
     public ServiceAuthTokenGenerator serviceAuthTokenGenerator(
@@ -50,5 +64,16 @@ public class TestContextConfiguration {
         dataSource.setUsername(datasourceUsername);
         dataSource.setPassword(datasourcePassword);
         return dataSource;
+    }
+
+    @Bean
+    public FeatureToggleService featureToggleService() {
+        LDClient ldClient = new LDClient(ldSdkKey);
+        final FeatureToggleService featureToggleService = new FeatureToggleService(
+                ldClient,
+                ldUserKey,
+                ldUserFirstName,
+                ldUserLastName);
+        return featureToggleService;
     }
 }
