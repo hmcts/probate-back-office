@@ -54,6 +54,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.StateChangeService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.ExecutorListMapperService;
@@ -555,6 +556,9 @@ class CallbackResponseTransformerTest {
     private Iht400421Defaulter iht400421Defaulter;
     @Mock
     Document coversheetMock;
+
+    @Mock
+    private FeatureToggleService featureToggleService;
 
     @BeforeEach
     public void setup() {
@@ -4889,6 +4893,8 @@ class CallbackResponseTransformerTest {
                 DEC_ALIAS_NAME_CM,
                 SOL_DEC_ALIAS_NAME_CM);
         final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
+
+        when(featureToggleService.enableNewAliasTransformation()).thenReturn(true);
 
         try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
             respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);

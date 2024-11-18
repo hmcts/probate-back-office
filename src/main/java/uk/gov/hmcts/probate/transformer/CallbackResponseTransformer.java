@@ -34,6 +34,7 @@ import uk.gov.hmcts.probate.model.fee.FeesResponse;
 import uk.gov.hmcts.probate.model.payments.pba.OrganisationEntityResponse;
 import uk.gov.hmcts.probate.service.ExceptedEstateDateOfDeathChecker;
 import uk.gov.hmcts.probate.service.ExecutorsApplyingNotificationService;
+import uk.gov.hmcts.probate.service.FeatureToggleService;
 import uk.gov.hmcts.probate.service.organisations.OrganisationsRetrievalService;
 import uk.gov.hmcts.probate.service.solicitorexecutor.FormattingService;
 import uk.gov.hmcts.probate.service.tasklist.TaskListUpdateService;
@@ -143,6 +144,8 @@ public class CallbackResponseTransformer {
     private final IhtEstateDefaulter ihtEstateDefaulter;
     private final Iht400421Defaulter iht400421Defaulter;
     private final ExceptedEstateDateOfDeathChecker exceptedEstateDateOfDeathChecker;
+    private final FeatureToggleService featureToggleService;
+
     @Value("${make_dormant.add_time_minutes}")
     private int makeDormantAddTimeMinutes;
 
@@ -1296,10 +1299,18 @@ public class CallbackResponseTransformer {
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose());
 
-        handleDeceasedAliases(
-                builder,
-                caseData,
-                caseDetails.getId());
+        if (featureToggleService.enableNewAliasTransformation()) {
+            handleDeceasedAliases(
+                    builder,
+                    caseData,
+                    caseDetails.getId());
+        } else {
+            builder.solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData));
+
+            builder.deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill());
+            builder.deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill());
+            builder.deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill());
+        }
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
