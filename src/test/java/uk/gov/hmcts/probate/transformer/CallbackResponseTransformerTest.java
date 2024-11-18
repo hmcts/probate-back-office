@@ -5,6 +5,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.function.Executable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
@@ -81,8 +82,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -95,6 +98,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.comparesEqualTo;
 import static org.hamcrest.Matchers.empty;
 import static org.hamcrest.core.Is.is;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -314,6 +318,43 @@ class CallbackResponseTransformerTest {
     private static final LocalDateTime dateTime = LocalDateTime.of(2024, 1, 1, 1, 1, 1, 1);
     private static final String DEFAULT_DATE_OF_DEATHTYPE = "diedOn";
     private static final String RESPONSE_CONTENT = "I responded";
+
+    private static final String WILL_ALIAS_FN = "WillFN";
+    private static final String WILL_ALIAS_LN = "WillLN";
+    private static final String WILL_ALIAS = WILL_ALIAS_FN + " " + WILL_ALIAS_LN;
+    private static final ProbateAliasName WILL_PROBATE_ALIAS_NAME = ProbateAliasName.builder()
+            .forenames(WILL_ALIAS_FN)
+            .lastName(WILL_ALIAS_LN)
+            .build();
+    private static final CollectionMember<ProbateAliasName> WILL_PROBATE_ALIAS_NAME_CM = new CollectionMember<>(
+            WILL_PROBATE_ALIAS_NAME);
+    private static final AliasName WILL_ALIAS_NAME = AliasName.builder().solsAliasname(WILL_ALIAS).build();
+    private static final CollectionMember<AliasName> WILL_ALIAS_NAME_CM = new CollectionMember<>(WILL_ALIAS_NAME);
+
+    private static final String DEC_ALIAS_FN = "DecAliasFN";
+    private static final String DEC_ALIAS_LN = "DecAliasLN";
+    private static final String DEC_ALIAS = DEC_ALIAS_FN + " " + DEC_ALIAS_LN;
+    private static final ProbateAliasName DEC_PROBATE_ALIAS_NAME = ProbateAliasName.builder()
+            .forenames(DEC_ALIAS_FN)
+            .lastName(DEC_ALIAS_LN)
+            .build();
+    private static final CollectionMember<ProbateAliasName> DEC_PROBATE_ALIAS_NAME_CM = new CollectionMember<>(
+            DEC_PROBATE_ALIAS_NAME);
+    private static final AliasName DEC_ALIAS_NAME = AliasName.builder().solsAliasname(DEC_ALIAS).build();
+    private static final CollectionMember<AliasName> DEC_ALIAS_NAME_CM = new CollectionMember<>(DEC_ALIAS_NAME);
+
+    private static final String SOL_DEC_ALIAS_FN = "SolDecAliasFN";
+    private static final String SOL_DEC_ALIAS_LN = "SolDecAliasLN";
+    private static final String SOL_DEC_ALIAS = SOL_DEC_ALIAS_FN + " " + SOL_DEC_ALIAS_LN;
+    private static final ProbateAliasName SOL_DEC_PROBATE_ALIAS_NAME = ProbateAliasName.builder()
+            .forenames(SOL_DEC_ALIAS_FN)
+            .lastName(SOL_DEC_ALIAS_LN)
+            .build();
+    private static final CollectionMember<ProbateAliasName> SOL_DEC_PROBATE_ALIAS_NAME_CM = new CollectionMember<>(
+            SOL_DEC_PROBATE_ALIAS_NAME);
+    private static final AliasName SOL_DEC_ALIAS_NAME = AliasName.builder().solsAliasname(SOL_DEC_ALIAS).build();
+    private static final CollectionMember<AliasName> SOL_DEC_ALIAS_NAME_CM = new CollectionMember<>(SOL_DEC_ALIAS_NAME);
+
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
     @Mock
@@ -4732,5 +4773,195 @@ class CallbackResponseTransformerTest {
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
+    }
+
+    @Test
+    void testConvertWillAlias_sameOnWillNull() {
+        final Long caseRef = 1L;
+        final String nameSameOnWill = null;
+        final String foreNames = WILL_ALIAS_FN;
+        final String lastName = WILL_ALIAS_LN;
+
+        final var res = underTest.convertAliasOnWillToSolsDecAliasList(
+                caseRef,
+                nameSameOnWill,
+                foreNames,
+                lastName);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(0, res.size(), "Expected converted will aliases to be empty"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertWillAlias_sameOnWillYes() {
+        final Long caseRef = 1L;
+        final String otherNameOnWill = YES;
+        final String foreNames = WILL_ALIAS_FN;
+        final String lastName = WILL_ALIAS_LN;
+
+        final var res = underTest.convertAliasOnWillToSolsDecAliasList(
+                caseRef,
+                otherNameOnWill,
+                foreNames,
+                lastName);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(0, res.size(), "Expected converted will aliases to be empty"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertWillAlias_sameOnWillNo_fnNull_lnPresent() {
+        final Long caseRef = 1L;
+        final String otherNameOnWill = NO;
+        final String foreNames = null;
+        final String lastName = WILL_ALIAS_LN;
+
+        final var res = underTest.convertAliasOnWillToSolsDecAliasList(
+                caseRef,
+                otherNameOnWill,
+                foreNames,
+                lastName);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(0, res.size(), "Expected converted will aliases to be empty"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertWillAlias_sameOnWillNo_fnPresent_lnNull() {
+        final Long caseRef = 1L;
+        final String otherNameOnWill = NO;
+        final String foreNames = WILL_ALIAS_FN;
+        final String lastName = null;
+
+        final var res = underTest.convertAliasOnWillToSolsDecAliasList(
+                caseRef,
+                otherNameOnWill,
+                foreNames,
+                lastName);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(0, res.size(), "Expected converted will aliases to be empty"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertWillAlias_sameOnWillNo_fnPresent_lnPresent() {
+        final Long caseRef = 1L;
+        final String otherNameOnWill = NO;
+        final String foreNames = WILL_ALIAS_FN;
+        final String lastName = WILL_ALIAS_LN;
+
+        final var res = underTest.convertAliasOnWillToSolsDecAliasList(
+                caseRef,
+                otherNameOnWill,
+                foreNames,
+                lastName);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(1, res.size(), "Expected converted will aliases to have one entry"));
+        assertions.add(() -> assertTrue(res.contains(WILL_ALIAS_NAME_CM), "Expected will alias present"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertDecAliases_null() {
+        final List<CollectionMember<ProbateAliasName>> aliases = null;
+
+        final var res = underTest.convertDecAliasesSolsDecAliasList(
+                aliases);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(0, res.size(), "Expected converted will aliases to be empty"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertDecAliases_empty() {
+        final List<CollectionMember<ProbateAliasName>> aliases = List.of();
+
+        final var res = underTest.convertDecAliasesSolsDecAliasList(
+                aliases);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(0, res.size(), "Expected converted dec aliases to be empty"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertDecAliases_one() {
+        final List<CollectionMember<ProbateAliasName>> aliases = List.of(
+                DEC_PROBATE_ALIAS_NAME_CM);
+
+        final var res = underTest.convertDecAliasesSolsDecAliasList(
+                aliases);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(1, res.size(), "Expected converted dec aliases to be have one entry"));
+        assertions.add(() -> assertTrue(res.contains(DEC_ALIAS_NAME_CM), "Expected dec alias present"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertDecAliases_two() {
+        final List<CollectionMember<ProbateAliasName>> aliases = List.of(
+                DEC_PROBATE_ALIAS_NAME_CM,
+                WILL_PROBATE_ALIAS_NAME_CM);
+
+        final var res = underTest.convertDecAliasesSolsDecAliasList(
+                aliases);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(2, res.size(), "Expected converted will aliases to have two entries"));
+        assertions.add(() -> assertTrue(res.contains(DEC_ALIAS_NAME_CM), "Expected dec alias present"));
+        assertions.add(() -> assertTrue(res.contains(WILL_ALIAS_NAME_CM), "Expected will alias present"));
+
+        assertAll(assertions);
+    }
+
+    @Test
+    void testConvertDecAliases_twoDuplicate() {
+        final List<CollectionMember<ProbateAliasName>> aliases = List.of(
+                DEC_PROBATE_ALIAS_NAME_CM,
+                DEC_PROBATE_ALIAS_NAME_CM);
+
+        final var res = underTest.convertDecAliasesSolsDecAliasList(
+                aliases);
+
+        final Collection<Executable> assertions = new HashSet<>();
+
+        assertions.add(() -> assertNotNull(res, "Expected non-null response"));
+        assertions.add(() -> assertEquals(1, res.size(), "Expected converted dec aliases to have one entry"));
+        assertions.add(() -> assertTrue(res.contains(DEC_ALIAS_NAME_CM), "Expected will alias present"));
+
+        assertAll(assertions);
     }
 }
