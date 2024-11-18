@@ -1047,7 +1047,6 @@ public class CallbackResponseTransformer {
             .primaryApplicantAddress(caseData.getPrimaryApplicantAddress())
             .primaryApplicantNotRequiredToSendDocuments(caseData.getPrimaryApplicantNotRequiredToSendDocuments())
             .solsAdditionalInfo(caseData.getSolsAdditionalInfo())
-            .solsDeceasedAliasNamesList(getSolsDeceasedAliasNamesList(caseData))
             .caseMatches(caseData.getCaseMatches())
 
             .solsSOTNeedToUpdate(caseData.getSolsSOTNeedToUpdate())
@@ -1284,9 +1283,6 @@ public class CallbackResponseTransformer {
             .paymentTaken(caseData.getPaymentTaken())
             .hmrcLetterId(caseData.getHmrcLetterId())
             .uniqueProbateCodeId(caseData.getUniqueProbateCodeId())
-            .deceasedAnyOtherNameOnWill(caseData.getDeceasedAnyOtherNameOnWill())
-            .deceasedAliasFirstNameOnWill(caseData.getDeceasedAliasFirstNameOnWill())
-            .deceasedAliasLastNameOnWill(caseData.getDeceasedAliasLastNameOnWill())
             .boHandoffReasonList(getHandoffReasonList(caseData))
             .lastModifiedDateForDormant(getLastModifiedDate(eventId, caseData.getLastModifiedDateForDormant()))
             .applicationSubmittedBy(caseData.getApplicationSubmittedBy())
@@ -1299,6 +1295,11 @@ public class CallbackResponseTransformer {
             .citizenResponses(caseData.getCitizenResponses())
             .citizenDocumentsUploaded(caseData.getCitizenDocumentsUploaded())
             .isSaveAndClose(caseData.getIsSaveAndClose());
+
+        handleDeceasedAliases(
+                builder,
+                caseData,
+                caseDetails.getId());
 
         if (transform) {
             updateCaseBuilderForTransformCase(caseData, builder);
