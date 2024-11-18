@@ -4787,6 +4787,86 @@ class CallbackResponseTransformerTest {
     }
 
     @Test
+    void verify_getResponseCaseData_no_willAlias_decAlias_solDecAlias() {
+        final var builder = ResponseCaseData.builder();
+        final var builderSpy = spy(builder);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(List.of(DEC_PROBATE_ALIAS_NAME_CM))
+                .solsDeceasedAliasNamesList(List.of(SOL_DEC_ALIAS_NAME_CM))
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        final String eventId = "TEST_EVENT";
+        final boolean transform = false;
+
+        final Set<CollectionMember<AliasName>> expAliases = Set.of(
+                WILL_ALIAS_NAME_CM,
+                DEC_ALIAS_NAME_CM,
+                SOL_DEC_ALIAS_NAME_CM);
+        final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
+
+        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
+            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
+
+            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+        }
+
+        verify(builderSpy).deceasedAnyOtherNameOnWill(NO);
+        verify(builderSpy).deceasedAliasFirstNameOnWill(WILL_ALIAS_FN);
+        verify(builderSpy).deceasedAliasLastNameOnWill(WILL_ALIAS_LN);
+
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
+
+        verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
+        verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
+    }
+
+    @Test
+    void verify_getResponseCaseData_yes_willAlias_decAlias_solDecAlias() {
+        final var builder = ResponseCaseData.builder();
+        final var builderSpy = spy(builder);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedAnyOtherNameOnWill(YES)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(List.of(DEC_PROBATE_ALIAS_NAME_CM))
+                .solsDeceasedAliasNamesList(List.of(SOL_DEC_ALIAS_NAME_CM))
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        final String eventId = "TEST_EVENT";
+        final boolean transform = false;
+
+        final Set<CollectionMember<AliasName>> expAliases = Set.of(
+                WILL_ALIAS_NAME_CM,
+                DEC_ALIAS_NAME_CM,
+                SOL_DEC_ALIAS_NAME_CM);
+        final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
+
+        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
+            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
+
+            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+        }
+
+        verify(builderSpy).deceasedAnyOtherNameOnWill(YES);
+        verify(builderSpy).deceasedAliasFirstNameOnWill(WILL_ALIAS_FN);
+        verify(builderSpy).deceasedAliasLastNameOnWill(WILL_ALIAS_LN);
+
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
+
+        verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
+        verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
+    }
+
+    @Test
     void neverAddNonSolsAliasesToBuilder() {
         final var builder = ResponseCaseData.builder();
         final var builderSpy = spy(builder);
