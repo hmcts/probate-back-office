@@ -11,6 +11,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.ArgumentMatcher;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.Spy;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
@@ -113,6 +114,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
@@ -4413,6 +4415,7 @@ class CallbackResponseTransformerTest {
     @Test
     void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilder() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill("John")
                 .deceasedAliasLastNameOnWill("Doe");
 
@@ -4436,6 +4439,7 @@ class CallbackResponseTransformerTest {
         List<CollectionMember<ProbateAliasName>> deceasedAliasNamesList = new ArrayList<>();
         deceasedAliasNamesList.add(createdDeceasedAliasName("0", ALIAS_FORENAME, ALIAS_SURNAME, YES));
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
+                .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill("John")
                 .deceasedAliasLastNameOnWill("Doe")
                 .deceasedAliasNameList(deceasedAliasNamesList);
@@ -4459,6 +4463,7 @@ class CallbackResponseTransformerTest {
     void shouldAddDeceasedAliasNamesToCaseDataUpdateCaseBuilderForTransformCase() {
         caseDataBuilder.applicationType(ApplicationType.PERSONAL)
                 .ihtReferenceNumber("020e920e920e902e2")
+                .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill("Jane")
                 .deceasedAliasLastNameOnWill("Smith")
                 .solsExecutorAliasNames("Dee ceased lol");
@@ -4779,6 +4784,46 @@ class CallbackResponseTransformerTest {
 
     private String format(DateTimeFormatter formatter, ResponseCaseData caseData, int ind) {
         return formatter.format(caseData.getRegistrarDirections().get(ind).getValue().getAddedDateTime());
+    }
+
+    @Test
+    void neverAddNonSolsAliasesToBuilder() {
+        final var builder = ResponseCaseData.builder();
+        final var builderSpy = spy(builder);
+
+        final CaseData caseData = CaseData.builder()
+                .deceasedAnyOtherNameOnWill(NO)
+                .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
+                .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(List.of(DEC_PROBATE_ALIAS_NAME_CM))
+                .solsDeceasedAliasNamesList(List.of(SOL_DEC_ALIAS_NAME_CM))
+                .build();
+
+        when(caseDetailsMock.getData()).thenReturn(caseData);
+
+        final String eventId = "TEST_EVENT";
+        final boolean transform = false;
+
+        final Set<CollectionMember<AliasName>> expAliases = Set.of(
+                WILL_ALIAS_NAME_CM,
+                DEC_ALIAS_NAME_CM,
+                SOL_DEC_ALIAS_NAME_CM);
+        final AliasMatcher expAliasMatcher = new AliasMatcher(expAliases);
+
+        try (MockedStatic<ResponseCaseData> respCaseData = mockStatic(ResponseCaseData.class)) {
+            respCaseData.when(ResponseCaseData::builder).thenReturn(builderSpy);
+
+            underTest.getResponseCaseData(caseDetailsMock, eventId, transform);
+        }
+
+        verify(builderSpy, never()).deceasedAnyOtherNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasFirstNameOnWill(any());
+        verify(builderSpy, never()).deceasedAliasLastNameOnWill(any());
+
+        verify(builderSpy, never()).deceasedAliasNamesList(any());
+
+        verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
+        verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
     }
 
     private static final class AliasMatcher implements ArgumentMatcher<List<CollectionMember<AliasName>>> {
