@@ -174,7 +174,7 @@ def versions = [
         probatePactCommonsVersion       : '1.0.2',
         restAssured                     : '5.5.0',
         serenity                        : '4.2.6',
-        serenityreporter                : '4.2.6',
+        serenityreporter                : '4.2.8',
         serviceAuthVersion              : '5.2.0',
         springBootVersion               : '3.3.5',
         springBootStarterHateoas        : '3.3.5',
@@ -253,7 +253,7 @@ dependencies {
   implementation group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
   implementation group: 'org.apache.httpcomponents.client5', name: 'httpclient5', version: '5.3.1'
 
-  implementation group: 'org.pitest', name: 'pitest', version: '1.17.0'
+  implementation group: 'org.pitest', name: 'pitest', version: '1.17.1'
   implementation group: 'org.commonmark', name: 'commonmark', version: '0.24.0'
   implementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
   implementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
@@ -272,7 +272,7 @@ dependencies {
   testAnnotationProcessor group:'org.projectlombok', name:'lombok', version: versions.lombok
   testImplementation group: 'com.github.hmcts', name: 'probate-commons', version: versions.probateCommonsVersion
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', version: versions.springBootVersion
-  testImplementation group: 'com.h2database', name: 'h2', version: '1.4.197'
+  testImplementation group: 'com.h2database', name: 'h2', version: '2.3.232'
   testImplementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '2.0.30'
   testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: versions.springSecurityVersion
   testImplementation group: 'com.mitchellbosecke', name: 'pebble', version: '2.4.0'
