@@ -1008,7 +1008,7 @@ public class CallbackResponseTransformer {
         return CallbackResponse.builder().data(responseCaseData).build();
     }
 
-    private ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, String eventId,
+    ResponseCaseDataBuilder<?, ?> getResponseCaseData(CaseDetails caseDetails, String eventId,
                                                               boolean transform) {
         CaseData caseData = caseDetails.getData();
 
@@ -1309,6 +1309,25 @@ public class CallbackResponseTransformer {
 
 
         return builder;
+    }
+
+    void handleDeceasedAliases(
+            final ResponseCaseDataBuilder<?,?> builder,
+            final CaseData caseData,
+            final Long caseRef) {
+    }
+
+    Set<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
+            final Long caseRef,
+            final String otherNameOnWill,
+            final String foreNames,
+            final String lastName) {
+        return Set.of();
+    }
+
+    Set<CollectionMember<AliasName>> convertDecAliasesSolsDecAliasList(
+            final List<CollectionMember<ProbateAliasName>> decAliases) {
+        return Set.of();
     }
 
     OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
