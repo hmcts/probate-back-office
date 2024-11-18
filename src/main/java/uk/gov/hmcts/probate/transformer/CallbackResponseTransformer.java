@@ -1318,6 +1318,46 @@ public class CallbackResponseTransformer {
             final ResponseCaseDataBuilder<?,?> builder,
             final CaseData caseData,
             final Long caseRef) {
+        // Question this asks is "Is the name on the will the same?" Not "Are there other names on the will?" as the
+        // name of the variable in the CaseData object suggests.
+        final String decNameOnWillSame = caseData.getDeceasedAnyOtherNameOnWill();
+        final var decAliases = caseData.getDeceasedAliasNameList();
+        final var solsDecAliases = caseData.getSolsDeceasedAliasNamesList();
+
+        {
+            final boolean hasAlternateNameOnWill = decNameOnWillSame != null && NO.equals(decNameOnWillSame);
+            final boolean hasDecAliases = decAliases != null && !decAliases.isEmpty();
+            final boolean hasSolsDecAliases = solsDecAliases != null && !solsDecAliases.isEmpty();
+
+            if ((hasAlternateNameOnWill || hasDecAliases) && hasSolsDecAliases) {
+                // This is one of the contributing causes for DTSPB-4388
+                log.info("For case {} found both non-sols and sols aliases: hasAltNameOnWill: {}, hasDecAliases: {},"
+                                + " hasSolsDecAliases: {}",
+                        caseRef,
+                        hasAlternateNameOnWill,
+                        hasDecAliases,
+                        hasSolsDecAliases);
+            }
+        }
+
+        Set<CollectionMember<AliasName>> newSolsDecAliases = new HashSet<>();
+
+        final String decAliasFNOnWill = caseData.getDeceasedAliasFirstNameOnWill();
+        final String decAliasLNOnWill = caseData.getDeceasedAliasLastNameOnWill();
+
+        newSolsDecAliases.addAll(convertAliasOnWillToSolsDecAliasList(
+                caseRef,
+                decNameOnWillSame,
+                decAliasFNOnWill,
+                decAliasLNOnWill));
+
+        newSolsDecAliases.addAll(convertDecAliasesSolsDecAliasList(decAliases));
+
+        if (solsDecAliases != null) {
+            newSolsDecAliases.addAll(solsDecAliases);
+        }
+
+        builder.solsDeceasedAliasNamesList(newSolsDecAliases.stream().toList());
     }
 
     Set<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
