@@ -708,9 +708,12 @@ public class CallbackResponseTransformer {
     }
 
     public CallbackResponse transform(CallbackRequest callbackRequest, String authToken) {
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
-                callbackRequest.getEventId(), authToken,false)
-                .build();
+        ResponseCaseData responseCaseData = getResponseCaseData(
+                callbackRequest.getCaseDetails(),
+                callbackRequest.getEventId(),
+                callbackRequest.isStateChanged() ? authToken : null,
+                false
+        ).build();
 
         return transformResponse(responseCaseData);
     }
@@ -719,9 +722,12 @@ public class CallbackResponseTransformer {
 
         boolean transform = doTransform(callbackRequest);
 
-        ResponseCaseData responseCaseData = getResponseCaseData(callbackRequest.getCaseDetails(),
-                callbackRequest.getEventId(), authToken, transform)
-                .build();
+        ResponseCaseData responseCaseData = getResponseCaseData(
+            callbackRequest.getCaseDetails(),
+            callbackRequest.getEventId(),
+            callbackRequest.isStateChanged() ? authToken : null,
+            transform
+        ).build();
 
         return transformResponse(responseCaseData);
     }
