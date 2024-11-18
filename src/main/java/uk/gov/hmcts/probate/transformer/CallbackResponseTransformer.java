@@ -1352,23 +1352,24 @@ public class CallbackResponseTransformer {
             }
         }
 
-        Set<CollectionMember<AliasName>> newSolsDecAliases = new HashSet<>();
-
-        final String decAliasFNOnWill = caseData.getDeceasedAliasFirstNameOnWill();
-        final String decAliasLNOnWill = caseData.getDeceasedAliasLastNameOnWill();
-
-        newSolsDecAliases.addAll(convertAliasOnWillToSolsDecAliasList(
-                caseRef,
-                decNameOnWillSame,
-                decAliasFNOnWill,
-                decAliasLNOnWill));
-
-        newSolsDecAliases.addAll(convertDecAliasesSolsDecAliasList(decAliases));
+        List<CollectionMember<AliasName>> newSolsDecAliases = new ArrayList<>();
 
         if (solsDecAliases != null) {
             newSolsDecAliases.addAll(solsDecAliases);
         }
 
+        newSolsDecAliases.addAll(convertDecAliasesSolsDecAliasList(decAliases));
+
+        {
+            final String decAliasFNOnWill = caseData.getDeceasedAliasFirstNameOnWill();
+            final String decAliasLNOnWill = caseData.getDeceasedAliasLastNameOnWill();
+
+            newSolsDecAliases.addAll(convertAliasOnWillToSolsDecAliasList(
+                    caseRef,
+                    decNameOnWillSame,
+                    decAliasFNOnWill,
+                    decAliasLNOnWill));
+        }
 
         Set<String> seenAliasNames = new HashSet<>();
 
@@ -1377,7 +1378,7 @@ public class CallbackResponseTransformer {
                 .toList());
     }
 
-    Set<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
+    List<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
             final Long caseRef,
             final String differentNameOnWill,
             final String foreNames,
@@ -1395,7 +1396,7 @@ public class CallbackResponseTransformer {
                         .build();
 
                 final CollectionMember<AliasName> listMember = new CollectionMember<>(alias);
-                return Set.of(listMember);
+                return List.of(listMember);
             } else {
                 log.info("For case {}, foreNames == null: {}, lastName == null: {},"
                                 + " so alias is not being added to solsDecAlias list",
@@ -1404,13 +1405,13 @@ public class CallbackResponseTransformer {
                         lastName == null);
             }
         }
-        return Set.of();
+        return List.of();
     }
 
-    Set<CollectionMember<AliasName>> convertDecAliasesSolsDecAliasList(
+    List<CollectionMember<AliasName>> convertDecAliasesSolsDecAliasList(
             final List<CollectionMember<ProbateAliasName>> decAliases) {
         if (decAliases == null || decAliases.isEmpty()) {
-            return Set.of();
+            return List.of();
         }
 
         final Function<CollectionMember<ProbateAliasName>, ProbateAliasName> unwrap = c -> c.getValue();
@@ -1429,11 +1430,14 @@ public class CallbackResponseTransformer {
 
         final Function<AliasName, CollectionMember<AliasName>> wrap = a -> new CollectionMember<>(a);
 
+        Set<String> seenAliasNames = new HashSet<>();
+
         return decAliases.stream()
                 .map(unwrap)
                 .map(convert)
                 .map(wrap)
-                .collect(Collectors.toUnmodifiableSet());
+                .filter(cm -> seenAliasNames.add(cm.getValue().getSolsAliasname()))
+                .toList();
     }
 
     OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
