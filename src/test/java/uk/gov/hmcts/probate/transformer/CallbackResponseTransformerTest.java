@@ -336,9 +336,12 @@ class CallbackResponseTransformerTest {
             .lastName(WILL_ALIAS_LN)
             .build();
     private static final CollectionMember<ProbateAliasName> WILL_PROBATE_ALIAS_NAME_CM = new CollectionMember<>(
+            "WILL_PROBATE_ALIAS_NAME_ID",
             WILL_PROBATE_ALIAS_NAME);
     private static final AliasName WILL_ALIAS_NAME = AliasName.builder().solsAliasname(WILL_ALIAS).build();
-    private static final CollectionMember<AliasName> WILL_ALIAS_NAME_CM = new CollectionMember<>(WILL_ALIAS_NAME);
+    private static final CollectionMember<AliasName> WILL_ALIAS_NAME_CM = new CollectionMember<>(
+            "WILL_ALIAS_NAME_ID",
+            WILL_ALIAS_NAME);
 
     private static final String DEC_ALIAS_FN = "DecAliasFN";
     private static final String DEC_ALIAS_LN = "DecAliasLN";
@@ -348,9 +351,12 @@ class CallbackResponseTransformerTest {
             .lastName(DEC_ALIAS_LN)
             .build();
     private static final CollectionMember<ProbateAliasName> DEC_PROBATE_ALIAS_NAME_CM = new CollectionMember<>(
+            "DEC_PROBATE_ALIAS_NAME_ID",
             DEC_PROBATE_ALIAS_NAME);
     private static final AliasName DEC_ALIAS_NAME = AliasName.builder().solsAliasname(DEC_ALIAS).build();
-    private static final CollectionMember<AliasName> DEC_ALIAS_NAME_CM = new CollectionMember<>(DEC_ALIAS_NAME);
+    private static final CollectionMember<AliasName> DEC_ALIAS_NAME_CM = new CollectionMember<>(
+            "DEC_ALIAS_NAME_ID",
+            DEC_ALIAS_NAME);
 
     private static final String SOL_DEC_ALIAS_FN = "SolDecAliasFN";
     private static final String SOL_DEC_ALIAS_LN = "SolDecAliasLN";
@@ -360,9 +366,12 @@ class CallbackResponseTransformerTest {
             .lastName(SOL_DEC_ALIAS_LN)
             .build();
     private static final CollectionMember<ProbateAliasName> SOL_DEC_PROBATE_ALIAS_NAME_CM = new CollectionMember<>(
+            "SOL_DEC_PROBATE_ALIAS_NAME_ID",
             SOL_DEC_PROBATE_ALIAS_NAME);
     private static final AliasName SOL_DEC_ALIAS_NAME = AliasName.builder().solsAliasname(SOL_DEC_ALIAS).build();
-    private static final CollectionMember<AliasName> SOL_DEC_ALIAS_NAME_CM = new CollectionMember<>(SOL_DEC_ALIAS_NAME);
+    private static final CollectionMember<AliasName> SOL_DEC_ALIAS_NAME_CM = new CollectionMember<>(
+            "SOL_DEC_ALIAS_NAME_ID",
+            SOL_DEC_ALIAS_NAME);
 
     private List<CaseMatch> caseMatches = new ArrayList<>();
 
@@ -4913,10 +4922,12 @@ class CallbackResponseTransformerTest {
     }
 
     private static final class AliasMatcher implements ArgumentMatcher<List<CollectionMember<AliasName>>> {
-        private final Set<CollectionMember<AliasName>> expects;
+        private final Set<String> expects;
 
         public AliasMatcher(Set<CollectionMember<AliasName>> expects) {
-            this.expects = expects;
+            this.expects = expects.stream()
+                    .map(cm -> cm.getValue().getSolsAliasname())
+                    .collect(Collectors.toUnmodifiableSet());
         }
 
         @Override
@@ -4928,13 +4939,15 @@ class CallbackResponseTransformerTest {
                 return false;
             }
 
-            return arg.containsAll(expects);
+            return arg.stream()
+                    .map(cm -> cm.getValue().getSolsAliasname())
+                    .toList()
+                    .containsAll(expects);
         }
 
         @Override
         public String toString() {
             final String elements = expects.stream()
-                    .map(c -> c.getValue().getSolsAliasname())
                     .collect(Collectors.joining(", "));
             final StringBuilder description = new StringBuilder();
 
@@ -5297,6 +5310,7 @@ class CallbackResponseTransformerTest {
                 .deceasedAnyOtherNameOnWill(NO)
                 .deceasedAliasFirstNameOnWill(WILL_ALIAS_FN)
                 .deceasedAliasLastNameOnWill(WILL_ALIAS_LN)
+                .deceasedAliasNameList(List.of(WILL_PROBATE_ALIAS_NAME_CM))
                 .solsDeceasedAliasNamesList(List.of(WILL_ALIAS_NAME_CM, SOL_DEC_ALIAS_NAME_CM))
                 .build();
 
@@ -5318,6 +5332,7 @@ class CallbackResponseTransformerTest {
 
         verify(builderSpy, never()).deceasedAliasNamesList(any());
 
+        verify(builderSpy, never()).solsDeceasedAliasNamesList(argThat(expAliasMatcher.invert()));
         verify(builderSpy).solsDeceasedAliasNamesList(argThat(expAliasMatcher));
     }
 
@@ -5422,7 +5437,10 @@ class CallbackResponseTransformerTest {
 
         assertions.add(() -> assertNotNull(res, "Expected non-null response"));
         assertions.add(() -> assertEquals(1, res.size(), "Expected converted will aliases to have one entry"));
-        assertions.add(() -> assertTrue(res.contains(WILL_ALIAS_NAME_CM), "Expected will alias present"));
+        assertions.add(() -> assertTrue(res.stream()
+                        .map(cm -> cm.getValue().getSolsAliasname())
+                        .anyMatch(WILL_ALIAS::equals),
+                "Expected will alias present"));
 
         assertAll(assertions);
     }
@@ -5469,7 +5487,10 @@ class CallbackResponseTransformerTest {
 
         assertions.add(() -> assertNotNull(res, "Expected non-null response"));
         assertions.add(() -> assertEquals(1, res.size(), "Expected converted dec aliases to be have one entry"));
-        assertions.add(() -> assertTrue(res.contains(DEC_ALIAS_NAME_CM), "Expected dec alias present"));
+        assertions.add(() -> assertTrue(res.stream()
+                        .map(cm -> cm.getValue().getSolsAliasname())
+                        .anyMatch(DEC_ALIAS::equals),
+                "Expected dec alias present"));
 
         assertAll(assertions);
     }
@@ -5487,8 +5508,14 @@ class CallbackResponseTransformerTest {
 
         assertions.add(() -> assertNotNull(res, "Expected non-null response"));
         assertions.add(() -> assertEquals(2, res.size(), "Expected converted will aliases to have two entries"));
-        assertions.add(() -> assertTrue(res.contains(DEC_ALIAS_NAME_CM), "Expected dec alias present"));
-        assertions.add(() -> assertTrue(res.contains(WILL_ALIAS_NAME_CM), "Expected will alias present"));
+        assertions.add(() -> assertTrue(res.stream()
+                        .map(cm -> cm.getValue().getSolsAliasname())
+                        .anyMatch(DEC_ALIAS::equals),
+                "Expected dec alias present"));
+        assertions.add(() -> assertTrue(res.stream()
+                        .map(cm -> cm.getValue().getSolsAliasname())
+                        .anyMatch(WILL_ALIAS::equals),
+                "Expected will alias present"));
 
         assertAll(assertions);
     }
@@ -5506,7 +5533,10 @@ class CallbackResponseTransformerTest {
 
         assertions.add(() -> assertNotNull(res, "Expected non-null response"));
         assertions.add(() -> assertEquals(1, res.size(), "Expected converted dec aliases to have one entry"));
-        assertions.add(() -> assertTrue(res.contains(DEC_ALIAS_NAME_CM), "Expected will alias present"));
+        assertions.add(() -> assertTrue(res.stream()
+                        .map(cm -> cm.getValue().getSolsAliasname())
+                        .anyMatch(DEC_ALIAS::equals),
+                "Expected dec alias present"));
 
         assertAll(assertions);
     }
