@@ -1369,7 +1369,12 @@ public class CallbackResponseTransformer {
             newSolsDecAliases.addAll(solsDecAliases);
         }
 
-        builder.solsDeceasedAliasNamesList(newSolsDecAliases.stream().toList());
+
+        Set<String> seenAliasNames = new HashSet<>();
+
+        builder.solsDeceasedAliasNamesList(newSolsDecAliases.stream()
+                .filter(a -> seenAliasNames.add(a.getValue().getSolsAliasname()))
+                .toList());
     }
 
     Set<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
