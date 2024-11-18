@@ -1,6 +1,7 @@
 package uk.gov.hmcts.probate.transformer;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -57,6 +58,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import static java.lang.Boolean.TRUE;
@@ -101,6 +103,7 @@ import static uk.gov.hmcts.reform.probate.model.cases.grantofrepresentation.Gran
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class CallbackResponseTransformer {
 
     public static final String ANSWER_YES = "Yes";
@@ -1319,15 +1322,61 @@ public class CallbackResponseTransformer {
 
     Set<CollectionMember<AliasName>> convertAliasOnWillToSolsDecAliasList(
             final Long caseRef,
-            final String otherNameOnWill,
+            final String differentNameOnWill,
             final String foreNames,
             final String lastName) {
+        if (differentNameOnWill != null && NO.equals(differentNameOnWill)) {
+            if (foreNames != null && lastName != null) {
+                final String aliasValue = new StringBuilder()
+                        .append(foreNames)
+                        .append(" ")
+                        .append(lastName)
+                        .toString();
+
+                final AliasName alias = AliasName.builder()
+                        .solsAliasname(aliasValue)
+                        .build();
+
+                final CollectionMember<AliasName> listMember = new CollectionMember<>(alias);
+                return Set.of(listMember);
+            } else {
+                log.info("For case {}, foreNames == null: {}, lastName == null: {},"
+                                + " so alias is not being added to solsDecAlias list",
+                        caseRef,
+                        foreNames == null,
+                        lastName == null);
+            }
+        }
         return Set.of();
     }
 
     Set<CollectionMember<AliasName>> convertDecAliasesSolsDecAliasList(
             final List<CollectionMember<ProbateAliasName>> decAliases) {
-        return Set.of();
+        if (decAliases == null || decAliases.isEmpty()) {
+            return Set.of();
+        }
+
+        final Function<CollectionMember<ProbateAliasName>, ProbateAliasName> unwrap = c -> c.getValue();
+
+        final Function<ProbateAliasName, AliasName> convert = p -> {
+            final String aliasValue = new StringBuilder()
+                    .append(p.getForenames())
+                    .append(" ")
+                    .append(p.getLastName())
+                    .toString();
+
+            return AliasName.builder()
+                    .solsAliasname(aliasValue)
+                    .build();
+        };
+
+        final Function<AliasName, CollectionMember<AliasName>> wrap = a -> new CollectionMember<>(a);
+
+        return decAliases.stream()
+                .map(unwrap)
+                .map(convert)
+                .map(wrap)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     OrganisationPolicy buildOrganisationPolicy(CaseDetails caseDetails, String authToken) {
