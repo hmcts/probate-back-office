@@ -28,12 +28,16 @@ import java.util.List;
 import java.util.Map;
 
 import static uk.gov.hmcts.probate.model.Constants.BUSINESS_ERROR;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.DIGITAL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.INTESTACY_GRANT_REISSUE;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT;
+import static uk.gov.hmcts.probate.model.DocumentType.WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_ADMON_WILL_GRANT_REISSUE;
 import static uk.gov.hmcts.probate.model.DocumentType.WELSH_DIGITAL_GRANT;
@@ -207,15 +211,20 @@ public class BulkPrintService {
         if (documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT)
+            || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), AD_COLLIGENDA_BONA_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_DIGITAL_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_INTESTACY_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_ADMON_WILL_GRANT)
+            || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_AD_COLLIGENDA_BONA_GRANT)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), INTESTACY_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), ADMON_WILL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), DIGITAL_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), AD_COLLIGENDA_BONA_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_DIGITAL_GRANT_REISSUE)
             || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_ADMON_WILL_GRANT_REISSUE)
-            || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_INTESTACY_GRANT_REISSUE)) {
+            || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument), WELSH_INTESTACY_GRANT_REISSUE)
+            || documentTransformer.hasDocumentWithType(Arrays.asList(grantDocument),
+                WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE)) {
             extraCopies = addAdditionalCopiesForGrants(callbackRequest);
         }
 

@@ -89,13 +89,16 @@ public class ReprintTransformer {
             case DIGITAL_GRANT:
             case INTESTACY_GRANT:
             case ADMON_WILL_GRANT:
+            case AD_COLLIGENDA_BONA_GRANT:
             case WELSH_DIGITAL_GRANT:
             case WELSH_INTESTACY_GRANT:
             case WELSH_ADMON_WILL_GRANT:
+            case WELSH_AD_COLLIGENDA_BONA_GRANT:
                 return true;
             case DIGITAL_GRANT_REISSUE:
             case INTESTACY_GRANT_REISSUE:
             case ADMON_WILL_GRANT_REISSUE:
+            case AD_COLLIGENDA_BONA_GRANT_REISSUE:
                 return true;
             case STATEMENT_OF_TRUTH:
             case WELSH_STATEMENT_OF_TRUTH:
@@ -115,14 +118,17 @@ public class ReprintTransformer {
             case DIGITAL_GRANT:
             case INTESTACY_GRANT:
             case ADMON_WILL_GRANT:
+            case AD_COLLIGENDA_BONA_GRANT:
             case WELSH_DIGITAL_GRANT:
             case WELSH_INTESTACY_GRANT:
             case WELSH_ADMON_WILL_GRANT:
+            case WELSH_AD_COLLIGENDA_BONA_GRANT:
                 optionalDynamicListItem = Optional.of(buildListItem(document.getDocumentFileName(), LABEL_GRANT));
                 break;
             case DIGITAL_GRANT_REISSUE:
             case INTESTACY_GRANT_REISSUE:
             case ADMON_WILL_GRANT_REISSUE:
+            case AD_COLLIGENDA_BONA_GRANT_REISSUE:
                 optionalDynamicListItem =
                     Optional.of(buildListItem(document.getDocumentFileName(), LABEL_REISSUED_GRANT));
                 break;

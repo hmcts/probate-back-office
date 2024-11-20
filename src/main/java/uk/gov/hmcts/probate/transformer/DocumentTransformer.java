@@ -43,6 +43,12 @@ public class DocumentTransformer {
             case ADMON_WILL_GRANT_REISSUE:
             case WELSH_ADMON_WILL_GRANT_REISSUE_DRAFT:
             case WELSH_ADMON_WILL_GRANT_REISSUE:
+            case AD_COLLIGENDA_BONA_GRANT_DRAFT:
+            case AD_COLLIGENDA_BONA_GRANT:
+            case AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT:
+            case AD_COLLIGENDA_BONA_GRANT_REISSUE:
+            case WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE_DRAFT:
+            case WELSH_AD_COLLIGENDA_BONA_GRANT_REISSUE:
             case SOT_INFORMATION_REQUEST:
             case GRANT_COVER:
             case ASSEMBLED_LETTER:
@@ -53,6 +59,8 @@ public class DocumentTransformer {
             case WELSH_ADMON_WILL_GRANT:
             case WELSH_INTESTACY_GRANT_DRAFT:
             case WELSH_INTESTACY_GRANT:
+            case WELSH_AD_COLLIGENDA_BONA_GRANT_DRAFT:
+            case WELSH_AD_COLLIGENDA_BONA_GRANT:
                 callbackRequest.getCaseDetails().getData().getProbateDocumentsGenerated()
                         .add(new CollectionMember<>(null, document));
                 break;
