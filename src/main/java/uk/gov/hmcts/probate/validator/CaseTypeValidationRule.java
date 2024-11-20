@@ -10,9 +10,6 @@ import uk.gov.hmcts.probate.service.BusinessValidationMessageRetriever;
 
 import java.util.Locale;
 
-import static uk.gov.hmcts.probate.model.Constants.YES;
-import static uk.gov.hmcts.reform.probate.model.IhtFormType.Constants.NOT_APPLICABLE_VALUE;
-
 
 @Component
 @RequiredArgsConstructor
