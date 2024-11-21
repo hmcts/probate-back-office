@@ -18,7 +18,7 @@ public class CallbackRequest {
 
     public boolean isStateChanged() {
         if (this.caseDetails == null || this.caseDetailsBefore == null) {
-            return false;
+            return true;
         }
         return !this.caseDetails.getState().equalsIgnoreCase(this.caseDetailsBefore.getState());
     }

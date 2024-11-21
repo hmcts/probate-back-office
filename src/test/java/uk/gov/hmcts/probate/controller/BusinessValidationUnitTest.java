@@ -939,7 +939,7 @@ class BusinessValidationUnitTest {
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
 
         ResponseEntity<CallbackResponse> response =
-                underTest.registrarsDecision(AUTH_TOKEN, callbackRequestMock);
+                underTest.registrarsDecision(callbackRequestMock);
         verify(registrarDirectionServiceMock, times(1)).addAndOrderDirectionsToGrant(caseDataMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
@@ -1023,9 +1023,9 @@ class BusinessValidationUnitTest {
         when(bindingResultMock.hasErrors()).thenReturn(false);
         when(caseDetailsMock.getData()).thenReturn(caseDataMock);
         ResponseEntity<CallbackResponse> response =
-                underTest.changeDob(AUTH_TOKEN, callbackRequestMock,httpServletRequest);
+                underTest.changeDob(callbackRequestMock,httpServletRequest);
         verify(callbackResponseTransformerMock, times(1))
-                .changeDob(callbackRequestMock, AUTH_TOKEN);
+                .changeDob(callbackRequestMock);
         assertThat(response.getStatusCode(), is(HttpStatus.OK));
     }
 

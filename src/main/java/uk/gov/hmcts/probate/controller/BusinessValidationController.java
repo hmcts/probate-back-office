@@ -498,13 +498,12 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/changeDob", consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> changeDob(@RequestHeader(value = "Authorization") String authToken,
-                                                      @RequestBody CallbackRequest callbackRequest,
+    public ResponseEntity<CallbackResponse> changeDob(@RequestBody CallbackRequest callbackRequest,
                                                       HttpServletRequest request) {
         logRequest(request.getRequestURI(), callbackRequest);
         log.info("superuser change Dob");
         pre1900DOBValidationRule.validate(callbackRequest.getCaseDetails());
-        CallbackResponse response = callbackResponseTransformer.changeDob(callbackRequest, authToken);
+        CallbackResponse response = callbackResponseTransformer.changeDob(callbackRequest);
         return ResponseEntity.ok(response);
     }
 
@@ -702,11 +701,9 @@ public class BusinessValidationController {
 
     @PostMapping(path = "/registrars-decision", consumes = APPLICATION_JSON_VALUE,
             produces = {APPLICATION_JSON_VALUE})
-    public ResponseEntity<CallbackResponse> registrarsDecision(
-            @RequestHeader(value = "Authorization") String authToken,
-            @RequestBody CallbackRequest callbackRequest) {
+    public ResponseEntity<CallbackResponse> registrarsDecision(@RequestBody CallbackRequest callbackRequest) {
         registrarDirectionService.addAndOrderDirectionsToGrant(callbackRequest.getCaseDetails().getData());
-        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, authToken));
+        return ResponseEntity.ok(callbackResponseTransformer.transformCase(callbackRequest, null));
     }
 
 

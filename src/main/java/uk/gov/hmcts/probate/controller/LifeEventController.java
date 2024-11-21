@@ -72,16 +72,16 @@ public class LifeEventController {
 
     @PostMapping(path = "/selectFromMultipleRecords", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> selectFromMultipleRecords(
-            @RequestHeader(value = "Authorization") String authToken,
-            @RequestBody CallbackRequest request) {
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest request) {
         lifeEventValidationRule.validate(request.getCaseDetails());
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, authToken));
     }
 
     @PostMapping(path = "/handOffToLegacySite", produces = {APPLICATION_JSON_VALUE})
     public ResponseEntity<CallbackResponse> handOffToLegacySite(
-            @RequestHeader(value = "Authorization") String authToken,
-            @RequestBody CallbackRequest request) {
+        @RequestHeader(value = "Authorization") String authToken,
+        @RequestBody CallbackRequest request) {
         handOffLegacyTransformer.setHandOffToLegacySiteYes(request);
         return ResponseEntity.ok(callbackResponseTransformer.updateTaskList(request, authToken));
     }
