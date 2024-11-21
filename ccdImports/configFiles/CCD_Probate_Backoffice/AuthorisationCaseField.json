@@ -2291,6 +2291,8 @@
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAliasFirstNameOnWill", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "deceasedAliasLastNameOnWill", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "doNotSaveCase", "UserRole": "caseworker-probate-superuser", "CRUD": "CRU"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedCaseworkerForenames", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
+  {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "lastModifiedCaseworkerSurname", "UserRole": "caseworker-probate-superuser", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "schemaVersion", "UserRole": "caseworker-probate-scheduler", "CRUD": "CRUD"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
   {"CaseTypeID": "GrantOfRepresentation", "CaseFieldID": "customPaymentHistoryViewer", "UserRole": "caseworker-probate-scheduler", "CRUD": "R"},
