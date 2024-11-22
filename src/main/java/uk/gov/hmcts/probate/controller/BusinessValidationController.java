@@ -568,6 +568,7 @@ public class BusinessValidationController {
             BindingResult bindingResult) {
 
         validateForPayloadErrors(callbackRequest, bindingResult);
+        caseTypeValidationRule.validate(callbackRequest.getCaseDetails());
         CallbackResponse response = callbackResponseTransformer.defaultDateOfDeathType(callbackRequest);
 
         return ResponseEntity.ok(response);
@@ -580,7 +581,6 @@ public class BusinessValidationController {
         caseDataTransformer.transformCaseDataForPaperForm(callbackRequest);
         handOffLegacyTransformer.setHandOffToLegacySiteYes(callbackRequest);
         validateForPayloadErrors(callbackRequest, bindingResult);
-        caseTypeValidationRule.validate(callbackRequest.getCaseDetails());
         numberOfApplyingExecutorsValidationRule.validate(callbackRequest.getCaseDetails());
 
         Document document = null;
